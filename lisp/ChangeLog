@@ -1,3 +1,18 @@
+2004-11-07  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-yank.el (riece-yank-strip-space): New function split from
+	riece-command-yank.
+	* test/test-riece-addon.el: New test cases.
+	* test/test-riece-yank.el: New test cases.
+
+2004-11-05  Daiki Ueno  <ueno@unixuser.org>
+
+	* COMPILE (riece-test): New function.
+	* Makefile.am (check-local): New target.
+	* test/luna.el: New file.
+	* test/lunit.el: New file.
+	* test/test-riece-alias.el: New test cases.
+
 2004-11-05  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-alias.el (riece-alias-alternate-separator): New user

@@ -2,6 +2,17 @@
 
 (luna-define-class test-riece-alias (lunit-test-case))
 
+(luna-define-method test-riece-alias-percent-hack ((case test-riece-alias))
+  (let ((riece-alias-percent-hack-mask "*.jp"))
+    (lunit-assert
+     (equal
+      (riece-alias-abbrev-percent-hack "#riece:*.jp")
+      "%riece"))
+    (lunit-assert
+     (equal
+      (riece-alias-expand-percent-hack "%riece")
+      "#riece:*.jp"))))
+
 (luna-define-method test-riece-alias-altsep-1 ((case test-riece-alias))
   (let ((riece-alias-alternate-separator "@"))
     (lunit-assert
