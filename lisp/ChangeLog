@@ -1,5 +1,17 @@
 2003-08-26  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-unread.el (riece-channel-list-unread-face): Change colors.
+
+	* riece-options.el (riece-addons): Enable riece-unread by default.
+
+	* riece-highlight.el (riece-channel-list-current-face): New variable.
+	(riece-channel-list-default-face): New face.
+
+	* riece-globals.el (riece-channel-list-buffer): Strip leading
+	whitespace.
+
+2003-08-26  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-unread.el: Require 'riece-highlight when compiling.
 	(riece-unread): New custom group.
 	(riece-channel-list-unread-face): New variable.

@@ -50,12 +50,12 @@
 (defface riece-channel-list-unread-face
   '((((class color)
       (background dark))
-     (:foreground "pink"))
+     (:foreground "orange"))
     (((class color)
       (background light))
      (:foreground "firebrick"))
     (t
-     ()))
+     (:bold t)))
   "Face used for displaying unread channels."
   :group 'riece-highlight-faces)
 

@@ -132,7 +132,7 @@ Local to the channel buffers.")
   "Name of channel message buffer.")
 (defvar riece-channel-buffer-format "*Channel:%s*"
   "Format of channel message buffer.")
-(defvar riece-channel-list-buffer " *Channels*"
+(defvar riece-channel-list-buffer "*Channels*"
   "Name of channel list buffer.")
 (defvar riece-user-list-buffer " *Users*"
   "Name of user list buffer.")

@@ -179,20 +179,37 @@
   :type '(repeat (list string))
   :group 'riece-highlight)
 
+(defcustom riece-channel-list-default-face 'riece-channel-list-default-face
+  "Face used for displaying channels."
+  :type 'face
+  :group 'riece-highlight-faces)
+
 (defcustom riece-channel-list-current-face 'riece-channel-list-current-face
   "Face used for displaying the current channel."
   :type 'face
   :group 'riece-highlight-faces)
 
+(defface riece-channel-list-default-face
+  '((((class color)
+      (background dark))
+     (:foreground "turquoise"))
+    (((class color)
+      (background light))
+     (:foreground "CadetBlue4"))
+    (t
+     ()))
+  "Face used for displaying channels."
+  :group 'riece-highlight-faces)
+
 (defface riece-channel-list-current-face
   '((((class color)
       (background dark))
-     (:foreground "PaleGreen" :underline t))
+     (:foreground "PaleTurquoise" :underline t))
     (((class color)
       (background light))
-     (:foreground "DarkGreen" :underline t))
+     (:foreground "ForestGreen" :underline t))
     (t
-     (:underline t)))
+     ()))
   "Face used for displaying the current channel."
   :group 'riece-highlight-faces)
 
@@ -206,7 +223,7 @@
   '(("^[ 0-9][0-9]:\\(.\\)\\(.*\\)"
      (2 (or (cdr (assq (aref (match-string 1) 0)
 		       riece-channel-list-mark-face-alist))
-	    'default))))
+	    riece-channel-list-default-face))))
   "Default expressions to highlight in riece-channel-list-mode."
   :type '(repeat (list string))
   :group 'riece-highlight)
