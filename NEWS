@@ -1,20 +1,20 @@
 * Major changes in 1.0.7
 
-** New add-on riece-google.
+** New add-on riece-google. (bg66)
 
-** New add-on riece-eval.
+** New add-on riece-eval. (bg66)
 
-** New add-on riece-keepalive.
+** New add-on riece-keepalive. (ueno)
 
-** New add-on riece-toolbar.
+** New add-on riece-toolbar. (ueno)
 
-** riece-log is enabled by default.
+** riece-log is enabled by default. (ueno)
 
-** Show backtrace when encountered an error in process-filter.
+** Show backtrace when encountered an error in process-filter. (ueno)
 
-** Ask channel key to user when it is required.
+** Ask channel key to user when it is required. (ueno)
 
-** Automatic buffer shrinking is now disabled by default.
+** Automatic buffer shrinking is now disabled by default. (ueno)
 
 * Major changes in 1.0.6
 
