@@ -273,7 +273,7 @@ If optional argument CONFIRM is non-nil, ask which IRC server to connect."
     (if riece-max-buffer-size
 	(setq riece-shrink-buffer-idle-timer
 	      (riece-run-with-idle-timer
-	       riece-shrink-buffer-idle-time-delay nil
+	       riece-shrink-buffer-idle-time-delay t
 	       (lambda ()
 		 (let ((buffers riece-buffer-list))
 		   (while buffers
