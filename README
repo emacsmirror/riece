@@ -11,7 +11,7 @@ This package contains following directories:
 
 lisp/ - Emacs Lisp files.
 
-dcc/  - DCC external program source.  (currently not used)
+doc/  - Documentation files.
 
 * Bug reports
 
