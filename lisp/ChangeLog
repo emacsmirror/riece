@@ -1,3 +1,8 @@
+2004-03-20  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-server.el (riece-open-server): Append the server-name to
+	the prompt string.
+
 2004-03-14  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-display.el (riece-display-connect-signals): Update

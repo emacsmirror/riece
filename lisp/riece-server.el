@@ -155,7 +155,11 @@ the `riece-server-keyword-map' variable."
 	  (unwind-protect
 	      ;; XEmacs signals an error when the keyboard cannot be grabbed.
 	      (condition-case nil
-		  (setq password (riece-read-passwd "Password: "))
+		  (setq password
+			(if (equal server-name "")
+			    (riece-read-passwd "Password: ")
+			  (riece-read-passwd (format "Password for %s: "
+						     server-name))))
 		(error))
 	    (setq riece-reconnect-with-password nil)))
       (if password
