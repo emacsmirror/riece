@@ -355,18 +355,18 @@ signal an error if not."
 	 (lunit-time-since
 	  (lunit-test-reporter-start-time-internal reporter))))
     (save-excursion
-    (set-buffer (lunit-test-reporter-buffer-internal reporter))
+      (set-buffer (lunit-test-reporter-buffer-internal reporter))
     
-    (insert "\
+      (insert "\
     </testcase>
 ")
-    (goto-char (point-min))
-    (looking-at " *<testcase\\>")
-    (goto-char (match-end 0))
-    (insert (format " time=\"%.03f\" "
-		    (+ (nth 1 elapsed)
-			   (/ (nth 2 elapsed) 1000000.0))))
-    (widen))))
+      (goto-char (point-min))
+      (looking-at " *<testcase\\>")
+      (goto-char (match-end 0))
+      (insert (format " time=\"%.03f\" "
+		      (+ (nth 1 elapsed)
+			 (/ (nth 2 elapsed) 1000000.0))))
+      (widen))))
 
 (defun lunit-report (test)
   "Run TEST and output result as XML."
@@ -403,7 +403,7 @@ signal an error if not."
 	(insert (format "\
 <?xml version=\"1.0\" encoding=\"UTF-8\"?>
 <testsuites>
-  <testsuite name=\"lunit-test-suite\" tests=\"%d\" failures=\"%d\" \
+  <testsuite name=\"\" tests=\"%d\" failures=\"%d\" \
 errors=\"%d\" time =\"%.03f\">
 "
 			(lunit-test-number-of-tests test)
@@ -456,24 +456,6 @@ errors=\"%d\" time =\"%.03f\">
   (lunit-assert nil))
 
 ")))))))
-
-(defun batch-lunit ()
-  (let ((load-path (cons (expand-file-name (car command-line-args-left))
-			 (cons nil load-path)))
-	(files (directory-files (expand-file-name (car command-line-args-left))
-				t "^test-.*\\.el$"))
-        suite)
-    (setq suite (lunit-make-test-suite))
-    (while files
-      (when (file-regular-p (car files))
-	(load-file (car files))
-	(lunit-test-suite-add-test
-	 suite
-	 (lunit-make-test-suite-from-class
-	  (intern (file-name-sans-extension
-		   (file-name-nondirectory (car files)))))))
-      (setq files (cdr files)))
-    (lunit suite)))
 
 (provide 'lunit)
 
