@@ -48,17 +48,11 @@
      (if (string-match "[0-9]+$" command-name)
 	 (list (string-to-number (match-string 0 command-name)))
        (list (string-to-number (read-string "Number: "))))))
-  (let ((channels riece-current-channels)
-	(index 1))
-    (while (and channels
-		(< index number))
-      (if (car channels)
-	  (setq index (1+ index)))
-      (setq channels (cdr channels)))
-    (if (car channels)
-	(riece-command-switch-to-channel (car channels))
+  (let ((channel (nth (1- number) riece-current-channels)))
+    (if channel
+	(riece-command-switch-to-channel channel)
       (error "No such number!"))))
-	
+
 (eval-and-compile
   (let ((number 1))
     (while (<= number 20)

@@ -1,3 +1,7 @@
+2003-06-12  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-commands.el (riece-command-switch-to-channel-by-number): Fixed.
+
 2003-08-17  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-commands.el (riece-command-previous-channel): Skip nil in
