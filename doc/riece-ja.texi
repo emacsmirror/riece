@@ -3,7 +3,7 @@
 @setfilename riece-ja.info
 @settitle Riece -- An IRC client for Emacsen --
 @c %**end of header
-@set VERSION 0.0.2
+@set VERSION 0.0.3
 @c @documentlanguage ja
 
 @dircategory GNU Emacs Lisp
@@ -140,7 +140,7 @@ XEmacs $B$N%Q%C%1!<%8$H$7$F%$%s%9%H!<%k$7$?>l9g$K$OI,MW$"$j$^$;$s$,!"(B
 @section Startup file
 
 $B$O$8$a$F$D$+$&>l9g$K$O!"$H$/$K2?$b@_Dj$9$kI,MW$O$"$j$^$;$s!#(B
-$BFI$_Ht$P$7$F$/$@$5$$!#(B
+$B$3$N>O$OFI$_Ht$P$7$F$/$@$5$$!#(B
 
 Riece $B$O@_Dj%U%!%$%k$rJQ?t(B @code{riece-directory} $B$G;X<($5$l$k%G%#%l%/%H(B
 $B%j(B ($B%G%U%)%k%H$O(B @file{~/.riece/}) $B$+$iFI$_9~$_$^$9!#$3$N%G%#%l%/%H%j$K(B
@@ -157,7 +157,7 @@ Riece $B$O@_Dj%U%!%$%k$rJQ?t(B @code{riece-directory} $B$G;X<($5$l$k%G%#%l%/%
 
 $B5/F0;~$K$O!":G=i$K(B @code{riece-saved-variables-file} $B$r!"<!$K(B 
 @code{riece-variables-file} $B$rFI$_9~$_$^$9!#%U%!%$%k$,B8:_$7$J$1$l$P2?$b(B
-$B$*$3$J$$$^$;$s!#(B
+$B$7$^$;$s!#(B
 
 @node Basic usage, Advanced usage, Getting started, Top
 @chapter Basic usage
@@ -307,10 +307,10 @@ IRC $B$r$d$a$^$9(B(@code{riece-command-quit})
 @node Connecting to multiple servers,  , Commands, Basic usage
 @section Connecting to multiple servers
 
-Riece $B$NBg$-$JFCD9$H$7$F!"F1;~$KJ#?t$N%5!<%P$K@\B3$9$k5!G=$,5s$2$i$l$^$9!#(B
+Riece $B$NBg$-$JFCD9$K!"J#?t$N%5!<%P$KF1;~$K@\B3$9$k5!G=$,$"$j$^$9!#(B
 
-$B4{$K(B Riece $B$r5/F0$7$?>uBV$+$i!"JL$N%5!<%P$K@\B3$7!"$=$N%5!<%P>e$N%A%c%s(B
-$B%M%k$K;22C$9$k<j=g$O0J2<$N$h$&$K$J$j$^$9!#(B
+$B?7$?$J%5!<%P$K@\B3$7!"$=$N%5!<%P>e$N%A%c%s%M%k$K;22C$9$k<j=g$O0J2<$N$h$&(B
+$B$K$J$j$^$9!#(B
 
 @enumerate
 @item
@@ -365,8 +365,8 @@ IRC $B%5!<%P$O(B @code{riece-server} $BJ8;zNs$H$7$F;XDj$7$^$9!#(B
 @example
 (setq riece-server-alist
       '(("irc6" :host "irc6.nara.wide.ad.jp")
-	("plum" :host "localhost" :service 26667
-	 :function relay-open-network-stream))
+        ("plum" :host "localhost" :service 26667
+         :function relay-open-network-stream))
       riece-server "irc6")
 @end example
 
@@ -425,8 +425,9 @@ DCC (Direct Client Connection) $B$K$h$k%U%!%$%kE>Aw(B
 $B$3$l$i$N$&$A!"(B@samp{riece-highlight} $B$H(B @samp{riece-ctcp} $B$O%G%U%)%k%H$G(B
 $BAH$_9~$^$l$F$$$^$9!#(B
 
-$B%"%I%*%s$rAH$_9~$`$K$O(B @code{riece-addons} $B$r@_Dj$7$^$9!#(B
-$B$?$H$($P(B @samp{riece-url} $B$rAH$_9~$`>l9g$K$O!"(B@code{riece-variables-file} $B$K0J2<$N$h$&$K5-=R$7$^$9!#(B
+$B%"%I%*%s$rAH$_9~$`$K$O(B @code{riece-addons} $B$r@_Dj$7$^$9!#$?$H$($P(B 
+@samp{riece-url} $B$rAH$_9~$`>l9g$K$O!"(B@file{~/.riece/init.el} $B$K0J2<$N$h(B
+$B$&$K5-=R$7$^$9!#(B
 @vindex riece-addons
 
 @example
@@ -696,7 +697,7 @@ JOIN $B$d(B PART $B$H$$$C$?FCJL$JA`:n$O!"$3$l$i$N%*%V%8%'%/%H$K$O7k$S$D$1$^$;
 @code{riece-channel} $B$O!"(BIRC $B$N%A%c%s%M%k$rI=$9%*%V%8%'%/%H$G$9!#0J2<$N(B
 $BMWAG$r;}$A$^$9!#(B
 
-@table @samp{}
+@table @samp
 @item users
 $B;22C$7$F$$$k%f!<%6$NL>A0(B($B6I=jL>(B)$B$N%j%9%H(B 
 @item operators
