@@ -128,14 +128,8 @@ This function is used by \"default\" layout."
 (defun riece-reconfigure-windows-predicate ()
   "Return t, if window reconfiguration is needed.
 This function is used by \"default\" layout."
-  ;; Check whether there is a buffer which belongs to Riece is visible.
-  (let ((buffers riece-buffer-list))
-    (catch 'found
-      (while buffers
-	(if (and (buffer-live-p (car buffers))
-		 (get-buffer-window (car buffers)))
-	    (throw 'found t)
-	  (setq buffers (cdr buffers)))))))
+  (memq (window-buffer (selected-window))
+	riece-buffer-list))
 
 (defun riece-configure-windows-top (&optional plist)
   "Candidate of `riece-configure-windows-function'.
