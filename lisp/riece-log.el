@@ -94,7 +94,7 @@ If integer, flash back only this line numbers. t means all lines."
 	(map (assoc (riece-format-identity identity) riece-log-directory-map))
 	name)
     (cond (map (setq name (cdr map)))
-	  ((string-match riece-channel-regexp channel)
+	  ((string-match riece-strict-channel-regexp channel)
 	   (let ((suffix (match-string 2 channel)))
 	     (setq name (substring channel (match-end 1) (match-beginning 2)))
 	     (when (and (stringp suffix)
