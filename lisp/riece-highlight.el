@@ -221,24 +221,6 @@
     (if (looking-at riece-prefix-regexp)
 	(put-text-property (match-beginning 1) (match-end 1) 'invisible t))))
 
-(defun riece-channel-list-mark-current-channel (last)
-  (if (and riece-channel-list-buffer-mode
-	   riece-current-channel)
-      (save-excursion
-	(set-buffer riece-channel-list-buffer)
-	(let ((inhibit-read-only t)
-	      buffer-read-only)
-	  (goto-char (point-min))
-	  (if (re-search-forward "^\\( ?[0-9]+:\\)\\*" nil t)
-	      (replace-match "\\1 "))
-	  (goto-char (point-min))
-	  (if (re-search-forward
-	       (concat
-		"^\\( ?[0-9]+:\\).\\("
-		(regexp-quote (riece-format-identity riece-current-channel))
-		"\\)$") nil t)
-	      (replace-match "\\1*\\2"))))))
-
 (defun riece-channel-list-turn-on-font-lock ()
   (make-local-variable 'font-lock-defaults)
   (setq font-lock-defaults '(riece-channel-list-font-lock-keywords t))
@@ -262,8 +244,6 @@
 	    'riece-dialogue-schedule-turn-on-font-lock)
   (put 'riece-channel-list-mode 'font-lock-defaults
        '(riece-channel-list-font-lock-keywords t))
-  (add-hook 'riece-after-switch-to-channel-functions
-	    'riece-channel-list-mark-current-channel)
   (add-hook 'riece-after-load-startup-hook
 	    'riece-channel-list-schedule-turn-on-font-lock))
 

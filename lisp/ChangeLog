@@ -1,5 +1,36 @@
 2003-10-13  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-unread.el (riece-unread-after-display-message-function):
+	Do nothing when message-target is already in
+	riece-unread-channels; call riece-redisplay-buffers.
+	(riece-unread-update-channel-list-buffer): Abolish.
+	(riece-unread-after-switch-to-channel-function): Don't call
+	riece-unread-update-channel-list-buffer.
+	(riece-unread-format-channel-list-line): New function.
+	(riece-unread-insinuate): Add
+	riece-unread-format-channel-list-line to
+	riece-format-channel-list-line; don't add
+	riece-unread-update-channel-list-buffer to
+	riece-update-buffer-functions.
+
+	* riece-highlight.el (riece-channel-list-mark-current-channel):
+	Abolish; merged into riece-update-channel-list-buffer.
+	(riece-highlight-insinuate): Don't add
+	riece-channel-list-mark-current-channel to
+	riece-after-switch-to-channel-functions.
+
+	* riece-display.el (riece-channel-list-changed): Abolish.
+	(riece-update-channel-list-buffer): Always redisplay channel-list
+	buffer.
+	(riece-update-channel-list-indicator): Always redisplay
+	channel-list indicator.
+	(riece-format-channel-list-line): New function.
+	(riece-update-buffers): Don't clear riece-channel-list-changed.
+	(riece-join-channel): Don't set riece-channel-list-changed.
+	(riece-part-channel): Ditto.
+
+2003-10-13  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-options.el (riece-addons): Add riece-button.
 
 	* riece-display.el (riece-update-channel-list-buffer): Avoid to

@@ -61,37 +61,25 @@
 
 (defun riece-unread-after-display-message-function (message)
   (unless (or (riece-message-own-p message)
-	      (equal (riece-message-target message) riece-current-channel))
+	      (riece-identity-equal (riece-message-target message)
+				    riece-current-channel)
+	      (riece-identity-member (riece-message-target message)
+				     riece-unread-channels))
     (setq riece-unread-channels
-	  (cons (riece-message-target message)
-		(delete (riece-message-target message) riece-unread-channels)))
-    (riece-unread-update-channel-list-buffer)))
+	  (cons (riece-message-target message) riece-unread-channels))
+    (riece-redisplay-buffers)))
 
 (defun riece-unread-after-switch-to-channel-function (last)
   (setq riece-unread-channels
 	(delete riece-current-channel
-		riece-unread-channels))
-  (riece-unread-update-channel-list-buffer))
+		riece-unread-channels)))
 
-(defun riece-unread-update-channel-list-buffer ()
-  (if riece-channel-list-buffer-mode
-      (save-excursion
-	(set-buffer riece-channel-list-buffer)
-	(let ((inhibit-read-only t)
-	      buffer-read-only)
-	  (goto-char (point-min))
-	  (while (not (eobp))
-	    (if (looking-at "\\( ?[0-9]+:\\)\\(.\\)")
-		(let ((channel (get-text-property (match-end 0)
-						  'riece-identity)))
-		  (replace-match
-		   (concat "\\1"
-			   (if (riece-identity-member channel
-						      riece-unread-channels)
-			       "!"
-			     "\\2")))))
-	    (forward-line))))))
-      
+(defun riece-unread-format-channel-list-line (index channel)
+  (if (riece-identity-member channel riece-unread-channels)
+      (concat (format "%2d:!" index)
+	      (riece-format-identity channel)
+	      "\n")))
+
 (defun riece-unread-switch-to-channel ()
   (interactive)
   (if (car riece-unread-channels)
@@ -118,10 +106,8 @@
 	    'riece-unread-after-display-message-function)
   (add-hook 'riece-after-switch-to-channel-functions
 	    'riece-unread-after-switch-to-channel-function)
-  (add-hook 'riece-channel-list-mode-hook
-	    (lambda ()
-	      (add-hook 'riece-update-buffer-functions
-			'riece-unread-update-channel-list-buffer t)))
+  (add-hook 'riece-format-channel-list-line-functions
+	    'riece-unread-format-channel-list-line)
   (define-key riece-command-mode-map
     "\C-c\C-u" 'riece-unread-switch-to-channel)
   (define-key riece-dialogue-mode-map
