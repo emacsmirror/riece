@@ -18,7 +18,15 @@
    riece-log, riece-alias, riece-ctlseq, and riece-keyword are now
    enabled by default.
 
+** New command riece-command-suspend-resume. (ueno)
+   riece-command-suspend-resume saves or restores the current window
+   configuration.
+
 ** Preserve cursor position when clicking button widget. (ueno)
+
+** Decorate modeline indicator with faces. (ueno)
+
+** Count users in NAMES reply. (ueno)
 
 ** New user option riece-part-message. (ueno)
 
@@ -33,6 +41,11 @@
 ** Automatic buffer shrinking is now disabled by default. (ueno)
 
 ** New directory structure for riece-log. (ueno)
+
+** Fixed a bug in user-renamed signal-filter. (kaoru)
+
+** Fixed a bug in riece-command-enable-addon and
+   riece-command-disable-addon. (yoichi)
 
 * Major changes in 1.0.6
 
