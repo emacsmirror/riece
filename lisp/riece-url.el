@@ -95,7 +95,8 @@ This will map a string \"Bug#12345\" to a URL
       (save-excursion
 	(goto-char start)
 	(while (re-search-forward (car (car alist)) end t)
-	  (let ((url (riece-url-replace-match (cdr (car alist)))))
+	  (let ((url (save-match-data
+		       (riece-url-replace-match (cdr (car alist))))))
 	    (if (memq 'riece-highlight riece-addons)
 		(widget-convert-button
 		 'url-link (match-beginning 0) (match-end 0) url))
