@@ -154,9 +154,12 @@ Normally they are *Dialogue* and/or *Others*."
 	(server-name (riece-identity-server (riece-message-speaker message))))
     (riece-with-server-buffer (riece-current-server-name)
       (concat
-       (riece-concat-server-name
-	(concat open-bracket name close-bracket
-		" " (riece-message-text message)))
+       (if global
+	   (riece-concat-server-name
+	    (concat open-bracket name close-bracket
+		    " " (riece-message-text message)))
+	 (concat open-bracket name close-bracket
+		 " " (riece-message-text message)))
        "\n"))))
 
 (defun riece-display-message-1 (message)

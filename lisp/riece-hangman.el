@@ -103,7 +103,7 @@ The wordlist is read from `riece-hangman-words-file'."
       (buffer-disable-undo)
       (insert-file-contents riece-hangman-words-file)
       (let ((case-fold-search nil))
-	(delete-non-matching-lines "^[a-z][a-z][a-z][a-z][a-z][a-z]"))))
+	(delete-non-matching-lines "^[a-z][a-z][a-z][a-z][a-z][a-z]+"))))
   (save-excursion
     (set-buffer riece-hangman-words-buffer)
     (goto-char (% (1+ (random)) (buffer-size)))

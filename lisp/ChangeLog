@@ -1,5 +1,12 @@
 2004-05-22  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-message.el (riece-format-message): Don't append
+	server-name if the 2nd arg is not specified.
+
+	* riece-hangman.el (riece-hangman-word): Fixed regexp.
+
+2004-05-22  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-xface.el: Support enable/disable.
 	(riece-xface-enabled): New flag.
 	(riece-xface-description): New variable.
