@@ -237,8 +237,7 @@
 								   identity)
   (if (riece-identity-equal identity riece-current-channel)
       (let ((string (riece-format-identity identity))
-	    (start 0)
-	    extent)
+	    (start 0))
 	;; Escape % -> %%.
 	(while (string-match "%" string start)
 	  (setq start (1+ (match-end 0))

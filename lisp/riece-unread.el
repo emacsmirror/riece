@@ -84,8 +84,7 @@
 (defun riece-unread-format-identity-for-channel-list-indicator (index identity)
   (if (riece-identity-member identity riece-unread-channels)
       (let ((string (riece-format-identity identity))
-	    (start 0)
-	    extent)
+	    (start 0))
 	;; Escape % -> %%.
 	(while (string-match "%" string start)
 	  (setq start (1+ (match-end 0))
