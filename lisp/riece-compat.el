@@ -62,8 +62,8 @@
 (if (string-match "0\\{0\\}" "")
     (defun riece-make-interval-regexp (regexp min &optional max)
       (if max
-	  (concat regexp (format "\\{%d,%d\\}" min max))
-	(concat regexp (format "\\{%d\\}" min))))
+	  (format "%s\\{%d,%d\\}" regexp min max)
+	(format "%s\\{%d\\}" regexp min)))
   ;; Emacs 20.7 doesn't support \{...\} in regexps.
   (defun riece-make-interval-regexp (regexp min &optional max)
     (mapconcat #'identity
