@@ -28,8 +28,6 @@
 	(riece-close-server-process): Delete process even if process is
 	not running.
 
-	* riece.el (riece): Don't set riece-server.
-
 2003-05-31  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-server.el (riece-open-server): No need to reset
