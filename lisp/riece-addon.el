@@ -216,7 +216,7 @@ All normal editing commands are turned off."
   (setq major-mode 'riece-addon-list-mode
         mode-name "AddOns"
 	mode-line-buffer-identification
-	(riece-mode-line-buffer-identification '("Riece: "))
+	(riece-mode-line-buffer-identification '("Riece: %12b"))
 	truncate-lines t
 	buffer-read-only t)
   (use-local-map riece-addon-list-mode-map)
