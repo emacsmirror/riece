@@ -39,31 +39,12 @@
 (add-hook 'riece-user-list-mode-hook 'riece-xemacs-hide-modeline)
 (add-hook 'riece-channel-list-mode-hook 'riece-xemacs-hide-modeline)
 
-(defun riece-xemacs-mode-line-buffer-identification (line)
-  "Decorate 1st	element	of `mode-line-buffer-identification' LINE.
-Modify whole identification by side effect."
-  (let ((id (car line)) chop)
-    (if (and (stringp id) (string-match "^Riece:" id))
-	(progn
-	  (setq chop (match-end 0))
-	  (nconc
-	   (list
-	    (cons (copy-extent modeline-buffer-id-left-extent)
-		  (substring id 0 chop))
-	    (cons (copy-extent modeline-buffer-id-right-extent)
-		  (substring id chop)))
-	   (cdr line)))
-      line)))
-
 (defun riece-xemacs-simplify-modeline-format ()
   "Remove unnecessary information from `modeline-format'."
   (setq modeline-format
 	(remrassq 'modeline-modified
 		  (delq 'modeline-multibyte-status
 			(copy-sequence mode-line-format)))))
-
-(defalias 'riece-mode-line-buffer-identification
-  'riece-xemacs-mode-line-buffer-identification)
 
 (defalias 'riece-simplify-mode-line-format
   'riece-xemacs-simplify-modeline-format)

@@ -172,7 +172,7 @@ This function is used by \"default\" layout."
     (select-window (or (get-buffer-window buffer)
 		       (get-buffer-window riece-command-buffer)))))
 
-(defun riece-configure-windows-top (&optional plist)
+(defun riece-configure-windows-top (&rest plist)
   "Candidate of `riece-configure-windows-function'.
 PLIST accept :command-height, :user-list-width, and :channel-list-width."
   (let ((command-height (or (plist-get plist :command-height) 4))

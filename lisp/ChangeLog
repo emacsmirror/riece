@@ -1,5 +1,22 @@
 2003-10-20  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-xemacs.el (riece-xemacs-mode-line-buffer-identification):
+	Abolish.
+	(riece-mode-line-buffer-identification): Don't define alias.
+
+	* riece-server.el (riece-open-server): Handle errors occurred
+	during reading password.
+
+	* riece-options.el (riece-addons): Add riece-icon.
+
+	* riece-layout.el (riece-configure-windows-top): Collect arguments.
+
+	* riece-icon.el: New add-on.
+	* COMPILE (riece-modules): Add riece-icon.
+	* Makefile.am (EXTRA_DIST): Add riece-icon.el
+
+2003-10-20  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-options.el (riece-saved-forms): Add riece-layout.
 
 	* riece-layout.el (riece-layout-alist): Change format.
