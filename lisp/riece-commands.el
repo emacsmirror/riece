@@ -275,8 +275,12 @@ the layout to the selected layout-name."
 	    (concat (riece-concat-channel-modes
 		     channel "Mode (? for help)") ": ")
 	    nil riece-minibuffer-map))))
-  (riece-send-string (format "MODE %s :%s\r\n" (riece-identity-prefix channel)
-			     change)))
+  (if (equal change "")
+      (riece-send-string (format "MODE %s\r\n"
+				 (riece-identity-prefix channel)))
+    (riece-send-string (format "MODE %s :%s\r\n"
+			       (riece-identity-prefix channel)
+			       change))))
 
 (defun riece-command-set-operators (users &optional arg)
   (interactive

@@ -1,5 +1,12 @@
 2004-06-10  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-commands.el (riece-command-change-mode): Don't send ":" to
+	query a channe mode.
+	* riece-mode.el (riece-parse-modes): Accept mode spec not
+	delimited with " " such as "-n+s".
+
+2004-06-10  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-layout.el (riece-set-window-points): Restore window-point
 	of the channel buffer from riece-channel-buffer-window-point.
 

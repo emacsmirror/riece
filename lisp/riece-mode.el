@@ -27,9 +27,9 @@
 (defun riece-parse-modes (string)
   (let ((start 0)
 	result)
-    (while (and (string-match "[-+]\\([^ ]*\\) *" string start)
+    (while (and (string-match "[-+]\\([^-+ ]*\\) *" string start)
 		(= (match-beginning 0) start))
-      (let ((toggle (eq (aref string 0) ?+))
+      (let ((toggle (eq (aref string start) ?+))
 	    (modes (string-to-list (match-string 1 string))))
 	(setq start (match-end 0))
 	(while modes
