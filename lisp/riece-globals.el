@@ -172,9 +172,10 @@ user's status on the current channel.")
   "Buffer for channel list.")
 (defvar riece-user-list-buffer nil
   "Buffer for user list.")
-
 (defvar riece-channel-buffer nil
   "Buffer for messages arrived in the current channel.")
+(defvar riece-temp-buffer nil
+  "Buffer for temporally use.")
 
 (defvar riece-buffer-list nil)
 (defvar riece-overriding-server-name nil)

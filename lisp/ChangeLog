@@ -1,5 +1,12 @@
 2005-02-02  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-debug.el (riece-debug-standard-output-buffer): Use
+	riece-temp-buffer.
+	* riece.el: Add riece-temp-buffer.
+	* riece-globals.el (riece-temp-buffer): New variable.
+
+2005-02-02  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-signal.el (riece-emit-signal): Use riece-ignore-errors.
 
 	* riece-filter.el (riece-handle-numeric-reply): Use

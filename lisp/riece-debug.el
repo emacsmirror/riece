@@ -26,16 +26,13 @@
 
 (require 'riece-globals)
 
-(defvar riece-debug-standard-output-buffer nil)
+(defvar riece-debug-standard-output-buffer riece-temp-buffer)
 
 (defun riece-debug-reset-standard-output ()
-  (unless riece-debug-standard-output-buffer
-    (setq riece-debug-standard-output-buffer
-	  (generate-new-buffer " *riece-debug-standard-output*")))
   (save-excursion
     (set-buffer riece-debug-standard-output-buffer)
     (buffer-disable-undo)
-    (erase-buffer)))
+    (erase-buffer))
 
 (defmacro riece-debug-with-backtrace (&rest body)
   `(unwind-protect
