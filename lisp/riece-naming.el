@@ -88,6 +88,49 @@
 	    users (cdr users)))
     (riece-emit-signal 'user-list-changed channel-identity)))
 
+(defun riece-naming-assert-channel-modes (channel modes)
+  (while modes
+    (cond
+     ((eq (riece-mode-flag (car (car modes))) ?o)
+      (riece-channel-toggle-operator channel
+				     (riece-mode-parameter (car (car modes)))
+				     (nth 1 (car modes)))
+      (riece-emit-signal 'channel-operators-changed
+			 (riece-make-identity channel
+					      riece-server-name)
+			 (riece-make-identity (riece-mode-parameter
+					       (car (car modes)))
+					      riece-server-name)
+			 (nth 1 (car modes))))
+     ((eq (riece-mode-flag (car (car modes))) ?v)
+      (riece-channel-toggle-speaker channel
+				    (riece-mode-parameter (car (car modes)))
+				    (nth 1 (car modes)))
+      (riece-emit-signal 'channel-speakers-changed
+			 (riece-make-identity channel
+					      riece-server-name)
+			 (riece-make-identity (riece-mode-parameter
+					       (car (car modes)))
+					      riece-server-name)
+			 (nth 1 (car modes))))
+     ((eq (riece-mode-flag (car (car modes))) ?b)
+      (riece-channel-toggle-banned channel
+				   (riece-mode-parameter (car (car modes)))
+				   (nth 1 (car modes))))
+     ((eq (riece-mode-flag (car (car modes))) ?e)
+      (riece-channel-toggle-uninvited channel
+				      (riece-mode-parameter (car (car modes)))
+				      (nth 1 (car modes))))
+     ((eq (riece-mode-flag (car (car modes))) ?I)
+      (riece-channel-toggle-invited channel
+				    (riece-mode-parameter (car (car modes)))
+				    (nth 1 (car modes))))
+     (t
+      (apply #'riece-channel-toggle-mode channel (car modes))))
+    (setq modes (cdr modes)))
+  (riece-emit-signal 'channel-modes-changed
+		     (riece-make-identity channel riece-server-name)))
+
 (provide 'riece-naming)
 
 ;;; riece-naming.el ends here

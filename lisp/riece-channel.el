@@ -27,6 +27,7 @@
 (require 'riece-options)
 (require 'riece-globals)
 (require 'riece-identity)
+(require 'riece-mode)
 
 ;;; Channel object:
 (defun riece-find-channel (name)
@@ -147,12 +148,13 @@ respectively."
 (defun riece-channel-toggle-mode (name mode flag)
   "Add or remove channel MODE of channel."
   (let* ((channel (riece-get-channel name))
-	 (modes (riece-channel-modes channel)))
+	 (modes (riece-channel-modes channel))
+	 (old (riece-mode-assoc (riece-mode-flag mode) modes)))
     (if flag
-	(unless (memq mode modes)
+	(unless old
 	  (riece-channel-set-modes channel (cons mode modes)))
-      (if (memq mode modes)
-	  (riece-channel-set-modes channel (delq mode modes))))))
+      (if old
+	  (riece-channel-set-modes channel (delq old modes))))))
 
 (defun riece-channel-toggle-banned (name pattern flag)
   "Add or remove banned PATTERN of channel."

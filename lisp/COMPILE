@@ -11,6 +11,7 @@
 		riece-coding
 		riece-complete
 
+		riece-mode
 		;; riece-identity -+-> riece-channel
 		;;                 +-> riece-user
 		riece-identity

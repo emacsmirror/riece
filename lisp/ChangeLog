@@ -1,3 +1,33 @@
+2004-03-14  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-display.el (riece-display-connect-signals): Update
+	riece-long-channel-indicator on 'channel-modes-changed signal.
+
+	* riece-naming.el (riece-naming-assert-channel-modes): New
+	function renamed from riece-handle-channel-modes.
+
+	* riece-misc.el: Require 'riece-mode.
+	(riece-concat-channel-modes): Display mode parameter.
+
+	* riece-channel.el: Require 'riece-mode.
+	(riece-channel-toggle-mode): Store mode "objects" instead of mode
+	"flags".
+	* riece-user.el: Require 'riece-mode.
+	(riece-user-toggle-mode): Store mode "objects" instead of mode
+	"flags".
+
+	* riece-handle.el: Require 'riece-mode.
+	(riece-handle-mode-message): Use riece-parse-mode.
+	(riece-parse-mode): Moved to riece-mode.el.
+	(riece-handle-channel-modes): Moved to riece-naming.el.
+
+	* riece-300.el: Require 'riece-mode.
+	(riece-handle-324-message): Use riece-parse-mode.
+
+	* riece-mode.el: New file.
+	* Makefile.am (EXTRA_DIST): Add riece-mode.el.
+	* COMPILE (riece-modules): Add riece-mode.
+
 2004-03-13  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-ctcp.el: "Error occurred in XXX" -> "Error in XXX".

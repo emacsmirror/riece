@@ -289,16 +289,9 @@
 (defun riece-handle-324-message (prefix number name string)
   (if (string-match "^\\([^ ]+\\) \\([^ ]+\\) " string)
       (let* ((channel (match-string 1 string))
-	     (mode-string (substring string (match-beginning 2)))
-	     (modes (string-to-list (match-string 2 string)))
-	     (toggle (car modes)))
-	(setq modes (cdr modes))
-	(while modes
-	  (riece-channel-toggle-mode channel (car modes) (eq toggle ?+))
-	  (setq modes (cdr modes)))
-	(riece-emit-signal 'channel-modes-changed
-			   (riece-make-identity channel riece-server-name)
-			   modes (eq toggle ?+))
+	     (mode-string (match-string 2 string)))
+	(riece-naming-assert-channel-modes channel
+					   (riece-parse-modes mode-string))
 	(let* ((channel-identity (riece-make-identity channel
 						      riece-server-name))
 	       (buffer (riece-channel-buffer channel-identity)))

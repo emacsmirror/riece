@@ -31,6 +31,7 @@
 (require 'riece-channel)
 (require 'riece-server)
 (require 'riece-user)
+(require 'riece-mode)
 
 (defun riece-get-buffer-create (name &optional init-major-mode)
   (let ((buffer (get-buffer name)))
@@ -143,7 +144,16 @@
   (riece-with-server-buffer (riece-identity-server target)
     (let ((modes (riece-channel-get-modes (riece-identity-prefix target))))
       (if modes
-	  (concat string " [" (apply #'string modes) "]")
+	  (concat string " ["
+		  (mapconcat
+		   (lambda (mode)
+		     (if (riece-mode-parameter mode)
+			 (format "%c(%s)"
+				 (riece-mode-flag mode)
+				 (riece-mode-parameter mode))
+		       (char-to-string (riece-mode-flag mode))))
+		   modes "")
+		  "]")
 	string))))
 
 (defun riece-concat-message (string message)

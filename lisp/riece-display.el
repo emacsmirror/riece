@@ -188,7 +188,7 @@ Local to the buffer in `riece-buffer-list'.")
   (riece-connect-signal
    'channel-modes-changed
    (lambda (signal handback)
-     (riece-update-status-indicators)
+     (riece-update-long-channel-indicator)
      (force-mode-line-update t))
    (lambda (signal)
      (and riece-current-channel

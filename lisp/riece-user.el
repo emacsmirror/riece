@@ -24,6 +24,7 @@
 ;;; Code:
 
 (require 'riece-identity)
+(require 'riece-mode)
 
 ;;; User object:
 (defun riece-find-user (name)
@@ -134,11 +135,12 @@ away status, respectively."
 (defun riece-user-toggle-mode (name mode flag)
   "Add or remove user MODE of user."
   (let* ((user (riece-get-user name))
-	 (modes (riece-user-modes user)))
+	 (modes (riece-user-modes user))
+	 (old (riece-mode-assoc (riece-mode-flag mode) modes)))
     (if flag
-	(unless (memq mode modes)
+	(unless old
 	  (riece-user-set-modes user (cons mode modes)))
-      (if (memq mode modes)
+      (if old
 	  (riece-user-set-modes user (delq mode modes))))))
 
 (defun riece-user-toggle-away (name flag)
