@@ -1,5 +1,28 @@
 2003-08-25  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece.el (riece-dialogue-mode-map): Bind riece-command-change-layout.
+	(riece): Switch to riece-command-buffer before riece-redisplay-buffers.
+
+	* riece-unread.el: Require 'riece-commands.
+
+	* riece-server.el: Require 'riece-identity and 'riece-compat.
+
+	* riece-ndcc.el: Require 'riece-globals, 'riece-options,
+	'riece-display.
+	(riece-handle-dcc-request): Use riece-channel-buffer-name.
+
+	* riece-identity.el: Don't require 'riece-server.
+
+	* riece-doctor.el: Require 'riece-globals, 'riece-identity,
+	'riece-message, and 'riece-server.
+
+	* riece-ctcp.el: Require 'riece-display.
+
+	* riece-commands.el: Require 'riece-layout.
+	(riece-command-change-layout): New command.
+
+	* riece-alias.el: Require 'riece-identity.
+
 	* riece-layout.el: No longer provided as an add-on.
 	* riece-display.el: Remove window configuration stuff.
 

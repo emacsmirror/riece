@@ -26,6 +26,7 @@
 
 (require 'riece-version)
 (require 'riece-misc)
+(require 'riece-display)
 
 (defvar riece-ctcp-ping-time nil)
 (defvar riece-ctcp-additional-clientinfo nil)

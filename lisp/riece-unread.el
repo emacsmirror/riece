@@ -31,7 +31,8 @@
 
 ;;; Code:
 
-(eval-when-compile (require 'riece-message))
+(require 'riece-message)
+(require 'riece-commands)
 
 (defvar riece-unread-channels nil)
 

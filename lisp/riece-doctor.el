@@ -30,6 +30,11 @@
 
 ;;; Code:
 
+(require 'riece-globals)
+(require 'riece-identity)
+(require 'riece-message)
+(require 'riece-server)
+
 (defgroup riece-doctor nil
   "Interface to doctor.el"
   :prefix "riece-"

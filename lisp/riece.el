@@ -142,6 +142,7 @@ If optional argument SAFE is nil, overwrite previous definitions."
     "\C-tu" riece-command-toggle-user-list-buffer-mode
     "\C-tc" riece-command-toggle-channel-buffer-mode
     "\C-tC" riece-command-toggle-channel-list-buffer-mode
+    "\C-tl" riece-command-change-layout
     "i" riece-command-invite
     "j" riece-command-join
     "\C-k" riece-command-kick
@@ -250,6 +251,7 @@ If optional argument CONFIRM is non-nil, ask which IRC server to connect."
   (if (stringp riece-server)
       (setq riece-server (riece-server-name-to-server riece-server)))
   (riece-create-buffers)
+  (switch-to-buffer riece-command-buffer)
   (riece-redisplay-buffers)
   (riece-open-server riece-server "")
   (run-hooks 'riece-startup-hook)

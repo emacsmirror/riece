@@ -26,7 +26,6 @@
 
 (require 'riece-globals)
 (require 'riece-coding)
-(require 'riece-server)
 (require 'riece-compat)			;riece-set-case-syntax-pair
 
 (defvar riece-abbrev-identity-string-function nil)

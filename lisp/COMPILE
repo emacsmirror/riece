@@ -18,6 +18,8 @@
 		riece-user
 
 		riece-misc
+		;; riece-layout ---> riece-display
+		riece-layout
 		riece-display
 		riece-server
 
@@ -48,7 +50,6 @@
 		riece-unread
 		riece-doctor
 		riece-alias
-		riece-layout
 		riece-skk-kakutei))))
 
 (defun riece-compile-modules (modules)

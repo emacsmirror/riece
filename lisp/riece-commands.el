@@ -26,6 +26,7 @@
 
 (require 'riece-channel)
 (require 'riece-complete)
+(require 'riece-layout)
 (require 'riece-display)
 (require 'riece-version)
 (require 'riece-server)
@@ -111,6 +112,12 @@
 (defun riece-command-configure-windows ()
   (interactive)
   (riece-redisplay-buffers t))
+
+(defun riece-command-change-layout (name)
+  "Select a layout-name from all current available layouts and change
+the layout to the selected layout-name."
+  (interactive (list (completing-read "Layout: " riece-layout-alist)))
+  (customize-set-variable 'riece-layout name))
 
 (defun riece-command-toggle-channel-buffer-mode ()
   (interactive)

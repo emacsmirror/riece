@@ -32,6 +32,8 @@
 
 ;;; Code:
 
+(require 'riece-identity)
+
 (defgroup riece-alias nil
   "Define aliases of names"
   :prefix "riece-"

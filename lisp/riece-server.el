@@ -27,6 +27,8 @@
 (require 'riece-options)
 (require 'riece-globals)		;for server local variables.
 (require 'riece-coding)			;riece-default-coding-system
+(require 'riece-identity)
+(require 'riece-compat)
 
 (eval-and-compile
   (defvar riece-server-keyword-map

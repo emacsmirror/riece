@@ -23,6 +23,10 @@
 
 ;;; Code:
 
+(require 'riece-globals)
+(require 'riece-options)
+(require 'riece-display)
+
 (require 'calc)
 
 (defgroup riece-ndcc nil
@@ -169,7 +173,7 @@ Only used for sending files."
 		   "DCC" " *DCC*"
 		   (riece-ndcc-decode-address (nth 2 request))
 		   (nth 3 request))))
-    (setq riece-rdcc-requests (delq request riece-rdcc-requests))
+    (setq riece-ndcc-requests (delq request riece-ndcc-requests))
     (with-current-buffer (process-buffer process)
       (set-buffer-multibyte nil)
       (buffer-disable-undo)
@@ -191,9 +195,8 @@ Only used for sending files."
 	    (port (string-to-number (match-string 3 message)))
 	    (size (string-to-number (match-string 4 message)))
 	    (buffer (if (riece-channel-p target)
-			(cdr (riece-identity-assoc
-			      (riece-make-identity target)
-			      riece-channel-buffer-alist))))
+			(riece-channel-buffer-name
+			 (riece-make-identity target riece-server-name))))
 	    (user (riece-prefix-nickname prefix)))
 	(setq riece-ndcc-requests
 	      (cons (list user file address port size)
