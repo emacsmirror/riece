@@ -3,7 +3,9 @@
 (luna-define-class test-riece-log (lunit-test-case))
 
 (defun test-riece-log-delete-directory (directory)
-  (let ((files (directory-files directory t nil t)))
+  (let (file-name-coding-system
+	default-file-name-coding-system
+	 (files (directory-files directory t nil t)))
     (while files
       (if (file-directory-p (car files))
 	  (unless (member (file-name-nondirectory (car files)) '("." ".."))
@@ -139,7 +141,8 @@
 				   (make-char 'japanese-jisx0208 36 57))
 			   "")
       "a b c\n" nil t)))
-  (let (file-name-coding-system)
+  (let (file-name-coding-system
+	default-file-name-coding-system)
     (lunit-assert-2
      case
      (file-directory-p
