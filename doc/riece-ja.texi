@@ -3,7 +3,7 @@
 @setfilename riece-ja.info
 @settitle Riece -- An IRC client for Emacsen --
 @c %**end of header
-@set VERSION 0.1.6
+@set VERSION 0.1.7
 @c @documentlanguage ja
 
 @dircategory GNU Emacs Lisp
@@ -521,6 +521,9 @@ SKK 使用時に変換モードの印を発言から取り除く
 キーワードの強調表示
 @item riece-menu
 メニューバーにメニューを登録
+@item riece-async
+Emacs が busy or suspend 状態になることに備え、
+PING に応答する local proxy 経由で IRC サーバに接続
 @end table
 
 これらのうち、@samp{riece-highlight} と @samp{riece-ctcp}、

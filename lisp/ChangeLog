@@ -1,3 +1,8 @@
+2003-12-25  Daiki Ueno  <ueno@unixuser.org>
+
+	* Riece: Version 0.1.7 released.
+	* riece-version.el (riece-version-number): Bump up to 0.1.7.
+
 2003-12-22  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-keyword.el (riece-notify-keyword-functions): Mark as
