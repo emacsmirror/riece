@@ -1,7 +1,5 @@
 2004-08-30  Daiki Ueno  <ueno@unixuser.org>
 
-	* riece-layout.el (riece-set-window-points): Use (recenter -1) to
-	set window point instead of doing so manually.
 	* riece-misc.el (riece-insert): Use (recenter -1) to set window
 	point instead of doing so manually.
 
