@@ -70,7 +70,8 @@
 		riece-ignore
 		riece-hangman
 		riece-biff
-		riece-kakasi))))
+		riece-kakasi
+		riece-yank))))
 
 (defun riece-compile-modules (modules)
   (let ((load-path (cons nil load-path)))
