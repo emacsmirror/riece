@@ -280,7 +280,7 @@ way is to put Riece variables on .emacs or file loaded from there."
   :type 'boolean
   :group 'riece-options)
 
-(defcustom riece-buffer-dispose-function #'bury-buffer
+(defcustom riece-buffer-dispose-function #'kill-buffer
   "Function called after the buffer was disposed."
   :type 'function
   :group 'riece-options)

@@ -1,5 +1,11 @@
 2005-02-04  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-options.el (riece-buffer-dispose-function): Changed the
+	default value from bury-buffer to kill-buffer.
+	* riece-log.el (riece-log-lock-directory): New user option.
+	(riece-log-enable): Create lock directory.
+	(riece-log-disable): Remove lock directory.
+
 	* riece-addon.el (riece-resolve-addons): Don't use FILES-ONLY
 	argument of directory-files.
 

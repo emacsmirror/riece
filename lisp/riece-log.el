@@ -45,6 +45,13 @@
   :type 'directory
   :group 'riece-log)
 
+(defcustom riece-log-lock-directory
+  (expand-file-name ".lock" riece-log-directory)
+  "*Lock directory for riece-log.
+It is created if there is at least one instance of Emacs running riece-log."
+  :type 'directory
+  :group 'riece-log)
+
 (defcustom riece-log-directory-map nil
   "*The map of channel name and directory name."
   :type '(repeat (cons (string :tag "Channel name")
@@ -258,10 +265,18 @@ If LINES is t, insert today's logs entirely."
 (defvar riece-command-mode-map)
 (defun riece-log-enable ()
   (define-key riece-command-mode-map "\C-cd" 'riece-log-open-directory)
-  (setq riece-log-enabled t))
+  (make-directory riece-log-directory t)
+  (condition-case nil
+      (progn
+	(make-directory riece-log-lock-directory)
+	(setq riece-log-enabled t))
+    (error)))
 
 (defun riece-log-disable ()
   (define-key riece-command-mode-map "\C-cd" nil)
+  (condition-case nil
+      (delete-directory riece-log-lock-directory)
+    (error))
   (setq riece-log-enabled nil))
 
 (provide 'riece-log)
