@@ -1,5 +1,17 @@
 2003-05-31  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-filter.el (riece-sentinel): Close process even if
+	riece-reconnect-with-password == t.
+	(riece-handle-message): Catch errors occured in hooks.
+
+	* riece-server.el (riece-open-server): Reuse server buffer.
+	(riece-close-server-process): Delete process even if process is
+	not running.
+
+	* riece.el (riece): Don't set riece-server.
+
+2003-05-31  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-server.el (riece-open-server): No need to reset
 	riece-reconnect-with-password.
 

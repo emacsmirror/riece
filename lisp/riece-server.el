@@ -112,19 +112,19 @@ the `riece-server-keyword-map' variable."
     (cdr entry)))
 
 (defun riece-open-server (server server-name)
-  "Open chat server on HOST.
-If HOST is nil, use value of environment variable \"IRCSERVER\".
-If optional argument SERVICE is non-nil, open by the service name."
   (riece-server-keyword-bind server
     (let* (selective-display
 	   (coding-system-for-read 'binary)
 	   (coding-system-for-write 'binary)
 	   (process
-	    (funcall function "IRC" (if server-name
-					(format " *IRC*%s" server-name)
-				      " *IRC*")
+	    (funcall function "IRC"
+		     (get-buffer-create
+		      (if server-name
+			  (format " *IRC*%s" server-name)
+			" *IRC*"))
 		     host service)))
       (riece-reset-process-buffer process)
+      (setq riece-server-name server-name)
       (set-process-sentinel process 'riece-sentinel)
       (set-process-filter process 'riece-filter)
       (if (or password
@@ -181,9 +181,9 @@ If optional argument SERVICE is non-nil, open by the service name."
 			       (if quit-message
 				   (format "QUIT :%s\r\n" quit-message)
 				 "QUIT\r\n"))
-    (delete-process process)
     (unless riece-debug
-      (kill-buffer (process-buffer process)))))
+      (kill-buffer (process-buffer process))))
+  (delete-process process))
 
 (eval-when-compile
   (autoload 'riece-exit "riece"))

@@ -254,11 +254,12 @@ If already connected, just pop up the windows."
     (switch-to-buffer (riece-get-buffer-create riece-command-buffer))
     (unless (eq major-mode 'riece-command-mode)
       (riece-command-mode))
-    (if (or confirm (null riece-server))
-	(setq riece-server (completing-read "Server: " riece-server-alist)))
-    (if (stringp riece-server)
-	(setq riece-server (riece-server-name-to-server riece-server)))
-    (setq riece-server-process (riece-start-server riece-server))
+    (let ((server-name
+	   (if (or confirm (null riece-server))
+	       (completing-read "Server: " riece-server-alist)
+	     riece-server)))
+      (setq riece-server-process (riece-start-server
+				  (riece-server-name-to-server server-name))))
     (riece-create-buffers)
     (riece-configure-windows)
     (let ((channel-list riece-startup-channel-list))

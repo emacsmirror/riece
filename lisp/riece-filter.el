@@ -68,19 +68,26 @@
        (riece-parse-user-at-host (substring prefix (1+ (match-beginning 0))))))
   (setq message (downcase message)
 	string (riece-decode-coding-string string))
-  (unless (run-hook-with-args-until-success
-	   (intern (concat "riece-" message "-hook"))
-	   prefix string)
-    (let ((function (intern-soft (concat "riece-handle-" message "-message"))))
+  (let ((function (intern-soft (concat "riece-handle-" message "-message")))
+	(hook (intern (concat "riece-" message "-hook")))
+	(after-hook (intern (concat "riece-after-" message "-hook"))))
+    (unless (condition-case error
+		(run-hook-with-args-until-success hook prefix string)
+	      (error
+	       (if riece-debug
+		   (message "Error occurred in `%S': %S" hook error))
+	       nil))
       (if function
 	  (condition-case error
 	      (funcall function prefix string)
 	    (error
 	     (if riece-debug
-		 (message "Error occurred in `%S': %S" function error))))))
-    (run-hook-with-args-until-success
-     (intern (concat "riece-after-" message "-hook"))
-     prefix string)))
+		 (message "Error occurred in `%S': %S" function error)))))
+      (condition-case error
+	  (run-hook-with-args-until-success after-hook prefix string)
+	(error
+	 (if riece-debug
+	     (message "Error occurred in `%S': %S" after-hook error)))))))
 
 (defun riece-filter (process input)
   (save-excursion
@@ -127,15 +134,11 @@
 	    (let* ((entry (rassq process riece-server-process-alist))
 		   (server-name
 		    (with-current-buffer (process-buffer process)
-		      riece-server-name))
-		   (process
-		    (riece-start-server
-		     (riece-server-name-to-server server-name)
-		     server-name)))
-	      ;; Connect the process with old process' buffer.
-	      (setcdr entry process)
-	      (with-current-buffer (process-buffer process)
-		(setq riece-server-name server-name))))
+		      riece-server-name)))
+	      (setcdr entry (riece-start-server
+			     (riece-server-name-to-server server-name)
+			     server-name))
+	      (riece-close-server-process process)))
 	(setq riece-reconnect-with-password nil))
     (let ((server-name (with-current-buffer (process-buffer process)
 			 riece-server-name)))
