@@ -105,11 +105,11 @@ the `riece-server-keyword-map' variable."
 (put 'riece-with-server-buffer 'lisp-indent-function 1)
 (put 'riece-with-server-buffer 'edebug-form-spec '(form body))
 
-(defun riece-flush-send-queue (process &optional force)
+(defun riece-flush-send-queue (process &optional reset)
   (with-current-buffer (process-buffer process)
     (let ((length 0)
 	  string)
-      (if force
+      (if reset
 	  (setq riece-send-size 0))
       (while (and riece-send-queue
 		  (<= riece-send-size riece-max-send-size))
