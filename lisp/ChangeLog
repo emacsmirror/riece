@@ -1,5 +1,11 @@
 2003-08-04  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-server.el (riece-find-server-name): Abolish.
+
+	* riece-alias.el: Add usage.
+
+2003-08-04  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-mini.el (riece-mini-send-message): Use
 	riece-completing-read-identity; don't use riece-own-channel-message.
 

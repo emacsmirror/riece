@@ -101,16 +101,6 @@ the `riece-server-keyword-map' variable."
 	    riece-save-variables-are-dirty t))
     (cdr entry)))
 
-(defun riece-find-server-name ()
-  (or riece-overriding-server-name
-					;already in the server buffer
-      (if (local-variable-p 'riece-server-name (current-buffer))
-	  riece-server-name
-	(if riece-current-channel
-	    (riece-identity-server riece-current-channel)
-	  (if (riece-server-opened "")
-	      "")))))
-
 (defun riece-server-process-name (server-name)
   (if (equal server-name "")
       "IRC"
@@ -133,7 +123,16 @@ the `riece-server-keyword-map' variable."
     (process-send-string process (riece-encode-coding-string string))))
 
 (defun riece-send-string (string)
-  (let ((process (riece-server-process (riece-find-server-name))))
+  (let* ((server-name
+	  (or riece-overriding-server-name
+					;already in the server buffer
+	      (if (local-variable-p 'riece-server-name (current-buffer))
+		  riece-server-name
+		(if riece-current-channel
+		    (riece-identity-server riece-current-channel)
+		  (if (riece-server-opened "")
+		      "")))))
+	 (process (riece-server-process server-name)))
     (unless process
       (error "%s" (substitute-command-keys
 		   "Type \\[riece-command-open-server] to open server.")))

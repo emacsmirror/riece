@@ -21,6 +21,15 @@
 ;; Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 ;; Boston, MA 02111-1307, USA.
 
+;; This add-on allows you to define aliases for IRC names.
+
+;; To use, add the following line to your ~/.riece/init.el:
+;; (add-to-list 'riece-addons 'riece-alias)
+
+;; For example, if you want to define an alias `#l' for `#Liece', you
+;; can customize riece-alias-alist as follows:
+;; (setq riece-alias-alist '(("#Liece" . "#l")))
+
 ;;; Code:
 
 (defgroup riece-alias nil
