@@ -42,7 +42,7 @@
 (defun riece-configure-windows ()
   (let ((buffer (current-buffer))
 	(show-user-list
-	 (and riece-channel-list-buffer-mode
+	 (and riece-user-list-buffer-mode
 	      riece-current-channel
 	      ;; User list buffer is nuisance for private conversation.
 	      (riece-channel-p riece-current-channel))))

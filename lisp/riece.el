@@ -144,6 +144,7 @@ If optional argument SAFE is nil, overwrite previous definitions."
     "\C-to" riece-command-toggle-own-freeze
     "\C-tu" riece-command-toggle-user-list-buffer-mode
     "\C-tc" riece-command-toggle-channel-buffer-mode
+    "\C-tC" riece-command-toggle-channel-list-buffer-mode
     "i" riece-command-invite
     "j" riece-command-join
     "\C-k" riece-command-kick

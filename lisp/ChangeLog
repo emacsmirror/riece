@@ -1,3 +1,13 @@
+2003-05-30  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece.el (riece-dialogue-mode-map): Bind
+	riece-command-toggle-channel-list-buffer-mode.
+
+	* riece-display.el (riece-configure-windows): Typo fixed.
+
+	* riece-user.el (riece-user-toggle-channel): Use member instead of
+	memq.
+
 2003-05-29  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-ctcp.el (riece-ctcp-insinuate): New function.
