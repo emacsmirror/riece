@@ -121,7 +121,7 @@ If twice (C-u C-u), then ask the channel."
 	(resize-mini-windows t))
     (when riece-mini-backlog-history
       (setq riece-mini-backlog-shown t)
-      (riece-mini-message-no-log
+      (riece-mini-message-no-log "%s"
        (mapconcat 'identity riece-mini-backlog-history "\n")))))
 
 (defun riece-mini-pre-command ()

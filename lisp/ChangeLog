@@ -1,3 +1,8 @@
+2004-09-12  OHASHI Akira  <bg66@koka-in.org>
+
+	* riece-mini.el (riece-mini-show-backlog): Protect 1st arg of
+	`riece-mini-message-no-log'.
+
 2004-09-11  OHASHI Akira  <bg66@koka-in.org>
 
 	* riece-mini.el (riece-mini-display-message-function): Remove
