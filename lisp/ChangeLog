@@ -1,5 +1,10 @@
 2004-03-28  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-signal.el: Require 'riece-options for riece-debug.
+	* riece-async.el: Require 'riece-options for riece-debug.
+
+2004-03-28  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece.el (riece-command-mode): Don't display
 	riece-freeze-indicator on the modeline of the command buffer.
 	(riece-dialogue-mode): Make riece-freeze-indicator local to the

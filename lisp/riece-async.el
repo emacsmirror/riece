@@ -37,6 +37,8 @@
 
 ;;; Code:
 
+(require 'riece-options)
+
 (defgroup riece-async nil
   "Connect to IRC server via asynchronous proxy"
   :prefix "riece-"

@@ -29,6 +29,8 @@
 
 ;;; Code:
 
+(require 'riece-options)
+
 (defvar riece-signal-slot-obarray
   (make-vector 31 0))
 
