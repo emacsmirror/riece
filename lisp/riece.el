@@ -24,10 +24,6 @@
 
 ;;; Code:
 
-(if (featurep 'xemacs)
-    (require 'riece-xemacs)
-  (require 'riece-emacs))
-
 (require 'riece-filter)
 (require 'riece-display)
 (require 'riece-server)
@@ -57,6 +53,7 @@
 (defvar riece-buffer-mode-alist
   '((riece-dialogue-buffer . riece-dialogue-mode)
     (riece-others-buffer . riece-others-mode)
+    (riece-user-list-buffer . riece-user-list-mode)
     (riece-channel-list-buffer . riece-channel-list-mode)
     (riece-private-buffer . riece-dialogue-mode)
     (riece-wallops-buffer)))
@@ -255,16 +252,9 @@ If already connected, just pop up the windows."
 	(setq riece-server (completing-read "Server: " riece-server-alist)))
     (if (stringp riece-server)
 	(setq riece-server (riece-server-name-to-server riece-server)))
-    (riece-open-server riece-server)
     (riece-create-buffers)
     (riece-configure-windows)
-    (let ((channel-list riece-startup-channel-list))
-      (while channel-list
-	(if (listp (car channel-list))
-	    (riece-command-join (car (car channel-list))
-				(cadr (car channel-list)))
-	  (riece-command-join (car channel-list)))
-	(setq channel-list (cdr channel-list))))
+    (riece-open-server riece-server "")
     (run-hooks 'riece-startup-hook)
     (message "%s" (substitute-command-keys
 		   "Type \\[describe-mode] for help"))))
@@ -298,7 +288,7 @@ For a list of the generic commands type \\[riece-command-generic] ? RET.
 	   " "
 	   riece-user-indicator
 	   " "
-	   riece-current-channel)))
+	   riece-short-channel-indicator)))
   (riece-simplify-mode-line-format)
   (use-local-map riece-command-mode-map)
 
@@ -318,10 +308,8 @@ All normal editing commands are turned off.
 Instead, these commands are available:
 \\{riece-dialogue-mode-map}"
   (kill-all-local-variables)
-
   (make-local-variable 'riece-freeze)
   (make-local-variable 'tab-stop-list)
-
   (setq riece-freeze riece-default-freeze
 	riece-away-indicator "-"
 	riece-operator-indicator "-"
@@ -337,7 +325,6 @@ Instead, these commands are available:
 	   riece-channel-list-indicator " "))
 	buffer-read-only t
 	tab-stop-list riece-tab-stop-list)
-  (riece-update-status-indicators)
   (riece-simplify-mode-line-format)
   (use-local-map riece-dialogue-mode-map)
   (buffer-disable-undo)
@@ -369,6 +356,8 @@ Instead, these commands are available:
   "Major mode for displaying channel list.
 All normal editing commands are turned off."
   (kill-all-local-variables)
+  (buffer-disable-undo)
+  (make-local-variable 'riece-redisplay-buffer)
   (setq major-mode 'riece-channel-list-mode
         mode-name "Channels"
 	mode-line-buffer-identification
@@ -384,6 +373,8 @@ All normal editing commands are turned off.
 Instead, these commands are available:
 \\{riece-user-list-mode-map}"
   (kill-all-local-variables)
+  (buffer-disable-undo)
+  (make-local-variable 'riece-redisplay-buffer)
   (setq major-mode 'riece-user-list-mode
         mode-name "User list"
 	mode-line-buffer-identification

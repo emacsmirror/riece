@@ -25,60 +25,46 @@
 
 (require 'riece-identity)
 
-(defconst riece-user-regexp
-  "[][\\\\`_^{|}A-Za-z][][\\\\`_^{|}A-Za-z0-9-]\\{0,8\\}")
-
 ;;; User object:
 (defun riece-find-user (name)
   "Get a user object named NAME from the server buffer."
-  (riece-with-server-buffer
-   (let ((symbol (intern-soft (riece-identity-canonicalize-prefix
-			       (riece-identity-prefix name))
-			      riece-obarray)))
+  (let ((symbol (intern-soft (riece-identity-canonicalize-prefix name)
+			     riece-obarray)))
      (if symbol
-	 (symbol-value symbol)))))
+	 (symbol-value symbol))))
 
 (defun riece-forget-user (name)
-  (riece-with-server-buffer
-   (let ((symbol (intern-soft (riece-identity-canonicalize-prefix
-			       (riece-identity-prefix name)))))
-     (when symbol
-       (makunbound symbol)
-       (unintern (symbol-name symbol) riece-obarray)))))
+  (let ((symbol (intern-soft (riece-identity-canonicalize-prefix name))))
+    (when symbol
+      (makunbound symbol)
+      (unintern (symbol-name symbol) riece-obarray))))
 
 (defun riece-rename-user (old-name new-name)
-  (riece-with-server-buffer
-   (unless (equal (riece-identity-canonicalize-prefix
-		   (riece-identity-prefix old-name))
-		  (riece-identity-canonicalize-prefix
-		   (riece-identity-prefix new-name)))
-     (let ((symbol (intern-soft (riece-identity-canonicalize-prefix
-				 (riece-identity-prefix old-name))
-				riece-obarray)))
-       (when symbol
-	 (set (intern (riece-identity-canonicalize-prefix
-		       (riece-identity-prefix new-name))
-		      riece-obarray)
-	      (symbol-value symbol))
-	 (makunbound symbol)
-	 (unintern (symbol-name symbol) riece-obarray))))))
+  (unless (equal (riece-identity-canonicalize-prefix old-name)
+		 (riece-identity-canonicalize-prefix new-name))
+    (let ((symbol (intern-soft (riece-identity-canonicalize-prefix old-name)
+			       riece-obarray)))
+      (when symbol
+	(set (intern (riece-identity-canonicalize-prefix new-name)
+		     riece-obarray)
+	     (symbol-value symbol))
+	(makunbound symbol)
+	(unintern (symbol-name symbol) riece-obarray)))))
 
-(defun riece-make-user (&optional channels user-at-host modes away operator)
+(defun riece-make-user (channels user-at-host modes away operator)
   "Make an instance of user object.
 Arguments are appropriate to joined channels, user-at-host, mode, and
 away status, respectively."
   (vector channels user-at-host modes away operator))
 
 (defun riece-get-user (name)
-  (riece-with-server-buffer
-   (let ((symbol (intern-soft (riece-identity-canonicalize-prefix
-			       (riece-identity-prefix name))
-			      riece-obarray)))
+  (let ((symbol (intern-soft (riece-identity-canonicalize-prefix name)
+			     riece-obarray)))
      (if symbol
 	 (symbol-value symbol)
-       (set (intern (riece-identity-canonicalize-prefix
-		     (riece-identity-prefix name)) riece-obarray)
-	    (riece-make-user))))))
+       (set (intern (riece-identity-canonicalize-prefix name)
+		    riece-obarray)
+	    (riece-make-user nil nil nil nil nil)))))
 
 (defun riece-user-channels (user)
   "Return joined channels of USER."
@@ -120,29 +106,24 @@ away status, respectively."
   "Set the operator status of USER to VALUE."
   (aset user 4 value))
 
-(defun riece-user-get-channels (&optional name)
-  (riece-user-channels
-   (riece-get-user (or name riece-real-nickname))))
+(defun riece-user-get-channels (name)
+  (riece-user-channels (riece-get-user name)))
 
-(defun riece-user-get-user-at-host (&optional name)
-  (riece-user-user-at-host
-   (riece-get-user (or name riece-real-nickname))))
+(defun riece-user-get-user-at-host (name)
+  (riece-user-user-at-host (riece-get-user name)))
 
-(defun riece-user-get-modes (&optional name)
-  (riece-user-modes
-   (riece-get-user (or name riece-real-nickname))))
+(defun riece-user-get-modes (name)
+  (riece-user-modes (riece-get-user name)))
 
-(defun riece-user-get-away (&optional name)
-  (riece-user-away
-   (riece-get-user (or name riece-real-nickname))))
+(defun riece-user-get-away (name)
+  (riece-user-away (riece-get-user name)))
 
-(defun riece-user-get-operator (&optional name)
-  (riece-user-operator
-   (riece-get-user (or name riece-real-nickname))))
+(defun riece-user-get-operator (name)
+  (riece-user-operator (riece-get-user name)))
 
 (defun riece-user-toggle-channel (name channel flag)
   "Add or remove the joined channel of user."
-  (let* ((user (riece-get-user (or name (riece-current-nickname))))
+  (let* ((user (riece-get-user name))
 	 (channels (riece-user-channels user)))
     (if flag
 	(unless (member channel channels)
@@ -152,7 +133,7 @@ away status, respectively."
 
 (defun riece-user-toggle-mode (name mode flag)
   "Add or remove user MODE of user."
-  (let* ((user (riece-get-user (or name (riece-current-nickname))))
+  (let* ((user (riece-get-user name))
 	 (modes (riece-user-modes user)))
     (if flag
 	(unless (memq mode modes)
@@ -161,12 +142,10 @@ away status, respectively."
 	  (riece-user-set-modes user (delq mode modes))))))
 
 (defun riece-user-toggle-away (name flag)
-  (riece-user-set-away
-   (riece-get-user (or name (riece-current-nickname))) flag))
+  (riece-user-set-away (riece-get-user name) flag))
 
 (defun riece-user-toggle-operator (name flag)
-  (riece-user-set-operator
-   (riece-get-user (or name (riece-current-nickname))) flag))
+  (riece-user-set-operator (riece-get-user name) flag))
 
 (provide 'riece-user)
 

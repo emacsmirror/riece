@@ -83,8 +83,8 @@
 	    'riece-unread-display-message-function)
   (add-hook 'riece-channel-switch-hook
 	    'riece-unread-channel-switch-hook)
-  (add-hook 'riece-update-buffers-hook
-	    'riece-unread-update-channel-list-buffer)
+  (add-hook 'riece-update-buffer-functions
+	    'riece-unread-update-channel-list-buffer t)
   (define-key riece-command-mode-map
     "\C-c\C-u" 'riece-unread-switch-to-channel)
   (define-key riece-dialogue-mode-map

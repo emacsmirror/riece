@@ -30,26 +30,34 @@
 (require 'riece-display)
 
 (defun riece-naming-assert-join (user-name channel-name)
-  (if (riece-identity-equal-no-server user-name riece-real-nickname)
-      (riece-join-channel channel-name))
   (riece-user-toggle-channel user-name channel-name t)
-  (riece-channel-toggle-user channel-name user-name t))
+  (riece-channel-toggle-user channel-name user-name t)
+  (if (riece-identity-equal-no-server user-name riece-real-nickname)
+      (let ((channel-identity (riece-make-identity channel-name
+						   riece-server-name)))
+	(riece-join-channel channel-identity)
+	(riece-switch-to-channel channel-identity))
+    (if (and riece-current-channel
+	     (riece-identity-equal (riece-make-identity channel-name
+							riece-server-name)
+				   riece-current-channel))
+	(with-current-buffer riece-user-list-buffer
+	  (setq riece-redisplay-buffer t)))))
 
 (defun riece-naming-assert-part (user-name channel-name)
+  (riece-user-toggle-channel user-name channel-name nil)
+  (riece-channel-toggle-user channel-name user-name nil)
+  (riece-channel-toggle-operator channel-name user-name nil)
+  (riece-channel-toggle-speaker channel-name user-name nil)
   (if (riece-identity-equal-no-server user-name riece-real-nickname)
-      (progn
-	(riece-part-channel channel-name)
-	(riece-forget-channel channel-name))
-    (riece-user-toggle-channel user-name channel-name nil)
-    (riece-channel-toggle-user channel-name user-name nil)
-    (riece-channel-toggle-operator channel-name user-name nil)
-    (riece-channel-toggle-speaker channel-name user-name nil)
-    (if (riece-identity-equal-safe user-name (riece-current-nickname))
-	(let* ((identity (riece-make-identity channel-name))
-	       (pointer (riece-identity-member-safe
-			 identity riece-current-channels)))
-	  (if pointer
-	      (setcar pointer nil))))))
+      (riece-part-channel (riece-make-identity channel-name
+					       riece-server-name))
+    (if (and riece-current-channel
+	     (riece-identity-equal (riece-make-identity channel-name
+							riece-server-name)
+				   riece-current-channel))
+	(with-current-buffer riece-user-list-buffer
+	  (setq riece-redisplay-buffer t)))))
 
 (defun riece-naming-assert-rename (old-name new-name)
   (if (riece-identity-equal-no-server old-name riece-real-nickname)
@@ -71,7 +79,15 @@
 	    pointer (member old-name users))
       (if pointer
 	  (setcar pointer new-name))
+      (if (and riece-current-channel
+	       (riece-identity-equal (riece-make-identity (car channels)
+							  riece-server-name)
+				     riece-current-channel))
+	  (with-current-buffer riece-user-list-buffer
+	    (setq riece-redisplay-buffer t)))
       (setq channels (cdr channels)))
     (riece-rename-user old-name new-name)))
 
 (provide 'riece-naming)
+
+;;; riece-naming.el ends here

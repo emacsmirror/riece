@@ -24,16 +24,22 @@
 
 ;;; Code:
 
+;;; Constants:
+(defconst riece-channel-regexp
+  "\\([+&#]\\|![A-Z0-9]\\{5\\}\\)[^\0\7\r\n ,:]*\\(:[^\0\7\r\n ,:]*\\)?")
+(defconst riece-user-regexp
+  "[][\\\\`_^{|}A-Za-z][][\\\\`_^{|}A-Za-z0-9-]\\{0,8\\}")
+
 ;;; Miscellaneous global variables:
-(defvar riece-server-process nil
-  "Primary server process.")
-(defvar riece-server-process-alist nil
-  "An alist mapping secondary server name to opened processes.")
+(defvar riece-process-list nil
+  "List of processes opened in the current session.")
 
 (defvar riece-current-channel nil
   "The channel you currently have joined.")
 (defvar riece-current-channels nil
   "The channels you have currently joined.")
+(defvar riece-last-channel nil
+  "The channel you had joined the last time.")
 
 (defvar riece-save-variables-are-dirty nil
   "Non nil if the variables in `riece-saved-forms' are changed.")
@@ -94,17 +100,6 @@ Local to the server buffers.")
   "Coding system for process I/O.
 Local to the server buffers.")
 
-;;; Variables local to the command buffer:
-(defvar riece-default-channel-candidate nil
-  "A channel name used as completion candidate.
-Local to the command buffer.")
-(defvar riece-last-channel nil
-  "The channel you joined the last time.")
-(defvar riece-command-buffer-mode 'channel
-  "Command buffer mode.
-Possible values are `chat' and `channel'.
-Local to the command buffer.")
-
 ;;; Variables local to the channel buffers:
 (defvar riece-freeze nil
   "If t, channel window is not scrolled.
@@ -115,7 +110,9 @@ Local to the channel buffers.")
 (defvar riece-channel-indicator "None"
   "A modeline indicator of the current channel.")
 (defvar riece-channel-list-indicator "No channel"
-  "The current joined channels, \"pretty-printed.\".")
+  "A modeline indicator of the current joined channels.")
+(defvar riece-short-channel-indicator "None"
+  "A modeline indicator of the current channel.")
 (defvar riece-user-indicator nil)
 
 (defvar riece-away-indicator "-")
@@ -137,14 +134,10 @@ Local to the channel buffers.")
   "Format of channel message buffer.")
 (defvar riece-channel-list-buffer " *Channels*"
   "Name of channel list buffer.")
-(defvar riece-user-list-buffer nil
+(defvar riece-user-list-buffer " *Users*"
   "Name of user list buffer.")
-(defvar riece-user-list-buffer-format " *Users:%s*"
-  "Format of user list buffer.")
 (defvar riece-wallops-buffer " *WALLOPS*")
 
-(defvar riece-channel-buffer-alist nil)
-(defvar riece-user-list-buffer-alist nil)
 (defvar riece-buffer-list nil)
 (defvar riece-overriding-server-name nil)
 

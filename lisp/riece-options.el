@@ -68,11 +68,6 @@
   :type '(repeat integer)
   :group 'riece-looks)
 
-(defcustom riece-inhibit-startup-message nil
-  "If non-nil, the startup message will not be displayed."
-  :group 'riece-looks
-  :type 'boolean)
-
 (defcustom riece-directory "~/.riece"
   "Where to look for data files."
   :type 'directory
@@ -181,11 +176,6 @@ way is to put Riece variables on .emacs or file loaded from there."
   "Your nickname."
   :type 'string
   :group 'riece-server)
-
-(defcustom riece-startup-channel-list nil
-  "A list of channels to join automatically at startup."
-  :type '(repeat (string :tag "Startup Channel"))
-  :group 'riece-channel)
 
 (defcustom riece-retry-with-new-nickname nil
   "When nickname has already been in use, grow-tail automatically."

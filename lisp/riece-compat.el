@@ -24,6 +24,10 @@
 
 ;;; Code:
 
+(if (featurep 'xemacs)
+    (require 'riece-xemacs)
+  (require 'riece-emacs))
+
 (defalias 'riece-mode-line-buffer-identification
   'identity)
 

@@ -265,9 +265,8 @@ puts(\"#{" address " >> 24 & 0xFF}.#{" address " >> 16 & 0xFF}.#{"
 	    (port (string-to-number (match-string 3 message)))
 	    (size (string-to-number (match-string 4 message)))
 	    (buffer (if (riece-channel-p target)
-			(cdr (riece-identity-assoc
-			      (riece-make-identity target)
-			      riece-channel-buffer-alist))))
+			(riece-channel-buffer-name
+			 (riece-make-identity target riece-server-name))))
 	    (user (riece-prefix-nickname prefix)))
 	(setq riece-rdcc-requests
 	      (cons (list user file address port size)
@@ -284,7 +283,7 @@ puts(\"#{" address " >> 24 & 0xFF}.#{" address " >> 16 & 0xFF}.#{"
 		   user
 		   (riece-strip-user-at-host
 		    (riece-prefix-user-at-host prefix))
-		   target))
+		   (riece-decode-coding-string target)))
 	  "\n")))
       t)))
 

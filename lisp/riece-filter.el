@@ -27,6 +27,8 @@
 (require 'riece-handle)
 (require 'riece-misc)
 (require 'riece-server)			;riece-close-server
+(require 'riece-identity)
+(require 'riece-display)
 
 (defun riece-handle-numeric-reply (prefix number name string)
   (let ((base-number (* (/ number 100) 100))
@@ -123,34 +125,46 @@
 	(forward-line)))))
 
 (eval-when-compile
-  (autoload 'riece "riece"))
+  (autoload 'riece-exit "riece"))
 (defun riece-sentinel (process status)
   (if riece-reconnect-with-password
       (unwind-protect
-	  (if (eq process riece-server-process)
-	      (riece)			;Need to initialize system.
-	    (let ((server-name
-		   (car (rassq process riece-server-process-alist))))
-	      (riece-close-server server-name)
-	      (riece-open-server
-	       (riece-server-name-to-server server-name)
-	       server-name)))
+	  (let ((server-name
+		 (with-current-buffer (process-buffer process)
+		   riece-server-name)))
+	    (riece-close-server-process process)
+	    (riece-open-server
+	     (if (equal server-name "")
+		 riece-server
+	       (riece-server-name-to-server server-name))
+	     server-name))
 	(setq riece-reconnect-with-password nil))
     (let ((server-name (with-current-buffer (process-buffer process)
 			 riece-server-name)))
       (if (and (process-id process)		;not a network connection
 	       (string-match "^exited abnormally with code \\([0-9]+\\)"
 			     status))
-	  (if server-name
-	      (message "Connection to \"%s\" closed: %s"
-		       server-name (match-string 1 status))
-	    (message "Connection closed: %s" (match-string 1 status)))
-	(if server-name
+	  (if (equal server-name "")
+	      (message "Connection closed: %s" (match-string 1 status))
 	    (message "Connection to \"%s\" closed: %s"
-		     server-name (substring status 0 (1- (length status))))
-	  (message "Connection closed: %s"
-		   (substring status 0 (1- (length status))))))
-      (riece-close-server server-name))))
+		     server-name (match-string 1 status)))
+	(if (equal server-name "")
+	    (message "Connection closed: %s"
+		   (substring status 0 (1- (length status))))
+	  (message "Connection to \"%s\" closed: %s"
+		   server-name (substring status 0 (1- (length status))))))
+      (let ((channels riece-current-channels))
+	(while channels
+	  (if (and (car channels)
+		   (equal (riece-identity-server (car channels))
+			  server-name))
+	      (riece-part-channel (car channels)))
+	  (setq channels (cdr channels))))
+      (riece-redisplay-buffers)
+      (riece-close-server-process process)
+      ;; If no server process is available, exit.
+      (unless riece-process-list
+	(riece-exit)))))
 
 (provide 'riece-filter)
 

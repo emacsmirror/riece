@@ -45,7 +45,9 @@
 		riece-mini
 		riece-rdcc
 		riece-url
-		riece-unread))))
+		riece-unread
+		riece-doctor
+		riece-alias))))
 
 (defun riece-compile-modules (modules)
   (let ((load-path (cons nil load-path)))

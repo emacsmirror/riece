@@ -60,7 +60,7 @@
   :group 'riece-message)
 
 (defun riece-message-make-open-bracket (message)
-  "Makes `open-bracket' string for MESSAGE."
+  "Make `open-bracket' string for MESSAGE."
   (if (riece-message-own-p message)
       ">"
     (if (eq (riece-message-type message) 'notice)
@@ -72,7 +72,7 @@
 	  "<")))))
 
 (defun riece-message-make-close-bracket (message)
-  "Makes `close-bracket' string for MESSAGE."
+  "Make `close-bracket' string for MESSAGE."
   (if (riece-message-own-p message)
       "<"
     (if (eq (riece-message-type message) 'notice)
@@ -84,50 +84,59 @@
 	  ">")))))
 
 (defun riece-message-make-name (message)
-  "Makes local identity for MESSAGE."
-  (riece-identity-prefix
-   (if (and (riece-message-private-p message)
-	    (riece-message-own-p message))
-       (riece-message-target message)
-     (riece-message-speaker message))))
-
-(defun riece-message-make-global-name (message)
-  "Makes global identity for MESSAGE."
+  "Make local identity for MESSAGE."
   (if (riece-message-private-p message)
       (if (riece-message-own-p message)
-	  (riece-identity-prefix (riece-message-target message))
-	(riece-identity-prefix (riece-message-speaker message)))
-    (concat (riece-identity-prefix (riece-message-target message)) ":"
-	    (riece-identity-prefix (riece-message-speaker message)))))
+	  (riece-format-identity (riece-message-target message) t)
+	(riece-format-identity (riece-message-speaker message) t))
+    (riece-format-identity (riece-message-speaker message) t)))
+
+(defun riece-message-make-global-name (message)
+  "Make global identity for MESSAGE."
+  (if (riece-message-private-p message)
+      (if (riece-message-own-p message)
+	  (riece-format-identity (riece-message-target message) t)
+	(riece-format-identity (riece-message-speaker message) t))
+    (concat (riece-format-identity (riece-message-target message) t) ":"
+	    (riece-format-identity (riece-message-speaker message) t))))
 
 (defun riece-message-buffer (message)
   "Return the buffer where MESSAGE should appear."
-  (let* ((target (if (riece-identity-equal
-		      (riece-message-target message)
-		      (riece-current-nickname))
-		     (riece-message-speaker message)
-		   (riece-message-target message)))
-	 (entry (riece-identity-assoc target riece-channel-buffer-alist)))
-    (unless entry
+  (let ((target (if (riece-message-private-p message)
+		    (if (riece-message-own-p message)
+			(riece-message-target message)
+		      (riece-message-speaker message))
+		  (riece-message-target message))))
+    (unless (riece-identity-member target riece-current-channels)
       (riece-join-channel target)
       ;; If you are not joined any channel,
       ;; switch to the target immediately.
       (unless riece-current-channel
 	(riece-switch-to-channel target))
-      (riece-redisplay-buffers)
-      (setq entry (riece-identity-assoc target riece-channel-buffer-alist)))
-    (cdr entry)))
+      (riece-redisplay-buffers))
+    (riece-channel-buffer-name target)))
 
 (defun riece-message-parent-buffers (message buffer)
   "Return the parents of BUFFER where MESSAGE should appear.
 Normally they are *Dialogue* and/or *Others*."
-  (if (or (and buffer (riece-frozen buffer))
-	  (and riece-current-channel
+  (if (and buffer (riece-frozen buffer)) ;the message might not be
+					 ;visible in buffer's window
+      (list riece-dialogue-buffer riece-others-buffer)
+    (if (and riece-current-channel	;the message is not sent to
+					;the current channel
+	     (if (riece-message-private-p message)
+		 (if (riece-message-own-p message)
+		     (not (riece-identity-equal
+			   (riece-message-target message)
+			   riece-current-channel))
+		   (not (riece-identity-equal
+			 (riece-message-speaker message)
+			 riece-current-channel)))
 	       (not (riece-identity-equal
 		     (riece-message-target message)
 		     riece-current-channel))))
-      (list riece-dialogue-buffer riece-others-buffer)
-    riece-dialogue-buffer))
+	(list riece-dialogue-buffer riece-others-buffer)
+      riece-dialogue-buffer)))
 
 (defun riece-display-message (message)
   "Display MESSAGE object."
@@ -140,6 +149,7 @@ Normally they are *Dialogue* and/or *Others*."
 	(global-name
 	 (funcall riece-message-make-global-name-function message))
 	(buffer (riece-message-buffer message))
+	(server-name (riece-identity-server (riece-message-speaker message)))
 	parent-buffers)
     (when (and buffer
 	       (riece-message-own-p message)
@@ -152,11 +162,12 @@ Normally they are *Dialogue* and/or *Others*."
 		  (concat open-bracket name close-bracket
 			  " " (riece-message-text message) "\n"))
     (riece-insert parent-buffers
-		  (concat
-		   (riece-concat-server-name
-		    (concat open-bracket global-name close-bracket
-			    " " (riece-message-text message)))
-		   "\n"))
+		  (if (equal server-name "")
+		      (concat open-bracket global-name close-bracket
+			      " " (riece-message-text message) "\n")
+		     (concat open-bracket global-name close-bracket
+			     " " (riece-message-text message)
+			     " (from " server-name ")\n")))
     (run-hook-with-args 'riece-after-display-message-functions message)))
 
 (defun riece-make-message (speaker target text &optional type own-p)
@@ -192,25 +203,21 @@ Currently possible values are `action' and `notice'."
 
 (defun riece-message-private-p (message)
   "Return t if MESSAGE is a private message."
-  (if (riece-message-own-p message)
-      (not (riece-channel-p (riece-message-target message)))
-    (riece-identity-equal
-     (riece-message-target message)
-     (riece-current-nickname))))
+  (not (or (riece-channel-p (riece-identity-prefix
+			     (riece-message-speaker message)))
+	   (riece-channel-p (riece-identity-prefix
+			     (riece-message-target message))))))
 
 (defun riece-message-external-p (message)
   "Return t if MESSAGE is from outside the channel."
   (not (riece-identity-member
-	(riece-message-target message)
-	(mapcar #'riece-make-identity
-		(riece-user-get-channels (riece-message-speaker message))))))
-
-(defun riece-own-channel-message (message &optional channel type)
-  "Display MESSAGE as you sent to CHNL."
-  (riece-display-message
-   (riece-make-message (riece-current-nickname)
-		       (or channel riece-current-channel)
-		       message type t)))
+	(riece-message-speaker message)
+	(let ((target (riece-message-target message)))
+	  (riece-with-server-buffer (riece-identity-server target)
+	    (mapcar
+	     (lambda (user)
+	       (riece-make-identity user riece-server-name))
+	     (riece-channel-get-users (riece-identity-prefix target))))))))
 
 (provide 'riece-message)
 

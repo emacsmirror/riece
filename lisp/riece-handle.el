@@ -33,37 +33,40 @@
 (defun riece-handle-nick-message (prefix string)
   (let* ((old (riece-prefix-nickname prefix))
 	 (new (car (riece-split-parameters string)))
+	 (old-identity (riece-make-identity old riece-server-name))
+	 (new-identity (riece-make-identity new riece-server-name))
 	 (channels (riece-user-get-channels old))
-	 (visible (riece-identity-member riece-current-channel channels)))
+	 (visible (riece-identity-member
+		   riece-current-channel
+		   (mapcar (lambda (channel)
+			     (riece-make-identity channel riece-server-name))
+			   channels))))
     (riece-naming-assert-rename old new)
-    (let ((pointer (riece-identity-member
-		    (riece-make-identity old)
-		    riece-current-channels)))
+    (let ((pointer (riece-identity-member old-identity
+					  riece-current-channels)))
       (when pointer
-	(setcar pointer (riece-make-identity new))
-	(setcar (riece-identity-assoc (riece-make-identity old)
-				      riece-channel-buffer-alist)
-		(riece-make-identity new))
-	(setcar (riece-identity-assoc (riece-make-identity old)
-				      riece-user-list-buffer-alist)
-		(riece-make-identity new))
-	(if (riece-identity-equal (riece-make-identity old)
-				  riece-current-channel)
-	    (riece-switch-to-channel (riece-make-identity new)))
-	(setq channels (cons (riece-make-identity new) channels))))
+	(setcar pointer new-identity)
+	(with-current-buffer (riece-channel-buffer-name new-identity)
+	  (rename-buffer (riece-channel-buffer-name new-identity)))
+	(if (riece-identity-equal new-identity riece-current-channel)
+	    (riece-switch-to-channel new-identity))
+	(setq channels (cons new-identity channels))))
     (riece-insert-change (mapcar
 			  (lambda (channel)
-			    (cdr (riece-identity-assoc
-				  (riece-make-identity channel)
-				  riece-channel-buffer-alist)))
+			    (riece-channel-buffer-name
+			     (riece-make-identity channel riece-server-name)))
 			  channels)
-			 (format "%s -> %s\n" old new))
+			 (format "%s -> %s\n"
+				 (riece-format-identity old-identity t)
+				 (riece-format-identity new-identity t)))
     (riece-insert-change (if visible
 			     riece-dialogue-buffer
 			   (list riece-dialogue-buffer riece-others-buffer))
 			 (concat
 			  (riece-concat-server-name
-			   (format "%s -> %s" old new))
+			   (format "%s -> %s"
+				 (riece-format-identity old-identity t)
+				 (riece-format-identity new-identity t)))
 			  "\n"))
     (riece-redisplay-buffers)))
 
@@ -72,10 +75,12 @@
 	 (parameters (riece-split-parameters string))
 	 (targets (split-string (car parameters) ","))
 	 (message (nth 1 parameters)))
-    (unless (equal message "")		;not ignored by server?
-      (riece-display-message
-       (riece-make-message user (riece-make-identity (car targets))
-			   message)))))
+    (riece-display-message
+     (riece-make-message (riece-make-identity user
+					      riece-server-name)
+			 (riece-make-identity (car targets)
+					      riece-server-name)
+			 message))))
 
 (defun riece-handle-notice-message (prefix string)
   (let* ((user (if prefix
@@ -83,15 +88,17 @@
 	 (parameters (riece-split-parameters string))
 	 (targets (split-string (car parameters) ","))
 	 (message (nth 1 parameters)))
-    (unless (equal message "")		;not ignored by server?
-      (if user
-	  (riece-display-message
-	   (riece-make-message user (riece-make-identity (car targets))
-			       message 'notice))
-	;; message from server
-	(riece-insert-notice
-	 (list riece-dialogue-buffer riece-others-buffer)
-	 (concat (riece-concat-server-name message) "\n"))))))
+    (if user
+	(riece-display-message
+	 (riece-make-message (riece-make-identity user
+						  riece-server-name)
+			     (riece-make-identity (car targets)
+						  riece-server-name)
+			     message 'notice))
+      ;; message from server
+      (riece-insert-notice
+       (list riece-dialogue-buffer riece-others-buffer)
+       (concat (riece-concat-server-name message) "\n")))))
 
 (defun riece-handle-ping-message (prefix string)
   (riece-send-string (format "PONG :%s\r\n"
@@ -100,22 +107,23 @@
 			       string))))
 
 (defun riece-handle-join-message (prefix string)
-  (let ((user (riece-prefix-nickname prefix))
-	(channels (split-string (car (riece-split-parameters string)) ",")))
+  (let* ((user (riece-prefix-nickname prefix))
+	 ;; RFC2812 3.2.1 doesn't recommend server to send join
+	 ;; messages which contain multiple targets.
+	 (channels (split-string (car (riece-split-parameters string)) ","))
+	 (user-identity (riece-make-identity user riece-server-name)))
     (while channels
       (riece-naming-assert-join user (car channels))
-      ;;XXX
-      (if (riece-identity-equal-no-server user riece-real-nickname)
-	  (riece-switch-to-channel (riece-make-identity (car channels))))
-      (let ((buffer (cdr (riece-identity-assoc
-			  (riece-make-identity (car channels))
-			  riece-channel-buffer-alist))))
+      (let* ((channel-identity (riece-make-identity (car channels)
+						    riece-server-name))
+	     (buffer (get-buffer (riece-channel-buffer-name
+				  channel-identity))))
 	(riece-insert-change
 	 buffer
 	 (format "%s (%s) has joined %s\n"
-		 user
+		 (riece-format-identity user-identity t)
 		 (riece-user-get-user-at-host user)
-		 (car channels)))
+		 (riece-format-identity channel-identity t)))
 	(riece-insert-change
 	 (if (and riece-channel-buffer-mode
 		  (not (eq buffer riece-channel-buffer)))
@@ -124,9 +132,9 @@
 	 (concat
 	  (riece-concat-server-name
 	   (format "%s (%s) has joined %s"
-		   user
+		   (riece-format-identity user-identity t)
 		   (riece-user-get-user-at-host user)
-		   (car channels)))
+		   (riece-format-identity channel-identity t)))
 	  "\n")))
       (setq channels (cdr channels)))
     (riece-redisplay-buffers)))
@@ -134,18 +142,24 @@
 (defun riece-handle-part-message (prefix string)
   (let* ((user (riece-prefix-nickname prefix))
 	 (parameters (riece-split-parameters string))
+	 ;; RFC2812 3.2.2 doesn't recommend server to send part
+	 ;; messages which contain multiple targets.
 	 (channels (split-string (car parameters) ","))
-	 (message (nth 1 parameters)))
+	 (message (nth 1 parameters))
+	 (user-identity (riece-make-identity user riece-server-name)))
     (while channels
       (riece-naming-assert-part user (car channels))
-      (let ((buffer (cdr (riece-identity-assoc
-			  (riece-make-identity (car channels))
-			  riece-channel-buffer-alist))))
+      (let* ((channel-identity (riece-make-identity (car channels)
+						    riece-server-name))
+	     (buffer (get-buffer (riece-channel-buffer-name
+				  channel-identity))))
 	(riece-insert-change
 	 buffer
 	 (concat
 	  (riece-concat-message
-	   (format "%s has left %s" user (car channels))
+	   (format "%s has left %s"
+		   (riece-format-identity user-identity t)
+		   (riece-format-identity channel-identity t))
 	   message)
 	  "\n"))
 	(riece-insert-change
@@ -156,7 +170,9 @@
 	 (concat
 	  (riece-concat-server-name
 	   (riece-concat-message
-	    (format "%s has left %s" user (car channels))
+	    (format "%s has left %s"
+		    (riece-format-identity user-identity t)
+		    (riece-format-identity channel-identity t))
 	    message))
 	  "\n")))
       (setq channels (cdr channels)))
@@ -167,16 +183,20 @@
 	 (parameters (riece-split-parameters string))
 	 (channel (car parameters))
 	 (user (nth 1 parameters))
-	 (message (nth 2 parameters)))
+	 (message (nth 2 parameters))
+	 (kicker-identity (riece-make-identity kicker riece-server-name))
+	 (channel-identity (riece-make-identity channel riece-server-name))
+	 (user-identity (riece-make-identity user riece-server-name)))
     (riece-naming-assert-part user channel)
-    (let ((buffer (cdr (riece-identity-assoc
-			(riece-make-identity channel)
-			riece-channel-buffer-alist))))
+    (let ((buffer (get-buffer (riece-channel-buffer-name channel-identity))))
       (riece-insert-change
        buffer
        (concat
 	(riece-concat-message
-	 (format "%s kicked %s out from %s" kicker user channel)
+	 (format "%s kicked %s out from %s"
+		 (riece-format-identity kicker-identity t)
+		 (riece-format-identity user-identity t)
+		 (riece-format-identity channel-identity t))
 	 message)
 	"\n"))
       (riece-insert-change
@@ -187,7 +207,10 @@
        (concat
 	(riece-concat-server-name
 	 (riece-concat-message
-	  (format "%s kicked %s out from %s\n" kicker user channel)
+	  (format "%s kicked %s out from %s\n"
+		 (riece-format-identity kicker-identity t)
+		 (riece-format-identity user-identity t)
+		 (riece-format-identity channel-identity t))
 	  message))
 	"\n")))
     (riece-redisplay-buffers)))
@@ -196,54 +219,12 @@
   (let* ((user (riece-prefix-nickname prefix))
 	 (channels (copy-sequence (riece-user-get-channels user)))
 	 (pointer channels)
-	 (message (car (riece-split-parameters string))))
-    ;; If you are quitting, no need to cleanup.
-    (unless (riece-identity-equal-no-server user riece-real-nickname)
-      ;; You were talking with the user.
-      (if (riece-identity-member (riece-make-identity user)
-				 riece-current-channels)
-	  (riece-part-channel user)) ;XXX
-      (setq pointer channels)
-      (while pointer
-	(riece-naming-assert-part user (car pointer))
-	(setq pointer (cdr pointer)))
-      (let ((buffers
-	     (mapcar
-	      (lambda (channel)
-		(cdr (riece-identity-assoc
-		      (riece-make-identity channel)
-		      riece-channel-buffer-alist)))
-	      channels)))
-	(riece-insert-change buffers
-			     (concat (riece-concat-message
-				      (format "%s has left IRC" user)
-				      message)
-				     "\n"))
-	(riece-insert-change (if (and riece-channel-buffer-mode
-				      (not (memq riece-channel-buffer
-						 buffers)))
-				 (list riece-dialogue-buffer
-				       riece-others-buffer)
-			       riece-dialogue-buffer)
-			     (concat
-			      (riece-concat-server-name
-			       (riece-concat-message
-				(format "%s has left IRC" user)
-				message))
-			      "\n"))))
-    (riece-redisplay-buffers)))
-
-(defun riece-handle-kill-message (prefix string)
-  (let* ((killer (riece-prefix-nickname prefix))
 	 (parameters (riece-split-parameters string))
-	 (user (car parameters))
-	 (message (nth 1 parameters))
-	 (channels (copy-sequence (riece-user-get-channels user)))
-	 pointer)
-    ;; You were talking with the user.
-    (if (riece-identity-member (riece-make-identity user)
-			       riece-current-channels)
-	(riece-part-channel user)) ;XXX
+	 (message (car parameters))
+	 (user-identity (riece-make-identity user riece-server-name)))
+    ;; If you are talking with the user, quit it.
+    (if (riece-identity-member user-identity riece-current-channels)
+	(riece-part-channel user))
     (setq pointer channels)
     (while pointer
       (riece-naming-assert-part user (car pointer))
@@ -251,27 +232,77 @@
     (let ((buffers
 	   (mapcar
 	    (lambda (channel)
-	      (cdr (riece-identity-assoc
-		    (riece-make-identity channel)
-		    riece-channel-buffer-alist)))
+	      (get-buffer
+	       (riece-channel-buffer-name
+		(riece-make-identity channel riece-server-name))))
 	    channels)))
-      (riece-insert-change buffers
-			   (concat (riece-concat-message
-				    (format "%s killed %s" killer user)
-				    message)
-				   "\n"))
-      (riece-insert-change (if (and riece-channel-buffer-mode
-				    (not (memq riece-channel-buffer
-					       buffers)))
-			       (list riece-dialogue-buffer
-				     riece-others-buffer)
-			     riece-dialogue-buffer)
-			   (concat
-			    (riece-concat-server-name
-			     (riece-concat-message
-			      (format "%s killed %s" killer user)
-			     message))
-			    "\n")))
+      (riece-insert-change
+       buffers
+       (concat
+	(riece-concat-message
+	 (format "%s has left IRC"
+		 (riece-format-identity user-identity t))
+	 message)
+	"\n"))
+      (riece-insert-change
+       (if (and riece-channel-buffer-mode
+		(not (memq riece-channel-buffer buffers)))
+	   (list riece-dialogue-buffer riece-others-buffer)
+	 riece-dialogue-buffer)
+       (concat
+	(riece-concat-server-name
+	 (riece-concat-message
+	  (format "%s has left IRC"
+		  (riece-format-identity user-identity t))
+	  message))
+	"\n"))))
+  (riece-redisplay-buffers))
+
+(defun riece-handle-kill-message (prefix string)
+  (let* ((killer (riece-prefix-nickname prefix))
+	 (parameters (riece-split-parameters string))
+	 (user (car parameters))
+	 (message (nth 1 parameters))
+	 (channels (copy-sequence (riece-user-get-channels user)))
+	 (killer-identity (riece-make-identity killer riece-server-name))
+	 (user-identity (riece-make-identity user riece-server-name))
+	 pointer)
+    ;; If you are talking with the user, quit it.
+    (if (riece-identity-member user-identity riece-current-channels)
+	(riece-part-channel user))
+    (setq pointer channels)
+    (while pointer
+      (riece-naming-assert-part user (car pointer))
+      (setq pointer (cdr pointer)))
+    (let ((buffers
+	   (mapcar
+	    (lambda (channel)
+	      (get-buffer
+	       (riece-channel-buffer-name
+		(riece-make-identity channel riece-server-name))))
+	    channels)))
+      (riece-insert-change
+       buffers
+       (concat
+	(riece-concat-message
+	 (format "%s killed %s"
+		 (riece-format-identity killer-identity t)
+		 (riece-format-identity user-identity t))
+	 message)
+	"\n"))
+      (riece-insert-change
+       (if (and riece-channel-buffer-mode
+		(not (memq riece-channel-buffer buffers)))
+	   (list riece-dialogue-buffer riece-others-buffer)
+	 riece-dialogue-buffer)
+       (concat
+	(riece-concat-server-name
+	 (riece-concat-message
+	  (format "%s killed %s"
+		 (riece-format-identity killer-identity t)
+		 (riece-format-identity user-identity t))
+	  message))
+	"\n")))
     (riece-redisplay-buffers)))
 
 (defun riece-handle-invite-message (prefix string)
@@ -282,21 +313,27 @@
      (list riece-dialogue-buffer riece-others-buffer)
      (concat
       (riece-concat-server-name
-       (format "%s invites you to %s" user channel))
+       (format "%s invites you to %s"
+	       (riece-format-identity (riece-make-identity
+				       user riece-server-name))
+	       (riece-format-identity (riece-make-identity
+				       channel riece-server-name))))
       "\n"))))
 
 (defun riece-handle-topic-message (prefix string)
   (let* ((user (riece-prefix-nickname prefix))
 	 (parameters (riece-split-parameters string))
 	 (channel (car parameters))
-	 (topic (nth 1 parameters)))
+	 (topic (nth 1 parameters))
+	 (user-identity (riece-make-identity user riece-server-name))
+	 (channel-identity (riece-make-identity channel riece-server-name)))
     (riece-channel-set-topic (riece-get-channel channel) topic)
-    (let ((buffer (cdr (riece-identity-assoc
-			(riece-make-identity channel)
-			riece-channel-buffer-alist))))
+    (let ((buffer (get-buffer (riece-channel-buffer-name channel-identity))))
       (riece-insert-change
        buffer
-       (format "Topic by %s: %s\n" user topic))
+       (format "Topic by %s: %s\n"
+	       (riece-format-identity user-identity t)
+	       topic))
       (riece-insert-change
        (if (and riece-channel-buffer-mode
 		(not (eq buffer riece-channel-buffer)))
@@ -304,7 +341,10 @@
 	 riece-dialogue-buffer)
        (concat
 	(riece-concat-server-name
-	 (format "Topic on %s by %s: %s" channel user topic))
+	 (format "Topic on %s by %s: %s"
+		 (riece-format-identity channel-identity t)
+		 (riece-format-identity user-identity t)
+		 topic))
 	"\n"))
       (riece-redisplay-buffers))))
 
@@ -339,18 +379,21 @@
 	(setq modes (cdr modes))))))
 
 (defun riece-handle-mode-message (prefix string)
-  (let ((user (riece-prefix-nickname prefix))
-	channel)
+  (let* ((user (riece-prefix-nickname prefix))
+	 (user-identity (riece-make-identity user riece-server-name))
+	 channel)
     (when (string-match "\\([^ ]+\\) *:?" string)
       (setq channel (match-string 1 string)
 	    string (substring string (match-end 0)))
       (riece-parse-channel-modes string channel)
-      (let ((buffer (cdr (riece-identity-assoc
-			  (riece-make-identity channel)
-			  riece-channel-buffer-alist))))
+      (let* ((channel-identity (riece-make-identity channel riece-server-name))
+	     (buffer (get-buffer (riece-channel-buffer-name
+				  channel-identity))))
 	(riece-insert-change
 	 buffer
-	 (format "Mode by %s: %s\n" user string))
+	 (format "Mode by %s: %s\n"
+		 (riece-format-identity user-identity t)
+		 string))
 	(riece-insert-change
 	 (if (and riece-channel-buffer-mode
 		  (not (eq buffer riece-channel-buffer)))
@@ -358,7 +401,10 @@
 	   riece-dialogue-buffer)
 	 (concat
 	  (riece-concat-server-name
-	   (format "Mode on %s by %s: %s" channel user string))
+	   (format "Mode on %s by %s: %s"
+		   (riece-format-identity channel-identity t)
+		   (riece-format-identity user-identity t)
+		   string))
 	  "\n"))
 	(riece-redisplay-buffers)))))
 

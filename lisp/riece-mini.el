@@ -79,8 +79,8 @@ If twice (C-u C-u), then ask the channel."
 	 (target
 	  (cond
 	   ((equal arg '(16))
-	    (completing-read "Channel/User: "
-			     (mapcar #'list riece-current-channels) nil t))
+	    (riece-completing-read-identity
+	     "Channel/User: " riece-current-channels nil t))
 	   (arg (or riece-mini-last-channel riece-current-channel))
 	   (t riece-current-channel)))
 	 (message (read-string (format "Message to %s: " target))))
@@ -90,7 +90,9 @@ If twice (C-u C-u), then ask the channel."
        (format "PRIVMSG %s :%s\r\n"
 	       (riece-identity-prefix target)
 	       message))
-      (riece-own-channel-message message target))))
+      (riece-display-message
+       (riece-make-message (riece-current-nickname) target
+			   message nil t)))))
 
 (defun riece-mini-insinuate ()
   (add-hook 'riece-after-display-message-functions
