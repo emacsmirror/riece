@@ -5,7 +5,7 @@
 
 	* riece-url.el (riece-url-regexp-alist): Backport from Liece 2.0.
 	(riece-url-replace-match): New function.
-	(riece-url-scan-region): Backport from Liece 2.0.
+	(riece-url-scan-region): Handle riece-url-regexp-alist.
 
 2004-11-25  Daiki Ueno  <ueno@unixuser.org>
 
