@@ -30,6 +30,8 @@
 (require 'riece-compat)
 (require 'riece-commands)
 
+(autoload 'derived-mode-class "derived")
+
 (defvar riece-channel-list-mode-map (make-sparse-keymap))
 (defvar riece-user-list-mode-map (make-sparse-keymap))
 
@@ -56,6 +58,9 @@
     (riece-others-buffer "*Others*" riece-others-mode)
     (riece-channel-list-buffer "*Channels*" riece-channel-list-mode)
     (riece-user-list-buffer " *Users*" riece-user-list-mode)))
+
+(defvar riece-shrink-buffer-idle-timer nil
+  "Timer object to periodically shrink channel buffers.")
 
 (defvar riece-select-keys
   `("1" riece-command-switch-to-channel-by-number-1
@@ -265,12 +270,40 @@ If optional argument CONFIRM is non-nil, ask which IRC server to connect."
     (if (stringp riece-server)
 	(setq riece-server (riece-server-name-to-server riece-server)))
     (riece-create-buffers)
+    (if riece-max-buffer-size
+	(setq riece-shrink-buffer-idle-timer
+	      (riece-run-with-idle-timer
+	       riece-shrink-buffer-idle-time-delay nil
+	       (lambda ()
+		 (let ((buffers riece-buffer-list))
+		   (while buffers
+		     (if (eq (derived-mode-class
+			      (with-current-buffer (car buffers)
+				major-mode))
+			     'riece-dialogue-mode)
+			 (riece-shrink-buffer (car buffers)))
+		     (setq buffers (cdr buffers))))))))
     (switch-to-buffer riece-command-buffer)
     (riece-redisplay-buffers)
     (riece-open-server riece-server "")
     (run-hooks 'riece-startup-hook)
     (message "%s" (substitute-command-keys
 		   "Type \\[describe-mode] for help"))))
+
+(defun riece-shrink-buffer (buffer)
+  (save-excursion
+    (set-buffer buffer)
+    (goto-char (point-min))
+    (while (> (buffer-size) riece-max-buffer-size)
+      (let* ((inhibit-read-only t)
+	     buffer-read-only
+	     (start (point))
+	     (end (progn (beginning-of-line 2) (point)))
+	     (overlays (riece-overlays-in start end)))
+	(while overlays
+	  (riece-delete-overlay (car overlays))
+	  (setq overlays (cdr overlays)))
+	(delete-region start end)))))
 
 (defun riece-exit ()
   (if riece-save-variables-are-dirty
@@ -280,6 +313,8 @@ If optional argument CONFIRM is non-nil, ask which IRC server to connect."
 	     (buffer-live-p (car riece-buffer-list)))
 	(funcall riece-buffer-dispose-function (car riece-buffer-list)))
     (setq riece-buffer-list (cdr riece-buffer-list)))
+  (if riece-shrink-buffer-idle-timer
+      (riece-cancel-timer riece-shrink-buffer-idle-timer))
   (setq riece-server nil
 	riece-current-channels nil
 	riece-current-channel nil

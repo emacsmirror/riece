@@ -59,6 +59,7 @@ Local to the buffer in `riece-buffer-list'.")
 	       (inhibit-read-only t)
 	       buffer-read-only)
 	  (erase-buffer)
+	  (riece-kill-all-overlays)
 	  (while users
 	    (insert (if (memq ?o (cdr (car users)))
 			"@"
@@ -81,6 +82,7 @@ Local to the buffer in `riece-buffer-list'.")
 	  (index 1)
 	  (channels riece-current-channels))
       (erase-buffer)
+      (riece-kill-all-overlays)
       (while channels
 	(if (car channels)
 	    (insert (riece-format-channel-list-line

@@ -77,13 +77,45 @@
 (defalias 'riece-overlay-start 'extent-start-position)
 (defalias 'riece-overlay-buffer 'extent-buffer)
 
+(defun riece-overlays-in (start end)
+  (extent-list (current-buffer) start end))
+
+(defalias 'riece-delete-overlay 'delete-extent)
+
+(defun riece-kill-all-overlays ()
+  "Delete all extents in the current buffer."
+  (map-extents (lambda (extent ignore)
+                 (delete-extent extent)
+                 nil)))
+
 ;;; stolen (and renamed) from nnheaderxm.el.
+(defun riece-xemacs-generate-timer-name (&optional prefix)
+  (let ((counter '(0)))
+    (format "%s-%d"
+	    (or prefix
+		"riece-xemacs-timer")
+	    (prog1 (car counter)
+	      (setcar counter (1+ (car counter)))))))
+
 (defun riece-run-at-time (time repeat function &rest args)
-  (start-itimer
-   "riece-run-at-time"
-   `(lambda ()
-      (,function ,@args))
-   time repeat))
+  (let ((name (riece-xemacs-generate-timer-name "riece-run-at-time")))
+    (start-itimer
+     name
+     `(lambda ()
+	(,function ,@args))
+     time repeat)
+    name))
+
+(defun riece-run-with-idle-timer (time repeat function &rest args)
+  (let ((name (riece-xemacs-generate-timer-name "riece-run-with-idle-timer")))
+    (start-itimer
+     name
+     `(lambda ()
+	(,function ,@args))
+     time repeat t)
+    name))
+
+(defalias 'riece-cancel-timer 'delete-itimer)
 
 (provide 'riece-xemacs)
 

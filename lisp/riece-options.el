@@ -199,7 +199,8 @@ way is to put Riece variables on .emacs or file loaded from there."
 
 (defcustom riece-quit-timeout 10
   "Quit timeout when there is no response from server."
-  :type 'integer
+  :type '(radio (integer :tag "Seconds")
+		(const nil))
   :group 'riece-server)
 
 (defcustom riece-channel-buffer-mode t
@@ -251,6 +252,17 @@ way is to put Riece variables on .emacs or file loaded from there."
 (defcustom riece-buffer-dispose-function #'bury-buffer
   "Function called after the buffer was disposed."
   :type 'function
+  :group 'riece-options)
+
+(defcustom riece-shrink-buffer-idle-time-delay 5
+  "Number of idle seconds to wait before shrinking channel buffers."
+  :type 'integer
+  :group 'riece-options)
+
+(defcustom riece-max-buffer-size 65535
+  "Maximum size of channel buffers."
+  :type '(radio (integer :tag "Number of characters")
+		(const nil))
   :group 'riece-options)
 
 (defcustom riece-format-time-function #'current-time-string

@@ -203,6 +203,12 @@ static char * a_xpm[] = {
 (eval-and-compile
   (if (featurep 'xemacs)
       (defun riece-icon-add-image-region (image start end)
+	(map-extents
+	 (lambda (extent ignore)
+	   (if (or (extent-property extent 'riece-icon-user-list-extent)
+		   (extent-property extent 'riece-icon-user-list-annotation))
+	       (delete-extent extent)))
+	 (current-buffer) start end)
 	(let ((extent (make-extent start end))
 	      (annotation (make-annotation image end 'text)))
 	  (set-extent-property extent 'end-open t)
@@ -212,7 +218,7 @@ static char * a_xpm[] = {
 	  (set-extent-property annotation
 			       'riece-icon-user-list-extent extent)
 	  (set-extent-property extent
-			       'riece-icon-user-list-extent annotation)))
+			       'riece-icon-user-list-annotation annotation)))
     (defun riece-icon-add-image-region (image start end)
       (let ((inhibit-read-only t)
 	    buffer-read-only)

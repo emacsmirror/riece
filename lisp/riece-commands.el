@@ -294,16 +294,17 @@ the layout to the selected layout-name."
     (while users
       (setq group (cons (car users) group)
 	    users (cdr users))
-      (if (or (= (length group) 3)
-	      (null users))
-	  (riece-send-string
-	   (format "MODE %s %c%s %s\r\n"
-		   (riece-identity-prefix riece-current-channel)
-		   (if current-prefix-arg
-		       ?-
-		     ?+)
-		   (make-string (length group) ?o)
-		   (mapconcat #'identity group " ")))))))
+      (when (or (= (length group) 3)
+		(null users))
+	(riece-send-string
+	 (format "MODE %s %c%s %s\r\n"
+		 (riece-identity-prefix riece-current-channel)
+		 (if current-prefix-arg
+		     ?-
+		   ?+)
+		 (make-string (length group) ?o)
+		 (mapconcat #'identity group " ")))
+	(setq group nil)))))
 
 (defun riece-command-set-speakers (users &optional arg)
   (interactive
@@ -326,16 +327,17 @@ the layout to the selected layout-name."
     (while users
       (setq group (cons (car users) group)
 	    users (cdr users))
-      (if (or (= (length group) 3)
-	      (null users))
-	  (riece-send-string
-	   (format "MODE %s %c%s %s\r\n"
-		   (riece-identity-prefix riece-current-channel)
-		   (if current-prefix-arg
-		       ?-
-		     ?+)
-		   (make-string (length group) ?v)
-		   (mapconcat #'identity group " ")))))))
+      (when (or (= (length group) 3)
+		(null users))
+	(riece-send-string
+	 (format "MODE %s %c%s %s\r\n"
+		 (riece-identity-prefix riece-current-channel)
+		 (if current-prefix-arg
+		     ?-
+		   ?+)
+		 (make-string (length group) ?v)
+		 (mapconcat #'identity group " ")))
+	(setq group nil)))))
 
 (defun riece-command-send-message (message notice)
   "Send MESSAGE to the current channel."

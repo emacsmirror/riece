@@ -76,8 +76,21 @@
 (defalias 'riece-overlay-put 'overlay-put)
 (defalias 'riece-overlay-start 'overlay-start)
 (defalias 'riece-overlay-buffer 'overlay-buffer)
+(defalias 'riece-overlays-in 'overlays-in)
+(defalias 'riece-delete-overlay 'delete-overlay)
+
+(defun riece-kill-all-overlays ()
+  "Delete all overlays in the current buffer."
+  (let* ((overlay-lists (overlay-lists))
+         (buffer-read-only nil)
+         (overlays (delq nil (nconc (car overlay-lists) (cdr overlay-lists)))))
+    (while overlays
+      (delete-overlay (car overlays))
+      (setq overlays (cdr overlays)))))
 
 (defalias 'riece-run-at-time 'run-at-time)
+(defalias 'riece-run-with-idle-timer 'run-with-idle-timer)
+(defalias 'riece-cancel-timer 'cancel-timer)
 
 (provide 'riece-emacs)
 
