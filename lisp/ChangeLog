@@ -1,5 +1,7 @@
 2004-12-12  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-options.el (riece-addons): Add riece-toolbar.
+
 	* riece-log.el (riece-log-flashback): Fixed regexp.
 
 	* riece-menu.el (riece-menu-items): Add "Next Channel" and
