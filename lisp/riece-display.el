@@ -137,7 +137,8 @@ PLIST accept :command-height, :user-list-width, and :channel-list-width."
 	    (set-window-buffer (selected-window) riece-channel-buffer)
 	    (set-window-buffer user-list-window riece-user-list-buffer)
 	    (select-window user-list-window)
-	    (shrink-window-horizontally (- (window-width) user-list-width))))
+	    (shrink-window-horizontally (- (window-width) user-list-width))
+	    (setq truncate-partial-width-windows nil)))
 	 ;; only user-list
 	 (show-user-list
 	  (set-window-buffer (selected-window) riece-user-list-buffer))
@@ -151,8 +152,9 @@ PLIST accept :command-height, :user-list-width, and :channel-list-width."
 	(let ((channel-list-window (split-window (selected-window) nil t)))
 	  (set-window-buffer (selected-window) riece-others-buffer)
 	  (set-window-buffer channel-list-window riece-channel-list-buffer)
-	    (select-window channel-list-window)
-	    (shrink-window-horizontally (- (window-width) channel-list-width)))
+	  (select-window channel-list-window)
+	  (shrink-window-horizontally (- (window-width) channel-list-width))
+	  (setq truncate-partial-width-windows nil))
       (set-window-buffer (selected-window) riece-dialogue-buffer))
     (riece-set-window-points)
     (select-window (or (get-buffer-window buffer)

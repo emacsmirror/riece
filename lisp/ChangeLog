@@ -1,3 +1,9 @@
+2003-08-22  TAKAHASHI Kaoru  <kaoru@kaisei.org>
+
+	* riece-display.el (riece-configure-windows-top): Set
+	`truncate-partial-width-windows' nil, when horizontal window
+	split.
+
 2003-08-21  TAKAHASHI Kaoru  <kaoru@kaisei.org>
 
 	* riece-display.el (riece-configure-windows-top): Change
