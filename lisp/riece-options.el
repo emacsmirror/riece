@@ -196,9 +196,14 @@ way is to put Riece variables on .emacs or file loaded from there."
 		(const :tag "No" nil))
   :group 'riece-server)
 
-(defcustom riece-username (or (getenv "IRCNAME")
-			      user-full-name)
+(defcustom riece-username nil
   "Your user name."
+  :type 'string
+  :group 'riece-server)
+
+(defcustom riece-realname (or (getenv "IRCNAME")
+			      user-full-name)
+  "Your real name."
   :type 'string
   :group 'riece-server)
 
