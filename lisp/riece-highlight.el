@@ -28,6 +28,7 @@
 (require 'riece-options)		;riece-channel-list-buffer-mode
 (require 'riece-identity)		;riece-format-identity
 (require 'font-lock)
+(require 'derived)
 
 (defgroup riece-highlight nil
   "Highlight IRC buffers"
@@ -200,14 +201,18 @@
   (font-lock-set-defaults)
   (make-local-hook 'after-change-functions)
   (add-hook 'after-change-functions
-	    'riece-highlight-hide-prefix nil 'local))
+	    'riece-highlight-hide-prefix nil 'local)
+  (if riece-highlight-enabled
+      (font-lock-mode 1)))
 
 (defun riece-highlight-setup-channel-list ()
   (make-local-variable 'font-lock-defaults)
   (setq font-lock-defaults '(riece-channel-list-font-lock-keywords t))
   ;; In XEmacs, auto-initialization of font-lock is not affective
   ;; when buffer-file-name is not set.
-  (font-lock-set-defaults))
+  (font-lock-set-defaults)
+  (if riece-highlight-enabled
+      (font-lock-mode 1)))
 
 (defun riece-highlight-hide-prefix (start end length)
   (save-excursion
@@ -281,7 +286,7 @@
 		 major-mode))
 		'(riece-dialogue-mode riece-channel-list-mode))
 	  (with-current-buffer (car buffers)
-	    (font-lock-mode -1)))
+	    (font-lock-mode 0)))
       (setq buffers (cdr buffers))))
   (setq riece-highlight-enabled nil))
 

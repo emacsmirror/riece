@@ -1,3 +1,10 @@
+2004-05-26  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-highlight.el: Require 'derived.
+	(riece-highlight-setup-dialogue): Turn on font-lock if
+	riece-highlight-enabled.
+	(riece-highlight-setup-channel-list): Ditto.
+
 2004-05-24  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-addon.el (riece-command-list-addons): Sort add-ons.
