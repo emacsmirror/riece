@@ -25,10 +25,8 @@
 ;;; Code:
 
 ;;; Miscellaneous global variables:
-(defvar riece-server-process nil
-  "Primary server process.")
-(defvar riece-server-process-alist nil
-  "An alist mapping secondary server name to opened processes.")
+(defvar riece-process-list nil
+  "List of processes opened in the current session.")
 
 (defvar riece-current-channel nil
   "The channel you currently have joined.")
@@ -115,7 +113,9 @@ Local to the channel buffers.")
 (defvar riece-channel-indicator "None"
   "A modeline indicator of the current channel.")
 (defvar riece-channel-list-indicator "No channel"
-  "The current joined channels, \"pretty-printed.\".")
+  "A modeline indicator of the current joined channels.")
+(defvar riece-short-channel-indicator "None"
+  "A modeline indicator of the current channel.")
 (defvar riece-user-indicator nil)
 
 (defvar riece-away-indicator "-")
@@ -143,8 +143,6 @@ Local to the channel buffers.")
   "Format of user list buffer.")
 (defvar riece-wallops-buffer " *WALLOPS*")
 
-(defvar riece-channel-buffer-alist nil)
-(defvar riece-user-list-buffer-alist nil)
 (defvar riece-buffer-list nil)
 (defvar riece-overriding-server-name nil)
 
