@@ -128,9 +128,9 @@
 	  (when (and (not (equal "" string)) (eq ?: (aref string 0)))
 	    (setq string (substring string 1)
 		  parameters (nconc parameters (list string)))
-	    (throw 'done nil))))
-      (or (equal "" string)
-	  (setq parameters (nconc parameters (list string))))
+	    (throw 'done nil)))
+	(or (equal "" string)
+	    (setq parameters (nconc parameters (list string)))))
       parameters)))
 
 (defun riece-concat-channel-topic (target string)
