@@ -3,6 +3,7 @@
 	* Makefile.am (EXTRA_DIST): Add url-riece.el.
 	* url-riece.el: url-irc backend provided by Masatake YAMATO
 	<jet@gyve.org>.
+	[cf. <Liece:00373>]
 
 2004-11-25  Daiki Ueno  <ueno@unixuser.org>
 
