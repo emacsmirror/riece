@@ -97,7 +97,11 @@
     ;; Remove all properties before adding entry.
     (set-text-properties 0 (length irc) nil irc)
     (unless (member irc old)
-      (lsdb-update-record (list full-name)
+      (lsdb-update-record (list full-name
+				;; LSDB does not allow empty 'net entry.
+				(or (nth 1 (assq 'net (lsdb-lookup-records
+						       full-name)))
+				    ""))
 			  (list (cons 'irc (cons irc old)))))))
 
 (defun riece-lsdb-insinuate ()
