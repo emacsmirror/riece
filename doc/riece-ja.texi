@@ -54,8 +54,8 @@ Riece $B$O(B Emacs $B$G(B IRC (Internet Relay Chat) $B$K;22C$9$k$?$a$N%W%m%
 @menu
 * Overview::                    Riece $B$H$O2?$+(B
 * Getting started::             
-* Basic usage::                 $B4pK\E*$J$D$+$$$+$?(B
-* Advanced usage::              $B?J$s$@$D$+$$$+$?(B
+* Basic usage::                 $B4pK\E*$J;H$$J}(B
+* Advanced usage::              $B?J$s$@;H$$J}(B
 * Tips::                        $BJXMx$J@_Dj(B
 * Development::                 $B3+H/<T8~$1>pJs(B
 * Index::                       
@@ -182,10 +182,10 @@ Riece $B$O@_Dj%U%!%$%k$rJQ?t(B @code{riece-directory} $B$G;X<($5$l$k%G%#%l%/%
 $B%f!<%6$N%m%0%$%sL>$,$=$N$^$^;H$o$l$^$9!#(B
 @vindex riece-nickname
 
-$BL5;v$K@\B3$G$-$?$J$i!"<!$O%A%c%s%M%k$K;22C$7$F2qOC$r$7$F$_$^$7$g$&!#(B
-@kbd{C-c j} $B$H%?%$%W$9$k$H!"%A%c%s%M%kL>$r?R$M$i$l$k$N$G!"E,Ev$J%A%c%s%M(B
-$B%kL>$rF~NO$7$^$7$g$&!#$?$H$($P(B IRCnet $B$K$O(B @samp{#Liece} $B$H$$$&%A%c%s%M(B
-$B%k$,$"$k$N$G!"%F%9%H$K$*;H$$$/$@$5$$!#(B
+$BL5;v$K@\B3$G$-$?$i!"<!$O%A%c%s%M%k$K;22C$7$F2qOC$r$7$F$_$^$7$g$&!#(B
+@kbd{C-c j} $B$H%?%$%W$9$k$H;22C$9$k%A%c%s%M%kL>$r?R$M$i$l$k$N$G!"E,Ev$J%A%c(B
+$B%s%M%kL>$rF~NO$7$^$7$g$&!#(BIRCnet $B$K$O(B @samp{#Riece} $B$H$$$&%A%c%s%M%k$,$"(B
+$B$k$N$G!"%F%9%H$K$*;H$$$/$@$5$$!#(B
 
 $B%A%c%s%M%k$KF~$k$3$H$,$G$-$?$i!"J8>O$rF~NO$7$F%j%?!<%s%-!<$r2!$9$HH/8@$9(B
 $B$k$3$H$,$G$-$^$9!#B>$N?M$N2qOC$O2hLL1&>e$N%P%C%U%!$KI=<($5$l$^$9!#(B
@@ -589,6 +589,7 @@ PING $B$K1~Ez$9$k(B local proxy $B7PM3$G(B IRC $B%5!<%P$K@\B3(B
 @end example
 
 @section $BD>A0$K$$$?%A%c%s%M%k$KLa$j$?$$(B
+@vindex riece-guess-channel-try-functions
 
 $B0J2<$N9T$r(B @file{~/.riece/init.el} $B$KDI2C$9$k$3$H$G!"(B
 @kbd{C-c g} $B$GMzNr$rC)$j$D$D0\F0$G$-$^$9!#(B
@@ -616,6 +617,7 @@ PING $B$K1~Ez$9$k(B local proxy $B7PM3$G(B IRC $B%5!<%P$K@\B3(B
 @end example
 
 @section $B%-!<%o!<%I$KH?1~$7$F2;$rLD$i$7$?$$(B
+@vindex riece-keyword-notify-functions
 
 XEmacs $B$G$O!"0J2<$N@_Dj$r(B @file{~/.riece/init.el} $B$K2C$($k$3$H$G!"(B"$B$[$2(B" 
 $B$d(B "$B$U$,(B" $B$KH?1~$7$F8z2L2;(B($B$3$NNc$G$O!"%+%C%3!<$NLD$-@<(B)$B$rLD$i$9$3$H$,$G(B
@@ -659,6 +661,7 @@ Emacs $B$N>l9g$O(B,$B0J2<$N@_Dj$r(B @file{~/.riece/init.el} $B$K2C$($k$3$H$
 @end example
 
 @section $B%A%c%s%M%k$NHV9f$r8GDj$7$?$$(B
+@vindex riece-default-channel-binding
 
 $B0J2<$N9T$r(B @file{~/.riece/init.el} $B$KDI2C$7$^$9!'(B
 
@@ -672,6 +675,8 @@ Emacs $B$N>l9g$O(B,$B0J2<$N@_Dj$r(B @file{~/.riece/init.el} $B$K2C$($k$3$H$
 $B>l9g!"$=$N%A%c%s%M%k$,(B 3 $BHVL\$N%A%c%s%M%k$H$7$F07$o$l$^$9!#(B
 
 @section $B5/F0;~$K%Q%9%o!<%I$D$-$N%A%c%s%M%k$K;22C$7$?$$(B
+@vindex riece-startup-channel-list
+@vindex riece-startup-server-list
 
 $B0J2<$N9T$r(B @file{~/.riece/init.el} $B$KDI2C$7$^$9!'(B
 
@@ -727,6 +732,7 @@ HTTP $B%W%m%-%7$r2p$7$F(B IRC $B%5!<%P$K@\B3$9$k$3$H$,$G$-$^$9!#(B
 @end example
 
 @section IRC $B%m%0$r%U%!%$%k$KJ]B8$7$?$$(B
+@vindex riece-log-directory-map
 
 $B0J2<$N9T$r(B @file{~/.riece/init.el} $B$KDI2C$7$^$9!'(B
 
