@@ -1,3 +1,26 @@
+* Major changes in 1.0.8
+
+** Mitigate file locking scheme of riece-log. (ueno)
+
+** Format idle seconds in human readable form. (ueno)
+
+** Separate riece-obarray to riece-channel-obarray and
+   riece-user-obarray. (kaoru)
+
+** Fixed bugs caused by mishandling of channel names (which should be
+   case insensitive.) (ueno)
+
+** Support SXEmacs version names. (Steve Youngs)
+
+** Support CTCP TIME. (Steve Youngs)
+
+** Ignore directories under ~/.riece/addons. (kaoru)
+
+** Fixed wrong-number-of-arguments error on riece-command-part. (yoichi)
+
+** Fixed a bug which assumes existence of ~/.riece/addons when
+   startup. (ueno)
+
 * Major changes in 1.0.7
 
 ** New add-on riece-toolbar. (ueno)
