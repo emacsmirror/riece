@@ -166,7 +166,7 @@ If integer, flash back only this line numbers. t means all lines."
 				  riece-log-file-name-coding-system)))
   file-name)
 
-(defun riece-log-insert-log (identity lines)
+(defun riece-log-insert (identity lines)
   "Insert logs for IDENTITY at most LINES.
 If LINES is t, insert today's logs entirely."
   (if (eq lines t)
@@ -202,7 +202,7 @@ If LINES is t, insert today's logs entirely."
     (let (buffer-read-only
 	  (point (goto-char (point-max))))
       (insert (with-temp-buffer
-		(riece-log-insert-log identity riece-log-flashback)
+		(riece-log-insert identity riece-log-flashback)
 		(buffer-string)))
       (goto-char point)
       (while (re-search-forward
