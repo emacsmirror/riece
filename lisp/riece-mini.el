@@ -81,10 +81,12 @@
     (let ((string (concat (format-time-string "%H:%M") " "
 			  (riece-format-message message t))))
       (riece-mini-message-no-log "%s" string)
-      (when (>= (length riece-mini-backlog-history)
+      (while (>= (length riece-mini-backlog-history)
 		riece-mini-backlog-size)
-	(pop riece-mini-backlog-history))
-      (push string riece-mini-backlog-history))))
+	(setq riece-mini-backlog-history
+	      (cdr riece-mini-backlog-history)))
+      (setq riece-mini-backlog-history
+	    (reverse (cons string (reverse riece-mini-backlog-history)))))))
 
 (defun riece-mini-send-message (arg)
   "Send message using minibuffer.
@@ -118,7 +120,7 @@ If twice (C-u C-u), then ask the channel."
     (when riece-mini-backlog-history
       (setq riece-mini-backlog-shown t)
       (riece-mini-message-no-log
-       (mapconcat 'identity (reverse riece-mini-backlog-history) "")))))
+       (mapconcat 'identity riece-mini-backlog-history "")))))
 
 (defun riece-mini-pre-command ()
   (when riece-mini-backlog-shown
