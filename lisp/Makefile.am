@@ -10,7 +10,7 @@ EXTRA_DIST = COMPILE ChangeLog ChangeLog.Liece \
 	riece-ndcc.el riece-rdcc.el riece-log.el riece-mini.el \
 	riece-doctor.el riece-alias.el riece-layout.el riece-skk-kakutei.el \
 	riece-guess.el riece-history.el riece-button.el riece-keyword.el \
-	riece-menu.el riece-icon.el riece-async
+	riece-menu.el riece-icon.el riece-async.el
 
 CLEANFILES = auto-autoloads.el custom-load.el *.elc
 FLAGS ?= -batch -q -no-site-file
