@@ -273,8 +273,7 @@ If optional argument CONFIRM is non-nil, ask which IRC server to connect."
 	riece-channel-list-indicator "No channel"
 	riece-away-indicator "-"
 	riece-operator-indicator "-"
-	riece-freeze-indicator "-"
-	riece-channel-history nil)
+	riece-freeze-indicator "-")
   (delete-other-windows)
   (run-hooks 'riece-exit-hook))
 

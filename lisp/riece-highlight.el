@@ -255,7 +255,7 @@
     (if (looking-at riece-prefix-regexp)
 	(put-text-property (match-beginning 1) (match-end 1) 'invisible t))))
 
-(defun riece-channel-list-mark-current-channel ()
+(defun riece-channel-list-mark-current-channel (last)
   (if (and riece-channel-list-buffer-mode
 	   riece-current-channel)
       (save-excursion
@@ -296,7 +296,7 @@
 	    'riece-dialogue-schedule-turn-on-font-lock)
   (put 'riece-channel-list-mode 'font-lock-defaults
        '(riece-channel-list-font-lock-keywords t))
-  (add-hook 'riece-channel-switch-hook
+  (add-hook 'riece-after-switch-to-channel-functions
 	    'riece-channel-list-mark-current-channel)
   (add-hook 'riece-after-load-startup-hook
 	    'riece-channel-list-schedule-turn-on-font-lock))

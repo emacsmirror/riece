@@ -180,9 +180,9 @@
     (current-buffer)))
 
 (defun riece-switch-to-channel (identity)
-  (setq riece-last-channel riece-current-channel
-	riece-current-channel identity)
-  (run-hooks 'riece-channel-switch-hook))
+  (let ((last riece-current-channel))
+    (setq riece-current-channel identity)
+    (run-hook-with-args 'riece-after-switch-to-channel-functions last)))
 
 (defun riece-join-channel (identity)
   (unless (riece-identity-member identity riece-current-channels)
@@ -211,8 +211,9 @@
       (setq identity (car pointer)))
     (if identity
 	(riece-switch-to-channel identity)
-      (setq riece-last-channel riece-current-channel
-	    riece-current-channel nil))))
+      (let ((last riece-current-channel))
+	(run-hook-with-args 'riece-after-switch-to-channel-functions last)
+	(setq riece-current-channel nil)))))
 
 (defun riece-part-channel (identity)
   (let ((pointer (riece-identity-member identity riece-current-channels)))

@@ -61,7 +61,7 @@
 
 (defvar riece-unread-channels nil)
 
-(defun riece-unread-display-message-function (message)
+(defun riece-unread-after-display-message-function (message)
   (unless (or (riece-message-own-p message)
 	      (equal (riece-message-target message) riece-current-channel))
     (setq riece-unread-channels
@@ -70,7 +70,7 @@
 		 (riece-message-target message))
     (riece-unread-update-channel-list-buffer)))
 
-(defun riece-unread-channel-switch-hook ()
+(defun riece-unread-after-switch-to-channel-function (last)
   (setq riece-unread-channels
 	(delete riece-current-channel
 		riece-unread-channels))
@@ -101,19 +101,30 @@
       (riece-command-switch-to-channel (car riece-unread-channels))
     (error "No unread channel!")))
 
+(defun riece-guess-channel-from-unread ()
+  riece-unread-channels)
+
 (defvar riece-command-mode-map)
 (defvar riece-dialogue-mode-map)
 (defvar riece-channel-list-mode-map)
 
 (defun riece-unread-requires ()
-  (if (memq 'riece-highlight riece-addons)
-      '(riece-highlight)))
+  (let (requires)
+    (if (memq 'riece-highlight riece-addons)
+	(setq requires (cons 'riece-highlight requires)))
+    (if (memq 'riece-guess riece-addons)
+	(setq requires (cons 'riece-guess requires)))
+    ;; riece-guess-channel-from-unread should be prior to
+    ;; riece-guess-channel-from-history.
+    (if (memq 'riece-history riece-addons)
+	(setq requires (cons 'riece-history requires)))
+    requires))
 
 (defun riece-unread-insinuate ()
   (add-hook 'riece-after-display-message-functions
-	    'riece-unread-display-message-function)
-  (add-hook 'riece-channel-switch-hook
-	    'riece-unread-channel-switch-hook)
+	    'riece-unread-after-display-message-function)
+  (add-hook 'riece-after-switch-to-channel-functions
+	    'riece-unread-after-switch-to-channel-function)
   (add-hook 'riece-update-buffer-functions
 	    'riece-unread-update-channel-list-buffer t)
   (define-key riece-command-mode-map
@@ -125,7 +136,10 @@
   (if (memq 'riece-highlight riece-addons)
       (setq riece-channel-list-mark-face-alist
 	    (cons '(?! . riece-channel-list-unread-face)
-		  riece-channel-list-mark-face-alist))))
+		  riece-channel-list-mark-face-alist)))
+  (if (memq 'riece-guess riece-addons)
+      (add-hook 'riece-guess-channel-try-functions
+		'riece-guess-channel-from-unread)))
 
 (provide 'riece-unread)
 

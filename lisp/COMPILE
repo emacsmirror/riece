@@ -50,7 +50,9 @@
 		riece-unread
 		riece-doctor
 		riece-alias
-		riece-skk-kakutei))))
+		riece-skk-kakutei
+		riece-guess
+		riece-history))))
 
 (defun riece-compile-modules (modules)
   (let ((load-path (cons nil load-path)))

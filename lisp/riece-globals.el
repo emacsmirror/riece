@@ -38,8 +38,6 @@
   "The channel you currently have joined.")
 (defvar riece-current-channels nil
   "The channels you have currently joined.")
-(defvar riece-channel-history nil
-  "List of channels user has visited.")
 
 (defvar riece-save-variables-are-dirty nil
   "Non nil if the variables in `riece-saved-forms' are changed.")

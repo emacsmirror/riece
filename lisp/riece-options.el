@@ -100,7 +100,12 @@ way is to put Riece variables on .emacs or file loaded from there."
   :type '(repeat (file :tag "Initialization File"))
   :group 'riece-options)
 
-(defcustom riece-addons '(riece-highlight riece-ctcp riece-unread)
+(defcustom riece-addons '(riece-highlight
+			  riece-ctcp
+			  riece-guess
+			  riece-unread
+			  riece-history
+			  riece-url)
   "Add-ons insinuated into Riece."
   :type '(repeat symbol)
   :group 'riece-options)
