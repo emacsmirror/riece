@@ -1,5 +1,16 @@
 2004-05-29  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-commands.el (riece-command-finger): Complete user names
+	without server-name.
+	(riece-command-invite): Ditto.
+	(riece-command-change-mode): Ditto.
+	(riece-command-enter-message-to-user): Ditto.
+
+	* riece-identity.el (riece-completing-read-identity): Add extra
+	8th arg "no-server".
+
+2004-05-29  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-server.el: Move autoload setting for 'riece-exit before
 	riece-open-server.
 

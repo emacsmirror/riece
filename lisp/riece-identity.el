@@ -160,7 +160,8 @@ The string will be expanded by
 
 (defun riece-completing-read-identity (prompt channels
 					      &optional predicate require-match
-					      initial history default)
+					      initial history default
+					      no-server)
   "Read an identity object in the minibuffer, with completion.
 PROMPT is a string to prompt with; normally it ends in a colon and a space.
 CHANNELS is a list of identity objects.
@@ -169,7 +170,7 @@ The rest of arguments are the same as `completing-read'."
 	  (completing-read
 	   prompt
 	   (mapcar (lambda (channel)
-		     (list (riece-format-identity channel)))
+		     (list (riece-format-identity channel no-server)))
 		   (delq nil (copy-sequence (or channels
 						riece-current-channels))))
 	   predicate require-match initial history default))

@@ -148,7 +148,8 @@ the layout to the selected layout-name."
    (let* ((completion-ignore-case t)
 	  (user (riece-completing-read-identity
 		 "Finger user: "
-		 (riece-get-users-on-server (riece-current-server-name)))))
+		 (riece-get-users-on-server (riece-current-server-name))
+		 nil nil nil nil nil t)))
      (list user current-prefix-arg)))
   (if recurse
       (riece-send-string (format "WHOIS %s %s\r\n"
@@ -179,7 +180,8 @@ the layout to the selected layout-name."
      (riece-check-channel-commands-are-usable t)
      (list (riece-completing-read-identity
 	    "Invite user: "
-	    (riece-get-users-on-server (riece-current-server-name))))))
+	    (riece-get-users-on-server (riece-current-server-name))
+	    nil nil nil nil nil t))))
   (riece-send-string (format "INVITE %s %s\r\n"
 			     (riece-identity-prefix user)
 			     (riece-identity-prefix riece-current-channel))))
@@ -254,7 +256,8 @@ the layout to the selected layout-name."
 	   (if current-prefix-arg
 	       (riece-completing-read-identity
 		"Change mode for channel/user: "
-		(riece-get-identities-on-server (riece-current-server-name)))
+		(riece-get-identities-on-server (riece-current-server-name))
+		nil nil nil nil nil t)
 	     (riece-check-channel-commands-are-usable t)
 	     riece-current-channel))
 	  (riece-overriding-server-name (riece-identity-server channel))
@@ -393,7 +396,8 @@ the layout to the selected layout-name."
    (let ((completion-ignore-case t))
      (list (riece-completing-read-identity
 	    "Message to user: "
-	    (riece-get-users-on-server (riece-current-server-name))))))
+	    (riece-get-users-on-server (riece-current-server-name))
+	    nil nil nil nil nil t))))
   (let ((text (buffer-substring
 	       (riece-line-beginning-position)
 	       (riece-line-end-position))))
