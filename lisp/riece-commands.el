@@ -38,7 +38,7 @@
 (defun riece-command-switch-to-channel (channel)
   (interactive (list (riece-completing-read-identity
 		      "Channel/User: " riece-current-channels nil t)))
-  (unless (equal channel riece-current-channels)
+  (unless (equal channel riece-current-channel)
     (riece-switch-to-channel channel)
     (riece-redisplay-buffers)))
 
