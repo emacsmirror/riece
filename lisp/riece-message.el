@@ -87,27 +87,26 @@
   "Make local identity for MESSAGE."
   (if (riece-message-private-p message)
       (if (riece-message-own-p message)
-	  (riece-identity-prefix (riece-message-target message))
-	(riece-identity-prefix (riece-message-speaker message)))
-    (riece-identity-prefix (riece-message-target message))))
+	  (riece-decode-identity (riece-message-target message) t)
+	(riece-decode-identity (riece-message-speaker message) t))
+    (riece-decode-identity (riece-message-speaker message) t)))
 
 (defun riece-message-make-global-name (message)
   "Make global identity for MESSAGE."
   (if (riece-message-private-p message)
       (if (riece-message-own-p message)
-	  (riece-identity-prefix (riece-message-target message))
-	(riece-identity-prefix (riece-message-speaker message)))
+	  (riece-decode-identity (riece-message-target message) t)
+	(riece-decode-identity (riece-message-speaker message) t))
     (concat (riece-decode-identity (riece-message-target message) t) ":"
-	    (riece-identity-prefix (riece-message-speaker message)))))
+	    (riece-decode-identity (riece-message-speaker message) t))))
 
 (defun riece-message-buffer (message)
   "Return the buffer where MESSAGE should appear."
-  (let* ((target (if (riece-message-private-p message)
-		     (if (riece-message-own-p message)
-			 (riece-message-target message)
-		       (riece-message-speaker message))
-		   (riece-message-target message)))
-	 (buffer (riece-channel-buffer-name target)))
+  (let ((target (if (riece-message-private-p message)
+		    (if (riece-message-own-p message)
+			(riece-message-target message)
+		      (riece-message-speaker message))
+		  (riece-message-target message))))
     (unless (riece-identity-member target riece-current-channels)
       (riece-join-channel target)
       ;; If you are not joined any channel,
@@ -115,7 +114,7 @@
       (unless riece-current-channel
 	(riece-switch-to-channel target))
       (riece-redisplay-buffers))
-    buffer))
+    (riece-channel-buffer-name target)))
 
 (defun riece-message-parent-buffers (message buffer)
   "Return the parents of BUFFER where MESSAGE should appear.
