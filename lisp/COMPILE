@@ -74,6 +74,10 @@
 		riece-yank
 		riece-toolbar))))
 
+(defvar riece-icons
+  '(riece-command-previous-channel
+    riece-command-next-channel))
+
 (defun riece-compile-modules (modules)
   (let ((load-path (cons nil load-path)))
     (while modules
@@ -105,6 +109,18 @@
 			 name)))))
     (setq modules (cdr modules))))
 
+(defun riece-install-icons (icons dest just-print)
+  (unless (or just-print (file-exists-p dest))
+    (make-directory dest t))
+  (while icons
+    (let ((name (symbol-name (car icons))))
+      (princ (format "%s.xpm -> %s\n" name dest))
+      (unless just-print
+	(copy-file (expand-file-name (concat name ".xpm"))
+		   (expand-file-name (concat name ".xpm") dest)
+		   t t)))
+    (setq icons (cdr icons))))
+
 (defun riece-install-just-print-p ()
   (let ((flag (getenv "MAKEFLAGS"))
 	case-fold-search)
@@ -117,6 +133,10 @@
 (defun riece-install ()
   (riece-install-modules
    riece-modules
+   (expand-file-name "riece" (car command-line-args-left))
+   (riece-install-just-print-p))
+  (riece-install-icons
+   riece-icons
    (expand-file-name "riece" (car command-line-args-left))
    (riece-install-just-print-p)))
 
@@ -134,6 +154,11 @@
   (riece-install-modules
    (append riece-modules
 	   '(auto-autoloads custom-load))
+   (expand-file-name "riece"
+		     (expand-file-name "lisp" (car command-line-args-left)))
+   (riece-install-just-print-p))
+  (riece-install-icons
+   riece-icons
    (expand-file-name "riece"
 		     (expand-file-name "lisp" (car command-line-args-left)))
    (riece-install-just-print-p)))

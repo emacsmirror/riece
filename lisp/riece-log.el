@@ -223,7 +223,8 @@ If LINES is t, insert today's logs entirely."
 	(put-text-property (1+ (match-beginning 1)) (1- (match-end 1))
 			   'riece-identity
 			   (riece-make-identity
-			    (riece-match-string-no-properties 1)
+			    (buffer-substring (1+ (match-beginning 1))
+					      (1- (match-end 1)))
 			    (riece-identity-server identity))))
       (run-hook-with-args 'riece-after-insert-functions
 			  point (goto-char (point-max)))
