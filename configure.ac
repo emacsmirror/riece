@@ -1,6 +1,6 @@
 AC_INIT(configure.ac)
 AC_PREREQ(2.50)
-AM_INIT_AUTOMAKE(riece, 0.0.1)
+AM_INIT_AUTOMAKE(riece, 0.0.2)
 
 AC_PROG_CC
 AC_ISC_POSIX

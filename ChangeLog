@@ -1,5 +1,8 @@
 2003-05-30  Daiki Ueno  <ueno@unixuser.org>
 
+	* Riece: Version 0.0.2 released.
+	* configure.ac: Bump up version to 0.0.2.
+
 	* INSTALL-CVS: New file.
 	* Makefile.am (EXTRA_DIST): Add INSTALL-CVS.
 
