@@ -275,7 +275,9 @@ If LINES is t, insert today's logs entirely."
 			(delete-directory riece-log-lock-directory)
 		      (error))))
 	(setq riece-log-enabled t))
-    (error)))
+    (error
+     (if riece-debug
+	 (message "Can't create lock directory for riece-log")))))
 
 (defun riece-log-disable ()
   (define-key riece-command-mode-map "\C-cd" nil)

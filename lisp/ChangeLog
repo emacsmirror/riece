@@ -1,3 +1,7 @@
+2005-02-04  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-log.el (riece-log-enable): Add debug message.
+
 2005-02-04  OHASHI Akira  <bg66@koka-in.org>
 
 	* riece-biff.el (riece-biff-functions): Abolish.
