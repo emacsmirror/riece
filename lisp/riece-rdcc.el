@@ -291,10 +291,11 @@ puts(\"#{" address " >> 24 & 0xFF}.#{" address " >> 16 & 0xFF}.#{"
 	      (cons (list user file address port size)
 		    riece-rdcc-requests))
 	(message "%s"
-		 (substitute-command-keys
-		  (format
-		   "DCC SEND from %s, \\[riece-command-dcc-receive] to receive"
-		   user)))
+		 (with-current-buffer (window-buffer (selected-window))
+		   (substitute-command-keys
+		    (format
+		     "Type \\[riece-command-dcc-receive] to receive"
+		     user))))
 	(riece-insert-change buffer (format "DCC SEND from %s: %s (%s)\n"
 					    user file
 					    (riece-rdcc-format-size size)))
