@@ -161,7 +161,6 @@
 	 (message (nth 1 parameters))
 	 (user-identity (riece-make-identity user riece-server-name)))
     (while channels
-      (riece-naming-assert-part user (car channels))
       (let* ((channel-identity (riece-make-identity (car channels)
 						    riece-server-name))
 	     (buffer (riece-channel-buffer channel-identity)))
@@ -187,6 +186,7 @@
 		    (riece-format-identity channel-identity t))
 	    message))
 	  "\n")))
+      (riece-naming-assert-part user (car channels))
       (setq channels (cdr channels)))))
 
 (defun riece-handle-kick-message (prefix string)

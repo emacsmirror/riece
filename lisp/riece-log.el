@@ -55,7 +55,8 @@
   "*If non-nil, irc messages flash back from log files.
 If integer, flash back only this line numbers. t means all lines."
   :type '(choice (integer :tag "line numbers")
-		 (boolean :tag "flash back or not"))
+		 (const t :tag "of the day")
+		 (const nil :tag "no flashback"))
   :group 'riece-log)
 
 (defcustom riece-log-coding-system nil
@@ -74,6 +75,19 @@ If integer, flash back only this line numbers. t means all lines."
   "*Function for opening a directory."
   :type 'function
   :group 'riece-log)
+
+(defface riece-log-date-face
+  '((((class color)
+      (background dark))
+     (:foreground "Gray70"))
+    (((class color)
+      (background light))
+     (:foreground "DimGray"))
+    (t
+     (:bold t)))
+  "Face used for displaying \"(YYYY/MM/dd)\" extent."
+  :group 'riece-highlight-faces)
+(defvar riece-log-date-face 'riece-log-date-face)
 
 (defvar riece-log-enabled nil)
 
@@ -163,30 +177,40 @@ If LINES is t, insert today's logs entirely."
 	    (insert-file-contents file)))
     (let ((files (riece-log-get-files identity))
 	  (lines (- lines))
-	  date point)
+	  name date point)
       (while (and (< lines 0) files)
 	(if (and (file-exists-p (car files))
-		 (string-match (concat "\\([0-9][0-9][0-9][0-9]\\)"
-				       "\\([0-9][0-9]\\)\\([0-9][0-9]\\).txt$")
-			       (car files)))
+		 (string-match (concat (riece-make-interval-regexp "[0-9]" 8)
+				       "\\.txt$")
+			       (setq name (file-name-nondirectory
+					   (car files)))))
 	    (save-restriction
 	      (narrow-to-region (point) (point))
-	      (setq date (concat " (" (match-string 1 (car files)) "/"
-				 (match-string 2 (car files)) "/"
-				 (match-string 3 (car files)) ")"))
 	      (insert-file-contents (car files))
 	      (goto-char (point-max))
 	      (setq lines (forward-line lines))
 	      (delete-region (point-min) (point))
-	      (while (not (eobp))
-		(end-of-line)
-		(insert date)
-		(forward-line))
-	      (goto-char (point-min))))
+	      (unless (equal name (format-time-string "%Y%m%d.txt"))
+		(setq date (concat " (" (substring name 0 4) "/"
+				   (substring name 4 6) "/"
+				   (substring name 6 8) ")"))
+		(while (not (eobp))
+		  (end-of-line)
+		  (setq point (point))
+		  (insert date)
+		  (put-text-property point (point)
+				     'riece-overlay-face 'riece-log-date-face)
+		  (forward-line))
+		(goto-char (point-min)))))
 	(setq files (cdr files))))))
 
 (defun riece-log-flashback (identity)
   (when riece-log-flashback
+    (riece-insert-info (current-buffer)
+		       (if (eq riece-log-flashback t)
+			   "Recent messages of the day:\n"
+			 (format "Recent messages up to %d lines:\n"
+				 riece-log-flashback)))
     (let (buffer-read-only
 	  (point (goto-char (point-max))))
       (insert (with-temp-buffer
@@ -200,10 +224,8 @@ If LINES is t, insert today's logs entirely."
 			   (riece-make-identity
 			    (riece-match-string-no-properties 1)
 			    (riece-identity-server identity))))
-      (when (and (memq 'riece-button riece-addons)
-		 riece-button-enabled)
-	(riece-button-update-buffer))
-      (goto-char (point-max))
+      (run-hook-with-args 'riece-after-insert-functions
+			  point (goto-char (point-max)))
       (set-window-point (get-buffer-window (current-buffer))
 			(point)))))
 

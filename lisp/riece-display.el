@@ -474,7 +474,8 @@ Local to the buffer in `riece-buffer-list'.")
     (if pointer
 	(setcar pointer nil))
     (if (riece-identity-equal identity riece-current-channel)
-	(riece-switch-to-nearest-channel pointer))))
+	(riece-switch-to-nearest-channel pointer))
+    (funcall riece-buffer-dispose-function (riece-channel-buffer identity))))
 
 (defun riece-redisplay-buffers (&optional force)
   (riece-update-buffers)

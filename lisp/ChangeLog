@@ -1,5 +1,19 @@
 2004-12-08  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-log.el (riece-log-flashback): Fixed custom spec.
+	(riece-log-date-face): New face.
+	(riece-log-insert): Don't append date string to the end of log
+	lines if they arrived today.
+	(riece-log-flashback): Insert "Recent messages ...:"; call
+	riece-after-insert-functions.
+
+	* riece-handle.el (riece-handle-part-message): Call riece-naming
+	assert-part after inserting changes in channel buffers.
+	* riece-display.el (riece-part-channel): Call
+	riece-buffer-dispose-function on parted channel buffer.
+
+2004-12-08  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-log.el (riece-log-display-message-function): Suppress
 	further file-name encoding.
 
