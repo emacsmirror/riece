@@ -536,11 +536,13 @@ Instead, these commands are available:
 	  (funcall (nth 2 (car alist))))
 	(setq alist (cdr alist))))))
 
-(defun riece-submit-bug-report (&optional recent-keys)
+(defun riece-submit-bug-report (&optional recent-messages recent-keys)
   "Submit via mail a bug report on Riece."
   ;; This strange form ensures that (recent-keys) is the value before
   ;; the bug subject string is read.
-  (interactive (list (recent-keys)))
+  (interactive (list (with-output-to-string
+		       (print-recent-messages 20))
+		     (recent-keys)))
   (require 'reporter)
   (let ((reporter-prompt-for-summary-p t))
     (when (y-or-n-p "Do you want to submit a report on Riece? ")
@@ -607,10 +609,8 @@ are familiar with the debugger, to get a lisp back-trace.")
 	    (insert "\n"))))
 	;; Insert recent minibuffer messages.
 	(insert "\nRecent messages (most recent first):\n"
-		"-----------------------------------\n")
-	(let ((standard-output (current-buffer)))
-	(print-recent-messages 20)
-	(insert "\n"))))))
+		"-----------------------------------\n"
+		recent-messages)))))
 
 (provide 'riece)
 
