@@ -55,7 +55,8 @@ string, be sure to use a valid format, see RFC 2616."
   "Version string for this version of Riece.")
 
 (eval-when-compile
-  (defvar xemacs-codename))
+  (defvar xemacs-codename)
+  (defvar sxemacs-codename))
 
 (defun riece-extended-version ()
   "Stringified Riece version and Emacs version.
@@ -79,22 +80,20 @@ See the variable `riece-user-agent'."
 		    (if system-v
 			(concat " (" system-v ")")
 		      "")))
-	   ((string-match
-	     "\\([A-Z]*[Mm][Aa][Cc][Ss]\\)[^(]*\\(\\((beta.*)\\|'\\)\\)?"
-	     emacs-version)
-	    (concat
-	     (match-string 1 emacs-version)
-	     (format "/%d.%d" emacs-major-version emacs-minor-version)
-	     (if (match-beginning 3)
-		 (match-string 3 emacs-version)
-	       "")
-	     (if (boundp 'xemacs-codename)
-		 (concat
-		  " (" xemacs-codename
-		  (if system-v
-		      (concat ", " system-v ")")
-		    ")"))
-	       "")))
+	   ((featurep 'sxemacs)
+	    (concat "SXEmacs/" emacs-program-version
+		    (when system-v
+		      (concat " ("
+			      (when sxemacs-codename
+				(concat sxemacs-codename ", "))
+			      system-v ")"))))
+	   ((featurep 'xemacs)
+	    (concat "XEmacs/" emacs-program-version
+		    (when system-v
+		      (concat " ("
+			      (when xemacs-codename
+				(concat xemacs-codename ", "))
+			      system-v ")"))))
 	   (t emacs-version))))
     (if (stringp riece-user-agent)
 	riece-user-agent

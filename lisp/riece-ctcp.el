@@ -179,6 +179,28 @@
      (concat (riece-concat-server-name (concat riece-ctcp-action-prefix user
 					       " " string)) "\n"))))
 
+(defun riece-handle-ctcp-time-request (prefix target string)
+  (let* ((target-identity (riece-make-identity target riece-server-name))
+	 (buffer (if (riece-channel-p target)
+		     (riece-channel-buffer target-identity)))
+	 (user (riece-prefix-nickname prefix))
+	 (time (format-time-string "%c")))
+    (riece-send-string
+     (format "NOTICE %s :\1TIME %s\1\r\n" user time))
+    (riece-insert-change buffer (format "CTCP TIME from %s\n" user))
+    (riece-insert-change
+     (if (and riece-channel-buffer-mode
+	      (not (eq buffer riece-channel-buffer)))
+	 (list riece-dialogue-buffer riece-others-buffer)
+       riece-dialogue-buffer)
+     (concat
+      (riece-concat-server-name
+       (format "CTCP TIME from %s (%s) to %s"
+	       user
+	       (riece-strip-user-at-host (riece-prefix-user-at-host prefix))
+	       (riece-format-identity target-identity t)))
+      "\n"))))
+
 (defun riece-handle-ctcp-response (prefix string)
   (when (and riece-ctcp-enabled prefix string
 	     (riece-prefix-nickname prefix))
@@ -238,6 +260,17 @@
    (concat
     (riece-concat-server-name
      (format "CTCP CLIENTINFO for %s (%s) = %s"
+	     (riece-prefix-nickname prefix)
+	     (riece-strip-user-at-host (riece-prefix-user-at-host prefix))
+	     string))
+    "\n")))
+
+(defun riece-handle-ctcp-time-response (prefix target string)
+  (riece-insert-change
+   (list riece-dialogue-buffer riece-others-buffer)
+   (concat
+    (riece-concat-server-name
+     (format "CTCP TIME for %s (%s) = %s"
 	     (riece-prefix-nickname prefix)
 	     (riece-strip-user-at-host (riece-prefix-user-at-host prefix))
 	     string))
@@ -307,6 +340,14 @@
 		 " (in " (riece-format-identity target t) ")")))
       "\n"))))
 
+(defun riece-command-ctcp-time (target)
+  (interactive
+   (list (riece-completing-read-identity
+	  "Channel/User: "
+	  (riece-get-identities-on-server (riece-current-server-name)))))
+  (riece-send-string (format "PRIVMSG %s :\1TIME\1\r\n"
+			     (riece-identity-prefix target))))
+
 (defun riece-ctcp-requires ()
   (if (memq 'riece-highlight riece-addons)
       '(riece-highlight)))
@@ -327,6 +368,7 @@
   (define-key riece-dialogue-mode-map "\C-cp" 'riece-command-ctcp-ping)
   (define-key riece-dialogue-mode-map "\C-ca" 'riece-command-ctcp-action)
   (define-key riece-dialogue-mode-map "\C-cc" 'riece-command-ctcp-clientinfo)
+  (define-key riece-dialogue-mode-map "\C-ct" 'riece-command-ctcp-time)
   (setq riece-ctcp-enabled t))
 
 (defun riece-ctcp-disable ()
@@ -334,6 +376,7 @@
   (define-key riece-dialogue-mode-map "\C-cp" nil)
   (define-key riece-dialogue-mode-map "\C-ca" nil)
   (define-key riece-dialogue-mode-map "\C-cc" nil)
+  (define-key riece-dialogue-mode-map "\C-ct" nil)
   (setq riece-ctcp-enabled nil))
 
 (provide 'riece-ctcp)

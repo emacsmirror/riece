@@ -1,3 +1,18 @@
+2005-02-18  Steve Youngs  <steve@sxemacs.org>
+
+	* riece-ctcp.el (riece-handle-ctcp-time-request): New.
+	(riece-handle-ctcp-time-response): New.
+	(riece-command-ctcp-time): New.
+	(riece-ctcp-enable): Add `riece-command-ctcp-time'.
+	(riece-ctcp-disable): Ditto.
+	
+	* riece-layout.el (riece-layout-alist): Minor doc string fix --
+	escape a couple of parens.
+	
+	* riece-version.el: defvar sxemacs-codename at compile time.
+	(riece-extended-version): Simplify the XEmacs section, add support
+	for SXEmacs.
+
 2005-02-17  TAKAHASHI Kaoru  <kaoru@kaisei.org>
 
 	* riece-addon.el (riece-resolve-addons): Fixed

@@ -49,8 +49,8 @@
   "An alist mapping the names to layout functions.
 An element of this alist is either in the following forms:
 
-(NAME CONFIGURE-FUNCTION [PARAMETERS])
-(NAME1 . NAME2)
+\(NAME CONFIGURE-FUNCTION [PARAMETERS]\)
+\(NAME1 . NAME2\)
 
 In the first form, NAME is a string which specifies the layout
 setting, and CONFIGURE-FUNCTION is a function which does window
