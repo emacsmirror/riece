@@ -32,15 +32,32 @@
 
 (require 'doctor)
 
+(defgroup riece-doctor nil
+  "Interface to doctor.el"
+  :prefix "riece-"
+  :group 'riece)
+
+(defcustom riece-doctor-hello-regexp "^, doctor"
+  "Pattern of string patients start consultation."
+  :type 'string
+  :group 'riece-doctor)
+
+(defcustom riece-doctor-bye-regexp "^, bye doctor"
+  "Pattern of string patients end consultation."
+  :type 'string
+  :group 'riece-doctor)
+
 (defvar riece-doctor-patients nil)
 
 (defun riece-doctor-buffer-name (user)
   (concat " *riece-doctor*" (riece-decode-identity user)))
 
 (defun riece-doctor-reply (target string)
-  (riece-own-channel-message string
-			     (riece-make-identity target riece-server-name)
-			     'notice)
+  (riece-display-message
+   (riece-make-message (riece-make-identity riece-real-nickname
+					    riece-server-name)
+		       (riece-make-identity target riece-server-name)
+		       string 'notice t))
   (riece-send-string (format "NOTICE %s :%s\r\n" target string)))
 
 (defun riece-doctor-after-privmsg-hook (prefix string)
@@ -49,7 +66,7 @@
 	 (parameters (riece-split-parameters string))
 	 (targets (split-string (car parameters) ","))
 	 (message (nth 1 parameters)))
-    (if (string-match "^, doctor" message)
+    (if (string-match riece-doctor-hello-regexp message)
 	(if (riece-identity-member user riece-doctor-patients)
 	    (riece-doctor-reply
 	     (car targets)
@@ -62,7 +79,7 @@
 	  (riece-doctor-reply
 	   (car targets)	   
 	   "I am the psychotherapist.  Please, describe your problems."))
-      (if (string-match "^, bye doctor" message)
+      (if (string-match riece-doctor-bye-regexp message)
 	  (let ((pointer (riece-identity-member user riece-doctor-patients)))
 	    (when pointer
 	      (kill-buffer (riece-doctor-buffer-name user))

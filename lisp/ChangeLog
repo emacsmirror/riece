@@ -1,3 +1,15 @@
+2003-06-12  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-message.el (riece-own-channel-message): Abolish.
+
+	* riece-commands.el (riece-command-send-message): Don't use
+	riece-own-channel-message.
+
+	* riece-doctor.el (riece-doctor-reply): Don't use
+	riece-own-channel-message.
+	(riece-doctor-hello-regexp): New user option.
+	(riece-doctor-bye-regexp): New user option.
+
 2003-06-11  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-identity.el (riece-identity-member-no-server): Abolish.

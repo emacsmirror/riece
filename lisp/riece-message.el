@@ -119,22 +119,24 @@
 (defun riece-message-parent-buffers (message buffer)
   "Return the parents of BUFFER where MESSAGE should appear.
 Normally they are *Dialogue* and/or *Others*."
-  (if (riece-message-own-p message)
-      riece-dialogue-buffer
-    (if (and buffer (riece-frozen buffer)) ;the message might not be
-					   ;visible in buffer's window
-	(list riece-dialogue-buffer riece-others-buffer)
-      (if (and riece-current-channel	;the message is not sent to
+  (if (and buffer (riece-frozen buffer)) ;the message might not be
+					 ;visible in buffer's window
+      (list riece-dialogue-buffer riece-others-buffer)
+    (if (and riece-current-channel	;the message is not sent to
 					;the current channel
-	       (if (riece-message-private-p message)
+	     (if (riece-message-private-p message)
+		 (if (riece-message-own-p message)
+		     (not (riece-identity-equal
+			   (riece-message-target message)
+			   riece-current-channel))
 		   (not (riece-identity-equal
 			 (riece-message-speaker message)
-			 riece-current-channel))
-		 (not (riece-identity-equal
-		       (riece-message-target message)
-		       riece-current-channel))))
-	  (list riece-dialogue-buffer riece-others-buffer)
-	riece-dialogue-buffer))))
+			 riece-current-channel)))
+	       (not (riece-identity-equal
+		     (riece-message-target message)
+		     riece-current-channel))))
+	(list riece-dialogue-buffer riece-others-buffer)
+      riece-dialogue-buffer)))
 
 (defun riece-display-message (message)
   "Display MESSAGE object."
@@ -216,13 +218,6 @@ Currently possible values are `action' and `notice'."
 	     (lambda (user)
 	       (riece-make-identity user riece-server-name))
 	     (riece-channel-get-users (riece-identity-prefix target))))))))
-
-(defun riece-own-channel-message (message &optional channel type)
-  "Display MESSAGE as you sent to CHNL."
-  (riece-display-message
-   (riece-make-message (riece-current-nickname)
-		       (or channel riece-current-channel)
-		       message type t)))
 
 (provide 'riece-message)
 

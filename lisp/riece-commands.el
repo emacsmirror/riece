@@ -356,12 +356,16 @@
 	 (format "NOTICE %s :%s\r\n"
 		 (riece-identity-prefix riece-current-channel)
 		 message))
-	(riece-own-channel-message message riece-current-channel 'notice))
+	(riece-display-message
+	 (riece-make-message (riece-current-nickname) riece-current-channel
+			     message 'notice t)))
     (riece-send-string
      (format "PRIVMSG %s :%s\r\n"
 	     (riece-identity-prefix riece-current-channel)
 	     message))
-    (riece-own-channel-message message)))
+    (riece-display-message
+     (riece-make-message (riece-current-nickname) riece-current-channel
+			 message nil t))))
 
 (defun riece-command-enter-message ()
   "Send the current line to the current channel."
