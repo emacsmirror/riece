@@ -65,7 +65,7 @@
 	(run-hook-with-args-until-success after-hook prefix string)))))
 
 (defun riece-chomp-string (string)
-  (if (string-match "\r?\n\\'" string)
+  (if (string-match "\r\\'" string)
       (substring string 0 (match-beginning 0))
     string))
 
@@ -84,13 +84,13 @@
 		(looking-at ".*\n"))	;the input line is not finished
       (save-excursion
 	(if (looking-at
-	     ":\\([^ ]+\\) +\\([0-5][0-9][0-9]\\) +\\([^ ]+\\) +\\(.*\\)\n")
+	     ":\\([^ ]+\\) +\\([0-5][0-9][0-9]\\) +\\([^ ]+\\) +\\(.*\\)")
 	    (riece-handle-numeric-reply
 	     (match-string 1)		;prefix
 	     (string-to-number (match-string 2)) ;number
 	     (match-string 3)		;name
 	     (riece-chomp-string (match-string 4)))		;reply string
-	  (if (looking-at "\\(:\\([^ ]+\\) +\\)?\\([^ ]+\\) +\\(.*\\)\n")
+	  (if (looking-at "\\(:\\([^ ]+\\) +\\)?\\([^ ]+\\) +\\(.*\\)")
 	      (riece-handle-message
 	       (match-string 2)		;optional prefix
 	       (match-string 3)		;command
