@@ -1,3 +1,8 @@
+2003-10-27  OHASHI Akira  <bg66@koka-in.org>
+
+	* riece-log.el (riece-log-get-directory): Fix for server name and
+	private messages handling.
+
 2003-10-26  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-xemacs.el (riece-run-with-idle-timer): Pass an integer to

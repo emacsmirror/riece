@@ -77,24 +77,21 @@ If integer, flash back only this line numbers. t means all lines."
    (riece-log-get-directory identity)))
 
 (defun riece-log-get-directory (identity)
-  (let ((channel (riece-identity-prefix identity))
-	(server (riece-identity-server identity)))
-    (let ((map (assoc channel riece-log-directory-map)))
-      (if map
-	  (expand-file-name (cdr map) riece-log-directory)
-	(if (string-match riece-channel-regexp channel)
-	    (let ((name (substring channel
-				   (match-end 1) (match-beginning 2)))
-		  (suffix (match-string 2 channel)))
-	      (when (and (stringp suffix)
-			 (string-match "^:\\*\\.\\(.*\\)" suffix))
-		(setq name (concat name "-" (match-string 1 suffix))))
-	      (if server
-		  (expand-file-name
-		   name
-		   (expand-file-name server riece-log-directory))
-		(expand-file-name name riece-log-directory)))
-	  riece-log-directory)))))
+  (let* ((channel (riece-identity-prefix identity))
+	 (server (riece-identity-server identity))
+	 (map (assoc channel riece-log-directory-map))
+	 name)
+    (cond (map (setq name (cdr map)))
+	  ((string-match riece-channel-regexp channel)
+	   (let ((suffix (match-string 2 channel)))
+	     (setq name (substring channel (match-end 1) (match-beginning 2)))
+	     (when (and (stringp suffix)
+			(string-match "^:\\*\\.\\(.*\\)" suffix))
+	       (setq name (concat name "-" (match-string 1 suffix))))))
+	  (t (setq name "priv")))
+    (if server
+	(expand-file-name name (expand-file-name server riece-log-directory))
+      (expand-file-name name riece-log-directory))))
 
 (defun riece-log-flashback (identity)
   (when riece-log-flashback
