@@ -48,6 +48,11 @@
   :type 'boolean
   :group 'riece-options)
 
+(defcustom riece-command-prefix "\C-c"
+  "Key sequence to be used as prefix for command mode key bindings."
+  :type 'string
+  :group 'riece-options)
+
 (defgroup riece-looks nil
   "Related to look and feel"
   :prefix "riece-"
@@ -63,12 +68,7 @@
   :type 'boolean
   :group 'riece-looks)
 
-(defcustom riece-tab-stop-list '(2 4 6 8 10 12 14 16)
-  "To override `tab-stop-list'."
-  :type '(repeat integer)
-  :group 'riece-looks)
-
-(defcustom riece-directory "~/.riece"
+(defcustom riece-directory (expand-file-name "~/.riece")
   "Where to look for data files."
   :type 'directory
   :group 'riece-options)

@@ -58,7 +58,7 @@
     (riece-user-list-buffer " *Users*" riece-user-list-mode)))
 
 (defvar riece-select-keys
-  '("1" riece-command-switch-to-channel-by-number-1
+  `("1" riece-command-switch-to-channel-by-number-1
     "2" riece-command-switch-to-channel-by-number-2
     "3" riece-command-switch-to-channel-by-number-3
     "4" riece-command-switch-to-channel-by-number-4
@@ -68,16 +68,26 @@
     "8" riece-command-switch-to-channel-by-number-8
     "9" riece-command-switch-to-channel-by-number-9
     "0" riece-command-switch-to-channel-by-number-10
-    "\C-c1" riece-command-switch-to-channel-by-number-11
-    "\C-c2" riece-command-switch-to-channel-by-number-12
-    "\C-c3" riece-command-switch-to-channel-by-number-13
-    "\C-c4" riece-command-switch-to-channel-by-number-14
-    "\C-c5" riece-command-switch-to-channel-by-number-15
-    "\C-c6" riece-command-switch-to-channel-by-number-16
-    "\C-c7" riece-command-switch-to-channel-by-number-17
-    "\C-c8" riece-command-switch-to-channel-by-number-18
-    "\C-c9" riece-command-switch-to-channel-by-number-19
-    "\C-c0" riece-command-switch-to-channel-by-number-20))
+    ,(concat riece-command-prefix "1")
+    riece-command-switch-to-channel-by-number-11
+    ,(concat riece-command-prefix "2")
+    riece-command-switch-to-channel-by-number-12
+    ,(concat riece-command-prefix "3")
+    riece-command-switch-to-channel-by-number-13
+    ,(concat riece-command-prefix "4")
+    riece-command-switch-to-channel-by-number-14
+    ,(concat riece-command-prefix "5")
+    riece-command-switch-to-channel-by-number-15
+    ,(concat riece-command-prefix "6")
+    riece-command-switch-to-channel-by-number-16
+    ,(concat riece-command-prefix "7")
+    riece-command-switch-to-channel-by-number-17
+    ,(concat riece-command-prefix "8")
+    riece-command-switch-to-channel-by-number-18
+    ,(concat riece-command-prefix "9")
+    riece-command-switch-to-channel-by-number-19
+    ,(concat riece-command-prefix "0")
+    riece-command-switch-to-channel-by-number-20))
 
 ;;; Keymap macros. -- borrowed from `gnus-util.el'.
 (defmacro riece-local-set-keys (&rest plist)
@@ -108,7 +118,11 @@ If optional argument SAFE is nil, overwrite previous definitions."
    ((listp keymap)
     (set (car keymap) nil)
     (define-prefix-command (car keymap))
-    (define-key (symbol-value (nth 2 keymap)) (nth 1 keymap) (car keymap))
+    (define-key (symbol-value (nth 2 keymap))
+      (if (symbolp (nth 1 keymap))
+	  (symbol-value (nth 1 keymap))
+	(nth 1 keymap))
+      (car keymap))
     (setq keymap (symbol-value (car keymap)))))
   (let (key)
     (while plist
@@ -162,7 +176,8 @@ If optional argument SAFE is nil, overwrite previous definitions."
     "\r" riece-command-enter-message
     [(control return)] riece-command-enter-message-as-notice)
 
-  (riece-define-keys (riece-command-map "\C-c" riece-command-mode-map)
+  (riece-define-keys (riece-command-map riece-command-prefix
+					riece-command-mode-map)
     "\177" riece-command-scroll-down
     [delete] riece-command-scroll-down
     [backspace] riece-command-scroll-down
@@ -318,7 +333,6 @@ Instead, these commands are available:
 \\{riece-dialogue-mode-map}"
   (kill-all-local-variables)
   (make-local-variable 'riece-freeze)
-  (make-local-variable 'tab-stop-list)
   (setq riece-freeze riece-default-freeze
 	riece-away-indicator "-"
 	riece-operator-indicator "-"
@@ -332,8 +346,7 @@ Instead, these commands are available:
 	   riece-freeze-indicator
 	   " "
 	   riece-channel-list-indicator " "))
-	buffer-read-only t
-	tab-stop-list riece-tab-stop-list)
+	buffer-read-only t)
   (riece-simplify-mode-line-format)
   (use-local-map riece-dialogue-mode-map)
   (buffer-disable-undo)
