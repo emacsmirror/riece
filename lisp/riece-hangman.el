@@ -217,7 +217,8 @@ The wordlist is read from `riece-hangman-words-file'."
 			  (riece-hangman-reply-with-context user (car targets)
 							    (cdr pointer))
 			(riece-hangman-reply (car targets)
-					     (format "%s: You got it!" user))
+					     (format "%s: You got it! (%s)"
+						     user word))
 			(setq riece-hangman-player-context-alist
 			      (delq
 			       pointer
@@ -227,6 +228,7 @@ The wordlist is read from `riece-hangman-words-file'."
   (add-hook 'riece-after-privmsg-hook 'riece-hangman-after-privmsg-hook))
 
 (defun riece-hangman-enable ()
+  (random t)
   (setq riece-hangman-enabled t))
 
 (defun riece-hangman-disable ()
