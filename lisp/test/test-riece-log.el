@@ -23,10 +23,10 @@
   (make-directory riece-log-directory)
   (make-directory test-riece-log-directory)
   (write-region "03:14 <test> a b c\n03:15 <test> a b c\n" nil
-		(expand-file-name "20380119.log" test-riece-log-directory)
+		(expand-file-name "20380119.txt" test-riece-log-directory)
 		t 0)
   (write-region "03:14 <test> 1 2 3\n" nil
-		(expand-file-name "20380118.log" test-riece-log-directory)
+		(expand-file-name "20380118.txt" test-riece-log-directory)
 		t 0))
 
 (luna-define-method lunit-test-case-teardown ((case test-riece-log))
