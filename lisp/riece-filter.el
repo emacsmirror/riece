@@ -141,18 +141,15 @@
 	(setq riece-reconnect-with-password nil))
     (let ((server-name (with-current-buffer (process-buffer process)
 			 riece-server-name)))
-      (if (and (process-id process)		;not a network connection
-	       (string-match "^exited abnormally with code \\([0-9]+\\)"
-			     status))
+      (if riece-debug
 	  (if (equal server-name "")
-	      (message "Connection closed: %s" (match-string 1 status))
+	      (message "Connection closed: %s"
+		       (substring status 0 (1- (length status))))
 	    (message "Connection to \"%s\" closed: %s"
-		     server-name (match-string 1 status)))
+		     server-name (substring status 0 (1- (length status)))))
 	(if (equal server-name "")
-	    (message "Connection closed: %s"
-		   (substring status 0 (1- (length status))))
-	  (message "Connection to \"%s\" closed: %s"
-		   server-name (substring status 0 (1- (length status))))))
+	    (message "Connection closed")
+	  (message "Connection to \"%s\" closed" server-name)))
       (let ((channels riece-current-channels))
 	(while channels
 	  (if (and (car channels)

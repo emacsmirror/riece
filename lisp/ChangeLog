@@ -1,5 +1,10 @@
 2003-08-26  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-filter.el (riece-sentinel): Suppress status message when
+	riece-debug is nil.
+
+2003-08-26  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-highlight.el (riece-channel-list-mark-current-channel):
 	New function.
 
