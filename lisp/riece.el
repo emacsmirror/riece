@@ -53,7 +53,7 @@
 (put 'riece-channel-mode 'derived-mode-parent 'riece-dialogue-mode)
 
 (defvar riece-buffer-alist
-  '((riece-command-buffer "*Commands*" riece-command-mode)
+  '((riece-command-buffer "*Command*" riece-command-mode)
     (riece-dialogue-buffer "*Dialogue*" riece-dialogue-mode)
     (riece-others-buffer "*Others*" riece-others-mode)
     (riece-channel-list-buffer "*Channels*" riece-channel-list-mode)
@@ -346,7 +346,7 @@ For a list of the generic commands type \\[riece-command-generic] ? RET.
   (setq riece-away-indicator "-"
 	riece-operator-indicator "-"
 	major-mode 'riece-command-mode
-	mode-name "Commands"
+	mode-name "Command"
 	mode-line-buffer-identification
 	(riece-mode-line-buffer-identification
 	 '("Riece: "
