@@ -1,3 +1,18 @@
+2003-08-26  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-unread.el: Require 'riece-highlight when compiling.
+	(riece-unread): New custom group.
+	(riece-channel-list-unread-face): New variable.
+	(riece-channel-list-unread-face): New face.
+	(riece-unread-requires): New function.
+	(riece-unread-insinuate): Add ?! to riece-channel-list-mark-face-alist.
+
+	* riece-highlight.el: Highlight *Channels* buffer; rename
+	riece-*-face -> riece-dialogue-*-face, riece-highlight-* ->
+	riece-dialogue-*.
+	(riece-channel-list-font-lock-keywords): New variable.
+	(riece-channel-list-mark-face-alist): New variable.
+
 2003-08-25  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-unread.el (riece-unread-update-channel-list-buffer):

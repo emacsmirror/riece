@@ -34,6 +34,31 @@
 (require 'riece-message)
 (require 'riece-commands)
 
+(eval-when-compile (require 'riece-highlight))
+
+(defgroup riece-unread nil
+  "Mark unread channels"
+  :tag "Unread"
+  :prefix "riece-"
+  :group 'riece)
+
+(defcustom riece-channel-list-unread-face 'riece-channel-list-unread-face
+  "Face used for displaying unread channels."
+  :type 'face
+  :group 'riece-highlight-faces)
+
+(defface riece-channel-list-unread-face
+  '((((class color)
+      (background dark))
+     (:foreground "pink"))
+    (((class color)
+      (background light))
+     (:foreground "firebrick"))
+    (t
+     ()))
+  "Face used for displaying unread channels."
+  :group 'riece-highlight-faces)
+
 (defvar riece-unread-channels nil)
 
 (defun riece-unread-display-message-function (message)
@@ -80,6 +105,10 @@
 (defvar riece-dialogue-mode-map)
 (defvar riece-channel-list-mode-map)
 
+(defun riece-unread-requires ()
+  (if (memq 'riece-highlight riece-addons)
+      '(riece-highlight)))
+
 (defun riece-unread-insinuate ()
   (add-hook 'riece-after-display-message-functions
 	    'riece-unread-display-message-function)
@@ -92,7 +121,11 @@
   (define-key riece-dialogue-mode-map
     "u" 'riece-unread-switch-to-channel)
   (define-key riece-channel-list-mode-map
-    "u" 'riece-unread-switch-to-channel))
+    "u" 'riece-unread-switch-to-channel)
+  (if (memq 'riece-highlight riece-addons)
+      (setq riece-channel-list-mark-face-alist
+	    (cons '(?! . riece-channel-list-unread-face)
+		  riece-channel-list-mark-face-alist))))
 
 (provide 'riece-unread)
 
