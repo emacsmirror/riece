@@ -24,28 +24,22 @@
 
 ;;; Code:
 
-(defvar riece-debug-standard-output
-  (make-string 4096 ?\x0))
+(defvar riece-debug-standard-output-buffer nil)
 
-(defvar riece-debug-standard-output-index 0)
-
-(defun riece-debug-standard-output (character)
-  (let ((length (length riece-debug-standard-output)))
-    (if (= riece-debug-standard-output-index length)
-	(setq riece-debug-standard-output
-	      (concat riece-debug-standard-output
-		      (make-string length ?\x0))))
-    (aset riece-debug-standard-output
-	  riece-debug-standard-output-index
-	  character)
-    (setq riece-debug-standard-output-index
-	  (1+ riece-debug-standard-output-index))))
+(defun riece-debug-reset-standard-output ()
+  (unless riece-debug-standard-output-buffer
+    (setq riece-debug-standard-output-buffer
+	  (generate-new-buffer " *riece-debug-standard-output*")))
+  (save-excursion
+    (set-buffer riece-debug-standard-output-buffer)
+    (buffer-disable-undo)
+    (erase-buffer)))
 
 (defmacro riece-debug-with-backtrace (&rest body)
   `(unwind-protect
        (progn ,@body)
-     (setq riece-debug-standard-output-index 0)
-     (let ((standard-output #'riece-debug-standard-output))
+     (riece-debug-reset-standard-output)
+     (let ((standard-output riece-debug-standard-output-buffer))
        (backtrace))))
 
 (put 'riece-debug-with-backtrace 'lisp-indent-function 0)
@@ -58,11 +52,11 @@
 	 ,@body)
      (error
       (if riece-debug
-	  (let ((backtrace (substring riece-debug-standard-output
-				      0 riece-debug-standard-output-index)))
-	    (if (string-match "^  signal(" backtrace)
-		(setq backtrace (substring backtrace 0 (match-beginning 0))))
-	    (message "Error in `%s': %S\n%s" ,location error backtrace)))
+	  (save-excursion
+	    (set-buffer riece-debug-standard-output-buffer)
+	    (if (re-search-forward "^  signal(" nil t)
+		(delete-region (point-min) (match-beginning 0)))
+	    (message "Error in `%s': %S\n%s" ,location error (buffer-string))))
       nil)))
 
 (put 'riece-ignore-errors 'lisp-indent-function 1)
