@@ -9,7 +9,7 @@ AC_PATH_PACKAGEDIR
 
 AM_CONDITIONAL(XEMACS, test ${EMACS_FLAVOR} = xemacs)
 
-AC_CONFIG_FILES([Makefile \
+AC_CONFIG_FILES([Makefile
 lisp/Makefile
 lisp/test/Makefile
 doc/Makefile])
