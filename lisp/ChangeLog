@@ -1,3 +1,12 @@
+2003-11-22  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-log.el (riece-log-coding-system): New user option.
+	(riece-log-display-message-function): Bind
+	coding-system-for-write; don't create temp buffer.
+
+	* riece-rdcc.el (riece-rdcc-filter): Use write-region instead of
+	append-to-file to suppress "Wrote file" messages.
+
 2003-11-10  Daiki Ueno  <ueno@unixuser.org>
 
 	* Riece: Version 0.1.6 released.

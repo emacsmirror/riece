@@ -189,7 +189,7 @@ puts(\"#{" address " >> 24 & 0xFF}.#{" address " >> 16 & 0xFF}.#{"
     (insert input)
     (let ((coding-system-for-write 'binary)
 	  jka-compr-compression-info-list jam-zcat-filename-list)
-      (append-to-file (point-min) (point-max) riece-rdcc-temp-file))
+      (write-region (point-min) (point-max) riece-rdcc-temp-file t 0))
     (message "Receiving %s from %s...(%s/%s)"
 	     (file-name-nondirectory riece-rdcc-request-file)
 	     riece-rdcc-request-user

@@ -55,6 +55,11 @@ If integer, flash back only this line numbers. t means all lines."
 		 (boolean :tag "flash back or not"))
   :group 'riece-log)
 
+(defcustom riece-log-coding-system nil
+  "*Coding system used for log files."
+  :type 'symbol
+  :group 'riece-log)
+
 (defun riece-log-display-message-function (message)
   (let ((open-bracket
 	 (funcall riece-message-make-open-bracket-function message))
@@ -62,14 +67,14 @@ If integer, flash back only this line numbers. t means all lines."
 	 (funcall riece-message-make-close-bracket-function message))
 	(name
 	 (funcall riece-message-make-name-function message))
-	(file (riece-log-get-file (riece-message-target message))))
+	(file (riece-log-get-file (riece-message-target message)))
+	(coding-system-for-write riece-log-coding-system))
     (unless (file-directory-p (file-name-directory file))
       (make-directory (file-name-directory file) t))
-    (with-temp-buffer
-      (insert (concat (format-time-string "%H:%M") " "
-		      open-bracket name close-bracket
-		      " " (riece-message-text message) "\n"))
-      (write-region (point-min) (point-max) file t 0))))
+    (write-region (concat (format-time-string "%H:%M") " "
+			  open-bracket name close-bracket
+			  " " (riece-message-text message) "\n")
+		  nil file t 0)))
 
 (defun riece-log-get-file (identity)
   (expand-file-name
@@ -80,7 +85,7 @@ If integer, flash back only this line numbers. t means all lines."
   (let ((channel (riece-identity-prefix identity))
 	(server (riece-identity-server identity))
 	(map (assoc (riece-format-identity identity) riece-log-directory-map))
-	 name)
+	name)
     (cond (map (setq name (cdr map)))
 	  ((string-match riece-channel-regexp channel)
 	   (let ((suffix (match-string 2 channel)))
