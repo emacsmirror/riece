@@ -110,7 +110,7 @@ Riece $B$O!"D9$$4V%a%s%F%J%s%9IT2DG=$J>uBV$K$"$C$?(B Liece $B$N%3!<%I$r40A4$K
 @section Installation
 
 Riece $B$N:G?7HG$O!"(B
-@uref{http://wiliki.designflaw.org/index.cgi?Riece&l=jp} $B$GG[I[$7$F$$$^(B
+@uref{http://wiliki.designflaw.org/riece.cgi} $B$GG[I[$7$F$$$^(B
 $B$9!#E83+$7$?$i!"0J2<$N%3%^%s%I$r<B9T$9$k$3$H$G<j85$N4D6-$K%$%s%9%H!<%k$G(B
 $B$-$^$9(B
 
@@ -499,6 +499,8 @@ DCC (Direct Client to Client protocol) $B$K$h$k%U%!%$%kE>Aw(B
 $B%_%K%P%C%U%!$N$_$G(B IRC $B$r$9$k(B
 @item riece-log
 $B2qOC$N%m%0$N<}=8(B
+@item riece-alias
+$B%A%c%s%M%kL>$d%K%C%/%M!<%`$NJLL>$rDj5A(B
 @end table
 
 $B$3$l$i$N$&$A!"(B@samp{riece-highlight} $B$H(B @samp{riece-ctcp} $B$O%G%U%)%k%H$G(B
@@ -704,13 +706,10 @@ Riece $B$OJ#?t$N%5!<%P$KF1;~$K@\B3$9$k$?$a!"%5!<%PKh$KJL!9$NL>A06u4V$r4IM}(B
 $B%m!<%+%kJQ?t$r2p$7$F%"%/%;%9$7$^$9!#(B
 
 @subsection Obtaining server buffer
-$B%5!<%P$N%P%C%U%!$r<hF@$9$k$K$O!"$^$:$O$8$a$K%5!<%P$NL>A0$rF@$kI,MW$,$"$j(B
-$B$^$9!#$3$l$K$O(B @code{riece-find-server-name} $B$r;H$$$^$9!#$3$N4X?t$O!">u(B
-$B67$K1~$8$FA*Br$9$Y$-%5!<%P$NL>A0$rJV$7$^$9!#6qBNE*$K$O0J2<$N=g=x$G8!:w$r(B
-$B9T$$$^$9!#(B
-@findex riece-find-server-name
+$B%5!<%P$N%W%m%;%9$rF@$k$K$O!"$^$:$O$8$a$K%5!<%P$NL>A0$rF@$kI,MW$,$"$j(B
+$B$^$9!#%5!<%P$NL>A0$O0J2<$K5s$2$k$$$/$D$+$NJ}K!$G<hF@$G$-$^$9!#(B
 
-@enumerate
+@table @samp
 @item
 @vindex riece-overrinding-server-name
 $BBg0hJQ?t(B @code{riece-overrinding-server-name} $B$NCM(B
@@ -722,81 +721,60 @@ Riece $B$OJ#?t$N%5!<%P$KF1;~$K@\B3$9$k$?$a!"%5!<%PKh$KJL!9$NL>A06u4V$r4IM}(B
 $BCM$=$N$b$N(B
 
 @item
-@vindex riece-current-channel
-$B%f!<%6$,8=:_$$$k%A%c%s%M%k(B (@code{riece-current-channel}) $B$NBg0hL>(B($B8e=R(B)
-$B$+$i@Z$j=P$7$?%5!<%PL>(B
-@end enumerate
+@samp{riece-identity} $B%*%V%8%'%/%H$K7k$SIU$1$i$l$?%5!<%PL>(B($B8e=R(B)
+@end table
 
-$B$3$&$7$FF@$?%5!<%PL>$G(B @code{riece-server-process-alist} $B$r:w$-!"%5!<%P(B
-$B$N%W%m%;%9$r<hF@$7$^$9!#%^%/%m(B riece-with-server-buffer $B$r;H$&$H!"$3$3$^(B
-$B$G$r0l3g$G$d$C$?$&$($G!"%W%m%;%9$N%P%C%U%!$G<0$rI>2A$9$k$3$H$,$G$-$^$9!#(B
-@vindex riece-server-process-alist
+$B$3$&$7$FF@$?%5!<%PL>$G(B @code{riece-server-process} $B$r8F=P$7!"%5!<%P$N(B
+$B%W%m%;%9$r<hF@$7$^$9!#(B
+@findex riece-server-process
 
-@subsection Global name
-$BJ#?t$N%5!<%P$K7R$$$@>l9g!"%A%c%s%M%kL>$d%K%C%/$r(B($B%5!<%P$N%P%C%U%!>e$@$1(B
-$B$G$O$J$/(B)$BBg0hE*$K6hJL$9$kI,MW$,@8$8$^$9!#$=$3$G!"$3$l$i$NL>A0$r9)IW$7$F!"(B
-$BL>A0$N8e$K6uGr$r64$s$G%5!<%PL>$r;XDj$9$k<jK!$r:N$C$F$$$^$9!#$3$l$rBg0hL>(B
-$B$H8F$S$^$9!#$?$H$($P!"(B@samp{irc6} $B$H$$$&%5!<%P$N(B @samp{#Liece} $B$H$$$&%A%c(B
-$B%s%M%k$NBg0hL>$O(B @samp{#Liece irc6} $B$H$J$j$^$9!#(B
+@subsection Identity
+$BJ#?t$N%5!<%P$K7R$$$@>l9g!"%A%c%s%M%kL>$d%K%C%/$r(B($B%5!<%P$N%P%C%U%!>e$@(B
+$B$1$G$O$J$/(B)$BBg0hE*$K6hJL$9$kI,MW$,@8$8$^$9!#$3$N$h$&$JL>A0$rI=8=$9$k$N(B
+$B$,(B @samp{riece-identity} $B%*%V%8%'%/%H$G$9!#(B
 
-$B$3$3$G6h@Z$j$r6uGr$K$7$F$$$k$N$O!"(BRFC2812 $B$G%A%c%s%M%k$K;HMQ$G$-$J$$J8;z(B
-$B$@$+$i$G$9!#(B
+@samp{riece-identity} $B%*%V%8%'%/%H$O0J2<$N(B 2 $B$D$NMWAG$r$b$D%Y%/%?!<$G$9!#(B
 
-$BBg0hL>$r07$&$K$O!"(B@samp{riece-identity} $B$H$$$&Cj>]$r2p$7$^$9!#$3$N%b%8%e!<(B
-$B%k$G$O!"0J2<$N$h$&$J4X?t$,Dj5A$5$l$F$$$^$9!#(B
+@table @samp
+@item prefix
+$B%5!<%P%m!<%+%k$JL>A0(B
+@item server
+$B%5!<%P$NL>A0(B
+@end table
+
+@samp{riece-identity} $B%*%V%8%'%/%H$KBP$9$kA`:n$K$O0J2<$N$h$&$J$b$N$,$"$j$^$9!#(B
 
 @defun riece-make-identity prefix &optional server
-$BBg0hI=5-$r:n@.$7$^$9!#(Bserver $B$,>JN,$5$l$?>l9g$K$O!"(B
+@samp{riece-identity} $B%*%V%8%'%/%H$r:n@.$7$^$9!#(Bserver $B$,>JN,$5$l$?>l9g$K$O!"(B
 riece-find-server-name $B$r;H$C$F<hF@$7$?%5!<%PL>$r;H$$$^$9(B
 @end defun
 
 @defun riece-identity-prefix identity
-$BBg0hI=5-$+$i%5!<%PL>$r=|$/ItJ,$rJV$7$^$9(B
+@samp{riece-identity} $B%*%V%8%'%/%H$+$i%5!<%P%m!<%+%k$JL>A0$r<h$j=P$7$^$9!#(B
 @end defun
 
 @defun riece-identity-server identity
-$BBg0hI=5-$+$i%5!<%P$r=|$/ItJ,$rJV$7$^$9(B
+@samp{riece-identity} $B%*%V%8%'%/%H$+$i%5!<%P$NL>A0$r<h$j=P$7$^$9!#(B
 @end defun
 
-@defun riece-identity-canonicalize-prefix prefix
-$BBg0hI=5-$N%5!<%PL>$r=|$/ItJ,$r@55,2=$7$^$9!#$9$J$o$A!"(B
-@var{prefix} $B$rA4$F>.J8;z$KD>$7$?>e$G!"(BRFC2812 2.2 $B$K$J$i$$!"(B
-@samp{[]\~} $B$N$=$l$>$l$NJ8;z$r(B @samp{@{@}|^} $B$KCV$-49$($^$9!#(B
-@end defun
- 
 @defun riece-identity-equal ident1 ident2
-$BFs$D$NBg0hI=5-$,F1Ey$+D4$Y$^$9!#(B
-@end defun
-
-@defun riece-identity-equal-safe ident1 ident2
-@code{riece-identity-equal} $B$H0l=o$G$9$,!"0z?t$H$7$FM?$($i$l$?J8;zNs$K%5!<(B
-$B%PL>$,IU2C$5$l$F$$$J$1$l$P!"IU2C$7$F$+$i8!::$r9T$$$^$9!#(B
+2 $B$D$N(B@samp{riece-identity} $B%*%V%8%'%/%H$,F1Ey$+D4$Y$^$9!#(B
 @end defun
 
 @defun riece-identity-equal-no-server ident1 ident2
-$BFs$D$NBg0hI=5-$N%5!<%P0J30$NItJ,$,F1Ey$+D4$Y$^$9!#(B
+2 $B$D$N(B@samp{riece-identity} $B%*%V%8%'%/%H$N%5!<%P%m!<%+%k$JL>A0$,F1Ey$+(B
+$BD4$Y$^$9!#(B
 @end defun
 
 @defun riece-identity-member elt list
-$BBg0hI=5-(B @var{elt} $B$,(B @var{list} $B$K4^$^$l$k$+8!::$7$^$9!#(B
-@end defun
-
-@defun riece-identity-member-safe elt list
-@code{riece-identity-member} $B$H0l=o$G$9$,!"0z?t$K%5!<%PL>$,IU2C$5$l$F$$(B
-$B$J$1$l$P!"IU2C$7$F$+$i8!::$r9T$$$^$9!#(B
-@end defun
-
-@defun riece-identity-member-no-server elt list
-@code{riece-identity-member} $B$H0l=o$G$9$,!"Bg0hI=5-$N%5!<%P0J30$NItJ,$@(B
-$B$1$r8!::$7$^$9!#(B
+@samp{riece-identity} $B%*%V%8%'%/%H(B @var{elt} $B$,(B @var{list} $B$K4^$^$l$k(B
+$B$+8!::$7$^$9!#(B
 @end defun
 
 @subsection Channel and user management
-IRC $B$N%A%c%s%M%k$H%f!<%6$O4pK\E*$KC1$J$k%Y%/%?!<$H$7$FI=8=$5$l$F$$$^$9!#(B
-JOIN $B$d(B PART $B$H$$$C$?FCJL$JA`:n$O!"$3$l$i$N%*%V%8%'%/%H$K$O7k$S$D$1$^$;(B
-$B$s!#7k$S$D$1$?$[$&$,%*%V%8%'%/%H;X8~$GNI$$$N$G$O$J$$$+!"$H$$$&0U8+$b$"$j(B
-$B$^$9$,!"$=$N$h$&$K$9$k$H!"Aj8_$N7k$SIU$-$,6[L)$K$J$j$9$.!"%9%Q%2%C%F%#$N(B
-$B$b$H$K$J$k$3$H$O4{$K7P83:Q$_$G$9!#(B
+@samp{riece-identity} $B%*%V%8%'%/%H$K$h$C$F<1JL$5$l$k(B IRC $B$N%A%c%s%M%k(B
+$B$H%f!<%6$O$=$l$>$l(B @samp{riece-channel} $B%*%V%8%'%/%H$H(B 
+@samp{riee-user} $B%*%V%8%'%/%H$K$h$jI=8=$5$l$^$9!#(B
 
 @subsubsection Channels
 @code{riece-channel} $B$O!"(BIRC $B$N%A%c%s%M%k$rI=$9%*%V%8%'%/%H$G$9!#0J2<$N(B
@@ -835,9 +813,9 @@ AWAY $BCf$+$I$&$+(B
 @end table
 
 @subsubsection Mediator
-$B$5$F!"%A%c%s%M%k$H%f!<%6$N;22C$r4IM}$9$k$?$a$K!"(B @code{riece-naming} $B$H(B
-$B$$$&>e0L$N%b%8%e!<%k$rMQ0U$7$F$$$^$9!#$3$l$O!"%G%6%$%s%Q%?!<%s$G$$$&$H$3(B
-$B$m$N(B Mediator $B%Q%?!<%s$KAjEv$9$k$b$N$G$9!#(B
+$B%A%c%s%M%k$H%f!<%6$N;22C!&N%C&$r4IM}$9$k$?$a$K!"(B @code{riece-naming} 
+$B$H$$$&>e0L$N%b%8%e!<%k$rMQ0U$7$F$$$^$9!#$3$l$O!"%G%6%$%s%Q%?!<%s$G$$$&(B
+$B$H$3$m$N(B Mediator $B%Q%?!<%s$KAjEv$9$k$b$N$G$9!#(B
 
 @code{riece-naming} $B$r2p$9$k$3$H$G!"A0=R$N%A%c%s%M%k!&%f!<%6%*%V%8%'%/%H(B
 $B$KD>@\<j$r?($l$k$3$H$J$/!"L>A06u4V$K0BA4$K%"%/%;%9$9$k$3$H$,$G$-$^$9!#(B
