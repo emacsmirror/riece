@@ -337,9 +337,11 @@
 	 (list riece-dialogue-buffer riece-others-buffer)
        riece-dialogue-buffer)
      (concat
-      (riece-concat-server-name
-       (concat riece-ctcp-action-prefix
-	       (riece-identity-prefix (riece-current-nickname)) " " action))
+      (riece-with-server-buffer (riece-identity-server target)
+	(riece-concat-server-name
+	 (concat riece-ctcp-action-prefix
+		 (riece-identity-prefix (riece-current-nickname)) " " action
+		 " (in " (riece-format-identity target t) ")")))
       "\n"))))
 
 (provide 'riece-ctcp)

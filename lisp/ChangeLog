@@ -1,3 +1,11 @@
+2003-11-08  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-layout.el (riece-set-window-points): Check whether the end
+	of buffer is visible.
+
+	* riece-ctcp.el (riece-command-ctcp-action): Display channel names
+	in "*Others*" buffer.
+
 2003-11-05  OHASHI Akira  <bg66@koka-in.org>
 
 	* riece-unread.el (riece-unread-switch-to-channel): Protect
