@@ -58,7 +58,9 @@
       (let ((source (expand-file-name
 		     (concat (symbol-name (car modules)) ".el"))))
 	(if (file-newer-than-file-p source (concat source "c"))
-	    (byte-compile-file source)))
+	    (condition-case error
+		(byte-compile-file source)
+	      (error))))
       (setq modules (cdr modules)))))
 
 (defun riece-install-modules (modules dest just-print)
@@ -73,9 +75,12 @@
 		   t t))
       (princ (format "%s.elc -> %s\n" name dest))
       (unless just-print
-	(copy-file (expand-file-name (concat name ".elc"))
-		   (expand-file-name (concat name ".elc") dest)
-		   t t)))
+	(if (file-exists-p (expand-file-name (concat name ".elc")))
+	    (copy-file (expand-file-name (concat name ".elc"))
+		       (expand-file-name (concat name ".elc") dest)
+		       t t)
+	  (princ (format "(%s was not successfully compiled, ignored)\n"
+			 name)))))
     (setq modules (cdr modules))))
 
 (defun riece-install-just-print-p ()
