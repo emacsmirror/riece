@@ -156,9 +156,7 @@
 		 (concat riece-current-channel ": "
 			 (riece-channel-get-topic riece-current-channel))
 	       riece-current-channel))
-	  "None"))
-  (with-current-buffer riece-command-buffer
-    (force-mode-line-update)))
+	  "None")))
 
 (defun riece-update-channel-list-indicator ()
   (if (and riece-current-channels
@@ -179,17 +177,19 @@
     (setq riece-channel-list-indicator "No channel")))
 
 (defun riece-update-status-indicators ()
-  (riece-with-server-buffer
-   (setq riece-away-indicator
-	 (if (and riece-real-nickname
-		  (riece-user-get-away riece-real-nickname))
-	     "A"
-	   "-"))
-   (setq riece-operator-indicator
-	 (if (and riece-real-nickname
-		  (riece-user-get-operator riece-real-nickname))
-	     "O"
-	   "-")))
+  (with-current-buffer riece-command-buffer
+    (riece-with-server-buffer
+     (setq riece-away-indicator
+	   (if (and riece-real-nickname
+		    (riece-user-get-away riece-real-nickname))
+	       "A"
+	     "-")
+	   riece-operator-indicator
+	   (if (and riece-real-nickname
+		    (riece-user-get-operator riece-real-nickname))
+	       "O"
+	     "-")
+	   riece-user-indicator riece-real-nickname)))
   (setq riece-freeze-indicator
 	(with-current-buffer (if (and riece-channel-buffer-mode
 				      riece-channel-buffer)

@@ -39,7 +39,7 @@
       (:username riece-username)
       (:password)
       (:function #'open-network-stream)
-      (:coding-system riece-default-coding-system))
+      (:coding riece-default-coding-system))
     "Mapping from keywords to default values.
 All keywords that can be used must be listed here."))
 
@@ -138,7 +138,7 @@ the `riece-server-keyword-map' variable."
       (with-current-buffer (process-buffer process)
 	(setq riece-last-nickname riece-real-nickname
 	      riece-nick-accepted 'sent
-	      riece-coding-system coding-system))
+	      riece-coding-system coding))
       (if server-name
 	  (setq riece-server-process-alist
 		(cons (cons server-name process)

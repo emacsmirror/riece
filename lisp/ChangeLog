@@ -1,3 +1,24 @@
+2003-06-03  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-server.el (riece-server-keyword-map): `:coding-system' ->
+	`:coding'.
+	(riece-open-server): Follow the change.
+
+	* riece-ctcp.el (riece-command-ctcp-action): New command.
+	(riece-ctcp-insinuate): Bind it in riece-dialogue-mode-map.
+	(riece-handle-ctcp-action-request): New handler.
+
+	* riece.el (riece-command-mode): Enclose status indicators with
+	`{}'; show riece-user-indicator.
+	(riece-channel-mode): Likewise.
+	(riece-dialogue-mode): Enclose status indicators with `{}'.
+	* riece-globals.el (riece-user-indicator): New indicator.
+	(riece-freeze-indicator): Default to "-".
+	* riece-display.el (riece-update-channel-indicator): Don't update
+	modeline.
+	(riece-update-status-indicators): Set riece-user-indicator.
+	* riece-300.el (riece-handle-324-message): Update channel indicator.
+
 2003-06-02  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece.el (riece-command-mode): Don't set riece-freeze-indicator.

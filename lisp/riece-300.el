@@ -231,7 +231,9 @@
 	   (concat
 	    (riece-concat-server-name
 	     (format "Mode for %s: %s" channel mode-string))
-	    "\n"))))))
+	    "\n")))
+	(riece-update-channel-indicator)
+	(force-mode-line-update t))))
 
 (defun riece-handle-set-topic (prefix number name string remove)
   (if (string-match "^\\([^ ]+\\) :" string)

@@ -116,11 +116,11 @@ Local to the channel buffers.")
   "A modeline indicator of the current channel.")
 (defvar riece-channel-list-indicator "No channel"
   "The current joined channels, \"pretty-printed.\".")
+(defvar riece-user-indicator nil)
 
 (defvar riece-away-indicator "-")
 (defvar riece-operator-indicator "-")
-(defvar riece-freeze-indicator nil)
-(defvar riece-own-freeze-indicator nil)
+(defvar riece-freeze-indicator "-")
 
 ;;; Buffers:
 (defvar riece-command-buffer "*Commands*"
