@@ -345,14 +345,18 @@
 	"\n")))))
 
 (defun riece-parse-modes (string)
-  (let (result)
-    (while (string-match "^[-+]\\([^ ]*\\) *" string)
+  (let ((start 0)
+	result)
+    (while (and (string-match "[-+]\\([^ ]*\\) *" string start)
+		(= (match-beginning 0) start))
       (let ((toggle (eq (aref string 0) ?+))
 	    (modes (string-to-list (match-string 1 string))))
-	(setq string (substring string (match-end 0)))
+	(setq start (match-end 0))
 	(while modes
-	  (if (string-match "\\([^-+][^ ]*\\) *" string)
-	      (setq result (cons (list (car modes) toggle
+	  (if (and (string-match "\\([^-+][^ ]*\\) *" string start)
+		   (= (match-beginning 0) start))
+	      (setq start (match-end 0)
+		    result (cons (list (car modes) toggle
 				       (match-string 1 string))
 				 result))
 	    (setq result (cons (list (car modes) toggle)
@@ -364,7 +368,9 @@
   (while modes
     (cond
      ((eq (car (car modes)) ?o)
-      (apply #'riece-channel-toggle-operator channel (cdr (car modes)))
+      (riece-channel-toggle-operator channel
+				     (nth 2 (car modes))
+				     (nth 1 (car modes)))
       (riece-emit-signal 'riece-channel-toggle-operator
 			 (riece-make-identity channel
 					      riece-server-name)
@@ -372,7 +378,9 @@
 					      riece-server-name)
 			 (nth 1 (car modes))))
      ((eq (car (car modes)) ?v)
-      (apply #'riece-channel-toggle-speaker channel (cdr (car modes)))
+      (riece-channel-toggle-speaker channel
+				    (nth 2 (car modes))
+				    (nth 1 (car modes)))
       (riece-emit-signal 'riece-channel-toggle-speaker
 			 (riece-make-identity channel
 					      riece-server-name)
@@ -380,13 +388,19 @@
 					      riece-server-name)
 			 (nth 1 (car modes))))
      ((eq (car (car modes)) ?b)
-      (apply #'riece-channel-toggle-banned channel (cdr (car modes))))
+      (riece-channel-toggle-banned channel
+				   (nth 2 (car modes))
+				   (nth 1 (car modes))))
      ((eq (car (car modes)) ?e)
-      (apply #'riece-channel-toggle-uninvited channel (cdr (car modes))))
+      (riece-channel-toggle-uninvited channel
+				      (nth 2 (car modes))
+				      (nth 1 (car modes))))
      ((eq (car (car modes)) ?I)
-      (apply #'riece-channel-toggle-invited channel (cdr (car modes))))
+      (riece-channel-toggle-invited channel
+				    (nth 2 (car modes))
+				    (nth 1 (car modes))))
      (t
-      (apply #'riece-channel-toggle-mode channel (cdr (car modes)))))
+      (apply #'riece-channel-toggle-mode channel (car modes))))
     (setq modes (cdr modes)))
   (riece-emit-signal 'riece-channel-set-modes
 		     (riece-make-identity channel
@@ -396,7 +410,7 @@
   (let* ((user (riece-prefix-nickname prefix))
 	 (user-identity (riece-make-identity user riece-server-name))
 	 channel)
-    (when (string-match "\\([^ ]+\\) *:?" string)
+    (when (string-match "^\\([^ ]+\\) *:?" string)
       (setq channel (match-string 1 string)
 	    string (substring string (match-end 0)))
       (if (string-match (concat "^" riece-channel-regexp "$") channel)
