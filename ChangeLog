@@ -1,6 +1,8 @@
 2003-06-02  Daiki Ueno  <ueno@unixuser.org>
 
-	* configure.ac: Output doc/Makefile.
+	* Riece: Version 0.0.3 released.
+	* configure.ac: Bump up version to 0.0.3.
+
 	* Makefile.am (SUBDIRS): Add doc.
 
 2003-06-01  Daiki Ueno  <ueno@unixuser.org>
