@@ -67,8 +67,7 @@ Riece is a full rewrite of the predecessor product "Liece" (whose code
 has been unmaintainable for a long time), while providing a user
 interface (mostly) compatible with Liece.
 
-For now it does not have rich functions as an IRC client, but there are
-noteworthy improvements as compared with Liece:
+There are noteworthy improvements as compared with Liece:
 
 @itemize @bullet
 @item
