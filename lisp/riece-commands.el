@@ -427,7 +427,8 @@ the layout to the selected layout-name."
      (if (and current-prefix-arg
 	      (riece-channel-p (riece-identity-prefix target)))
 	 (setq key
-	       (riece-read-passwd (format "Key for %s: " target))))
+	       (riece-read-passwd (format "Key for %s: "
+					  (riece-format-identity target)))))
      (list target key)))
   (let ((pointer (riece-identity-member target riece-current-channels)))
     (if pointer

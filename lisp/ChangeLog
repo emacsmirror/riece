@@ -1,7 +1,7 @@
 2003-09-02  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-commands.el (riece-command-join): Extract target
-	identity-prefix before applying riece-channel-p.
+	identity-prefix before applying riece-channel-p; format target.
 
 2003-08-30  Daiki Ueno  <ueno@unixuser.org>
 
