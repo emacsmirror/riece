@@ -1,3 +1,15 @@
+2004-12-07  Daiki Ueno  <ueno@unixuser.org>
+
+	* test/test-riece-log.el (test-riece-log-encode-file-name): New
+	test case.
+	(test-riece-log-encode-file-name-mule): New test case.
+	(test-riece-log-decode-file-name): New test case.
+	(test-riece-log-decode-file-name-mule): New test case.
+
+	* riece-log.el (riece-log-file-name-coding-system): New user option.
+	(riece-log-encode-file-name): New function.
+	(riece-log-decode-file-name): New function.
+
 2004-12-06  Daiki Ueno  <ueno@unixuser.org>
 
 	* test/test-riece-log.el: New test cases.

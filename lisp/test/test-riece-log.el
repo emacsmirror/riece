@@ -1,3 +1,5 @@
+;;; -*- coding: iso-2022-7 -*-
+
 (require 'riece-log)
 
 (luna-define-class test-riece-log (lunit-test-case))
@@ -54,3 +56,65 @@
 	    (with-temp-buffer
 	      (riece-log-flashback (riece-make-identity "#riece" ""))
 	      (buffer-string))))))
+
+(luna-define-method test-riece-log-encode-file-name ((case test-riece-log))
+  (let (riece-log-file-name-coding-system)
+    (lunit-assert-2
+     case
+     (equal "=23riece"
+	    (riece-log-encode-file-name "#riece")))
+    (lunit-assert-2
+     case
+     (equal "=23riece=3A=2A=2Ejp"
+	    (riece-log-encode-file-name "#riece:*.jp")))))
+
+(luna-define-method test-riece-log-encode-file-name-mule
+  ((case test-riece-log))
+  (let ((riece-log-file-name-coding-system 'iso-8859-1))
+    (lunit-assert-2
+     case
+     (equal "=23\xABriece\xBB"
+	    (riece-log-encode-file-name
+	     (format "#%criece%c"
+		     (make-char 'latin-iso8859-1 43)
+		     (make-char 'latin-iso8859-1 59))))))
+  (let ((riece-log-file-name-coding-system 'iso-2022-jp))
+    (lunit-assert-2
+     case
+     (equal "=23=1B=24B=24j=21=3C=249=1B=28B"
+	    (riece-log-encode-file-name
+	     (format "#%c%c%c"
+		    (make-char 'japanese-jisx0208 36 106)
+		    (make-char 'japanese-jisx0208 33 60)
+		    (make-char 'japanese-jisx0208 36 57)))))))
+
+(luna-define-method test-riece-log-decode-file-name ((case test-riece-log))
+  (let (riece-log-file-name-coding-system)
+    (lunit-assert-2
+     case
+     (equal "#riece"
+	    (riece-log-decode-file-name "=23riece")))
+    (lunit-assert-2
+     case
+     (equal "#riece:*.jp"
+	    (riece-log-decode-file-name "=23riece=3A=2A=2Ejp")))))
+
+(luna-define-method test-riece-log-decode-file-name-mule
+  ((case test-riece-log))
+  (let ((riece-log-file-name-coding-system 'iso-8859-1))
+    (lunit-assert-2
+     case
+     (equal (format "#%criece%c"
+		     (make-char 'latin-iso8859-1 43)
+		     (make-char 'latin-iso8859-1 59))
+	    (riece-log-decode-file-name
+	     "=23\xABriece\xBB"))))
+  (let ((riece-log-file-name-coding-system 'iso-2022-jp))
+    (lunit-assert-2
+     case
+     (equal (format "#%c%c%c"
+		    (make-char 'japanese-jisx0208 36 106)
+		    (make-char 'japanese-jisx0208 33 60)
+		    (make-char 'japanese-jisx0208 36 57))
+	    (riece-log-decode-file-name
+	     "=23=1B=24B=24j=21=3C=249=1B=28B")))))

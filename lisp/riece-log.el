@@ -61,6 +61,13 @@ If integer, flash back only this line numbers. t means all lines."
   :type 'symbol
   :group 'riece-log)
 
+(defcustom riece-log-file-name-coding-system
+  (if (boundp 'file-name-coding-system)
+      file-name-coding-system)
+  "*Coding system used for filenames of log files."
+  :type 'symbol
+  :group 'riece-log)
+
 (defcustom riece-log-open-directory-function 'find-file
   "*Function for opening a directory."
   :type 'function
@@ -111,6 +118,36 @@ If integer, flash back only this line numbers. t means all lines."
     (if server
 	(expand-file-name name (expand-file-name server riece-log-directory))
       (expand-file-name name riece-log-directory))))
+
+(defun riece-log-encode-file-name (file-name)
+  (if riece-log-file-name-coding-system
+      (setq file-name
+	    (encode-coding-string file-name
+				  riece-log-file-name-coding-system)))
+  (let ((index 0))
+    (while (string-match "[^-0-9A-Za-z=_\x80-\xFF]" file-name index)
+      (setq file-name (replace-match
+		       (format "=%02X"
+			       (aref file-name (match-beginning 0)))
+		       nil t file-name)
+	    index (+ 3 index)))
+    file-name))
+
+(defun riece-log-decode-file-name (file-name)
+  (let ((index 0))
+    (while (string-match "=\\([0-7][0-9A-F]\\)" file-name index)
+      (setq file-name (replace-match
+		       (char-to-string
+			(car (read-from-string
+			      (concat "?\\x" (match-string 1 file-name)))))
+		       nil t file-name)
+	    index (1+ index)))
+    file-name)
+  (if riece-log-file-name-coding-system
+      (setq file-name
+	    (decode-coding-string file-name
+				  riece-log-file-name-coding-system)))
+  file-name)
 
 (defun riece-log-flashback-1 (identity)
   (if (eq riece-log-flashback t)
