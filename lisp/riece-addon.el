@@ -107,8 +107,8 @@
     (define-key keymap "-" 'riece-command-disable-addon)
     (define-key keymap "n" 'next-line)
     (define-key keymap "p" 'previous-line)
-    (define-key keymap " " 'scroll-up-command)
-    (define-key keymap [delete] 'scroll-down-command)
+    (define-key keymap " " 'scroll-up)
+    (define-key keymap [delete] 'scroll-down)
     (define-key keymap "q" 'bury-buffer)
     keymap))
 
