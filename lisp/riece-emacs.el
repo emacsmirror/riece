@@ -91,6 +91,10 @@
 
 (defalias 'riece-match-string-no-properties 'match-string-no-properties)
 
+(defun riece-propertize-modeline-string (string &rest properties)
+  (add-text-properties string properties)
+  string)
+
 (provide 'riece-emacs)
 
 ;;; riece-emacs.el ends here

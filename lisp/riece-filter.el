@@ -28,7 +28,6 @@
 (require 'riece-misc)
 (require 'riece-server)			;riece-close-server
 (require 'riece-identity)
-(require 'riece-display)
 
 (defun riece-handle-numeric-reply (prefix number name string)
   (let ((base-number (* (/ number 100) 100))

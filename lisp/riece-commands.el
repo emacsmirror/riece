@@ -38,8 +38,7 @@
   (interactive (list (riece-completing-read-identity
 		      "Channel/User: " riece-current-channels nil t)))
   (unless (equal channel riece-current-channel)
-    (riece-switch-to-channel channel)
-    (riece-redisplay-buffers)))
+    (riece-switch-to-channel channel)))
 
 (defun riece-command-switch-to-channel-by-number (number)
   (interactive
@@ -303,7 +302,7 @@ the layout to the selected layout-name."
 		     ?-
 		   ?+)
 		 (make-string (length group) ?o)
-		 (mapconcat #'identity group " ")))
+		 (mapconcat #'identity (nreverse group) " ")))
 	(setq group nil)))))
 
 (defun riece-command-set-speakers (users &optional arg)
@@ -336,7 +335,7 @@ the layout to the selected layout-name."
 		     ?-
 		   ?+)
 		 (make-string (length group) ?v)
-		 (mapconcat #'identity group " ")))
+		 (mapconcat #'identity (nreverse group) " ")))
 	(setq group nil)))))
 
 (defun riece-command-send-message (message notice)
@@ -416,8 +415,7 @@ the layout to the selected layout-name."
     (if pointer
 	(riece-command-switch-to-channel (car pointer))
       (riece-join-channel target)
-      (riece-switch-to-channel target)
-      (riece-redisplay-buffers))))
+      (riece-switch-to-channel target))))
 
 (defun riece-command-join (target &optional key)
   (interactive
@@ -476,8 +474,7 @@ the layout to the selected layout-name."
   (if (riece-identity-member target riece-current-channels)
       (if (riece-channel-p (riece-identity-prefix target))
 	  (riece-command-part-channel target message)
-	(riece-part-channel target)
-	(riece-redisplay-buffers))
+	(riece-part-channel target))
     (error "You are not talking with %s" target)))
 
 (defun riece-command-change-nickname (nickname)
@@ -561,9 +558,9 @@ If prefix argument ARG is non-nil, toggle frozen status."
 			 riece-dialogue-buffer)
     (setq riece-freeze (if arg
 			   (< 0 (prefix-numeric-value arg))
-			 (not riece-freeze))))
-  (riece-update-status-indicators)
-  (force-mode-line-update t))
+			 (not riece-freeze)))
+    (riece-emit-signal 'buffer-freeze-changed
+		       (current-buffer) riece-freeze)))
 
 (defun riece-command-toggle-own-freeze (&optional arg)
   "Prevent automatic scrolling of the dialogue window.
@@ -579,8 +576,8 @@ If prefix argument ARG is non-nil, toggle frozen status."
 	  (not (eq riece-freeze 'own)))
 	(setq riece-freeze 'own)
       (setq riece-freeze nil)))
-  (riece-update-status-indicators)
-  (force-mode-line-update t))
+  (riece-emit-signal 'buffer-freeze-changed
+		     (current-buffer) riece-freeze))
 
 (eval-when-compile
   (autoload 'riece-exit "riece"))

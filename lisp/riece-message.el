@@ -117,8 +117,7 @@
       ;; If you are not joined any channel,
       ;; switch to the target immediately.
       (unless riece-current-channel
-	(riece-switch-to-channel target))
-      (riece-redisplay-buffers))
+	(riece-switch-to-channel target)))
     (riece-channel-buffer target)))
 
 (defun riece-message-parent-buffers (message buffer)
@@ -160,7 +159,7 @@ Normally they are *Dialogue* and/or *Others*."
 	       (riece-own-frozen buffer))
       (with-current-buffer buffer
 	(setq riece-freeze nil))
-      (riece-update-status-indicators))
+      (riece-emit-signal 'buffer-freeze-changed buffer nil))
     (setq parent-buffers (riece-message-parent-buffers message buffer))
     (riece-insert buffer
 		  (concat open-bracket name close-bracket

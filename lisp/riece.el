@@ -284,6 +284,7 @@ If optional argument CONFIRM is non-nil, ask which IRC server to connect."
 			 (riece-shrink-buffer (car buffers)))
 		     (setq buffers (cdr buffers))))))))
     (switch-to-buffer riece-command-buffer)
+    (riece-display-connect-signals)
     (riece-redisplay-buffers)
     (riece-open-server riece-server "")
     (let ((server-list riece-startup-server-list))

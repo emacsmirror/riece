@@ -28,6 +28,7 @@
 (require 'riece-channel)
 (require 'riece-misc)
 (require 'riece-layout)
+(require 'riece-signal)
 
 (defvar riece-channel-buffer-format "*Channel:%s*"
   "Format of channel message buffer.")
@@ -45,15 +46,183 @@ Local to the buffer in `riece-buffer-list'.")
     riece-update-channel-list-indicator)
   "Functions to update modeline indicators.")
 
+(defun riece-display-connect-signals ()
+  (riece-connect-signal
+   'channel-list-changed
+   (lambda (signal handback)
+     (save-excursion
+       (set-buffer riece-channel-list-buffer)
+       (run-hooks 'riece-update-buffer-functions))
+     (riece-update-channel-list-indicator)))
+  (riece-connect-signal
+   'user-list-changed
+   (lambda (signal handback)
+     (save-excursion
+       (set-buffer riece-user-list-buffer)
+       (run-hooks 'riece-update-buffer-functions)))
+   (lambda (signal)
+     (and riece-current-channel
+	  (riece-identity-equal (car (riece-signal-args signal))
+				riece-current-channel))))
+  (riece-connect-signal
+   'channel-switched
+   (lambda (signal handback)
+     (riece-update-status-indicators)
+     (riece-update-channel-indicator)
+     (riece-update-long-channel-indicator)
+     (force-mode-line-update t)
+     (riece-emit-signal 'channel-list-changed)
+     (riece-emit-signal 'user-list-changed riece-current-channel)
+     (save-excursion
+       (riece-redraw-layout))))
+  (riece-connect-signal
+   'user-joined-channel
+   (lambda (signal handback)
+     (riece-emit-signal 'user-list-changed riece-current-channel))
+   (lambda (signal)
+     (and riece-current-channel
+	  (riece-identity-equal (nth 1 (riece-signal-args signal))
+				riece-current-channel)
+	  (not (riece-identity-equal (car (riece-signal-args signal))
+				     (riece-current-nickname))))))
+  (riece-connect-signal
+   'user-joined-channel
+   (lambda (signal handback)
+     (riece-join-channel (nth 1 (riece-signal-args signal)))
+     (riece-switch-to-channel (nth 1 (riece-signal-args signal)))
+     (setq riece-join-channel-candidate nil))
+   (lambda (signal)
+     (riece-identity-equal (car (riece-signal-args signal))
+			   (riece-current-nickname))))
+  (riece-connect-signal
+   'user-left-channel
+   (lambda (signal handback)
+     (riece-emit-signal 'user-list-changed riece-current-channel))
+   (lambda (signal)
+     (and riece-current-channel
+	  (riece-identity-equal (nth 1 (riece-signal-args signal))
+				riece-current-channel)
+	  (not (riece-identity-equal (car (riece-signal-args signal))
+				     (riece-current-nickname))))))
+  (riece-connect-signal
+   'user-left-channel
+   (lambda (signal handback)
+     (riece-part-channel (nth 1 (riece-signal-args signal))))
+   (lambda (signal)
+     (riece-identity-equal (car (riece-signal-args signal))
+			   (riece-current-nickname))))
+  (riece-connect-signal
+   'user-renamed
+   (lambda (signal handback)
+     (riece-emit-signal 'user-list-changed riece-current-channel))
+   (lambda (signal)
+     (and riece-current-channel
+	  (equal (riece-identity-server (nth 1 (riece-signal-args signal)))
+		 (riece-identity-server riece-current-channel))
+	  (riece-with-server-buffer (riece-identity-server
+				     riece-current-channel)
+	    (riece-identity-assoc
+	     (riece-identity-prefix (nth 1 (riece-signal-args signal)))
+	     (riece-channel-get-users (riece-identity-prefix
+				       riece-current-channel))
+	     t)))))
+  (riece-connect-signal
+   'user-renamed
+   (lambda (signal handback)
+     (riece-update-status-indicators)
+     (riece-update-channel-indicator)
+     (force-mode-line-update t))
+   (lambda (signal)
+     (riece-identity-equal (nth 1 (riece-signal-args signal))
+			   (riece-current-nickname))))
+  (riece-connect-signal
+   'user-renamed
+   (lambda (signal handback)
+     (riece-switch-to-channel (nth 1 (riece-signal-args signal))))
+   (lambda (signal)
+     (and riece-current-channel
+	  (riece-identity-equal (car (riece-signal-args signal))
+				riece-current-channel))))
+  (riece-connect-signal
+   'user-renamed
+   (lambda (signal handback)
+     (let* ((old-identity (car (riece-signal-args signal)))
+	    (new-identity (nth 1 (riece-signal-args signal)))
+	    (pointer (riece-identity-member old-identity
+					    riece-current-channels)))
+       ;; Rename the channel buffer.
+       (when pointer
+	 (setcar pointer new-identity)
+	 (with-current-buffer (riece-channel-buffer old-identity)
+	   (rename-buffer (riece-channel-buffer-name new-identity) t)
+	   (setq riece-channel-buffer-alist
+		 (cons (cons new-identity (current-buffer))
+		       (delq (riece-identity-assoc old-identity
+						   riece-channel-buffer-alist)
+			     riece-channel-buffer-alist))))))))
+  (riece-connect-signal
+   'user-away-changed
+   (lambda (signal handback)
+     (riece-update-status-indicators)
+     (force-mode-line-update t))
+   (lambda (signal)
+     (riece-identity-equal (car (riece-signal-args signal))
+			   (riece-current-nickname))))
+  (riece-connect-signal
+   'user-operator-changed
+   (lambda (signal handback)
+     (riece-update-status-indicators)
+     (force-mode-line-update t))
+   (lambda (signal)
+     (riece-identity-equal (car (riece-signal-args signal))
+			   (riece-current-nickname))))
+  (riece-connect-signal
+   'channel-topic-changed
+   (lambda (signal handback)
+     (riece-update-long-channel-indicator)
+     (force-mode-line-update t))
+   (lambda (signal)
+     (and riece-current-channel
+	  (riece-identity-equal (car (riece-signal-args signal))
+				riece-current-channel))))
+  (riece-connect-signal
+   'channel-modes-changed
+   (lambda (signal handback)
+     (riece-update-status-indicators)
+     (force-mode-line-update t))
+   (lambda (signal)
+     (and riece-current-channel
+	  (riece-identity-equal (car (riece-signal-args signal))
+				riece-current-channel))))
+  (riece-connect-signal
+   'channel-operators-changed
+   (lambda (signal handback)
+     (riece-emit-signal 'user-list-changed riece-current-channel))
+   (lambda (signal)
+     (and riece-current-channel
+	  (riece-identity-equal (car (riece-signal-args signal))
+				riece-current-channel))))
+  (riece-connect-signal
+   'channel-speakers-changed
+   (lambda (signal handback)
+     (riece-emit-signal 'user-list-changed riece-current-channel))
+   (lambda (signal)
+     (and riece-current-channel
+	  (riece-identity-equal (car (riece-signal-args signal))
+				riece-current-channel))))
+  (riece-connect-signal
+   'buffer-freeze-changed
+   (lambda (signal handback)
+     (riece-update-status-indicators)
+     (force-mode-line-update t))))
+
 (defun riece-update-user-list-buffer ()
   (save-excursion
-    (set-buffer riece-user-list-buffer)
     (if (and riece-current-channel
 	     (riece-channel-p (riece-identity-prefix riece-current-channel)))
 	(let* ((users
-		(with-current-buffer (process-buffer (riece-server-process
-						      (riece-identity-server
-						       riece-current-channel)))
+		(riece-with-server-buffer (riece-identity-server
+					   riece-current-channel)
 		  (riece-channel-get-users (riece-identity-prefix
 					    riece-current-channel))))
 	       (inhibit-read-only t)
@@ -74,9 +243,17 @@ Local to the buffer in `riece-buffer-list'.")
 		    "\n")
 	    (setq users (cdr users)))))))
 
+(defun riece-format-identity-for-channel-list-buffer (index identity)
+  (or (run-hook-with-args-until-success
+       'riece-format-identity-for-channel-list-buffer-functions index identity)
+      (concat (format "%2d:%c" index
+		      (if (riece-identity-equal identity riece-current-channel)
+			  ?*
+			? ))
+	      (riece-format-identity identity))))
+
 (defun riece-update-channel-list-buffer ()
   (save-excursion
-    (set-buffer riece-channel-list-buffer)
     (let ((inhibit-read-only t)
 	  buffer-read-only
 	  (index 1)
@@ -85,20 +262,11 @@ Local to the buffer in `riece-buffer-list'.")
       (riece-kill-all-overlays)
       (while channels
 	(if (car channels)
-	    (insert (riece-format-channel-list-line
-		     index (car channels))))
+	    (insert (riece-format-identity-for-channel-list-buffer
+		     index (car channels))
+		    "\n"))
 	(setq index (1+ index)
 	      channels (cdr channels))))))
-
-(defun riece-format-channel-list-line (index channel)
-  (or (run-hook-with-args-until-success
-       'riece-format-channel-list-line-functions index channel)
-      (concat (format "%2d:%c" index
-		      (if (riece-identity-equal channel riece-current-channel)
-			  ?*
-			? ))
-	      (riece-format-identity channel)
-	      "\n")))
 
 (defun riece-update-channel-indicator ()
   (setq riece-channel-indicator
@@ -118,24 +286,40 @@ Local to the buffer in `riece-buffer-list'.")
 	      (riece-format-identity riece-current-channel))
 	  "None")))
 
+(defun riece-format-identity-for-channel-list-indicator (index identity)
+  (or (run-hook-with-args-until-success
+       'riece-format-identity-for-channel-list-indicator-functions
+       index identity)
+      (let ((string (riece-format-identity identity))
+	    (start 0))
+	;; Escape % -> %%.
+	(while (string-match "%" string start)
+	  (setq start (1+ (match-end 0))
+		string (replace-match "%%" nil nil string)))
+	(format "%d:%s" index string))))
+
 (defun riece-update-channel-list-indicator ()
   (if (and riece-current-channels
 	   ;; There is at least one channel.
 	   (delq nil (copy-sequence riece-current-channels)))
-      (let ((index 1))
+      (let ((index 1)
+	    pointer)
 	(setq riece-channel-list-indicator
-	      (mapconcat
-	       #'identity
-	       (delq nil
-		     (mapcar
-		      (lambda (channel)
-			(prog1
-			    (if channel
-				(format "%d:%s" index
-					(riece-format-identity channel)))
-			  (setq index (1+ index))))
-		      riece-current-channels))
-	       ",")))
+	      (delq
+	       nil
+	       (mapcar
+		(lambda (channel)
+		  (prog1
+		      (if channel
+			  (riece-format-identity-for-channel-list-indicator
+			   index channel))
+		    (setq index (1+ index))))
+		riece-current-channels))
+	      pointer riece-channel-list-indicator)
+	(while pointer
+	  (if (cdr pointer)
+	      (setcdr pointer (cons "," (cdr pointer))))
+	  (setq pointer (cdr (cdr pointer)))))
     (setq riece-channel-list-indicator "No channel")))
 
 (defun riece-update-status-indicators ()
@@ -211,7 +395,8 @@ Local to the buffer in `riece-buffer-list'.")
   (let ((last riece-current-channel))
     (setq riece-current-channel identity
 	  riece-channel-buffer (riece-channel-buffer riece-current-channel))
-    (run-hook-with-args 'riece-after-switch-to-channel-functions last)))
+    (run-hook-with-args 'riece-after-switch-to-channel-functions last)
+    (riece-emit-signal 'channel-switched)))
 
 (defun riece-join-channel (identity)
   (unless (riece-identity-member identity riece-current-channels)
@@ -241,7 +426,8 @@ Local to the buffer in `riece-buffer-list'.")
 	(riece-switch-to-channel identity)
       (let ((last riece-current-channel))
 	(run-hook-with-args 'riece-after-switch-to-channel-functions last)
-	(setq riece-current-channel nil)))))
+	(setq riece-current-channel nil)
+	(riece-emit-signal 'channel-switched)))))
 
 (defun riece-part-channel (identity)
   (let ((pointer (riece-identity-member identity riece-current-channels)))

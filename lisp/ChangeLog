@@ -1,3 +1,249 @@
+2004-03-07  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-display.el: Rename some signals.
+
+	* riece-commands.el (riece-command-set-operators): Reverse user-list.
+	(riece-command-set-speakers): Ditto.
+
+2004-03-07  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-unread.el
+	(riece-unread-format-identity-for-channel-list-indicator): Escape
+	% -> %%; use riece-propertize-modeline-string.
+
+	* riece-history.el
+	(riece-history-format-identity-for-channel-list-indicator): Escape
+	% -> %%; use riece-propertize-modeline-string.
+
+	* riece-highlight.el
+	(riece-highlight-format-identity-for-channel-list-indicator):
+	Escape % -> %%; use riece-propertize-modeline-string.
+
+	* riece-display.el
+	(riece-format-identity-for-channel-list-indicator): Escape % ->
+	%%.
+	(riece-update-channel-list-indicator): Rewrite.
+
+	* riece-emacs.el (riece-propertize-modeline-string): New function.
+	* riece-xemacs.el (riece-propertize-modeline-string): New function.
+
+2004-03-07  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-unread.el
+	(riece-unread-format-identity-for-channel-list-indicator): New
+	function.
+	(riece-unread-insinuate): Setup
+	riece-format-identity-for-channel-list-indicator-functions.
+
+	* riece-history.el
+	(riece-history-format-identity-for-channel-list-buffer): New
+	function.
+	(riece-history-insinuate): Setup
+	riece-format-identity-for-channel-list-indicator-functions.
+
+	* riece-highlight.el
+	(riece-highlight-format-identity-for-channel-list-indicator): New
+	function.
+	(riece-highlight-insinuate): Setup
+	riece-format-identity-for-channel-list-indicator-functions.
+
+	* riece-display.el
+	(riece-format-identity-for-channel-list-buffer): Rename from
+	riece-format-channel-list-line.
+	(riece-format-identity-for-channel-list-indicator): New function.
+	(riece-update-channel-list-indicator): Use it.
+
+2004-03-07  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-handle.el (riece-parse-modes): Make sure that mode params
+	are started at the beginning of the mode string.
+	(riece-handle-channel-modes): Fixed arguments passed to
+	riece-channel-toggle-*.
+
+2004-03-06  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-xface.el (riece-xface-insinuate): Set
+	'riece-update-buffer-functions local to the user-list buffer.
+
+	* riece-unread.el: Require 'riece-signal instead of
+	'riece-display.
+	(riece-unread-after-display-message-function): Emit
+	'riece-update-buffer signal instead of
+	'riece-unread-channel-list-update signal.
+
+	* riece-ndcc.el: Don't require 'riece-display.
+
+	* riece-naming.el: Require 'riece-signal instead of
+	'riece-display.
+	(riece-naming-assert-rename): Don't rename buffer.
+
+	* riece-history.el (riece-history-format-channel-list-line): Don't
+	append "\n".
+
+	* riece-handle.el: Require 'riece-signal instead of
+	'riece-display.
+	(riece-parse-modes): Rename from riece-parse-channel-modes; don't
+	update channel modes.
+	(riece-handle-channel-modes): New function which processes the
+	result of riece-parse-modes.
+	(riece-handle-mode-message): Use it.
+
+	* riece-filter.el: Don't require 'riece-display.
+	* riece-display.el: Require 'riece-signal; connect
+	'riece-update-buffer signal.
+
+	* riece-ctcp.el: Don't require 'riece-display.
+
+	* riece-signal.el: New module splitted from riece-display.el.
+	* Makefile.am (EXTRA_DIST): Add riece-signal.
+	* COMPILE (riece-modules): Add riece-signal.
+
+2004-03-05  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-unread.el (riece-unread-after-display-message-function):
+	Emit 'riece-unread-channel-list-update signal.
+	(riece-unread-insinuate): Connect the signal to the function which
+	updates channel-list buffer.
+
+	* riece-display.el (riece-display-connect-signals): Fix parenthesis.
+
+2004-03-04  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-display.el (riece-emit-signal): Fixed bug that errors
+	during signal filter execution were not caught.
+	(riece-display-connect-signals): Check riece-current-channel is set.
+
+2004-03-01  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-display.el (riece-display-connect-signals): Fixed bug in
+	signal filters.
+
+	* riece-handle.el (riece-handle-mode-message): Don't call
+	riece-parse-channel-modes if channel doesn't match with
+	riece-channel-regexp.
+
+2004-02-28  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-display.el (riece-display-connect-signals): Connect some
+	signals.
+
+	* riece-naming.el (riece-naming-assert-join): Don't change the
+	current channel manually.
+	(riece-naming-assert-part): Ditto.
+	(riece-naming-assert-rename): Ditto.
+	(riece-naming-assert-channel-users): Ditto.
+
+2004-02-27  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-display.el (riece-emit-signal): Create signal object
+	internally.
+
+	* riece-message.el (riece-display-message-1): Emit
+	'riece-buffer-toggle-freeze signal.
+
+	* riece-commands.el (riece-command-toggle-freeze): Emit
+	'riece-buffer-toggle-freeze signal; don't update status indicators
+	manually.
+	(riece-command-toggle-own-freeze): Ditto.
+	
+	* riece-naming.el (riece-naming-assert-join): Rename signal 'join
+	-> 'riece-naming-assert-join.
+	(riece-naming-assert-part): Rename signal 'part ->
+	'riece-naming-assert-part.
+	(riece-naming-assert-rename): Rename signal 'rename ->
+	'riece-naming-assert-rename.
+	(riece-naming-assert-channel-users): Rename from
+	riece-naming-assert-users; rename signal 'users ->
+	'riece-naming-assert-channel-users.
+
+	* riece-handle.el (riece-handle-topic-message): Emit
+	'riece-channel-set-topic signal.
+	(riece-parse-channel-modes): Emit 'riece-channel-toggle-operator,
+	'riece-channel-toggle-speaker, and 'riece-channel-toggle-modes signals.
+
+	* riece-display.el (riece-display-connect-signals): Rename some
+	signals; connect more signals.
+
+	* riece-300.el (riece-handle-302-message): Emit
+	'riece-user-toggle-away, and 'riece-user-toggle-operator signals;
+	don't update status indicators manually.
+	(riece-handle-301-message): Emit 'riece-user-toggle-away signal;
+	don't update status indicators manually.
+	(riece-handle-305-message): Ditto.
+	(riece-handle-306-message): Ditto.
+	(riece-handle-353-message): Follow the name change of
+	riece-naming-assert-users.
+	(riece-handle-324-message): Emit 'riece-channel-toggle-modes
+	signal; don't update status indicators manually.
+	(riece-handle-set-topic): Emit 'riece-channel-set-topic signal;
+	don't update channel indicator manually.
+	(riece-handle-352-message): Emit 'riece-user-toggle-away, and
+	'riece-user-toggle-operator signals; don't update status
+	indicators manually.
+
+2004-02-27  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-display.el (riece-connect-signal): Create slot object
+	internally.
+
+2004-02-27  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece.el (riece): Setup signal slots.
+
+	* riece-unread.el (riece-unread-after-display-message-function):
+	Don't call riece-redisplay-buffers.
+
+	* riece-naming.el (riece-naming-assert-names): New function.
+	(riece-naming-assert-join): Emit 'join signal.
+	(riece-naming-assert-part): Emit 'part signal.
+	(riece-naming-assert-rename): Emit 'rename signal.
+
+	* riece-message.el (riece-message-buffer): Don't call
+	riece-redisplay-buffers.
+
+	* riece-handle.el (riece-handle-nick-message): Don't call
+	riece-redisplay-buffers.
+	(riece-handle-join-message): Ditto.
+	(riece-handle-part-message): Ditto.
+	(riece-handle-kick-message): Ditto.
+	(riece-handle-kill-message): Ditto.
+	(riece-handle-topic-message): Ditto.
+	(riece-parse-channel-modes): Ditto.
+
+	* riece-display.el (riece-update-user-list-buffer): Use
+	riece-with-server-buffer.
+	(riece-emit-signal): Notify if signal filter fails.
+	(riece-display-connect-signals): New function.
+	(riece-update-user-list-buffer): Don't switch to user-list buffer.
+	(riece-update-channel-list-buffer): Don't switch to channel-list
+	buffer.
+	(riece-switch-to-channel): Emit 'switch-to-channel signal.
+	(riece-switch-to-nearest-channel): Ditto.
+
+	* riece-commands.el (riece-command-switch-to-channel): Don't call
+	riece-redisplay-buffers.
+	(riece-command-join-partner): Ditto.
+	(riece-command-part): Ditto.
+
+	* riece-300.el (riece-handle-353-message): Save match data before
+	calling riece-naming-assert-names; don't call riece-redisplay-buffers.
+	(riece-handle-322-message): Don't call riece-redisplay-buffers.
+
+2004-02-26  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-display.el: Introduce Qt like "signal-slot" abstraction
+	for routing display events.
+	(riece-signal-slot-obarray): New variable.
+	(riece-make-slot): New function.
+	(riece-slot-function): New function.
+	(riece-slot-filter): New function.
+	(riece-slot-handback): New function.
+	(riece-make-signal): New function.
+	(riece-signal-name): New function.
+	(riece-signal-args): New function.
+	(riece-connect-signal): New function.
+	(riece-emit-signal): New function.
+
 2004-02-19  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-300.el (riece-handle-353-message): Add 'riece-identity

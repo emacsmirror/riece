@@ -37,32 +37,33 @@
 (defvar lsdb-insert-x-face-function)
 
 (defun riece-xface-update-user-list-buffer ()
-  (save-excursion
-    (set-buffer riece-user-list-buffer)
-    (riece-scan-property-region
-     'riece-identity (point-min)(point-max)
-     (lambda (start end)
-       (let ((records (riece-lsdb-lookup-records (get-text-property
-						  start 'riece-identity)))
-	     xface)
-	 (while (and records
-		     (null xface))
-	   (setq xface (nth 1 (assq 'x-face (car records)))
-		 records (cdr records)))
-	 (if (and xface
-		  (not (eq (char-after end) ? )))
-	     (let ((inhibit-read-only t)
-		   buffer-read-only)
-	       (goto-char end)
-	       (insert " ")
-	       (funcall lsdb-insert-x-face-function xface))))))))
+  (riece-scan-property-region
+   'riece-identity (point-min)(point-max)
+   (lambda (start end)
+     (let ((records (riece-lsdb-lookup-records (get-text-property
+						start 'riece-identity)))
+	   xface)
+       (while (and records
+		   (null xface))
+	 (setq xface (nth 1 (assq 'x-face (car records)))
+	       records (cdr records)))
+       (if (and xface
+		(not (eq (char-after end) ? )))
+	   (let ((inhibit-read-only t)
+		 buffer-read-only)
+	     (goto-char end)
+	     (insert " ")
+	     (funcall lsdb-insert-x-face-function xface)))))))
 
 (defun riece-xface-requires ()
   '(riece-lsdb))
 
 (defun riece-xface-insinuate ()
-  (add-hook 'riece-update-buffer-functions
-	    'riece-xface-update-user-list-buffer t))
+  (add-hook 'riece-startup-hook
+	    (lambda ()
+	      (with-current-buffer riece-user-list-buffer
+		(add-hook 'riece-update-buffer-functions
+			  'riece-xface-update-user-list-buffer t)))))
 
 (provide 'riece-xface)
 

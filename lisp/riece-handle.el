@@ -28,7 +28,7 @@
 (require 'riece-message)
 (require 'riece-channel)
 (require 'riece-naming)
-(require 'riece-display)
+(require 'riece-signal)
 
 (defun riece-handle-nick-message (prefix string)
   (let* ((old (riece-prefix-nickname prefix))
@@ -60,8 +60,7 @@
 			   (format "%s -> %s"
 				 (riece-format-identity old-identity t)
 				 (riece-format-identity new-identity t)))
-			  "\n"))
-    (riece-redisplay-buffers)))
+			  "\n"))))
 
 (defun riece-handle-privmsg-message (prefix string)
   (let* ((user (riece-prefix-nickname prefix))
@@ -135,8 +134,7 @@
 		   (riece-user-get-user-at-host user)
 		   (riece-format-identity channel-identity t)))
 	  "\n")))
-      (setq channels (cdr channels)))
-    (riece-redisplay-buffers)))
+      (setq channels (cdr channels)))))
 
 (defun riece-handle-part-message (prefix string)
   (let* ((user (riece-prefix-nickname prefix))
@@ -173,8 +171,7 @@
 		    (riece-format-identity channel-identity t))
 	    message))
 	  "\n")))
-      (setq channels (cdr channels)))
-    (riece-redisplay-buffers)))
+      (setq channels (cdr channels)))))
 
 (defun riece-handle-kick-message (prefix string)
   (let* ((kicker (riece-prefix-nickname prefix))
@@ -210,8 +207,7 @@
 		 (riece-format-identity user-identity t)
 		 (riece-format-identity channel-identity t))
 	  message))
-	"\n")))
-    (riece-redisplay-buffers)))
+	"\n")))))
 
 (defun riece-handle-quit-message (prefix string)
   (let* ((user (riece-prefix-nickname prefix))
@@ -252,8 +248,7 @@
 	  (format "%s has left IRC"
 		  (riece-format-identity user-identity t))
 	  message))
-	"\n"))))
-  (riece-redisplay-buffers))
+	"\n")))))
 
 (defun riece-handle-kill-message (prefix string)
   (let* ((killer (riece-prefix-nickname prefix))
@@ -298,8 +293,7 @@
 		 (riece-format-identity killer-identity t)
 		 (riece-format-identity user-identity t))
 	  message))
-	"\n")))
-    (riece-redisplay-buffers)))
+	"\n")))))
 
 (defun riece-handle-invite-message (prefix string)
   (let* ((user (riece-prefix-nickname prefix))
@@ -329,6 +323,8 @@
 	 (user-identity (riece-make-identity user riece-server-name))
 	 (channel-identity (riece-make-identity channel riece-server-name)))
     (riece-channel-set-topic (riece-get-channel channel) topic)
+    (riece-emit-signal 'channel-topic-changed
+		       channel-identity topic)
     (let ((buffer (riece-channel-buffer channel-identity)))
       (riece-insert-change
        buffer
@@ -346,47 +342,79 @@
 		 (riece-format-identity channel-identity t)
 		 (riece-format-identity user-identity t)
 		 topic))
-	"\n"))
-      (riece-redisplay-buffers))))
+	"\n")))))
 
-(defsubst riece-parse-channel-modes (string channel)
-  (while (string-match "^[-+]\\([^ ]*\\) *" string)
-    (let ((toggle (aref string 0))
-	  (modes (string-to-list (match-string 1 string))))
-      (setq string (substring string (match-end 0)))
-      (while modes
-	(if (and (memq (car modes) '(?O ?o ?v ?k ?l ?b ?e ?I))
-		 (string-match "\\([^-+][^ ]*\\) *" string))
-	    (let ((parameter (match-string 1 string)))
-	      (setq string (substring string (match-end 0)))
-	      (cond
-	       ((eq (car modes) ?o)
-		(riece-channel-toggle-operator channel parameter
-					       (eq toggle ?+)))
-	       ((eq (car modes) ?v)
-		(riece-channel-toggle-speaker channel parameter
-					      (eq toggle ?+)))
-	       ((eq (car modes) ?b)
-		(riece-channel-toggle-banned channel parameter
-					     (eq toggle ?+)))
-	       ((eq (car modes) ?e)
-		(riece-channel-toggle-uninvited channel parameter
-						(eq toggle ?+)))
-	       ((eq (car modes) ?I)
-		(riece-channel-toggle-invited channel parameter
-					      (eq toggle ?+)))))
-	  (riece-channel-toggle-mode channel (car modes)
-				     (eq toggle ?+)))
-	(setq modes (cdr modes))))))
+(defun riece-parse-modes (string)
+  (let ((start 0)
+	result)
+    (while (and (string-match "[-+]\\([^ ]*\\) *" string start)
+		(= (match-beginning 0) start))
+      (let ((toggle (eq (aref string 0) ?+))
+	    (modes (string-to-list (match-string 1 string))))
+	(setq start (match-end 0))
+	(while modes
+	  (if (and (string-match "\\([^-+][^ ]*\\) *" string start)
+		   (= (match-beginning 0) start))
+	      (setq start (match-end 0)
+		    result (cons (list (car modes) toggle
+				       (match-string 1 string))
+				 result))
+	    (setq result (cons (list (car modes) toggle)
+			       result)))
+	  (setq modes (cdr modes)))))
+    (nreverse result)))
+
+(defun riece-handle-channel-modes (channel modes)
+  (while modes
+    (cond
+     ((eq (car (car modes)) ?o)
+      (riece-channel-toggle-operator channel
+				     (nth 2 (car modes))
+				     (nth 1 (car modes)))
+      (riece-emit-signal 'channel-operators-changed
+			 (riece-make-identity channel
+					      riece-server-name)
+			 (riece-make-identity (nth 2 (car modes))
+					      riece-server-name)
+			 (nth 1 (car modes))))
+     ((eq (car (car modes)) ?v)
+      (riece-channel-toggle-speaker channel
+				    (nth 2 (car modes))
+				    (nth 1 (car modes)))
+      (riece-emit-signal 'channel-speakers-changed
+			 (riece-make-identity channel
+					      riece-server-name)
+			 (riece-make-identity (nth 2 (car modes))
+					      riece-server-name)
+			 (nth 1 (car modes))))
+     ((eq (car (car modes)) ?b)
+      (riece-channel-toggle-banned channel
+				   (nth 2 (car modes))
+				   (nth 1 (car modes))))
+     ((eq (car (car modes)) ?e)
+      (riece-channel-toggle-uninvited channel
+				      (nth 2 (car modes))
+				      (nth 1 (car modes))))
+     ((eq (car (car modes)) ?I)
+      (riece-channel-toggle-invited channel
+				    (nth 2 (car modes))
+				    (nth 1 (car modes))))
+     (t
+      (apply #'riece-channel-toggle-mode channel (car modes))))
+    (setq modes (cdr modes)))
+  (riece-emit-signal 'channel-modes-changed
+		     (riece-make-identity channel
+					  riece-server-name)))
 
 (defun riece-handle-mode-message (prefix string)
   (let* ((user (riece-prefix-nickname prefix))
 	 (user-identity (riece-make-identity user riece-server-name))
 	 channel)
-    (when (string-match "\\([^ ]+\\) *:?" string)
+    (when (string-match "^\\([^ ]+\\) *:?" string)
       (setq channel (match-string 1 string)
 	    string (substring string (match-end 0)))
-      (riece-parse-channel-modes string channel)
+      (if (string-match (concat "^" riece-channel-regexp "$") channel)
+	  (riece-handle-channel-modes channel (riece-parse-modes string)))
       (let* ((channel-identity (riece-make-identity channel riece-server-name))
 	     (buffer (riece-channel-buffer channel-identity)))
 	(riece-insert-change
@@ -405,8 +433,7 @@
 		   (riece-format-identity channel-identity t)
 		   (riece-format-identity user-identity t)
 		   string))
-	  "\n"))
-	(riece-redisplay-buffers)))))
+	  "\n"))))))
 
 (provide 'riece-handle)
 

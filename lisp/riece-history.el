@@ -72,12 +72,26 @@
 	    index (1+ index)))
     (nreverse result)))
 
-(defun riece-history-format-channel-list-line (index channel)
+(defun riece-history-format-identity-for-channel-list-buffer (index identity)
   (if (and (not (ring-empty-p riece-channel-history))
-	   (riece-identity-equal channel (ring-ref riece-channel-history 0)))
+	   (riece-identity-equal identity (ring-ref riece-channel-history 0)))
       (concat (format "%2d:+" index)
-		(riece-format-identity channel)
-		"\n")))
+	      (riece-format-identity identity))))
+
+(defun riece-history-format-identity-for-channel-list-indicator (index
+								 identity)
+  (if (and (not (ring-empty-p riece-channel-history))
+	   (riece-identity-equal identity (ring-ref riece-channel-history 0)))
+      (let ((string (riece-format-identity identity))
+	    (start 0)
+	    extent)
+	;; Escape % -> %%.
+	(while (string-match "%" string start)
+	  (setq start (1+ (match-end 0))
+		string (replace-match "%%" nil nil string)))
+	(list (format "%d:" index)
+	      (riece-propertize-modeline-string
+	       string 'face 'riece-channel-list-history-face)))))
 
 ;;; (defun riece-history-requires ()
 ;;;   (if (memq 'riece-guess riece-addons)
@@ -96,8 +110,10 @@
 	      (if (and last
 		       (not (riece-identity-equal last riece-current-channel)))
 		  (ring-insert riece-channel-history last))))
-  (add-hook 'riece-format-channel-list-line-functions
-	    'riece-history-format-channel-list-line)
+  (add-hook 'riece-format-identity-for-channel-list-buffer-functions
+	    'riece-history-format-identity-for-channel-list-buffer)
+  (add-hook 'riece-format-identity-for-channel-list-indicator-functions
+	    'riece-history-format-identity-for-channel-list-indicator)
   (if (memq 'riece-highlight riece-addons)
       (setq riece-channel-list-mark-face-alist
 	    (cons '(?+ . riece-channel-list-history-face)
