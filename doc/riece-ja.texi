@@ -877,30 +877,30 @@ AWAY 中かどうか
 @section Signals
 
 画面の再描画を効率良く行うために、イベントと描画対象のオブジェクト(バッ
-ファや @xref{Indicators})を結び付けるメカニズムを用意しています。
+ファや、モードラインの印 @pxref{Indicators})を結び付けるメカニズムを用意
+しています。
 
 イベントと描画対象のオブジェクトはシグナルをやりとりします。シグナルの概
-念は、Qt や GTK+ といった GUI ツールキットに用意されているものと同様のも
-のです。
+念は、Qt や GTK+ といった GUI ツールキットに用意されているものと同様です。
 
-シグナルを送出するには、@samp{riece-emit-signal}を使います。
+シグナルを送出するには、@samp{riece-emit-signal} を使います。
 
 @defun riece-emit-signal signal-name &rest args
-@var{signal-name}で指示されるシグナルを、引数@var{args}とともに送出します
+@var{signal-name} で指示されるシグナルを、引数 @var{args} とともに送出します
 @end defun
 
-シグナルに応答するには、@samp{riece-connect-signal}を使います。
+シグナルに応答するには、@samp{riece-connect-signal} を使います。
 
 @defun riece-connect-signal signal-name slot-function &optional filter-function handback
-@var{signal-name}で指示されるシグナルに応答する関数@var{slot-function}を
-定義します。@var{slot-function}に指定された関数は 2 つの引数を取ります。
-第1の引数ははシグナルを表します。また、第2の引数として、@var{handback}引
-数に与えられたオブジェクトがそのまま渡されます。
+@var{signal-name} で指示されるシグナルに応答する関数 @var{slot-function} 
+を結び付けます。@var{slot-function} に指定された関数は 2 つの引数を取りま
+す。第1の引数ははシグナルを表します。また、第2の引数として、
+@var{handback} 引数に与えられたオブジェクトがそのまま渡されます。
 
-@var{filter-function}は、受信したシグナルに応答すべきかどうかを判定する
+@var{filter-function} は、受信したシグナルに応答すべきかどうかを判定する
 関数です。この関数は引数としてシグナルオブジェクトを受け取り、@samp{nil}
-または@samp{t}を返すことが期待されます。返り値が@samp{nil}の場合には、
-@var{slot-function}が呼ばれることはありません。
+または @samp{t} を返すことが期待されます。返り値が @samp{nil} の場合には、
+@var{slot-function} が呼ばれることはありません。
 @end defun
 
 シグナルオブジェクトにアクセスするには、以下の関数を使います。
