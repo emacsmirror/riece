@@ -1,3 +1,9 @@
+2004-08-19  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-handle.el (riece-handle-quit-message): Pass
+	riece-part-channel the identity object of the quitting user
+	instead of his name.
+
 2004-08-16  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-highlight.el (riece-highlight-server-match): Simplified.

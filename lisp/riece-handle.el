@@ -234,7 +234,7 @@
 	 (user-identity (riece-make-identity user riece-server-name)))
     ;; If you are talking with the user, quit it.
     (if (riece-identity-member user-identity riece-current-channels)
-	(riece-part-channel user))
+	(riece-part-channel user-identity))
     (setq pointer channels)
     (while pointer
       (riece-naming-assert-part user (car pointer))
