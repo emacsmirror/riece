@@ -1,5 +1,10 @@
 2003-08-30  Daiki Ueno  <ueno@unixuser.org>
 
+	* Riece: Version 0.1.2 released.
+	* configure.ac: Bump up version to 0.1.2.
+
+2003-08-30  Daiki Ueno  <ueno@unixuser.org>
+
 	* Riece: Version 0.1.1 released.
 	* configure.ac: Bump up version to 0.1.1.
 

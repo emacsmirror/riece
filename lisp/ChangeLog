@@ -1,5 +1,10 @@
 2003-10-05  Daiki Ueno  <ueno@unixuser.org>
 
+	* Riece: Version 0.1.2 released.
+	* riece-version.el (riece-version-number): Bump up to 0.1.2.
+
+2003-10-05  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-filter.el (riece-sentinel): Don't clear
 	riece-reconnect-with-password.
 	* riece-server.el (riece-open-server): Clear
