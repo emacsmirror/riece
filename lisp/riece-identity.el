@@ -72,7 +72,7 @@
 
 (defun riece-identity-equal (ident1 ident2)
   "Return t, if IDENT1 and IDENT2 is equal."
-  (and (scandinavian-equal-ignore-case
+  (and (riece-identity-equal-no-server
 	(riece-identity-prefix ident1)
 	(riece-identity-prefix ident2))
        (equal
