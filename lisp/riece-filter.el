@@ -64,6 +64,11 @@
       (riece-ignore-errors (symbol-name after-hook)
 	(run-hook-with-args-until-success after-hook prefix string)))))
 
+(defun riece-chomp-string (string)
+  (if (string-match "\r?\n\\'" string)
+      (substring string 0 (match-beginning 0))
+    string))
+
 (defun riece-filter (process input)
   (save-excursion
     (set-buffer (process-buffer process))
@@ -76,20 +81,20 @@
 		 (setq riece-read-point (point))))
     (beginning-of-line)
     (while (and (not (eobp))
-		(looking-at "[^\r]*\r?\n"))	;the input line is not finished
+		(looking-at ".*\n"))	;the input line is not finished
       (save-excursion
 	(if (looking-at
-	     ":\\([^ ]+\\) +\\([0-5][0-9][0-9]\\) +\\([^ ]+\\) +\\([^\r]*\\)\r?\n")
+	     ":\\([^ ]+\\) +\\([0-5][0-9][0-9]\\) +\\([^ ]+\\) +\\(.*\\)\n")
 	    (riece-handle-numeric-reply
 	     (match-string 1)		;prefix
 	     (string-to-number (match-string 2)) ;number
 	     (match-string 3)		;name
-	     (match-string 4))		;reply string
-	  (if (looking-at "\\(:\\([^ ]+\\) +\\)?\\([^ ]+\\) +\\([^\r]*\\)\r?\n")
+	     (riece-chomp-string (match-string 4)))		;reply string
+	  (if (looking-at "\\(:\\([^ ]+\\) +\\)?\\([^ ]+\\) +\\(.*\\)\n")
 	      (riece-handle-message
 	       (match-string 2)		;optional prefix
 	       (match-string 3)		;command
-	       (match-string 4))	;params & trailing
+	       (riece-chomp-string (match-string 4)))	;params & trailing
 	    (if riece-debug
 		(message "Weird message from server: %s"
 			 (buffer-substring (point) (progn
