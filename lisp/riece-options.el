@@ -178,12 +178,12 @@ way is to put Riece variables on .emacs or file loaded from there."
   :type 'symbol
   :group 'riece-server)
 
-(defcustom riece-max-send-size 1500
+(defcustom riece-max-send-size 512
   "Maximum size of messages to be sent at a time."
   :type 'integer
   :group 'riece-server)
 
-(defcustom riece-send-delay 1
+(defcustom riece-send-delay 8
   "Duration of multiple send."
   :type 'integer
   :group 'riece-server)

@@ -114,8 +114,7 @@ the `riece-server-keyword-map' variable."
 
 ;; stolen (and renamed) from time-date.el.
 (defun riece-time-since (time)
-  "Return the time elapsed since TIME.
-TIME should be either a time value or a date-time string."
+  "Return the time elapsed since TIME."
   (let* ((current (current-time))
 	 (rest (when (< (nth 1 current) (nth 1 time))
 		 (expt 2 16))))
@@ -137,26 +136,19 @@ TIME should be either a time value or a date-time string."
 			     (riece-time-since riece-last-send-time))
 	  (setq riece-send-size 0))
       (while (and riece-send-queue
-		  (< riece-send-size riece-max-send-size))
+		  (<= riece-send-size riece-max-send-size))
 	(setq string (riece-encode-coding-string (car riece-send-queue))
 	      length (length string))
 	(if (> length riece-max-send-size)
 	    (message "Long message (%d > %d)" length riece-max-send-size)
-	  (process-send-string process string)
-	  (setq riece-send-size (+ riece-send-size length)))
+	  (setq riece-send-size (+ riece-send-size length))
+	  (when (<= riece-send-size riece-max-send-size)
+	    (process-send-string process string)
+	    (setq riece-last-send-time (current-time))))
 	(setq riece-send-queue (cdr riece-send-queue)))
       (if riece-send-queue
-	  (progn
-	    (if riece-debug
-		(message "%d bytes sent, %d bytes left"
-			 riece-send-size
-			 (apply #'+ (mapcar #'length riece-send-queue))))
-	    ;; schedule next send after a second
-	    (riece-run-at-time riece-send-delay nil
-			       #'riece-flush-send-queue process))
-	(if riece-debug
-	    (message "%d bytes sent" riece-send-size)))
-      (setq riece-last-send-time (current-time)))))
+	  (riece-run-at-time riece-send-delay nil
+			     #'riece-flush-send-queue process)))))
 
 (defun riece-process-send-string (process string)
   (with-current-buffer (process-buffer process)
