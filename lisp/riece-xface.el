@@ -59,11 +59,10 @@
   '(riece-lsdb))
 
 (defun riece-xface-insinuate ()
-  (add-hook 'riece-startup-hook
+  (add-hook 'riece-user-list-mode-hook
 	    (lambda ()
-	      (with-current-buffer riece-user-list-buffer
-		(add-hook 'riece-update-buffer-functions
-			  'riece-xface-update-user-list-buffer t)))))
+	      (add-hook 'riece-update-buffer-functions
+			'riece-xface-update-user-list-buffer t t))))
 
 (provide 'riece-xface)
 
