@@ -1,5 +1,7 @@
 2004-12-07  Daiki Ueno  <ueno@unixuser.org>
 
+	* test/lunit-report.el: New file split from lunit.el.
+
 	* riece-options.el (riece-addons): Add 'riece-log.
 
 	* test/test-riece-log.el (lunit-test-case-setup): #riece -> =23riece.

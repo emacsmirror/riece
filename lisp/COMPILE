@@ -141,7 +141,7 @@
   (let ((load-path (cons (expand-file-name "test") (cons nil load-path)))
 	(files (directory-files "test" t "^test-.*\\.el$"))
         suite)
-    (require 'lunit)
+    (require 'lunit-report)
     (setq suite (lunit-make-test-suite))
     (while files
       (when (file-regular-p (car files))
