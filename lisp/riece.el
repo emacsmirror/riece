@@ -151,6 +151,7 @@ If optional argument SAFE is nil, overwrite previous definitions."
     "m" riece-dialogue-enter-message
     "M" riece-command-change-mode
     "n" riece-command-change-nickname
+    "\C-n" riece-command-names
     "o" other-window
     "O" riece-command-open-server
     "C" riece-command-close-server
@@ -158,7 +159,8 @@ If optional argument SAFE is nil, overwrite previous definitions."
     "q" riece-command-quit
     "r" riece-command-configure-windows
     "x" riece-command-copy-region
-    "t" riece-command-topic)
+    "t" riece-command-topic
+    "w" riece-command-who)
 
   (riece-define-keys riece-command-mode-map
     "\r" riece-command-enter-message

@@ -195,6 +195,32 @@
 	     (riece-identity-prefix riece-current-channel)
 	     user))))
 
+(defun riece-command-names (pattern)
+  (interactive
+   (let ((completion-ignore-case t))
+     (list (read-from-minibuffer
+	    "Pattern: "
+	    (if (and riece-current-channel
+		     (riece-channel-p riece-current-channel))
+		(cons (riece-identity-prefix riece-current-channel)
+		      0))))))
+  (if (or (not (equal pattern ""))
+	  (yes-or-no-p "Really want to query NAMES without argument? "))
+      (riece-send-string (format "NAMES %s\r\n" pattern))))
+
+(defun riece-command-who (pattern)
+  (interactive
+   (let ((completion-ignore-case t))
+     (list (read-from-minibuffer
+	    "Pattern: "
+	    (if (and riece-current-channel
+		     (riece-channel-p riece-current-channel))
+		(cons (riece-identity-prefix riece-current-channel)
+		      0))))))
+  (if (or (not (equal pattern ""))
+	  (yes-or-no-p "Really want to query WHO without argument? "))
+      (riece-send-string (format "WHO %s\r\n" pattern))))
+
 (defun riece-command-change-mode (channel change)
   (interactive
    (let* ((completion-ignore-case t)

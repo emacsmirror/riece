@@ -1,5 +1,11 @@
 2003-05-29  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-commands.el (riece-command-names): New command.
+	(riece-command-who): New command.
+
+	* riece.el (riece-dialogue-mode-map): Bind riece-command-names and
+	riece-command-who.
+
 	* riece-300.el (riece-handle-341-message): New handler.
 	(riece-handle-352-message): New handler.
 
