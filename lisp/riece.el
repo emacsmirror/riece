@@ -339,7 +339,7 @@ If optional argument CONFIRM is non-nil, ask which IRC server to connect."
 	     buffer-read-only
 	     (start (point))
 	     (end (progn (beginning-of-line
-			  (1+ riece-buffer-shrink-buffer-remove-lines))
+			  (1+ riece-shrink-buffer-remove-lines))
 			 (point)))
 	     (overlays (riece-overlays-in start end)))
 	(while overlays
