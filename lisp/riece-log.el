@@ -84,7 +84,8 @@ If integer, flash back only this line numbers. t means all lines."
   (if riece-log-enabled
       (let ((file (riece-log-get-file (riece-message-target message)))
 	    (coding-system-for-write riece-log-coding-system)
-	    file-name-coding-system)
+	    file-name-coding-system
+	    default-file-name-coding-system)
 	(unless (file-directory-p (file-name-directory file))
 	  (make-directory (file-name-directory file) t))
 	(write-region (concat (format-time-string "%H:%M") " "
