@@ -100,8 +100,7 @@
       (if (symbol-value enabled)
 	  (if riece-debug
 	      (message "Can't enable add-on %S" addon))
-	(funcall (or (intern-soft (concat (symbol-name addon) "-enable"))
-		     #'ignore))
+	(funcall (intern (concat (symbol-name addon) "-enable")))
 	(if riece-debug
 	    (message "Add-on %S enabled" addon))))))
 
@@ -112,9 +111,7 @@
 	    (message "Add-on %S doesn't support enable/disable" addon))
       (if (symbol-value enabled)
 	  (progn
-	    (funcall (or (intern-soft (concat (symbol-name (car addons))
-					      "-disable"))
-			 #'ignore))
+	    (funcall (intern (concat (symbol-name (car addons)) "-disable")))
 	    (if riece-debug
 		(message "Add-on %S disabled" (car addons))))
 	(if riece-debug
