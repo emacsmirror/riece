@@ -288,11 +288,13 @@ For a list of the generic commands type \\[riece-command-generic] ? RET.
   (interactive)
   (kill-all-local-variables)
 
-  (setq major-mode 'riece-command-mode
-	mode-name "Commands"
+  (setq riece-freeze riece-default-freeze
+	riece-freeze-indicator (if riece-freeze "F" "-")
+	riece-own-freeze riece-default-own-freeze
+	riece-own-freeze-indicator (if riece-own-freeze "M" "-")
 	riece-away-indicator "-"
-	riece-freeze-indicator "-"
-	riece-own-freeze-indicator "-"
+	major-mode 'riece-command-mode
+	mode-name "Commands"
 	mode-line-buffer-identification
 	(riece-mode-line-buffer-identification
 	 '("Riece: "
@@ -329,7 +331,7 @@ Instead, these commands are available:
 	riece-freeze-indicator (if riece-freeze "F" "-")
 	riece-own-freeze riece-default-own-freeze
 	riece-own-freeze-indicator (if riece-own-freeze "M" "-")
-
+	riece-away-indicator "-"
 	major-mode 'riece-dialogue-mode
 	mode-name "Dialogue"
 	mode-line-buffer-identification

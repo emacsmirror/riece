@@ -1,5 +1,18 @@
 2003-06-02  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece.el (riece-command-mode): Set default value of riece-freeze
+	& riece-own-freeze.
+	* riece-options.el (riece-away-message): New user option.
+	* riece-commands.el (riece-command-toggle-away): Query user away
+	message.
+	* riece-300.el (riece-handle-301-message): Set user's away status.
+	(riece-handle-305-message): Ditto.
+	(riece-handle-306-message): Ditto.
+	(riece-handle-302-message): Ditto.
+	(riece-handle-352-message): Ditto.
+
+2003-06-02  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-rdcc.el: Require riece-globals, riece-misc, riece-channel,
 	and riece-identity.
 	(riece-command-dcc-receive): Check the existence of

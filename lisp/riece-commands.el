@@ -491,7 +491,9 @@
 (defun riece-command-toggle-away (&optional message)
   "Mark yourself as being away."
   (interactive
-   (if current-prefix-arg
+   (if (and (not (riece-user-get-away (riece-current-nickname)))
+	    (or (null riece-away-message)
+		current-prefix-arg))
        (let ((message (read-string "Away message: ")))
 	 (list message))))
   (if message

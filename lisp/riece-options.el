@@ -229,8 +229,13 @@ way is to put Riece variables on .emacs or file loaded from there."
   :group 'riece-options)
 
 (defcustom riece-quit-message nil
-  "Default signoff message."
-  :type '(radio (string :tag "Signoff message"))
+  "Default quit message."
+  :type '(radio (string :tag "Quit message"))
+  :group 'riece-options)
+
+(defcustom riece-away-message nil
+  "Default away message."
+  :type '(radio (string :tag "Away message"))
   :group 'riece-options)
 
 (defcustom riece-gather-channel-modes t
