@@ -93,14 +93,14 @@ This function is for internal use only."
 		      (error
 		       (if riece-debug
 			   (message
-			    "Error occurred in signal filter for \"%S\": %S"
+			    "Error in signal filter for \"%S\": %S"
 			    signal-name error)))
 		      nil))
 		(funcall (riece-slot-function (car slots))
 			 signal (riece-slot-handback (car slots))))
 	  (error
 	   (if riece-debug
-	       (message "Error occurred in slot function for \"%S\": %S"
+	       (message "Error in slot function for \"%S\": %S"
 			signal-name error))))
 	(setq slots (cdr slots))))))
 

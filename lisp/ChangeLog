@@ -1,3 +1,9 @@
+2004-03-13  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-ctcp.el: "Error occurred in XXX" -> "Error in XXX".
+	* riece-filter.el: "Error occurred in XXX" -> "Error in XXX".
+	* riece-signal.el: "Error occurred in XXX" -> "Error in XXX".
+
 2004-03-09  Daiki Ueno  <ueno@unixuser.org>
 
 	* Riece: Version 0.2.1 released.

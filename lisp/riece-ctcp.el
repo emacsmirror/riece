@@ -90,21 +90,21 @@
 			   hook prefix (car targets) message)
 			(error
 			 (if riece-debug
-			     (message "Error occurred in `%S': %S" hook error))
+			     (message "Error in `%S': %S" hook error))
 			 nil))
 		(if function
 		    (condition-case error
 			(funcall function prefix (car targets) message)
 		      (error
 		       (if riece-debug
-			   (message "Error occurred in `%S': %S"
+			   (message "Error in `%S': %S"
 				    function error))))))
 	      (condition-case error
 		  (run-hook-with-args-until-success
 		   after-hook prefix (car targets) message)
 		(error
 		 (if riece-debug
-		     (message "Error occurred in `%S': %S"
+		     (message "Error in `%S': %S"
 			      after-hook error)))))
 	    t)))))
 
@@ -225,21 +225,21 @@
 			   hook prefix (car targets) message)
 			(error
 			 (if riece-debug
-			     (message "Error occurred in `%S': %S" hook error))
+			     (message "Error in `%S': %S" hook error))
 			 nil))
 		(if function
 		    (condition-case error
 			(funcall function prefix (car targets) message)
 		      (error
 		       (if riece-debug
-			   (message "Error occurred in `%S': %S"
+			   (message "Error in `%S': %S"
 				    function error))))))
 	      (condition-case error
 		  (run-hook-with-args-until-success
 		   after-hook prefix (car targets) message)
 		(error
 		 (if riece-debug
-		     (message "Error occurred in `%S': %S"
+		     (message "Error in `%S': %S"
 			      after-hook error)))))
 	    t)))))
 

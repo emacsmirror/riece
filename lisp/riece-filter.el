@@ -48,7 +48,7 @@
 		     (riece-decode-coding-string string))
 	  (error
 	   (if riece-debug
-	       (message "Error occurred in `%S': %S" function error)))))))
+	       (message "Error in `%S': %S" function error)))))))
 
 (defun riece-default-handle-numeric-reply
   (client-prefix prefix number name string)
@@ -74,19 +74,19 @@
 		(run-hook-with-args-until-success hook prefix string)
 	      (error
 	       (if riece-debug
-		   (message "Error occurred in `%S': %S" hook error))
+		   (message "Error in `%S': %S" hook error))
 	       nil))
       (if function
 	  (condition-case error
 	      (funcall function prefix string)
 	    (error
 	     (if riece-debug
-		 (message "Error occurred in `%S': %S" function error)))))
+		 (message "Error in `%S': %S" function error)))))
       (condition-case error
 	  (run-hook-with-args-until-success after-hook prefix string)
 	(error
 	 (if riece-debug
-	     (message "Error occurred in `%S': %S" after-hook error)))))))
+	     (message "Error in `%S': %S" after-hook error)))))))
 
 (defun riece-filter (process input)
   (save-excursion
