@@ -62,10 +62,14 @@
 	    (let ((pointer items)
 		  toolbar
 		  file
-		  menu-item)
+		  menu-item
+		  (riece-data-directory (locate-data-directory "riece")))
 	      (while pointer
 		(setq file (locate-file (symbol-name (car pointer))
-					load-path
+					(if riece-data-directory
+					    (cons riece-data-directory
+						  load-path)
+					  load-path)
 					'(".xpm" ".pbm" ".xbm"))
 		      menu-item (riece-toolbar-find-menu-item (car pointer)))
 		(if (and file (file-exists-p file))

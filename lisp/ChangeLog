@@ -1,3 +1,8 @@
+2005-03-20  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-toolbar.el [XEmacs] (riece-make-toolbar-from-menu):
+	Pick up toolbar icons from etc/riece/.
+
 2005-03-12  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece.el (riece-buffer-alist): Init riece-debug-buffer.
