@@ -1,5 +1,6 @@
 # A simple IPC server for executing arbitrary Ruby program.
 # The protocol is based on Assuan protocol of GnuPG.
+# http://www.gnupg.org/(en)/related_software/libassuan/index.html
 
 require 'thread'
 require 'stringio'
