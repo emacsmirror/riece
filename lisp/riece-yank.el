@@ -63,7 +63,7 @@ before/after the first/last non-blank line."
 	    (string= prefix ""))
     (setq prefix " "))
   (let* ((kill (current-kill 0))
-	 msg)
+	 msg space-width)
     (unless kill
       (error "Nothing to send in kill-ring"))
     (if riece-yank-strip-space
