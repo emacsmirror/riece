@@ -63,7 +63,8 @@
 		riece-async
 		riece-lsdb
 		riece-xface
-		riece-ctlseq))))
+		riece-ctlseq
+		riece-ignore))))
 
 (defun riece-compile-modules (modules)
   (let ((load-path (cons nil load-path)))

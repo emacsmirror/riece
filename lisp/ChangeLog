@@ -1,3 +1,11 @@
+2004-05-18  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-url.el (riece-url-regexp): Accept ";".
+
+	* riece-ignore.el: New add-on.
+	* COMPILE (riece-modules): Add riece-ignore.
+	* Makefile.am (EXTRA_DIST): Add riece-ignore.el.
+
 2004-05-13  OHASHI Akira  <bg66@koka-in.org>
 
 	* riece-log.el (riece-log-get-directory): Follow the name change
