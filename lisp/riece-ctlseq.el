@@ -29,15 +29,31 @@
 
 ;;; Code:
 
-(require 'riece-highlight)
+(require 'riece-options)
 
-(defvar riece-ctlseq-colors
+(defgroup 'riece-ctlseq nil
+  "Highlight control sequences in IRC buffer."
+  :group 'riece)
+
+(defcustom riece-ctlseq-colors
   '("white" "black" "red" "orange" "yellow" "LightGreen" "DarkOliveGreen"
     "cyan4" "turquoise" "blue" "black" "black" "black" "black" "black"
-    "DarkBlue" "purple1" "purple2" "purple3" "magenta"))
+    "DarkBlue" "purple1" "purple2" "purple3" "magenta")
+  "List of colors can be used with ^C<fg>,<bg>."
+  :group 'riece-ctlseq
+  :type '(repeat (string :tag "Color")))
+
+(defcustom riece-ctlseq-hide-controls t
+  "If non-nil, control characters are hidden."
+  :group 'riece-ctlseq
+  :type 'boolean)
+
+(defcustom riece-ctlseq-face-cache-size 128
+  "Maximum length of the internal face cache."
+  :group 'riece-ctlseq
+  :type 'integer)
 
 (defvar riece-ctlseq-face-cache nil)
-(defvar riece-ctlseq-face-cache-size 128)
 (defvar riece-ctlseq-face-counter 0)
 
 (defun riece-ctlseq-compatible-attributes-p (this other)
@@ -140,8 +156,10 @@
     (while (string-match
 	    "[\x2\xF\x16\x1F]\\|\x3\\([0-9]+\\)?\\(,[0-9]+\\)?"
 	    (riece-message-text message) start)
-      (put-text-property (match-beginning 0) (match-end 0)
-			 'invisible 'riece-ctlseq (riece-message-text message))
+      (if riece-ctlseq-hide-controls
+	  (put-text-property (match-beginning 0) (match-end 0)
+			     'invisible 'riece-ctlseq
+			     (riece-message-text message)))
       (if attrs
 	  (put-text-property start (match-beginning 0)
 			     'riece-ctlseq-attributes (copy-sequence attrs)
@@ -166,9 +184,6 @@
 			 (get-text-property start
 					    'riece-ctlseq-attributes))))))
 
-(defun riece-ctlseq-requires ()
-  '(riece-highlight))
-			    
 (defun riece-ctlseq-insinuate ()
   (add-hook 'riece-message-filter-functions 'riece-ctlseq-message-filter)
   (add-hook 'riece-after-insert-functions 'riece-ctlseq-scan-region))
