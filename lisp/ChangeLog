@@ -1,5 +1,21 @@
 2003-06-12  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-doctor.el: Don't require 'doctor; autoload doctor-mode and
+	doctor-read-print.
+
+	* riece-handle.el (riece-handle-nick-message): Use
+	riece-decode-identity to decode user.
+	(riece-handle-join-message): Ditto.
+	(riece-handle-part-message): Ditto.
+	(riece-handle-kick-message): Ditto.
+	(riece-handle-quit-message): Ditto.
+	(riece-handle-kill-message): Ditto.
+	(riece-handle-invite-message): Ditto.
+	(riece-handle-topic-message): Ditto.
+	(riece-handle-mode-message): Ditto.
+
+2003-06-12  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-message.el (riece-own-channel-message): Abolish.
 
 	* riece-commands.el (riece-command-send-message): Don't use

@@ -71,3 +71,5 @@
     (riece-rename-user old-name new-name)))
 
 (provide 'riece-naming)
+
+;;; riece-naming.el ends here

@@ -30,8 +30,6 @@
 
 ;;; Code:
 
-(require 'doctor)
-
 (defgroup riece-doctor nil
   "Interface to doctor.el"
   :prefix "riece-"
@@ -48,6 +46,9 @@
   :group 'riece-doctor)
 
 (defvar riece-doctor-patients nil)
+
+(autoload 'doctor-mode "doctor")
+(autoload 'doctor-read-print "doctor")
 
 (defun riece-doctor-buffer-name (user)
   (concat " *riece-doctor*" (riece-decode-identity user)))
