@@ -1,3 +1,8 @@
+2004-03-09  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-emacs.el (riece-propertize-modeline-string): Fix arguments
+	for add-text-properties.
+
 2004-03-08  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-xface.el (riece-xface-insinuate): Use
