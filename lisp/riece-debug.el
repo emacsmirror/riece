@@ -24,12 +24,17 @@
 
 ;;; Code:
 
+(require 'riece-globals)
+
 (defvar riece-debug-standard-output-buffer nil)
 
 (defun riece-debug-reset-standard-output ()
   (unless riece-debug-standard-output-buffer
     (setq riece-debug-standard-output-buffer
-	  (generate-new-buffer " *riece-debug-standard-output*")))
+	  (generate-new-buffer " *riece-debug-standard-output*")
+	  riece-buffer-list
+	  (cons riece-debug-standard-output-buffer
+		riece-buffer-list)))
   (save-excursion
     (set-buffer riece-debug-standard-output-buffer)
     (buffer-disable-undo)
