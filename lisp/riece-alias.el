@@ -50,6 +50,11 @@
   :type 'boolean
   :group 'riece-alias)
 
+(defcustom riece-alias-use-atmark nil
+  "If non-nil, use atmark to separate prefix and server."
+  :type 'boolean
+  :group 'riece-alias)
+
 (defcustom riece-alias-alist nil
   "An alist mapping aliases to names."
   :type 'list
@@ -74,9 +79,48 @@
 		     nil nil string)
     string))
 
+(defun riece-alias-escape-atmark (string)
+  (let ((index 0))
+    (while (string-match "@" string index)
+      (setq index (1+ (match-end 0))
+	    string (replace-match "@@" nil nil string)))
+    string))
+
+(defun riece-alias-abbrev-atmark (string)
+  (if (string-match " " string)
+      (let ((prefix (substring string 0 (match-beginning 0)))
+	    (server (substring string (match-end 0))))
+	(concat (riece-alias-escape-atmark prefix) "@"
+		(riece-alias-escape-atmark server)))
+    (concat (riece-alias-escape-atmark string) "@")))
+
+(defun riece-alias-expand-atmark (string)
+  (let ((index 0)
+	prefix
+	server
+	length)
+    (while (and (null prefix)
+		(string-match "@+" string index))
+      (setq length (- (match-end 0) (match-beginning 0))
+	    string (replace-match (make-string (/ length 2) ?@)
+				  nil nil string)
+	    index (+ (match-beginning 0) (/ length 2)))
+      (unless (zerop (% length 2))
+	(setq prefix (substring string 0 index))))
+    (setq server (substring string index)
+	  index 0)
+    (if (equal server "")
+	prefix
+      (while (string-match "@@" server index)
+	(setq server (replace-match "@" nil nil server)
+	      index (1- (match-end 0))))
+      (concat prefix " " server))))
+
 (defun riece-alias-abbrev-identity-string (string)
   (if riece-alias-enable-percent-hack
       (setq string (riece-alias-abbrev-percent-hack string)))
+  (if riece-alias-use-atmark
+      (setq string (riece-alias-abbrev-atmark string)))
   (let ((alist riece-alias-alist))
     (catch 'done
       (while alist
@@ -88,6 +132,8 @@
 (defun riece-alias-expand-identity-string (string)
   (if riece-alias-enable-percent-hack
       (setq string (riece-alias-expand-percent-hack string)))
+  (if riece-alias-use-atmark
+      (setq string (riece-alias-expand-atmark string)))
   (let ((alist riece-alias-alist))
     (catch 'done
       (while alist

@@ -1,5 +1,16 @@
 2004-11-05  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-alias.el (riece-alias-use-atmark): New user option.  If
+	this option enabled, atmark "@" will be used to separate prefix
+	and server. (e.g. "#riece@server")
+	(riece-alias-escape-atmark): New function.
+	(riece-alias-abbrev-atmark): New function.
+	(riece-alias-expand-atmark): New function.
+	(riece-alias-abbrev-identity-string): Call
+	riece-alias-abbrev-atmark.
+	(riece-alias-expand-identity-string): Call
+	riece-alias-expand-atmark.
+
 	* riece-rdcc.el (riece-rdcc-block-size): Changed default value to
 	1024 due to the DCC specification.
 	(riece-rdcc-send-program): Wait ack from a recipient.
