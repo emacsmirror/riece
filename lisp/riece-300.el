@@ -235,7 +235,7 @@
   (make-local-variable 'riece-353-message-alist)      
   (if (string-match "^[=\*@] *\\([^ ]+\\) +:?" string)
       (let* ((channel (match-string 1 string))
-	     (entry (assoc channel riece-353-message-alist)))
+	     (entry (riece-identity-assoc channel riece-353-message-alist)))
 	(if entry
 	    (setcdr entry
 		    (concat (cdr entry)
@@ -414,7 +414,7 @@
 	     (channel-identity (riece-make-identity channel
 						    riece-server-name))
 	     (buffer (riece-channel-buffer channel-identity))
-	     (entry (assoc channel riece-353-message-alist))
+	     (entry (riece-identity-assoc channel riece-353-message-alist))
 	     (string (cdr entry))
 	     (start 0)
 	     users)
