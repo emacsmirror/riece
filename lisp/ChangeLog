@@ -1,5 +1,8 @@
 2003-06-17  OHASHI Akira  <bg66@koka-in.org>
 
+	* riece-unread.el (riece-unread-display-message-function): Check a
+	`selected-window'.
+
 	* riece-mini.el: New add-on.
 	* COMPILE (riece-modules): Add `riece-mini'.
 	* Makefile.am (EXTRA_DIST): Add `riece-mini.el'.
