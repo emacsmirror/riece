@@ -1,3 +1,15 @@
+2003-12-13  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-options.el (riece-default-open-connection-function): New
+	user option.
+
+	* riece-server.el (riece-server-keyword-map): Use
+	riece-default-open-connection-function.
+
+	* riece-async.el: New add-on.
+	* COMPILE (riece-modules): Add riece-async.
+	* Makefile.am (EXTRA_DIST): Add riece-async.el
+
 2003-12-09  OHASHI Akira  <bg66@koka-in.org>
 
 	* riece-mini.el (riece-mini-display-message-function): Don't set
