@@ -1,3 +1,13 @@
+2004-05-22  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-addon.el (riece-addon-list-mode): Call font-lock-set-defaults.
+
+	* riece-highlight.el (riece-highlight-setup-dialogue): Call
+	font-lock-set-defaults.
+	(riece-highlight-setup-channel-list): Ditto.
+
+	* riece.el (riece): Enable add-ons after startup.
+
 2004-05-21  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece.el (riece-dialogue-mode-map): Bind

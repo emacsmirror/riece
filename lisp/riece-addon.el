@@ -220,8 +220,12 @@ All normal editing commands are turned off."
 	truncate-lines t
 	buffer-read-only t)
   (use-local-map riece-addon-list-mode-map)
-  (make-local-variable 'font-lock-defaults)
-  (setq font-lock-defaults '(riece-addon-list-font-lock-keywords t))
+  (if (featurep 'xemacs)
+      ;; In XEmacs, auto-initialization of font-lock is not affective
+      ;; when buffer-file-name is not set.
+      (font-lock-set-defaults)
+    (make-local-variable 'font-lock-defaults)
+    (setq font-lock-defaults '(riece-addon-list-font-lock-keywords t)))
   (run-hooks 'riece-addon-list-mode-hook))
 
 (defun riece-command-list-addons ()
