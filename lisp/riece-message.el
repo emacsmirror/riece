@@ -153,9 +153,11 @@ Normally they are *Dialogue* and/or *Others*."
 	   (funcall riece-message-make-name-function message)))
 	(server-name (riece-identity-server (riece-message-speaker message))))
     (riece-with-server-buffer (riece-current-server-name)
-      (riece-concat-server-name
-       (concat open-bracket name close-bracket
-	       " " (riece-message-text message) "\n")))))
+      (concat
+       (riece-concat-server-name
+	(concat open-bracket name close-bracket
+		" " (riece-message-text message)))
+       "\n"))))
 
 (defun riece-display-message-1 (message)
   (let ((buffer (riece-message-buffer message))
