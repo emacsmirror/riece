@@ -51,7 +51,7 @@ For example:
         '((\"\\\\bBug#\\\\([0-9]+\\\\)\\\\b\" .
            \"http://bugs.debian.org/\\\\1\")))
 
-This will map a string \"Bug#12345\" to a URL
+This maps a string \"Bug#12345\" to a URL
 \"http://bugs.debian.org/12345\"."
   :type 'alist
   :group 'riece-url)
