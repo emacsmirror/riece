@@ -286,6 +286,10 @@ If optional argument CONFIRM is non-nil, ask which IRC server to connect."
     (switch-to-buffer riece-command-buffer)
     (riece-redisplay-buffers)
     (riece-open-server riece-server "")
+    (let ((server-list riece-startup-server-list))
+      (while server-list
+	(riece-command-open-server (car server-list))
+	(setq server-list (cdr server-list))))
     (run-hooks 'riece-startup-hook)
     (message "%s" (substitute-command-keys
 		   "Type \\[describe-mode] for help"))))

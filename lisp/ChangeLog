@@ -1,5 +1,12 @@
 2003-12-14  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece.el (riece): Connect to servers in riece-startup-server-list.
+
+	* riece-000.el (riece-handle-001-message): Ignore entries in
+	riece-startup-channel-list which doesn't match riece-server-name. 
+
+	* riece-options.el (riece-startup-server-list): New user option.
+
 	* riece-async.el (riece-async-max-buffer-size): New user option.
 	(riece-async-server-program): Use io/nonblock & IO#syswrite to
 	check whether the write end of pipe (i.e. input to emacs process)

@@ -192,6 +192,11 @@ way is to put Riece variables on .emacs or file loaded from there."
 			 (list (string :tag "Channel") (string :tag "Key"))))
   :group 'riece-channel)
 
+(defcustom riece-startup-server-list nil
+  "A list of servers to connect automatically at startup."
+  :type '(repeat (string :tag "Server"))
+  :group 'riece-server)
+
 (defcustom riece-retry-with-new-nickname nil
   "When nickname has already been in use, grow-tail automatically."
   :type 'boolean

@@ -53,12 +53,15 @@
   (if (equal riece-server-name "")
       (message "Logging in to IRC server...done")
     (message "Logging in to %s...done" riece-server-name))
-  (let ((channel-list riece-startup-channel-list))
+  (let ((channel-list riece-startup-channel-list)
+	entry identity)
     (while channel-list
-      (if (listp (car channel-list))
-	  (riece-command-join (riece-parse-identity (car (car channel-list)))
-			      (nth 1 (car channel-list)))
-	(riece-command-join (riece-parse-identity (car channel-list))))
+      (unless (listp (setq entry (car channel-list)))
+	(setq entry (list (car channel-list))))
+      (if (equal (riece-identity-server
+		  (setq identity (riece-parse-identity (car entry))))
+		 riece-server-name)
+	  (riece-command-join identity (nth 1 entry)))
       (setq channel-list (cdr channel-list))))
   (run-hooks 'riece-after-login-hook))
 
