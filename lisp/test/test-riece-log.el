@@ -19,7 +19,7 @@
 			       (temp-directory)
 			     temporary-file-directory))
 	test-riece-log-directory
-	(expand-file-name "riece" riece-log-directory))
+	(expand-file-name "=23riece" riece-log-directory))
   (make-directory riece-log-directory)
   (make-directory test-riece-log-directory)
   (write-region "03:14 <test> a b c\n03:15 <test> a b c\n" nil

@@ -94,32 +94,16 @@ If integer, flash back only this line numbers. t means all lines."
    (riece-log-get-directory identity)))
 
 (defun riece-log-get-files (identity)
-  (let ((files (directory-files (riece-log-get-directory identity) t
-				(concat "^"
-					(riece-make-interval-regexp "[0-9]" 8)
-					"\\.log$")
-				t)))
-    (nreverse (sort files #'string-lessp))))
+  (let ((directory (riece-log-get-directory identity)))
+    (if (file-directory-p directory)
+	(nreverse (sort (directory-files directory t
+			 (concat "^"
+				 (riece-make-interval-regexp "[0-9]" 8)
+				 "\\.log$")
+			 t)
+		  #'string-lessp)))))
 
 (defun riece-log-get-directory (identity)
-  (let ((channel (riece-identity-canonicalize-prefix
-		  (riece-identity-prefix identity)))
-	(server (riece-identity-server identity))
-	(map (assoc (riece-format-identity identity) riece-log-directory-map))
-	name)
-    (cond (map (setq name (cdr map)))
-	  ((string-match riece-strict-channel-regexp channel)
-	   (let ((suffix (match-string 2 channel)))
-	     (setq name (substring channel (match-end 1) (match-beginning 2)))
-	     (when (and (stringp suffix)
-			(string-match "^:\\*\\.\\(.*\\)" suffix))
-	       (setq name (concat name "-" (match-string 1 suffix))))))
-	  (t (setq name "priv")))
-    (if server
-	(expand-file-name name (expand-file-name server riece-log-directory))
-      (expand-file-name name riece-log-directory))))
-
-(defun riece-log-get-directory-1 (identity)
   (let ((prefix (riece-identity-canonicalize-prefix
 		 (riece-identity-prefix identity)))
 	(server (riece-identity-server identity))

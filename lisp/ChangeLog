@@ -1,7 +1,11 @@
 2004-12-07  Daiki Ueno  <ueno@unixuser.org>
 
+	* test/test-riece-log.el (lunit-test-case-setup): #riece -> =23riece.
+
 	* riece-log.el (riece-log-insert): Renamed from
 	riece-log-flashback-1; simplified.
+	(riece-log-get-files): Check existence of directory.
+	(riece-log-get-directory): New implementation.
 
 2004-12-07  TAKAHASHI Kaoru  <kaoru@kaisei.org>
 
