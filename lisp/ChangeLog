@@ -1,5 +1,8 @@
 2003-10-19  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-menu.el (riece-menu-create-layouts-menu): New function.
+	(riece-menu-items): Use it.
+
 	* riece-server.el (riece-server-process-opened): New function.
 	(riece-server-opened): Use it.
 

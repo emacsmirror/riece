@@ -33,8 +33,7 @@
   `("Riece"
     ["Version" riece-version t]
     "----"
-    ["Change Window Layout"
-     riece-command-change-layout t]
+    ("Change Window Layout..." :filter riece-menu-create-layouts-menu)
     ["Toggle Freeze Channel Buffer"
      riece-command-toggle-freeze t]
     ["Toggle Freeze Channel Buffer Until Next Message"
@@ -53,6 +52,12 @@
     ("Channels" :filter riece-menu-create-channels-menu)
     ("Servers" :filter riece-menu-create-servers-menu))
   "Menu used in command mode.")
+
+(defun riece-menu-create-layouts-menu (menu)
+  (mapcar (lambda (entry)
+	    (vector (car entry) (list 'riece-command-change-layout (car entry))
+		    t))
+	  riece-layout-alist))
 
 (defun riece-menu-create-channels-menu (menu)
   (mapcar (lambda (channel)
