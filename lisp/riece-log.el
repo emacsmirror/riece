@@ -77,9 +77,9 @@ If integer, flash back only this line numbers. t means all lines."
    (riece-log-get-directory identity)))
 
 (defun riece-log-get-directory (identity)
-  (let* ((channel (riece-identity-prefix identity))
-	 (server (riece-identity-server identity))
-	 (map (assoc channel riece-log-directory-map))
+  (let ((channel (riece-identity-prefix identity))
+	(server (riece-identity-server identity))
+	(map (assoc (riece-format-identity identity) riece-log-directory-map))
 	 name)
     (cond (map (setq name (cdr map)))
 	  ((string-match riece-channel-regexp channel)
