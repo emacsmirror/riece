@@ -1,5 +1,9 @@
 2003-09-20  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-options.el (riece-startup-channel-list): Revive.
+	* riece-000.el (riece-handle-001-message): Process
+	riece-startup-channel-list.
+
 	* riece-server.el (riece-open-server): Display "Logging in to
 	XXX..." message.
 	* riece-000.el (riece-handle-001-message): Clear "Logging in to
