@@ -1,3 +1,24 @@
+2004-05-29  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-commands.el (riece-command-switch-to-channel): Change prompt.
+	(riece-command-switch-to-channel-by-number): Ditto.
+	(riece-command-change-layout): Ditto.
+	(riece-command-finger): Ditto.
+	(riece-command-topic): Ditto.
+	(riece-command-invite): Ditto.
+	(riece-command-kick): Ditto.
+	(riece-command-names): Ditto.
+	(riece-command-who): Ditto.
+	(riece-command-list): Ditto.
+	(riece-command-change-mode): Ditto.
+	(riece-command-set-operators): Ditto.
+	(riece-command-set-speakers): Ditto.
+	(riece-command-enter-message-to-user): Ditto.
+	(riece-command-join): Ditto.
+	(riece-command-part): Ditto.
+	(riece-command-open-server): Ditto.
+	(riece-command-close-server): Ditto.
+
 2004-05-28  OHASHI Akira  <bg66@koka-in.org>
 
 	* riece-biff.el (riece-biff-insinuate): Add riece-biff-disable to

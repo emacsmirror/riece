@@ -38,7 +38,8 @@
 ;;; Channel movement:
 (defun riece-command-switch-to-channel (channel)
   (interactive (list (riece-completing-read-identity
-		      "Channel/User: " riece-current-channels nil t)))
+		      "Switch to channel/user: "
+		      riece-current-channels nil t)))
   (unless (equal channel riece-current-channel)
     (riece-switch-to-channel channel)))
 
@@ -47,7 +48,7 @@
    (let ((command-name (symbol-name this-command)))
      (if (string-match "[0-9]+$" command-name)
 	 (list (string-to-number (match-string 0 command-name)))
-       (list (string-to-number (read-string "Number: "))))))
+       (list (string-to-number (read-string "Switch to number: "))))))
   (let ((channel (nth (1- number) riece-current-channels)))
     (if channel
 	(riece-command-switch-to-channel channel)
@@ -116,7 +117,7 @@
 (defun riece-command-change-layout (name)
   "Select a layout-name from all current available layouts and change
 the layout to the selected layout-name."
-  (interactive (list (completing-read "Layout: " riece-layout-alist)))
+  (interactive (list (completing-read "Change layout: " riece-layout-alist)))
   (setq riece-layout name
 	riece-save-variables-are-dirty t)
   (riece-command-configure-windows))
@@ -146,7 +147,7 @@ the layout to the selected layout-name."
   (interactive
    (let* ((completion-ignore-case t)
 	  (user (riece-completing-read-identity
-		 "User: "
+		 "Finger user: "
 		 (riece-get-users-on-server (riece-current-server-name)))))
      (list user current-prefix-arg)))
   (if recurse
@@ -160,14 +161,14 @@ the layout to the selected layout-name."
    (progn
      (riece-check-channel-commands-are-usable t)
      (list (read-from-minibuffer
-	    "Topic: " (cons (or (riece-with-server-buffer
-				    (riece-identity-server
-				     riece-current-channel)
-				  (riece-channel-get-topic
-				   (riece-identity-prefix
-				    riece-current-channel)))
-				"")
-			    0)))))
+	    "Set topic: " (cons (or (riece-with-server-buffer
+				     (riece-identity-server
+				      riece-current-channel)
+				     (riece-channel-get-topic
+				      (riece-identity-prefix
+				       riece-current-channel)))
+				    "")
+				0)))))
   (riece-send-string (format "TOPIC %s :%s\r\n"
 			     (riece-identity-prefix riece-current-channel)
 			     topic)))
@@ -177,7 +178,7 @@ the layout to the selected layout-name."
    (let ((completion-ignore-case t))
      (riece-check-channel-commands-are-usable t)
      (list (riece-completing-read-identity
-	    "User: "
+	    "Invite user: "
 	    (riece-get-users-on-server (riece-current-server-name))))))
   (riece-send-string (format "INVITE %s %s\r\n"
 			     (riece-identity-prefix user)
@@ -188,7 +189,7 @@ the layout to the selected layout-name."
    (let ((completion-ignore-case t))
      (riece-check-channel-commands-are-usable t)
      (list (completing-read
-	    "User: "
+	    "Kick user: "
 	    (riece-with-server-buffer
 		(riece-identity-server riece-current-channel)
 	      (riece-channel-get-users (riece-identity-prefix
@@ -208,7 +209,7 @@ the layout to the selected layout-name."
   (interactive
    (let ((completion-ignore-case t))
      (list (read-from-minibuffer
-	    "Pattern: "
+	    "NAMES pattern: "
 	    (if (and riece-current-channel
 		     (riece-channel-p (riece-identity-prefix
 				       riece-current-channel)))
@@ -222,7 +223,7 @@ the layout to the selected layout-name."
   (interactive
    (let ((completion-ignore-case t))
      (list (read-from-minibuffer
-	    "Pattern: "
+	    "WHO pattern: "
 	    (if (and riece-current-channel
 		     (riece-channel-p (riece-identity-prefix
 				       riece-current-channel)))
@@ -236,7 +237,7 @@ the layout to the selected layout-name."
   (interactive
    (let ((completion-ignore-case t))
      (list (read-from-minibuffer
-	    "Pattern: "
+	    "LIST pattern: "
 	    (if (and riece-current-channel
 		     (riece-channel-p (riece-identity-prefix
 				       riece-current-channel)))
@@ -252,7 +253,7 @@ the layout to the selected layout-name."
 	  (channel
 	   (if current-prefix-arg
 	       (riece-completing-read-identity
-		"Channel/User: "
+		"Change mode for channel/user: "
 		(riece-get-identities-on-server (riece-current-server-name)))
 	     (riece-check-channel-commands-are-usable t)
 	     riece-current-channel))
@@ -280,7 +281,9 @@ the layout to the selected layout-name."
      (riece-check-channel-commands-are-usable t)
      (let ((completion-ignore-case t))
        (list (riece-completing-read-multiple
-	      "Users"
+	      (if current-prefix-arg
+		  "Unset +o for users"
+		"Set +o for users")
 	      (riece-with-server-buffer
 		  (riece-identity-server riece-current-channel)
 		(riece-channel-get-users (riece-identity-prefix
@@ -313,7 +316,9 @@ the layout to the selected layout-name."
      (riece-check-channel-commands-are-usable t)
      (let ((completion-ignore-case t))
        (list (riece-completing-read-multiple
-	      "Users"
+	      (if current-prefix-arg
+		  "Unset +v for users"
+		"Set +v for users")
 	      (riece-with-server-buffer
 		  (riece-identity-server riece-current-channel)
 		(riece-channel-get-users (riece-identity-prefix
@@ -387,7 +392,7 @@ the layout to the selected layout-name."
   (interactive
    (let ((completion-ignore-case t))
      (list (riece-completing-read-identity
-	    "User: "
+	    "Message to user: "
 	    (riece-get-users-on-server (riece-current-server-name))))))
   (let ((text (buffer-substring
 	       (riece-line-beginning-position)
@@ -427,11 +432,11 @@ the layout to the selected layout-name."
 	       (let ((default (riece-format-identity
 			       riece-join-channel-candidate)))
 		 (riece-completing-read-identity
-		  (format "Channel/User (default %s): " default)
+		  (format "Join channel/user (default %s): " default)
 		  (riece-get-identities-on-server (riece-current-server-name))
 		  nil nil nil nil default))
 	     (riece-completing-read-identity
-	      "Channel/User: "
+	      "Join channel/user: "
 	      (riece-get-identities-on-server (riece-current-server-name)))))
 	  key)
      (if (and current-prefix-arg
@@ -464,7 +469,7 @@ the layout to the selected layout-name."
      (let* ((completion-ignore-case t)
 	    (target
 	     (riece-completing-read-identity
-	      (format "Channel/User (default %s): "
+	      (format "Part from channel/user (default %s): "
 		      (riece-format-identity riece-current-channel))
 	      riece-current-channels nil nil nil nil
 	      (riece-format-identity riece-current-channel)))
@@ -654,7 +659,7 @@ If prefix argument ARG is non-nil, toggle frozen status."
   
 (defun riece-command-open-server (server-name)
   (interactive
-   (list (completing-read "Server: " riece-server-alist)))
+   (list (completing-read "Open server: " riece-server-alist)))
   (if (riece-server-process server-name)
       (error "%s is already opened" server-name))
   (riece-open-server
@@ -663,7 +668,7 @@ If prefix argument ARG is non-nil, toggle frozen status."
 
 (defun riece-command-close-server (server-name &optional message)
   (interactive
-   (list (completing-read "Server: " riece-server-process-alist)
+   (list (completing-read "Close server: " riece-server-process-alist)
 	 (if current-prefix-arg
 	     (read-string "Message: ")
 	   riece-quit-message)))
