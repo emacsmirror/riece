@@ -300,7 +300,7 @@ If optional argument CONFIRM is non-nil, ask which IRC server to connect."
 				    major-mode))
 				 'riece-dialogue-mode)
 			     (riece-shrink-buffer (car buffers)))
-		       (deql (car buffers) riece-buffer-list))
+		       (delq (car buffers) riece-buffer-list))
 		     (setq buffers (cdr buffers))))))))
     (switch-to-buffer riece-command-buffer)
     (riece-display-connect-signals)
