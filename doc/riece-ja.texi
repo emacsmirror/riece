@@ -373,10 +373,12 @@ Riece $B$N%P!<%8%g%s$rI=<($7$^$9!#A0CV0z?t(B (@kbd{C-u}) $B$rM?$($k$H!"$h$j>\
 $B%f!<%6%j%9%H%P%C%U%!$NI=<(!&HsI=<($r@Z$jBX$($^$9(B(@code{riece-command-toggle-user-list-buffer-mode})
 @item C-c C-t f
 @findex riece-command-toggle-freeze
-$B%A%c%s%M%k%P%C%U%!!"$^$?$O%@%$%"%m%0%P%C%U%!$N%9%/%m!<%k$r6X;_$7$^$9(B(@code{riece-command-toggle-freeze})
+$B%A%c%s%M%k%P%C%U%!!"$^$?$O%@%$%"%m%0%P%C%U%!$rE`7k(B($B%9%/%m!<%k$r6X;_(B)$B$7$^(B
+$B$9(B(@code{riece-command-toggle-freeze})
 @item C-c C-t o
 @findex riece-command-toggle-own-freeze
-$B%A%c%s%M%k%P%C%U%!!"$^$?$O%@%$%"%m%0%P%C%U%!$N%9%/%m!<%k$r!"<+J,$,H/8@$9$k$^$G6X;_$7$^$9(B(@code{riece-command-toggle-own-freeze})
+$B%A%c%s%M%k%P%C%U%!!"$^$?$O%@%$%"%m%0%P%C%U%!$r!"<+J,$,H/8@$9$k$^$GE`7k$7(B
+$B$^$9(B(@code{riece-command-toggle-own-freeze})
 @item C-c C-t a
 @findex riece-command-toggle-away
 $B<+J,$NN%@J>uBV$r@Z$jBX$($^$9(B(@code{riece-command-toggle-away})
@@ -880,8 +882,8 @@ AWAY $BCf$+$I$&$+(B
 $B%U%!$d!"%b!<%I%i%$%s$N0u(B @pxref{Indicators})$B$r7k$SIU$1$k%a%+%K%:%`$rMQ0U(B
 $B$7$F$$$^$9!#(B
 
-$B%$%Y%s%H$HIA2hBP>]$N%*%V%8%'%/%H$O%7%0%J%k$r$d$j$H$j$7$^$9!#%7%0%J%k$N35(B
-$BG0$O!"(BQt $B$d(B GTK+ $B$H$$$C$?(B GUI $B%D!<%k%-%C%H$KMQ0U$5$l$F$$$k$b$N$HF1MM$G$9!#(B
+$B2?$i$+$N%$%Y%s%H$,H/@8$9$k$H!"%7%0%J%k$,Aw=P$5$l$^$9!#%7%0%J%k$N35G0$O!"(B
+Qt $B$d(B GTK+ $B$H$$$C$?(B GUI $B%D!<%k%-%C%H$KMQ0U$5$l$F$$$k$b$N$HF1MM$G$9!#(B
 
 $B%7%0%J%k$rAw=P$9$k$K$O!"(B@samp{riece-emit-signal} $B$r;H$$$^$9!#(B
 
@@ -912,6 +914,48 @@ AWAY $BCf$+$I$&$+(B
 @defun riece-signal-args
 $B%7%0%J%kAw=P;~$KM?$($i$l$?0z?t$rJV$7$^$9!#(B
 @end defun
+
+$B8=:_!"0J2<$N%7%0%J%k$,I8=`$GEPO?$5$l$F$$$^$9!'(B
+
+@table @samp
+@item channel-list-changed
+$B;22C$7$F$$$k%A%c%s%M%k$N0lMw$NJQ2=(B
+@item user-list-changed
+$B%A%c%s%M%k$N;22C<T0lMw$NJQ2=(B
+($B0z?t$O%A%c%s%M%k$KAjEv$9$k(B @samp{riece-identity} $B%*%V%8%'%/%H(B)
+@item channel-switched
+$B8=:_$N%A%c%s%M%k$r0\F0(B
+@item user-joined-channel
+$B%f!<%6$,%A%c%s%M%k$K;22C(B
+($B0z?t$O!"%f!<%6$*$h$S%A%c%s%M%k$KAjEv$9$k(B @samp{riece-identity} $B%*%V%8%'%/%H(B)
+@item user-left-channel
+$B%f!<%6$,%A%c%s%M%k$+$iN%C&(B
+($B0z?t$O!"%f!<%6$*$h$S%A%c%s%M%k$KAjEv$9$k(B @samp{riece-identity} $B%*%V%8%'%/%H(B)
+@item user-renamed
+$B%f!<%6$,L>A0$rJQ99(B
+($B0z?t$O!"0JA0$H8=:_$NL>A0$KAjEv$9$k(B @samp{riece-identity} $B%*%V%8%'%/%H(B)
+@item user-away-changed
+$B%f!<%6$NN%@J>uBV$NJQ2=(B
+($B0z?t$O!"%f!<%6$KAjEv$9$k(B @samp{riece-identity} $B%*%V%8%'%/%H(B)
+@item user-operator-changed
+$B%f!<%6$N%*%Z%l!<%?>uBV$NJQ2=(B
+($B0z?t$O!"%f!<%6$KAjEv$9$k(B @samp{riece-identity} $B%*%V%8%'%/%H(B)
+@item channel-topic-changed
+$B%A%c%s%M%k$N%H%T%C%/$NJQ2=(B
+($B0z?t$O!"%A%c%s%M%k$KAjEv$9$k(B @samp{riece-identity} $B%*%V%8%'%/%H(B)
+@item channel-modes-changed
+$B%A%c%s%M%k$N%b!<%I$NJQ2=(B
+($B0z?t$O!"%A%c%s%M%k$KAjEv$9$k(B @samp{riece-identity} $B%*%V%8%'%/%H(B)
+@item channel-operators-changed
+$B%A%c%s%M%k$G%*%Z%l!<%?8"8B$r;}$D%f!<%6$N0lMw$NJQ2=(B
+($B0z?t$O!"%A%c%s%M%k$KAjEv$9$k(B @samp{riece-identity} $B%*%V%8%'%/%H(B)
+@item channel-speakers-changed
+$B%A%c%s%M%k$GH/8@8"$r;}$D%f!<%6$N0lMw$NJQ2=(B
+($B0z?t$O!"%A%c%s%M%k$KAjEv$9$k(B @samp{riece-identity} $B%*%V%8%'%/%H(B)
+@item buffer-freeze-changed
+$B%P%C%U%!$NE`7k>uBV$NJQ2=(B
+($B0z?t$O%P%C%U%!(B)
+@end table
 
 @node Index, Function Index, Development, Top
 @chapter Index
