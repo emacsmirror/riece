@@ -191,8 +191,13 @@ Local to the buffers.")
 (defun riece-join-channel (identity)
   (unless (riece-identity-member identity riece-current-channels)
     (setq riece-current-channels
-	  (riece-identity-assign-binding identity riece-current-channels
-					 riece-default-channel-binding))
+	  (riece-identity-assign-binding
+	   identity riece-current-channels
+	   (mapcar
+	    (lambda (channel)
+	      (if channel
+		  (riece-parse-identity channel)))
+	    riece-default-channel-binding)))
     (riece-channel-buffer-create identity)
     (with-current-buffer riece-channel-list-buffer
       (setq riece-redisplay-buffer t))))

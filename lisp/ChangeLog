@@ -1,5 +1,10 @@
 2003-08-25  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-display.el (riece-join-channel): Parse non-nil elements in
+	riece-default-channel-binding.
+
+2003-08-25  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-identity.el (riece-format-identity): Add 'riece-identity
 	property to the resulting string.
 
