@@ -161,7 +161,12 @@
   (force-mode-line-update t))
 
 (defun riece-channel-buffer-name (identity)
-  (format riece-channel-buffer-format (riece-format-identity identity)))
+  (let ((channels (riece-identity-member identity riece-current-channels)))
+    (if channels
+	(setq identity (car channels))
+      (if riece-debug
+	  (message "%S is not a member of riece-current-channels" identity)))
+    (format riece-channel-buffer-format (riece-format-identity identity))))
 
 (eval-when-compile
   (autoload 'riece-channel-mode "riece"))

@@ -1,3 +1,8 @@
+2003-10-07  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-display.el (riece-channel-buffer-name): Check whether
+	IDENTITY is a member of riece-current-channels.
+
 2003-10-07  TAKAHASHI Kaoru  <kaoru@kaisei.org>
 
 	* riece-commands.el (riece-command-kick): Fix completing-read
