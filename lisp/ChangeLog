@@ -1,5 +1,10 @@
 2004-05-18  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-ignore.el (riece-ignore-user): Renamed from
+	riece-ignore-by-user.
+
+2004-05-18  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-signal.el (riece-connect-signal): Fixed doc.
 	(riece-disconnect-signal): New function.
 

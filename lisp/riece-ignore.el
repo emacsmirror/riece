@@ -51,7 +51,7 @@ Otherwise, they are left there but not visible."
     (if pointer
 	(setcar pointer (nth 1 (riece-signal-args signal))))))
 
-(defun riece-ignore-by-user (user toggle)
+(defun riece-ignore-user (user toggle)
   (interactive
    (let ((completion-ignore-case t))
      (list (if current-prefix-arg
@@ -93,7 +93,7 @@ Otherwise, they are left there but not visible."
 (defun riece-ignore-insinuate ()
   (add-hook 'riece-message-filter-functions 'riece-ignore-message-filter)
   (define-key riece-command-mode-map
-    "\C-ck" 'riece-ignore-by-user))
+    "\C-ck" 'riece-ignore-user))
 
 (provide 'riece-ignore)
 
