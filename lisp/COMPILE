@@ -74,7 +74,7 @@
 		riece-yank
 		riece-toolbar))))
 
-(defvar riece-icons
+(defun riece-icons
   '(riece-command-previous-channel
     riece-command-next-channel))
 

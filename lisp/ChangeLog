@@ -1,5 +1,15 @@
 2004-12-12  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-command-previous-channel.xpm: New file.
+	* riece-command-next-channel.xpm: New file.
+
+	* COMPILE (riece-icons): New variable.
+	(riece-install-icons): New function.
+	(riece-install): Install icons.
+	(riece-install-package): Ditto.
+
+2004-12-12  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-options.el (riece-addons): Add riece-toolbar.
 
 	* riece-log.el (riece-log-flashback): Fixed regexp.
