@@ -62,6 +62,11 @@ loop do
   rfds, wfds, = select([socket, $stdin], wfds_in)
   unless wfds.empty?
     begin
+      until buf.length <= " max-buffer-size "
+        i = buf.index(\"\r\n\")
+        break unless i
+        buf.slice!(0 .. i + 1)
+      end
       until buf.empty?
         len = $stdout.syswrite(buf)
         buf.slice!(0 .. len)
@@ -79,9 +84,6 @@ loop do
     else
       wfds_in = [$stdout]
       buf << line
-      until buf.length <= " max-buffer-size "
-        buf.slice!(0 .. buf.index(\"\r\n\"))
-      end
     end
   end
   if rfds.include?($stdin)
