@@ -1,3 +1,8 @@
+2004-11-09  OHASHI Akira  <bg66@koka-in.org>
+
+	* riece-yank.el (riece-command-yank): Take a 1st argument to send
+	messages as notice.
+
 2004-11-07  Daiki Ueno  <ueno@unixuser.org>
 
 	* Riece: Version 1.0.5 released.

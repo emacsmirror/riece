@@ -80,8 +80,8 @@ before/after the first/last non-blank line."
       (forward-line))
     (buffer-string)))
 
-(defun riece-command-yank (prefix)
-  (interactive "sPrefix: ")
+(defun riece-command-yank (arg prefix)
+  (interactive "P\nsPrefix: ")
   (when (or (not prefix)
 	    (string= prefix ""))
     (setq prefix " "))
@@ -95,7 +95,7 @@ before/after the first/last non-blank line."
     (when (y-or-n-p (format "Send \"%s\"\n? " kill))
       (mapcar
        (lambda (x) 
-	 (riece-command-send-message (concat prefix x) nil)
+	 (riece-command-send-message (concat prefix x) arg)
 	 ;; Without next line, you will be kicked out from ircd.
 	 ;; It may means "Don't send much data at once."
 	 (sit-for riece-yank-tick))
