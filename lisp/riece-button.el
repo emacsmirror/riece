@@ -194,9 +194,6 @@ This function is used as a callback for a channel button."
 (defun riece-button-update-buffer ()
   (riece-button-add-identity-button (point-min) (point-max)))
 
-(defun riece-button-requires ()
-  '(riece-highlight))
-
 (defvar riece-channel-list-mode-map)
 (defvar riece-user-list-mode-map)
 (defvar riece-dialogue-mode-map)
