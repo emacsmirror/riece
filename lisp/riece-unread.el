@@ -63,9 +63,8 @@
   (unless (or (riece-message-own-p message)
 	      (equal (riece-message-target message) riece-current-channel))
     (setq riece-unread-channels
-	  (delete (riece-message-target message) riece-unread-channels))
-    (add-to-list 'riece-unread-channels
-		 (riece-message-target message))
+	  (cons (riece-message-target message)
+		(delete (riece-message-target message) riece-unread-channels)))
     (riece-unread-update-channel-list-buffer)))
 
 (defun riece-unread-after-switch-to-channel-function (last)
