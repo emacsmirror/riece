@@ -37,7 +37,7 @@
       (:nickname riece-nickname)
       (:username riece-username)
       (:password)
-      (:function #'open-network-stream)
+      (:function riece-default-open-connection-function)
       (:coding riece-default-coding-system))
     "Mapping from keywords to default values.
 All keywords that can be used must be listed here."))

@@ -56,7 +56,8 @@
 		riece-button
 		riece-keyword
 		riece-menu
-		riece-icon))))
+		riece-icon
+		riece-async))))
 
 (defun riece-compile-modules (modules)
   (let ((load-path (cons nil load-path)))

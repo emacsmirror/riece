@@ -203,6 +203,11 @@ way is to put Riece variables on .emacs or file loaded from there."
 		(const nil))
   :group 'riece-server)
 
+(defcustom riece-default-open-connection-function #'open-network-stream
+  "Default function used for connecting to an IRC server."
+  :type 'function
+  :group 'riece-server)
+
 (defcustom riece-channel-buffer-mode t
   "When non-nil, Riece will display a channel buffer."
   :type 'boolean
