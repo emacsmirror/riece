@@ -84,7 +84,7 @@
     ;; Remove nonexistent users.
     (setq pointer (riece-channel-users (riece-get-channel channel-name)))
     (while pointer
-      (unless (assq (car (car pointer)) users)
+      (unless (assoc (car (car pointer)) users)
 	(riece-user-toggle-channel (car (car pointer)) channel-name nil)
 	(riece-channel-toggle-user channel-name (car (car pointer)) nil))
       (setq pointer (cdr pointer)))
