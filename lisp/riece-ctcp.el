@@ -40,8 +40,7 @@
 (defun riece-handle-ctcp-request (prefix string)
   (when (and prefix string
 	     (riece-prefix-nickname prefix))
-    (let* ((user (riece-prefix-nickname prefix))
-	   (parameters (riece-split-parameters string))
+    (let* ((parameters (riece-split-parameters string))
 	   (targets (split-string (car parameters) ","))
 	   (message (nth 1 parameters)))
       (if (string-match "\1\\([^ ]+\\)\\( .+\\)?\1" message)
@@ -115,8 +114,7 @@
 (defun riece-handle-ctcp-response (prefix string)
   (when (and prefix string
 	     (riece-prefix-nickname prefix))
-    (let* ((user (riece-prefix-nickname prefix))
-	   (parameters (riece-split-parameters string))
+    (let* ((parameters (riece-split-parameters string))
 	   (targets (split-string (car parameters) ","))
 	   (message (nth 1 parameters)))
       (if (string-match "\1\\([^ ]+\\)\\( .+\\)?\1" message)

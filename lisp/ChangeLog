@@ -1,5 +1,11 @@
 2003-05-30  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-highlight.el (riece-highlight-font-lock-keywords):
+	Simplified regexp.
+
+	* riece-ctcp.el (riece-handle-ctcp-request): Don't bind user.
+	(riece-handle-ctcp-response): Ditto.
+
 	* riece-highlight.el: Make it an add-on.
 	(riece-highlight-insinuate): New function.
 	* riece.el: Don't require 'riece-highlight.

@@ -164,20 +164,19 @@
   (append
    (list
     `(,(concat
-	"^\\(" riece-time-prefix-regexp "\\)?"
-	"\\(\\([][<>(-][][<>(-]?[^<>)]*[][<>)-][][<>)-]?\\)\\|"
-	"\\(=[^ ]*=\\|\\*\\*[^ \*]*\\*\\*\\)\\) ")
-      (3 riece-prefix-face append t)))
+	"^" riece-time-prefix-regexp 
+	"\\(<[^>]+>\\|>[^<]+<\\|-[^-]+-\\|([^)]+)\\|=[^=]+=\\)")
+      (1 riece-prefix-face append t)))
    ;; set property to the whole line
    (mapcar
     (lambda (line)
       (cons
        (concat
-	"^\\(" riece-time-prefix-regexp "\\)?\\("
+	"^" riece-time-prefix-regexp "\\("
 	(regexp-quote
 	 (symbol-value (intern (format "riece-%s-prefix" line))))
 	".*\\)$")
-       (list 2 (intern (format "riece-%s-face" line)) t t)))
+       (list 1 (intern (format "riece-%s-face" line)) t t)))
     '(change notice wallops error info))
    (list (list "(from [^)]+)$" 0 riece-server-face t)))
   "Normal and deformed faces for IRC normal line."
