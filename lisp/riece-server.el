@@ -105,9 +105,35 @@ the `riece-server-keyword-map' variable."
 (put 'riece-with-server-buffer 'lisp-indent-function 1)
 (put 'riece-with-server-buffer 'edebug-form-spec '(form body))
 
+(defun riece-flush-send-queue (process)
+  (with-current-buffer (process-buffer process)
+    (let ((length 0)
+	  (total 0)
+	  string)
+      (while (and riece-send-queue
+		  (< total riece-max-send-size))
+	(setq string (riece-encode-coding-string (car riece-send-queue))
+	      length (length string))
+	(if (> length riece-max-send-size)
+	    (message "Long message (%d > %d)" length riece-max-send-size)
+	  (process-send-string process string)
+	  (setq total (+ total length)))
+	(setq riece-send-queue (cdr riece-send-queue)))
+      (if riece-send-queue
+	  (progn
+	    (if riece-debug
+		(message "%d bytes sent, %d bytes left"
+			 total (apply #'+ (mapcar #'length riece-send-queue))))
+	    ;; schedule next send after a second
+	    (riece-run-at-time 1 nil
+			       #'riece-flush-send-queue process))
+	(if riece-debug
+	    (message "%d bytes sent" total))))))
+
 (defun riece-process-send-string (process string)
   (with-current-buffer (process-buffer process)
-    (process-send-string process (riece-encode-coding-string string))))
+    (setq riece-send-queue (nconc riece-send-queue (list string))))
+  (riece-flush-send-queue process))
 
 (defun riece-current-server-name ()
   (or riece-overriding-server-name
@@ -178,6 +204,7 @@ the `riece-server-keyword-map' variable."
     (make-local-variable 'riece-channel-filter)
     (make-local-variable 'riece-server-name)
     (make-local-variable 'riece-read-point)
+    (make-local-variable 'riece-send-queue)
     (setq riece-read-point (point-min))
     (make-local-variable 'riece-obarray)
     (setq riece-obarray (make-vector riece-obarray-size 0))

@@ -178,6 +178,11 @@ way is to put Riece variables on .emacs or file loaded from there."
   :type 'symbol
   :group 'riece-server)
 
+(defcustom riece-max-send-size 1500
+  "Maximum size of messages to be sent at a time."
+  :type 'integer
+  :group 'riece-server)
+
 (defcustom riece-default-password (getenv "IRCPASSWORD")
   "Your password."
   :type '(radio (string :tag "Password")

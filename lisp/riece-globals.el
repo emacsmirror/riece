@@ -108,6 +108,9 @@ Local to the server buffers.")
 (defvar riece-read-point nil
   "Point at the last input was seen.
 Local to the server buffers.")
+(defvar riece-send-queue nil
+  "Send queue for avoiding client flood.
+Local to the server buffers.")
 (defvar riece-obarray nil
   "Namespace of the IRC world.
 Local to the server buffers.")
