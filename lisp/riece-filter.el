@@ -64,64 +64,43 @@
       (riece-ignore-errors (symbol-name after-hook)
 	(run-hook-with-args-until-success after-hook prefix string)))))
 
-;;; stolen (and renamed) from gnus-async.el.
-(defun riece-get-semaphore (semaphore)
-  "Wait until SEMAPHORE is released."
-  (while (/= (length (nconc (symbol-value semaphore) (list nil))) 2)
-    (sleep-for 0.1)))
-
-(defun riece-release-semaphore (semaphore)
-  "Release SEMAPHORE."
-  (setcdr (symbol-value semaphore) nil))
-
-(defmacro riece-filter-with-semaphore (&rest forms)
-  `(unwind-protect
-       (progn
-	 (riece-get-semaphore 'riece-filter-semaphore)
-	 ,@forms)
-     (riece-release-semaphore 'riece-filter-semaphore)))
-
-(put 'riece-filter-with-semaphore 'lisp-indent-function 0)
-(put 'riece-filter-with-semaphore 'edebug-form-spec '(body))
-
 (defsubst riece-chomp-string (string)
   (if (string-match "\r\\'" string)
       (substring string 0 (match-beginning 0))
     string))
 
 (defun riece-filter (process input)
-  (riece-filter-with-semaphore
-   (save-excursion
-     (set-buffer (process-buffer process))
-     (goto-char riece-read-point)
-     (unless riece-debug
-       (delete-region (riece-line-beginning-position) (point-min))
-       (setq riece-read-point (point)))
-     (insert input)
-     (goto-char (prog1 riece-read-point
-		  (setq riece-read-point (point))))
-     (beginning-of-line)
-     (while (and (not (eobp))
-		 (looking-at ".*\n"))	;the input line is not finished
-       (save-excursion
-	 (if (looking-at
-	      ":\\([^ ]+\\) +\\([0-5][0-9][0-9]\\) +\\([^ ]+\\) +\\(.*\\)\n")
-	     (riece-handle-numeric-reply
-	      (match-string 1)		;prefix
-	      (string-to-number (match-string 2)) ;number
-	      (match-string 3)		;name
-	      (riece-chomp-string (match-string 4))) ;reply string
-	   (if (looking-at "\\(:\\([^ ]+\\) +\\)?\\([^ ]+\\) +\\(.*\\)\n")
-	       (riece-handle-message
-		(match-string 2)	;optional prefix
-		(match-string 3)	;command
-		(riece-chomp-string (match-string 4))) ;params & trailing
-	     (if riece-debug
-		 (message "Weird message from server: %s"
-			  (buffer-substring (point) (progn
-						      (end-of-line)
-						      (point))))))))
-       (forward-line)))))
+  (save-excursion
+    (set-buffer (process-buffer process))
+    (goto-char riece-read-point)
+    (unless riece-debug
+      (delete-region (riece-line-beginning-position) (point-min))
+      (setq riece-read-point (point)))
+    (insert input)
+    (goto-char (prog1 riece-read-point
+		 (setq riece-read-point (point))))
+    (beginning-of-line)
+    (while (and (not (eobp))
+		(looking-at ".*\n"))	;the input line is not finished
+      (save-excursion
+	(if (looking-at
+	     ":\\([^ ]+\\) +\\([0-5][0-9][0-9]\\) +\\([^ ]+\\) +\\(.*\\)\n")
+	    (riece-handle-numeric-reply
+	     (match-string 1)		;prefix
+	     (string-to-number (match-string 2)) ;number
+	     (match-string 3)		;name
+	     (riece-chomp-string (match-string 4))) ;reply string
+	  (if (looking-at "\\(:\\([^ ]+\\) +\\)?\\([^ ]+\\) +\\(.*\\)\n")
+	      (riece-handle-message
+	       (match-string 2)		;optional prefix
+	       (match-string 3)		;command
+	       (riece-chomp-string (match-string 4))) ;params & trailing
+	    (if riece-debug
+		(message "Weird message from server: %s"
+			 (buffer-substring (point) (progn
+						     (end-of-line)
+						     (point))))))))
+      (forward-line))))
 
 (eval-when-compile
   (autoload 'riece-exit "riece"))

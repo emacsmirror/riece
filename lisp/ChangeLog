@@ -1,14 +1,3 @@
-2005-02-07  Daiki Ueno  <ueno@unixuser.org>
-
-	* riece-server.el (riece-reset-process-buffer): Reset
-	riece-filter-semaphore.
-	* riece-globals.el (riece-filter-semaphore): Define here.
-
-	* riece-filter.el (riece-get-semaphore): New function.
-	(riece-release-semaphore): New function.
-	(riece-filter-with-semaphore): New macro.
-	(riece-filter): Use it.
-
 2005-02-06  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-filter.el (riece-filter): Modified regexp.
