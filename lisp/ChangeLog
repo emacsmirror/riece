@@ -1,5 +1,8 @@
 2003-10-18  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-keyword.el (riece-keyword-message-filter): Ignore messages
+	which belongs to myself.
+
 	* riece-commands.el (riece-command-topic): Use
 	riece-check-channel-commands-are-usable.
 	(riece-command-invite): Ditto.
