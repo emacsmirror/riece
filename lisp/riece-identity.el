@@ -90,19 +90,6 @@ RFC2812, 2.2 \"Character codes\" says:
 	  (throw 'found list)
 	(setq list (cdr list))))))
 
-(defun riece-identity-member-no-server (elt list)
-  "Return non-nil if an identity ELT is an element of LIST.
-The only difference with `riece-identity-member', this function doesn't
-take server names into account."
-  (catch 'found
-    (while list
-      (if (and (vectorp (car list))	;needed because
-					;riece-current-channels
-					;contains nil.
-	       (riece-identity-equal-no-server (car list) elt))
-	  (throw 'found list)
-	(setq list (cdr list))))))
-
 (defun riece-identity-assoc (elt alist)
   "Return non-nil if an identity ELT matches the car of an element of ALIST."
   (catch 'found

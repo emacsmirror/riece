@@ -1,5 +1,13 @@
 2003-06-11  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-identity.el (riece-identity-member-no-server): Abolish.
+
+	* riece-doctor.el (riece-doctor-patients): Make it global variable.
+	(riece-doctor-after-privmsg-hook): Use riece-identity-member
+	instead of riece-identity-member-no-server.
+
+2003-06-11  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-doctor.el: New add-on.
 	* COMPILE (riece-modules): Add riece-doctor.
 	* Makefile.am (EXTRA_DIST): Add riece-doctor.el
