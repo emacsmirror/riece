@@ -269,15 +269,16 @@ If LINES is t, insert today's logs entirely."
   (condition-case nil
       (progn
 	(make-directory riece-log-lock-directory)
+	(add-hook 'riece-exit-hook
+		  (lambda ()
+		    (condition-case nil
+			(delete-directory riece-log-lock-directory)
+		      (error))))
 	(setq riece-log-enabled t))
     (error)))
 
 (defun riece-log-disable ()
   (define-key riece-command-mode-map "\C-cd" nil)
-  (if riece-log-enabled
-      (condition-case nil
-	  (delete-directory riece-log-lock-directory)
-	(error)))
   (setq riece-log-enabled nil))
 
 (provide 'riece-log)
