@@ -162,7 +162,8 @@
     "u" nil)
   (define-key riece-channel-list-mode-map
     "u" nil)
-  (setq riece-unread-enabled nil)
+  (setq riece-unread-channels nil
+	riece-unread-enabled nil)
   (riece-emit-signal 'channel-list-changed))
 
 (provide 'riece-unread)
