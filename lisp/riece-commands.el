@@ -213,7 +213,7 @@ the layout to the selected layout-name."
 	    (if (and riece-current-channel
 		     (riece-channel-p (riece-identity-prefix
 				       riece-current-channel)))
-		(cons (riece-format-identity riece-current-channel t)
+		(cons (riece-identity-prefix riece-current-channel)
 		      0))))))
   (if (or (not (equal pattern ""))
 	  (yes-or-no-p "Really want to query NAMES without argument? "))
@@ -227,7 +227,7 @@ the layout to the selected layout-name."
 	    (if (and riece-current-channel
 		     (riece-channel-p (riece-identity-prefix
 				       riece-current-channel)))
-		(cons (riece-format-identity riece-current-channel t)
+		(cons (riece-identity-prefix riece-current-channel)
 		      0))))))
   (if (or (not (equal pattern ""))
 	  (yes-or-no-p "Really want to query WHO without argument? "))
