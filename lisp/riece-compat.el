@@ -57,7 +57,12 @@
 	    (setq riece-read-passwd 'read-passwd)
 	  (autoload 'ange-ftp-read-passwd "ange-ftp")
 	  (setq riece-read-passwd 'ange-ftp-read-passwd))))
-  (funcall riece-read-passwd prompt))
+  (condition-case nil
+      (let (inhibit-quit)
+	(funcall riece-read-passwd prompt))
+    (quit
+     (message "%s: Quit" prompt)
+     'quit)))
 
 (if (string-match "0\\{0\\}" "")
     (defun riece-make-interval-regexp (regexp min &optional max)

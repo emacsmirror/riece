@@ -60,18 +60,10 @@
       (if riece-reconnect-with-password	;password incorrect or not set.
 	  (unwind-protect
 	      (setq password
-		    (condition-case nil
-			(let (inhibit-quit)
-			  (if (equal server-name "")
-			      (riece-read-passwd "Password: ")
-			    (riece-read-passwd (format "Password for %s: "
-						       server-name))))
-		      (quit
-		       (if (equal server-name "")
-			   (message "Password: Quit")
-			 (message (format "Password for %s: Quit"
-					  server-name)))
-		       'quit)))
+		    (if (equal server-name "")
+			(riece-read-passwd "Password: ")
+		      (riece-read-passwd (format "Password for %s: "
+						 server-name))))
 	    (setq riece-reconnect-with-password nil)))
       (if (eq password 'quit)
 	  (delete-process process)
