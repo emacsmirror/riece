@@ -99,8 +99,8 @@
 	     (match-string 4))		;reply string
 	  (if (looking-at "\\(:\\([^ ]+\\) +\\)?\\([^ ]+\\) +\\(.*\\)\r\n")
 	      (riece-handle-message
-	       (match-string 2)	;optional prefix
-	       (match-string 3)	;command
+	       (match-string 2)		;optional prefix
+	       (match-string 3)		;command
 	       (match-string 4))	;params & trailing
 	    (if riece-debug
 		(message "Weird message from server: %s"
