@@ -249,7 +249,8 @@ Local to the buffers.")
 			   (concat "Created on "
 				   (funcall riece-format-time-function
 					    (current-time))
-				   "\n"))))
+				   "\n"))
+	(run-hook-with-args 'riece-channel-buffer-create-functions identity)))
     (current-buffer)))
 
 (defun riece-switch-to-channel (identity)

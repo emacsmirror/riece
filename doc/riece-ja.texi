@@ -3,7 +3,7 @@
 @setfilename riece-ja.info
 @settitle Riece -- An IRC client for Emacsen --
 @c %**end of header
-@set VERSION 0.0.3
+@set VERSION 0.0.4
 @c @documentlanguage ja
 
 @dircategory GNU Emacs Lisp
@@ -491,6 +491,14 @@ CTCP (Client To Client Protocol)
 発言のあったチャンネルに@samp{!}マークをつける
 @item riece-rdcc
 DCC (Direct Client to Client protocol) によるファイル転送
+(Ruby による実装)
+@item riece-ndcc
+DCC (Direct Client to Client protocol) によるファイル転送
+(Emacs 21.3 の make-network-process による実装)
+@item riece-mini
+ミニバッファのみで IRC をする
+@item riece-log
+会話のログの収集
 @end table
 
 これらのうち、@samp{riece-highlight} と @samp{riece-ctcp} はデフォルトで
@@ -502,7 +510,7 @@ DCC (Direct Client to Client protocol) によるファイル転送
 @vindex riece-addons
 
 @example
-(add-to-list 'riece-addons 'riece-url t)
+(add-to-list 'riece-addons 'riece-url)
 @end example
 
 @node Writing add-ons, Handler hooks, Add-ons, Advanced usage

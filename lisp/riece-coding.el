@@ -33,8 +33,7 @@
   :group 'riece)
   
 (defcustom riece-default-coding-system
-  (if (and (or (featurep 'mule)
-	       (featurep 'file-coding)))
+  (if (featurep 'mule)
       (cons 'ctext 'iso-2022-jp-2))
   "Coding system for process I/O.
 The value is a coding system, or a cons cell (DECODING . ENCODING)

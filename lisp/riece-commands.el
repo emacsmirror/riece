@@ -410,11 +410,11 @@
 
 (defun riece-command-join (target &optional key)
   (interactive
-   (let ((completion-ignore-case t)
-	 (target
-	  (riece-completing-read-identity
-	   "Channel/User: " riece-current-channels))
-	 key)
+   (let* ((completion-ignore-case t)
+	  (target
+	   (riece-completing-read-identity
+	    "Channel/User: " riece-current-channels))
+	  key)
      (if (and current-prefix-arg
 	      (riece-channel-p target))
 	 (setq key
@@ -442,7 +442,7 @@
 
 (defun riece-command-part (target &optional message)
   (interactive
-   (let ((completion-ignore-case t)
+   (let* ((completion-ignore-case t)
 	 (target
 	  (riece-completing-read-identity
 	   "Channel/User: " riece-current-channels nil nil

@@ -1,5 +1,8 @@
 2003-08-04  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-mini.el (riece-mini-send-message): Use
+	riece-completing-read-identity; don't use riece-own-channel-message.
+
 	* riece-identity.el: Require 'riece-compat.
 	(riece-identity-prefix-case-table): New variable.
 	(riece-abbrev-identity-string-function): New variable.
@@ -19,6 +22,16 @@
 	* riece-emacs.el (riece-set-case-syntax-pair): New alias.
 	* riece-xemacs.el (riece-set-case-syntax-pair): New alias.
 	* riece-identity.el (riece-identity-canonicalize-prefix): Simplified.
+
+2003-08-03  Daiki Ueno  <ueno@unixuser.org>
+
+	* Riece: Version 0.0.4 released.
+	* riece-version.el (riece-version-number): Bump up to 0.0.4.
+
+2003-06-24  OHASHI Akira  <bg66@koka-in.org>
+
+	* riece-unread.el (riece-unread-display-message-function): Don't check
+	`selected-window'. It doesn't work as expected.
 
 2003-06-23  Daiki Ueno  <ueno@unixuser.org>
 
@@ -64,6 +77,13 @@
 	buffer local.
 	(riece-user-list-mode): Ditto.
 
+2003-06-22  Yoichi NAKAYAMA  <yoichi@geiin.org>
+
+	* riece-log.el, riece-mini.el, riece-unread.el, riece-url.el:
+	Fix example setting, don't use 3rd arg of add-to-list.
+
+	* riece-coding.el (riece-default-coding-system): Fix default value.
+
 2003-06-22  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-display.el (riece-inhibit-update-buffers): New variable.
@@ -83,6 +103,23 @@
 
 	* riece-identity.el (riece-completing-read-identity): Remove nil
 	from riece-current-channels before converting it to an alist.
+
+2003-06-17  OHASHI Akira  <bg66@koka-in.org>
+
+	* riece-unread.el (riece-unread-display-message-function): Check a
+	`selected-window'.
+
+	* riece-mini.el: New add-on.
+	* COMPILE (riece-modules): Add `riece-mini'.
+	* Makefile.am (EXTRA_DIST): Add `riece-mini.el'.
+
+	* riece-display.el (riece-channel-buffer-create): Add new hook.
+	* riece-log.el: New add-on for saving irc logs.
+	* COMPILE (riece-modules): Add `riece-log'.
+	* Makefile.am (EXTRA_DIST): Add `riece-log.el'.
+
+	* riece-commands.el (riece-command-join): Use `let*' instead of `let'.
+	(riece-command-part): Ditto.
 
 2003-06-12  Daiki Ueno  <ueno@unixuser.org>
 
