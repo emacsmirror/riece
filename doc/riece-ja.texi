@@ -3,7 +3,7 @@
 @setfilename riece-ja.info
 @settitle Riece -- An IRC client for Emacsen --
 @c %**end of header
-@set VERSION 0.1.3
+@set VERSION 0.1.4
 @c @documentlanguage ja
 
 @dircategory GNU Emacs Lisp
@@ -281,6 +281,9 @@ Riece: --- ueno #Liece [n]
 @item C-c C-p
 @findex riece-command-part
 チャンネルから離脱します(@code{riece-command-part})
+@item C-c p
+@findex riece-command-enter-message-to-user
+宛先を指定して現在の行を送ります(@code{riece-command-enter-message-to-user})
 @item C-c q
 @findex riece-command-quit
 IRC をやめます(@code{riece-command-quit})
@@ -317,6 +320,9 @@ IRC をやめます(@code{riece-command-quit})
 @item C-c v
 @findex riece-command-set-speakers
 ユーザに発言権を与えます。前置引数 (@kbd{C-u}) を与えると、ユーザから発言権を奪います(@code{riece-command-set-speakers})
+@item C-c V
+@findex riece-version
+Riece のバージョンを表示します。
 @item C-c /
 @findex riece-command-raw
 生の IRC コマンドを送ります(@code{riece-command-raw})
@@ -513,12 +519,14 @@ SKK 使用時に変換モードの印を発言から取り除く
 ボタンやポップアップメニューの表示
 @item riece-keyword
 キーワードの強調表示
+@item riece-menu
+メニューバーにメニューを登録
 @end table
 
 これらのうち、@samp{riece-highlight} と @samp{riece-ctcp}、
 @samp{riece-url}、 @samp{riece-unread}、 @samp{riece-guess}、
-@samp{riece-history}、 @samp{riece-button} はデフォルトで組み込まれてい
-ます。
+@samp{riece-history}、 @samp{riece-button}、@samp{riece-menu} はデフォル
+トで組み込まれています。
 
 アドオンを組み込むには @code{riece-addons} を設定します。たとえば 
 @samp{riece-alias} を組み込む場合には、@file{~/.riece/init.el} に以下のよ
