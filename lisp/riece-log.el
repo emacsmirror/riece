@@ -30,7 +30,8 @@
 
 ;;; Code:
 
-(eval-when-compile (require 'riece-message))
+(eval-when-compile (require 'riece-message)
+		   (require 'riece-button))
 
 (defgroup riece-log nil
   "Save irc log"
@@ -113,6 +114,16 @@ If integer, flash back only this line numbers. t means all lines."
 	  (let (buffer-read-only)
 	    (goto-char (point-max))
 	    (insert string)
+	    (goto-char (point-min))
+	    (while (re-search-forward
+		    "^[0-9][0-9]:[0-9][0-9] [<>]\\([^<>]+\\)[<>] " nil t)
+	      (put-text-property (match-beginning 1) (match-end 1)
+				 'riece-identity
+				 (riece-make-identity
+				  (match-string-no-properties 1)
+				  (riece-identity-server identity))))
+	    (if (memq 'riece-button riece-addons)
+		(riece-button-update-buffer))
 	    (goto-char (point-max))
 	    (set-window-point (get-buffer-window (current-buffer))
 			      (point))))))))
@@ -122,6 +133,10 @@ If integer, flash back only this line numbers. t means all lines."
   (if channel
       (find-file (riece-log-get-directory channel))
     (find-file riece-log-directory)))
+
+(defun riece-log-requires ()
+  (if (memq 'riece-button riece-addons)
+      '(riece-button)))
 
 (defun riece-log-insinuate ()
   ;; FIXME: Use `riece-after-insert-functions' for trapping change,
