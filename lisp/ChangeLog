@@ -1,5 +1,7 @@
 2005-02-05  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-keyword.el (riece-keyword-face): Change defface spec for tty.
+
 	* riece-toolbar.el (riece-toolbar-description): New constant.
 
 	* riece-keepalive.el: Require 'riece-options.

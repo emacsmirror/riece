@@ -61,7 +61,7 @@ and the matched message object."
   '((((class color))
      (:foreground "red" :underline t))
     (t
-     ()))
+     (:underline t)))
   "Face used for highlightening matching keyword."
   :group 'riece-highlight-faces)
 (defvar riece-keyword-face 'riece-keyword-face)
