@@ -38,6 +38,8 @@
   "The channel you currently have joined.")
 (defvar riece-current-channels nil
   "The channels you have currently joined.")
+(defvar riece-join-channel-candidate nil
+  "The candidate for channel to be used with the next join command.")
 
 (defvar riece-save-variables-are-dirty nil
   "Non nil if the variables in `riece-saved-forms' are changed.")

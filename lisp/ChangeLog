@@ -1,5 +1,16 @@
 2003-10-04  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-globals.el (riece-join-channel-candidate): New variable.
+	* riece-commands.el (riece-command-join): Prompt
+	riece-join-channel-candidate.
+
+	* riece-handle.el (riece-handle-invite-message): Set
+	riece-join-channel-candidate when the user is invited.
+	* riece-naming.el (riece-naming-assert-join): Clear
+	riece-join-channel-candidate.
+
+2003-10-04  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-identity.el (riece-completing-read-identity): Pass 6th &
 	7th arguments to completing-read.
 

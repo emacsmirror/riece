@@ -421,8 +421,14 @@ the layout to the selected layout-name."
   (interactive
    (let* ((completion-ignore-case t)
 	  (target
-	   (riece-completing-read-identity
-	    "Channel/User: " riece-current-channels))
+	   (if riece-join-channel-candidate
+	       (let ((default (riece-format-identity
+			       riece-join-channel-candidate)))
+		 (riece-completing-read-identity
+		  (format "Channel/User (default %s): " default)
+		  riece-current-channels nil nil nil nil default))
+	     (riece-completing-read-identity
+	      "Channel/User: " riece-current-channels)))
 	  key)
      (if (and current-prefix-arg
 	      (riece-channel-p (riece-identity-prefix target)))

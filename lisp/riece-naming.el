@@ -36,7 +36,8 @@
       (let ((channel-identity (riece-make-identity channel-name
 						   riece-server-name)))
 	(riece-join-channel channel-identity)
-	(riece-switch-to-channel channel-identity))))
+	(riece-switch-to-channel channel-identity)
+	(setq riece-join-channel-candidate nil))))
 
 (defun riece-naming-assert-part (user-name channel-name)
   (riece-user-toggle-channel user-name channel-name nil)

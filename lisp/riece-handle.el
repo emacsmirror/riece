@@ -309,7 +309,10 @@
   (let* ((user (riece-prefix-nickname prefix))
 	 (parameters (riece-split-parameters string))
 	 (invited (car parameters))
-	 (channel (nth 1 parameters)))
+	 (channel (nth 1 parameters))
+	 (channel-identity (riece-make-identity channel riece-server-name)))
+    (if (riece-identity-equal-no-server invited riece-real-nickname)
+	(setq riece-join-channel-candidate channel-identity))
     (riece-insert-info
      (list riece-dialogue-buffer riece-others-buffer)
      (concat
@@ -319,8 +322,7 @@
 				       user riece-server-name))
 	       (riece-format-identity (riece-make-identity
 				       invited riece-server-name))
-	       (riece-format-identity (riece-make-identity
-				       channel riece-server-name))))
+	       (riece-format-identity channel-identity)))
       "\n"))))
 
 (defun riece-handle-topic-message (prefix string)
