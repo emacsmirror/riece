@@ -217,8 +217,10 @@ If LINES is t, insert today's logs entirely."
 		(buffer-string)))
       (goto-char point)
       (while (re-search-forward
-	      "^[0-9][0-9]:[0-9][0-9] [<>]\\([^<>]+\\)[<>] " nil t)
-	(put-text-property (match-beginning 1) (match-end 1)
+	      (concat "^" riece-time-prefix-regexp
+		       "\\(<[^>]+>\\|>[^<]+<\\|([^)]+)\\|{[^}]+}\\|=[^=]+=\\)")
+	      nil t)
+	(put-text-property (1+ (match-beginning 1)) (1- (match-end 1))
 			   'riece-identity
 			   (riece-make-identity
 			    (riece-match-string-no-properties 1)
