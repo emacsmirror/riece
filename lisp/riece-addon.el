@@ -24,6 +24,12 @@
 
 ;;; Code:
 
+(defvar riece-addon-list-mode-map
+  (let ((keymap (make-sparse-keymap)))
+    (define-key keymap "+" 'riece-command-enable-addon)
+    (define-key keymap "-" 'riece-command-disable-addon)
+    keymap))
+
 (defun riece-load-and-build-addon-dependencies (addons)
   (let ((load-path (cons riece-addon-directory load-path))
 	dependencies)
@@ -111,12 +117,99 @@
 	    (message "Add-on %S doesn't support enable/disable" addon))
       (if (symbol-value enabled)
 	  (progn
-	    (funcall (intern (concat (symbol-name (car addons)) "-disable")))
+	    (funcall (intern (concat (symbol-name addon) "-disable")))
 	    (if riece-debug
-		(message "Add-on %S disabled" (car addons))))
+		(message "Add-on %S disabled" addon)))
 	(if riece-debug
 	    (message "Can't disable add-on %S" addon))))))
 
+(defun riece-addon-list-mode ()
+  "Major mode for displaying addon list.
+All normal editing commands are turned off."
+  (kill-all-local-variables)
+  (buffer-disable-undo)
+  (setq major-mode 'riece-addon-list-mode
+        mode-name "AddOns"
+	mode-line-buffer-identification
+	(riece-mode-line-buffer-identification '("Riece: "))
+	truncate-lines t
+	buffer-read-only t)
+  (use-local-map riece-addon-list-mode-map)
+  (run-hooks 'riece-addon-list-mode-hook))
+
+(defun riece-command-list-addons ()
+  (interactive)
+  (save-excursion
+    (set-buffer (riece-get-buffer-create "*AddOns*" 'riece-addon-list-mode))
+    (riece-addon-list-mode)
+    (let ((inhibit-read-only t)
+	  buffer-read-only
+	  (pointer riece-addons)
+	  enabled description point)
+      (erase-buffer)
+      (riece-kill-all-overlays)
+      (while pointer
+	(setq enabled (intern-soft (concat (symbol-name (car pointer))
+					   "-enabled"))
+	      description (intern-soft (concat (symbol-name (car pointer))
+					       "-description")))
+	(setq point (point))
+	(insert (format "%c %S: %s\n"
+			(if (not (featurep (car pointer)))
+			    ??
+			  (if (null enabled)
+			      ?=
+			    (if (symbol-value enabled)
+				?+
+			      ?-)))
+			(car pointer)
+			(if description
+			    (symbol-value description)
+			  "no description")))
+	(put-text-property point (point) 'riece-addon (car pointer))
+	(setq pointer (cdr pointer)))
+      (insert "
+Symbols in the leftmost column:
+
+  +     The add-on is enabled.
+  -     The add-on is disabled.
+  =	The add-on doesn't support enable/disable operation.
+  ?	The add-on status is not known.
+"))
+    (pop-to-buffer (current-buffer))))
+
+(defun riece-command-enable-addon (addon)
+  (interactive
+   (list
+    (or (if (eq major-mode 'riece-addon-list-mode)
+	    (get-text-property (point) 'riece-addon))
+	(completing-read "Add-on: "
+			 (mapcar #'list riece-addons)
+			 (lambda (pointer)
+			   (setq enabled (intern-soft (concat (car pointer)
+							      "-enabled")))
+			   (and enabled
+				(null (symbol-value enabled))))
+			 t))))
+  (riece-enable-addon addon)
+  (riece-command-list-addons))
+
+(defun riece-command-disable-addon (addon)
+  (interactive
+   (list
+    (or (if (eq major-mode 'riece-addon-list-mode)
+	    (get-text-property (point) 'riece-addon))
+	(completing-read "Add-on: "
+			 (mapcar #'list riece-addons)
+			 (lambda (pointer)
+			   (setq enabled (intern-soft (concat (car pointer)
+							      "-enabled")))
+			   (and enabled
+				(symbol-value enabled)))
+			 t))))
+  (riece-disable-addon addon)
+  (riece-command-list-addons))
+      
 (provide 'riece-addon)
 
 ;;; riece-addon.el ends here

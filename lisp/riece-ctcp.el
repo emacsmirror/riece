@@ -347,7 +347,7 @@
   (define-key riece-dialogue-mode-map "\C-cp" 'riece-command-ctcp-ping)
   (define-key riece-dialogue-mode-map "\C-ca" 'riece-command-ctcp-action)
   (define-key riece-dialogue-mode-map "\C-cc" 'riece-command-ctcp-clientinfo)
-  (setq riece-ctcp-enable t))
+  (setq riece-ctcp-enabled t))
 
 (defun riece-ctcp-disable ()
   (define-key riece-dialogue-mode-map "\C-cv" nil)

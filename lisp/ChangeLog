@@ -1,5 +1,16 @@
 2004-05-21  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-ctcp.el (riece-ctcp-enable): Fixed typo.
+
+	* riece-addon.el (riece-addon-list-mode-map): New keymap.
+	(riece-addon-list-mode): New function.
+	(riece-command-list-addons): New command.
+	(riece-command-enable-addon): New command.
+	(riece-command-disable-addon): New command.
+	(riece-disable-addon): Fixed typo.
+
+2004-05-21  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-mini.el (riece-mini-enabled): New flag.
 	(riece-mini-display-message-function): Check riece-mini-enabled.
 	(riece-mini-enable): New function.
