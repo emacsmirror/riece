@@ -45,6 +45,67 @@ Local to the buffer in `riece-buffer-list'.")
     riece-update-channel-list-indicator)
   "Functions to update modeline indicators.")
 
+;;; Qt like "signal-slot" abstraction for routing display events.
+(defvar riece-signal-slot-obarray
+  (make-vector 31 0))
+
+(defun riece-make-slot (function &optional filter handback)
+  "Make an instance of slot object.
+Arguments are corresponding to callback function, filter function, and
+a handback object, respectively."
+  (vector function filter handback))
+
+(defun riece-slot-function (slot)
+  "Return the callback function of SLOT."
+  (aref slot 0))
+
+(defun riece-slot-filter (slot)
+  "Return the filter function of SLOT."
+  (aref slot 1))
+
+(defun riece-slot-handback (slot)
+  "Return the handback object of SLOT."
+  (aref slot 2))
+
+(defun riece-make-signal (name &rest args)
+  "Make an instance of signal object.
+The 1st arguments is the name of the signal and the rest of arguments
+are the data of the signal."
+  (vector name args))
+
+(defun riece-signal-name (signal)
+  "Return the name of SIGNAL."
+  (aref signal 0))
+
+(defun riece-signal-args (signal)
+  "Return the data of SIGNAL."
+  (aref signal 1))
+
+(defun riece-connect-signal (signal-name slot)
+  "Add SLOT as a listener of a signal identified by SIGNAL-NAME."
+  (let ((symbol (intern (symbol-name signal-name) riece-signal-slot-obarray)))
+    (set symbol (cons slot (if (boundp symbol)
+			       (symbol-value symbol))))))
+
+(defun riece-emit-signal (signal)
+  "Emit SIGNAL."
+  (let ((symbol (intern-soft (symbol-name (riece-signal-name signal))
+			     riece-signal-slot-obarray))
+	slots)
+    (when symbol
+      (setq slots (symbol-value symbol))
+      (while slots
+	(condition-case error
+	    (if (or (null (riece-slot-filter (car slots)))
+		    (funcall (riece-slot-filter (car slots)) signal))
+		(funcall (riece-slot-function (car slots))
+			 signal (riece-slot-handback (car slots))))
+	  (error
+	   (if riece-debug
+	       (message "Error occurred in slot function for signal \"%S\": %S"
+			(riece-signal-name signal) error))))
+	(setq slots (cdr slots))))))
+
 (defun riece-update-user-list-buffer ()
   (save-excursion
     (set-buffer riece-user-list-buffer)

@@ -1,3 +1,18 @@
+2004-02-26  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-display.el: Introduce Qt like "signal-slot" abstraction
+	for routing display events.
+	(riece-signal-slot-obarray): New variable.
+	(riece-make-slot): New function.
+	(riece-slot-function): New function.
+	(riece-slot-filter): New function.
+	(riece-slot-handback): New function.
+	(riece-make-signal): New function.
+	(riece-signal-name): New function.
+	(riece-signal-args): New function.
+	(riece-connect-signal): New function.
+	(riece-emit-signal): New function.
+
 2004-02-19  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-300.el (riece-handle-353-message): Add 'riece-identity
