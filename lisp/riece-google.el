@@ -148,7 +148,7 @@ end
   :group 'riece-google)
 
 (defcustom riece-google-default-lang '("lang_en" "lang_ja")
-  "*Default language for search keywords."
+  "*Default language for searching keywords."
   :type '(repeat (choice (const "lang_en" :tag "English")
 			 (const "lang_ja" :tag "Japanese")
 			 (string :tag "The other language")))
