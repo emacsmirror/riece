@@ -29,9 +29,8 @@
 
 ;;; Code:
 
-(autoload 'lsdb-maybe-load-hash-tables "lsdb")
-
 (eval-when-compile
+  (autoload 'lsdb-maybe-load-hash-tables "lsdb")
   (autoload 'lsdb-lookup-records "lsdb")
   (autoload 'lsdb-puthash "lsdb")
   (autoload 'lsdb-remhash "lsdb")
@@ -71,8 +70,7 @@
       (message "No entry for `%s'" (riece-format-identity user t)))))
 
 (defun riece-lsdb-insinuate ()
-  (add-hook 'riece-startup-hook
-	    'lsdb-maybe-load-hash-tables t)
+  (require 'lsdb)
   (add-to-list 'lsdb-secondary-hash-tables
 	       'riece-lsdb-cache)
   (add-to-list 'lsdb-after-update-record-functions
