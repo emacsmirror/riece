@@ -1,3 +1,11 @@
+2004-06-03  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-server.el (riece-open-server): When password input is
+	quitted, delete the current server process manually.
+	(riece-close-server-process): Always kill process buffer.
+	(riece-quit-server-process): If the connection is timed out,
+	delete the current server process manually.
+
 2004-06-02  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-unread.el: Use riece-facep to check existence of

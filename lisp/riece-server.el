@@ -170,11 +170,7 @@ the `riece-server-keyword-map' variable."
 		       'quit)))
 	    (setq riece-reconnect-with-password nil)))
       (if (eq password 'quit)
-	  (progn
-	    (riece-close-server-process process)
-	    ;; If no server process is available, exit.
-	    (unless riece-server-process-alist
-	      (riece-exit)))
+	  (delete-process process)
 	(if password
 	    (riece-process-send-string process
 				       (format "PASS %s\r\n" password)))
@@ -218,11 +214,7 @@ the `riece-server-keyword-map' variable."
     (erase-buffer)))
 
 (defun riece-close-server-process (process)
-  (if riece-debug
-      (delete-process process)
-    (set-process-filter process nil)
-    (set-process-sentinel process nil)
-    (kill-buffer (process-buffer process)))
+  (kill-buffer (process-buffer process))
   (setq riece-server-process-alist
 	(delq (rassq process riece-server-process-alist)
 	      riece-server-process-alist)))
@@ -246,11 +238,8 @@ the `riece-server-keyword-map' variable."
   (if riece-quit-timeout
       (riece-run-at-time riece-quit-timeout nil
 			 (lambda (process)
-			   (when (rassq process riece-server-process-alist)
-			     (riece-close-server-process process)
-			     ;; If no server process is available, exit.
-			     (unless riece-server-process-alist
-			       (riece-exit))))
+			   (if (rassq process riece-server-process-alist)
+			       (delete-process process)))
 			 process))
   (riece-process-send-string process
 			     (if message
