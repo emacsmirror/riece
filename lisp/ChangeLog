@@ -1,6 +1,6 @@
 2005-02-04  Daiki Ueno  <ueno@unixuser.org>
 
-	* riece-filter.el (riece-filter): Accept lines which ends with LF.
+	* riece-filter.el (riece-filter): Accept lines which end with LF.
 
 	* riece-300.el (riece-353-string): Renamed from riece-353-users.
 	(riece-handle-353-message): Don't parse the reply.

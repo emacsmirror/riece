@@ -76,16 +76,16 @@
 		 (setq riece-read-point (point))))
     (beginning-of-line)
     (while (and (not (eobp))
-		(looking-at ".*\r?\n"))	;the input line is not finished
+		(looking-at "[^\r]*\r?\n"))	;the input line is not finished
       (save-excursion
 	(if (looking-at
-	     ":\\([^ ]+\\) +\\([0-5][0-9][0-9]\\) +\\([^ ]+\\) +\\(.*\\)\r?\n")
+	     ":\\([^ ]+\\) +\\([0-5][0-9][0-9]\\) +\\([^ ]+\\) +\\([^\r]*\\)\r?\n")
 	    (riece-handle-numeric-reply
 	     (match-string 1)		;prefix
 	     (string-to-number (match-string 2)) ;number
 	     (match-string 3)		;name
 	     (match-string 4))		;reply string
-	  (if (looking-at "\\(:\\([^ ]+\\) +\\)?\\([^ ]+\\) +\\(.*\\)\r?\n")
+	  (if (looking-at "\\(:\\([^ ]+\\) +\\)?\\([^ ]+\\) +\\([^\r]*\\)\r?\n")
 	      (riece-handle-message
 	       (match-string 2)		;optional prefix
 	       (match-string 3)		;command
