@@ -23,6 +23,11 @@
 
 ;;; Code:
 
+(require 'riece-globals)
+(require 'riece-misc)
+(require 'riece-channel)
+(require 'riece-identity)
+
 (defgroup riece-rdcc nil
   "DCC implementation using ruby"
   :prefix "riece-"
@@ -224,7 +229,8 @@ puts(\"#{" address " >> 24 & 0xFF}.#{" address " >> 16 & 0xFF}.#{"
 		   (nth 3 request))))
     (setq riece-rdcc-requests (delq request riece-rdcc-requests))
     (with-current-buffer (process-buffer process)
-      (set-buffer-multibyte nil)
+      (if (fboundp 'set-buffer-multibyte)
+	  (set-buffer-multibyte nil))
       (buffer-disable-undo)
       (setq buffer-file-name file)
       (make-local-variable 'riece-rdcc-request-user)

@@ -1,5 +1,12 @@
 2003-06-02  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-rdcc.el: Require riece-globals, riece-misc, riece-channel,
+	and riece-identity.
+	(riece-command-dcc-receive): Check the existence of
+	set-buffer-multibyte.
+
+2003-06-02  Daiki Ueno  <ueno@unixuser.org>
+
 	* Riece: Version 0.0.3 released.
 	* riece-version.el (riece-version-number): Bump up to 0.0.3.
 
