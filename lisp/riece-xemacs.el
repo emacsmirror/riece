@@ -112,7 +112,7 @@
      name
      `(lambda ()
 	(,function ,@args))
-     time repeat t)
+     time (if repeat 1) t)
     name))
 
 (defalias 'riece-cancel-timer 'delete-itimer)

@@ -1,5 +1,8 @@
 2003-10-26  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-xemacs.el (riece-run-with-idle-timer): Pass an integer to
+	the RESTART argument of start-itimer.
+
 	* riece-commands.el (riece-command-user-list-scroll-down): Rename
 	from riece-command-nick-scroll-down.
 	(riece-command-user-list-scroll-up): Rename from
