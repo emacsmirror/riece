@@ -1,3 +1,9 @@
+2004-11-27  Daiki Ueno  <ueno@unixuser.org>
+
+	* test/lunit.el: Update copyright year.
+	(lunit-test-result-run): Fixed the argument of
+	lunit-test-listener-error listener.
+
 2004-11-26  Daiki Ueno  <ueno@unixuser.org>
 
 	* COMPILE (riece-test): Require 'lunit after when ./test is added

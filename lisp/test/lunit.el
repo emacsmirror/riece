@@ -1,6 +1,6 @@
 ;;; lunit.el --- simple testing framework for luna
 
-;; Copyright (C) 2000 Daiki Ueno.
+;; Copyright (C) 2000-2004 Daiki Ueno.
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>
 ;; Keywords: OOP, XP
@@ -128,7 +128,7 @@
       (nconc (lunit-test-result-errors-internal result)
 	     (list (cons case (cdr error)))))
      (lunit-test-result-notify
-      result 'lunit-test-listener-error case error)))
+      result 'lunit-test-listener-error case (cdr error))))
   (lunit-test-result-set-assert-count-internal
    result
    (+ (lunit-test-result-assert-count-internal result)
@@ -328,6 +328,24 @@ signal an error if not."
   (lunit-assert nil))
 
 ")))))))
+
+(defun batch-lunit ()
+  (let ((load-path (cons (expand-file-name (car command-line-args-left))
+			 (cons nil load-path)))
+	(files (directory-files (expand-file-name (car command-line-args-left))
+				t "^test-.*\\.el$"))
+        suite)
+    (setq suite (lunit-make-test-suite))
+    (while files
+      (when (file-regular-p (car files))
+	(load-file (car files))
+	(lunit-test-suite-add-test
+	 suite
+	 (lunit-make-test-suite-from-class
+	  (intern (file-name-sans-extension
+		   (file-name-nondirectory (car files)))))))
+      (setq files (cdr files)))
+    (lunit suite)))
 
 (provide 'lunit)
 
