@@ -1,5 +1,10 @@
 2004-06-01  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-button.el (riece-button-disable): On XEmacs, BUFFER arg of
+	widget-map-buttons is ignored.
+
+2004-06-01  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-unread.el (riece-modeline-unread-face): New face;
 	setup the properties are inherited from 'modeline.
 	* riece-history.el (riece-modeline-history-face): New face;

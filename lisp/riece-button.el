@@ -241,13 +241,15 @@ This function is used as a callback for a channel button."
 
 (defun riece-button-disable ()
   (setq riece-button-enabled nil)
-  (let ((pointer riece-buffer-list))
-    (while pointer
-      (widget-map-buttons
-       (lambda (widget maparg)
-	 (widget-leave-text widget))
-       (car pointer))
-      (setq pointer (cdr pointer)))))
+  (save-excursion
+    (let ((pointer riece-buffer-list))
+      (while pointer
+	;; On XEmacs, BUFFER arg of widget-map-buttons is ignored.
+	(set-buffer (car pointer))
+	(widget-map-buttons
+	 (lambda (widget maparg)
+	   (widget-leave-text widget)))
+	(setq pointer (cdr pointer))))))
 
 (provide 'riece-button)
 
