@@ -44,11 +44,6 @@
   :prefix "riece-"
   :group 'riece)
 
-(defcustom riece-channel-list-unread-face 'riece-channel-list-unread-face
-  "Face used for displaying unread channels."
-  :type 'face
-  :group 'riece-highlight-faces)
-
 (defface riece-channel-list-unread-face
   '((((class color)
       (background dark))
@@ -60,6 +55,7 @@
      (:bold t)))
   "Face used for displaying unread channels."
   :group 'riece-highlight-faces)
+(defvar riece-channel-list-unread-face 'riece-channel-list-unread-face)
 
 (defvar riece-unread-channels nil)
 

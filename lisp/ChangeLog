@@ -1,3 +1,19 @@
+2003-08-28  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-highlight.el (riece-dialogue-change-face): Use defvar to
+	define.
+	(riece-dialogue-notice-face): Ditto.
+	(riece-dialogue-wallops-face): Ditto.
+	(riece-dialogue-error-face): Ditto.
+	(riece-dialogue-info-face): Ditto.
+	(riece-dialogue-server-face): Ditto.
+	(riece-dialogue-prefix-face): Ditto.
+	(riece-channel-list-default-face): Ditto.
+	(riece-channel-list-current-face): Ditto.
+
+	* riece-unread.el (riece-channel-list-unread-face): Use defvar to
+	define.
+
 2003-08-27  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-history.el (riece-history-insinuate): Don't set

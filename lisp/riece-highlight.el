@@ -1,4 +1,4 @@
-;;; riece-highlight.el --- coloring IRC buffers
+;;; riece-highlight.el --- highlight IRC buffers
 ;; Copyright (C) 1998-2003 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>
@@ -25,6 +25,8 @@
 ;;; Code:
 
 (require 'riece-globals)
+(require 'riece-options)		;riece-channel-list-buffer-mode
+(require 'riece-identity)		;riece-format-identity
 (require 'font-lock)
 
 (defgroup riece-highlight nil
@@ -39,41 +41,6 @@
   :prefix "riece-highlight-"
   :group 'riece-highlight)
 
-(defcustom riece-dialogue-change-face 'riece-dialogue-change-face
-  "Face used for displaying \"*** Change:\" line."
-  :type 'face
-  :group 'riece-highlight-faces)
-
-(defcustom riece-dialogue-notice-face 'riece-dialogue-notice-face
-  "Face used for displaying \"*** Notice:\" line."
-  :type 'face
-  :group 'riece-highlight-faces)
-
-(defcustom riece-dialogue-wallops-face 'riece-dialogue-wallops-face
-  "Face used for displaying \"*** Wallops:\" line."
-  :type 'face
-  :group 'riece-highlight-faces)
-  
-(defcustom riece-dialogue-error-face 'riece-dialogue-error-face
-  "Face used for displaying \"*** Error:\" line."
-  :type 'face
-  :group 'riece-highlight-faces)
-
-(defcustom riece-dialogue-info-face 'riece-dialogue-info-face
-  "Face used for displaying \"*** Info:\" line."
-  :type 'face
-  :group 'riece-highlight-faces)
-
-(defcustom riece-dialogue-server-face 'riece-dialogue-server-face
-  "Face used for displaying \"(from server)\" extent."
-  :type 'face
-  :group 'riece-highlight-faces)
-
-(defcustom riece-dialogue-prefix-face 'riece-dialogue-prefix-face
-  "Face used for displaying \"<nick>\" extent."
-  :type 'face
-  :group 'riece-highlight-faces)
-
 (defface riece-dialogue-change-face
   '((((class color)
       (background dark))
@@ -85,6 +52,7 @@
      (:bold t)))
   "Face used for displaying \"*** Change:\" line"
   :group 'riece-highlight-faces)
+(defvar riece-dialogue-change-face 'riece-dialogue-change-face)
 
 (defface riece-dialogue-notice-face
   '((((class color)
@@ -97,6 +65,7 @@
      (:bold t)))
   "Face used for displaying \"*** Notice:\" line"
   :group 'riece-highlight-faces)
+(defvar riece-dialogue-notice-face 'riece-dialogue-notice-face)
 
 (defface riece-dialogue-wallops-face
   '((((class color)
@@ -109,6 +78,7 @@
      (:bold t)))
   "Face used for displaying \"*** Wallops:\" line"
   :group 'riece-highlight-faces)
+(defvar riece-dialogue-wallops-face 'riece-dialogue-wallops-face)
 
 (defface riece-dialogue-error-face
   '((((class color)
@@ -121,6 +91,7 @@
      (:bold t)))
   "Face used for displaying \"*** Error:\" line"
   :group 'riece-highlight-faces)
+(defvar riece-dialogue-error-face 'riece-dialogue-error-face)
 
 (defface riece-dialogue-info-face
   '((((class color)
@@ -133,6 +104,7 @@
      (:bold t)))
   "Face used for displaying \"*** Info:\" line"
   :group 'riece-highlight-faces)
+(defvar riece-dialogue-info-face 'riece-dialogue-info-face)
 
 (defface riece-dialogue-server-face
   '((((class color)
@@ -145,6 +117,7 @@
      (:bold t)))
   "Face used for displaying \"(from server)\" extent."
   :group 'riece-highlight-faces)
+(defvar riece-dialogue-server-face 'riece-dialogue-server-face)
 
 (defface riece-dialogue-prefix-face
   '((((class color)
@@ -157,6 +130,7 @@
      (:bold nil)))
   "Face used for displaying \"<nick>\" extent"
   :group 'riece-highlight-faces)
+(defvar riece-dialogue-prefix-face 'riece-dialogue-prefix-face)
 
 (defcustom riece-dialogue-font-lock-keywords
   (append
@@ -179,20 +153,11 @@
   :type '(repeat (list string))
   :group 'riece-highlight)
 
-(defcustom riece-channel-list-default-face 'riece-channel-list-default-face
-  "Face used for displaying channels."
-  :type 'face
-  :group 'riece-highlight-faces)
-
-(defcustom riece-channel-list-current-face 'riece-channel-list-current-face
-  "Face used for displaying the current channel."
-  :type 'face
-  :group 'riece-highlight-faces)
-
 (defface riece-channel-list-default-face
   '((t ()))
   "Face used for displaying channels."
   :group 'riece-highlight-faces)
+(defvar riece-channel-list-default-face 'riece-channel-list-default-face)
 
 (defface riece-channel-list-current-face
   '((((class color)
@@ -205,6 +170,7 @@
      ()))
   "Face used for displaying the current channel."
   :group 'riece-highlight-faces)
+(defvar riece-channel-list-current-face 'riece-channel-list-current-face)
 
 (defcustom riece-channel-list-mark-face-alist
   '((?* . riece-channel-list-current-face))
