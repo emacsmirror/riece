@@ -11,4 +11,5 @@ AC_PATH_LISPDIR
 AC_PATH_PACKAGEDIR
 
 AC_OUTPUT(Makefile \
-lisp/Makefile)
+lisp/Makefile
+doc/Makefile)

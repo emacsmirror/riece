@@ -1,4 +1,4 @@
-SUBDIRS = lisp
+SUBDIRS = lisp doc
 EXTRA_DIST = INSTALL-CVS
 AUTOMAKE_OPTIONS = no-dependencies
 
