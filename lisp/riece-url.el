@@ -22,7 +22,14 @@
 ;; Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 ;; Boston, MA 02111-1307, USA.
 
+;;; Commentary:
+
+;; To use, add the following line to your ~/.riece/init.el:
+;; (add-to-list 'riece-addons 'riece-url)
+
 ;;; Code:
+
+(require 'riece-options)
 
 (defvar browse-url-browser-function)
 
@@ -40,13 +47,14 @@
 
 (autoload 'widget-convert-button "wid-edit")
 
-(defun riece-url-add-buttons (start end)
+(defun riece-url-scan-region (start end)
   (save-excursion
     (goto-char start)
     (while (re-search-forward riece-url-regexp end t)
       (let ((url (match-string 0)))
-	(widget-convert-button
-	 'url-link (match-beginning 0) (match-end 0) url)
+	(if (memq 'riece-highlight riece-addons)
+	    (widget-convert-button
+	     'url-link (match-beginning 0) (match-end 0) url))
 	(unless (member url riece-urls)
 	  (setq riece-urls (cons url riece-urls)))))))
 
@@ -58,10 +66,11 @@
 (defvar riece-dialogue-mode-map)
 
 (defun riece-url-requires ()
-  '(riece-highlight))
+  (if (memq 'riece-highlight riece-addons)
+      '(riece-highlight)))
 
 (defun riece-url-insinuate ()
-  (add-hook 'riece-after-insert-functions 'riece-url-add-buttons)
+  (add-hook 'riece-after-insert-functions 'riece-url-scan-region)
   (define-key riece-dialogue-mode-map "U" 'riece-command-browse-url))
 
 (provide 'riece-url)

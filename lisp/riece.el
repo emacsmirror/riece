@@ -417,32 +417,44 @@ Instead, these commands are available:
 
 (defun riece-load-and-build-addon-dependencies (addons)
   (let ((load-path (cons riece-addon-directory load-path))
-	dependencies)
+	dependencies
+	pointer)
     (while addons
       (require (car addons))		;error will be reported here
       (let* ((requires
-	      (funcall (or (intern-soft (concat (symbol-name (car addons))
-						"-requires"))
+	      (funcall (or (intern-soft
+			    (concat (symbol-name (car addons)) "-requires"))
 			   #'ignore)))
 	     (pointer requires)
 	     entry)
+	;; Increment succs' pred count.
+	(if (setq entry (assq (car addons) dependencies))
+	    (setcar (cdr entry) (+ (length requires) (nth 1 entry)))
+	  (setq dependencies (cons (list (car addons) (length requires))
+				   dependencies)))
+	;; Merge pred's succs.
 	(while pointer
 	  (if (setq entry (assq (car pointer) dependencies))
-	      (setcar (cdr entry) (1+ (nth 1 entry)))
-	    (setq dependencies (cons (list (car pointer) 1 nil)
+	      (setcdr (cdr entry)
+		      (cons (car addons) (nthcdr 2 entry)))
+	    (setq dependencies (cons (list (car pointer) 0 (car addons))
 				     dependencies)))
-	  (setq pointer (cdr pointer)))
-	(if (setq entry (assq (car addons) dependencies))
-	    (setcar (nthcdr 2 entry) requires)
-	  (setq dependencies (cons (list (car addons) 0 requires)
-				   dependencies))))
+	  (setq pointer (cdr pointer))))
       (setq addons (cdr addons)))
     dependencies))
 
 (defun riece-insinuate-addons (addons)
-  (let* ((dependencies (riece-load-and-build-addon-dependencies addons))
-	 (pointer dependencies)
-	 queue)
+  (let ((pointer addons)
+	dependencies queue)
+    ;; Uniquify, first.
+    (while pointer
+      (if (memq (car pointer) (cdr pointer))
+	  (setcar pointer nil))
+      (setq pointer (cdr pointer)))
+    (setq dependencies (riece-load-and-build-addon-dependencies
+			(delq nil addons))
+	  pointer dependencies)
+    ;; Sort them.
     (while pointer
       (if (zerop (nth 1 (car pointer)))
 	  (setq dependencies (delq (car pointer) dependencies)
@@ -451,7 +463,7 @@ Instead, these commands are available:
     (setq addons nil)
     (while queue
       (setq addons (cons (car (car queue)) addons)
-	    pointer (nth 2 (car queue)))
+	    pointer (nthcdr 2 (car queue)))
       (while pointer
 	(let* ((entry (assq (car pointer) dependencies))
 	       (count (1- (nth 1 entry))))
@@ -463,7 +475,7 @@ Instead, these commands are available:
 	(setq pointer (cdr pointer)))
       (setq queue (cdr queue)))
     (if dependencies
-	(error "Circular dependency found"))
+	(error "Circular add-on dependency found"))
     (while addons
       (require (car addons))		;implicit dependency
       (funcall (intern (concat (symbol-name (car addons)) "-insinuate")))

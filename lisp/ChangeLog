@@ -1,5 +1,12 @@
 2003-05-30  Daiki Ueno  <ueno@unixuser.org>
 
+	* Riece: Version 0.0.2 released.
+	* riece-version.el (riece-version-number): Bump up to 0.0.2.
+
+	* riece.el (riece-load-and-build-addon-dependencies): Fixed.
+	* riece-url.el (riece-url-requires): Don't assert dependency on
+	riece-highlight unless it appears in riece-addons.
+
 	* riece-url.el: New add-on.
 	* COMPILE (riece-modules): Add riece-url.
 
