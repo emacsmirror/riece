@@ -52,6 +52,13 @@
 
 (defvar riece-doctor-patients nil)
 
+(defvar riece-doctor-enabled nil)
+
+(defconst riece-doctor-description
+  "Allow users in channel to talk with the classic pseudo-AI")
+
+(put 'riece-doctor 'riece-addon-default-disabled t)
+
 (autoload 'doctor-mode "doctor")
 (autoload 'doctor-read-print "doctor")
 
@@ -69,53 +76,64 @@
   (riece-send-string (format "NOTICE %s :%s\r\n" target string)))
 
 (defun riece-doctor-after-privmsg-hook (prefix string)
-  (let* ((user (riece-prefix-nickname prefix))
-	 (parameters (riece-split-parameters string))
-	 (targets (split-string (car parameters) ","))
-	 (message (nth 1 parameters)))
-    (if (string-match riece-doctor-hello-regexp message)
-	(if (riece-identity-member user riece-doctor-patients t)
-	    (riece-doctor-reply
-	     (car targets)
-	     (format "%s: You are already talking with me." user))
-	  (save-excursion
-	    (set-buffer (get-buffer-create (riece-doctor-buffer-name user)))
-	    (erase-buffer)
-	    (doctor-mode))
-	  (setq riece-doctor-patients (cons user riece-doctor-patients))
-	  (riece-doctor-reply
-	   (car targets)	   
-	   (format
-	    "%s: I am the psychotherapist.  Please, describe your problems."
-	    user)))
-      (if (string-match riece-doctor-bye-regexp message)
-	  (let ((pointer (riece-identity-member user riece-doctor-patients t)))
-	    (when pointer
-	      (kill-buffer (riece-doctor-buffer-name user))
-	      (setq riece-doctor-patients (delq (car pointer)
-						riece-doctor-patients))
-	      (riece-doctor-reply
-	       (car targets)
-	       (format "%s: Good bye." user))))
-	(if (riece-identity-member user riece-doctor-patients t)
-	    (let (string)
+  (if riece-doctor-enabled
+      (let* ((user (riece-prefix-nickname prefix))
+	     (parameters (riece-split-parameters string))
+	     (targets (split-string (car parameters) ","))
+	     (message (nth 1 parameters)))
+	(if (string-match riece-doctor-hello-regexp message)
+	    (if (riece-identity-member user riece-doctor-patients t)
+		(riece-doctor-reply
+		 (car targets)
+		 (format "%s: You are already talking with me." user))
 	      (save-excursion
-		(set-buffer (get-buffer (riece-doctor-buffer-name user)))
-		(goto-char (point-max))
-		(insert message "\n")
-		(let ((point (point)))
-		  (doctor-read-print)
-		  (setq string (buffer-substring (1+ point) (- (point) 2))))
-		(with-temp-buffer
-		  (insert string)
-		  (subst-char-in-region (point-min) (point-max) ?\n ? )
-		  (setq string (buffer-string))))
+		(set-buffer (get-buffer-create
+			     (riece-doctor-buffer-name user)))
+		(erase-buffer)
+		(doctor-mode))
+	      (setq riece-doctor-patients (cons user riece-doctor-patients))
 	      (riece-doctor-reply
-	       (car targets)
-	       (format "%s: %s" user string))))))))
+	       (car targets)	   
+	       (format
+		"%s: I am the psychotherapist.  \
+Please, describe your problems."
+		user)))
+	  (if (string-match riece-doctor-bye-regexp message)
+	      (let ((pointer (riece-identity-member user 
+						    riece-doctor-patients t)))
+		(when pointer
+		  (kill-buffer (riece-doctor-buffer-name user))
+		  (setq riece-doctor-patients (delq (car pointer)
+						    riece-doctor-patients))
+		  (riece-doctor-reply
+		   (car targets)
+		   (format "%s: Good bye." user))))
+	    (if (riece-identity-member user riece-doctor-patients t)
+		(let (string)
+		  (save-excursion
+		    (set-buffer (get-buffer (riece-doctor-buffer-name user)))
+		    (goto-char (point-max))
+		    (insert message "\n")
+		    (let ((point (point)))
+		      (doctor-read-print)
+		      (setq string (buffer-substring (1+ point)
+						     (- (point) 2))))
+		    (with-temp-buffer
+		      (insert string)
+		      (subst-char-in-region (point-min) (point-max) ?\n ? )
+		      (setq string (buffer-string))))
+		  (riece-doctor-reply
+		   (car targets)
+		   (format "%s: %s" user string)))))))))
 
 (defun riece-doctor-insinuate ()
   (add-hook 'riece-after-privmsg-hook 'riece-doctor-after-privmsg-hook))
+
+(defun riece-doctor-enable ()
+  (setq riece-doctor-enabled t))
+
+(defun riece-doctor-disable ()
+  (setq riece-doctor-enabled nil))
 
 (provide 'riece-doctor)
 

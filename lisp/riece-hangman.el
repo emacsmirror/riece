@@ -56,6 +56,13 @@
 (defvar riece-hangman-player-context-alist nil)
 (defvar riece-hangman-words-buffer nil)
 
+(defvar riece-hangman-enabled nil)
+
+(defconst riece-hangman-description
+  "Allow users in channel to play classic textual game \"hangman\"")
+
+(put 'riece-hangman 'riece-addon-default-disabled t)
+
 (defun riece-hangman-make-context (word)
   "Make an instance of player context object.
 This function is for internal use only."
@@ -133,85 +140,97 @@ The wordlist is read from `riece-hangman-words-file'."
 	       "")))))
 
 (defun riece-hangman-after-privmsg-hook (prefix string)
-  (let* ((user (riece-prefix-nickname prefix))
-	 (parameters (riece-split-parameters string))
-	 (targets (split-string (car parameters) ","))
-	 (message (nth 1 parameters))
-	 case-fold-search
-	 pointer word guessed index)
-    (if (string-match riece-hangman-hello-regexp message)
-	(if (riece-identity-assoc user riece-hangman-player-context-alist t)
-	    (riece-hangman-reply
-	     (car targets)
-	     (format "%s: You are already playing the game." user))
-	  (let ((context (riece-hangman-make-context (riece-hangman-word))))
-	    (setq riece-hangman-player-context-alist
-		  (cons (cons user context)
-			riece-hangman-player-context-alist))
-	    (riece-hangman-reply-with-context user (car targets) context)))
-      (if (string-match riece-hangman-bye-regexp message)
-	  (when (setq pointer (riece-identity-assoc
-			       user riece-hangman-player-context-alist t))
-	    (setq riece-hangman-player-context-alist
-		  (delq pointer riece-hangman-player-context-alist))
-	    (riece-hangman-reply
-	     (car targets)
-	     (format "%s: Sorry, the word was \"%s\""
-		     user
-		     (riece-hangman-context-word (cdr pointer)))))
-	(if (setq pointer (riece-identity-assoc
-			   user riece-hangman-player-context-alist t))
-	    (if (or (/= (length message) 1)
-		    (not (string-match "[a-z]" message)))
+  (if riece-hangman-enabled
+      (let* ((user (riece-prefix-nickname prefix))
+	     (parameters (riece-split-parameters string))
+	     (targets (split-string (car parameters) ","))
+	     (message (nth 1 parameters))
+	     case-fold-search
+	     pointer word guessed index)
+	(if (string-match riece-hangman-hello-regexp message)
+	    (if (riece-identity-assoc user riece-hangman-player-context-alist
+				      t)
 		(riece-hangman-reply
 		 (car targets)
-		 (format "%s: Not a valid guess: %s" user message))
-	      (if (memq (aref message 0)
-			(riece-hangman-context-guessed (cdr pointer)))
-		  (riece-hangman-reply (car targets)
-				       (format "%s: Already guessed '%c'"
-					       user (aref message 0)))
-		(setq guessed (riece-hangman-context-set-guessed
-			       (cdr pointer)
-			       (cons (aref message 0)
-				     (riece-hangman-context-guessed
-				      (cdr pointer))))
-		      word (riece-hangman-context-word (cdr pointer)))
-		(unless (catch 'found
-			  (setq index 0)
-			  (while (< index (length word))
-			    (if (eq (aref word index) (aref message 0))
-				(throw 'found t))
-			    (setq index (1+ index))))
-		  (riece-hangman-context-set-missed-count
-		   (cdr pointer)
-		   (1+ (riece-hangman-context-missed-count (cdr pointer)))))
-		(if (>= (riece-hangman-context-missed-count (cdr pointer)) 7)
-		    (progn
-		      (riece-hangman-reply
-		       (car targets)
-		       (format "%s: Sorry, the word was \"%s\""
-			       user
-			       (riece-hangman-context-word (cdr pointer))))
-		      (setq riece-hangman-player-context-alist
-			    (delq pointer
-				  riece-hangman-player-context-alist)))
-		  (if (catch 'missing
-			(setq index 0)
-			(while (< index (length word))
-			  (unless (memq (aref word index) guessed)
-			    (throw 'missing t))
-			  (setq index (1+ index))))
-		      (riece-hangman-reply-with-context user (car targets)
-							(cdr pointer))
-		    (riece-hangman-reply (car targets)
-					 (format "%s: You got it!" user))
-		    (setq riece-hangman-player-context-alist
-			  (delq pointer
-				riece-hangman-player-context-alist)))))))))))
+		 (format "%s: You are already playing the game." user))
+	      (let ((context (riece-hangman-make-context
+			      (riece-hangman-word))))
+		(setq riece-hangman-player-context-alist
+		      (cons (cons user context)
+			    riece-hangman-player-context-alist))
+		(riece-hangman-reply-with-context user (car targets) context)))
+	  (if (string-match riece-hangman-bye-regexp message)
+	      (when (setq pointer (riece-identity-assoc
+				   user riece-hangman-player-context-alist t))
+		(setq riece-hangman-player-context-alist
+		      (delq pointer riece-hangman-player-context-alist))
+		(riece-hangman-reply
+		 (car targets)
+		 (format "%s: Sorry, the word was \"%s\""
+			 user
+			 (riece-hangman-context-word (cdr pointer)))))
+	    (if (setq pointer (riece-identity-assoc
+			       user riece-hangman-player-context-alist t))
+		(if (or (/= (length message) 1)
+			(not (string-match "[a-z]" message)))
+		    (riece-hangman-reply
+		     (car targets)
+		     (format "%s: Not a valid guess: %s" user message))
+		  (if (memq (aref message 0)
+			    (riece-hangman-context-guessed (cdr pointer)))
+		      (riece-hangman-reply (car targets)
+					   (format "%s: Already guessed '%c'"
+						   user (aref message 0)))
+		    (setq guessed (riece-hangman-context-set-guessed
+				   (cdr pointer)
+				   (cons (aref message 0)
+					 (riece-hangman-context-guessed
+					  (cdr pointer))))
+			  word (riece-hangman-context-word (cdr pointer)))
+		    (unless (catch 'found
+			      (setq index 0)
+			      (while (< index (length word))
+				(if (eq (aref word index) (aref message 0))
+				    (throw 'found t))
+				(setq index (1+ index))))
+		      (riece-hangman-context-set-missed-count
+		       (cdr pointer)
+		       (1+ (riece-hangman-context-missed-count
+			    (cdr pointer)))))
+		    (if (>= (riece-hangman-context-missed-count (cdr pointer))
+			    7)
+			(progn
+			  (riece-hangman-reply
+			   (car targets)
+			   (format "%s: Sorry, the word was \"%s\""
+				   user
+				   (riece-hangman-context-word (cdr pointer))))
+			  (setq riece-hangman-player-context-alist
+				(delq pointer
+				      riece-hangman-player-context-alist)))
+		      (if (catch 'missing
+			    (setq index 0)
+			    (while (< index (length word))
+			      (unless (memq (aref word index) guessed)
+				(throw 'missing t))
+			      (setq index (1+ index))))
+			  (riece-hangman-reply-with-context user (car targets)
+							    (cdr pointer))
+			(riece-hangman-reply (car targets)
+					     (format "%s: You got it!" user))
+			(setq riece-hangman-player-context-alist
+			      (delq
+			       pointer
+			       riece-hangman-player-context-alist))))))))))))
 
 (defun riece-hangman-insinuate ()
   (add-hook 'riece-after-privmsg-hook 'riece-hangman-after-privmsg-hook))
+
+(defun riece-hangman-enable ()
+  (setq riece-hangman-enabled t))
+
+(defun riece-hangman-disable ()
+  (setq riece-hangman-enabled nil))
 
 (provide 'riece-hangman)
 

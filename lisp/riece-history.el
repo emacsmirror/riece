@@ -63,6 +63,11 @@
 
 (defvar riece-channel-history nil)
 
+(defvar riece-history-enabled nil)
+
+(defconst riece-history-description
+  "Keep track channel history")
+
 (defun riece-guess-channel-from-history ()
   (let ((length (ring-length riece-channel-history))
 	(index 0)
@@ -73,14 +78,16 @@
     (nreverse result)))
 
 (defun riece-history-format-identity-for-channel-list-buffer (index identity)
-  (if (and (not (ring-empty-p riece-channel-history))
+  (if (and riece-history-enabled
+	   (not (ring-empty-p riece-channel-history))
 	   (riece-identity-equal identity (ring-ref riece-channel-history 0)))
       (concat (format "%2d:+" index)
 	      (riece-format-identity identity))))
 
 (defun riece-history-format-identity-for-channel-list-indicator (index
 								 identity)
-  (if (and (not (ring-empty-p riece-channel-history))
+  (if (and riece-history-enabled
+	   (not (ring-empty-p riece-channel-history))
 	   (riece-identity-equal identity (ring-ref riece-channel-history 0)))
       (let ((string (riece-format-identity identity))
 	    (start 0))
@@ -97,16 +104,9 @@
 ;;;       '(riece-guess)))
 
 (defun riece-history-insinuate ()
-  (add-hook 'riece-startup-hook
-	    (lambda ()
-	      (setq riece-channel-history
-		    (make-ring riece-channel-history-length))))
-  (add-hook 'riece-exit-hook
-	    (lambda ()
-	      (setq riece-channel-history nil)))
   (add-hook 'riece-after-switch-to-channel-functions
 	    (lambda (last)
-	      (if (and last
+	      (if (and riece-history-enabled last
 		       (not (riece-identity-equal last riece-current-channel)))
 		  (ring-insert riece-channel-history last))))
   (add-hook 'riece-format-identity-for-channel-list-buffer-functions
@@ -122,7 +122,17 @@
 ;;;		'riece-guess-channel-from-history))
   )
 
+(defun riece-history-enable ()
+  (setq riece-channel-history
+	(make-ring riece-channel-history-length))
+  (setq riece-history-enabled t)
+  (riece-emit-signal 'channel-list-changed))
+
+(defun riece-history-disable ()
+  (setq riece-channel-history nil
+	riece-history-enabled nil)
+  (riece-emit-signal 'channel-list-changed))
+
 (provide 'riece-history)
 
 ;;; riece-history.el ends here
-

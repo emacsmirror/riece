@@ -57,6 +57,11 @@
 (defvar riece-ctlseq-face-cache nil)
 (defvar riece-ctlseq-face-counter 0)
 
+(defvar riece-ctlseq-enabled nil)
+
+(defvar riece-ctlseq-description
+  "Highlight control sequences in IRC buffers")
+
 (defun riece-ctlseq-compatible-attributes-p (this other)
   (let ((pointer this))
     (catch 'mismatched
@@ -151,28 +156,29 @@
     attrs)))
 
 (defun riece-ctlseq-message-filter (message)
-  (let ((start 0)
-	(end (length (riece-message-text message)))
-	attrs)
-    (while (string-match
-	    "[\x2\xF\x16\x1F]\\|\x3\\([0-9]+\\)?\\(,[0-9]+\\)?"
-	    (riece-message-text message) start)
-      (if riece-ctlseq-hide-controls
-	  (put-text-property (match-beginning 0) (match-end 0)
-			     'invisible 'riece-ctlseq
-			     (riece-message-text message)))
-      (if attrs
-	  (put-text-property start (match-beginning 0)
-			     'riece-ctlseq-attributes (copy-sequence attrs)
-			     (riece-message-text message)))
-      (setq start (match-end 0)
-	    attrs (riece-ctlseq-update-attributes
-		   (match-string 0 (riece-message-text message)) attrs)))
-    (if (and (< start end) attrs)
-	(put-text-property start end
-			   'riece-overlay-face
-			   (riece-ctlseq-face-from-cache attrs)
-			   (riece-message-text message))))
+  (if riece-ctlseq-enabled
+      (let ((start 0)
+	    (end (length (riece-message-text message)))
+	    attrs)
+	(while (string-match
+		"[\x2\xF\x16\x1F]\\|\x3\\([0-9]+\\)?\\(,[0-9]+\\)?"
+		(riece-message-text message) start)
+	  (if riece-ctlseq-hide-controls
+	      (put-text-property (match-beginning 0) (match-end 0)
+				 'invisible 'riece-ctlseq
+				 (riece-message-text message)))
+	  (if attrs
+	      (put-text-property start (match-beginning 0)
+				 'riece-ctlseq-attributes (copy-sequence attrs)
+				 (riece-message-text message)))
+	  (setq start (match-end 0)
+		attrs (riece-ctlseq-update-attributes
+		       (match-string 0 (riece-message-text message)) attrs)))
+	(if (and (< start end) attrs)
+	    (put-text-property start end
+			       'riece-overlay-face
+			       (riece-ctlseq-face-from-cache attrs)
+			       (riece-message-text message)))))
   message)
 
 (defun riece-ctlseq-requires ()
@@ -180,6 +186,12 @@
 
 (defun riece-ctlseq-insinuate ()
   (add-hook 'riece-message-filter-functions 'riece-ctlseq-message-filter))
+
+(defun riece-ctlseq-enable ()
+  (setq riece-ctlseq-enabled t))
+
+(defun riece-ctlseq-disable ()
+  (setq riece-ctlseq-enabled nil))
 
 (provide 'riece-ctlseq)
 

@@ -47,6 +47,11 @@
 (defvar riece-urls nil
   "A list of URL which appears in Riece buffers.")
 
+(defvar riece-url-enabled nil)
+
+(defconst riece-url-description
+  "Collect URL in IRC buffers")
+
 (autoload 'widget-convert-button "wid-edit")
 
 (defun riece-url-scan-region (start end)
@@ -80,7 +85,6 @@
 
 (defun riece-url-insinuate ()
   (add-hook 'riece-after-insert-functions 'riece-url-scan-region)
-  (define-key riece-dialogue-mode-map "U" 'riece-command-browse-url)
   (if (memq 'riece-menu riece-addons)
       (add-hook 'riece-command-mode-hook
 		(lambda ()
@@ -89,6 +93,14 @@
 		   '("Open URL..." :filter riece-url-create-menu)))
 		t)))
 
+(defun riece-url-enable ()
+  (define-key riece-dialogue-mode-map "U" 'riece-command-browse-url)
+  (setq riece-url-enabled t))
+
+(defun riece-url-disable ()
+  (define-key riece-dialogue-mode-map "U" nil)
+  (setq riece-url-enabled nil))
+  
 (provide 'riece-url)
 
 ;;; riece-url.el ends here

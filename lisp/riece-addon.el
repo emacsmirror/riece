@@ -86,14 +86,14 @@
 (defcustom riece-addon-list-mark-face-alist
   '((?+ . riece-addon-list-enabled-face)
     (?- . riece-addon-list-disabled-face)
-    (?= . riece-addon-list-unsupported-face)
+    (?! . riece-addon-list-unsupported-face)
     (?? . riece-addon-list-unknown-face))
   "An alist mapping marks on riece-addon-list-buffer to faces."
   :type 'list
   :group 'riece-addon-list)
 
 (defcustom riece-addon-list-font-lock-keywords
-  '(("^\\([-+=?] [^:]+\\): \\(.*\\)"
+  '(("^\\([-+!?] [^:]+\\): \\(.*\\)"
      (1 (cdr (assq (aref (match-string 1) 0)
 		   riece-addon-list-mark-face-alist)))
      (2 riece-addon-list-description-face)))
@@ -247,7 +247,7 @@ All normal editing commands are turned off."
 		      (if (not (featurep (car pointer)))
 			  ??
 			(if (null enabled)
-			    ?=
+			    ?!
 			  (if (symbol-value enabled)
 			      ?+
 			    ?-)))
@@ -262,7 +262,7 @@ Symbols in the leftmost column:
 
   +     The add-on is enabled.
   -     The add-on is disabled.
-  =	The add-on doesn't support enable/disable operation.
+  !	The add-on doesn't support enable/disable operation.
   ?	The add-on status is unknown.
 ")
     (insert (substitute-command-keys "

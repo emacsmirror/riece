@@ -54,6 +54,11 @@
   :type 'list
   :group 'riece-alias)
 
+(defvar riece-alias-enabled nil)
+
+(defconst riece-alias-description
+  "Define aliases of channel/user names")
+
 (defun riece-alias-abbrev-percent-hack (string)
   (if (string-match (concat "^#\\([^ ]+\\):"
 			    (regexp-quote riece-alias-percent-hack-mask)
@@ -91,10 +96,21 @@
       string)))
 
 (defun riece-alias-insinuate ()
+  )
+
+(defun riece-alias-enable ()
   (setq riece-abbrev-identity-string-function
 	#'riece-alias-abbrev-identity-string
 	riece-expand-identity-string-function
-	#'riece-alias-expand-identity-string))
+	#'riece-alias-expand-identity-string)
+  (riece-emit-signal 'channel-list-changed)
+  (setq riece-alias-enabled t))
+
+(defun riece-alias-disable ()
+  (setq riece-abbrev-identity-string-function nil
+	riece-expand-identity-string-function nil)
+  (riece-emit-signal 'channel-list-changed)
+  (setq riece-alias-enabled nil))
 
 (provide 'riece-alias)
 

@@ -100,6 +100,11 @@ puts(\"#{" address " >> 24 & 0xFF}.#{" address " >> 16 & 0xFF}.#{"
 (defvar riece-rdcc-temp-file nil)
 (defvar riece-rdcc-received-size nil)
 
+(defvar riece-rdcc-enabled nil)
+
+(defconst riece-rdcc-description
+  "DCC file sending extension implemented in Ruby")
+
 (defvar temporary-file-directory)
 (defvar jka-compr-compression-info-list)
 (defvar jam-zcat-filename-list)
@@ -315,9 +320,10 @@ puts(\"#{" address " >> 24 & 0xFF}.#{" address " >> 16 & 0xFF}.#{"
 
 (defun riece-handle-dcc-request (prefix target message)
   (let ((case-fold-search t))
-    (when (string-match
-	   "SEND \\([^ ]+\\) \\([^ ]+\\) \\([^ ]+\\) \\([^ ]+\\)"
-	   message)
+    (when (and riece-rdcc-enabled
+	       (string-match
+		"SEND \\([^ ]+\\) \\([^ ]+\\) \\([^ ]+\\) \\([^ ]+\\)"
+		message))
       (let ((file (match-string 1 message))
 	    (address (match-string 2 message))
 	    (port (string-to-number (match-string 3 message)))
@@ -361,9 +367,17 @@ puts(\"#{" address " >> 24 & 0xFF}.#{" address " >> 16 & 0xFF}.#{"
 (defvar riece-dialogue-mode-map)
 (defun riece-rdcc-insinuate ()
   (add-to-list 'riece-ctcp-additional-clientinfo "DCC")
-  (add-hook 'riece-ctcp-dcc-request-hook 'riece-handle-dcc-request)
+  (add-hook 'riece-ctcp-dcc-request-hook 'riece-handle-dcc-request))
+
+(defun riece-rdcc-enable ()
   (define-key riece-dialogue-mode-map "\C-ds" 'riece-command-dcc-send)
-  (define-key riece-dialogue-mode-map "\C-dr" 'riece-command-dcc-receive))
+  (define-key riece-dialogue-mode-map "\C-dr" 'riece-command-dcc-receive)
+  (setq riece-rdcc-enabled t))
+
+(defun riece-rdcc-disable ()
+  (define-key riece-dialogue-mode-map "\C-ds" nil)
+  (define-key riece-dialogue-mode-map "\C-dr" nil)
+  (setq riece-rdcc-enabled nil))
 
 (provide 'riece-rdcc)
 

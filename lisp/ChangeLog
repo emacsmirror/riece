@@ -1,5 +1,142 @@
 2004-05-22  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-xface.el: Support enable/disable.
+	(riece-xface-enabled): New flag.
+	(riece-xface-description): New variable.
+	(riece-xface-update-user-list-buffer): Check riece-xface-enabled.
+	(riece-xface-enable): New function.
+	(riece-xface-disable): New function.
+
+	* riece-url.el: Support enable/disable.
+	(riece-url-enabled): New flag.
+	(riece-url-description): New variable.
+	(riece-url-enable): New function; bind command keys here.
+	(riece-url-disable): New function.
+
+	* riece-unread.el: Support enable/disable.
+	(riece-unread-enabled): New flag.
+	(riece-unread-description): New variable.
+	(riece-unread-after-display-message-function): Check
+	riece-unread-enabled.
+	(riece-unread-after-switch-to-channel-function): Ditto.
+	(riece-unread-format-identity-for-channel-list-buffer): Ditto.
+	(riece-unread-format-identity-for-channel-list-indicator): Ditto.
+	(riece-unread-enable): New function; bind command keys here.
+	(riece-unread-disable): New function.
+
+	* riece-rdcc.el: Support enable/disable.
+	(riece-rdcc-enabled): New flag.
+	(riece-rdcc-description): New variable.
+	(riece-handle-dcc-request): Check riece-rdcc-enabled.
+	(riece-rdcc-enable): New function; bind command keys here.
+	(riece-rdcc-disable): New function.
+
+	* riece-ndcc.el: Support enable/disable.
+	(riece-ndcc-enabled): New flag.
+	(riece-ndcc-description): New variable.
+	(riece-handle-dcc-request): Check riece-ndcc-enabled.
+	(riece-ndcc-enable): New function; bind command keys here.
+	(riece-ndcc-disable): New function.
+
+	* riece-menu.el: Support enable/disable; put
+	riece-addon-default-disabled property.
+	(riece-menu-enabled): New flag.
+	(riece-menu-description): New variable.
+	(riece-menu-enable): New function.
+	(riece-menu-disable): New function.
+
+	* riece-lsdb.el: Support enable/disable.
+	(riece-lsdb-enabled): New flag.
+	(riece-lsdb-description): New variable.
+	(riece-lsdb-enable): New function; bind command keys here.
+	(riece-lsdb-disable): New function.
+
+	* riece-keyword.el: Support enable/disable.
+	(riece-keyword-enabled): New flag.
+	(riece-keyword-description): New variable.
+	(riece-keyword-message-filter): Check riece-keyword-enabled.
+	(riece-keyword-enable): New function.
+	(riece-keyword-disable): New function.
+
+	* riece-ignore.el: Support enable/disable.
+	(riece-ignore-enabled): New flag.
+	(riece-ignore-description): New variable.
+	(riece-ignore-message-filter): Check riece-ignore-enabled.
+	(riece-ignore-enable): New function; bind command keys here.
+	(riece-ignore-disable): New function.
+
+	* riece-icon.el: Support enable/disable.
+	(riece-icon-enabled): New flag.
+	(riece-icon-description): New variable.
+	(riece-icon-update-user-list-buffer): Check riece-icon-enabled.
+	(riece-icon-update-channel-list-buffer): Check riece-icon-enabled.
+	(riece-icon-enable): New function.
+	(riece-icon-disable): New function.
+
+	* riece-history.el: Support enable/disable.
+	(riece-history-enabled): New flag.
+	(riece-history-description): New variable.
+	(riece-history-format-identity-for-channel-list-buffer): Check
+	riece-history-enabled.
+	(riece-history-format-identity-for-channel-list-indicator): Ditto.
+	(riece-history-enable): New function.
+	(riece-history-disable): New function.
+
+	* riece-hangman.el: Support enable/disable; put
+	riece-addon-default-disabled property.
+	(riece-hangman-enabled): New flag.
+	(riece-hangman-description): New variable.
+	(riece-hangman-after-privmsg-hook): Check riece-hangman-enabled.
+	(riece-hangman-enable): New function.
+	(riece-hangman-disable): New function.
+
+	* riece-guess.el: Support enable/disable.
+	(riece-guess-enabled): New flag.
+	(riece-guess-description): New variable.
+	(riece-guess-insinuate): Nothing to do.
+	(riece-guess-enable): New function; bind command keys here.
+	(riece-guess-disable): New function.
+
+	* riece-doctor.el: Support enable/disable; put
+	'riece-addon-default-disabled property.
+	(riece-doctor-enabled): New flag.
+	(riece-doctor-description): New variable.
+	(riece-doctor-after-privmsg-hook): Check riece-doctor-enabled.
+	(riece-doctor-enable): New function.
+	(riece-doctor-disable): New function.
+
+	* riece-ctlseq.el: Support enable/disable.
+	(riece-ctlseq-enabled): New flag.
+	(riece-ctlseq-description): New variable.
+	(riece-ctlseq-message-filter): Check riece-ctlseq-enabled.
+	(riece-ctlseq-enable): New function.
+	(riece-ctlseq-disable): New function.
+
+	* riece-button.el: Support enable/disable.
+	(riece-button-enabled): New flag
+	(riece-button-description): New variable.
+	(riece-button-enable): New function.
+	(riece-button-disable): New function.
+
+	* riece-async.el (riece-async-description): New variable.
+
+	* riece-alias.el: Support enable/disable.
+	(riece-alias-enabled): New flag.
+	(riece-alias-description): New variable.
+	(riece-alias-insinuate): Nothing to do.
+	(riece-alias-enable): New function.
+	(riece-alias-disable): New function.
+
+	* riece-addon.el (riece-addon-list-mark-face-alist): Change mark
+	for addons which does not support enable/disable.
+	(riece-addon-list-font-lock-keywords): Follow the above change.
+	(riece-command-list-addons): Ditto.
+
+	* riece.el (riece): Check 'riece-addon-default-disabled property.
+	(riece-exit): Disable addons.
+
+2004-05-22  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-addon.el (riece-addon-list-mode): Call font-lock-set-defaults.
 
 	* riece-highlight.el (riece-highlight-setup-dialogue): Call

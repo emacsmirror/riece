@@ -65,6 +65,13 @@
     ("Servers" :filter riece-menu-create-servers-menu))
   "Menu used in command mode.")
 
+(defvar riece-menu-enabled nil)
+
+(defconst riece-menu-description
+  "Setup command menus on menubar")
+
+(put 'riece-menu 'riece-addon-default-disabled t)
+
 (defun riece-menu-create-layouts-menu (menu)
   (mapcar (lambda (entry)
 	    (vector (car entry) (list 'riece-command-change-layout (car entry))
@@ -103,7 +110,17 @@
 				riece-command-mode-map
 				"Riece Menu"
 				riece-menu-items)
-	      (easy-menu-add riece-menu))))
+	      (riece-enable-addon 'riece-menu))))
+
+(defun riece-menu-enable ()
+  (with-current-buffer riece-command-buffer
+    (easy-menu-add riece-menu))
+  (setq riece-menu-enabled t))
+
+(defun riece-menu-disable ()
+  (with-current-buffer riece-command-buffer
+    (easy-menu-remove riece-menu))
+  (setq riece-menu-enabled nil))
 
 (provide 'riece-menu)
 

@@ -37,6 +37,11 @@
   :type '(repeat function)
   :group 'riece-guess)
 
+(defvar riece-guess-enabled nil)
+
+(defconst riece-guess-description
+  "Guess the next channel, using multiple methods")
+
 (defvar riece-current-channels)
 
 (defun riece-guess-candidates ()
@@ -86,13 +91,26 @@ merge the results."
 (defvar riece-channel-list-mode-map)
 
 (defun riece-guess-insinuate ()
+  )
+
+(defun riece-guess-enable ()
   (define-key riece-command-mode-map
     "\C-cg" 'riece-command-guess-switch-to-channel)
   (define-key riece-dialogue-mode-map
     "g" 'riece-command-guess-switch-to-channel)
   (define-key riece-channel-list-mode-map
-    "g" 'riece-command-guess-switch-to-channel))
-	
+    "g" 'riece-command-guess-switch-to-channel)
+  (setq riece-guess-enabled t))
+
+(defun riece-guess-disable ()
+  (define-key riece-command-mode-map
+    "\C-cg" nil)
+  (define-key riece-dialogue-mode-map
+    "g" nil)
+  (define-key riece-channel-list-mode-map
+    "g" nil)
+  (setq riece-guess-enabled nil))
+  
 (provide 'riece-guess)
 
 ;;; riece-guess.el ends here

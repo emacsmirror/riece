@@ -44,6 +44,11 @@ Only used for sending files."
 (defvar riece-ndcc-request-user nil)
 (defvar riece-ndcc-request-size nil)
 
+(defvar riece-ndcc-enabled nil)
+
+(defconst riece-ndcc-description
+  "DCC file sending extension implemented with `make-network-process'")
+
 (defun riece-ndcc-encode-address (address)
   (unless (string-match
 	   "^\\([0-9]+\\)\\.\\([0-9]+\\)\\.\\([0-9]+\\)\\.\\([0-9]+\\)$"
@@ -187,9 +192,10 @@ Only used for sending files."
 
 (defun riece-handle-dcc-request (prefix target message)
   (let ((case-fold-search t))
-    (when (string-match
-	   "SEND \\([^ ]+\\) \\([^ ]+\\) \\([^ ]+\\) \\([^ ]+\\)"
-	   message)
+    (when (and riece-ndcc-enabled
+	       (string-match
+		"SEND \\([^ ]+\\) \\([^ ]+\\) \\([^ ]+\\) \\([^ ]+\\)"
+		message))
       (let ((file (match-string 1 message))
 	    (address (match-string 2 message))
 	    (port (string-to-number (match-string 3 message)))
@@ -222,9 +228,15 @@ Only used for sending files."
 
 (defvar riece-dialogue-mode-map)
 (defun riece-ndcc-insinuate ()
-  (add-hook 'riece-ctcp-dcc-request-hook 'riece-handle-dcc-request)
+  (add-hook 'riece-ctcp-dcc-request-hook 'riece-handle-dcc-request))
+
+(defun riece-ndcc-enable ()
   (define-key riece-dialogue-mode-map "\C-ds" 'riece-command-dcc-send)
   (define-key riece-dialogue-mode-map "\C-dr" 'riece-command-dcc-receive))
+
+(defun riece-ndcc-disable ()
+  (define-key riece-dialogue-mode-map "\C-ds" nil)
+  (define-key riece-dialogue-mode-map "\C-dr" nil))
 
 (provide 'riece-ndcc)
 

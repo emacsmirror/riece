@@ -49,6 +49,11 @@
     ["Allow To Speak" riece-user-button-set-speakers])
   "Menu for user buttons.")
 
+(defvar riece-button-enabled nil)
+
+(defconst riece-button-description
+  "Display useful buttons in IRC buffers")
+
 (defvar help-echo-owns-message)
 (define-widget 'riece-identity-button 'push-button
   "A channel button."
@@ -179,17 +184,19 @@ This function is used as a callback for a channel button."
 
 (defvar riece-identity-button-map)
 (defun riece-button-add-identity-button (start end)
-  (riece-scan-property-region
-   'riece-identity
-   start end
-   (lambda (start end)
-     (let ((inhibit-read-only t)
-	   buffer-read-only)
-       (widget-convert-button 'riece-identity-button start end
-			      (get-text-property start 'riece-identity))
-       (add-text-properties start end
-			    (list 'local-map riece-identity-button-map
-				  'keymap riece-identity-button-map))))))
+  (if riece-button-enabled
+      (riece-scan-property-region
+       'riece-identity
+       start end
+       (lambda (start end)
+	 (let ((inhibit-read-only t)
+	       buffer-read-only)
+	   (widget-convert-button 'riece-identity-button start end
+				  (get-text-property start 'riece-identity))
+	   (add-text-properties
+	    start end
+	    (list 'local-map riece-identity-button-map
+		  'keymap riece-identity-button-map)))))))
 
 (defun riece-button-update-buffer ()
   (riece-button-add-identity-button (point-min) (point-max)))
@@ -218,6 +225,29 @@ This function is used as a callback for a channel button."
 	      (set (make-local-variable 'riece-identity-button-map)
 		   (riece-make-identity-button-map))))
   (add-hook 'riece-after-insert-functions 'riece-button-add-identity-button))
+
+(defun riece-button-enable ()
+  (setq riece-button-enabled t)
+  (let ((pointer riece-buffer-list))
+    (while pointer
+      (with-current-buffer (car pointer)
+	(if (eq (derived-mode-class major-mode)
+		'riece-dialogue-mode)
+	    (riece-button-update-buffer)))
+      (setq pointer (cdr pointer)))
+    (if riece-current-channel
+	(riece-emit-signal 'user-list-changed riece-current-channel))
+    (riece-emit-signal 'channel-list-changed)))
+
+(defun riece-button-disable ()
+  (setq riece-button-enabled nil)
+  (let ((pointer riece-buffer-list))
+    (while pointer
+      (widget-map-buttons
+       (lambda (widget maparg)
+	 (widget-leave-text widget))
+       (car pointer))
+      (setq pointer (cdr pointer)))))
 
 (provide 'riece-button)
 

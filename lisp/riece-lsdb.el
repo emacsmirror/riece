@@ -43,6 +43,11 @@
 
 (defvar riece-lsdb-cache nil)
 
+(defvar riece-lsdb-enabled nil)
+
+(defconst riece-lsdb-description
+  "Use LSDB (Lovely Sister Database)")
+
 (defun riece-lsdb-update-cache (record)
   (let ((irc (cdr (assq 'irc record))))
     (while irc
@@ -119,11 +124,21 @@
   (add-to-list 'lsdb-after-update-record-functions
 	       'riece-lsdb-update-cache)
   (add-to-list 'lsdb-after-delete-record-functions
-	       'riece-lsdb-delete-cache)
+	       'riece-lsdb-delete-cache))
+
+(defun riece-lsdb-enable ()
   (define-key riece-command-mode-map
     "\C-c\C-ll" 'riece-lsdb-display-records)
   (define-key riece-command-mode-map
-    "\C-c\C-la" 'riece-lsdb-add-user))
+    "\C-c\C-la" 'riece-lsdb-add-user)
+  (setq riece-lsdb-enabled t))
+
+(defun riece-lsdb-disable ()
+  (define-key riece-command-mode-map
+    "\C-c\C-ll" nil)
+  (define-key riece-command-mode-map
+    "\C-c\C-la" nil)
+  (setq riece-lsdb-enabled nil))
 
 (provide 'riece-lsdb)
 

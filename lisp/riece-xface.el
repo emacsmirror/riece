@@ -34,26 +34,32 @@
 (require 'riece-display)
 (require 'riece-lsdb)
 
+(defvar riece-xface-enabled nil)
+
+(defconst riece-xface-description
+  "Display X-Face in user list buffer")
+
 (defvar lsdb-insert-x-face-function)
 
 (defun riece-xface-update-user-list-buffer ()
-  (riece-scan-property-region
-   'riece-identity (point-min)(point-max)
-   (lambda (start end)
-     (let ((records (riece-lsdb-lookup-records (get-text-property
-						start 'riece-identity)))
-	   xface)
-       (while (and records
-		   (null xface))
-	 (setq xface (nth 1 (assq 'x-face (car records)))
-	       records (cdr records)))
-       (if (and xface
-		(not (eq (char-after end) ? )))
-	   (let ((inhibit-read-only t)
-		 buffer-read-only)
-	     (goto-char end)
-	     (insert " ")
-	     (funcall lsdb-insert-x-face-function xface)))))))
+  (if riece-xface-enabled
+      (riece-scan-property-region
+       'riece-identity (point-min)(point-max)
+       (lambda (start end)
+	 (let ((records (riece-lsdb-lookup-records (get-text-property
+						    start 'riece-identity)))
+	       xface)
+	   (while (and records
+		       (null xface))
+	     (setq xface (nth 1 (assq 'x-face (car records)))
+		   records (cdr records)))
+	   (if (and xface
+		    (not (eq (char-after end) ? )))
+	       (let ((inhibit-read-only t)
+		     buffer-read-only)
+		 (goto-char end)
+		 (insert " ")
+		 (funcall lsdb-insert-x-face-function xface))))))))
 
 (defun riece-xface-requires ()
   '(riece-lsdb))
@@ -63,6 +69,16 @@
 	    (lambda ()
 	      (add-hook 'riece-update-buffer-functions
 			'riece-xface-update-user-list-buffer t t))))
+
+(defun riece-xface-enable ()
+  (setq riece-xface-enabled t)
+  (if riece-current-channel
+      (riece-emit-signal 'user-list-changed riece-current-channel)))
+
+(defun riece-xface-disable ()
+  (setq riece-xface-enabled nil)
+  (if riece-current-channel
+      (riece-emit-signal 'user-list-changed riece-current-channel)))
 
 (provide 'riece-xface)
 

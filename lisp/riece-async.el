@@ -106,6 +106,9 @@ socket.close
   :type 'integer
   :group 'riece-async)
 
+(defconst riece-async-description
+  "Keep IRC connection with external process")
+
 (defun riece-async-substitute-variables (program variable value)
   (setq program (copy-sequence program))
   (let ((pointer program))

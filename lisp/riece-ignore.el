@@ -56,6 +56,11 @@ Otherwise, they are not removed from IRC buffers, but are hidden with
 (defvar riece-ignore-buffer nil)
 (defvar riece-ignored-user-list nil)
 
+(defvar riece-ignore-enabled nil)
+
+(defconst riece-ignore-description
+  "Ignore users")
+
 (defun riece-ignore-user-rename-signal-function (signal handback)
   (let ((pointer (riece-identity-member (car (riece-signal-args signal))
 					riece-ignored-user-list)))
@@ -91,8 +96,9 @@ Otherwise, they are not removed from IRC buffers, but are hidden with
        #'riece-ignore-user-rename-signal-function))))
 
 (defun riece-ignore-message-filter (message)
-  (if (riece-identity-member (riece-message-speaker message)
-			     riece-ignored-user-list)
+  (if (and riece-ignore-enabled
+	   (riece-identity-member (riece-message-speaker message)
+				  riece-ignored-user-list))
       (if riece-ignore-discard-message
 	  (when (eq riece-ignore-discard-message 'log)
 	    (unless riece-ignore-buffer
@@ -116,9 +122,17 @@ Otherwise, they are not removed from IRC buffers, but are hidden with
 
 (defvar riece-command-mode-map)
 (defun riece-ignore-insinuate ()
-  (add-hook 'riece-message-filter-functions 'riece-ignore-message-filter)
+  (add-hook 'riece-message-filter-functions 'riece-ignore-message-filter))
+
+(defun riece-ignore-enable ()
   (define-key riece-command-mode-map
-    "\C-ck" 'riece-ignore-user))
+    "\C-ck" 'riece-ignore-user)
+  (setq riece-ignore-enabled t))
+
+(defun riece-ignore-disable ()
+  (define-key riece-command-mode-map
+    "\C-ck" nil)
+  (setq riece-ignore-enabled nil))
 
 (provide 'riece-ignore)
 

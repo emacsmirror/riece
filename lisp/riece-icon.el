@@ -179,6 +179,11 @@ static char * a_xpm[] = {
 \"  @@@@@@@@@@@ \",
 \"              \"};")
 
+(defvar riece-icon-enabled nil)
+
+(defconst riece-icon-description
+  "Add icon images on IRC buffers")
+
 (defun riece-icon-available-p ()
   (if (featurep 'xemacs)
       (featurep 'xpm)
@@ -229,22 +234,24 @@ static char * a_xpm[] = {
 				   'rear-nonsticky (list 'display)))))))
 
 (defun riece-icon-update-user-list-buffer ()
-  (let ((images (riece-icon-make-images riece-user-list-icons)))
-    (save-excursion
-      (goto-char (point-min))
-      (while (re-search-forward "^[ @+]" nil t)
-	(riece-icon-add-image-region
-	 (cdr (assoc (match-string 0) images))
-	 (1- (point)) (point))))))
+  (if riece-icon-enabled
+      (let ((images (riece-icon-make-images riece-user-list-icons)))
+	(save-excursion
+	  (goto-char (point-min))
+	  (while (re-search-forward "^[ @+]" nil t)
+	    (riece-icon-add-image-region
+	     (cdr (assoc (match-string 0) images))
+	     (1- (point)) (point)))))))
 
 (defun riece-icon-update-channel-list-buffer ()
-  (let ((images (riece-icon-make-images riece-channel-list-icons)))
-    (save-excursion
-      (goto-char (point-min))
-      (while (re-search-forward "^ ?[0-9]+:\\([ !+*]\\)" nil t)
-	(riece-icon-add-image-region
-	 (cdr (assoc (match-string 1) images))
-	 (match-beginning 1) (match-end 1))))))
+  (if riece-icon-enabled
+      (let ((images (riece-icon-make-images riece-channel-list-icons)))
+	(save-excursion
+	  (goto-char (point-min))
+	  (while (re-search-forward "^ ?[0-9]+:\\([ !+*]\\)" nil t)
+	    (riece-icon-add-image-region
+	     (cdr (assoc (match-string 1) images))
+	     (match-beginning 1) (match-end 1)))))))
 
 (eval-and-compile
   (if (featurep 'xemacs)
@@ -301,7 +308,7 @@ Modify whole identification by side effect."
 
 (defun riece-icon-insinuate ()
   (defalias 'riece-mode-line-buffer-identification
-    'riece-icon-modeline-buffer-identification)
+    #'riece-icon-modeline-buffer-identification)
   (add-hook 'riece-user-list-mode-hook
 	    (lambda ()
 	      (if (riece-icon-available-p)
@@ -312,6 +319,18 @@ Modify whole identification by side effect."
 	      (if (riece-icon-available-p)
 		  (add-hook 'riece-update-buffer-functions
 			    'riece-icon-update-channel-list-buffer t t)))))
+
+(defun riece-icon-enable ()
+  (setq riece-icon-enabled t)
+  (if riece-current-channel
+      (riece-emit-signal 'user-list-changed riece-current-channel))
+  (riece-emit-signal 'channel-list-changed))
+
+(defun riece-icon-disable ()
+  (setq riece-icon-enabled nil)
+  (if riece-current-channel
+      (riece-emit-signal 'user-list-changed riece-current-channel))
+  (riece-emit-signal 'channel-list-changed))
 
 (provide 'riece-icon)
 

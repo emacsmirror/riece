@@ -60,29 +60,38 @@
 
 (defvar riece-unread-channels nil)
 
+(defvar riece-unread-enabled nil)
+
+(defconst riece-unread-description
+  "Mark channels where \"unread\" messages arrived")
+
 (defun riece-unread-after-display-message-function (message)
-  (let ((target (if (riece-message-private-p message)
-		    (riece-message-speaker message)
-		  (riece-message-target message))))
-    (unless (or (riece-message-own-p message)
-		(riece-message-type message)
-		(riece-identity-equal target riece-current-channel)
-		(riece-identity-member target riece-unread-channels))
-      (setq riece-unread-channels (cons target riece-unread-channels))
-      (riece-emit-signal 'channel-list-changed))))
+  (if riece-unread-enabled
+      (let ((target (if (riece-message-private-p message)
+			(riece-message-speaker message)
+		      (riece-message-target message))))
+	(unless (or (riece-message-own-p message)
+		    (riece-message-type message)
+		    (riece-identity-equal target riece-current-channel)
+		    (riece-identity-member target riece-unread-channels))
+	  (setq riece-unread-channels (cons target riece-unread-channels))
+	  (riece-emit-signal 'channel-list-changed)))))
 
 (defun riece-unread-after-switch-to-channel-function (last)
-  (setq riece-unread-channels
-	(delete riece-current-channel
-		riece-unread-channels)))
+  (if riece-unread-enabled
+      (setq riece-unread-channels
+	    (delete riece-current-channel
+		    riece-unread-channels))))
 
 (defun riece-unread-format-identity-for-channel-list-buffer (index identity)
-  (if (riece-identity-member identity riece-unread-channels)
+  (if (and riece-unread-enabled
+	   (riece-identity-member identity riece-unread-channels))
       (concat (format "%2d:!" index)
 	      (riece-format-identity identity))))
 
 (defun riece-unread-format-identity-for-channel-list-indicator (index identity)
-  (if (riece-identity-member identity riece-unread-channels)
+  (if (and riece-unread-enabled
+	   (riece-identity-member identity riece-unread-channels))
       (let ((string (riece-format-identity identity))
 	    (start 0))
 	;; Escape % -> %%.
@@ -107,10 +116,6 @@
 (defun riece-guess-channel-from-unread ()
   riece-unread-channels)
 
-(defvar riece-command-mode-map)
-(defvar riece-dialogue-mode-map)
-(defvar riece-channel-list-mode-map)
-
 (defun riece-unread-requires ()
   (let (requires)
     (if (memq 'riece-highlight riece-addons)
@@ -128,12 +133,6 @@
 	    'riece-unread-format-identity-for-channel-list-buffer)
   (add-hook 'riece-format-identity-for-channel-list-indicator-functions
 	    'riece-unread-format-identity-for-channel-list-indicator)
-  (define-key riece-command-mode-map
-    "\C-c\C-u" 'riece-unread-switch-to-channel)
-  (define-key riece-dialogue-mode-map
-    "u" 'riece-unread-switch-to-channel)
-  (define-key riece-channel-list-mode-map
-    "u" 'riece-unread-switch-to-channel)
   (if (memq 'riece-highlight riece-addons)
       (setq riece-channel-list-mark-face-alist
 	    (cons '(?! . riece-channel-list-unread-face)
@@ -142,6 +141,29 @@
 ;;;      (add-hook 'riece-guess-channel-try-functions
 ;;;		'riece-guess-channel-from-unread))
   )
+
+(defvar riece-command-mode-map)
+(defvar riece-dialogue-mode-map)
+(defvar riece-channel-list-mode-map)
+(defun riece-unread-enable ()
+  (define-key riece-command-mode-map
+    "\C-c\C-u" 'riece-unread-switch-to-channel)
+  (define-key riece-dialogue-mode-map
+    "u" 'riece-unread-switch-to-channel)
+  (define-key riece-channel-list-mode-map
+    "u" 'riece-unread-switch-to-channel)
+  (setq riece-unread-enabled t)
+  (riece-emit-signal 'channel-list-changed))
+
+(defun riece-unread-disable ()
+  (define-key riece-command-mode-map
+    "\C-c\C-u" nil)
+  (define-key riece-dialogue-mode-map
+    "u" nil)
+  (define-key riece-channel-list-mode-map
+    "u" nil)
+  (setq riece-unread-enabled nil)
+  (riece-emit-signal 'channel-list-changed))
 
 (provide 'riece-unread)
 
