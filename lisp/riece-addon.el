@@ -93,25 +93,28 @@
       (message "Add-on %S is insinuated" addon)))
 
 (defun riece-enable-addon (addon)
-  (let ((enabled (intern (concat (symbol-name addon) "-enabled"))))
-    (if (not (boundp enabled))
+  (let ((enabled (intern-soft (concat (symbol-name addon) "-enabled"))))
+    (if (null enabled)
 	(if riece-debug
 	    (message "Add-on %S doesn't support enable/disable" addon))
       (if (symbol-value enabled)
 	  (if riece-debug
 	      (message "Can't enable add-on %S" addon))
-	(funcall (intern (concat (symbol-name addon) "-enable")))
+	(funcall (or (intern-soft (concat (symbol-name addon) "-enable"))
+		     #'ignore))
 	(if riece-debug
 	    (message "Add-on %S enabled" addon))))))
 
 (defun riece-disable-addon (addon)
-  (let ((enabled (intern (concat (symbol-name addon) "-enabled"))))
-    (if (not (boundp enabled))
+  (let ((enabled (intern-soft (concat (symbol-name addon) "-enabled"))))
+    (if (null enabled)
 	(if riece-debug
 	    (message "Add-on %S doesn't support enable/disable" addon))
       (if (symbol-value enabled)
 	  (progn
-	    (funcall (intern (concat (symbol-name (car addons)) "-disable")))
+	    (funcall (or (intern-soft (concat (symbol-name (car addons))
+					      "-disable"))
+			 #'ignore))
 	    (if riece-debug
 		(message "Add-on %S disabled" (car addons))))
 	(if riece-debug

@@ -1,5 +1,11 @@
 2004-05-21  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-addon.el (riece-enable-addon): Check if riece-*-enable
+	exists.
+	(riece-disable-addon): Check if riece-*-disable exists.
+
+2004-05-21  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-mini.el (riece-mini-enabled): New flag.
 	(riece-mini-display-message-function): Check riece-mini-enabled.
 	(riece-mini-enable): New function.
