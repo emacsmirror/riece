@@ -1,5 +1,17 @@
 2003-06-23  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-300.el: Rewrite using riece-decode-identity.
+
+	* riece-identity.el (riece-completing-read-identity): Signal an
+	error when the encoded channel name is not matched with
+	riece-channel-regexp.
+
+	* riece-globals.el (riece-channel-regexp): Moved from
+	riece-channel.el.
+	(riece-user-regexp): Moved form riece-user.el.
+
+2003-06-23  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-handle.el (riece-handle-join-message): Don't call
 	riece-switch-to-channel.
 	(riece-handle-part-message): Don't decode message if it is empty.

@@ -159,6 +159,10 @@ RFC2812, 2.2 \"Character codes\" says:
 	   predicate must-match initial))
 	 (encoded
 	  (riece-encode-identity decoded)))
+    (unless (string-match (concat "^\\(" riece-channel-regexp "\\|"
+				  riece-user-regexp "\\)")
+			  (riece-identity-prefix encoded))
+      (error "Invalid channel name!"))
     (if (and (not (string-match "[ ,]" decoded))
 	     (string-match "[ ,]" (riece-identity-prefix encoded))
 	     (not (y-or-n-p (format "The encoded channel name contains illegal character \"%s\".  continue? "

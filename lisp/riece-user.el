@@ -25,9 +25,6 @@
 
 (require 'riece-identity)
 
-(defconst riece-user-regexp
-  "[][\\\\`_^{|}A-Za-z][][\\\\`_^{|}A-Za-z0-9-]\\{0,8\\}")
-
 ;;; User object:
 (defun riece-find-user (name)
   "Get a user object named NAME from the server buffer."

@@ -25,15 +25,14 @@
 ;;; Code:
 
 (require 'riece-options)
+(require 'riece-globals)
 (require 'riece-identity)
 
 ;;; String representation of a channel:
-(defconst riece-channel-regexp "^[+&#!]")
-
 (defun riece-channel-p (string)
   "Return t if STRING is a channel.
 \(i.e. it matches `riece-channel-regexp')"
-  (string-match riece-channel-regexp string))
+  (string-match (concat "^" riece-channel-regexp) string))
 
 ;;; Channel object:
 (defun riece-find-channel (name)

@@ -24,6 +24,12 @@
 
 ;;; Code:
 
+;;; Constants:
+(defconst riece-channel-regexp
+  "\\([+&#]\\|![A-Z0-9]\\{5\\}\\)[^\0\7\r\n ,:]*\\(:[^\0\7\r\n ,:]*\\)?")
+(defconst riece-user-regexp
+  "[][\\\\`_^{|}A-Za-z][][\\\\`_^{|}A-Za-z0-9-]\\{0,8\\}")
+
 ;;; Miscellaneous global variables:
 (defvar riece-process-list nil
   "List of processes opened in the current session.")
