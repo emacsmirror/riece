@@ -61,6 +61,7 @@
 
 (defun riece-unread-after-display-message-function (message)
   (unless (or (riece-message-own-p message)
+	      (riece-message-type message)
 	      (riece-identity-equal (riece-message-target message)
 				    riece-current-channel)
 	      (riece-identity-member (riece-message-target message)

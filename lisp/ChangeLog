@@ -1,3 +1,8 @@
+2003-11-28  OHASHI Akira  <bg66@koka-in.org>
+
+	* riece-unread.el (riece-unread-after-display-message-function):
+	Do nothing when message is not a privmsg.
+
 2003-11-22  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-log.el (riece-log-coding-system): New user option.
