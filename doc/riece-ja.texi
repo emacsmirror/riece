@@ -192,7 +192,7 @@ Riece $B$O@_Dj%U%!%$%k$rJQ?t(B @code{riece-directory} $B$G;X<($5$l$k%G%#%l%/%
 * Connecting to multiple servers::  $BJ#?t$N%5!<%P$K$D$J$0$K$O(B
 @end menu
 
-@node Windows, Commands, Basic usage, Basic usage
+@node Windows, Indicators, Basic usage, Basic usage
 @section Windows
 
 $B%G%U%)%k%H$N@_Dj$G$O!"%A%c%s%M%k$KF~$k$H!"2<$N?^$K<($9$h$&$J8^$D$N%&%#%s(B
@@ -237,7 +237,7 @@ Riece $B$O@_Dj%U%!%$%k$rJQ?t(B @code{riece-directory} $B$G;X<($5$l$k%G%#%l%/%
 $B%"%6!<%:%P%C%U%!(B (@samp{*Others*})$B!#8=:_$N%A%c%s%M%k0J30$N2qOC$,N.$l$^$9!#(B
 @end enumerate
 
-@node Indicators
+@node Indicators, Commands, Windows, Basic usage
 @section Indicators
 
 $B%3%^%s%I%P%C%U%!$d%A%c%s%M%k%P%C%U%!$N%b!<%I%i%$%s$N:8C<$K$O!"(B
@@ -262,7 +262,7 @@ Riece: --- ueno #Liece [n]
 $B$P(B @samp{f})
 @end enumerate
 
-@node Commands, Connecting to multiple servers, Windows, Basic usage
+@node Commands, Connecting to multiple servers, Indicators, Basic usage
 @section Commands
 
 $BJ8>O$rF~NO$7$?%P%C%U%!$O!"%3%^%s%I%P%C%U%!$H8F$P$l!"%3%^%s%I%P%C%U%!$+$i(B
@@ -617,6 +617,7 @@ Riece $B$K$O!"%O%s%I%i%U%C%/$H8F$P$l$kFC<l$J%U%C%/$,$"$j$^$9!#$3$l$i$O(B IRC
 * Debugging::                   
 * Modules::                     
 * Namespace management::        
+* Signals::                     
 @end menu
 
 @node CVS, Debugging, Development, Development
@@ -684,6 +685,8 @@ channel object $B4XO"$NDj5A(B
 @item riece-user
 user object $B4XO"$NDj5A(B 
 
+@item riece-signal
+$B%7%0%J%k(B(@xref{Signals})$B4IM}(B
 @item riece-misc
 $B;(B?$J4X?t$NDj5A(B($B%$%s%i%$%s4X?t$r=|$/(B) 
 @item riece-display
@@ -734,7 +737,7 @@ DCC (Direct Client to Client protocol) $B$K$h$k%U%!%$%kE>Aw(B (Emacs 21.3 $B$
 @code{make-network-connection} $B$K$h$k<BAu(B)
 @end table
 
-@node Namespace management,  , Modules, Development
+@node Namespace management, Signals, Modules, Development
 @section Namespace management
 
 Riece $B$OJ#?t$N%5!<%P$KF1;~$K@\B3$9$k$?$a!"%5!<%PKh$KJL!9$NL>A06u4V$r4IM}(B
@@ -868,6 +871,46 @@ AWAY $BCf$+$I$&$+(B
 
 @defun riece-naming-assert-rename old-name new-name
 $B%f!<%6$NL>A0$,JQ99$5$l$?$3$H$rI=L@$7$^$9(B 
+@end defun
+
+@node Signals,  , Namespace management, Development
+@section Signals
+
+$B2hLL$N:FIA2h$r8zN(NI$/9T$&$?$a$K!"%$%Y%s%H$HIA2hBP>]$N%*%V%8%'%/%H(B($B%P%C(B
+$B%U%!$d(B @xref{Indicators})$B$r7k$SIU$1$k%a%+%K%:%`$rMQ0U$7$F$$$^$9!#(B
+
+$B%$%Y%s%H$HIA2hBP>]$N%*%V%8%'%/%H$O%7%0%J%k$r$d$j$H$j$7$^$9!#%7%0%J%k$N35(B
+$BG0$O!"(BQt $B$d(B GTK+ $B$H$$$C$?(B GUI $B%D!<%k%-%C%H$KMQ0U$5$l$F$$$k$b$N$HF1MM$N$b(B
+$B$N$G$9!#(B
+
+$B%7%0%J%k$rAw=P$9$k$K$O!"(B@samp{riece-emit-signal}$B$r;H$$$^$9!#(B
+
+@defun riece-emit-signal signal-name &rest args
+@var{signal-name}$B$G;X<($5$l$k%7%0%J%k$r!"0z?t(B@var{args}$B$H$H$b$KAw=P$7$^$9(B
+@end defun
+
+$B%7%0%J%k$K1~Ez$9$k$K$O!"(B@samp{riece-connect-signal}$B$r;H$$$^$9!#(B
+
+@defun riece-connect-signal signal-name slot-function &optional filter-function handback
+@var{signal-name}$B$G;X<($5$l$k%7%0%J%k$K1~Ez$9$k4X?t(B@var{slot-function}$B$r(B
+$BDj5A$7$^$9!#(B@var{slot-function}$B$K;XDj$5$l$?4X?t$O(B 2 $B$D$N0z?t$r<h$j$^$9!#(B
+$BBh(B1$B$N0z?t$O$O%7%0%J%k$rI=$7$^$9!#$^$?!"Bh(B2$B$N0z?t$H$7$F!"(B@var{handback}$B0z(B
+$B?t$KM?$($i$l$?%*%V%8%'%/%H$,$=$N$^$^EO$5$l$^$9!#(B
+
+@var{filter-function}$B$O!"<u?.$7$?%7%0%J%k$K1~Ez$9$Y$-$+$I$&$+$rH=Dj$9$k(B
+$B4X?t$G$9!#$3$N4X?t$O0z?t$H$7$F%7%0%J%k%*%V%8%'%/%H$r<u$1<h$j!"(B@samp{nil}
+$B$^$?$O(B@samp{t}$B$rJV$9$3$H$,4|BT$5$l$^$9!#JV$jCM$,(B@samp{nil}$B$N>l9g$K$O!"(B
+@var{slot-function}$B$,8F$P$l$k$3$H$O$"$j$^$;$s!#(B
+@end defun
+
+$B%7%0%J%k%*%V%8%'%/%H$K%"%/%;%9$9$k$K$O!"0J2<$N4X?t$r;H$$$^$9!#(B
+
+@defun riece-signal-name
+$B%7%0%J%k$NL>A0(B($B%7%s%\%k(B)$B$rJV$7$^$9!#(B
+@end defun
+
+@defun riece-signal-args
+$B%7%0%J%kAw=P;~$KM?$($i$l$?0z?t$rJV$7$^$9!#(B
 @end defun
 
 @node Index, Function Index, Development, Top
