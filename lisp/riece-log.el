@@ -61,6 +61,11 @@ If integer, flash back only this line numbers. t means all lines."
   :type 'symbol
   :group 'riece-log)
 
+(defcustom riece-log-open-directory-function 'find-file
+  "*Function for opening a directory."
+  :type 'function
+  :group 'riece-log)
+
 (defun riece-log-display-message-function (message)
   (let ((open-bracket
 	 (funcall riece-message-make-open-bracket-function message))
@@ -83,7 +88,8 @@ If integer, flash back only this line numbers. t means all lines."
    (riece-log-get-directory identity)))
 
 (defun riece-log-get-directory (identity)
-  (let ((channel (riece-identity-prefix identity))
+  (let ((channel (riece-identity-canonicalize-prefix
+		  (riece-identity-prefix identity)))
 	(server (riece-identity-server identity))
 	(map (assoc (riece-format-identity identity) riece-log-directory-map))
 	name)
@@ -130,21 +136,26 @@ If integer, flash back only this line numbers. t means all lines."
 
 (defun riece-log-open-directory (&optional channel)
   (interactive)
-  (if channel
-      (find-file (riece-log-get-directory channel))
-    (find-file riece-log-directory)))
+  (let ((directory (riece-log-get-directory
+		    (or channel riece-current-channel))))
+    (if (file-directory-p directory)
+	(funcall riece-log-open-directory-function directory)
+      (error "No log directory"))))
 
 (defun riece-log-requires ()
   (if (memq 'riece-button riece-addons)
       '(riece-button)))
 
+(defvar riece-command-mode-map)
 (defun riece-log-insinuate ()
   ;; FIXME: Use `riece-after-insert-functions' for trapping change,
   ;; notice, wallops and so on. But must add argument.
   (add-hook 'riece-after-display-message-functions
 	    'riece-log-display-message-function)
   (add-hook 'riece-channel-buffer-create-functions
-	    'riece-log-flashback))
+	    'riece-log-flashback)
+  (define-key riece-command-mode-map
+    "\C-cd" 'riece-log-open-directory))
 
 (provide 'riece-log)
 

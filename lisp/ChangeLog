@@ -1,3 +1,11 @@
+2004-04-29  OHASHI Akira  <bg66@koka-in.org>
+
+	* riece-log.el (riece-log-get-directory): Use a canonicalized
+	channel name.
+	(riece-log-open-directory-function): New user option.
+	(riece-log-open-directory): Use it.
+	(riece-log-insinuate): Add new key bind.
+
 2004-04-05  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-button.el (riece-button-requires): Abolish.
