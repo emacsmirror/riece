@@ -122,13 +122,13 @@
   (unless (or just-print (file-exists-p dest))
     (make-directory dest t))
   (while icons
-    (if (file-exists-p (expand-file-name (concat name ".xpm")))
-	(let ((name (symbol-name (car icons))))
-	  (princ (format "%s.xpm -> %s\n" name dest))
-	  (unless just-print
-	    (copy-file (expand-file-name (concat name ".xpm"))
-		       (expand-file-name (concat name ".xpm") dest)
-		       t t))))
+    (let ((name (symbol-name (car icons))))
+      (when (file-exists-p (expand-file-name (concat name ".xpm")))
+	(princ (format "%s.xpm -> %s\n" name dest))
+	(unless just-print
+	  (copy-file (expand-file-name (concat name ".xpm"))
+		     (expand-file-name (concat name ".xpm") dest)
+		     t t))))
     (setq icons (cdr icons))))
 
 (defun riece-install-just-print-p ()
