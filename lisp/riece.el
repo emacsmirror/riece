@@ -51,7 +51,8 @@
 (put 'riece-others-mode 'derived-mode-parent 'riece-dialogue-mode)
 
 (defvar riece-buffer-mode-alist
-  '((riece-dialogue-buffer . riece-dialogue-mode)
+  '((riece-command-buffer . riece-command-mode)
+    (riece-dialogue-buffer . riece-dialogue-mode)
     (riece-others-buffer . riece-others-mode)
     (riece-user-list-buffer . riece-user-list-mode)
     (riece-channel-list-buffer . riece-channel-list-mode)
@@ -236,28 +237,23 @@ If optional argument SAFE is nil, overwrite previous definitions."
 ;;;###autoload
 (defun riece (&optional confirm)
   "Connect to the IRC server and start chatting.
-If optional argument CONFIRM is non-nil, ask which IRC server to connect.
-If already connected, just pop up the windows."
+If optional argument CONFIRM is non-nil, ask which IRC server to connect."
   (interactive "P")
   (riece-read-variables-files (if noninteractive
 				  (car command-line-args-left)))
   (riece-insinuate-addons riece-addons)
   (run-hooks 'riece-after-load-startup-hook)
   (if (riece-server-opened)
-      (riece-redisplay-buffers)
-    (switch-to-buffer (riece-get-buffer-create riece-command-buffer))
-    (unless (eq major-mode 'riece-command-mode)
-      (riece-command-mode))
-    (if (or confirm (null riece-server))
-	(setq riece-server (completing-read "Server: " riece-server-alist)))
-    (if (stringp riece-server)
-	(setq riece-server (riece-server-name-to-server riece-server)))
-    (riece-create-buffers)
-    (riece-redisplay-buffers)
-    (riece-open-server riece-server "")
-    (run-hooks 'riece-startup-hook)
-    (message "%s" (substitute-command-keys
-		   "Type \\[describe-mode] for help"))))
+      (error "Already running"))
+  (if (or confirm (null riece-server))
+      (setq riece-server (completing-read "Server: " riece-server-alist)))
+  (if (stringp riece-server)
+      (setq riece-server (riece-server-name-to-server riece-server)))
+  (riece-create-buffers)
+  (riece-redisplay-buffers)
+  (riece-open-server riece-server "")
+  (run-hooks 'riece-startup-hook)
+  (message "%s" (substitute-command-keys "Type \\[describe-mode] for help")))
 
 (defun riece-exit ()
   (setq riece-server nil)
