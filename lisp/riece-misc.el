@@ -214,12 +214,17 @@
     user-at-host))
 
 (defun riece-get-users-on-server (server-name)
-  (delq nil (mapcar (lambda (identity)
-		      (if (riece-user-p (riece-identity-prefix identity))
-			  identity))
-		    (riece-get-identities-on-server server-name))))
+  (riece-with-server-buffer server-name
+    (let (identities)
+      (mapatoms
+       (lambda (user)
+	 (setq identities
+	       (cons (riece-make-identity (symbol-name user) server-name)
+		     identities)))
+       riece-user-obarray)
+      identities)))
 
-(defun riece-get-identities-on-server (server-name)
+(defun riece-get-channels-on-server (server-name)
   (riece-with-server-buffer server-name
     (let (identities)
       (mapatoms
@@ -228,13 +233,11 @@
 	       (cons (riece-make-identity (symbol-name channel) server-name)
 		     identities)))
        riece-channel-obarray)
-      (mapatoms
-       (lambda (user)
-	 (setq identities
-	       (cons (riece-make-identity (symbol-name user) server-name)
-		     identities)))
-       riece-user-obarray)
       identities)))
+
+(defun riece-get-identities-on-server (server-name)
+  (nconc (riece-get-channels-on-server server-name)
+	 (riece-get-users-on-server server-name)))
 
 (defun riece-check-channel-commands-are-usable (&optional channel)
    (unless riece-current-channel

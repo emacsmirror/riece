@@ -1,5 +1,10 @@
 2005-04-04  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-misc.el (riece-get-channels-on-server): New function.
+	(riece-get-users-on-server): Don't use riece-user-p.
+	(riece-get-identities-on-server): Call
+	riece-get-channels-on-server and riece-get-users-on-server.
+
 	* riece-identity.el (riece-completing-read-identity): Don't signal
 	an error when input string does not match riece-channel-regexp nor
 	riece-user-regexp.
