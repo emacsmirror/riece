@@ -37,8 +37,9 @@
   (condition-case nil
       (let (inhibit-quit)
 	(read-string prompt))
-    (quit)))
-  
+    (quit
+     (ignore (message "%s" (concat prompt "Quit"))))))
+
 (defun riece-handle-432-message (prefix number name string)
   "ERR_ERRONEUSNICKNAME	\"<nick> :Erroneous nickname\"."
   (let ((nickname
