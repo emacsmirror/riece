@@ -35,6 +35,11 @@
   :prefix "riece-"
   :group 'riece)
 
+(defcustom riece-message-filter-functions nil
+  "Functions to filter incoming messages."
+  :type 'function
+  :group 'riece-message)
+
 (defcustom riece-message-make-open-bracket-function
   #'riece-message-make-open-bracket
   "Function which makes `open-bracket' string for each message."
@@ -138,8 +143,7 @@ Normally they are *Dialogue* and/or *Others*."
 	(list riece-dialogue-buffer riece-others-buffer)
       riece-dialogue-buffer)))
 
-(defun riece-display-message (message)
-  "Display MESSAGE object."
+(defun riece-display-message-1 (message)
   (let ((open-bracket
 	 (funcall riece-message-make-open-bracket-function message))
 	(close-bracket
@@ -169,6 +173,16 @@ Normally they are *Dialogue* and/or *Others*."
 			     " " (riece-message-text message)
 			     " (from " server-name ")\n")))
     (run-hook-with-args 'riece-after-display-message-functions message)))
+
+(defun riece-display-message (message)
+  "Display MESSAGE object."
+  (let ((functions riece-message-filter-functions))
+    (setq message (copy-sequence message))
+    (while functions
+      (setq message (funcall (car functions) message)
+	    functions (cdr functions)))
+    (if message
+	(riece-display-message-1 message))))
 
 (defun riece-make-message (speaker target text &optional type own-p)
   "Make an instance of message object.

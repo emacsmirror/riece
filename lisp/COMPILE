@@ -53,7 +53,8 @@
 		riece-skk-kakutei
 		riece-guess
 		riece-history
-		riece-button))))
+		riece-button
+		riece-keyword))))
 
 (defun riece-compile-modules (modules)
   (let ((load-path (cons nil load-path)))

@@ -1,5 +1,25 @@
 2003-10-13  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-xemacs.el (riece-make-overlay): New alias.
+	(riece-overlay-put): New alias.
+	(riece-overlay-start): New alias.
+	(riece-overlay-buffer): New alias.
+
+	* riece-emacs.el (riece-make-overlay): New alias.
+	(riece-overlay-put): New alias.
+	(riece-overlay-start): New alias.
+	(riece-overlay-buffer): New alias.
+
+	* riece-keyword.el: New add-on.
+	* COMPILE (riece-modules): Add riece-keyword.
+	* Makefile.am (EXTRA_DIST): Add riece-keyword.el
+
+	* riece-message.el (riece-message-filter-functions): New user option.
+	(riece-display-message-1): New function.
+	(riece-display-message): Use it.
+
+2003-10-13  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece.el (riece-channel-list-mode): Initialize
 	riece-update-buffer-functions.
 	(riece-user-list-mode): Ditto.

@@ -72,6 +72,11 @@
        (boundp 'mark-active)
        mark-active))
 
+(defalias 'riece-make-overlay 'make-overlay)
+(defalias 'riece-overlay-put 'overlay-put)
+(defalias 'riece-overlay-start 'overlay-start)
+(defalias 'riece-overlay-buffer 'overlay-buffer)
+
 (provide 'riece-emacs)
 
 ;;; riece-emacs.el ends here

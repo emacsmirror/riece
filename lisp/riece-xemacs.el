@@ -91,6 +91,11 @@ Modify whole identification by side effect."
 ;;; stolen (and renamed) from gnus-xmas.el.
 (defalias 'riece-region-active-p 'region-active-p)
 
+(defalias 'riece-make-overlay 'make-extent)
+(defalias 'riece-overlay-put 'set-extent-property)
+(defalias 'riece-overlay-start 'extent-start-position)
+(defalias 'riece-overlay-buffer 'extent-buffer)
+
 (provide 'riece-xemacs)
 
 ;;; riece-xemacs.el ends here

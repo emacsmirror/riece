@@ -65,8 +65,8 @@
 	    ;; window, overlay, position.
 	    (riece-format-identity
 	     (if overlay
-		 (with-current-buffer (overlay-buffer overlay)
-		   (widget-value (widget-at (overlay-start overlay))))
+		 (with-current-buffer (riece-overlay-buffer overlay)
+		   (widget-value (widget-at (riece-overlay-start overlay))))
 	       (widget-value widget/window))))))
 
 (defun riece-button-switch-to-identity (widget &optional event)
