@@ -24,7 +24,6 @@
 
 ;;; Code:
 
-(require 'riece-filter)
 (require 'riece-display)
 (require 'riece-server)
 (require 'riece-compat)

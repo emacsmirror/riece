@@ -27,7 +27,7 @@
 (require 'riece-misc)
 
 (eval-when-compile
-  (autoload 'riece-default-handle-numeric-reply "riece-filter"))
+  (autoload 'riece-default-handle-numeric-reply "riece-handle"))
 (defun riece-handle-default-200-message (prefix number name string)
   (riece-default-handle-numeric-reply
    riece-info-prefix prefix number name string))

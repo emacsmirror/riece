@@ -25,12 +25,11 @@
 ;;; Code:
 
 (require 'riece-misc)
-(require 'riece-filter)			;riece-default-handle-message
 (require 'riece-version)
 (require 'riece-commands)		;riece-command-join
 
 (eval-when-compile
-  (autoload 'riece-default-handle-numeric-reply "riece-filter"))
+  (autoload 'riece-default-handle-numeric-reply "riece-handle"))
 (defun riece-handle-default-000-message (prefix number name string)
   (setq riece-nick-accepted 'ok)
   (riece-default-handle-numeric-reply
