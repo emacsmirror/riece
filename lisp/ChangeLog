@@ -23,19 +23,15 @@
 	lunit-assert-2 instead of lunit-assert.
 	(test-riece-resolve-addons-2): Ditto.
 
-	* test/lunit.el: Don't treat a failure as an Emacs error signal;
-	count assertions in test-case methods.
+	* test/lunit.el: Count assertions in test-case methods.
 	(lunit-test-result): Add assert-count slot.
 	(lunit-make-test-result): Reset assert-count to 0.
-	(lunit-test-result-run): Count assertions; collect failures at a
-	time after test-case execution.
+	(lunit-test-result-run): Count assertions.
 	(lunit-test-result-failure): Abolished.
-	(lunit-test-case): Add failures and assert-count slots; define
-	internal accesssors for them.
+	(lunit-test-case): Add assert-count slot; define internal
+	accesssors for them.
 	(lunit-make-test-case): Reset assert-count to 0.
-	(lunit-test-case-run): Don't handle failure signals.
-	(lunit-assert): Define as a nop macro.
-	(lunit-assert-2): New macro.  Use this instead of lunit-assert.
+	(lunit-assert-2): New macro.
 	(lunit): Display assertion count.
 
 2004-11-25  Daiki Ueno  <ueno@unixuser.org>

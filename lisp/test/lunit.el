@@ -79,6 +79,9 @@
 (put 'lunit-error 'error-message "test error")
 (put 'lunit-error 'error-conditions '(lunit-error error))
 
+(put 'lunit-failure 'error-message "test failure")
+(put 'lunit-failure 'error-conditions '(lunit-failure lunit-error error))
+
 (eval-and-compile
   (luna-define-class lunit-test-result ()
 		     (errors
@@ -93,9 +96,6 @@
 
 (luna-define-generic lunit-test-result-notify (result message &rest args)
   "Report the current state of execution.")
-
-(luna-define-generic lunit-test-result-error (result case error)
-  "Add error to the list of errors.")
 
 (luna-define-generic lunit-test-result-add-listener (result listener)
   "Add listener to the list of listeners.")
@@ -115,33 +115,25 @@
   (lunit-test-result-notify result 'lunit-test-listener-start case)
   (condition-case error
       (lunit-test-case-run case)
+    (lunit-failure
+     (lunit-test-result-set-failures-internal
+      result
+      (nconc (lunit-test-result-failures-internal result)
+	     (list (cons case (cdr failure)))))
+     (lunit-test-result-notify
+      result 'lunit-test-listener-failure case failure))
     (lunit-error
-     (lunit-test-result-error result case (cdr error))))
+     (lunit-test-result-set-errors-internal
+      result
+      (nconc (lunit-test-result-errors-internal result)
+	     (list (cons case (cdr error)))))
+     (lunit-test-result-notify
+      result 'lunit-test-listener-error case error)))
   (lunit-test-result-set-assert-count-internal
    result
    (+ (lunit-test-result-assert-count-internal result)
       (lunit-test-case-assert-count-internal case)))
-  (let ((failures
-	 (lunit-test-case-failures-internal case)))
-    (when failures
-      (lunit-test-result-set-failures-internal
-       result
-       (nconc (lunit-test-result-failures-internal result)
-	      (mapcar (lambda (failure)
-			(prog1 (cons case failure)
-			  (lunit-test-result-notify
-			   result 'lunit-test-listener-failure
-			   case failure)))
-		      failures)))))
   (lunit-test-result-notify result 'lunit-test-listener-end case))
-
-(luna-define-method lunit-test-result-error ((result lunit-test-result)
-					     case error)
-  (let ((errors
-	 (lunit-test-result-errors-internal result)))
-    (setq errors (nconc errors (list (cons case error))))
-    (lunit-test-result-set-errors-internal result errors))
-  (lunit-test-result-notify result 'lunit-test-listener-error case error))
 
 (luna-define-method lunit-test-result-add-listener ((result lunit-test-result)
 						    listener)
@@ -155,8 +147,7 @@
 
 (eval-and-compile
   (luna-define-class lunit-test-case (lunit-test)
-		     (failures
-		      assert-count))
+		     (assert-count))
 
   (luna-define-internal-accessors 'lunit-test-case))
 
@@ -195,6 +186,8 @@ NAME is name of the method to be tested."
 	  (error "Method \"%S\" not found" name))
 	(condition-case error
 	    (funcall (car functions) case)
+	  (lunit-failure
+	   (signal (car error)(cdr error)))
 	  (error
 	   (signal 'lunit-error error))))
     (lunit-test-case-teardown case)))
@@ -234,7 +227,8 @@ TESTS holds a number of instances of `lunit-test'."
 
 (defmacro lunit-assert (condition-expr)
   "Verify that CONDITION-EXPR returns non-nil; signal an error if not."
-  (princ "`lunit-assert' is obsolete; use `lunit-assert-2' instead.\n"))
+  `(unless ,condition-expr
+     (signal 'lunit-failure (list ',condition-expr))))
 
 (defmacro lunit-assert-2 (case condition-expr)
   "In regard to CASE, verify that CONDITION-EXPR returns non-nil;
@@ -244,10 +238,7 @@ signal an error if not."
       case
       (1+ (lunit-test-case-assert-count-internal case)))
      (unless ,condition-expr
-       (lunit-test-case-set-failures-internal
-	case
-	(cons ',condition-expr
-	      (lunit-test-case-failures-internal case))))))
+       (signal 'lunit-failure (list ',condition-expr)))))
 
 (luna-define-class lunit-test-printer (lunit-test-listener))
 
