@@ -499,6 +499,8 @@ DCC (Direct Client to Client protocol) によるファイル転送
 ミニバッファのみで IRC をする
 @item riece-log
 会話のログの収集
+@item riece-doctor
+doctor.el と連携して精神科医になりすます
 @item riece-alias
 チャンネル名やニックネームの別名を定義
 @end table
