@@ -1,8 +1,8 @@
-AC_INIT(configure.ac)
-AC_PREREQ(2.50)
+AC_INIT
+AC_CONFIG_SRCDIR([configure.ac])
+AC_PREREQ(2.59)
 AM_INIT_AUTOMAKE(riece, 1.0.7)
 
-AC_ISC_POSIX
 AC_PROG_INSTALL
 AC_PROG_MAKE_SET
 
@@ -12,7 +12,8 @@ AC_PATH_PACKAGEDIR
 
 AM_CONDITIONAL(XEMACS, test ${EMACS_FLAVOR} = xemacs)
 
-AC_OUTPUT(Makefile \
+AC_CONFIG_FILES([Makefile \
 lisp/Makefile
 lisp/test/Makefile
-doc/Makefile)
+doc/Makefile])
+AC_OUTPUT
