@@ -24,6 +24,11 @@
 
 ;;; Code:
 
+(require 'font-lock)
+(require 'riece-options)
+(require 'riece-compat)
+(require 'riece-misc)
+
 (defgroup riece-addon-list nil
   "Add-on management"
   :tag "Addon"

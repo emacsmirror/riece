@@ -27,6 +27,7 @@
 (require 'riece-globals)
 (require 'riece-options)		;riece-channel-list-buffer-mode
 (require 'riece-identity)		;riece-format-identity
+(require 'riece-misc)
 (require 'font-lock)
 (require 'derived)
 

@@ -95,6 +95,8 @@ Otherwise, they are not removed from IRC buffers, but are hidden with
        'user-renamed
        #'riece-ignore-user-rename-signal-function))))
 
+(eval-when-compile
+  (autoload 'riece-dialogue-mode "riece"))
 (defun riece-ignore-message-filter (message)
   (if (and riece-ignore-enabled
 	   (riece-identity-member (riece-message-speaker message)

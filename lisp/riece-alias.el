@@ -33,6 +33,7 @@
 ;;; Code:
 
 (require 'riece-identity)
+(require 'riece-signal)
 
 (defgroup riece-alias nil
   "Define aliases of names"

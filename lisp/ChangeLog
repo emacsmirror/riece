@@ -1,5 +1,29 @@
 2004-05-29  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-server.el: Move autoload setting for 'riece-exit before
+	riece-open-server.
+
+	* riece-message.el (riece-format-message): Use speaker's
+	server-name instead of the current server-name.
+
+	* riece-ignore.el: Autoload 'riece-dialogue-mode.
+
+	* riece-identity.el (riece-format-identity): Put
+	'riece-format-identity-prefix-only property.
+
+	* riece-icon.el: Require 'riece-globals and 'riece-signal.
+
+	* riece-history.el: Require 'riece-signal.
+
+	* riece-highlight.el: Require 'riece-misc.
+
+	* riece-alias.el: Require 'riece-signal.
+
+	* riece-addon.el: Require 'font-lock, 'riece-options,
+	'riece-compat, and 'riece-misc.
+
+2004-05-29  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-commands.el (riece-command-switch-to-channel): Change prompt.
 	(riece-command-switch-to-channel-by-number): Ditto.
 	(riece-command-change-layout): Ditto.

@@ -35,6 +35,7 @@
 (require 'riece-globals)
 (require 'riece-highlight)
 (require 'riece-identity)
+(require 'riece-signal)
 (require 'ring)
 
 (defgroup riece-history nil

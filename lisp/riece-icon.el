@@ -29,6 +29,9 @@
 
 ;;; Code:
 
+(require 'riece-globals)
+(require 'riece-signal)
+
 (defvar riece-channel-list-icons
   '((" " . "/* XPM */
 static char * blank_xpm[] = {

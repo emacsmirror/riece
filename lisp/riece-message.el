@@ -152,7 +152,7 @@ Normally they are *Dialogue* and/or *Others*."
 	     (funcall riece-message-make-global-name-function message)
 	   (funcall riece-message-make-name-function message)))
 	(server-name (riece-identity-server (riece-message-speaker message))))
-    (riece-with-server-buffer (riece-current-server-name)
+    (riece-with-server-buffer server-name
       (concat
        (if global
 	   (riece-concat-server-name

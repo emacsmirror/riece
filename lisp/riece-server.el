@@ -127,6 +127,8 @@ the `riece-server-keyword-map' variable."
 		   "Type \\[riece-command-open-server] to open server.")))
     (riece-process-send-string process string)))
 
+(eval-when-compile
+  (autoload 'riece-exit "riece"))
 (defun riece-open-server (server server-name)
   (riece-server-keyword-bind server
     (let (selective-display
@@ -238,8 +240,6 @@ the `riece-server-keyword-map' variable."
 	      (throw 'found t))
 	  (setq alist (cdr alist)))))))
 
-(eval-when-compile
-  (autoload 'riece-exit "riece"))
 (defun riece-quit-server-process (process &optional message)
   (if riece-quit-timeout
       (riece-run-at-time riece-quit-timeout nil
