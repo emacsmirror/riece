@@ -11,15 +11,18 @@
 ** 新規アドオン riece-google (bg66)
    riece-google は Google での検索結果をチャンネルに送ります。
 
-** New add-on riece-eval. (bg66)
+** 新規アドオン riece-eval (bg66)
    riece-eval は elisp の式の評価結果をチャンネルに送ります。
 
 ** いくつかのアドオンをデフォルトで有効化 (ueno)
    riece-log, riece-alias, riece-ctlseq, riece-keyword が今回からデフォ
    ルトで有効になります。
 
-** ボタンウィジェットをクリックしてもカーソルの位置が変化しないように
-   なりました。(ueno)
+** ボタンウィジェットクリック時のカーソル移動の防止 (ueno)
+
+** モードラインのインジケータを face で装飾 (ueno)
+
+** NAMES リプライに含まれるユーザ数を数えるようになりました (ueno)
 
 ** 新規ユーザオプション riece-part-message (ueno)
 
@@ -31,11 +34,16 @@
 ** process-filter 内でエラーが発生した場合、backtrace を行なうようにな
    りました (ueno)
 
-** 必要な時にはチャンネルキーを問い合わせるようにしました (ueno)
+** 必要に応じてチャンネルキーを問い合わせるようにしました (ueno)
 
 ** バッファの自動的な切り詰めをデフォルトでは無効化 (ueno)
 
 ** riece-log のための新しいディレクトリ構成 (ueno)
+
+** user-renamed signal-filter のバグを修正 (kaoru)
+
+** riece-command-enable-addon と riece-command-disable-addon のバグの
+   修正 (yoichi)
 
 * Riece 1.0.6 の主な変更点
 
