@@ -89,6 +89,10 @@ This function is for internal use only."
 	  (set symbol (delq (car slots) (symbol-value symbol))))
       (setq slots (cdr slots)))))
 
+(defun riece-clear-signal-slots ()
+  "Remove all functions from listeners list."
+  (fillarray riece-signal-slot-obarray 0))
+
 (defun riece-emit-signal (signal-name &rest args)
   "Emit SIGNAL."
   (let ((symbol (intern-soft (symbol-name signal-name)

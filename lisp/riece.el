@@ -30,6 +30,7 @@
 (require 'riece-compat)
 (require 'riece-commands)
 (require 'riece-addon)
+(require 'riece-signal)
 
 (autoload 'derived-mode-class "derived")
 
@@ -341,6 +342,7 @@ If optional argument CONFIRM is non-nil, ask which IRC server to connect."
     (setq riece-buffer-list (cdr riece-buffer-list)))
   (if riece-shrink-buffer-idle-timer
       (riece-cancel-timer riece-shrink-buffer-idle-timer))
+  (riece-clear-signal-slots)
   (setq riece-server nil
 	riece-current-channels nil
 	riece-current-channel nil
