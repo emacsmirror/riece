@@ -176,17 +176,29 @@
   (if (string-match
        (concat "^\\(" riece-user-regexp "\\) \\([0-9]+\\) ")
        string)
-      (let ((user (match-string 1 string))
-	    (idle (match-string 2 string)))
+      (let* ((user (match-string 1 string))
+	     (seconds (string-to-number (match-string 2 string)))
+	     (units (list (cons (/ seconds 60 60 24) "days")
+			  (cons (mod (/ seconds 60 60) 24) "hours")
+			  (cons (mod (/ seconds 60) 60) "minutes")
+			  (cons (mod seconds 60) "seconds"))))
 	(riece-insert-info
 	 (list riece-dialogue-buffer riece-others-buffer)
 	 (concat
 	  (riece-concat-server-name
-	   (format "%s is %s seconds idle"
+	   (format "%s is %s idle"
 		   (riece-format-identity
 		    (riece-make-identity user riece-server-name)
 		    t)
-		   idle))
+		   (mapconcat #'identity
+			      (delq nil
+				    (mapcar
+				     (lambda (unit)
+				       (if (/= (car unit) 0)
+					   (format "%d %s"
+						   (car unit) (cdr unit))))
+				     units))
+			      ", ")))
 	  "\n")))))
 
 (defun riece-handle-319-message (prefix number name string)

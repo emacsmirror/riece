@@ -1,5 +1,8 @@
 2005-02-27  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-300.el (riece-handle-317-message): Format idle seconds in
+	human readable form.
+
 	* riece-ctcp.el (riece-handle-ctcp-action-request): Prepend target.
 	(riece-command-ctcp-action): Ditto.
 
