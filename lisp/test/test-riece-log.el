@@ -1,5 +1,3 @@
-;;; -*- coding: iso-2022-7 -*-
-
 (require 'riece-log)
 
 (luna-define-class test-riece-log (lunit-test-case))
