@@ -128,8 +128,9 @@ RFC2812, 2.2 \"Character codes\" says:
 	   (concat (riece-identity-prefix identity) " "
 		   (riece-identity-server identity)))))
     (if riece-abbrev-identity-string-function
-	(funcall riece-abbrev-identity-string-function string)
-      string)))
+	(setq string (funcall riece-abbrev-identity-string-function string)))
+    (put-text-property 0 (length string) 'riece-identity identity string)
+    string))
 
 (defun riece-parse-identity (string)
   (if riece-expand-identity-string-function
