@@ -1,5 +1,8 @@
 2003-10-22  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-button.el (riece-user-button-finger): Pass an identity
+	object instead of the prefix.
+
 	* riece-ctcp.el: Require 'riece-highlight.
 	(riece-ctcp-action-face): New face.
 	(riece-ctcp-action-face): New variable.

@@ -182,8 +182,7 @@ This function is used as a callback for a channel button."
 
 (defun riece-user-button-finger ()
   (interactive)
-  (riece-command-finger
-   (riece-identity-prefix (get-text-property (point) 'riece-identity))))
+  (riece-command-finger (get-text-property (point) 'riece-identity)))
 
 (defun riece-make-identity-button-map ()
   (let ((map (make-sparse-keymap)))
