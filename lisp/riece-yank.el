@@ -1,4 +1,4 @@
-;;; riece-kill.el --- enter the element in kill-ring
+;;; riece-yank.el --- enter the element in kill-ring
 ;; Copyright (C) 2004 Masatake YAMATO
 
 ;; Author: Masatake YAMATO <jet@gyve.org>
@@ -23,7 +23,7 @@
 ;;
 ;; In riece's command buffer, you can send the top element of kill-ring
 ;; by C-c y. 
-;; Don't forget do (riece-command-enable-addon 'riece-yank).
+;; Don't forget do (riece-command-enable-addon 'riece-yank) to test.
 ;;
 ;;; Code:
 (require 'riece-commands)
@@ -97,7 +97,7 @@ before/after the first/last non-blank line."
        (lambda (x) 
 	 (riece-command-send-message (concat prefix x) arg)
 	 ;; Without next line, you will be kicked out from ircd.
-	 ;; It may means "Don't send much data at once."
+	 ;; It may mean "Don't send much data at once."
 	 (sit-for riece-yank-tick))
        msg))))
 

@@ -1,3 +1,7 @@
+2004-11-11  Masatake YAMATO  <jet@gyve.org>
+
+	* riece-yank.el (riece-command-yank): Fix a typo in comments.
+
 2004-11-09  OHASHI Akira  <bg66@koka-in.org>
 
 	* riece-yank.el (riece-command-yank): Take a 1st argument to send
