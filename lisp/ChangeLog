@@ -1,5 +1,8 @@
 2003-06-01  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-user.el (riece-rename-user): Don't modify entry when
+	old-name == new-name.
+
 	* riece-display.el (riece-configure-windows): Use window-buffer
 	instead of current-buffer.
 

@@ -48,14 +48,16 @@
 
 (defun riece-rename-user (old-name new-name)
   (riece-with-server-buffer
-   (let ((symbol (intern-soft (downcase (riece-identity-prefix old-name))
-			      riece-obarray)))
-     (when symbol
-       (set (intern (downcase (riece-identity-prefix new-name))
-		    riece-obarray)
-	    (symbol-value symbol))
-       (makunbound symbol)
-       (unintern (symbol-name symbol) riece-obarray)))))
+   (unless (equal (downcase (riece-identity-prefix old-name))
+		  (downcase (riece-identity-prefix new-name)))
+     (let ((symbol (intern-soft (downcase (riece-identity-prefix old-name))
+				riece-obarray)))
+       (when symbol
+	 (set (intern (downcase (riece-identity-prefix new-name))
+		      riece-obarray)
+	      (symbol-value symbol))
+	 (makunbound symbol)
+	 (unintern (symbol-name symbol) riece-obarray))))))
 
 (defun riece-make-user (&optional channels user-at-host modes away)
   "Make an instance of user object.
