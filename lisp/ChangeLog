@@ -1,3 +1,8 @@
+2005-02-27  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-ctcp.el (riece-handle-ctcp-action-request): Prepend target.
+	(riece-command-ctcp-action): Ditto.
+
 2005-02-25  TAKAHASHI Kaoru  <kaoru@kaisei.org>
 
 	* riece-globals.el (riece-obarray-size, riece-obarray): Abolish.

@@ -170,15 +170,27 @@
 		    (riece-channel-buffer (riece-make-identity
 					   target riece-server-name))))
 	(user (riece-prefix-nickname prefix)))
-    (riece-insert buffer (concat riece-ctcp-action-prefix user " " string
+    (riece-insert buffer (concat riece-ctcp-action-prefix
+				 (riece-format-identity
+				  (riece-make-identity user riece-server-name)
+				  t)
+				 " " string
 				 "\n"))
     (riece-insert
      (if (and riece-channel-buffer-mode
 	      (not (eq buffer riece-channel-buffer)))
 	 (list riece-dialogue-buffer riece-others-buffer)
        riece-dialogue-buffer)
-     (concat (riece-concat-server-name (concat riece-ctcp-action-prefix user
-					       " " string)) "\n"))))
+     (concat (riece-concat-server-name
+	      (concat riece-ctcp-action-prefix
+		      (riece-format-identity
+		       (riece-make-identity target riece-server-name)
+		       t)
+		      ": "
+		      (riece-format-identity
+		       (riece-make-identity user riece-server-name)
+		       t)
+		      " " string)) "\n"))))
 
 (defun riece-handle-ctcp-time-request (prefix target string)
   (let* ((target-identity (riece-make-identity target riece-server-name))
@@ -338,8 +350,8 @@
       (riece-with-server-buffer (riece-identity-server target)
 	(riece-concat-server-name
 	 (concat riece-ctcp-action-prefix
-		 (riece-identity-prefix (riece-current-nickname)) " " action
-		 " (in " (riece-format-identity target t) ")")))
+		 (riece-format-identity target t) ": "
+		 (riece-identity-prefix (riece-current-nickname)) " " action)))
       "\n"))))
 
 (defun riece-command-ctcp-time (target)
