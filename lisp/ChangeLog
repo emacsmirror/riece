@@ -47,12 +47,10 @@
 	* riece-server.el (riece-close-server-process): Switch to process
 	buffer when running riece-after-close-hook.
 
-	* COMPILE (riece-icons): Add riece-command-quit and
-	riece-submit-bug-report.
+	* COMPILE (riece-icons): Add all symbols from riece-toolbar-items.
 
-	* Makefile.am (EXTRA_DIST): Add riece-command-quit.xpm
-	riece-command-previous-channel.xpm riece-command-next-channel.xpm
-	riece-submit-bug-report.xpm.
+	* Makefile.am (EXTRA_DIST): Add riece-command-previous-channel.xpm,
+	riece-command-next-channel.xpm, and riece-submit-bug-report.xpm.
 
 	* riece-menu.el (riece-menu-items): Add "Submit Bug Report".
 
