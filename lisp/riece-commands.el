@@ -69,7 +69,7 @@
   "Select the next channel."
   (interactive)
   (when (> (length riece-current-channels) 1)
-    (let ((pointer (cdr (riece-identity-member-no-server
+    (let ((pointer (cdr (riece-identity-member
 			 riece-current-channel
 			 riece-current-channels))))
       (while (and pointer
@@ -88,7 +88,7 @@
   "Select the previous channel."
   (interactive)
   (when (> (length riece-current-channels) 1)
-    (let ((pointer (riece-identity-member-no-server
+    (let ((pointer (riece-identity-member
 		    riece-current-channel
 		    riece-current-channels))
 	  (start riece-current-channels)

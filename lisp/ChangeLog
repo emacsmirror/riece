@@ -1,5 +1,18 @@
 2003-06-11  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-identity.el (riece-identity-member): Assume that each
+	element of list is identity object.
+	(riece-identity-member-no-server): Ditto.
+
+	* riece-handle.el (riece-handle-nick-message): Follow the change
+	of riece-identity-member.
+
+	* riece-commands.el (riece-command-next-channel): Use
+	riece-identity-member instead of riece-identity-member-no-server.
+	(riece-command-previous-channel): Ditto.
+
+2003-06-11  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-identity.el (riece-completing-read-identity): Remove nil
 	from channels before completing-read.
 

@@ -83,8 +83,7 @@ RFC2812, 2.2 \"Character codes\" says:
   "Return non-nil if an identity ELT is an element of LIST."
   (catch 'found
     (while list
-      (if (and (vectorp (car list))
-	       (riece-identity-equal (car list) elt))
+      (if (riece-identity-equal (car list) elt)
 	  (throw 'found list)
 	(setq list (cdr list))))))
 
@@ -94,8 +93,7 @@ The only difference with `riece-identity-member', this function doesn't
 take server names into account."
   (catch 'found
     (while list
-      (if (and (vectorp (car list))
-	       (riece-identity-equal-no-server (car list) elt))
+      (if (riece-identity-equal-no-server (car list) elt)
 	  (throw 'found list)
 	(setq list (cdr list))))))
 

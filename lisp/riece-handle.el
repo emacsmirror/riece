@@ -34,7 +34,11 @@
   (let* ((old (riece-prefix-nickname prefix))
 	 (new (car (riece-split-parameters string)))
 	 (channels (riece-user-get-channels old))
-	 (visible (riece-identity-member riece-current-channel channels)))
+	 (visible (riece-identity-member
+		   riece-current-channel
+		   (mapcar (lambda (channel)
+			     (riece-make-identity channel riece-server-name))
+			   channels))))
     (riece-naming-assert-rename old new)
     (let ((pointer (riece-identity-member
 		    (riece-make-identity old riece-server-name)
