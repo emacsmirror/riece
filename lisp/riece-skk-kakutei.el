@@ -42,7 +42,7 @@
   "Send the current line to the current channel as NOTICE."
   (interactive)
   (when (riece-skk-kakutei)
-    (riece-command-enter-message-ad-notice)))
+    (riece-command-enter-message-as-notice)))
 
 (defun riece-skk-kakutei ()
   "When required after-follow return `t'."

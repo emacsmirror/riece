@@ -1,3 +1,8 @@
+2003-09-21  TAKAHASHI Kaoru  <kaoru@kaisei.org>
+
+	* riece-skk-kakutei.el
+	(riece-skk-kakutei-command-enter-message-as-notice): Fix typo.
+
 2003-09-20  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-options.el (riece-startup-channel-list): Revive.
