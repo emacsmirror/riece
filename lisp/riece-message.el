@@ -230,7 +230,7 @@ Currently possible values are `action' and `notice'."
 	  (riece-with-server-buffer (riece-identity-server target)
 	    (mapcar
 	     (lambda (user)
-	       (riece-make-identity user riece-server-name))
+	       (riece-make-identity (car user) riece-server-name))
 	     (riece-channel-get-users (riece-identity-prefix target))))))))
 
 (provide 'riece-message)

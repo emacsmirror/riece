@@ -43,14 +43,12 @@
       (makunbound symbol)
       (unintern (symbol-name symbol) riece-obarray))))
 
-(defun riece-make-channel (users operators speakers
-				 topic modes banned invited uninvited
-				 key)
+(defun riece-make-channel (users topic modes banned invited uninvited key)
   "Make an instance of channel object.
-Arguments are appropriate to channel users, operators, speakers
-\(+v), topic, modes, banned users, invited users, uninvited users, and
-the channel key, respectively."
-  (vector users operators speakers topic modes banned invited uninvited))
+Arguments are appropriate to channel users, topic, modes, banned
+users, invited users, uninvited users, and the channel key,
+respectively."
+  (vector users topic modes banned invited uninvited))
 
 (defun riece-get-channel (name)
   (let ((symbol (intern-soft (riece-identity-canonicalize-prefix name)
@@ -59,91 +57,67 @@ the channel key, respectively."
 	(symbol-value symbol)
       (set (intern (riece-identity-canonicalize-prefix name)
 		   riece-obarray)
-	   (riece-make-channel nil nil nil nil nil nil nil nil nil)))))
+	   (riece-make-channel nil nil nil nil nil nil nil)))))
 
 (defun riece-channel-users (channel)
   "Return the users of CHANNEL."
   (aref channel 0))
 
-(defun riece-channel-operators (channel)
-  "Return the operators of CHANNEL."
-  (aref channel 1))
-
-(defun riece-channel-speakers (channel)
-  "Return the speakers of CHANNEL."
-  (aref channel 2))
-
 (defun riece-channel-topic (channel)
   "Return the topic of CHANNEL."
-  (aref channel 3))
+  (aref channel 1))
 
 (defun riece-channel-modes (channel)
   "Return the modes of CHANNEL."
-  (aref channel 4))
+  (aref channel 2))
 
 (defun riece-channel-banned (channel)
   "Return the banned users of CHANNEL."
-  (aref channel 5))
+  (aref channel 3))
 
 (defun riece-channel-invited (channel)
   "Return the invited users of CHANNEL."
-  (aref channel 6))
+  (aref channel 4))
 
 (defun riece-channel-uninvited (channel)
   "Return the uninvited users of CHANNEL."
-  (aref channel 7))
+  (aref channel 5))
 
 (defun riece-channel-key (channel)
   "Return the key of CHANNEL."
-  (aref channel 8))
+  (aref channel 6))
 
 (defun riece-channel-set-users (channel value)
   "Set the users of CHANNEL to VALUE."
   (aset channel 0 value))
 
-(defun riece-channel-set-operators (channel value)
-  "Set the operators of CHANNEL to VALUE."
-  (aset channel 1 value))
-
-(defun riece-channel-set-speakers (channel value)
-  "Set the speakers of CHANNEL to VALUE."
-  (aset channel 2 value))
-
 (defun riece-channel-set-topic (channel value)
   "Set the topic of CHANNEL to VALUE."
-  (aset channel 3 value))
+  (aset channel 1 value))
 
 (defun riece-channel-set-modes (channel value)
   "Set the modes of CHANNEL to VALUE."
-  (aset channel 4 value))
+  (aset channel 2 value))
 
 (defun riece-channel-set-banned (channel value)
   "Set the banned users of CHANNEL to VALUE."
-  (aset channel 5 value))
+  (aset channel 3 value))
 
 (defun riece-channel-set-invited (channel value)
   "Set the invited users of CHANNEL to VALUE."
-  (aset channel 6 value))
+  (aset channel 4 value))
 
 (defun riece-channel-set-uninvited (channel value)
   "Set the uninvited users of CHANNEL to VALUE."
-  (aset channel 7 value))
+  (aset channel 5 value))
 
 (defun riece-channel-set-key (channel value)
   "Set the key of CHANNEL to VALUE."
-  (aset channel 8 value))
+  (aset channel 6 value))
 
 (defun riece-channel-get-users (name)
   "Return channel's users as list."
   (riece-channel-users (riece-get-channel name)))
-
-(defun riece-channel-get-operators (name)
-  "Return channel's operators as list."
-  (riece-channel-operators (riece-get-channel name)))
-
-(defun riece-channel-get-speakers (name)
-  "Return channel's speakers as list."
-  (riece-channel-speakers (riece-get-channel name)))
 
 (defun riece-channel-get-topic (name)
   "Return channel's topic."
@@ -216,48 +190,34 @@ the channel key, respectively."
   (let* ((channel (riece-get-channel name))
 	 (users (riece-channel-users channel)))
     (if flag
-	(unless (member user users)
-	  (riece-channel-set-users channel (cons user users)))
-      (if (setq user (car (member user users)))
+	(unless (riece-identity-assoc user users t)
+	  (riece-channel-set-users channel (cons (list user) users)))
+      (if (setq user (car (riece-identity-assoc user users t)))
 	  (riece-channel-set-users channel (delq user users))))))
-
-(defun riece-channel-intern-user (channel user)
-  (unless (setq user (car (member user (riece-channel-users channel))))
-    (if riece-debug
-	(message "%s is not a member of channel" user)))
-  user)
 
 (defun riece-channel-toggle-operator (name user flag)
   "Add or remove an operator to channel."
   (let* ((channel (riece-get-channel name))
-	 (operators (riece-channel-operators channel)))
-    (setq user (riece-channel-intern-user channel user))
+	 (users (riece-channel-users channel)))
+    (setq user (riece-identity-assoc user users t))
     (if flag
-	(unless (memq user operators)
-	  (riece-channel-set-operators channel (cons user operators)))
-      (if (setq user (car (memq user operators)))
-	  (riece-channel-set-operators channel (delq user operators))))))
+	(if user
+	    (setcdr user (cons ?o (cdr user)))
+	  (riece-channel-set-users channel (cons (list user ?o) users)))
+      (if user
+	  (setcdr user (delq ?o (cdr user)))))))
 
 (defun riece-channel-toggle-speaker (name user flag)
   "Add or remove an speaker to channel."
   (let* ((channel (riece-get-channel name))
-	 (speakers (riece-channel-speakers channel)))
-    (setq user (riece-channel-intern-user channel user))
+	 (users (riece-channel-users channel)))
+    (setq user (riece-identity-assoc user users t))
     (if flag
-	(unless (memq user speakers)
-	  (riece-channel-set-speakers channel (cons user speakers)))
-      (if (setq user (car (memq user speakers)))
-	  (riece-channel-set-speakers channel (delq user speakers))))))
-
-(defun riece-channel-operator-p (channel user)
-  "Return non-nil, if USER has operator privileges in channel."
-  (memq (riece-channel-intern-user channel user)
-	(riece-channel-operators channel)))
-
-(defun riece-channel-speaker-p (channel user)
-  "Return non-nil, if USER is allowed to speak in channel."
-  (memq (riece-channel-intern-user channel user)
-	(riece-channel-speakers channel)))
+	(if user
+	    (setcdr user (cons ?v (cdr user)))
+	  (riece-channel-set-users channel (cons (list user ?v) users)))
+      (if user
+	  (setcdr user (delq ?v (cdr user)))))))
 
 (provide 'riece-channel)
 

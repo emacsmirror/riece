@@ -113,7 +113,7 @@ This function is used as a callback for a channel button."
 
 (defun riece-user-button-set-operators ()
   (interactive)
-  (let (group)
+  (let (group users)
     (if (riece-region-active-p)
 	(save-excursion
 	  (riece-scan-property-region
@@ -123,24 +123,25 @@ This function is used as a callback for a channel button."
 	     (setq group (cons (get-text-property start 'riece-identity)
 			       group)))))
       (setq group (list (get-text-property (point) 'riece-identity))))
+    (setq users (riece-with-server-buffer
+		    (riece-identity-server riece-current-channel)
+		  (riece-channel-get-users (riece-identity-prefix
+					    riece-current-channel))))
     (if (setq group
 	      (delq nil
 		    (mapcar
 		     (lambda (identity)
-		       (unless (riece-channel-operator-p
-				(riece-with-server-buffer
-				    (riece-identity-server
-				     riece-current-channel)
-				  (riece-get-channel (riece-identity-prefix
-						      riece-current-channel)))
-				(riece-identity-prefix identity))
+		       (unless (memq ?o (cdr (riece-identity-assoc
+					      (riece-identity-prefix identity)
+					      users
+					      t)))
 			 identity))
 		     group)))
 	(riece-command-set-operators (mapcar #'riece-identity-prefix group)))))
 
 (defun riece-user-button-set-speakers ()
   (interactive)
-  (let (group)
+  (let (group users)
     (if (riece-region-active-p)
 	(save-excursion
 	  (riece-scan-property-region
@@ -150,26 +151,18 @@ This function is used as a callback for a channel button."
 	     (setq group (cons (get-text-property start 'riece-identity)
 			       group)))))
       (setq group (list (get-text-property (point) 'riece-identity))))
+    (setq users (riece-with-server-buffer
+		    (riece-identity-server riece-current-channel)
+		  (riece-channel-get-users (riece-identity-prefix
+					    riece-current-channel))))
     (if (setq group
 	      (delq nil
 		    (mapcar
 		     (lambda (identity)
-		       (unless (or (riece-channel-operator-p
-				    (riece-with-server-buffer
-					(riece-identity-server
-					 riece-current-channel)
-				      (riece-get-channel
-				       (riece-identity-prefix
-					riece-current-channel)))
-				    (riece-identity-prefix identity))
-				   (riece-channel-speaker-p
-				    (riece-with-server-buffer
-					(riece-identity-server
-					 riece-current-channel)
-				      (riece-get-channel
-				       (riece-identity-prefix
-					riece-current-channel)))
-				    (riece-identity-prefix identity)))
+		       (unless (memq ?v (cdr (riece-identity-assoc
+					      (riece-identity-prefix identity)
+					      users
+					      t)))
 			 identity))
 		     group)))
 	(riece-command-set-speakers (mapcar #'riece-identity-prefix group)))))

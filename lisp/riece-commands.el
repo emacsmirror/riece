@@ -189,11 +189,10 @@ the layout to the selected layout-name."
      (riece-check-channel-commands-are-usable t)
      (list (completing-read
 	    "User: "
-	    (mapcar #'list
-		    (riece-with-server-buffer
-			(riece-identity-server riece-current-channel)
-		      (riece-channel-get-users
-		       (riece-identity-prefix riece-current-channel)))))
+	    (riece-with-server-buffer
+		(riece-identity-server riece-current-channel)
+	      (riece-channel-get-users (riece-identity-prefix
+					riece-current-channel))))
 	   (if current-prefix-arg
 	       (read-string "Message: ")))))
   (riece-send-string
@@ -278,30 +277,19 @@ the layout to the selected layout-name."
   (interactive
    (progn
      (riece-check-channel-commands-are-usable t)
-     (let ((operators
-	    (riece-with-server-buffer
-		(riece-identity-server riece-current-channel)
-	      (riece-channel-get-operators
-	       (riece-identity-prefix riece-current-channel))))
-	   (completion-ignore-case t)
-	   users)
-       (if current-prefix-arg
-	   (setq users (riece-completing-read-multiple
-			"Users"
-			(mapcar #'list operators)))
-	 (setq users (riece-completing-read-multiple
-		      "Users"
-		      (delq nil (mapcar
-				 (lambda (user)
-				   (unless (member user operators)
-				     (list user)))
-				 (riece-with-server-buffer
-				     (riece-identity-server
-				      riece-current-channel)
-				   (riece-channel-get-users
-				    (riece-identity-prefix
-				     riece-current-channel))))))))
-       (list users current-prefix-arg))))
+     (let ((completion-ignore-case t))
+       (list (riece-completing-read-multiple
+	      "Users"
+	      (riece-with-server-buffer
+		  (riece-identity-server riece-current-channel)
+		(riece-channel-get-users (riece-identity-prefix
+					 riece-current-channel)))
+	      (if current-prefix-arg
+		  (lambda (user)
+		    (memq ?o (cdr user)))
+		(lambda (user)
+		  (not (memq ?o (cdr user))))))
+	     current-prefix-arg))))
   (let (group)
     (while users
       (setq group (cons (car users) group)
@@ -321,30 +309,19 @@ the layout to the selected layout-name."
   (interactive
    (progn
      (riece-check-channel-commands-are-usable t)
-     (let ((speakers
-	    (riece-with-server-buffer
-		(riece-identity-server riece-current-channel)
-	      (riece-channel-get-speakers
-	       (riece-identity-prefix riece-current-channel))))
-	   (completion-ignore-case t)
-	   users)
-       (if current-prefix-arg
-	   (setq users (riece-completing-read-multiple
-			"Users"
-			(mapcar #'list speakers)))
-	 (setq users (riece-completing-read-multiple
-		      "Users"
-		      (delq nil (mapcar
-				 (lambda (user)
-				   (unless (member user speakers)
-				     (list user)))
-				 (riece-with-server-buffer
-				     (riece-identity-server
-				      riece-current-channel)
-				   (riece-channel-get-users
-				    (riece-identity-prefix
-				     riece-current-channel))))))))
-       (list users current-prefix-arg))))
+     (let ((completion-ignore-case t))
+       (list (riece-completing-read-multiple
+	      "Users"
+	      (riece-with-server-buffer
+		  (riece-identity-server riece-current-channel)
+		(riece-channel-get-users (riece-identity-prefix
+					  riece-current-channel)))
+	      (if current-prefix-arg
+		  (lambda (user)
+		    (memq ?v (cdr user)))
+		(lambda (user)
+		  (not (memq ?v (cdr user))))))
+	     current-prefix-arg))))
   (let (group)
     (while users
       (setq group (cons (car users) group)

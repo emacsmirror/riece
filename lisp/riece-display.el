@@ -50,24 +50,23 @@ Local to the buffer in `riece-buffer-list'.")
     (set-buffer riece-user-list-buffer)
     (if (and riece-current-channel
 	     (riece-channel-p (riece-identity-prefix riece-current-channel)))
-	(let* ((channel
+	(let* ((users
 		(with-current-buffer (process-buffer (riece-server-process
 						      (riece-identity-server
 						       riece-current-channel)))
-		  (riece-get-channel (riece-identity-prefix
-				      riece-current-channel))))
-	       (users (riece-channel-users channel))
+		  (riece-channel-get-users (riece-identity-prefix
+					    riece-current-channel))))
 	       (inhibit-read-only t)
 	       buffer-read-only)
 	  (erase-buffer)
 	  (while users
-	    (insert (if (riece-channel-operator-p channel (car users))
+	    (insert (if (memq ?o (cdr (car users)))
 			"@"
-		      (if (riece-channel-speaker-p channel (car users))
+		      (if (memq ?v (cdr (car users)))
 			  "+"
 			" "))
 		    (riece-format-identity
-		     (riece-make-identity (car users)
+		     (riece-make-identity (car (car users))
 					  (riece-identity-server
 					   riece-current-channel))
 		     t)

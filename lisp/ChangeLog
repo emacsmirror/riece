@@ -1,5 +1,42 @@
 2003-10-23  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-naming.el (riece-naming-assert-rename): Follow the
+	change of riece-channel.el.
+
+	* riece-message.el (riece-message-external-p): Follow the
+	change of riece-channel.el.
+
+	* riece-display.el (riece-update-user-list-buffer): Follow the
+	change of riece-channel.el.
+
+	* riece-commands.el (riece-command-kick): Follow the change of
+	riece-channel.el.
+	(riece-command-set-operators): Ditto.
+	(riece-command-set-speakers): Ditto.
+
+	* riece-button.el (riece-user-button-set-operators): Follow the
+	change of riece-channel.el.
+	(riece-user-button-set-speakers): Ditto.
+
+	* riece-channel.el (riece-make-channel): Abolish 2nd and 3rd
+	arguments.
+	(riece-get-channel): Follow the change of riece-make-channel.
+	(riece-channel-operators): Abolish.
+	(riece-channel-speakers): Abolish.
+	(riece-channel-set-operators): Abolish.
+	(riece-channel-set-speakers): Abolish.
+	(riece-channel-get-operators): Abolish.
+	(riece-channel-get-speakers): Abolish.
+	(riece-channel-toggle-user): Follow the change of the return type
+	of riece-channel-users.
+	(riece-channel-toggle-operator): Ditto.
+	(riece-channel-toggle-speaker): Ditto.
+	(riece-channel-operator-p): Abolish.
+	(riece-channel-speaker-p): Abolish.
+	(riece-channel-intern-user): Abolish.
+
+2003-10-23  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-identity.el (riece-identity-member): Take an optional 3rd
 	argument to instruct to use riece-identity-equal-no-server.
 	(riece-identity-assoc): Ditto.

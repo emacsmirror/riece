@@ -54,20 +54,12 @@
 	    riece-real-nickname new-name))
   (let* ((old (riece-get-user old-name))
 	 (channels (riece-user-channels old))
-	 users pointer)
+	 users user)
     (while channels
       (setq users (riece-channel-get-users (car channels))
-	    pointer (member old-name users))
-      (if pointer
-	  (setcar pointer new-name))
-      (setq users (riece-channel-get-operators (car channels))
-	    pointer (member old-name users))
-      (if pointer
-	  (setcar pointer new-name))
-      (setq users (riece-channel-get-speakers (car channels))
-	    pointer (member old-name users))
-      (if pointer
-	  (setcar pointer new-name))
+	    user (car (riece-identity-assoc old-name users t)))
+      (if user
+	  (setcar user new-name))
       (setq channels (cdr channels)))
     (riece-rename-user old-name new-name))
   ;; Rename the channel buffer.
