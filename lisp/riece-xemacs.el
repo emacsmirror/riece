@@ -23,8 +23,6 @@
 
 ;;; Code:
 
-(require 'riece-compat)
-
 (defun riece-xemacs-hide-modeline ()
   "Remove modeline from current window."
   (set-specifier has-modeline-p nil (current-buffer)))

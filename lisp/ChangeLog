@@ -1,3 +1,7 @@
+2003-08-09  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-xemacs.el: Don't require 'riece-compat.
+
 2003-08-06  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-unread.el (riece-unread-update-channel-list-buffer): Call
