@@ -481,7 +481,7 @@ the layout to the selected layout-name."
 				 (format "PART %s\r\n"
 					 (riece-identity-prefix target))))))
 
-(defun riece-command-part (target)
+(defun riece-command-part (target &optional message)
   (interactive
    (progn
      (riece-check-channel-commands-are-usable)
