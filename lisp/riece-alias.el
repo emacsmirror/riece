@@ -151,17 +151,17 @@
       string)))
 
 (defun riece-alias-expand-identity-string (string)
-  (if riece-alias-enable-percent-hack
-      (setq string (riece-alias-expand-percent-hack string)))
-  (if riece-alias-alternate-separator
-      (setq string (riece-alias-expand-alternate-separator string)))
   (let ((alist riece-alias-alist))
     (catch 'done
       (while alist
 	(if (equal (cdr (car alist)) string)
 	    (throw 'done (car (car alist))))
 	(setq alist (cdr alist)))
-      string)))
+      string))
+  (if riece-alias-alternate-separator
+      (setq string (riece-alias-expand-alternate-separator string)))
+  (if riece-alias-enable-percent-hack
+      (setq string (riece-alias-expand-percent-hack string))))
 
 (defun riece-alias-insinuate ()
   )
