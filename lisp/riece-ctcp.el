@@ -251,44 +251,57 @@
 	     string))
     "\n")))
 
-(defun riece-ctcp-completing-read-identity ()
-  (riece-completing-read-identity
-   "Channel/User: "
-   (let ((server-name (riece-current-server-name)))
-     (append (mapcar
-	      (lambda (user)
-		(riece-make-identity user server-name))
-	      (riece-get-users-on-server))
-	     riece-current-channels))))
-
-(defun riece-command-ctcp-version (user)
+(defun riece-command-ctcp-version (target)
   (interactive
-   (list (riece-ctcp-completing-read-identity)))
-  (riece-send-string (format "PRIVMSG %s :\1VERSION\1\r\n" user)))
+   (list (riece-completing-read-identity
+	  "Channel/User: "
+	  (apply #'nconc
+		 (mapcar (lambda (entry)
+			   (riece-get-identities-on-server (car entry)))
+			 riece-server-process-alist)))))
+  (riece-send-string (format "PRIVMSG %s :\1VERSION\1\r\n"
+			     (riece-identity-prefix target))))
 
-(defun riece-command-ctcp-ping (user)
+(defun riece-command-ctcp-ping (target)
   (interactive
-   (list (riece-ctcp-completing-read-identity)))
-  (riece-send-string (format "PRIVMSG %s :\1PING\1\r\n" user))
+   (list (riece-completing-read-identity
+	  "Channel/User: "
+	  (apply #'nconc
+		 (mapcar (lambda (entry)
+			   (riece-get-identities-on-server (car entry)))
+			 riece-server-process-alist)))))
+  (riece-send-string (format "PRIVMSG %s :\1PING\1\r\n"
+			     (riece-identity-prefix target)))
   (setq riece-ctcp-ping-time (current-time)))
 
-(defun riece-command-ctcp-clientinfo (user)
+(defun riece-command-ctcp-clientinfo (target)
   (interactive
-   (list (riece-ctcp-completing-read-identity)))
-  (riece-send-string (format "PRIVMSG %s :\1CLIENTINFO\1\r\n" user)))
+   (list (riece-completing-read-identity
+	  "Channel/User: "
+	  (apply #'nconc
+		 (mapcar (lambda (entry)
+			   (riece-get-identities-on-server (car entry)))
+			 riece-server-process-alist)))))
+  (riece-send-string (format "PRIVMSG %s :\1CLIENTINFO\1\r\n"
+			     (riece-identity-prefix target))))
 
-(defun riece-command-ctcp-action (channel action)
+(defun riece-command-ctcp-action (target action)
   (interactive
    (list (if current-prefix-arg
-	     (riece-ctcp-completing-read-identity)
+	     (riece-completing-read-identity
+	      "Channel/User: "
+	      (apply #'nconc
+		     (mapcar (lambda (entry)
+			       (riece-get-identities-on-server (car entry)))
+			     riece-server-process-alist)))
 	   riece-current-channel)
 	 (read-string "Action: ")))
   (if (equal action "")
       (error "No action"))
   (riece-send-string (format "PRIVMSG %s :\1ACTION %s\1\r\n"
-			     (riece-identity-prefix channel)
+			     (riece-identity-prefix target)
 			     action))
-  (let ((buffer (riece-channel-buffer channel)))
+  (let ((buffer (riece-channel-buffer target)))
     (riece-insert-change
      buffer
      (concat (riece-identity-prefix (riece-current-nickname)) " " action "\n"))

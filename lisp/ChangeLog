@@ -1,3 +1,24 @@
+2003-10-22  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-misc.el (riece-get-identities-on-server): New function.
+	(riece-get-users-on-server): Use it.
+
+	* riece-ctcp.el (riece-ctcp-completing-read-identity): Abolish.
+	(riece-command-ctcp-version): Use riece-completing-read-identity
+	and riece-get-identities-on-server.
+	(riece-command-ctcp-ping): Ditto.
+	(riece-command-ctcp-clientinfo): Ditto.
+	(riece-command-ctcp-action): Ditto.
+
+	* riece-commands.el (riece-command-finger): Pass the current
+	server name to riece-get-users-on-server; use
+	riece-completing-read-identity.
+	(riece-command-invite): Ditto.
+	(riece-command-enter-message-to-user): Ditto.
+
+	* riece-000.el (riece-handle-001-message): Register myself with
+	riece-obarray.
+
 2003-10-21  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-ctcp.el (riece-ctcp-completing-read-identity): New

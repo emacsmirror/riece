@@ -105,6 +105,11 @@
 \(i.e. it matches `riece-channel-regexp')"
   (string-match (concat "^" riece-channel-regexp) string))
 
+(defun riece-user-p (string)
+  "Return t if STRING is a user.
+\(i.e. it matches `riece-user-regexp')"
+  (string-match (concat "^" riece-user-regexp) string))
+
 (defun riece-current-nickname ()
   "Return the current nickname."
   (riece-with-server-buffer (riece-current-server-name)
@@ -180,17 +185,22 @@
       (substring user-at-host 1)
     user-at-host))
 
-(defun riece-get-users-on-server ()
-  (riece-with-server-buffer (riece-current-server-name)
-    (let (users)
+(defun riece-get-users-on-server (server-name)
+  (delq nil (mapcar (lambda (identity)
+		      (if (riece-user-p (riece-identity-prefix identity))
+			  identity))
+		    (riece-get-identities-on-server server-name))))
+
+(defun riece-get-identities-on-server (server-name)
+  (riece-with-server-buffer server-name
+    (let (identities)
       (mapatoms
        (lambda (atom)
-	 (unless (riece-channel-p (symbol-name atom))
-	   (setq users (cons (symbol-name atom) users))))
+	 (setq identities
+	       (cons (riece-make-identity (symbol-name atom) server-name)
+		     identities)))
        riece-obarray)
-      (if (member riece-real-nickname users)
-	  users
-	(cons riece-real-nickname users)))))
+      identities)))
 
 (defun riece-check-channel-commands-are-usable (&optional channel)
    (unless riece-current-channel

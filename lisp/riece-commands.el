@@ -145,13 +145,15 @@ the layout to the selected layout-name."
 (defun riece-command-finger (user &optional recurse)
   (interactive
    (let* ((completion-ignore-case t)
-	  (user (completing-read
+	  (user (riece-completing-read-identity
 		 "User: "
-		 (mapcar #'list (riece-get-users-on-server)))))
+		 (riece-get-users-on-server (riece-current-server-name)))))
      (list user current-prefix-arg)))
   (if recurse
-      (riece-send-string (format "WHOIS %s %s\r\n" user user))
-    (riece-send-string (format "WHOIS %s\r\n" user))))
+      (riece-send-string (format "WHOIS %s %s\r\n"
+				 (riece-identity-prefix user)
+				 (riece-identity-prefix user)))
+    (riece-send-string (format "WHOIS %s\r\n" (riece-identity-prefix user)))))
 
 (defun riece-command-topic (topic)
   (interactive
@@ -174,12 +176,12 @@ the layout to the selected layout-name."
   (interactive
    (let ((completion-ignore-case t))
      (riece-check-channel-commands-are-usable t)
-     (list (completing-read
+     (list (riece-completing-read-identity
 	    "User: "
-	    (mapcar #'list (riece-get-users-on-server))))))
+	    (riece-get-users-on-server (riece-current-server-name))))))
   (riece-send-string (format "INVITE %s %s\r\n"
-			     user (riece-identity-prefix
-				   riece-current-channel))))
+			     (riece-identity-prefix user)
+			     (riece-identity-prefix riece-current-channel))))
 
 (defun riece-command-kick (user &optional message)
   (interactive
@@ -404,18 +406,16 @@ the layout to the selected layout-name."
   "Send the current line to USER."
   (interactive
    (let ((completion-ignore-case t))
-     (list (completing-read
+     (list (riece-completing-read-identity
 	    "User: "
-	    (mapcar #'list (riece-get-users-on-server))))))
+	    (riece-get-users-on-server (riece-current-server-name))))))
   (let ((text (buffer-substring
 	       (riece-line-beginning-position)
 	       (riece-line-end-position))))
     (riece-send-string
-     (format "PRIVMSG %s :%s\r\n" user text))
+     (format "PRIVMSG %s :%s\r\n" (riece-identity-prefix user) text))
     (riece-display-message
-     (riece-make-message (riece-current-nickname)
-			 (riece-make-identity user (riece-current-server-name))
-			 text nil t)))
+     (riece-make-message (riece-current-nickname) user text nil t)))
   (let ((next-line-add-newlines t))
     (next-line 1)))
 

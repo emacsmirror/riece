@@ -43,6 +43,9 @@
   (setq riece-real-server-name prefix
 	riece-real-nickname name
 	riece-real-userhost nil)
+  ;; Before sending USERHOST, register myself with riece-obarray
+  ;; because it may take some time.
+  (riece-get-user name)
   (riece-send-string (format "USERHOST %s\r\n" riece-real-nickname))
   (riece-insert-info
    (list riece-dialogue-buffer riece-others-buffer)
