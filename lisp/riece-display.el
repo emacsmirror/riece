@@ -29,13 +29,16 @@
 (require 'riece-misc)
 (require 'riece-layout)
 
-(defvar riece-update-buffer-functions
-  '(riece-update-user-list-buffer
-    riece-update-channel-list-buffer
-    riece-update-status-indicators
+(defvar riece-update-buffer-functions nil
+  "Functions to redisplay the buffer.
+Local to the buffer in `riece-buffer-list'.")
+  
+(defvar riece-update-indicator-functions
+  '(riece-update-status-indicators
     riece-update-channel-indicator
-    riece-update-short-channel-indicator
-    riece-update-channel-list-indicator))
+    riece-update-long-channel-indicator
+    riece-update-channel-list-indicator)
+  "Functions to update modeline indicators.")
 
 (defun riece-update-user-list-buffer ()
   (save-excursion
@@ -101,6 +104,12 @@
 (defun riece-update-channel-indicator ()
   (setq riece-channel-indicator
 	(if riece-current-channel
+	    (riece-format-identity riece-current-channel)
+	  "None")))
+
+(defun riece-update-long-channel-indicator ()
+  (setq riece-long-channel-indicator
+	(if riece-current-channel
 	    (if (riece-channel-p (riece-identity-prefix riece-current-channel))
 		(riece-concat-channel-modes
 		 riece-current-channel
@@ -108,12 +117,6 @@
 		  riece-current-channel
 		  (riece-format-identity riece-current-channel)))
 	      (riece-format-identity riece-current-channel))
-	  "None")))
-
-(defun riece-update-short-channel-indicator ()
-  (setq riece-short-channel-indicator
-	(if riece-current-channel
-	    (riece-format-identity riece-current-channel)
 	  "None")))
 
 (defun riece-update-channel-list-indicator ()
@@ -162,11 +165,15 @@
 		"F"
 	      "-")))))
 
-(defun riece-update-buffers ()
-  (if riece-current-channel
-      (setq riece-channel-buffer (get-buffer (riece-channel-buffer-name
-					      riece-current-channel))))
-  (run-hooks 'riece-update-buffer-functions)
+(defun riece-update-buffers (&optional buffers)
+  (unless buffers
+    (setq buffers riece-buffer-list))
+  (while buffers
+    (save-excursion
+      (set-buffer (car buffers))
+      (run-hooks 'riece-update-buffer-functions))
+    (setq buffers (cdr buffers)))
+  (run-hooks 'riece-update-indicator-functions)
   (force-mode-line-update t))
 
 (defun riece-channel-buffer-name (identity)
@@ -195,7 +202,9 @@
 
 (defun riece-switch-to-channel (identity)
   (let ((last riece-current-channel))
-    (setq riece-current-channel identity)
+    (setq riece-current-channel identity
+	  riece-channel-buffer (get-buffer (riece-channel-buffer-name
+					    riece-current-channel)))
     (run-hook-with-args 'riece-after-switch-to-channel-functions last)))
 
 (defun riece-join-channel (identity)

@@ -1,5 +1,32 @@
 2003-10-13  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece.el (riece-channel-list-mode): Initialize
+	riece-update-buffer-functions.
+	(riece-user-list-mode): Ditto.
+
+	* riece-globals.el (riece-channel-indicator): Rename from
+	riece-short-channel-indicator.
+	(riece-long-channel-indicator): Rename from
+	riece-channel-indicator.
+
+	* riece-display.el (riece-update-buffer-functions): Default to
+	nil.
+	(riece-update-indicator-functions): New variable splitted from
+	riece-update-buffer-functions.
+	(riece-update-channel-indicator): Rename from
+	riece-update-short-channel-indicator.
+	(riece-update-long-channel-indicator): Rename from
+	riece-update-channel-indicator.
+	(riece-update-buffers): Don't set riece-channel-buffer.
+	(riece-switch-to-channel): Set riece-channel-buffer here.
+
+	* riece-button.el (riece-user-button-popup-menu): Change order.
+	(riece-button-update-buffer): Unify
+	riece-button-update-channel-list-buffer and
+	riece-button-update-user-list-buffer.
+
+2003-10-13  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-history.el (riece-history-insinuate): In
 	riece-after-switch-to-channel-functions, check whether the last
 	channel is nil.

@@ -109,10 +109,10 @@ Local to the channel buffers.")
 ;;; Modeline indicators:
 (defvar riece-channel-indicator "None"
   "A modeline indicator of the current channel.")
+(defvar riece-long-channel-indicator "None"
+  "A modeline indicator of the current channel.")
 (defvar riece-channel-list-indicator "No channel"
   "A modeline indicator of the current joined channels.")
-(defvar riece-short-channel-indicator "None"
-  "A modeline indicator of the current channel.")
 (defvar riece-user-indicator nil)
 
 (defvar riece-away-indicator "-")

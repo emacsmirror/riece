@@ -43,10 +43,10 @@
 
 (defconst riece-user-button-popup-menu
   '("User"
+    ["Finger (WHOIS)" riece-user-button-finger]
     ["Start Private Conversation" riece-user-button-join-partner]
     ["Give Channel Operator Privileges" riece-user-button-set-operators]
-    ["Allow To Speak" riece-user-button-set-speakers]
-    ["Finger (WHOIS)" riece-user-button-finger])
+    ["Allow To Speak" riece-user-button-set-speakers])
   "Menu for user buttons.")
 
 (defvar help-echo-owns-message)
@@ -219,15 +219,8 @@ This function is used as a callback for a channel button."
 			    (list 'local-map riece-identity-button-map
 				  'keymap riece-identity-button-map))))))
 
-(defun riece-button-update-channel-list-buffer ()
-  (save-excursion
-    (set-buffer riece-channel-list-buffer)
-    (riece-button-add-identity-button (point-min) (point-max))))
-
-(defun riece-button-update-user-list-buffer ()
-  (save-excursion
-    (set-buffer riece-user-list-buffer)
-    (riece-button-add-identity-button (point-min) (point-max))))
+(defun riece-button-update-buffer ()
+  (riece-button-add-identity-button (point-min) (point-max)))
 
 (defun riece-button-requires ()
   '(riece-highlight))
@@ -236,20 +229,20 @@ This function is used as a callback for a channel button."
 (defvar riece-user-list-mode-map)
 (defvar riece-dialogue-mode-map)
 (defun riece-button-insinuate ()
-  (add-hook 'riece-update-buffer-functions
-	    'riece-button-update-channel-list-buffer t)
-  (add-hook 'riece-update-buffer-functions
-	    'riece-button-update-user-list-buffer t)
   (add-hook 'riece-channel-list-mode-hook
 	    (lambda ()
 	      (set-keymap-parent riece-channel-list-mode-map widget-keymap)
 	      (set (make-local-variable 'riece-identity-button-map)
-		   (riece-make-identity-button-map))))
+		   (riece-make-identity-button-map))
+	      (add-hook 'riece-update-buffer-functions
+			'riece-button-update-buffer t t)))
   (add-hook 'riece-user-list-mode-hook
 	    (lambda ()
 	      (set-keymap-parent riece-user-list-mode-map widget-keymap)
 	      (set (make-local-variable 'riece-identity-button-map)
-		   (riece-make-identity-button-map))))
+		   (riece-make-identity-button-map))
+	      (add-hook 'riece-update-buffer-functions
+			'riece-button-update-buffer t t)))
   (add-hook 'riece-dialogue-mode-hook
 	    (lambda ()
 	      (set-keymap-parent riece-dialogue-mode-map widget-keymap)

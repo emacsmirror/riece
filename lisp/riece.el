@@ -268,7 +268,7 @@ If optional argument CONFIRM is non-nil, ask which IRC server to connect."
 	riece-current-channels nil
 	riece-current-channel nil
 	riece-user-indicator nil
-	riece-channel-indicator "None"
+	riece-long-channel-indicator "None"
 	riece-channel-list-indicator "No channel"
 	riece-away-indicator "-"
 	riece-operator-indicator "-"
@@ -298,7 +298,7 @@ For a list of the generic commands type \\[riece-command-generic] ? RET.
 	   " "
 	   riece-user-indicator
 	   " "
-	   riece-short-channel-indicator)))
+	   riece-channel-indicator)))
   (riece-simplify-mode-line-format)
   (use-local-map riece-command-mode-map)
 
@@ -360,7 +360,7 @@ Instead, these commands are available:
 	   riece-operator-indicator
 	   riece-freeze-indicator
 	   " "
-	   riece-channel-indicator))))
+	   riece-long-channel-indicator))))
 
 (defun riece-channel-list-mode ()
   "Major mode for displaying channel list.
@@ -373,6 +373,9 @@ All normal editing commands are turned off."
 	(riece-mode-line-buffer-identification '("Riece: "))
 	truncate-lines t
 	buffer-read-only t)
+  (make-local-hook 'riece-update-buffer-functions)
+  (add-hook 'riece-update-buffer-functions
+	    'riece-update-channel-list-buffer nil t)
   (use-local-map riece-channel-list-mode-map)
   (run-hooks 'riece-channel-list-mode-hook))
 
@@ -387,11 +390,14 @@ Instead, these commands are available:
         mode-name "User list"
 	mode-line-buffer-identification
 	(riece-mode-line-buffer-identification
-	 '("Riece: " riece-channel-indicator " "))
+	 '("Riece: " riece-long-channel-indicator " "))
 	truncate-lines t
 	buffer-read-only t)
   (if (boundp 'transient-mark-mode)
       (set (make-local-variable 'transient-mark-mode) t))
+  (make-local-hook 'riece-update-buffer-functions)
+  (add-hook 'riece-update-buffer-functions
+	    'riece-update-user-list-buffer nil t)
   (use-local-map riece-user-list-mode-map)
   (run-hooks 'riece-user-list-mode-hook))
 
