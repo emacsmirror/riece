@@ -1,5 +1,10 @@
 2003-10-24  Daiki Ueno  <ueno@unixuser.org>
 
+	* Riece: Version 0.1.5 released.
+	* riece-version.el (riece-version-number): Bump up to 0.1.5.
+
+2003-10-24  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-ctcp.el (riece-command-ctcp-action): If the current
 	command line is not empty, insert it into the minibuffer before
 	reading input.  Thanks to Akinori MUSHA  <knu@iDaemons.org>
