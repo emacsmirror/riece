@@ -87,7 +87,10 @@ happen unconditionally."
   (if (and riece-channel-buffer
 	   (get-buffer-window riece-channel-buffer))
       (with-current-buffer riece-channel-buffer
-	(unless (riece-frozen riece-channel-buffer)
+	(if (riece-frozen riece-channel-buffer)
+	    (if riece-channel-buffer-window-point
+		(set-window-point (get-buffer-window riece-channel-buffer)
+				  riece-channel-buffer-window-point))
 	  (set-window-point (get-buffer-window riece-channel-buffer)
 			    (point-max)))))
   (if (get-buffer-window riece-others-buffer)

@@ -1,3 +1,16 @@
+2004-06-10  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-layout.el (riece-set-window-points): Restore window-point
+	of the channel buffer from riece-channel-buffer-window-point.
+
+	* riece-display.el (riece-switch-to-channel): Set
+	riece-channel-buffer-window-point.
+
+	* riece.el (riece-channel-mode): Make
+	riece-channel-buffer-window-point buffer local.
+
+	* riece-globals.el (riece-channel-buffer-window-point): New variable.
+
 2004-06-06  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-rdcc.el (riece-command-dcc-send): Replace whitespace with

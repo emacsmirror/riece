@@ -126,6 +126,10 @@ Local to the channel buffers.")
 channel buffer is locked.
 Local to the channel buffers.")
 
+(defvar riece-channel-buffer-window-point nil
+  "Last value of point in window which displayed the channel buffer.
+Local to the channel buffers.")
+
 ;;; Modeline indicators:
 (defvar riece-channel-indicator "None"
   "String displayed on the modeline to indicate the current channel.")

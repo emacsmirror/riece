@@ -426,6 +426,7 @@ Instead, these commands are available:
 All normal editing commands are turned off.
 Instead, these commands are available:
 \\{riece-channel-mode-map}"
+  (make-local-variable 'riece-channel-buffer-window-point)
   (setq mode-line-buffer-identification
 	(riece-mode-line-buffer-identification
 	 '("Riece: "
