@@ -32,7 +32,7 @@
   (save-excursion
     (set-buffer riece-debug-standard-output-buffer)
     (buffer-disable-undo)
-    (erase-buffer))
+    (erase-buffer)))
 
 (defmacro riece-debug-with-backtrace (&rest body)
   `(unwind-protect
