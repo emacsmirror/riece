@@ -1,5 +1,10 @@
 2003-08-25  Daiki Ueno  <ueno@unixuser.org>
 
+	* Riece: Version 0.1.0 released.
+	* riece-version.el (riece-version-number): Bump up to 0.1.0.
+
+2003-08-25  Daiki Ueno  <ueno@unixuser.org>
+
 	* COMPILE (riece-compile-modules): Ignore errors during byte
 	compilation.
 	(riece-install-modules): If there lacks a compiled module, don't
