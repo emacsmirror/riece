@@ -538,6 +538,8 @@ PING に応答する local proxy 経由で IRC サーバに接続
 @uref{http://lsdb.sourceforge.jp} と連携
 @item riece-xface
 ユーザリストバッファにユーザの X-Face を表示
+@item riece-ctlseq
+コントロールシーケンス (^B など) による強調表示
 @end table
 
 これらのうち、@samp{riece-highlight} と @samp{riece-ctcp}、
