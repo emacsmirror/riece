@@ -51,7 +51,7 @@
     (if channel
 	(riece-command-switch-to-channel channel)
       (error "No such number!"))))
-	
+
 (eval-and-compile
   (let ((number 1))
     (while (<= number 20)
