@@ -1,4 +1,4 @@
-EXTRA_DIST = texinfo.tex
+EXTRA_DIST = texinfo.tex infohack.el ptexinfmt.el
 
 info_TEXINFOS = riece-ja.texi
 riece_ja_TEXINFOS = fdl.texi
