@@ -59,8 +59,7 @@
 (defun riece-keyword-message-filter (message)
   (if (and riece-keywords
 	   ;; Ignore messages which belongs to myself.
-	   (riece-identity-equal (riece-message-speaker message)
-				 riece-current-nickname))
+	   (not (riece-message-own-p message)))
       (let ((regexp (regexp-opt riece-keywords))
 	    (index 0))
 	(while (string-match regexp (riece-message-text message) index)
