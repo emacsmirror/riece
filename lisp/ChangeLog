@@ -1,6 +1,7 @@
 2004-11-19  Daiki Ueno  <ueno@unixuser.org>
 
-	* riece.el (riece-submit-bug-report): Query CTCP VERSION.
+	* riece.el (riece-submit-bug-report): Query CTCP VERSION before
+	inspecting *IRC* buffer.
 
 2004-11-19  Daiki Ueno  <ueno@unixuser.org>
 
