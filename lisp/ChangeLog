@@ -1,5 +1,9 @@
 2004-11-15  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-misc.el (riece-insert): Don't bind unused variable `buffer'.
+
+2004-11-15  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-300.el (riece-handle-302-message): Don't expect leading
 	":" before parameter list.
 	(riece-handle-301-message): Ditto.

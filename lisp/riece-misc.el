@@ -70,7 +70,6 @@
       (let ((inhibit-read-only t)
 	    buffer-read-only
 	    (start (goto-char (point-max)))
-	    (buffer (current-buffer))
 	    window
 	    point)
 	(insert (format-time-string "%H:%M") " " string)
