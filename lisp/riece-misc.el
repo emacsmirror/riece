@@ -108,9 +108,10 @@
 (defun riece-concat-channel-topic (target string)
   (riece-with-server-buffer (riece-identity-server target)
     (let ((topic (riece-channel-get-topic (riece-identity-prefix target))))
-      (if topic
-	  (concat string ": " topic)
-	string))))
+      (if (or (null topic)
+	      (equal topic ""))
+	  string
+	(concat string ": " topic)))))
 
 (defun riece-concat-channel-modes (target string)
   (riece-with-server-buffer (riece-identity-server target)

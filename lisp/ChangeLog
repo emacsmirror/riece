@@ -1,5 +1,8 @@
 2003-08-25  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-misc.el (riece-concat-channel-topic): Don't append ":" if
+	topic is "".
+
 	* riece-300.el (riece-handle-322-message): Simplify message.
 
 	* riece-commands.el (riece-command-change-layout): Call
