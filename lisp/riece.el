@@ -30,8 +30,6 @@
 (require 'riece-compat)
 (require 'riece-commands)
 
-(autoload 'make-ring "ring")
-
 (defvar riece-channel-list-mode-map (make-sparse-keymap))
 (defvar riece-user-list-mode-map (make-sparse-keymap))
 
@@ -254,7 +252,6 @@ If optional argument CONFIRM is non-nil, ask which IRC server to connect."
       (setq riece-server (riece-server-name-to-server riece-server)))
   (riece-create-buffers)
   (switch-to-buffer riece-command-buffer)
-  (setq riece-channel-history (make-ring riece-channel-history-length))
   (riece-redisplay-buffers)
   (riece-open-server riece-server "")
   (run-hooks 'riece-startup-hook)

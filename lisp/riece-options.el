@@ -243,11 +243,6 @@ way is to put Riece variables on .emacs or file loaded from there."
   :type 'function
   :group 'riece-options)
 
-(defcustom riece-channel-history-length 3
-  "Length of riece-channel-history."
-  :type 'integer
-  :group 'riece-options)
-
 (provide 'riece-options)
 
 ;;; riece-options.el ends here
