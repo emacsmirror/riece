@@ -456,7 +456,8 @@ Instead, these commands are available:
 		(setq dependencies (delq entry dependencies)
 		      queue (nconc queue (list entry))))
 	    (setcar (cdr entry) count)))
-	(setq pointer (cdr pointer))))
+	(setq pointer (cdr pointer)))
+      (setq queue (cdr queue)))
     (if dependencies
 	(error "Circular dependency found"))
     (while addons
