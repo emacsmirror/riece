@@ -58,25 +58,8 @@
   (when (and riece-eval-enabled
 	     (riece-message-own-p message)
 	     (string-match riece-eval-regexp (riece-message-text message)))
-    (let ((form (match-string 1 (riece-message-text message)))
-	  object string)
-      (condition-case err
-	  (progn
-	    (setq object (eval (read form)))
-	    (setq string
-		  (cond
-		   ((stringp object) object)
-		   ((and (listp object)
-			 (not (eq object nil)))
-		    (let ((string (pp-to-string object)))
-		      (substring string 0 (1- (length string)))))
-		   ((numberp object)
-		    (number-to-string object))
-		   ((eq object nil) "")
-		   (t (pp-to-string object)))))
-	(error
-	 (unless riece-eval-ignore-error
-	     (setq string (format "Error evaluating %s: %s" form err)))))
+    (let* ((form (match-string 1 (riece-message-text message)))
+	   (string (riece-eval-form form)))
       (unless (equal string "")
 	(riece-send-string
 	 (format "NOTICE %s :%s\r\n"
@@ -86,6 +69,23 @@
 	 (riece-make-message (riece-current-nickname)
 			     (riece-message-target message)
 			     string 'notice))))))
+
+(defun riece-eval-form (form)
+  (condition-case err
+      (let ((object (eval (read form))))
+	(cond
+	 ((stringp object) object)
+	 ((and (listp object)
+	       (not (eq object nil)))
+	  (let ((string (pp-to-string object)))
+	    (substring string 0 (1- (length string)))))
+	 ((numberp object)
+	  (number-to-string object))
+	 ((eq object nil) "")
+	 (t (pp-to-string object))))
+    (error
+     (unless riece-eval-ignore-error
+       (format "Error evaluating %s: %s" form err)))))
 
 (defun riece-eval-insinuate ()
   (add-hook 'riece-after-display-message-functions

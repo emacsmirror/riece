@@ -1,3 +1,8 @@
+2005-02-04  OHASHI Akira  <bg66@koka-in.org>
+
+	* riece-eval.el (riece-eval-form): New function.
+	(riece-eval-display-message-function): Use it.
+
 2005-02-04  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-000.el (riece-handle-001-message): Use
