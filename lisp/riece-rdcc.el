@@ -85,6 +85,8 @@ puts(\"#{" address " >> 24 & 0xFF}.#{" address " >> 16 & 0xFF}.#{"
 (defvar riece-rdcc-request-file nil)
 (defvar riece-rdcc-request-size nil)
 
+(defvar jka-compr-compression-info-list)
+(defvar jam-zcat-filename-list)
 (defun riece-rdcc-substitute-variables (program variable value)
   (setq program (copy-sequence program))
   (let ((pointer program))
@@ -123,7 +125,7 @@ puts(\"#{" address " >> 24 & 0xFF}.#{" address " >> 16 & 0xFF}.#{"
 	    (mapcar #'list (riece-get-users-on-server)))
 	   (expand-file-name (read-file-name "File: ")))))
   (let ((process
-	 (start-process "DCC" " *DCC*" "ruby" "-rsocket")))
+	 (start-process "DCC send" " *DCC send*" "ruby" "-rsocket")))
     (process-send-string process
 			 (apply #'concat
 				(riece-rdcc-substitute-variables
@@ -166,7 +168,7 @@ puts(\"#{" address " >> 24 & 0xFF}.#{" address " >> 16 & 0xFF}.#{"
     (goto-char (point-max))
     (insert input)
     (message "Receiving %s from %s...(%d/%d)"
-	     (file-name-nondirectory buffer-file-name)
+	     (file-name-nondirectory riece-rdcc-request-file)
 	     riece-rdcc-request-user
 	     (1- (point))
 	     riece-rdcc-request-size)))
@@ -177,10 +179,13 @@ puts(\"#{" address " >> 24 & 0xFF}.#{" address " >> 16 & 0xFF}.#{"
     (unless (= (buffer-size) riece-rdcc-request-size)
       (error "Premature end of file"))
     (message "Receiving %s from %s...done"
-	     (file-name-nondirectory buffer-file-name)
+	     (file-name-nondirectory riece-rdcc-request-file)
 	     riece-rdcc-request-user)
-    (let ((coding-system-for-write 'binary))
-      (save-buffer))))
+    (let ((coding-system-for-write 'binary)
+	  jka-compr-compression-info-list jam-zcat-filename-list)
+      (write-region (point-min) (point-max) riece-rdcc-request-file)))
+  (kill-buffer (process-buffer process))
+  (delete-process process))
 
 (defun riece-rdcc-decode-address (address)
   (with-temp-buffer
@@ -197,34 +202,42 @@ puts(\"#{" address " >> 24 & 0xFF}.#{" address " >> 16 & 0xFF}.#{"
    (progn
      (unless riece-rdcc-requests
        (error "No request"))
-     (list
-      (if (= (length riece-rdcc-requests) 1)
-	  (car riece-rdcc-requests)
-	(with-output-to-temp-buffer "*Help*"
-	  (let ((requests riece-rdcc-requests)
-		(index 1))
-	    (while requests
-	      (princ (format "%2d: %s %s (%d bytes)\n"
-			     index
-			     (car (car requests))
-			     (nth 1 (car requests))
-			     (nth 4 (car requests))))
-	      (setq index (1+ index)
-		    requests (cdr requests)))))
-	(let ((number (read-string "Request#: ")))
-	  (unless (string-match "^[0-9]+$" number)
-	    (error "Not a number"))
-	  (if (or (> (setq number (string-to-number number))
-		     (length riece-rdcc-requests))
-		  (< number 1))
-	      (error "Invalid number"))
-	  (nth (1- number) riece-rdcc-requests)))
-      (expand-file-name (read-file-name "Save as: ")))))
+     (let* ((request
+	     (if (= (length riece-rdcc-requests) 1)
+		 (car riece-rdcc-requests)
+	       (with-output-to-temp-buffer "*Help*"
+		 (let ((requests riece-rdcc-requests)
+		       (index 1))
+		   (while requests
+		     (princ (format "%2d: %s %s (%d bytes)\n"
+				    index
+				    (car (car requests))
+				    (nth 1 (car requests))
+				    (nth 4 (car requests))))
+		     (setq index (1+ index)
+			   requests (cdr requests)))))
+	       (let ((number (read-string "Request#: ")))
+		 (unless (string-match "^[0-9]+$" number)
+		   (error "Not a number"))
+		 (if (or (> (setq number (string-to-number number))
+			    (length riece-rdcc-requests))
+			 (< number 1))
+		     (error "Invalid number"))
+		 (nth (1- number) riece-rdcc-requests))))
+	    (default-name (expand-file-name
+			   (nth 1 request) default-directory)))
+       (list request
+	     (expand-file-name
+	      (read-file-name
+	       (concat "Save as (default "
+		       (file-name-nondirectory default-name) ") ")
+	       (file-name-directory default-name)
+	       default-name))))))
   (let* (selective-display
 	 (coding-system-for-read 'binary)
 	 (coding-system-for-write 'binary)
 	 (process (open-network-stream
-		   "DCC" " *DCC*"
+		   "DCC receive" " *DCC receive*"
 		   (riece-rdcc-decode-address (nth 2 request))
 		   (nth 3 request))))
     (setq riece-rdcc-requests (delq request riece-rdcc-requests))
@@ -232,9 +245,11 @@ puts(\"#{" address " >> 24 & 0xFF}.#{" address " >> 16 & 0xFF}.#{"
       (if (fboundp 'set-buffer-multibyte)
 	  (set-buffer-multibyte nil))
       (buffer-disable-undo)
-      (setq buffer-file-name file)
+      (erase-buffer)
       (make-local-variable 'riece-rdcc-request-user)
       (setq riece-rdcc-request-user (car request))
+      (make-local-variable 'riece-rdcc-request-file)
+      (setq riece-rdcc-request-file file)
       (make-local-variable 'riece-rdcc-request-size)
       (setq riece-rdcc-request-size (nth 4 request)))
     (set-process-filter process #'riece-rdcc-filter)

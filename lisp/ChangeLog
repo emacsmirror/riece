@@ -1,5 +1,8 @@
 2003-06-03  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-rdcc.el (riece-command-dcc-receive): Don't set
+	buffer-file-name.
+
 	* riece-server.el (riece-server-keyword-map): `:coding-system' ->
 	`:coding'.
 	(riece-open-server): Follow the change.
