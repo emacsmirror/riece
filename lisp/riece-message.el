@@ -114,7 +114,7 @@
 		  (riece-message-target message))))
     (unless (riece-identity-member target riece-current-channels)
       (riece-join-channel target)
-      ;; If you are not joined any channel,
+      ;; If you are not joined to any channel,
       ;; switch to the target immediately.
       (unless riece-current-channel
 	(riece-switch-to-channel target)))
