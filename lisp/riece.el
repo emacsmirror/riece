@@ -540,9 +540,7 @@ Instead, these commands are available:
   "Submit via mail a bug report on Riece."
   ;; This strange form ensures that (recent-keys) is the value before
   ;; the bug subject string is read.
-  (interactive (list (with-output-to-string
-		       (print-recent-messages 20))
-		     (recent-keys)))
+  (interactive (list (riece-recent-messages 20) (recent-keys)))
   (require 'reporter)
   (let ((reporter-prompt-for-summary-p t))
     (unless riece-debug
@@ -597,8 +595,8 @@ are familiar with the debugger, to get a lisp back-trace.")
 		      "(closed server)"))
 	    (setq pointer (cdr pointer))))
 	;; Insert recent keystrokes.
-	(insert "\n\n"
-	"Recent keystrokes:\n-----------------\n\n")
+	(insert "\n\nRecent keystrokes:\n"
+		"-----------------\n\n")
 	(let ((before-keys (point)))
 	(insert (key-description recent-keys))
 	(save-restriction
@@ -608,7 +606,7 @@ are familiar with the debugger, to get a lisp back-trace.")
 	    (search-forward " " nil t)
 	    (insert "\n"))))
 	;; Insert recent minibuffer messages.
-	(insert "\nRecent messages (most recent first):\n"
+	(insert "\n\nRecent messages (most recent first):\n"
 		"-----------------------------------\n"
 		recent-messages))))
 

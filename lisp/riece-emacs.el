@@ -103,6 +103,25 @@
 
 (defalias 'riece-facep 'facep)
 
+;;; stolen (and renamed) from emacsbug.el.
+(defun riece-recent-messages (n)
+  "Return N most recent messages, most recent first.
+If N is nil, all messages will be returned."
+  (let ((message-buf (get-buffer "*Messages*")))
+    (if message-buf
+	(with-temp-buffer
+	  (let (beg-pos end-pos)
+	    (with-current-buffer message-buf
+	      (setq end-pos (goto-char (point-max)))
+	      (if n
+		  (progn
+		    (forward-line (- n))
+		    (setq beg-pos (point)))
+		(setq beg-pos (point-min))))
+	    (insert-buffer-substring message-buf beg-pos end-pos)
+	    (reverse-region (point-min) (point-max))
+	    (buffer-string))))))
+
 (provide 'riece-emacs)
 
 ;;; riece-emacs.el ends here

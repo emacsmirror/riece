@@ -129,6 +129,12 @@
   (add-text-properties start end (list prop value 'start-open t 'end-open t)
 		       object))
 
+(defun riece-recent-messages (n)
+  "Return N most recent messages, most recent first.
+If N is nil, all messages will be returned."
+  (with-output-to-string
+    (print-recent-messages n)))
+
 (provide 'riece-xemacs)
 
 ;;; riece-xemacs.el ends here
