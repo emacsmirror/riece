@@ -39,6 +39,12 @@
   :type 'number
   :group 'riece-yank)
 
+(defcustom riece-yank-strip-space nil
+  "If non-nil, strip common spaces in front of lines and blank lines
+before/after the first/last non-blank line."
+  :type 'boolean
+  :group 'riece-yank)
+
 (defvar riece-yank-enabled nil)
 
 (defun riece-yank-insinuate ()
@@ -60,6 +66,28 @@
 	 msg)
     (unless kill
       (error "Nothing to send in kill-ring"))
+    (if riece-yank-strip-space
+	(with-temp-buffer
+	  (insert kill)
+	  (untabify (point-min) (point-max))
+	  ;; Delete blank lines before the first non-blank line.
+	  (goto-char (point-min))
+	  (while (looking-at " *$")
+	    (delete-region (point) (progn (forward-line) (point))))
+	  ;; Delete blank lines after the last non-blank line.
+	  (goto-char (point-max))
+	  (while (progn (beginning-of-line) (looking-at " *$"))
+	    (delete-region (point) (progn (end-of-line 0) (point))))
+	  ;; Delete common spaces in front of lines.
+	  (setq space-width (point-max))
+	  (while (looking-at " +")
+	    (setq space-width (min space-width (length (match-string 0))))
+	    (forward-line))
+	  (goto-char (point-min))
+	  (while (not (eobp))
+	    (delete-char space-width)
+	    (forward-line))
+	  (setq kill (buffer-string))))
     (setq msg (split-string kill "\n"))
     (when (y-or-n-p (format "Send \"%s\"\n? " kill))
       (mapcar

@@ -1,3 +1,9 @@
+2004-10-30  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-yank.el (riece-yank-strip-space): New user option.
+	(riece-command-yank): Strip spaces if riece-yank-strip-space is
+	non-nil.
+
 2004-10-18  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-yank.el: New add-on from Masatake YAMATO <jet@gyve.org>.
