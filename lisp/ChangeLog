@@ -2,6 +2,11 @@
 
 	* riece-300.el (riece-handle-317-message): Format idle seconds in
 	human readable form.
+	(riece-handle-301-message): Don't use riece-user-regexp.
+	(riece-handle-311-message): Ditto.
+	(riece-handle-312-message): Ditto.
+	(riece-handle-317-message): Ditto.
+	(riece-handle-319-message): Ditto.
 
 	* riece-ctcp.el (riece-handle-ctcp-action-request): Prepend target.
 	(riece-command-ctcp-action): Ditto.

@@ -93,7 +93,7 @@
     "\n")))
 
 (defun riece-handle-301-message (prefix number name string)
-  (if (string-match (concat "^\\(" riece-user-regexp "\\) :?") string)
+  (if (string-match (concat "^\\([^ ]+\\) :?") string)
       (let ((user (match-string 1 string))
 	    (message (substring string (match-end 0))))
 	(riece-user-toggle-away user t)
@@ -127,8 +127,7 @@
 
 (defun riece-handle-311-message (prefix number name string)
   (if (string-match
-       (concat "^\\(" riece-user-regexp
-	       "\\) \\([^ ]+\\) \\([^ ]+\\) \\* :?")
+       (concat "^\\([^ ]+\\) \\([^ ]+\\) \\([^ ]+\\) \\* :?")
        string)
       (let ((user (match-string 1 string))
 	    (name (substring string (match-end 0)))
@@ -148,7 +147,7 @@
 
 (defun riece-handle-312-message (prefix number name string)
   (if (string-match
-       (concat "^\\(" riece-user-regexp "\\) \\([^ ]+\\) :?")
+       (concat "^\\([^ ]+\\) \\([^ ]+\\) :?")
        string)
       (riece-insert-info
        (list riece-dialogue-buffer riece-others-buffer)
@@ -174,7 +173,7 @@
 
 (defun riece-handle-317-message (prefix number name string)
   (if (string-match
-       (concat "^\\(" riece-user-regexp "\\) \\([0-9]+\\) ")
+       (concat "^\\([^ ]+\\) \\([0-9]+\\) ")
        string)
       (let* ((user (match-string 1 string))
 	     (seconds (string-to-number (match-string 2 string)))
@@ -202,7 +201,7 @@
 	  "\n")))))
 
 (defun riece-handle-319-message (prefix number name string)
-  (if (string-match (concat "^\\(" riece-user-regexp "\\) :?") string)
+  (if (string-match (concat "^\\([^ ]+\\) :?") string)
       (let ((user (match-string 1 string))
 	    (channels
 	     (mapconcat
