@@ -73,8 +73,7 @@
 	(insert (format-time-string "%H:%M") " " string)
 	(if (and (not (riece-frozen (current-buffer)))
 		 (get-buffer-window (current-buffer)))
-	    (set-window-point (get-buffer-window (current-buffer))
-			      (point)))
+	    (recenter -1 (get-buffer-window (current-buffer))))
 	(run-hook-with-args 'riece-after-insert-functions start (point))))
     (setq buffers (cdr buffers))))
 

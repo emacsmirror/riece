@@ -1,3 +1,8 @@
+2004-08-30  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-misc.el (riece-insert): Use (recenter -1) to set window
+	point instead of doing so manually.
+
 2004-08-28  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-xemacs.el (riece-put-text-property-nonsticky): New function.
