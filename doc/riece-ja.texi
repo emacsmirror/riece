@@ -813,12 +813,12 @@ autoreconf -f -i -v
 ユーザオプションの定義 
 @item riece-version
 バージョンの定義 
-@item riece-inlines
-雑多なインライン関数の定義 
 @item riece-coding
 コーディングシステム関連の関数の定義 
 @item riece-complete
 ミニバッファでの補完を助ける関数の定義 
+@item riece-addon
+アドオン管理
 
 @item riece-mode
 channel/user のモード管理
@@ -829,10 +829,13 @@ channel object 関連の定義
 @item riece-user
 user object 関連の定義 
 
+@item riece-misc
+雑多な関数の定義
 @item riece-signal
 シグナル(@pxref{Signals})管理
-@item riece-misc
-雑多な関数の定義(インライン関数を除く) 
+
+@item riece-layout
+ウィンドウレイアウト管理
 @item riece-display
 表示用バッファの管理 
 @item riece-server
@@ -860,6 +863,8 @@ message object 関連の定義
 
 @item riece-commands
 コマンドの定義 
+@item riece-irc
+IRC プロトコルインターフェース
 @item riece
 エントリポイント。各バッファのモード定義など 
 @end table
