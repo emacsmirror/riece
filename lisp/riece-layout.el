@@ -91,18 +91,15 @@ happen unconditionally."
 	    (if riece-channel-buffer-window-point
 		(set-window-point (get-buffer-window riece-channel-buffer)
 				  riece-channel-buffer-window-point))
-	  (set-window-point (get-buffer-window riece-channel-buffer)
-			    (point-max)))))
+	  (recenter -1 (get-buffer-window riece-channel-buffer)))))
   (if (get-buffer-window riece-others-buffer)
       (with-current-buffer riece-others-buffer
 	(unless (riece-frozen riece-others-buffer)
-	  (set-window-point (get-buffer-window riece-others-buffer)
-			    (point-max)))))
+	  (recenter -1 (get-buffer-window riece-others-buffer)))))
   (if (get-buffer-window riece-dialogue-buffer)
       (with-current-buffer riece-dialogue-buffer
 	(unless (riece-frozen riece-dialogue-buffer)
-	  (set-window-point (get-buffer-window riece-dialogue-buffer)
-			    (point-max))))))
+	  (recenter -1 (get-buffer-window riece-dialogue-buffer))))))
 
 (defun riece-reconfigure-windows-predicate ()
   "Return t, if window reconfiguration is needed.
