@@ -1,5 +1,10 @@
 2004-08-16  Daiki Ueno  <ueno@unixuser.org>
 
+	* Riece: Version 1.0.2 released.
+	* riece-version.el (riece-version-number): Bump up to 1.0.2.
+
+2004-08-16  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-highlight.el (riece-highlight-server-match): New match
 	function for font-lock-keywords to highlight "(from XXX)" only if
 	'riece-server-name property is set.
