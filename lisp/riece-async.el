@@ -49,11 +49,29 @@
 
 (defcustom riece-async-server-program
   '("\
+require 'io/nonblock'
+
 socket = TCPSocket.new(" host ", " service ")
 $stdout.write(\"NOTICE CONNECTED #{$$}\r\n\")
 $stdout.flush
+
+$stdout.nonblock = true
+trap('STOP', 'IGNORE')
+trap('TSTP', 'IGNORE')
+wfds_in = []
+buf = ''
 loop do
-  rfds, = select([socket, $stdin])
+  rfds, wfds = select([socket, $stdin], wfds_in)
+  if wfds.delete($stdout)
+    begin
+      until buf.empty?
+        len = $stdout.syswrite(buf)
+        buf.slice!(0 .. len)
+      end
+      wfds_in.delete($stdout)
+    rescue Errno::EAGAIN
+    end
+  end
   if rfds.delete(socket)
     line = socket.gets(\"\r\n\")
     break unless line
@@ -61,8 +79,11 @@ loop do
       socket.write(\"PONG #{$1}\r\n\")
       socket.flush
     else
-      $stdout.write(line)
-      $stdout.flush
+      wfds_in = [$stdout]
+      buf << line
+      until buf.length <= " max-buffer-size "
+        buf.slice!(0 .. buf.index(\"\r\n\"))
+      end
     end
   end
   if rfds.delete($stdin)
@@ -77,6 +98,11 @@ exit
 ")
   "Ruby program of asynchronous proxy"
   :type 'list
+  :group 'riece-async)
+
+(defcustom riece-async-max-buffer-size 65535
+  "Maximum size of the write buffer"
+  :type 'integer
   :group 'riece-async)
 
 (defun riece-async-substitute-variables (program variable value)
@@ -97,13 +123,17 @@ exit
 			 (apply #'concat
 				(riece-async-substitute-variables
 				 (riece-async-substitute-variables
-				  riece-async-server-program
-				  'host
-				  (concat "'" host "'"))
-				 'service
-				 (if (numberp service)
-				     (number-to-string service)
-				   (concat "'" service "'")))))
+				  (riece-async-substitute-variables
+				   riece-async-server-program
+				   'host
+				   (concat "'" host "'"))
+				  'service
+				  (if (numberp service)
+				      (number-to-string service)
+				    (concat "'" service "'")))
+				 'max-buffer-size
+				 (number-to-string
+				  riece-async-max-buffer-size))))
     (process-send-string process "\0\n") ;input to process is needed
     (if buffer
 	(save-excursion

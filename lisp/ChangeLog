@@ -1,3 +1,10 @@
+2003-12-14  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-async.el (riece-async-max-buffer-size): New user option.
+	(riece-async-server-program): Use io/nonblock & IO#syswrite to
+	check whether the write end of pipe (i.e. input to emacs process)
+	would block.
+
 2003-12-13  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-options.el (riece-default-open-connection-function): New
