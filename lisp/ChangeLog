@@ -1,3 +1,8 @@
+2003-12-09  OHASHI Akira  <bg66@koka-in.org>
+
+	* riece-mini.el (riece-mini-display-message-function): Don't set
+	riece-mini-last-channel when message is not a privmsg.
+
 2003-12-04  OHASHI Akira  <bg66@koka-in.org>
 
 	* riece-server.el (riece-with-server-buffer): Store 'edebug-form-spec

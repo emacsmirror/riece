@@ -64,7 +64,8 @@
 	   (funcall riece-message-make-close-bracket-function message))
 	  (global-name
 	   (funcall riece-message-make-global-name-function message)))
-      (setq riece-mini-last-channel (riece-message-target message))
+      (unless (riece-message-type message)
+	(setq riece-mini-last-channel (riece-message-target message)))
       (riece-mini-message-no-log
        "%s" (concat (format-time-string "%H:%M") " "
 		    open-bracket global-name close-bracket
