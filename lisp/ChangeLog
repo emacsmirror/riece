@@ -1,8 +1,13 @@
 2003-12-22  Daiki Ueno  <ueno@unixuser.org>
 
-	* riece-keyword.el (riece-notify-keyword-functions): Mark as obsolete.
+	* riece-keyword.el (riece-notify-keyword-functions): Mark as
+	obsolete.
 	(riece-keyword-notify-functions): New user option.
-	(riece-keyword-message-filter): Call riece-keyword-notify-functions.
+	(riece-keyword-message-filter): Don't restore the match data when
+	calling riece-notify-keyword-functions; call
+	riece-keyword-notify-functions with the matched message object.
+	Thanks to OHASHI Akira <bg66@koka-in.org>
+	[cf. <Liece:00134>]
 
 2003-12-17  Daiki Ueno  <ueno@unixuser.org>
 
