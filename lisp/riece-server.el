@@ -173,7 +173,10 @@ the `riece-server-keyword-map' variable."
 	    (setq riece-last-send-time (current-time)))))
       (if riece-send-queue
 	  (riece-run-at-time riece-send-delay nil
-			     #'riece-flush-send-queue process)))))
+			     (lambda (process)
+			       (if (process-buffer process)
+				   (riece-flush-send-queue process)))
+			     process)))))
 
 (defun riece-process-send-string (process string)
   (with-current-buffer (process-buffer process)

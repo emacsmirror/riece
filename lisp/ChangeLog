@@ -6,7 +6,8 @@
 	(riece-queue-enqueue): New function.
 	(riece-queue-dequeue): New function.
 	(riece-queue-empty): New function.
-	(riece-flush-send-queue): Use a queue object.
+	(riece-flush-send-queue): Use a queue object; check the process
+	is active.
 
 2004-09-25  Daiki Ueno  <ueno@unixuser.org>
 
