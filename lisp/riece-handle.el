@@ -30,6 +30,20 @@
 (require 'riece-naming)
 (require 'riece-signal)
 (require 'riece-mode)
+(require 'riece-000)
+(require 'riece-200)
+(require 'riece-300)
+(require 'riece-400)
+(require 'riece-500)
+
+(defun riece-default-handle-numeric-reply
+  (client-prefix prefix number name string)
+  (riece-insert
+   (list riece-dialogue-buffer riece-others-buffer)
+   (concat client-prefix
+	   (riece-concat-server-name
+	    (mapconcat #'identity (riece-split-parameters string) " "))
+	   "\n")))
 
 (defun riece-handle-nick-message (prefix string)
   (let* ((old (riece-prefix-nickname prefix))

@@ -32,9 +32,6 @@
 (defun riece-handle-numeric-reply (prefix number name string)
   (let ((base-number (* (/ number 100) 100))
 	function)
-    (condition-case nil
-	(require (intern (format "riece-%03d" base-number)))
-      (error))
     (setq function (intern-soft (format "riece-handle-%03d-message" number)))
     (unless (and function
 		 (symbol-function function))
@@ -49,15 +46,6 @@
 	  (error
 	   (if riece-debug
 	       (message "Error in `%S': %S" function error)))))))
-
-(defun riece-default-handle-numeric-reply
-  (client-prefix prefix number name string)
-  (riece-insert
-   (list riece-dialogue-buffer riece-others-buffer)
-   (concat client-prefix
-	   (riece-concat-server-name
-	    (mapconcat #'identity (riece-split-parameters string) " "))
-	   "\n")))
 
 (defun riece-handle-message (prefix message string)
   (if (and prefix
