@@ -12,7 +12,7 @@
 
 ** Show backtrace when encountered an error in process-filter.
 
-** Ask channel key to user when required.
+** Ask channel key to user when it is required.
 
 ** Automatic buffer shrinking is now disabled by default.
 
