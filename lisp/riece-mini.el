@@ -41,6 +41,7 @@
 ;;; Code:
 
 (require 'riece-message)
+(require 'riece-biff)
 
 (defgroup riece-mini nil
   "riece on minibuffer"
@@ -126,6 +127,9 @@ If twice (C-u C-u), then ask the channel."
       (let ((max-mini-window-height height)
 	    (resize-mini-windows t))
 	(setq riece-mini-backlog-shown t)
+	(when (and (memq 'riece-biff riece-addons)
+		   riece-biff-enabled)
+	  (riece-biff-clear))
 	(riece-mini-message-no-log
 	 "%s" (mapconcat #'identity riece-mini-backlog-history "\n"))))))
 
@@ -134,6 +138,10 @@ If twice (C-u C-u), then ask the channel."
     (let ((resize-mini-windows t))
       (setq riece-mini-backlog-shown nil)
       (riece-mini-message-no-log ""))))
+
+(defun riece-mini-requires ()
+  (if (memq 'riece-biff riece-addons)
+ '(riece-biff)))
 
 (defun riece-mini-insinuate ()
   (add-hook 'riece-after-display-message-functions

@@ -127,8 +127,9 @@ If integer, flash back only this line numbers. t means all lines."
 				 (riece-make-identity
 				  (riece-match-string-no-properties 1)
 				  (riece-identity-server identity))))
-	    (if (memq 'riece-button riece-addons)
-		(riece-button-update-buffer))
+	    (when (and (memq 'riece-button riece-addons)
+		       riece-button-enabled)
+	      (riece-button-update-buffer))
 	    (goto-char (point-max))
 	    (set-window-point (get-buffer-window (current-buffer))
 			      (point))))))))
