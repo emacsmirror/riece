@@ -26,11 +26,9 @@
 
 (require 'riece-globals)
 
-(defvar riece-debug-standard-output-buffer riece-temp-buffer)
-
 (defun riece-debug-reset-standard-output ()
   (save-excursion
-    (set-buffer riece-debug-standard-output-buffer)
+    (set-buffer riece-temp-buffer)
     (buffer-disable-undo)
     (erase-buffer)))
 
@@ -38,7 +36,7 @@
   `(unwind-protect
        (progn ,@body)
      (riece-debug-reset-standard-output)
-     (let ((standard-output riece-debug-standard-output-buffer))
+     (let ((standard-output riece-temp-buffer))
        (backtrace))))
 
 (put 'riece-debug-with-backtrace 'lisp-indent-function 0)
@@ -52,7 +50,7 @@
      (error
       (if riece-debug
 	  (save-excursion
-	    (set-buffer riece-debug-standard-output-buffer)
+	    (set-buffer riece-temp-buffer)
 	    (if (re-search-forward "^  signal(" nil t)
 		(delete-region (point-min) (match-beginning 0)))
 	    (message "Error in `%s': %S\n%s" ,location error (buffer-string))))
