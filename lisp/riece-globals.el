@@ -27,14 +27,23 @@
 (require 'riece-compat)			;riece-make-interval-regexp
 
 ;;; Constants:
-(defconst riece-channel-regexp
+(defconst riece-strict-channel-regexp
   (concat "\\([+&#]\\|!"
 	  (riece-make-interval-regexp "[A-Z0-9]" 5)
 	  "\\|!!\\)[^\0\7\r\n ,:]*\\(:[^\0\7\r\n ,:]*\\)?"))
 
-(defconst riece-user-regexp
+(defconst riece-strict-user-regexp
   (concat "[][\\\\`_^{|}A-Za-z]"
 	  (riece-make-interval-regexp "[][\\\\`_^{|}A-Za-z0-9-]" 0 8)))
+
+(defconst riece-laxed-channel-regexp
+  "[+&#!][^\0\7\r\n ,:]*\\(:[^\0\7\r\n ,:]*\\)?")
+
+(defconst riece-laxed-user-regexp
+  "[][\\\\`_^{|}A-Za-z][][\\\\`_^{|}A-Za-z0-9-]*")
+
+(defvar riece-channel-regexp riece-laxed-channel-regexp)
+(defvar riece-user-regexp riece-laxed-user-regexp)
 
 ;;; Global variables:
 (defvar riece-server-process-alist nil

@@ -1,3 +1,15 @@
+2004-05-12  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-globals.el (riece-strict-channel-regexp): Renamed from
+	riece-channel-regexp.
+	(riece-strict-user-regexp): Renamed from riece-user-regexp.
+	(riece-laxed-channel-regexp): New constant.
+	(riece-laxed-user-regexp): New constant.
+	(riece-channel-regexp): Define as variable (its default value is
+	set to riece-laxed-channel-regexp).
+	(riece-user-regexp): Define as variable (its default value is set
+	to riece-laxed-user-regexp).
+
 2004-05-10  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-ctlseq.el (riece-ctlseq-scan-region): Abolish.
