@@ -166,7 +166,11 @@
 (defun riece-concat-server-name (string)
   (if (equal riece-server-name "")
       string
-    (concat string " (from " riece-server-name ")")))
+    (let ((server-name (concat " (from " riece-server-name ")")))
+      (put-text-property 0 (length server-name)
+			 'riece-server-name riece-server-name
+			 server-name)
+      (concat string server-name))))
 
 (defun riece-concat-user-status (status string)
   (if status

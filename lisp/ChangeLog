@@ -1,3 +1,13 @@
+2004-08-15  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-handle.el (riece-handle-nick-message): Remove nil from
+	channel buffers.
+	(riece-handle-quit-message): Ditto.
+	(riece-handle-kill-message): Ditto.
+
+	* riece-misc.el (riece-concat-server-name): Put 'riece-server-name
+	property on "(from XXX)".
+
 2004-07-29  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-menu.el: Do not support enable/disable addon since

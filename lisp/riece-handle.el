@@ -59,11 +59,12 @@
     (riece-naming-assert-rename old new)
     (if (riece-identity-member old-identity riece-current-channels)
 	(setq channels (cons new channels)))
-    (riece-insert-change (mapcar
-			  (lambda (channel)
-			    (riece-channel-buffer (riece-make-identity
-						   channel riece-server-name)))
-			  channels)
+    (riece-insert-change (delq nil (mapcar
+				    (lambda (channel)
+				      (riece-channel-buffer
+				       (riece-make-identity
+					channel riece-server-name)))
+				    channels))
 			 (format "%s -> %s\n"
 				 (riece-format-identity old-identity t)
 				 (riece-format-identity new-identity t)))
@@ -239,11 +240,11 @@
       (riece-naming-assert-part user (car pointer))
       (setq pointer (cdr pointer)))
     (let ((buffers
-	   (mapcar
-	    (lambda (channel)
-	      (riece-channel-buffer (riece-make-identity channel
-							 riece-server-name)))
-	    channels)))
+	   (delq nil (mapcar
+		      (lambda (channel)
+			(riece-channel-buffer (riece-make-identity
+					       channel riece-server-name)))
+		      channels))))
       (riece-insert-change
        buffers
        (concat
@@ -282,11 +283,11 @@
       (riece-naming-assert-part user (car pointer))
       (setq pointer (cdr pointer)))
     (let ((buffers
-	   (mapcar
-	    (lambda (channel)
-	      (riece-channel-buffer (riece-make-identity channel
-							 riece-server-name)))
-	    channels)))
+	   (delq nil (mapcar
+		      (lambda (channel)
+			(riece-channel-buffer (riece-make-identity
+					       channel riece-server-name)))
+		      channels))))
       (riece-insert-change
        buffers
        (concat
