@@ -44,7 +44,7 @@ Only used for sending files."
 unless " address "
   sock = UDPSocket.new
   sock.connect('164.46.176.4', 7)		# www.unixuser.org/echo
-  address = sock.getsockname[4 .. 8].unpack('CCCC').join('.')
+  address = sock.getsockname[4 .. 7].unpack('CCCC').join('.')
 end
 server = TCPServer.new(address, 0)
 puts(\"#{server.addr[3].split(/\\./).collect{|c| c.to_i}.pack('CCCC').unpack('N')[0]} #{server.addr[1]}\")
