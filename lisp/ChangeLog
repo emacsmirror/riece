@@ -1,5 +1,10 @@
 2004-05-21  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-highlight.el (riece-highlight-setup-dialogue): Simplified.
+	(riece-highlight-setup-channel-list): Simplified.
+
+	* riece.el (riece): Enable add-ons just after insinuate them.
+
 	* riece-addon.el (riece-addon-list-enabled-face): New face.
 	(riece-addon-list-disabled-face): New face.
 	(riece-addon-list-unsupported-face): New face.

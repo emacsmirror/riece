@@ -274,6 +274,7 @@ If optional argument CONFIRM is non-nil, ask which IRC server to connect."
       (let ((pointer riece-addons))
 	(while pointer
 	  (riece-insinuate-addon (car pointer) riece-debug)
+	  (riece-enable-addon (car pointer) riece-debug)
 	  (setq pointer (cdr pointer))))
       (setq riece-addons-insinuated t))
     (if (or confirm (null riece-server))
@@ -303,10 +304,6 @@ If optional argument CONFIRM is non-nil, ask which IRC server to connect."
 	(riece-command-open-server (car server-list))
 	(setq server-list (cdr server-list))))
     (run-hooks 'riece-startup-hook)
-    (let ((pointer riece-addons))
-      (while pointer
-	(riece-enable-addon (car pointer) riece-debug)
-	(setq pointer (cdr pointer))))
     (message "%s" (substitute-command-keys
 		   "Type \\[describe-mode] for help"))))
 

@@ -192,31 +192,16 @@
 (defconst riece-highlight-description
   "Highlight IRC buffers")
 
-(defvar font-lock-support-mode)
 (defun riece-highlight-setup-dialogue ()
   (make-local-variable 'font-lock-defaults)
   (setq font-lock-defaults '(riece-dialogue-font-lock-keywords t))
-  (make-local-variable 'font-lock-verbose)
-  (setq font-lock-verbose nil)
-  (when (boundp 'font-lock-support-mode)
-    (make-local-variable 'font-lock-support-mode)
-    (setq font-lock-support-mode nil))
-  (make-local-hook 'font-lock-mode-hook)
-  (setq font-lock-mode-hook nil)
   (make-local-hook 'after-change-functions)
   (add-hook 'after-change-functions
 	    'riece-highlight-hide-prefix nil 'local))
 
 (defun riece-highlight-setup-channel-list ()
   (make-local-variable 'font-lock-defaults)
-  (setq font-lock-defaults '(riece-channel-list-font-lock-keywords t))
-  (make-local-variable 'font-lock-verbose)
-  (setq font-lock-verbose nil)
-  (when (boundp 'font-lock-support-mode)
-    (make-local-variable 'font-lock-support-mode)
-    (setq font-lock-support-mode nil))
-  (make-local-hook 'font-lock-mode-hook)
-  (setq font-lock-mode-hook nil))
+  (setq font-lock-defaults '(riece-channel-list-font-lock-keywords t)))
 
 (defun riece-highlight-hide-prefix (start end length)
   (save-excursion
