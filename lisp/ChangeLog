@@ -1,3 +1,14 @@
+2004-08-31  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece.el (riece-dialogue-mode): Make
+	truncate-partial-width-windows local to channel buffers and set it
+	to nil.
+	* riece-layout.el (riece-configure-windows): Don't affect
+	truncate-partial-width-windows.
+	(riece-configure-windows-top): Ditto.
+	* riece-options.el (riece-truncate-partial-width-windows):
+	Abolished unused user option.
+
 2004-08-30  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-options.el (riece-window-center-line): New user option.

@@ -172,11 +172,7 @@ This function is used by \"default\" layout."
 		(set-window-buffer (split-window)
 				   riece-channel-buffer)
 		(set-window-buffer rest-window
-				   riece-command-buffer))))
-	  (with-current-buffer riece-channel-buffer
-	    (setq truncate-partial-width-windows nil))
-	  (with-current-buffer riece-others-buffer
-	    (setq truncate-partial-width-windows nil)))
+				   riece-command-buffer)))))
       (if (eq vpos 'bottom)
 	  (progn
 	    (set-window-buffer (selected-window)
@@ -227,8 +223,7 @@ PLIST accept :command-height, :user-list-width, and :channel-list-width."
 	    (set-window-buffer (selected-window) riece-channel-buffer)
 	    (set-window-buffer user-list-window riece-user-list-buffer)
 	    (select-window user-list-window)
-	    (shrink-window-horizontally (- (window-width) user-list-width))
-	    (setq truncate-partial-width-windows nil)))
+	    (shrink-window-horizontally (- (window-width) user-list-width))))
 	 ;; only user-list
 	 (show-user-list
 	  (set-window-buffer (selected-window) riece-user-list-buffer))
@@ -243,8 +238,7 @@ PLIST accept :command-height, :user-list-width, and :channel-list-width."
 	  (set-window-buffer (selected-window) riece-others-buffer)
 	  (set-window-buffer channel-list-window riece-channel-list-buffer)
 	  (select-window channel-list-window)
-	  (shrink-window-horizontally (- (window-width) channel-list-width))
-	  (setq truncate-partial-width-windows nil))
+	  (shrink-window-horizontally (- (window-width) channel-list-width)))
       (set-window-buffer (selected-window) riece-dialogue-buffer))
     (riece-set-window-points)
     (select-window (or (get-buffer-window buffer)

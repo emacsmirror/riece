@@ -402,6 +402,7 @@ Instead, these commands are available:
   (kill-all-local-variables)
   (make-local-variable 'riece-freeze)
   (make-local-variable 'riece-freeze-indicator)
+  (make-local-variable 'truncate-partial-width-windows)
   (setq riece-freeze riece-default-freeze
 	riece-away-indicator "-"
 	riece-operator-indicator "-"
@@ -415,7 +416,8 @@ Instead, these commands are available:
 	   riece-freeze-indicator
 	   " "
 	   riece-channel-list-indicator " "))
-	buffer-read-only t)
+	buffer-read-only t
+	truncate-partial-width-windows nil)
   (riece-simplify-mode-line-format)
   (use-local-map riece-dialogue-mode-map)
   (buffer-disable-undo)

@@ -60,11 +60,6 @@
   :prefix "riece-"
   :group 'riece)
 
-(defcustom riece-truncate-partial-width-windows nil
-  "If non-nil, truncate lines in splitting windows such as others buffer."
-  :type 'boolean
-  :group 'riece-looks)
-
 (defcustom riece-use-full-window t
   "If non-nil, whole Emacs window is used to display dialogue."
   :type 'boolean
