@@ -89,6 +89,8 @@
 (defalias 'riece-run-with-idle-timer 'run-with-idle-timer)
 (defalias 'riece-cancel-timer 'cancel-timer)
 
+(defalias 'riece-match-string-no-properties 'match-string-no-properties)
+
 (provide 'riece-emacs)
 
 ;;; riece-emacs.el ends here

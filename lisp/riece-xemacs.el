@@ -114,6 +114,9 @@
 
 (defalias 'riece-cancel-timer 'delete-itimer)
 
+(defun riece-match-string-no-properties (number &optional string)
+  (format "%s" (match-string number string)))
+
 (provide 'riece-xemacs)
 
 ;;; riece-xemacs.el ends here

@@ -120,7 +120,7 @@ If integer, flash back only this line numbers. t means all lines."
 	      (put-text-property (match-beginning 1) (match-end 1)
 				 'riece-identity
 				 (riece-make-identity
-				  (match-string-no-properties 1)
+				  (riece-match-string-no-properties 1)
 				  (riece-identity-server identity))))
 	    (if (memq 'riece-button riece-addons)
 		(riece-button-update-buffer))
