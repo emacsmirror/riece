@@ -1,3 +1,8 @@
+2004-11-21  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece.el (riece): Remove nonexistent buffer from
+	riece-buffer-list when running riece-shrink-buffer.
+
 2004-11-20  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-display.el (riece-update-buffers): Check existence of each

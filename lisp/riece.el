@@ -294,12 +294,13 @@ If optional argument CONFIRM is non-nil, ask which IRC server to connect."
 	       (lambda ()
 		 (let ((buffers riece-buffer-list))
 		   (while buffers
-		     (if (and (buffer-live-p (car buffers))
-			      (eq (derived-mode-class
-				   (with-current-buffer (car buffers)
-				     major-mode))
-				  'riece-dialogue-mode))
-			 (riece-shrink-buffer (car buffers)))
+		     (if (buffer-live-p (car buffers))
+			 (if (eq (derived-mode-class
+				  (with-current-buffer (car buffers)
+				    major-mode))
+				 'riece-dialogue-mode)
+			     (riece-shrink-buffer (car buffers)))
+		       (deql (car buffers) riece-buffer-list))
 		     (setq buffers (cdr buffers))))))))
     (switch-to-buffer riece-command-buffer)
     (riece-display-connect-signals)
