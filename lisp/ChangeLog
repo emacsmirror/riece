@@ -1,5 +1,11 @@
 2004-11-25  Daiki Ueno  <ueno@unixuser.org>
 
+	* Makefile.am (EXTRA_DIST): Add url-riece.el.
+	* url-riece.el: url-irc backend provided by Masatake YAMATO
+	<jet@gyve.org>.
+
+2004-11-25  Daiki Ueno  <ueno@unixuser.org>
+
 	* test/Makefile.am (EXTRA_DIST): Add test-riece-url.el.
 	* test/test-riece-url.el: New test cases.
 
