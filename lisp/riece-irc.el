@@ -82,7 +82,7 @@
 				   (format "USER %s * * :%s\r\n"
 					   (if (and username
 						    (not (string-match
-							  "[^\0\r\n @]"
+							  "[\0\r\n @]"
 							  username)))
 					       username
 					     (user-real-login-name))
