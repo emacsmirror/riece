@@ -39,7 +39,7 @@
 
 ;;; Code:
 
-(eval-when-compile (require 'riece-message))
+(require 'riece-message)
 
 (defvar riece-mini-last-channel nil)
 

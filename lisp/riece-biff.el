@@ -28,7 +28,7 @@
 
 ;;; Code:
 
-(eval-when-compile (require 'riece-message))
+(require 'riece-message)
 
 (defgroup riece-biff nil
   "Biff for new arrival messages"

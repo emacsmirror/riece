@@ -30,8 +30,8 @@
 
 ;;; Code:
 
-(eval-when-compile (require 'riece-message)
-		   (require 'riece-button))
+(require 'riece-message)
+(require 'riece-button)
 
 (defgroup riece-log nil
   "Save irc log"
