@@ -1,3 +1,10 @@
+2004-11-05  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-rdcc.el (riece-rdcc-block-size): Changed default value to
+	1024 due to the DCC specification.
+	(riece-rdcc-send-program): Wait ack from a recipient.
+	(riece-rdcc-filter): Send ack each time data arrives.
+
 2004-10-30  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-yank.el (riece-yank-strip-space): New user option.

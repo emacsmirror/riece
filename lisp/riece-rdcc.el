@@ -62,8 +62,11 @@ if session
   File.open(" file ") {|file|
     while (bytes = file.read(" block-size "))
       total += bytes.length
-      puts(\"#{total}\")
+      puts(total)
       session.write(bytes)
+      begin
+        buf = session.read(4)
+      end until buf.unpack('N')[0] == total
     end
   }
   session.close
@@ -86,7 +89,7 @@ puts(\"#{" address " >> 24 & 0xFF}.#{" address " >> 16 & 0xFF}.#{"
   :type 'directory
   :group 'riece-rdcc)
 
-(defcustom riece-rdcc-block-size 4096
+(defcustom riece-rdcc-block-size 1024
   "Number of bytes sent as a block."
   :type 'integer
   :group 'riece-rdcc)
@@ -198,13 +201,21 @@ puts(\"#{" address " >> 24 & 0xFF}.#{" address " >> 16 & 0xFF}.#{"
     (let ((coding-system-for-write 'binary)
 	  jka-compr-compression-info-list jam-zcat-filename-list)
       (write-region (point-min) (point-max) riece-rdcc-temp-file t 0))
+    (setq riece-rdcc-received-size (+ (buffer-size) riece-rdcc-received-size))
+    (process-send-string
+     process
+     (format "%c%c%c%c"
+	     (lsh riece-rdcc-received-size -24)
+	     (logand (lsh riece-rdcc-received-size -16) 255)
+	     (logand (lsh riece-rdcc-received-size -8) 255)
+	     (logand riece-rdcc-received-size 255)))
     (message "Receiving %s from %s...(%s/%s)"
 	     (file-name-nondirectory riece-rdcc-request-file)
 	     riece-rdcc-request-user
-	     (riece-rdcc-format-size
-	      (setq riece-rdcc-received-size (+ (buffer-size)
-						riece-rdcc-received-size)))
-	     (riece-rdcc-format-size riece-rdcc-request-size))))
+	     (riece-rdcc-format-size riece-rdcc-received-size)
+	     (riece-rdcc-format-size riece-rdcc-request-size))
+    (if (= riece-rdcc-received-size riece-rdcc-request-size)
+	(set-process-filter process nil))))
 
 (defun riece-rdcc-sentinel (process status)
   (save-excursion
