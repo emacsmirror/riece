@@ -1,4 +1,8 @@
 2003-05-29  Daiki Ueno  <ueno@unixuser.org>
 
+	* Makefile.am (AUTOMAKE_OPTIONS): Add "no-dependencies".
+
+2003-05-29  Daiki Ueno  <ueno@unixuser.org>
+
 	* Riece: Version 0.0.1 released.
 
