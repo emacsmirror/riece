@@ -1,3 +1,42 @@
+* Riece 1.0.7 の主な変更点
+
+** 新規アドオン riece-toolbar (ueno)
+   riece-toolbar はツールバーにアイコンを表示します。現時点では全ての
+   アイコンが含まれているわけではありません。
+
+** 新規アドオン riece-keepalive (ueno)
+   riece-keepalive は自発的にサーバに PING メッセージを送ることで IRC
+   のコネクションを持続させます。
+
+** 新規アドオン riece-google (bg66)
+   riece-google は Google での検索結果をチャンネルに送ります。
+
+** New add-on riece-eval. (bg66)
+   riece-eval は elisp の式の評価結果をチャンネルに送ります。
+
+** いくつかのアドオンをデフォルトで有効化 (ueno)
+   riece-log, riece-alias, riece-ctlseq, riece-keyword が今回からデフォ
+   ルトで有効になります。
+
+** ボタンウィジェットをクリックしてもカーソルの位置が変化しないように
+   なりました。(ueno)
+
+** 新規ユーザオプション riece-part-message (ueno)
+
+** riece-addon-directory 以下に置かれたアドオンを自動的に有効化 (ueno)
+
+** riece-buffer-dispose-function のデフォルト値が今回から kill-buffer
+   になりました (ueno)
+
+** process-filter 内でエラーが発生した場合、backtrace を行なうようにな
+   りました (ueno)
+
+** 必要な時にはチャンネルキーを問い合わせるようにしました (ueno)
+
+** バッファの自動的な切り詰めをデフォルトでは無効化 (ueno)
+
+** riece-log のための新しいディレクトリ構成 (ueno)
+
 * Riece 1.0.6 の主な変更点
 
 ** CVS 版 GNU Emacs に同梱された url パッケージの irc: スキーマ対応の

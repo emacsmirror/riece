@@ -18,7 +18,7 @@
    riece-log, riece-alias, riece-ctlseq, and riece-keyword are now
    enabled by default.
 
-** Preserve cursor position when clicking mouse button. (ueno)
+** Preserve cursor position when clicking button widget. (ueno)
 
 ** New user option riece-part-message. (ueno)
 
