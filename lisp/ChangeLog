@@ -1,7 +1,7 @@
 2004-01-27  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-lsdb.el: Require 'riece-identity; add autoload setting for
-	riece-update-record; bind lsdb-hash-table, riece-command-mode-map.
+	lsdb-update-record; bind lsdb-hash-table, riece-command-mode-map.
 
 2004-01-23  TAKAHASHI Kaoru  <kaoru@kaisei.org>
 
