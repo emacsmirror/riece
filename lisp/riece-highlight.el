@@ -184,13 +184,6 @@
   :type '(repeat (list string))
   :group 'riece-highlight)
 
-(put 'riece-channel-mode 'font-lock-defaults
-     '(riece-highlight-font-lock-keywords t))
-(put 'riece-others-mode 'font-lock-defaults
-     '(riece-highlight-font-lock-keywords t))
-(put 'riece-dialogue-mode 'font-lock-defaults
-     '(riece-highlight-font-lock-keywords t))
-
 (defun riece-highlight-schedule-turn-on-font-lock ()
   (add-hook 'riece-channel-mode-hook
 	    'riece-highlight-turn-on-font-lock)
@@ -198,9 +191,6 @@
 	    'riece-highlight-turn-on-font-lock)
   (add-hook 'riece-dialogue-mode-hook
 	    'riece-highlight-turn-on-font-lock))
-
-(add-hook 'riece-after-load-startup-hook
-	  'riece-highlight-schedule-turn-on-font-lock)
 
 (defvar font-lock-support-mode)
 (defun riece-highlight-turn-on-font-lock ()
@@ -223,6 +213,16 @@
     (goto-char start)
     (if (looking-at riece-prefix-regexp)
 	(put-text-property (match-beginning 1) (match-end 1) 'invisible t))))
+
+(defun riece-highlight-insinuate ()
+  (put 'riece-channel-mode 'font-lock-defaults
+       '(riece-highlight-font-lock-keywords t))
+  (put 'riece-others-mode 'font-lock-defaults
+       '(riece-highlight-font-lock-keywords t))
+  (put 'riece-dialogue-mode 'font-lock-defaults
+       '(riece-highlight-font-lock-keywords t))
+  (add-hook 'riece-after-load-startup-hook
+	    'riece-highlight-schedule-turn-on-font-lock))
 
 (provide 'riece-highlight)
 

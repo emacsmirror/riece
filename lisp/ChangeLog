@@ -1,5 +1,11 @@
 2003-05-30  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-highlight.el: Make it an add-on.
+	(riece-highlight-insinuate): New function.
+	* riece.el: Don't require 'riece-highlight.
+	* riece-options.el (riece-addons): Turn on riece-highlight and
+	riece-ctcp by default.
+
 	* riece-display.el (riece-configure-windows-predicate): New function.
 	(riece-configure-windows-predicate): New user option.
 	(riece-redisplay-buffers): Use it.

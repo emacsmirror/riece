@@ -31,7 +31,6 @@
   (require 'riece-emacs))
 
 (require 'riece-filter)
-(require 'riece-highlight)
 (require 'riece-display)
 (require 'riece-server)
 (require 'riece-compat)
