@@ -167,9 +167,9 @@ take server names into account."
 	 (encoded
 	  (riece-encode-identity decoded)))
     (if (and (not (string-match "[ ,]" decoded))
-	     (string-match "[ ,]" encoded)
+	     (string-match "[ ,]" (riece-identity-prefix encoded))
 	     (not (y-or-n-p (format "The encoded channel name contains illegal character \"%s\".  continue? "
-				    (match-string 0 encoded)))))
+				    (match-string 0 (riece-identity-prefix encoded))))))
 	(error "Invalid channel name!"))
     encoded))
 
