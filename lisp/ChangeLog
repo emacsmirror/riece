@@ -1,3 +1,11 @@
+2003-08-24  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-300.el (riece-handle-319-message): New handler.
+
+	* riece.el (riece-buffer-mode-alist): Add riece-command-buffer.
+	(riece): Signal an error when a server is opened;
+	No need to initialize riece-command-buffer specially.
+
 2003-08-22  TAKAHASHI Kaoru  <kaoru@kaisei.org>
 
 	* riece-display.el (riece-configure-windows-top): Set

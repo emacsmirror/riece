@@ -176,6 +176,34 @@
 		   idle))
 	  "\n")))))
 
+(defun riece-handle-319-message (prefix number name string)
+  (if (string-match (concat "^\\(" riece-user-regexp "\\) :") string)
+      (let ((user (match-string 1 string))
+	    (channels
+	     (mapconcat
+	      (lambda (channel)
+		(if (string-match
+		     (concat "^\\([@+]?\\)\\(" riece-channel-regexp "\\)")
+		     channel)
+		    (concat
+		     (match-string 1 channel)
+		     (riece-format-identity
+		      (riece-make-identity (match-string 2 channel)
+					   riece-server-name)
+		      t))))
+	      (split-string (substring string (match-end 0)) " ")
+	      " ")))
+	(riece-insert-info
+	 (list riece-dialogue-buffer riece-others-buffer)
+	 (concat
+	  (riece-concat-server-name
+	   (format "%s: %s"
+		   (riece-format-identity
+		    (riece-make-identity user riece-server-name)
+		    t)
+		   channels))
+	  "\n")))))
+
 (defun riece-handle-351-message (prefix number name string)
   (if (string-match "\\([^ ]+\\.[^ ]+\\) \\([^ ]+\\) :" string)
       (riece-insert-info
