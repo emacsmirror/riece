@@ -235,7 +235,12 @@ are the data of the signal."
        (run-hooks 'riece-update-buffer-functions)))
    (lambda (signal)
      (riece-identity-equal (car (riece-signal-args signal))
-			   riece-current-channel))))
+			   riece-current-channel)))
+  (riece-connect-signal
+   'riece-buffer-toggle-freeze
+   (lambda (signal handback)
+     (riece-update-status-indicators)
+     (force-mode-line-update t))))
 
 (defun riece-update-user-list-buffer ()
   (save-excursion
