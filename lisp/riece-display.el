@@ -107,10 +107,11 @@ This function is for internal use only."
 	    (if (or (null (riece-slot-filter (car slots)))
 		    (condition-case error
 			(funcall (riece-slot-filter (car slots)) signal)
-		      (if riece-debug
-			  (message
-			   "Error occurred in signal filter for \"%S\": %S"
-			   signal-name error))
+		      (error
+		       (if riece-debug
+			   (message
+			    "Error occurred in signal filter for \"%S\": %S"
+			    signal-name error)))
 		      nil))
 		(funcall (riece-slot-function (car slots))
 			 signal (riece-slot-handback (car slots))))
@@ -149,7 +150,8 @@ This function is for internal use only."
        (set-buffer riece-user-list-buffer)
        (run-hooks 'riece-update-buffer-functions)))
    (lambda (signal)
-     (and (riece-identity-equal (nth 1 (riece-signal-args signal))
+     (and riece-current-channel
+	  (riece-identity-equal (nth 1 (riece-signal-args signal))
 				riece-current-channel)
 	  (not (riece-identity-equal (car (riece-signal-args signal))
 				     (riece-current-nickname))))))
@@ -169,7 +171,8 @@ This function is for internal use only."
        (set-buffer riece-user-list-buffer)
        (run-hooks 'riece-update-buffer-functions)))
    (lambda (signal)
-     (and (riece-identity-equal (nth 1 (riece-signal-args signal))
+     (and riece-current-channel
+	  (riece-identity-equal (nth 1 (riece-signal-args signal))
 				riece-current-channel)
 	  (not (riece-identity-equal (car (riece-signal-args signal))
 				     (riece-current-nickname))))))
@@ -187,7 +190,8 @@ This function is for internal use only."
        (set-buffer riece-user-list-buffer)
        (run-hooks 'riece-update-buffer-functions)))
    (lambda (signal)
-     (and (equal (riece-identity-server (nth 1 (riece-signal-args signal)))
+     (and riece-current-channel
+	  (equal (riece-identity-server (nth 1 (riece-signal-args signal)))
 		 (riece-identity-server riece-current-channel))
 	  (riece-with-server-buffer (riece-identity-server
 				     riece-current-channel)
@@ -210,8 +214,9 @@ This function is for internal use only."
    (lambda (signal handback)
      (riece-switch-to-channel (nth 1 (riece-signal-args signal))))
    (lambda (signal)
-     (riece-identity-equal (car (riece-signal-args signal))
-			   riece-current-channel)))
+     (and riece-current-channel
+	  (riece-identity-equal (car (riece-signal-args signal))
+				riece-current-channel))))
   (riece-connect-signal
    'riece-user-toggle-away
    (lambda (signal handback)
@@ -234,16 +239,18 @@ This function is for internal use only."
      (riece-update-long-channel-indicator)
      (force-mode-line-update t))
    (lambda (signal)
-     (riece-identity-equal (car (riece-signal-args signal))
-			   riece-current-channel)))
+     (and riece-current-channel
+	  (riece-identity-equal (car (riece-signal-args signal))
+				riece-current-channel))))
   (riece-connect-signal
    'riece-channel-toggle-modes
    (lambda (signal handback)
      (riece-update-status-indicators)
      (force-mode-line-update t))
    (lambda (signal)
-     (riece-identity-equal (car (riece-signal-args signal))
-			   riece-current-channel)))
+     (and riece-current-channel
+	  (riece-identity-equal (car (riece-signal-args signal))
+				riece-current-channel))))
   (riece-connect-signal
    'riece-channel-toggle-operator
    (lambda (signal handback)
@@ -251,8 +258,9 @@ This function is for internal use only."
        (set-buffer riece-user-list-buffer)
        (run-hooks 'riece-update-buffer-functions)))
    (lambda (signal)
-     (riece-identity-equal (car (riece-signal-args signal))
-			   riece-current-channel)))
+     (and riece-current-channel
+	  (riece-identity-equal (car (riece-signal-args signal))
+				riece-current-channel))))
   (riece-connect-signal
    'riece-channel-toggle-speaker
    (lambda (signal handback)
@@ -260,8 +268,9 @@ This function is for internal use only."
        (set-buffer riece-user-list-buffer)
        (run-hooks 'riece-update-buffer-functions)))
    (lambda (signal)
-     (riece-identity-equal (car (riece-signal-args signal))
-			   riece-current-channel)))
+     (and riece-current-channel
+	  (riece-identity-equal (car (riece-signal-args signal))
+				riece-current-channel))))
   (riece-connect-signal
    'riece-buffer-toggle-freeze
    (lambda (signal handback)

@@ -1,3 +1,9 @@
+2004-03-04  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-display.el (riece-emit-signal): Fixed bug that errors
+	during signal filter execution were not caught.
+	(riece-display-connect-signals): Check riece-current-channel is set.
+
 2004-03-01  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-display.el (riece-display-connect-signals): Fixed bug in
