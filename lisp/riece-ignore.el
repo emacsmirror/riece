@@ -96,12 +96,18 @@ Otherwise, they are not removed from IRC buffers, but are hidden with
       (if riece-ignore-discard-message
 	  (when (eq riece-ignore-discard-message 'log)
 	    (unless riece-ignore-buffer
-	      (setq riece-ignore-buffer
-		    (riece-get-buffer-create riece-ignore-buffer-name)))
+	      (with-current-buffer (setq riece-ignore-buffer
+					 (riece-get-buffer-create
+					  riece-ignore-buffer-name
+					  'riece-dialogue-mode))
+		(riece-dialogue-mode)))
 	    (save-excursion
 	      (set-buffer riece-ignore-buffer)
 	      (goto-char (point-max))
-	      (insert (riece-format-message message t))))
+	      (let ((inhibit-read-only t)
+		    buffer-read-only)
+		(insert (concat (format-time-string "%H:%M") " "
+				(riece-format-message message t))))))
 	(put-text-property 0 (length (riece-message-text message))
 			   'invisible 'riece-ignore
 			   (riece-message-text message))

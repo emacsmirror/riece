@@ -1,5 +1,10 @@
 2004-05-18  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-ignore.el (riece-ignore-message-filter): Set the
+	major-mode of riece-ignore-buffer riece-dialogue-mode.
+
+2004-05-18  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-ignore.el (riece-ignore-buffer-name): New user option.
 	(riece-ignore-discard-message): Fixed custom spec to follow the
 	logging option.
