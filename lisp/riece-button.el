@@ -127,19 +127,14 @@ This function is used as a callback for a channel button."
 	      (delq nil
 		    (mapcar
 		     (lambda (identity)
-		       (riece-with-server-buffer (riece-identity-server
-						  riece-current-channel)
-			 (if (and (member
-				   (riece-identity-prefix identity)
-				   (riece-channel-get-users
-				    (riece-identity-prefix
-				     riece-current-channel)))
-				  (not (member
-					(riece-identity-prefix identity)
-					(riece-channel-get-operators
-					 (riece-identity-prefix
-					  riece-current-channel)))))
-			     identity)))
+		       (unless (riece-channel-operator-p
+				(riece-with-server-buffer
+				    (riece-identity-server
+				     riece-current-channel)
+				  (riece-get-channel (riece-identity-prefix
+						      riece-current-channel)))
+				(riece-identity-prefix identity))
+			 identity))
 		     group)))
 	(riece-command-set-operators (mapcar #'riece-identity-prefix group)))))
 
@@ -159,24 +154,23 @@ This function is used as a callback for a channel button."
 	      (delq nil
 		    (mapcar
 		     (lambda (identity)
-		       (riece-with-server-buffer (riece-identity-server
-						  riece-current-channel)
-			 (if (and (member
-				   (riece-identity-prefix identity)
-				   (riece-channel-get-users
-				    (riece-identity-prefix
-				     riece-current-channel)))
-				  (not (member
-					(riece-identity-prefix identity)
-					(riece-channel-get-operators
-					 (riece-identity-prefix
-					  riece-current-channel))))
-				  (not (member
-					(riece-identity-prefix identity)
-					(riece-channel-get-speakers
-					 (riece-identity-prefix
-					  riece-current-channel)))))
-			     identity)))
+		       (unless (or (riece-channel-operator-p
+				    (riece-with-server-buffer
+					(riece-identity-server
+					 riece-current-channel)
+				      (riece-get-channel
+				       (riece-identity-prefix
+					riece-current-channel)))
+				    (riece-identity-prefix identity))
+				   (riece-channel-speaker-p
+				    (riece-with-server-buffer
+					(riece-identity-server
+					 riece-current-channel)
+				      (riece-get-channel
+				       (riece-identity-prefix
+					riece-current-channel)))
+				    (riece-identity-prefix identity)))
+			 identity))
 		     group)))
 	(riece-command-set-speakers (mapcar #'riece-identity-prefix group)))))
 

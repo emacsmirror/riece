@@ -221,25 +221,43 @@ the channel key, respectively."
       (if (setq user (car (member user users)))
 	  (riece-channel-set-users channel (delq user users))))))
 
+(defun riece-channel-intern-user (channel user)
+  (unless (setq user (car (member user (riece-channel-users channel))))
+    (if riece-debug
+	(message "%s is not a member of channel" user)))
+  user)
+
 (defun riece-channel-toggle-operator (name user flag)
   "Add or remove an operator to channel."
   (let* ((channel (riece-get-channel name))
 	 (operators (riece-channel-operators channel)))
+    (setq user (riece-channel-intern-user channel user))
     (if flag
-	(unless (member user operators)
+	(unless (memq user operators)
 	  (riece-channel-set-operators channel (cons user operators)))
-      (if (setq user (car (member user operators)))
+      (if (setq user (car (memq user operators)))
 	  (riece-channel-set-operators channel (delq user operators))))))
 
 (defun riece-channel-toggle-speaker (name user flag)
   "Add or remove an speaker to channel."
   (let* ((channel (riece-get-channel name))
 	 (speakers (riece-channel-speakers channel)))
+    (setq user (riece-channel-intern-user channel user))
     (if flag
-	(unless (member user speakers)
+	(unless (memq user speakers)
 	  (riece-channel-set-speakers channel (cons user speakers)))
-      (if (setq user (car (member user speakers)))
+      (if (setq user (car (memq user speakers)))
 	  (riece-channel-set-speakers channel (delq user speakers))))))
+
+(defun riece-channel-operator-p (channel user)
+  "Return non-nil, if USER has operator privileges in channel."
+  (memq (riece-channel-intern-user channel user)
+	(riece-channel-operators channel)))
+
+(defun riece-channel-speaker-p (channel user)
+  "Return non-nil, if USER is allowed to speak in channel."
+  (memq (riece-channel-intern-user channel user)
+	(riece-channel-speakers channel)))
 
 (provide 'riece-channel)
 

@@ -50,35 +50,29 @@ Local to the buffer in `riece-buffer-list'.")
     (set-buffer riece-user-list-buffer)
     (if (and riece-current-channel
 	     (riece-channel-p (riece-identity-prefix riece-current-channel)))
-	(let (users operators speakers)
-	  (with-current-buffer (process-buffer (riece-server-process
-						(riece-identity-server
-						 riece-current-channel)))
-	    (setq users
-		  (riece-channel-get-users
-		   (riece-identity-prefix riece-current-channel))
-		  operators
-		  (riece-channel-get-operators
-		   (riece-identity-prefix riece-current-channel))
-		  speakers
-		  (riece-channel-get-speakers
-		   (riece-identity-prefix riece-current-channel))))
-	  (let ((inhibit-read-only t)
-		buffer-read-only)
-	    (erase-buffer)
-	    (while users
-	      (insert (if (member (car users) operators)
-			  "@"
-			(if (member (car users) speakers)
-			    "+"
-			  " "))
-		      (riece-format-identity
-		       (riece-make-identity (car users)
-					    (riece-identity-server
-					     riece-current-channel))
-		       t)
-		      "\n")
-	      (setq users (cdr users))))))))
+	(let* ((channel
+		(with-current-buffer (process-buffer (riece-server-process
+						      (riece-identity-server
+						       riece-current-channel)))
+		  (riece-get-channel (riece-identity-prefix
+				      riece-current-channel))))
+	       (users (riece-channel-users channel))
+	       (inhibit-read-only t)
+	       buffer-read-only)
+	  (erase-buffer)
+	  (while users
+	    (insert (if (riece-channel-operator-p channel (car users))
+			"@"
+		      (if (riece-channel-speaker-p channel (car users))
+			  "+"
+			" "))
+		    (riece-format-identity
+		     (riece-make-identity (car users)
+					  (riece-identity-server
+					   riece-current-channel))
+		     t)
+		    "\n")
+	    (setq users (cdr users)))))))
 
 (defun riece-update-channel-list-buffer ()
   (save-excursion

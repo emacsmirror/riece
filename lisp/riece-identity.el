@@ -77,26 +77,29 @@ RFC2812, 2.2 \"Character codes\" says:
       (set-case-table old-table))))
 
 (defun riece-identity-equal-no-server (prefix1 prefix2)
-  "Return t, if IDENT1 and IDENT2 is equal without server."
+  "Return t, if IDENT1 and IDENT2 is equal without server part."
   (equal (riece-identity-canonicalize-prefix prefix1)
 	 (riece-identity-canonicalize-prefix prefix2)))
 
-(defun riece-identity-member (elt list)
+(defun riece-identity-member (elt list &optional no-server)
   "Return non-nil if an identity ELT is an element of LIST."
   (catch 'found
     (while list
-      (if (and (vectorp (car list))	;needed because
-					;riece-current-channels
-					;contains nil.
-	       (riece-identity-equal (car list) elt))
+      (if (and (car list)	;needed because riece-current-channels
+				;contains nil.
+	       (if no-server
+		   (riece-identity-equal-no-server (car list) elt)
+		 (riece-identity-equal (car list) elt)))
 	  (throw 'found list)
 	(setq list (cdr list))))))
 
-(defun riece-identity-assoc (elt alist)
+(defun riece-identity-assoc (elt alist &optional no-server)
   "Return non-nil if an identity ELT matches the car of an element of ALIST."
   (catch 'found
     (while alist
-      (if (riece-identity-equal (car (car alist)) elt)
+      (if (if no-server
+	      (riece-identity-equal-no-server (car (car alist)) elt)
+	    (riece-identity-equal (car (car alist)) elt))
 	  (throw 'found (car alist))
 	(setq alist (cdr alist))))))
 
