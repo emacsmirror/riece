@@ -185,7 +185,8 @@
        (append addons
 	       (mapcar
 		(lambda (name)
-		  (intern (file-name-sans-extension name)))
+		  (unless (file-directory-p name)
+		    (intern (file-name-sans-extension name))))
 		(directory-files riece-addon-directory nil "\\`[^.]" t)))
      addons)))
 

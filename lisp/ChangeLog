@@ -1,3 +1,8 @@
+2005-02-10  TAKAHASHI Kaoru  <kaoru@kaisei.org>
+
+	* riece-addon.el (riece-resolve-addons): Don't add directory to
+	addons.
+
 2005-02-09  Yoichi NAKAYAMA  <yoichi@geiin.org>
 
 	* riece-commands.el (riece-command-part): Fix argument.
