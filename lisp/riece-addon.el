@@ -92,35 +92,35 @@
 	(error "Circular add-on dependency found"))
     (nreverse addons)))
 
-(defun riece-insinuate-addon (addon)
+(defun riece-insinuate-addon (addon &optional verbose)
   (require addon)		;implicit dependency
   (funcall (intern (concat (symbol-name addon) "-insinuate")))
-  (if riece-debug
+  (if verbose
       (message "Add-on %S is insinuated" addon)))
 
-(defun riece-enable-addon (addon)
+(defun riece-enable-addon (addon &optional verbose)
   (let ((enabled (intern-soft (concat (symbol-name addon) "-enabled"))))
     (if (null enabled)
-	(if riece-debug
+	(if verbose
 	    (message "Add-on %S doesn't support enable/disable" addon))
       (if (symbol-value enabled)
-	  (if riece-debug
+	  (if verbose
 	      (message "Can't enable add-on %S" addon))
 	(funcall (intern (concat (symbol-name addon) "-enable")))
-	(if riece-debug
+	(if verbose
 	    (message "Add-on %S enabled" addon))))))
 
-(defun riece-disable-addon (addon)
+(defun riece-disable-addon (addon &optional verbose)
   (let ((enabled (intern-soft (concat (symbol-name addon) "-enabled"))))
     (if (null enabled)
-	(if riece-debug
+	(if verbose
 	    (message "Add-on %S doesn't support enable/disable" addon))
       (if (symbol-value enabled)
 	  (progn
 	    (funcall (intern (concat (symbol-name addon) "-disable")))
-	    (if riece-debug
+	    (if verbose
 		(message "Add-on %S disabled" addon)))
-	(if riece-debug
+	(if verbose
 	    (message "Can't disable add-on %S" addon))))))
 
 (defun riece-addon-list-mode ()
@@ -197,7 +197,7 @@ Useful keys:
 			   (and enabled
 				(null (symbol-value enabled))))
 			 t))))
-  (riece-enable-addon addon)
+  (riece-enable-addon addon t)
   (riece-command-list-addons))
 
 (defun riece-command-disable-addon (addon)
@@ -213,7 +213,7 @@ Useful keys:
 			   (and enabled
 				(symbol-value enabled)))
 			 t))))
-  (riece-disable-addon addon)
+  (riece-disable-addon addon t)
   (riece-command-list-addons))
       
 (provide 'riece-addon)

@@ -1,5 +1,16 @@
 2004-05-21  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-addon.el (riece-insinuate-addon): Add optional 2nd
+	argument `verbose'
+	(riece-enable-addon): Ditto.
+	(riece-disable-addon): Ditto.
+	(riece-command-enable-addon): Call riece-enable-addon with the 2nd
+	arg.
+	(riece-command-disable-addon): Call riece-disable-addon with the
+	2nd arg.
+
+2004-05-21  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-addon.el (riece-command-list-addons): Change "no
 	description" -> "(no description)"; show key bindings.
 
