@@ -147,9 +147,11 @@ end
   :type 'string
   :group 'riece-google)
 
-(defcustom riece-google-default-lang "lang_ja"
+(defcustom riece-google-default-lang '("lang_en" "lang_ja")
   "*Default language for search keywords."
-  :type 'string
+  :type '(repeat (choice (const "lang_en" :tag "English")
+			 (const "lang_ja" :tag "Japanese")
+			 (string :tag "The other language")))
   :group 'riece-google)
 
 (defconst riece-google-regexp
@@ -178,6 +180,8 @@ end
 	  (coding-system-for-write 'binary)
 	  (process (start-process "Google" (generate-new-buffer " *Google*")
 				  riece-google-ruby-command)))
+      (when (listp lang)
+	(setq lang (mapconcat #'identity lang " ")))
       (setq riece-google-target (riece-message-target message))
       (process-send-string process
 			   (apply #'concat
