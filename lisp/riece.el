@@ -323,6 +323,9 @@ If optional argument CONFIRM is non-nil, ask which IRC server to connect."
   (setq riece-server nil
 	riece-current-channels nil
 	riece-current-channel nil
+	riece-channel-buffer nil
+	riece-user-list-buffer nil
+	riece-channel-list-buffer nil
 	riece-channel-buffer-alist nil
 	riece-user-indicator nil
 	riece-long-channel-indicator "None"

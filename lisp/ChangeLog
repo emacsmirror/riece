@@ -1,3 +1,8 @@
+2004-03-21  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece.el (riece-exit): Clear riece-channel-buffer,
+	riece-user-list-buffer, and riece-channel-list-buffer.
+
 2004-03-20  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-server.el (riece-open-server): Append the server-name to
