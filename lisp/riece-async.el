@@ -50,11 +50,9 @@
 (defcustom riece-async-server-program
   '("\
 require 'io/nonblock'
-
 socket = TCPSocket.new(" host ", " service ")
 $stdout.write(\"NOTICE CONNECTED #{$$}\r\n\")
 $stdout.flush
-
 $stdout.nonblock = true
 trap('STOP', 'IGNORE')
 trap('TSTP', 'IGNORE')
@@ -72,7 +70,7 @@ loop do
     rescue Errno::EAGAIN
     end
   end
-  if rfds.delete(socket)
+  if rfds.include?(socket)
     line = socket.gets(\"\r\n\")
     break unless line
     if line =~ /^(?::[^ ]+ +)?PING +(.+)\r\n/i
@@ -86,7 +84,7 @@ loop do
       end
     end
   end
-  if rfds.delete($stdin)
+  if rfds.include?($stdin)
     line = $stdin.gets(\"\r\n\")
     break unless line
     socket.write(line)
@@ -96,12 +94,12 @@ end
 socket.close
 exit
 ")
-  "Ruby program of asynchronous proxy"
+  "Ruby program of asynchronous proxy."
   :type 'list
   :group 'riece-async)
 
 (defcustom riece-async-max-buffer-size 65535
-  "Maximum size of the write buffer"
+  "Maximum size of the write buffer."
   :type 'integer
   :group 'riece-async)
 
