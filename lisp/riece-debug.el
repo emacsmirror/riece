@@ -38,12 +38,7 @@ If the optional 2nd argument DETAIL is specified, it is stored into
     (let ((point (point)))
       (if detail
 	  (insert message "\n" detail "\n")
-	(insert message "\n"))
-      (goto-char point)
-      (beginning-of-line)
-      (while (not (eobp))
-	(insert "riece-debug: ")
-	(forward-line)))))
+	(insert message "\n")))))
 
 (defun riece-debug-reset-standard-output ()
   "Reset `riece-temp-buffer' to be used as `standard-output'."
