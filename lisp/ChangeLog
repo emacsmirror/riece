@@ -1,3 +1,8 @@
+2003-10-22  OHASHI Akira  <bg66@koka-in.org>
+
+	* riece.el (riece): When riece server was opened, Do
+	`riece-command-configure-windows' instead of signaling.
+
 2003-10-22  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-rdcc.el (riece-rdcc-send-program): Flush $stdout before
