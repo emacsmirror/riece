@@ -1,0 +1,471 @@
+\input texinfo                  @c -*- mode: texinfo; coding: iso-2022-jp -*-
+@c %**start of header
+@setfilename riece-en.info
+@settitle Riece -- An IRC client for Emacsen --
+@c %**end of header
+@set VERSION 1.0.4
+@c @documentlanguage en
+
+@dircategory GNU Emacs Lisp
+@direntry
+* Riece-en: (riece-en).   An IRC client for Emacsen
+@end direntry
+
+@ifinfo
+This file describes Riece.
+
+Copyright (C) 2003,2004 Daiki Ueno.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.1 or
+any later version published by the Free Software Foundation; with no
+Invariant Sections, with no Front-Cover Texts, and with no Back-Cover
+Texts.  A copy of the license is included in the section entitled "GNU
+Free Documentation License".
+@end ifinfo
+
+@tex
+
+@titlepage
+@title Riece
+
+@author by Daiki Ueno
+@page
+
+@vskip 0pt plus 1filll
+Copyright @copyright{} 2003 Daiki Ueno.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.1 or
+any later version published by the Free Software Foundation; with no
+Invariant Sections, with no Front-Cover Texts, and with no Back-Cover
+Texts.  A copy of the license is included in the section entitled "GNU
+Free Documentation License".
+@end titlepage
+@page
+
+@end tex
+
+@node Top, Overview, (dir), (dir)
+@top Riece user's manual
+
+Riece is a program to participate in IRC (Internet Relay Chat) from Emacs.
+
+@menu
+* Overview::                    What's Riece?
+* Getting started::             
+* Basic usage::                 Let's talk with other people.
+* Index::                       
+* Function Index::              
+* Variable Index::              
+@end menu
+
+@node Overview, Getting started, Top, Top
+@chapter Overview
+
+Riece is an IRC (Internet Relay Chat) client for Emacs and is a full
+rewrite of the predecessor product "Liece" (whose code has been
+unmaintainable for a long time), while providing user interface
+compatible with Liece.
+
+For now it does not have rich functions as an IRC client, but there are
+noteworthy points as compared with Liece:
+
+@itemize @bullet
+@item Several IRC servers may be used at the same time.
+@item Essential features can be built upon the extension framework (called "add-on") capable of dependency tracking.
+@item Installation is easy.  Riece doesn't depend on other packages.
+@item Setup is easy.  Automatically save/restore the configuration.
+@item Step-by-step instructions (currently written in Japanese) are included.
+@item Mostly compliant with the latest IRC client protocol (RFC 2812).
+@end itemize
+
+For more details, please look at the following pages:
+
+@itemize @bullet
+@item http://www.nongnu.org/riece/
+@item http://wiliki.designflaw.org/index.cgi?Riece&l=jp
+@item http://www.unixuser.org/~ueno/liece/
+@end itemize
+
+@node Getting started, Basic usage, Overview, Top
+@chapter Getting started
+
+@menu
+* Required Environments::       
+* Installation::                
+* Startup File::                
+@end menu
+
+@node Required Environments, Installation, Getting started, Getting started
+@section Required Environments
+
+We have checked this version working on the following environments.
+
+@itemize @bullet
+@item Emacs 20.7 or later
+@item XEmacs 21.4 or later
+@end itemize
+
+@node Installation, Startup File, Required Environments, Getting started
+@section Installation
+
+The latest version of Riece can be obtained from
+@uref{http://wiliki.designflaw.org/riece.cgi}.  After unpacking the
+tarball, you can install with the following commands:
+
+@example
+./configure
+make
+make install
+@end example
+
+If you want to install Riece as an XEmacs package, use the following
+commands instead of the above:
+
+@example
+./configure --with-xemacs[=xemacs-21.4.15]
+make package
+make install-package
+@end example
+
+If you do not so, it is necessery to add autoload setting to your Emacs
+startup file to be able to start Riece by typing @kbd{M-x riece}.
+
+@lisp
+(autoload 'riece "riece" "Start Riece" t)
+@end lisp
+
+@node Startup File,  , Installation, Getting started
+@section Startup file
+
+In this section, we describe Riece's startup files.
+
+If you are attempting to use Riece by way of trial, nothing needed to be
+written in startup files.  Thus you can skip this section.
+
+Riece reads startup files under the directory pointed by the variable
+@code{riece-directory} (by default, it has @file{~/.riece/} as the
+value).  There are two kinds of startup files in the directory:
+
+@table @code
+@item riece-saved-variables-file
+@vindex riece-saved-variables-file
+Variables changed during the last session are automatically saved in this file.
+(by default, it is located at @file{~/.riece/save})
+@item riece-variables-file
+@vindex riece-variables-file
+Users can edit this file to configure their own settings (by default, it
+is located at @file{~/.riece/init})
+@end table
+
+At startup, Riece will first read @code{riece-saved-variables-file} ,
+and then @code{riece-variables-file}.  That is to say, automatically
+saved variables may be refered/modified by user configuration.
+
+@node Basic usage, Index, Getting started, Top
+@chapter Basic usage
+
+To start Riece, type @kbd{M-x riece}.  Then you need to select an IRC
+server to connect.  Typical IRC network consists of several IRC servers
+and you can pick up appropriate one.  Most of them provide a list of
+available servers on their Web pages:
+
+@itemize @bullet
+@item http://irc.kyoto-u.ac.jp
+@item http://freenode.net
+@end itemize
+
+If your nickname is taken, you will be asked to use different one.  The
+initial nickname can be set via the variable @code{riece-nickname}.  By
+default, your nickname is generated from your login name.
+@vindex riece-nickname
+
+After successfully connecting to an IRC server, you can join a channel
+and talk with people in there.  To join a channel, type @kbd{C-c j}.
+There is the channel @samp{#Riece} on IRCnet, so feel free to use it for
+testing.
+
+Now you can send the current line by simply hitting Enter key.  Messages
+from other people will appear on the top-left window.
+
+@menu
+* Windows::                     
+* Indicators::                  
+* Commands::                    
+* Connecting to multiple servers::  
+@end menu
+
+@node Windows, Indicators, Basic usage, Basic usage
+@section Windows
+
+By default, Riece uses 5 window to inform user of his status:
+
+@example
++-----+-----------------+
+|     |                 |
+|     |                 |
+| (1) |       (2)       |
+|     |                 |
+|     |                 |
++-----+-----------------+
+|     |       (4)       |
+|     +-----------------+
+| (3) |                 |
+|     |       (5)       |
+|     |                 |
++-----+-----------------+
+@end example
+
+Each window is used for different purpose:
+
+@enumerate
+@item
+"user list window" (@samp{*Users XXX*}).  Users on the current
+channel are listed in this window.
+
+@item
+"channel window" (@samp{*Channel XXX*}).  This window keeps
+dialogues on the current channel.
+
+@item
+"channel list window" (@samp{*Channels*}).  All channels you are
+joined are listed in this window.
+
+@item
+"command window" (@samp{*Commands*}).  This window is used for either
+sending messages or issueing commands.
+
+@item
+"others buffer" (@samp{*Others*}).  This window displays dialogues on
+channels except the current channel.
+@end enumerate
+
+@node Indicators, Commands, Windows, Basic usage
+@section Indicators
+
+Indicators are characters which indicate your status.  Usually they are
+put on the left side of the modeline like:
+
+@example
+Riece: --- ueno #Liece [n]
+@end example
+
+In this case, @samp{---} are indicators.  From left to right their
+meanings are:
+
+@enumerate
+@item
+You are not "away". (If you marked yourself as "away", it would be
+@samp{A})
+
+@item
+You are not an IRC operator. (If you entered operator mode, it would be
+@samp{O})
+
+@item
+The channel window is not locked.
+(If it was locked, it would be @samp{F}.  If it was locked until next
+send, it would be @samp{f})
+@end enumerate
+
+@node Commands, Connecting to multiple servers, Indicators, Basic usage
+@section Commands
+
+The buffer used for sending messages is called "command buffer".
+You can issue various commands from the command buffer.
+
+@subsection IRC commands
+@table @kbd
+@item RET
+@findex riece-command-enter-message
+Send the current line. (@code{riece-command-enter-message})
+@item C-RET
+@findex riece-command-enter-message-as-notice
+Send the current line as NOTICE. (@code{riece-command-enter-message-as-notice})
+@item C-c j
+@findex riece-command-join
+Join a channel. (@code{riece-command-join})
+@item C-c C-p
+@findex riece-command-part
+Part from a channel. (@code{riece-command-part})
+@item C-c p
+@findex riece-command-enter-message-to-user
+Send the current line to particular
+user. (@code{riece-command-enter-message-to-user})
+@item C-c q
+@findex riece-command-quit
+Quit from IRC. (@code{riece-command-quit})
+@item C-c n
+@findex riece-command-change-nickname
+Change your nickname. (@code{riece-command-change-nickname})
+@item C-c f
+@findex riece-command-finger
+Get information of a user. (@code{riece-command-finger})
+@item C-c C-k
+@findex riece-command-kick
+Kick a user from the current channel. (@code{riece-command-kick})
+@item C-c i
+@findex riece-command-invite
+Invite a user to the current channel. (@code{riece-command-invite})
+@item C-c l
+@findex riece-command-list
+Issue a LIST command with specified pattern. (@code{riece-command-list})
+@item C-c C-n
+@findex riece-command-names
+Issue a NAMES command with specified pattern. (@code{riece-command-names})
+@item C-c w
+@findex riece-command-who
+Issue a WHO command with specified pattern. (@code{riece-command-who})
+@item C-c t
+@findex riece-command-topic
+Set topic of the current channel. (@code{riece-command-topic})
+@item C-c C-m
+@findex riece-command-change-mode
+Change the mode of the current channel. (@code{riece-command-change-mode})
+@item C-c o
+@findex riece-command-set-operators
+Assign channel operator privilege to a user.  If a prefix argument
+(@kbd{C-u}) is given, remove the privilege from a
+user. (@code{riece-command-set-operators})
+@item C-c v
+@findex riece-command-set-speakers
+Allow a user to speak in the current channel.  If a prefix argument
+(@kbd{C-u}) is given, disallow a user to
+speak. (@code{riece-command-set-speakers})
+@item C-c V
+@findex riece-version
+Display version number of Riece.  If a prefix argument (@kbd{C-u}) is
+given, use User-Agent format.
+@item C-c /
+@findex riece-command-raw
+Send raw IRC command. (@code{riece-command-raw})
+@end table
+
+@subsection Window manipulating commands
+@table @kbd
+@item C-c r
+@findex riece-command-configure-windows
+Redraw windows. (@code{riece-command-configure-windows})
+@item C-c C-j
+@findex riece-command-next-channel
+Switch to the next channel in the channel
+list. (@code{riece-command-next-channel})
+@item C-c <
+@findex riece-command-previous-channel
+Switch to the previous channel in the channel
+list. (@code{riece-command-previous-channel})
+@item C-c >
+@findex riece-command-next-channel
+Switch to the next channel in the channel
+list. (@code{riece-command-next-channel})
+@item C-c ^
+@findex riece-command-list-addons
+Browse add-ons currently insinuated. (@code{riece-command-list-addons})
+@item C-c digit
+@findex riece-command-switch-to-channel-by-number
+Switch to @var{n}th channel in the channel
+list. (@code{riece-command-switch-to-channel-by-number})
+@item C-c C-c digit
+@findex riece-command-switch-to-channel-by-number
+Switch to @var{n} + 10th channel in the channel
+list. (@code{riece-command-switch-to-channel-by-number})
+@item C-c Home
+@findex riece-command-beginning-of-buffer
+Move point to the beginning of the buffer in the channel window.
+(@code{riece-command-beginning-of-buffer})
+@item C-c $
+@findex riece-command-end-of-buffer
+Move point to the end of the buffer in the channel window.
+(@code{riece-command-end-of-buffer})
+@item C-c SPC
+@findex riece-command-scroll-up
+Scroll text of the channel window up. (@code{riece-command-scroll-up})
+@item C-c DEL
+@findex riece-command-scroll-down
+Scroll text of the channel window down. (@code{riece-command-scroll-down})
+@end table
+
+@subsection Status toggle commands
+@table @kbd
+@item C-c C-t c
+@findex riece-command-toggle-channel-buffer-mode
+Toggle visibility of the channel
+window. (@code{riece-command-toggle-channel-buffer-mode})
+@item C-c C-t C
+@findex riece-command-toggle-channel-list-buffer-mode
+Toggle visibility of the channel list
+window. (@code{riece-command-toggle-channel-list-buffer-mode})
+@item C-c C-t u
+@findex riece-command-toggle-user-list-buffer-mode
+Toggle visibility of the user list
+window. (@code{riece-command-toggle-user-list-buffer-mode})
+@item C-c C-t f
+@findex riece-command-toggle-freeze
+Disable scrolling of the channel window. (@code{riece-command-toggle-freeze})
+@item C-c C-t o
+@findex riece-command-toggle-own-freeze
+Disable scrolling of the channel window until next
+send. (@code{riece-command-toggle-own-freeze})
+@item C-c C-t a
+@findex riece-command-toggle-away
+Mark or unmark yourself as "away". (@code{riece-command-toggle-away})
+@end table
+
+@node Connecting to multiple servers,  , Commands, Basic usage
+@section Connecting to multiple servers
+
+One of the most important features of Riece is that users can use
+several IRC servers at the same time.
+
+The procedure to use multiple servers consists (1) connecting to the
+foreign server and (2) joinning a channel:
+
+@enumerate
+@item
+Type @kbd{C-c O} (@code{riece-command-open-server}), and then you will
+be asked the server name.
+
+@item
+Type @kbd{C-c j} (@code{riece-command-join}) to join a channel.  Here
+the server name follows the channel name.  To input a space character,
+use @kbd{C-q}.  For example, if you want to join the channel
+@samp{#Riece} on the server @samp{irc6}, type @kbd{C-c j #Riece C-q SPC
+irc6}.
+@end enumerate
+
+If you want to send IRC command without joinning a channel, @kbd{C-c M}
+(@code{riece-command-universal-server-name-argument}) may be useful.
+
+Commands used for connection management are listed below:
+
+@table @kbd
+@item C-c O
+@findex riece-command-open-server
+Connect to the foreign server. (@code{riece-command-open-server})
+@item C-c C
+@findex riece-command-close-server
+Close the connection to the server. (@code{riece-command-close-server})
+@item C-c M
+@findex riece-command-universal-server-name-argument
+Issue a command on the specified
+server. (@code{riece-command-universal-server-name-argument})
+@end table
+
+@node Index, Function Index, Basic usage, Top
+@chapter Index
+@printindex cp
+
+@node Function Index, Variable Index, Index, Top
+@chapter Function Index
+@printindex fn
+
+@node Variable Index,  , Function Index, Top
+@chapter Variable Index
+@printindex vr
+
+@summarycontents
+@contents
+@bye
+
+@c End:
