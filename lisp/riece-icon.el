@@ -182,7 +182,8 @@ static char * a_xpm[] = {
 (defun riece-icon-available-p ()
   (if (featurep 'xemacs)
       (featurep 'xpm)
-    (image-type-available-p 'xpm)))
+    (if (fboundp 'image-type-available-p)
+	(image-type-available-p 'xpm))))
 
 (eval-and-compile
   (if (featurep 'xemacs)

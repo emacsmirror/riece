@@ -1,3 +1,8 @@
+2003-10-27  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-icon.el (riece-icon-available-p): Check
+	the existence of image-type-available-p.
+
 2003-10-27  OHASHI Akira  <bg66@koka-in.org>
 
 	* riece-log.el (riece-log-get-directory): Fix for server name and
