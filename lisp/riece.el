@@ -254,10 +254,10 @@ If optional argument CONFIRM is non-nil, ask which IRC server to connect."
       (setq riece-server (riece-server-name-to-server riece-server)))
   (riece-create-buffers)
   (switch-to-buffer riece-command-buffer)
+  (setq riece-channel-history (make-ring riece-channel-history-length))
   (riece-redisplay-buffers)
   (riece-open-server riece-server "")
   (run-hooks 'riece-startup-hook)
-  (setq riece-channel-history (make-ring riece-channel-history-length))
   (message "%s" (substitute-command-keys "Type \\[describe-mode] for help")))
 
 (defun riece-exit ()

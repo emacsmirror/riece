@@ -27,6 +27,9 @@
 (require 'riece-globals)
 (require 'riece-misc)
 
+(autoload 'ring-empty-p "ring")
+(autoload 'ring-ref "ring")
+
 (defgroup riece-layout nil
   "Manage window layouts"
   :prefix "riece-"
@@ -129,7 +132,9 @@ This function is used by \"default\" layout."
   "Return t, if window reconfiguration is needed.
 This function is used by \"default\" layout."
   ;; The current channel is changed, and some buffers are visible.
-  (unless (equal riece-last-channel riece-current-channel)
+  (unless (or (ring-empty-p riece-channel-history)
+	      (equal (ring-ref riece-channel-history 0)
+		     riece-current-channel))
     (let ((buffers riece-buffer-list))
       (catch 'found
 	(while buffers

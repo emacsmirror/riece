@@ -1,5 +1,13 @@
 2003-08-27  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece.el (riece): Initialize riece-channel-history before
+	calling riece-redisplay-buffers.
+
+	* riece-layout.el: Autoload ring-empty-p and ring-ref.
+	(riece-reconfigure-windows-predicate): Check riece-channel-history.
+
+2003-08-27  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-options.el (riece-channel-history-length): New user option.
 	(riece-connection-timeout): Abolish.
 
