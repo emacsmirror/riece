@@ -197,7 +197,7 @@ way is to put Riece variables on .emacs or file loaded from there."
   :group 'riece-server)
 
 (defcustom riece-username (or (getenv "IRCNAME")
-			      (user-real-login-name))
+			      user-full-name)
   "Your user name."
   :type 'string
   :group 'riece-server)

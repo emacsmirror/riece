@@ -1,3 +1,8 @@
+2004-12-13  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-options.el (riece-username): Changed the default value to
+	user-full-name.
+
 2004-12-12  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-command-previous-channel.xpm: New file.
