@@ -223,7 +223,7 @@
 	    (start 0))
 	(setq string (substring string (match-end 0)))
 	(while (string-match
-		(concat "\\([@+]\\)?\\(" riece-user-regexp "\\) ")
+		(concat "\\([@+]\\)?\\(" riece-user-regexp "\\) *")
 		string start)
 	  (put-text-property (match-beginning 2) (match-end 2)
 			     'riece-identity
