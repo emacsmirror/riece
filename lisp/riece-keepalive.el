@@ -29,8 +29,22 @@
 
 ;;; Code:
 
-(defvar riece-keepalive-ping-repeat 120)
+(require 'riece-options)
+
+(defgroup riece-keepalive nil
+  "Keep an IRC connection."
+  :prefix "riece-"
+  :group 'riece)
+
+(defcustom riece-keepalive-ping-repeat 120
+  "Interval for sending PING to server."
+  :type 'integer
+  :group 'riece-keepalive)
+
 (defvar riece-keepalive-timer nil)
+
+(defconst riece-keepalive-description
+  "Keep an IRC connection.")
 
 (defun riece-keepalive-after-login-hook ()
   (make-local-variable 'riece-keepalive-timer)

@@ -1,5 +1,13 @@
 2005-02-05  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-keepalive.el: Require 'riece-options.
+	(riece-keepalive-ping-repeat): Define with defcustom.
+	(riece-keepalive-description): New constant.
+
+	* riece.el (riece-dialogue-mode-map): Bind
+	riece-command-suspend-resume.
+	* riece-commands.el (riece-command-suspend-resume): New command.
+
 	* riece-options.el (riece-addons): Enable riece-keyword by default.
 
 	* riece-button.el (riece-identity-button-popup-menu): Changed

@@ -185,7 +185,8 @@ If optional argument SAFE is nil, overwrite previous definitions."
     "r" riece-command-configure-windows
     "x" riece-command-copy-region
     "t" riece-command-topic
-    "w" riece-command-who)
+    "w" riece-command-who
+    "z" riece-command-suspend-resume)
 
   (riece-define-keys riece-command-mode-map
     "\r" riece-command-enter-message
@@ -276,6 +277,9 @@ If optional argument CONFIRM is non-nil, ask which IRC server to connect."
   (run-hooks 'riece-after-load-startup-hook)
   (if (riece-server-opened)
       (riece-command-configure-windows)
+    (modify-frame-parameters (selected-frame)
+			     (list (cons 'riece-window-configuration
+					 (current-window-configuration))))
     (unless riece-addons-insinuated
       (setq riece-addons (riece-resolve-addons riece-addons))
       (let ((pointer riece-addons))
@@ -371,7 +375,11 @@ If optional argument CONFIRM is non-nil, ask which IRC server to connect."
 	riece-operator-indicator "-"
 	riece-channel-status-indicator "-"
 	riece-freeze-indicator "-")
-  (delete-other-windows)
+  (let ((window-configuration
+	 (cdr (assq 'riece-window-configuration (frame-parameters)))))
+    (if window-configuration
+	(set-window-configuration window-configuration)
+      (delete-other-windows)))
   (run-hooks 'riece-exit-hook))
 
 (defun riece-command-mode ()

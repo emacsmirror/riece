@@ -112,7 +112,22 @@
 
 (defun riece-command-configure-windows ()
   (interactive)
+  "Reconfigure windows with the current layout."
   (riece-redisplay-buffers t))
+
+(defun riece-command-suspend-resume ()
+  (interactive)
+  "Save or restore the current window configuration."
+  (let ((entry (assq 'riece-window-configuration (frame-parameters))))
+    (modify-frame-parameters (selected-frame)
+			     (list (cons 'riece-window-configuration
+					 (current-window-configuration))))
+    (if entry
+	(set-window-configuration (cdr entry))
+      (delete-other-windows))
+    (message
+     (substitute-command-keys
+      "\\[riece-command-suspend-resume] to get back the last windows"))))
 
 (defun riece-command-change-layout (name)
   "Select a layout-name from all current available layouts and change
