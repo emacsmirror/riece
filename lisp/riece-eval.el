@@ -23,7 +23,7 @@
 
 ;;; Commentary:
 
-;; This add-on evaluate an input string as lisp object and send a result
+;; This add-on evaluates an input string as lisp object and sends a result
 ;; as notice. Note the risky of this add-on.
 
 ;; To use, add the following line to your ~/.riece/init.el:
