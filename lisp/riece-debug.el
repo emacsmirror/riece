@@ -51,6 +51,7 @@
       (if riece-debug
 	  (save-excursion
 	    (set-buffer riece-temp-buffer)
+	    (goto-char (point-min))
 	    (if (re-search-forward "^  signal(" nil t)
 		(delete-region (point-min) (match-beginning 0)))
 	    (message "Error in `%s': %S\n%s" ,location error (buffer-string))))
