@@ -217,6 +217,17 @@ the `riece-server-keyword-map' variable."
 	    (throw 'found t))
 	(setq process-list (cdr process-list))))))
 
+(defun riece-quit-server-process (process &optional message)
+  (run-at-time riece-quit-timeout nil
+	       (lambda (process)
+		 (if (memq process riece-process-list)
+		     (kill-process (process-buffer process))))
+	       process)
+  (riece-process-send-string process
+			     (if message
+				 (format "QUIT :%s\r\n" message)
+			       "QUIT\r\n")))
+
 (provide 'riece-server)
 
 ;;; riece-server.el ends here

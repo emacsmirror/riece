@@ -89,7 +89,8 @@
 	  (start riece-current-channels)
 	  channel)
       (while (and start (not (eq start pointer)))
-	(setq channel (car start))
+	(if (car start)
+	    (setq channel (car start)))
 	(setq start (cdr start)))
       (when (null channel)
 	(setq start (copy-sequence riece-current-channels))
@@ -564,10 +565,7 @@ If prefix argument ARG is non-nil, toggle frozen status."
 		   (riece-extended-version))))
 	    (process-list riece-process-list))
 	(while process-list
-	  (riece-process-send-string (car process-list)
-				     (if message
-				       (format "QUIT :%s\r\n" message)
-				     "QUIT\r\n"))
+	  (riece-quit-server-process (car process-list) message)
 	  (setq process-list (cdr process-list))))))
 
 (defun riece-command-raw (command)
@@ -617,10 +615,7 @@ If prefix argument ARG is non-nil, toggle frozen status."
 	     (read-string "Message: ")
 	   (or riece-quit-message
 	       (riece-extended-version)))))
-  (riece-process-send-string (riece-server-process server-name)
-			     (if message
-				 (format "QUIT :%s\r\n" message)
-			       "QUIT\r\n")))
+  (riece-quit-server-process (riece-server-process server-name) message))
 
 (defun riece-command-universal-server-name-argument ()
   (interactive)

@@ -1,3 +1,15 @@
+2003-08-17  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-options.el (riece-quit-timeout): New user option.
+	* riece-server.el (riece-quit-server-process): New function.
+	* riece-commands.el (riece-command-quit): Use it.
+	(riece-command-close-server): Use it.
+
+2003-08-17  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-commands.el (riece-command-previous-channel): Skip nil in
+	riece-current-channels.
+
 2003-08-09  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-rdcc.el (riece-command-dcc-send): Accept output only from
