@@ -1,3 +1,8 @@
+2004-03-24  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-unread.el (riece-unread-after-display-message-function):
+	Treat private messages as unread.
+
 2004-03-21  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece.el (riece-exit): Don't clear riece-user-list-buffer and

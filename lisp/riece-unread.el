@@ -61,15 +61,15 @@
 (defvar riece-unread-channels nil)
 
 (defun riece-unread-after-display-message-function (message)
-  (unless (or (riece-message-own-p message)
-	      (riece-message-type message)
-	      (riece-identity-equal (riece-message-target message)
-				    riece-current-channel)
-	      (riece-identity-member (riece-message-target message)
-				     riece-unread-channels))
-    (setq riece-unread-channels
-	  (cons (riece-message-target message) riece-unread-channels))
-    (riece-emit-signal 'channel-list-changed)))
+  (let ((target (if (riece-message-private-p message)
+		    (riece-message-speaker message)
+		  (riece-message-target message))))
+    (unless (or (riece-message-own-p message)
+		(riece-message-type message)
+		(riece-identity-equal target riece-current-channel)
+		(riece-identity-member target riece-unread-channels))
+      (setq riece-unread-channels (cons target riece-unread-channels))
+      (riece-emit-signal 'channel-list-changed))))
 
 (defun riece-unread-after-switch-to-channel-function (last)
   (setq riece-unread-channels
