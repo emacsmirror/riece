@@ -399,6 +399,25 @@ the layout to the selected layout-name."
   (let ((next-line-add-newlines t))
     (next-line 1)))
 
+(defun riece-command-enter-message-to-user (user)
+  "Send the current line to USER."
+  (interactive
+   (let ((completion-ignore-case t))
+     (list (completing-read
+	    "User: "
+	    (mapcar #'list (riece-get-users-on-server))))))
+  (let ((text (buffer-substring
+	       (riece-line-beginning-position)
+	       (riece-line-end-position))))
+    (riece-send-string
+     (format "PRIVMSG %s :%s\r\n" user text))
+    (riece-display-message
+     (riece-make-message (riece-current-nickname)
+			 (riece-make-identity user (riece-current-server-name))
+			 text nil t)))
+  (let ((next-line-add-newlines t))
+    (next-line 1)))
+
 (defun riece-command-join-channel (target key)
   (let ((process (riece-server-process (riece-identity-server target))))
     (unless process

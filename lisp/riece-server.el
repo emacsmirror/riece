@@ -108,16 +108,18 @@ the `riece-server-keyword-map' variable."
   (with-current-buffer (process-buffer process)
     (process-send-string process (riece-encode-coding-string string))))
 
-(defun riece-send-string (string)
-  (let* ((server-name
-	  (or riece-overriding-server-name
+(defun riece-current-server-name ()
+  (or riece-overriding-server-name
 					;already in the server buffer
-	      (if (local-variable-p 'riece-server-name (current-buffer))
-		  riece-server-name
-		(if riece-current-channel
-		    (riece-identity-server riece-current-channel)
-		  (if (riece-server-opened "")
-		      "")))))
+      (if (local-variable-p 'riece-server-name (current-buffer))
+	  riece-server-name
+	(if riece-current-channel
+	    (riece-identity-server riece-current-channel)
+	  (if (riece-server-opened "")
+	      "")))))
+
+(defun riece-send-string (string)
+  (let* ((server-name (riece-current-server-name))
 	 (process (riece-server-process server-name)))
     (unless process
       (error "%s" (substitute-command-keys

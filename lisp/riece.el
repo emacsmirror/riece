@@ -166,6 +166,7 @@ If optional argument SAFE is nil, overwrite previous definitions."
     "O" riece-command-open-server
     "C" riece-command-close-server
     "M" riece-command-universal-server-name-argument
+    "p" riece-command-enter-message-to-user
     "q" riece-command-quit
     "r" riece-command-configure-windows
     "x" riece-command-copy-region

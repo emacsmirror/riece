@@ -107,7 +107,7 @@
 
 (defun riece-current-nickname ()
   "Return the current nickname."
-  (riece-with-server-buffer (riece-identity-server riece-current-channel)
+  (riece-with-server-buffer (riece-current-server-name)
     (if riece-real-nickname
 	(riece-make-identity riece-real-nickname riece-server-name))))
 
@@ -181,9 +181,7 @@
     user-at-host))
 
 (defun riece-get-users-on-server ()
-  (riece-with-server-buffer (if riece-current-channel
-				(riece-identity-server riece-current-channel)
-			      "")
+  (riece-with-server-buffer (riece-current-server-name)
     (let (users)
       (mapatoms
        (lambda (atom)
