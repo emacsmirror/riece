@@ -77,10 +77,11 @@
 	(setq point (point))
 	(if (and (not (riece-frozen (current-buffer)))
 		 (setq window (get-buffer-window (current-buffer))))
-	    (save-excursion
+	    (save-excursion		;save-selected-window changes
+					;current buffer
 	      (save-selected-window
 		(select-window window)
-		(goto-char point)
+		(goto-char point)	;select-window changes current point
 		(recenter -2))))
 	(run-hook-with-args 'riece-after-insert-functions start (point))))
     (setq buffers (cdr buffers))))
