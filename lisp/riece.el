@@ -29,6 +29,7 @@
 (require 'riece-server)
 (require 'riece-compat)
 (require 'riece-commands)
+(require 'riece-addon)
 
 (autoload 'derived-mode-class "derived")
 
@@ -61,6 +62,9 @@
 
 (defvar riece-shrink-buffer-idle-timer nil
   "Timer object to periodically shrink channel buffers.")
+
+(defvar riece-addons-insinuated nil
+  "Non nil if add-ons are already insinuated.")
 
 (defvar riece-select-keys
   `("1" riece-command-switch-to-channel-by-number-1
@@ -262,10 +266,16 @@ If optional argument CONFIRM is non-nil, ask which IRC server to connect."
   (interactive "P")
   (riece-read-variables-files (if noninteractive
 				  (car command-line-args-left)))
-  (riece-insinuate-addons riece-addons)
   (run-hooks 'riece-after-load-startup-hook)
   (if (riece-server-opened)
       (riece-command-configure-windows)
+    (unless riece-addons-insinuated
+      (setq riece-addons (riece-resolve-addons riece-addons))
+      (let ((pointer riece-addons))
+	(while pointer
+	  (riece-insinuate-addon (car pointer))
+	  (setq pointer (cdr pointer))))
+      (setq riece-addons-insinuated t))
     (if (or confirm (null riece-server))
 	(setq riece-server (completing-read "Server: " riece-server-alist)))
     (if (stringp riece-server)
@@ -293,6 +303,10 @@ If optional argument CONFIRM is non-nil, ask which IRC server to connect."
 	(riece-command-open-server (car server-list))
 	(setq server-list (cdr server-list))))
     (run-hooks 'riece-startup-hook)
+    (let ((pointer riece-addons))
+      (while pointer
+	(riece-enable-addon (car pointer))
+	(setq pointer (cdr pointer))))
     (message "%s" (substitute-command-keys
 		   "Type \\[describe-mode] for help"))))
 
@@ -469,75 +483,7 @@ Instead, these commands are available:
 		    (eq major-mode (nth 2 (car alist))))
 	  (funcall (nth 2 (car alist))))
 	(setq alist (cdr alist))))))
-
-(defun riece-load-and-build-addon-dependencies (addons)
-  (let ((load-path (cons riece-addon-directory load-path))
-	dependencies)
-    (while addons
-      (require (car addons))		;error will be reported here
-      (let* ((requires
-	      (funcall (or (intern-soft
-			    (concat (symbol-name (car addons)) "-requires"))
-			   #'ignore)))
-	     (pointer requires)
-	     entry)
-	;; Increment succs' pred count.
-	(if (setq entry (assq (car addons) dependencies))
-	    (setcar (cdr entry) (+ (length requires) (nth 1 entry)))
-	  (setq dependencies (cons (list (car addons) (length requires))
-				   dependencies)))
-	;; Merge pred's succs.
-	(while pointer
-	  (if (setq entry (assq (car pointer) dependencies))
-	      (setcdr (cdr entry)
-		      (cons (car addons) (nthcdr 2 entry)))
-	    (setq dependencies (cons (list (car pointer) 0 (car addons))
-				     dependencies)))
-	  (setq pointer (cdr pointer))))
-      (setq addons (cdr addons)))
-    dependencies))
-
-(defun riece-insinuate-addons (addons)
-  (let ((pointer addons)
-	dependencies queue)
-    ;; Uniquify, first.
-    (while pointer
-      (if (memq (car pointer) (cdr pointer))
-	  (setcar pointer nil))
-      (setq pointer (cdr pointer)))
-    (setq dependencies (riece-load-and-build-addon-dependencies
-			(delq nil addons))
-	  pointer dependencies)
-    ;; Sort them.
-    (while pointer
-      (if (zerop (nth 1 (car pointer)))
-	  (setq dependencies (delq (car pointer) dependencies)
-		queue (cons (car pointer) queue)))
-      (setq pointer (cdr pointer)))
-    (setq addons nil)
-    (while queue
-      (setq addons (cons (car (car queue)) addons)
-	    pointer (nthcdr 2 (car queue)))
-      (while pointer
-	(let* ((entry (assq (car pointer) dependencies))
-	       (count (1- (nth 1 entry))))
-	  (if (zerop count)
-	      (progn
-		(setq dependencies (delq entry dependencies)
-		      queue (nconc queue (list entry))))
-	    (setcar (cdr entry) count)))
-	(setq pointer (cdr pointer)))
-      (setq queue (cdr queue)))
-    (if dependencies
-	(error "Circular add-on dependency found"))
-    (setq addons (nreverse addons))
-    (while addons
-      (require (car addons))		;implicit dependency
-      (funcall (intern (concat (symbol-name (car addons)) "-insinuate")))
-      (if riece-debug
-	  (message "Add-on %S is loaded" (car addons)))
-      (setq addons (cdr addons)))))
-
+      
 (provide 'riece)
 
 ;;; riece.el ends here

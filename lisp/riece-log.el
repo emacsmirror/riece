@@ -66,14 +66,17 @@ If integer, flash back only this line numbers. t means all lines."
   :type 'function
   :group 'riece-log)
 
+(defvar riece-log-enabled nil)
+
 (defun riece-log-display-message-function (message)
-  (let ((file (riece-log-get-file (riece-message-target message)))
-	(coding-system-for-write riece-log-coding-system))
-    (unless (file-directory-p (file-name-directory file))
-      (make-directory (file-name-directory file) t))
-    (write-region (concat (format-time-string "%H:%M") " "
-			  (riece-format-message message))
-		  nil file t 0)))
+  (if riece-log-enabled
+      (let ((file (riece-log-get-file (riece-message-target message)))
+	    (coding-system-for-write riece-log-coding-system))
+	(unless (file-directory-p (file-name-directory file))
+	  (make-directory (file-name-directory file) t))
+	(write-region (concat (format-time-string "%H:%M") " "
+			      (riece-format-message message))
+		      nil file t 0))))
 
 (defun riece-log-get-file (identity)
   (expand-file-name
@@ -99,7 +102,7 @@ If integer, flash back only this line numbers. t means all lines."
       (expand-file-name name riece-log-directory))))
 
 (defun riece-log-flashback (identity)
-  (when riece-log-flashback
+  (when (and riece-log-enabled riece-log-flashback)
     (let ((file (riece-log-get-file identity)))
       (when (file-exists-p file)
 	(let (string)
@@ -139,16 +142,22 @@ If integer, flash back only this line numbers. t means all lines."
   (if (memq 'riece-button riece-addons)
       '(riece-button)))
 
-(defvar riece-command-mode-map)
 (defun riece-log-insinuate ()
   ;; FIXME: Use `riece-after-insert-functions' for trapping change,
   ;; notice, wallops and so on. But must add argument.
   (add-hook 'riece-after-display-message-functions
 	    'riece-log-display-message-function)
   (add-hook 'riece-channel-buffer-create-functions
-	    'riece-log-flashback)
-  (define-key riece-command-mode-map
-    "\C-cd" 'riece-log-open-directory))
+	    'riece-log-flashback))
+
+(defvar riece-command-mode-map)
+(defun riece-log-enable ()
+  (define-key riece-command-mode-map "\C-cd" 'riece-log-open-directory)
+  (setq riece-log-enabled t))
+
+(defun riece-log-disable ()
+  (define-key riece-command-mode-map "\C-cd" nil)
+  (setq riece-log-enabled nil))
 
 (provide 'riece-log)
 

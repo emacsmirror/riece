@@ -187,20 +187,10 @@
   :type '(repeat (list string))
   :group 'riece-highlight)
 
-(defun riece-dialogue-schedule-turn-on-font-lock ()
-  (add-hook 'riece-channel-mode-hook
-	    'riece-dialogue-turn-on-font-lock)
-  (add-hook 'riece-others-mode-hook
-	    'riece-dialogue-turn-on-font-lock)
-  (add-hook 'riece-dialogue-mode-hook
-	    'riece-dialogue-turn-on-font-lock))
-
-(defun riece-channel-list-schedule-turn-on-font-lock ()
-  (add-hook 'riece-channel-list-mode-hook
-	    'riece-channel-list-turn-on-font-lock))
+(defvar riece-highlight-enabled nil)
 
 (defvar font-lock-support-mode)
-(defun riece-dialogue-turn-on-font-lock ()
+(defun riece-highlight-setup-dialogue ()
   (make-local-variable 'font-lock-defaults)
   (setq font-lock-defaults '(riece-dialogue-font-lock-keywords t))
   (make-local-variable 'font-lock-verbose)
@@ -210,27 +200,11 @@
     (setq font-lock-support-mode nil))
   (make-local-hook 'font-lock-mode-hook)
   (setq font-lock-mode-hook nil)
-  (turn-on-font-lock)
   (make-local-hook 'after-change-functions)
   (add-hook 'after-change-functions
-	    'riece-dialogue-hide-prefix nil 'local))
+	    'riece-highlight-hide-prefix nil 'local))
 
-(defun riece-dialogue-hide-prefix (start end length)
-  (save-excursion
-    (goto-char start)
-    (if (looking-at riece-prefix-regexp)
-	(put-text-property (match-beginning 1) (match-end 1) 'invisible t))))
-
-(defun riece-put-overlay-faces (start end)
-  (riece-scan-property-region
-   'riece-overlay-face
-   start end
-   (lambda (start end)
-     (riece-overlay-put (riece-make-overlay start end)
-			'face
-			(get-text-property start 'riece-overlay-face)))))
-
-(defun riece-channel-list-turn-on-font-lock ()
+(defun riece-highlight-setup-channel-list ()
   (make-local-variable 'font-lock-defaults)
   (setq font-lock-defaults '(riece-channel-list-font-lock-keywords t))
   (make-local-variable 'font-lock-verbose)
@@ -239,12 +213,28 @@
     (make-local-variable 'font-lock-support-mode)
     (setq font-lock-support-mode nil))
   (make-local-hook 'font-lock-mode-hook)
-  (setq font-lock-mode-hook nil)
-  (turn-on-font-lock))
+  (setq font-lock-mode-hook nil))
+
+(defun riece-highlight-hide-prefix (start end length)
+  (save-excursion
+    (goto-char start)
+    (if (looking-at riece-prefix-regexp)
+	(put-text-property (match-beginning 1) (match-end 1) 'invisible t))))
+
+(defun riece-highlight-put-overlay-faces (start end)
+  (if riece-highlight-enabled
+      (riece-scan-property-region
+       'riece-overlay-face
+       start end
+       (lambda (start end)
+	 (riece-overlay-put (riece-make-overlay start end)
+			    'face
+			    (get-text-property start 'riece-overlay-face))))))
 
 (defun riece-highlight-format-identity-for-channel-list-indicator (index
 								   identity)
-  (if (riece-identity-equal identity riece-current-channel)
+  (if (and riece-highlight-enabled
+	   (riece-identity-equal identity riece-current-channel))
       (let ((string (riece-format-identity identity))
 	    (start 0))
 	;; Escape % -> %%.
@@ -258,19 +248,48 @@
 (defun riece-highlight-insinuate ()
   (put 'riece-channel-mode 'font-lock-defaults
        '(riece-dialogue-font-lock-keywords t))
+  (add-hook 'riece-channel-mode-hook
+	    'riece-highlight-setup-dialogue)
   (put 'riece-others-mode 'font-lock-defaults
        '(riece-dialogue-font-lock-keywords t))
+  (add-hook 'riece-others-mode-hook
+	    'riece-highlight-setup-dialogue)
   (put 'riece-dialogue-mode 'font-lock-defaults
        '(riece-dialogue-font-lock-keywords t))
-  (add-hook 'riece-after-load-startup-hook
-	    'riece-dialogue-schedule-turn-on-font-lock)
+  (add-hook 'riece-dialogue-mode-hook
+	    'riece-highlight-setup-dialogue)
   (put 'riece-channel-list-mode 'font-lock-defaults
        '(riece-channel-list-font-lock-keywords t))
-  (add-hook 'riece-after-load-startup-hook
-	    'riece-channel-list-schedule-turn-on-font-lock)
+  (add-hook 'riece-channel-list-mode-hook
+	    'riece-highlight-setup-channel-list)
   (add-hook 'riece-format-identity-for-channel-list-indicator-functions
 	    'riece-highlight-format-identity-for-channel-list-indicator)
-  (add-hook 'riece-after-insert-functions 'riece-put-overlay-faces))
+  (add-hook 'riece-after-insert-functions
+	    'riece-highlight-put-overlay-faces))
+
+(defun riece-highlight-enable ()
+  (let ((buffers riece-buffer-list))
+    (while buffers
+      (if (memq (derived-mode-class
+	       (with-current-buffer (car buffers)
+		 major-mode))
+		'(riece-dialogue-mode riece-channel-list-mode))
+	  (with-current-buffer (car buffers)
+	    (font-lock-mode 1)))
+      (setq buffers (cdr buffers))))
+  (setq riece-highlight-enabled t))
+
+(defun riece-highlight-disable ()
+  (let ((buffers riece-buffer-list))
+    (while buffers
+      (if (memq (derived-mode-class
+	       (with-current-buffer (car buffers)
+		 major-mode))
+		'(riece-dialogue-mode riece-channel-list-mode))
+	  (with-current-buffer (car buffers)
+	    (font-lock-mode -1)))
+      (setq buffers (cdr buffers))))
+  (setq riece-highlight-disable nil))
 
 (provide 'riece-highlight)
 

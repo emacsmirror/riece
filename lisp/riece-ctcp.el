@@ -49,27 +49,10 @@
 
 (defvar riece-dialogue-mode-map)
 
-(defun riece-ctcp-requires ()
-  (if (memq 'riece-highlight riece-addons)
-      '(riece-highlight)))
-
-(defun riece-ctcp-insinuate ()
-  (add-hook 'riece-privmsg-hook 'riece-handle-ctcp-request)
-  (add-hook 'riece-notice-hook 'riece-handle-ctcp-response)
-  (if (memq 'riece-highlight riece-addons)
-      (setq riece-dialogue-font-lock-keywords
-	    (cons (list (concat "^" riece-time-prefix-regexp "\\("
-				(regexp-quote riece-ctcp-action-prefix)
-				".*\\)$")
-			1 riece-ctcp-action-face t t)
-		  riece-dialogue-font-lock-keywords)))
-  (define-key riece-dialogue-mode-map "\C-cv" 'riece-command-ctcp-version)
-  (define-key riece-dialogue-mode-map "\C-cp" 'riece-command-ctcp-ping)
-  (define-key riece-dialogue-mode-map "\C-ca" 'riece-command-ctcp-action)
-  (define-key riece-dialogue-mode-map "\C-cc" 'riece-command-ctcp-clientinfo))
+(defvar riece-ctcp-enabled nil)
 
 (defun riece-handle-ctcp-request (prefix string)
-  (when (and prefix string
+  (when (and riece-ctcp-enabled prefix string
 	     (riece-prefix-nickname prefix))
     (let* ((parameters (riece-split-parameters string))
 	   (targets (split-string (car parameters) ","))
@@ -205,7 +188,7 @@
 					       " " string)) "\n"))))
 
 (defun riece-handle-ctcp-response (prefix string)
-  (when (and prefix string
+  (when (and riece-ctcp-enabled prefix string
 	     (riece-prefix-nickname prefix))
     (let* ((parameters (riece-split-parameters string))
 	   (targets (split-string (car parameters) ","))
@@ -343,6 +326,35 @@
 		 (riece-identity-prefix (riece-current-nickname)) " " action
 		 " (in " (riece-format-identity target t) ")")))
       "\n"))))
+
+(defun riece-ctcp-requires ()
+  (if (memq 'riece-highlight riece-addons)
+      '(riece-highlight)))
+
+(defun riece-ctcp-insinuate ()
+  (add-hook 'riece-privmsg-hook 'riece-handle-ctcp-request)
+  (add-hook 'riece-notice-hook 'riece-handle-ctcp-response)
+  (if (memq 'riece-highlight riece-addons)
+      (setq riece-dialogue-font-lock-keywords
+	    (cons (list (concat "^" riece-time-prefix-regexp "\\("
+				(regexp-quote riece-ctcp-action-prefix)
+				".*\\)$")
+			1 riece-ctcp-action-face t t)
+		  riece-dialogue-font-lock-keywords))))
+
+(defun riece-ctcp-enable ()
+  (define-key riece-dialogue-mode-map "\C-cv" 'riece-command-ctcp-version)
+  (define-key riece-dialogue-mode-map "\C-cp" 'riece-command-ctcp-ping)
+  (define-key riece-dialogue-mode-map "\C-ca" 'riece-command-ctcp-action)
+  (define-key riece-dialogue-mode-map "\C-cc" 'riece-command-ctcp-clientinfo)
+  (setq riece-ctcp-enable t))
+
+(defun riece-ctcp-disable ()
+  (define-key riece-dialogue-mode-map "\C-cv" nil)
+  (define-key riece-dialogue-mode-map "\C-cp" nil)
+  (define-key riece-dialogue-mode-map "\C-ca" nil)
+  (define-key riece-dialogue-mode-map "\C-cc" nil)
+  (setq riece-ctcp-enabled nil))
 
 (provide 'riece-ctcp)
 

@@ -43,6 +43,8 @@
 
 (defvar riece-mini-last-channel nil)
 
+(defvar riece-mini-enabled nil)
+
 (defmacro riece-mini-message-no-log (string &rest args)
   "Like `message', except that message logging is disabled."
   (if (featurep 'xemacs)
@@ -54,22 +56,16 @@
 
 (defun riece-mini-display-message-function (message)
   "Show arrival messages to minibuffer."
-  (unless (or (eq (window-buffer (selected-window))
-		  (get-buffer riece-command-buffer))
-	      (riece-message-own-p message)
-	      (active-minibuffer-window))
-    (let ((open-bracket
-	   (funcall riece-message-make-open-bracket-function message))
-	  (close-bracket
-	   (funcall riece-message-make-close-bracket-function message))
-	  (global-name
-	   (funcall riece-message-make-global-name-function message)))
-      (unless (riece-message-type message)
-	(setq riece-mini-last-channel (riece-message-target message)))
-      (riece-mini-message-no-log
-       "%s" (concat (format-time-string "%H:%M") " "
-		    open-bracket global-name close-bracket
-		    " " (riece-message-text message))))))
+  (when (and riece-mini-enabled
+	     (not (or (eq (window-buffer (selected-window))
+			  (get-buffer riece-command-buffer))
+		      (riece-message-own-p message)
+		      (active-minibuffer-window))))
+    (unless (riece-message-type message)
+      (setq riece-mini-last-channel (riece-message-target message)))
+    (riece-mini-message-no-log
+     "%s" (concat (format-time-string "%H:%M") " "
+		  (riece-format-message message t)))))
 
 (defun riece-mini-send-message (arg)
   "Send message using minibuffer.
@@ -98,6 +94,12 @@ If twice (C-u C-u), then ask the channel."
 (defun riece-mini-insinuate ()
   (add-hook 'riece-after-display-message-functions
 	    'riece-mini-display-message-function))
+
+(defun riece-mini-enable ()
+  (setq riece-mini-enabled t))
+
+(defun riece-mini-disable ()
+  (setq riece-mini-enabled nil))
 
 (provide 'riece-mini)
 

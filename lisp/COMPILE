@@ -10,6 +10,7 @@
 		riece-version
 		riece-coding
 		riece-complete
+		riece-addon
 
 		riece-mode
 		;; riece-identity -+-> riece-channel

@@ -1,3 +1,48 @@
+2004-05-21  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-mini.el (riece-mini-enabled): New flag.
+	(riece-mini-display-message-function): Check riece-mini-enabled.
+	(riece-mini-enable): New function.
+	(riece-mini-disable): New function.
+
+	* riece-log.el (riece-log-enabled): New flag.
+	(riece-log-display-message-function): Check riece-log-enabled.
+	(riece-log-insinuate): Don't bind command key.
+	(riece-log-enable): New function.
+	(riece-log-disable): New function.
+
+	* riece-highlight.el (riece-highlight-enabled): New flag.
+	(riece-highlight-setup-dialogue): Renamed from
+	riece-dialogue-turn-on-font-lock; don't call turn-on-font-lock.
+	(riece-highlight-setup-channel-list): Renamed from
+	riece-channel-list-turn-on-font-lock; don't call
+	turn-on-font-lock.
+	(riece-highlight-hide-prefix): Renamed from
+	riece-dialogue-hide-prefix.
+	(riece-highlight-put-overlay-faces): Renamed from
+	riece-put-overlay-faces; check riece-highlight-enabled.
+	(riece-highlight-format-identity-for-channel-list-indicator):
+	Check riece-highlight-enabled.
+	(riece-highlight-insinuate): Follow the name changes.
+	(riece-highlight-enable): New function.
+	(riece-highlight-disable): New function.
+
+	* riece-ctcp.el (riece-ctcp-enabled): New flag.
+	(riece-ctcp-insinuate): Don't bind command keys.
+	(riece-ctcp-enable): New function.
+	(riece-ctcp-disable): New function.
+	(riece-handle-ctcp-request): Check riece-ctcp-enabled.
+	(riece-handle-ctcp-response): Ditto.
+
+	* riece.el: Moved add-on arrangement code to riece-addon.el.
+	(riece-addons-insinuated): New flag.
+	(riece): Don't (re)insinuate add-ons if at least an IRC server is
+	opened; enable add-ons after calling riece-startup-hook.
+
+	* riece-addon.el: New file.
+	* COMPILE (riece-modules): Add riece-addon.
+	* Makefile.am (EXTRA_DIST): Add riece-addon.el.
+
 2004-05-20  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-doctor.el (riece-doctor-buffer-name): Assume that the 1st
