@@ -59,6 +59,19 @@
 	  (setq riece-read-passwd 'ange-ftp-read-passwd))))
   (funcall riece-read-passwd prompt))
 
+(if (string-match "0\\{0\\}" "")
+    (defun riece-make-interval-regexp (regexp min &optional max)
+      (if max
+	  (concat regexp (format "\\{%d,%d\\}" min max))
+	(concat regexp (format "\\{%d\\}" min))))
+  ;; Emacs 20.7 doesn't support \{...\} in regexps.
+  (defun riece-make-interval-regexp (regexp min &optional max)
+    (mapconcat #'identity
+	       (nconc (make-list min regexp)
+		      (if max
+			  (make-list (- max min) (concat regexp "?"))))
+	       "")))
+
 (provide 'riece-compat)
 
 ;;; riece-compat.el ends here

@@ -49,8 +49,22 @@
 (defalias 'riece-simplify-mode-line-format
   'riece-xemacs-simplify-modeline-format)
 
-(defalias 'riece-set-case-syntax-pair
-  'put-case-table-pair)
+(if (fboundp 'put-case-table-pair)
+    (defalias 'riece-set-case-syntax-pair
+      'put-case-table-pair)
+  ;; In XEmacs 21.1, case-table is a list of strings.
+  (defun riece-set-case-syntax-pair (uc lc case-table)
+    (aset (car case-table) (char-to-int uc) lc)
+    (if (nth 1 case-table)
+	(aset (nth 1 case-table) (char-to-int lc) uc))
+    (if (nth 2 case-table)
+	(aset (nth 2 case-table) (char-to-int uc) lc))))
+
+(if (fboundp 'copy-case-table)
+    (defalias 'riece-copy-case-table 'copy-case-table)
+  ;; In XEmacs 21.1, case-table is a list of strings.
+  (defun riece-copy-case-table (case-table)
+    (mapcar #'copy-sequence case-table)))
 
 ;;; stolen (and renamed) from gnus-xmas.el.
 ;;; In GNU Emacs, user can intercept whole mouse tracking events by

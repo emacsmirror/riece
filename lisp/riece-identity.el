@@ -32,7 +32,7 @@
 (defvar riece-expand-identity-string-function nil)
 
 (defvar riece-identity-prefix-case-table
-  (let ((table (copy-case-table (standard-case-table))))
+  (let ((table (riece-copy-case-table (standard-case-table))))
     (riece-set-case-syntax-pair ?\[ ?{ table)
     (riece-set-case-syntax-pair ?\] ?} table)
     (riece-set-case-syntax-pair ?\\ ?| table)

@@ -27,6 +27,9 @@
 (defalias 'riece-set-case-syntax-pair
   'set-case-syntax-pair)
 
+(defalias 'riece-copy-case-table
+  'copy-case-table)
+
 ;;; stolen (and renamed) from gnus-ems.el.
 ;;; In GNU Emacs, user can intercept whole mouse tracking events by
 ;;; assigning [mouse-X].  In XEmacs, however, which causes different
