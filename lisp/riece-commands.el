@@ -114,19 +114,22 @@
 (defun riece-command-toggle-channel-buffer-mode ()
   (interactive)
   (setq riece-channel-buffer-mode
-	(not riece-channel-buffer-mode))
+	(not riece-channel-buffer-mode)
+	riece-save-variables-are-dirty t)
   (riece-command-configure-windows))
 
 (defun riece-command-toggle-user-list-buffer-mode ()
   (interactive)
   (setq riece-user-list-buffer-mode
-	(not riece-user-list-buffer-mode))
+	(not riece-user-list-buffer-mode)
+	riece-save-variables-are-dirty t)
   (riece-command-configure-windows))
 
 (defun riece-command-toggle-channel-list-buffer-mode ()
   (interactive)
   (setq riece-channel-list-buffer-mode
-	(not riece-channel-list-buffer-mode))
+	(not riece-channel-list-buffer-mode)
+	riece-save-variables-are-dirty t)
   (riece-command-configure-windows))
 
 (defun riece-command-finger (user &optional recurse)
@@ -553,14 +556,9 @@ If prefix argument ARG is non-nil, toggle frozen status."
 (defun riece-command-open-server (server-name)
   (interactive
    (list (completing-read "Server: " riece-server-alist)))
-  (let ((process (riece-start-server
-		  (riece-server-name-to-server server-name)
-		  server-name)))
-    (with-current-buffer (process-buffer process)
-      (setq riece-server-name server-name))
-    (setq riece-server-process-alist
-	  (cons (cons server-name process)
-		riece-server-process-alist))))
+  (riece-open-server
+   (riece-server-name-to-server server-name)
+   server-name))
 
 (defun riece-command-close-server (server-name &optional message)
   (interactive

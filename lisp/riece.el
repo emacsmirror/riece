@@ -258,8 +258,7 @@ If already connected, just pop up the windows."
 	   (if (or confirm (null riece-server))
 	       (completing-read "Server: " riece-server-alist)
 	     riece-server)))
-      (setq riece-server-process (riece-start-server
-				  (riece-server-name-to-server server-name))))
+      (riece-open-server (riece-server-name-to-server server-name)))
     (riece-create-buffers)
     (riece-configure-windows)
     (let ((channel-list riece-startup-channel-list))

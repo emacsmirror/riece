@@ -1,5 +1,25 @@
 2003-05-31  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-filter.el (riece-sentinel): Simplified.
+
+	* riece-display.el (riece-user-list-update-buffer): Check the
+	existence of riece-user-list-buffer.
+	(riece-channel-list-update-buffer): Check the existence of
+	riece-channel-list-buffer.
+	(riece-set-window-points): Ditto.
+
+	* riece-commands.el (riece-command-open-server): Simplified.
+	(riece-command-toggle-channel-buffer-mode): Set
+	riece-save-variables-are-dirty to t.
+	(riece-command-toggle-user-list-buffer-mode): Ditto.
+	(riece-command-toggle-channel-list-buffer-mode): Ditto.
+
+	* riece-server.el (riece-start-server): Abolish.
+	(riece-open-server): Set riece-server-process-alist and
+	riece-server-process here.
+
+2003-05-31  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-filter.el (riece-sentinel): Close process even if
 	riece-reconnect-with-password == t.
 	(riece-handle-message): Catch errors occured in hooks.

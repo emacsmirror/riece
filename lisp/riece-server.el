@@ -63,15 +63,6 @@ the `riece-server-keyword-map' variable."
 (put 'riece-server-keyword-bind 'lisp-indent-function 1)
 (put 'riece-server-keyword-bind 'edebug-form-spec '(form body))
 
-(defun riece-start-server (server &optional server-name)
-  (if server-name
-      (message "Connecting to IRC server on %s..." server-name)
-    (message "Connecting to IRC server..."))
-  (prog1 (riece-open-server server server-name)
-    (if server-name
-	(message "Connecting to IRC server on %s...done" server-name)
-      (message "Connecting to IRC server...done"))))
-
 (defun riece-clear-system ()
   (while riece-buffer-list
     (if (and (get-buffer (car riece-buffer-list))
@@ -111,7 +102,10 @@ the `riece-server-keyword-map' variable."
 	    riece-save-variables-are-dirty t))
     (cdr entry)))
 
-(defun riece-open-server (server server-name)
+(defun riece-open-server (server &optional server-name)
+  (if server-name
+      (message "Connecting to IRC server on %s..." server-name)
+    (message "Connecting to IRC server..."))
   (riece-server-keyword-bind server
     (let* (selective-display
 	   (coding-system-for-read 'binary)
@@ -144,7 +138,14 @@ the `riece-server-keyword-map' variable."
 	(setq riece-last-nickname riece-real-nickname
 	      riece-nick-accepted 'sent
 	      riece-coding-system coding-system))
-      process)))
+      (if server-name
+	  (setq riece-server-process-alist
+		(cons (cons server-name process)
+		      riece-server-process-alist))
+	(setq riece-server-process process))))
+  (if server-name
+      (message "Connecting to IRC server on %s...done" server-name)
+    (message "Connecting to IRC server...done")))
 
 (defun riece-reset-process-buffer (process)
   (save-excursion

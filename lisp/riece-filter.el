@@ -131,14 +131,12 @@
       (unwind-protect
 	  (if (eq process riece-server-process)
 	      (riece)			;Need to initialize system.
-	    (let* ((entry (rassq process riece-server-process-alist))
-		   (server-name
-		    (with-current-buffer (process-buffer process)
-		      riece-server-name)))
-	      (setcdr entry (riece-start-server
-			     (riece-server-name-to-server server-name)
-			     server-name))
-	      (riece-close-server-process process)))
+	    (let ((server-name
+		   (car (rassq process riece-server-process-alist))))
+	      (riece-close-server server-name)
+	      (riece-open-server
+	       (riece-server-name-to-server server-name)
+	       server-name)))
 	(setq riece-reconnect-with-password nil))
     (let ((server-name (with-current-buffer (process-buffer process)
 			 riece-server-name)))

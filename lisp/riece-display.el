@@ -101,14 +101,16 @@
 	(unless (riece-frozen riece-user-list-buffer)
 	  (set-window-start (get-buffer-window riece-user-list-buffer)
 			    (point-min)))))
-  (if (get-buffer-window riece-channel-list-buffer)
+  (if (and riece-channel-list-buffer
+	   (get-buffer-window riece-channel-list-buffer))
       (with-current-buffer riece-channel-list-buffer
 	(unless (riece-frozen riece-channel-list-buffer)
 	  (set-window-start (get-buffer-window riece-channel-list-buffer)
 			    (point-min))))))
 
 (defun riece-user-list-update-buffer ()
-  (if (get-buffer riece-user-list-buffer)
+  (if (and riece-user-list-buffer
+	   (get-buffer riece-user-list-buffer))
       (save-excursion
 	(set-buffer riece-user-list-buffer)
 	(when (and riece-current-channel
@@ -128,7 +130,8 @@
 	      (setq users (cdr users))))))))
 
 (defun riece-channel-list-update-buffer ()
-  (if (get-buffer riece-channel-list-buffer)
+  (if (and riece-channel-list-buffer
+	   (get-buffer riece-channel-list-buffer))
       (save-excursion
 	(set-buffer riece-channel-list-buffer)
 	(let ((inhibit-read-only t)
