@@ -178,10 +178,10 @@ The rest of arguments are the same as `completing-read'."
 	   predicate require-match initial history default))
 	 (identity
 	  (riece-parse-identity string)))
-    (unless (string-match (concat "^\\(" riece-channel-regexp "\\|"
-				  riece-user-regexp "\\)")
-			  (riece-identity-prefix identity))
-      (error "Invalid channel name!"))
+;;;    (unless (string-match (concat "^\\(" riece-channel-regexp "\\|"
+;;;				  riece-user-regexp "\\)")
+;;;			  (riece-identity-prefix identity))
+;;;      (error "Invalid channel name!"))
     identity))
 
 (provide 'riece-identity)

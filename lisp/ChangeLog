@@ -1,5 +1,9 @@
 2005-04-04  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-identity.el (riece-completing-read-identity): Don't signal
+	an error when input string does not match riece-channel-regexp nor
+	riece-user-regexp.
+
 	* riece-300.el (riece-handle-366-message): Don't use riece-user-regexp.
 	(riece-handle-302-message): Ditto.
 	(riece-handle-313-message): Ditto.
