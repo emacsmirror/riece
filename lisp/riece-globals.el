@@ -111,6 +111,12 @@ Local to the server buffers.")
 (defvar riece-send-queue nil
   "Send queue for avoiding client flood.
 Local to the server buffers.")
+(defvar riece-last-send-time nil
+  "Timestamp of the last send.
+Local to the server buffers.")
+(defvar riece-send-size nil
+  "Size of the last send.
+Local to the server buffers.")
 (defvar riece-obarray nil
   "Namespace of the IRC world.
 Local to the server buffers.")

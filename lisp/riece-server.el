@@ -105,30 +105,58 @@ the `riece-server-keyword-map' variable."
 (put 'riece-with-server-buffer 'lisp-indent-function 1)
 (put 'riece-with-server-buffer 'edebug-form-spec '(form body))
 
+;; stolen (and renamed) from time-date.el.
+(defun riece-seconds-to-time (seconds)
+  "Convert SECONDS (a floating point number) to a time value."
+  (list (floor seconds 65536)
+	(floor (mod seconds 65536))
+	(floor (* (- seconds (ffloor seconds)) 1000000))))
+
+;; stolen (and renamed) from time-date.el.
+(defun riece-time-since (time)
+  "Return the time elapsed since TIME.
+TIME should be either a time value or a date-time string."
+  (let* ((current (current-time))
+	 (rest (when (< (nth 1 current) (nth 1 time))
+		 (expt 2 16))))
+    (list (- (+ (car current) (if rest -1 0)) (car time))
+	  (- (+ (or rest 0) (nth 1 current)) (nth 1 time)))))
+
+;; stolen (and renamed) from time-date.el.
+(defun riece-time-less-p (t1 t2)
+  "Say whether time value T1 is less than time value T2."
+  (or (< (car t1) (car t2))
+      (and (= (car t1) (car t2))
+	   (< (nth 1 t1) (nth 1 t2)))))
+
 (defun riece-flush-send-queue (process)
   (with-current-buffer (process-buffer process)
     (let ((length 0)
-	  (total 0)
 	  string)
+      (if (riece-time-less-p (riece-seconds-to-time riece-send-delay)
+			     (riece-time-since riece-last-send-time))
+	  (setq riece-send-size 0))
       (while (and riece-send-queue
-		  (< total riece-max-send-size))
+		  (< riece-send-size riece-max-send-size))
 	(setq string (riece-encode-coding-string (car riece-send-queue))
 	      length (length string))
 	(if (> length riece-max-send-size)
 	    (message "Long message (%d > %d)" length riece-max-send-size)
 	  (process-send-string process string)
-	  (setq total (+ total length)))
+	  (setq riece-send-size (+ riece-send-size length)))
 	(setq riece-send-queue (cdr riece-send-queue)))
       (if riece-send-queue
 	  (progn
 	    (if riece-debug
 		(message "%d bytes sent, %d bytes left"
-			 total (apply #'+ (mapcar #'length riece-send-queue))))
+			 riece-send-size
+			 (apply #'+ (mapcar #'length riece-send-queue))))
 	    ;; schedule next send after a second
-	    (riece-run-at-time 1 nil
+	    (riece-run-at-time riece-send-delay nil
 			       #'riece-flush-send-queue process))
 	(if riece-debug
-	    (message "%d bytes sent" total))))))
+	    (message "%d bytes sent" riece-send-size)))
+      (setq riece-last-send-time (current-time)))))
 
 (defun riece-process-send-string (process string)
   (with-current-buffer (process-buffer process)
@@ -205,6 +233,10 @@ the `riece-server-keyword-map' variable."
     (make-local-variable 'riece-server-name)
     (make-local-variable 'riece-read-point)
     (make-local-variable 'riece-send-queue)
+    (make-local-variable 'riece-last-send-time)
+    (setq riece-last-send-time '(0 0 0))
+    (make-local-variable 'riece-send-size)
+    (setq riece-send-size 0)
     (setq riece-read-point (point-min))
     (make-local-variable 'riece-obarray)
     (setq riece-obarray (make-vector riece-obarray-size 0))

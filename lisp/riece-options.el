@@ -183,6 +183,11 @@ way is to put Riece variables on .emacs or file loaded from there."
   :type 'integer
   :group 'riece-server)
 
+(defcustom riece-send-delay 1
+  "Duration of multiple send."
+  :type 'integer
+  :group 'riece-server)
+  
 (defcustom riece-default-password (getenv "IRCPASSWORD")
   "Your password."
   :type '(radio (string :tag "Password")

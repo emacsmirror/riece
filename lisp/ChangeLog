@@ -1,3 +1,19 @@
+2004-09-25  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-server.el: Implement flood protection.
+	(riece-flush-send-queue): New function.
+	(riece-process-send-string): Use it.
+	(riece-seconds-to-time): New function.
+	(riece-time-since): New function.
+	(riece-time-less-p): New function.
+	(riece-reset-process-buffer): Reset riece-send-queue,
+	riece-last-send-time, riece-send-size.
+	* riece-options.el (riece-max-send-size): New user option.
+	(riece-send-delay): New user option.
+	* riece-globals.el (riece-send-queue): New variable.
+	(riece-last-send-time): New variable.
+	(riece-send-size): New variable.
+
 2004-09-14  OHASHI Akira  <bg66@koka-in.org>
 
 	* riece-log.el (riece-log-flashback): Run riece-button-update-buffer
