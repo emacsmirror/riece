@@ -1,4 +1,5 @@
-# A simple IPC server for executing arbitrary Ruby program.
+# A simple IPC server executing arbitrary Ruby program.
+
 # The protocol is based on Assuan protocol of GnuPG.
 # http://www.gnupg.org/(en)/related_software/libassuan/index.html
 
@@ -59,12 +60,11 @@ class RubyServ
 
   def dispatch_eval(c, r)
     r = deq_data if r.empty?
-    p r
     open('|-') do |f|
       if f
         d = f.read
         Process.wait
-        send_data(d)
+        send_data(d) if d
         if $?.success?
           puts("OK\r\n")
         else
