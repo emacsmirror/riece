@@ -1,3 +1,12 @@
+2004-12-06  Daiki Ueno  <ueno@unixuser.org>
+
+	* test/test-riece-log.el: New test cases.
+
+	* riece-log.el: Collect logs across dates.
+	(riece-log-get-files): New function.
+	(riece-log-flashback-1): New function.
+	(riece-log-flashback): Use it.
+
 2004-12-05  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-message.el (riece-display-message-1): Call

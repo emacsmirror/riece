@@ -86,6 +86,14 @@ If integer, flash back only this line numbers. t means all lines."
    (concat (format-time-string "%Y%m%d") ".log")
    (riece-log-get-directory identity)))
 
+(defun riece-log-get-files (identity)
+  (let ((files (directory-files (riece-log-get-directory identity) t
+				(concat "^"
+					(riece-make-interval-regexp "[0-9]" 8)
+					"\\.log$")
+				t)))
+    (nreverse (sort files #'string-lessp))))
+
 (defun riece-log-get-directory (identity)
   (let ((channel (riece-identity-canonicalize-prefix
 		  (riece-identity-prefix identity)))
@@ -104,35 +112,63 @@ If integer, flash back only this line numbers. t means all lines."
 	(expand-file-name name (expand-file-name server riece-log-directory))
       (expand-file-name name riece-log-directory))))
 
+(defun riece-log-flashback-1 (identity)
+  (if (eq riece-log-flashback t)
+      (let ((file (riece-log-get-file identity)))
+	(if (file-exists-p file)
+	    (insert-file-contents file)))
+    (let ((files (riece-log-get-files identity))
+	  (lines (- riece-log-flashback))
+	  date point)
+      (while (and (< lines 0) files)
+	(if (and (file-exists-p (car files))
+		 (string-match (concat "\\("
+				       (riece-make-interval-regexp "[0-9]" 4)
+				       "\\)\\("
+				       (riece-make-interval-regexp "[0-9]" 2)
+				       "\\)\\("
+				       (riece-make-interval-regexp "[0-9]" 2)
+				       "\\).log$")
+			       (car files)))
+	    (save-restriction
+	      (narrow-to-region (point-min) (point-min))
+	      (setq date (concat " (" (match-string 1 (car files)) "/"
+				 (match-string 2 (car files)) "/"
+				 (match-string 3 (car files)) ")"))
+	      (insert-file-contents (car files))
+	      (goto-char (point-max))
+	      (setq lines (forward-line lines)
+		    point (point))
+	      (while (not (eobp))
+		(end-of-line)
+		(insert date)
+		(forward-line))
+	      (goto-char point)))
+	(setq files (cdr files)))
+      (if (zerop lines)
+	  (delete-region (point-min) (point))))))
+
 (defun riece-log-flashback (identity)
   (when riece-log-flashback
-    (let ((file (riece-log-get-file identity)))
-      (when (file-exists-p file)
-	(let (string)
-	  (with-temp-buffer
-	    (insert-file-contents file)
-	    (if (not (integerp riece-log-flashback))
-		(goto-char (point-min))
-	      (goto-char (point-max))
-	      (forward-line (- riece-log-flashback)))
-	    (setq string (buffer-substring (point) (point-max))))
-	  (let (buffer-read-only)
-	    (goto-char (point-max))
-	    (insert string)
-	    (goto-char (point-min))
-	    (while (re-search-forward
-		    "^[0-9][0-9]:[0-9][0-9] [<>]\\([^<>]+\\)[<>] " nil t)
-	      (put-text-property (match-beginning 1) (match-end 1)
-				 'riece-identity
-				 (riece-make-identity
-				  (riece-match-string-no-properties 1)
-				  (riece-identity-server identity))))
-	    (when (and (memq 'riece-button riece-addons)
-		       riece-button-enabled)
-	      (riece-button-update-buffer))
-	    (goto-char (point-max))
-	    (set-window-point (get-buffer-window (current-buffer))
-			      (point))))))))
+    (let (buffer-read-only
+	  (point (goto-char (point-max))))
+      (insert (with-temp-buffer
+		(riece-log-flashback-1 identity)
+		(buffer-string)))
+      (goto-char point)
+      (while (re-search-forward
+	      "^[0-9][0-9]:[0-9][0-9] [<>]\\([^<>]+\\)[<>] " nil t)
+	(put-text-property (match-beginning 1) (match-end 1)
+			   'riece-identity
+			   (riece-make-identity
+			    (riece-match-string-no-properties 1)
+			    (riece-identity-server identity))))
+      (when (and (memq 'riece-button riece-addons)
+		 riece-button-enabled)
+	(riece-button-update-buffer))
+      (goto-char (point-max))
+      (set-window-point (get-buffer-window (current-buffer))
+			(point)))))
 
 (defun riece-log-open-directory (&optional channel)
   (interactive)
