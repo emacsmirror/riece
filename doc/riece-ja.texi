@@ -711,10 +711,10 @@ HTTP プロキシを介して IRC サーバに接続することができます。
 
 @table @asis
 @item relay.el
-@uref{http://www.imasy.or.jp/~gotoh/lisp/relay.el}
+@uref{http://www.taiyo.co.jp/~gotoh/lisp/relay.el}
 
 @item connect.c
-@uref{http://www.imasy.or.jp/~gotoh/ssh/connect.html}
+@uref{http://www.taiyo.co.jp/~gotoh/ssh/connect.html}
 @end table
 
 たとえば、"proxy.example.com:8080" 経由で irc.tokyo.wide.ad.jp に接続す
