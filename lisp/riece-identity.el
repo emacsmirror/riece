@@ -26,19 +26,22 @@
 
 (require 'riece-globals)
 (require 'riece-coding)
-(require 'riece-compat)			;riece-set-case-syntax-pair
 
 (defvar riece-abbrev-identity-string-function nil)
 (defvar riece-expand-identity-string-function nil)
 
-(defvar riece-identity-prefix-case-table
-  (let ((table (riece-copy-case-table (standard-case-table))))
-    (riece-set-case-syntax-pair ?\[ ?{ table)
-    (riece-set-case-syntax-pair ?\] ?} table)
-    (riece-set-case-syntax-pair ?\\ ?| table)
-    (riece-set-case-syntax-pair ?~ ?^ table)
-    table))
-    
+(defconst riece-identity-prefix-case-pair-alist
+  '((?\[ . ?{)
+    (?\] . ?})
+    (?\\ . ?|)
+    (?~ . ?^))
+  "An alist used to canonicalize identity-prefix.
+RFC2812, 2.2 \"Character codes\" says:
+   Because of IRC's Scandinavian origin, the characters {}|^ are
+   considered to be the lower case equivalents of the characters []\~,
+   respectively. This is a critical issue when determining the
+   equivalence of two nicknames or channel names.")
+
 (defun riece-identity-prefix (identity)
   "Return the component sans its server from IDENTITY."
   (aref identity 0))
@@ -61,20 +64,16 @@
 	(riece-identity-server ident2))))
 
 (defun riece-identity-canonicalize-prefix (prefix)
-  "Canonicalize identity PREFIX.
-This function downcases PREFIX with Scandinavian alphabet rule.
-
-RFC2812, 2.2 \"Character codes\" says:
-   Because of IRC's Scandinavian origin, the characters {}|^ are
-   considered to be the lower case equivalents of the characters []\~,
-   respectively. This is a critical issue when determining the
-   equivalence of two nicknames or channel names."
-  (let ((old-table (current-case-table)))
-    (unwind-protect
-	(progn
-	  (set-case-table riece-identity-prefix-case-table)
-	  (downcase prefix))
-      (set-case-table old-table))))
+  "Canonicalize identity PREFIX."
+  (let ((i 0)
+	c)
+    (setq prefix (copy-sequence prefix))
+    (while (< i (length prefix))
+      (if (setq c (cdr (assq (aref prefix i)
+			     riece-identity-prefix-case-pair-alist)))
+	  (aset prefix i c))
+      (setq i (1+ i)))
+    prefix))
 
 (defun riece-identity-equal-no-server (prefix1 prefix2)
   "Return t, if IDENT1 and IDENT2 is equal without server part."

@@ -1,3 +1,15 @@
+2003-12-17  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-identity.el: Don't require 'riece-compat.
+	(riece-identity-prefix-case-table): Abolish.
+	(riece-identity-prefix-case-pair-alist): New constant.
+	(riece-identity-canonicalize-prefix): Don't use case-table.
+
+	* riece-emacs.el (riece-set-case-syntax-pair): Abolish.
+	(riece-copy-case-table): Abolish.
+	* riece-xmacs.el (riece-set-case-syntax-pair): Abolish.
+	(riece-copy-case-table): Abolish.
+
 2003-12-15  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-options.el: Require 'riece-version.
