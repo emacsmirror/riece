@@ -1,3 +1,9 @@
+2003-06-06  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-channel.el (riece-forget-channel): Fixed.
+	(riece-channel-modeless-regexp): Abolish.
+	(riece-channel-modeless-p): Abolish.
+
 2003-06-06  OHASHI Akira  <bg66@koka-in.org>
 
 	* riece-unread.el (riece-unread-display-message-function): Delete the

@@ -29,17 +29,11 @@
 
 ;;; String representation of a channel:
 (defconst riece-channel-regexp "^[+&#!]")
-(defconst riece-channel-modeless-regexp "^[+!]")
 
 (defun riece-channel-p (string)
   "Return t if STRING is a channel.
 \(i.e. it matches `riece-channel-regexp')"
   (string-match riece-channel-regexp string))
-
-(defun riece-channel-modeless-p (string)
-  "Return t if STRING is a modeless channel.
-\(i.e. it matches `riece-channel-modeless-regexp')"
-  (string-match riece-channel-modeless-regexp string))
 
 ;;; Channel object:
 (defun riece-find-channel (name)
@@ -54,7 +48,8 @@
 (defun riece-forget-channel (name)
   (riece-with-server-buffer
    (let ((symbol (intern-soft (riece-identity-canonicalize-prefix
-			       (riece-identity-prefix name)))))
+			       (riece-identity-prefix name))
+			      riece-obarray)))
      (when symbol
        (makunbound symbol)
        (unintern (symbol-name symbol) riece-obarray)))))
