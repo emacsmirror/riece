@@ -71,10 +71,11 @@ This function is for internal use only."
 This function is for internal use only."
   (aref slot 2))
 
-(defun riece-make-signal (name &rest args)
+(defun riece-make-signal (name args)
   "Make an instance of signal object.
 The 1st arguments is the name of the signal and the rest of arguments
-are the data of the signal."
+are the data of the signal.
+This function is for internal use only."
   (vector name args))
 
 (defun riece-signal-name (signal)
@@ -92,13 +93,15 @@ are the data of the signal."
 		      (if (boundp symbol)
 			  (symbol-value symbol))))))
 
-(defun riece-emit-signal (signal)
+(defun riece-emit-signal (signal-name &rest args)
   "Emit SIGNAL."
-  (let ((symbol (intern-soft (symbol-name (riece-signal-name signal))
+  (let ((symbol (intern-soft (symbol-name signal-name)
 			     riece-signal-slot-obarray))
+	signal
 	slots)
     (when symbol
-      (setq slots (symbol-value symbol))
+      (setq signal (riece-make-signal signal-name args)
+	    slots (symbol-value symbol))
       (while slots
 	(condition-case error
 	    (if (or (null (riece-slot-filter (car slots)))
@@ -107,14 +110,14 @@ are the data of the signal."
 		      (if riece-debug
 			  (message
 			   "Error occurred in signal filter for \"%S\": %S"
-			   (riece-signal-name signal) error))
+			   signal-name error))
 		      nil))
 		(funcall (riece-slot-function (car slots))
 			 signal (riece-slot-handback (car slots))))
 	  (error
 	   (if riece-debug
 	       (message "Error occurred in slot function for \"%S\": %S"
-			(riece-signal-name signal) error))))
+			signal-name error))))
 	(setq slots (cdr slots))))))
 
 (defun riece-display-connect-signals ()
@@ -406,7 +409,7 @@ are the data of the signal."
     (setq riece-current-channel identity
 	  riece-channel-buffer (riece-channel-buffer riece-current-channel))
     (run-hook-with-args 'riece-after-switch-to-channel-functions last)
-    (riece-emit-signal (riece-make-signal 'riece-switch-to-channel))))
+    (riece-emit-signal 'riece-switch-to-channel)))
 
 (defun riece-join-channel (identity)
   (unless (riece-identity-member identity riece-current-channels)
@@ -437,7 +440,7 @@ are the data of the signal."
       (let ((last riece-current-channel))
 	(run-hook-with-args 'riece-after-switch-to-channel-functions last)
 	(setq riece-current-channel nil)
-	(riece-emit-signal (riece-make-signal 'riece-switch-to-channel))))))
+	(riece-emit-signal 'riece-switch-to-channel)))))
 
 (defun riece-part-channel (identity)
   (let ((pointer (riece-identity-member identity riece-current-channels)))

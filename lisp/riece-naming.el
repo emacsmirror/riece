@@ -40,9 +40,8 @@
       (riece-join-channel channel-identity)
       (riece-switch-to-channel channel-identity)
       (setq riece-join-channel-candidate nil))
-    (riece-emit-signal (riece-make-signal 'riece-naming-assert-join
-					  user-identity
-					  channel-identity))))
+    (riece-emit-signal 'riece-naming-assert-join
+		       user-identity channel-identity)))
 
 (defun riece-naming-assert-part (user-name channel-name)
   (riece-user-toggle-channel user-name channel-name nil)
@@ -55,9 +54,8 @@
 					       riece-server-name)))
     (if (riece-identity-equal-no-server user-name riece-real-nickname)
 	(riece-part-channel channel-identity))
-    (riece-emit-signal (riece-make-signal 'riece-naming-assert-part
-					  user-identity
-					  channel-identity))))
+    (riece-emit-signal 'riece-naming-assert-part
+		       user-identity channel-identity)))
 
 (defun riece-naming-assert-rename (old-name new-name)
   (if (riece-identity-equal-no-server old-name riece-real-nickname)
@@ -88,8 +86,8 @@
 			  riece-channel-buffer-alist))))
       (if (riece-identity-equal old-identity riece-current-channel)
 	  (riece-switch-to-channel new-identity)))
-    (riece-emit-signal (riece-make-signal 'riece-naming-assert-rename
-					  old-identity new-identity))))
+    (riece-emit-signal 'riece-naming-assert-rename
+		       old-identity new-identity)))
 
 (defun riece-naming-assert-channel-users (users channel-name)
   (let ((channel-identity (riece-make-identity channel-name
@@ -115,9 +113,8 @@
 	(riece-switch-to-channel channel-identity)
 	(setq riece-join-channel-candidate nil))
       (setq users (cdr users)))
-    (riece-emit-signal (riece-make-signal 'riece-naming-assert-channel-users
-					  (nreverse user-identity-list)
-					  channel-identity))))
+    (riece-emit-signal 'riece-naming-assert-channel-users
+		       (nreverse user-identity-list) channel-identity)))
 
 (provide 'riece-naming)
 

@@ -52,19 +52,13 @@
 	    (if operator
 		(setq status (cons "operator" status)))
 	    (riece-user-toggle-away user away)
-	    (riece-emit-signal (riece-make-signal
-				'riece-user-toggle-away
-				(riece-make-identity
-				 user
-				 riece-server-name)
-				away))
+	    (riece-emit-signal 'riece-user-toggle-away
+			       (riece-make-identity user riece-server-name)
+			       away)
 	    (riece-user-toggle-operator user operator)
-	    (riece-emit-signal (riece-make-signal
-				'riece-user-toggle-operator
-				(riece-make-identity
-				 user
-				 riece-server-name)
-				operator))
+	    (riece-emit-signal 'riece-user-toggle-operator
+			       (riece-make-identity user riece-server-name)
+			       operator)
 	    (riece-insert-info
 	     (list riece-dialogue-buffer riece-others-buffer)
 	     (concat
@@ -99,12 +93,9 @@
       (let ((user (match-string 1 string))
 	    (message (substring string (match-end 0))))
 	(riece-user-toggle-away user t)
-	(riece-emit-signal (riece-make-signal
-			    'riece-user-toggle-away
-			    (riece-make-identity
-			     user
-			     riece-server-name)
-			    t))
+	(riece-emit-signal 'riece-user-toggle-away
+			   (riece-make-identity user riece-server-name)
+			   t)
 	(riece-insert-info
 	 (list riece-dialogue-buffer riece-others-buffer)
 	 (concat
@@ -118,21 +109,17 @@
 
 (defun riece-handle-305-message (prefix number name string)
   (riece-user-toggle-away riece-real-nickname nil)
-  (riece-emit-signal (riece-make-signal
-		      'riece-user-toggle-away
-		      (riece-make-identity
-		       riece-real-nickname
-		       riece-server-name)
-		      nil)))
+  (riece-emit-signal 'riece-user-toggle-away
+		      (riece-make-identity riece-real-nickname
+					   riece-server-name)
+		      nil))
 
 (defun riece-handle-306-message (prefix number name string)
   (riece-user-toggle-away riece-real-nickname t)
-  (riece-emit-signal (riece-make-signal
-		      'riece-user-toggle-away
-		      (riece-make-identity
-		       riece-real-nickname
-		       riece-server-name)
-		      t)))
+  (riece-emit-signal 'riece-user-toggle-away
+		     (riece-make-identity riece-real-nickname
+					  riece-server-name)
+		     t))
 
 (defun riece-handle-311-message (prefix number name string)
   (if (string-match
@@ -309,12 +296,9 @@
 	(while modes
 	  (riece-channel-toggle-mode channel (car modes) (eq toggle ?+))
 	  (setq modes (cdr modes)))
-	(riece-emit-signal (riece-make-signal
-			    'riece-channel-toggle-modes
-			    (riece-make-identity
-			     channel
-			     riece-server-name)
-			    modes (eq toggle ?+)))
+	(riece-emit-signal 'riece-channel-toggle-modes
+			   (riece-make-identity channel riece-server-name)
+			   modes (eq toggle ?+))
 	(let* ((channel-identity (riece-make-identity channel
 						      riece-server-name))
 	       (buffer (riece-channel-buffer channel-identity)))
@@ -352,11 +336,10 @@
 		     (riece-format-identity channel-identity t)
 		     message))
 	    "\n")))
-	(riece-emit-signal (riece-make-signal
-			    'riece-channel-set-topic
+	(riece-emit-signal 'riece-channel-set-topic
 			    channel-identity
 			    (unless remove
-			      message))))))
+			      message)))))
 
 (defun riece-handle-331-message (prefix number name string)
   (riece-handle-set-topic prefix number name string t))
@@ -420,19 +403,13 @@
 	    (setq status (nreverse status)))
 	(riece-naming-assert-join nick channel)
 	(riece-user-toggle-away user away)
-	(riece-emit-signal (riece-make-signal
-			    'riece-user-toggle-away
-			    (riece-make-identity
-			     user
-			     riece-server-name)
-			    away))
+	(riece-emit-signal 'riece-user-toggle-away
+			   (riece-make-identity user riece-server-name)
+			   away))
 	(riece-user-toggle-operator user operator)
-	(riece-emit-signal (riece-make-signal
-			    'riece-user-toggle-operator
-			    (riece-make-identity
-			     user
-			     riece-server-name)
-			    operator))
+	(riece-emit-signal 'riece-user-toggle-operator
+			   (riece-make-identity user riece-server-name)
+			   operator)
 	(riece-insert-info buffer (concat (riece-concat-user-status
 					   status info)
 					  "\n"))
