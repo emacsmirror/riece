@@ -1,4 +1,4 @@
-;;; riece-xface.el --- display X-Face on user list buffer
+;;; riece-xface.el --- display X-Face in user list buffer
 ;; Copyright (C) 1998-2003 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>
