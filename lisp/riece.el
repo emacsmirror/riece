@@ -586,7 +586,7 @@ are familiar with the debugger, to get a lisp back-trace.")
 				   (cdr (assoc (car (car pointer))
 					       riece-server-alist))))
 		    "\n"
-		    (if (process-live-p (cdr (car pointer)))
+		    (if (riece-server-process-opened (cdr (car pointer)))
 			(save-excursion
 			  (set-buffer (process-buffer (cdr (car pointer))))
 			  (goto-char (point-max))

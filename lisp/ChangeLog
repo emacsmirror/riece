@@ -1,5 +1,10 @@
 2004-11-19  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece.el (riece-submit-bug-report): use
+	riece-server-process-opened instead of process-live-p.
+	* riece-server.el (riece-flush-send-queue): Use
+	riece-server-process-opened instead of process-live-p.
+
 	* riece-yank.el (riece-yank-strip-space): Bind space-width.
 
 	* riece-xemacs.el (riece-recent-messages): New function.
