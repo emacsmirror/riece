@@ -1,5 +1,12 @@
 2004-12-05  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-log.el (riece-log-display-message-function): Switch to
+	riece-dialogue-buffer when writing messages from other people to a
+	file.
+	[cf. <Liece:00391>]
+
+2004-12-05  Daiki Ueno  <ueno@unixuser.org>
+
 	* Riece: Version 1.0.6 released.
 	* riece-version.el (riece-version-number): Bump up to 1.0.6.
 
