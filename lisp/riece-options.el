@@ -68,20 +68,6 @@
   :type '(repeat integer)
   :group 'riece-looks)
 
-(defcustom riece-icon-directory nil
-  "Location of the icon directory."
-  :type 'directory
-  :group 'riece-looks)
-
-(defcustom riece-user-image-alist
-  '((?@ . "ball.red.xpm")
-    (?+ . "ball.gray.xpm")
-    (?  . "ball.blank.xpm"))
-  "An alist of icons to display user's mode."
-  :type '(repeat (list (character :tag "Mark")
-		       (string :tag "XPM file")))
-  :group 'riece-looks)
-
 (defcustom riece-inhibit-startup-message nil
   "If non-nil, the startup message will not be displayed."
   :group 'riece-looks
@@ -89,6 +75,12 @@
 
 (defcustom riece-directory "~/.riece"
   "Where to look for data files."
+  :type 'directory
+  :group 'riece-options)
+
+(defcustom riece-addon-directory
+  (expand-file-name "addons" riece-directory)
+  "Where to look for add-on files."
   :type 'directory
   :group 'riece-options)
   
@@ -111,6 +103,11 @@ This file was saved the last session."
 This feature is most likely to dissappear in near future.  The preferred
 way is to put Riece variables on .emacs or file loaded from there."
   :type '(repeat (file :tag "Initialization File"))
+  :group 'riece-options)
+
+(defcustom riece-addons nil
+  "Add-ons insinuated into Riece."
+  :type '(repeat symbol)
   :group 'riece-options)
 
 (defgroup riece-server nil

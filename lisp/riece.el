@@ -245,9 +245,9 @@ If optional argument SAFE is nil, overwrite previous definitions."
 If optional argument CONFIRM is non-nil, ask which IRC server to connect.
 If already connected, just pop up the windows."
   (interactive "P")
-  (riece-read-variables-files
-   (car command-line-args-left))
-  (pop command-line-args-left)
+  (riece-read-variables-files (if noninteractive
+				  (car command-line-args-left)))
+  (riece-insinuate-addons riece-addons)
   (run-hooks 'riece-after-load-startup-hook)
   (if (riece-server-opened)
       (riece-configure-windows)
@@ -412,6 +412,57 @@ Instead, these commands are available:
 		    (eq major-mode (cdr (car alist))))
 	  (funcall (cdr (car alist))))
 	(setq alist (cdr alist))))))
+
+(defun riece-load-and-build-addon-dependencies (addons)
+  (let ((load-path (cons riece-addon-directory load-path))
+	dependencies)
+    (while addons
+      (require (car addons))		;error will be reported here
+      (let* ((requires
+	      (funcall (or (intern-soft (concat (symbol-name (car addons))
+						"-requires"))
+			   #'ignore)))
+	     (pointer requires)
+	     entry)
+	(while pointer
+	  (if (setq entry (assq (car pointer) dependencies))
+	      (setcar (cdr entry) (1+ (nth 1 entry)))
+	    (push (list (car pointer) 1 nil) dependencies))
+	  (setq pointer (cdr pointer)))
+	(if (setq entry (assq (car addons) dependencies))
+	    (setcar (nthcdr 2 entry) requires)
+	  (push (list (car addons) 0 requires) dependencies)))
+      (setq addons (cdr addons)))
+    dependencies))
+
+(defun riece-insinuate-addons (addons)
+  (let* ((dependencies (riece-load-and-build-addon-dependencies addons))
+	 (pointer dependencies)
+	 queue)
+    (while pointer
+      (when (zerop (nth 1 (car pointer)))
+	(setq dependencies (delq (car pointer) dependencies))
+	(push (car pointer) queue))
+      (setq pointer (cdr pointer)))
+    (setq addons nil)
+    (while queue
+      (push (car (car queue)) addons)
+      (setq pointer (nth 2 (car queue)))
+      (while pointer
+	(let* ((entry (assq (car pointer) dependencies))
+	       (count (1- (nth 1 entry))))
+	  (if (zerop count)
+	      (progn
+		(setq dependencies (delq entry dependencies)
+		      queue (nconc queue (list entry))))
+	    (setcar (cdr entry) count)))
+	(setq pointer (cdr pointer))))
+    (if dependencies
+	(error "Circular dependency found"))
+    (while addons
+      (require (car addons))		;implicit dependency
+      (funcall (intern (concat (symbol-name (car addons)) "-insinuate")))
+      (setq addons (cdr addons)))))
 
 (provide 'riece)
 

@@ -1,5 +1,14 @@
 2003-05-29  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-ctcp.el (riece-ctcp-insinuate): New function.
+
+	* riece-options.el (riece-addons): New user option.
+	(riece-addon-directory): New user option.
+
+	* riece.el (riece-load-and-build-addon-dependencies): New function.
+	(riece-insinuate-addons): New function.
+	(riece): Call riece-insinuate-addons.
+
 	* riece-misc.el (riece-get-users-on-server): Moved from
 	riece-commands.el.
 

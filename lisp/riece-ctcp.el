@@ -29,15 +29,13 @@
 
 (defvar riece-ctcp-ping-time nil)
 
-(add-hook 'riece-privmsg-hook 'riece-handle-ctcp-request)
-(add-hook 'riece-notice-hook 'riece-handle-ctcp-response)
-
 (defvar riece-dialogue-mode-map)
 
-(eval-after-load "riece"
-  '(progn
-     (define-key riece-dialogue-mode-map "\C-cv" 'riece-command-ctcp-version)
-     (define-key riece-dialogue-mode-map "\C-cp" 'riece-command-ctcp-ping)))
+(defun riece-ctcp-insinuate ()
+  (add-hook 'riece-privmsg-hook 'riece-handle-ctcp-request)
+  (add-hook 'riece-notice-hook 'riece-handle-ctcp-response)
+  (define-key riece-dialogue-mode-map "\C-cv" 'riece-command-ctcp-version)
+  (define-key riece-dialogue-mode-map "\C-cp" 'riece-command-ctcp-ping))
 
 (defun riece-handle-ctcp-request (prefix string)
   (when (and prefix string
