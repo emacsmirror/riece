@@ -1,3 +1,8 @@
+2005-03-05  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-log.el (riece-log-insinuate): Use user-uid instead of
+	user-login-name and escape system-name for riece-log-lock-file.
+
 2005-03-02  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-log.el (riece-log-lock-file): Define with defvar.

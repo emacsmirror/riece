@@ -255,9 +255,9 @@ If LINES is t, insert today's logs entirely."
 (defun riece-log-insinuate ()
   (make-directory riece-log-directory t)
   (setq riece-log-lock-file
-	(expand-file-name (format "=lock.%s@%s.%d"
-				  (user-login-name)
-				  (system-name)
+	(expand-file-name (format "=%d-%d-%d"
+				  (user-uid)
+				  (riece-log-encode-file-name (system-name))
 				  (emacs-pid))
 			  riece-log-directory))
   ;; FIXME: Use `riece-after-insert-functions' for trapping change,
