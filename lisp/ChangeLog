@@ -1,3 +1,8 @@
+2004-12-07  TAKAHASHI Kaoru  <kaoru@kaisei.org>
+
+	* riece-foolproof.el (riece-foolproof-command-send-message-function): 
+	Check invisible text.
+
 2004-12-07  Daiki Ueno  <ueno@unixuser.org>
 
 	* test/test-riece-log.el (test-riece-log-encode-file-name): New

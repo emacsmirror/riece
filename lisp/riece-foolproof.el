@@ -51,6 +51,13 @@
 		 riece-current-channel))
       (error "Channel %s is not displayed"
 	     (riece-identity-prefix riece-current-channel)))
+    (when (text-property-not-all
+	   (riece-line-beginning-position) (riece-line-end-position)
+	   'invisible nil)
+      (error "Invisible text included: %s"
+	     (buffer-substring-no-properties
+	      (riece-line-beginning-position)
+	      (riece-line-end-position))))
     (when executing-kbd-macro
       (error "%s" "Forbidden to run keyboard macro"))))
 
