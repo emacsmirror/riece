@@ -1,3 +1,8 @@
+2004-07-29  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-menu.el: Do not support enable/disable addon since
+	easy-menu-remove is not working.
+
 2004-07-19  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-server.el (riece-open-server): Call protocol interface.
