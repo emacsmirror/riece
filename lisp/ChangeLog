@@ -1,3 +1,7 @@
+2004-01-03  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-lsdb.el (riece-lsdb-insinuate): Don't require 'lsdb.
+
 2004-01-02  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-lsdb.el: New add-on.
