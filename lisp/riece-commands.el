@@ -33,6 +33,8 @@
 (require 'riece-identity)
 (require 'riece-message)
 
+(autoload 'derived-mode-class "derived")
+
 ;;; Channel movement:
 (defun riece-command-switch-to-channel (channel)
   (interactive (list (riece-completing-read-identity
@@ -552,10 +554,13 @@ the layout to the selected layout-name."
   "Prevent automatic scrolling of the dialogue window.
 If prefix argument ARG is non-nil, toggle frozen status."
   (interactive "P")
-  (with-current-buffer (if (and riece-channel-buffer-mode
-				riece-channel-buffer)
-			   riece-channel-buffer
-			 riece-dialogue-buffer)
+  (with-current-buffer (if (eq (derived-mode-class major-mode)
+			       'riece-dialogue-mode)
+			   (current-buffer)
+			 (if (and riece-channel-buffer-mode
+				  riece-channel-buffer)
+			     riece-channel-buffer
+			   riece-dialogue-buffer))
     (setq riece-freeze (if arg
 			   (< 0 (prefix-numeric-value arg))
 			 (not riece-freeze)))
@@ -567,17 +572,20 @@ If prefix argument ARG is non-nil, toggle frozen status."
 The difference from `riece-command-freeze' is that your messages are hidden.
 If prefix argument ARG is non-nil, toggle frozen status."
   (interactive "P")
-  (with-current-buffer (if (and riece-channel-buffer-mode
-				riece-channel-buffer)
-			   riece-channel-buffer
-			 riece-dialogue-buffer)
+  (with-current-buffer (if (eq (derived-mode-class major-mode)
+			       'riece-dialogue-mode)
+			   (current-buffer)
+			 (if (and riece-channel-buffer-mode
+				  riece-channel-buffer)
+			     riece-channel-buffer
+			   riece-dialogue-buffer))
     (if (if arg
 	    (< 0 (prefix-numeric-value arg))
 	  (not (eq riece-freeze 'own)))
 	(setq riece-freeze 'own)
-      (setq riece-freeze nil)))
-  (riece-emit-signal 'buffer-freeze-changed
-		     (current-buffer) riece-freeze))
+      (setq riece-freeze nil))
+    (riece-emit-signal 'buffer-freeze-changed
+		       (current-buffer) riece-freeze)))
 
 (eval-when-compile
   (autoload 'riece-exit "riece"))

@@ -30,6 +30,8 @@
 (require 'riece-layout)
 (require 'riece-signal)
 
+(autoload 'derived-mode-class "derived")
+
 (defvar riece-channel-buffer-format "*Channel:%s*"
   "Format of channel message buffer.")
 (defvar riece-channel-buffer-alist nil
@@ -337,16 +339,17 @@ Local to the buffer in `riece-buffer-list'.")
 		    "O"
 		  "-")
 		riece-user-indicator riece-real-nickname))))
-  (setq riece-freeze-indicator
-	(with-current-buffer (if (and riece-channel-buffer-mode
-				      riece-channel-buffer)
-				 riece-channel-buffer
-			       riece-dialogue-buffer)
-	  (if (eq riece-freeze 'own)
-	      "f"
-	    (if riece-freeze
-		"F"
-	      "-")))))
+  (walk-windows
+   (lambda (window)
+     (with-current-buffer (window-buffer window)
+       (if (eq (derived-mode-class major-mode)
+	       'riece-dialogue-mode)
+	   (setq riece-freeze-indicator
+		 (if (eq riece-freeze 'own)
+		     "f"
+		   (if riece-freeze
+		       "F"
+		     "-"))))))))
 
 (defun riece-update-buffers (&optional buffers)
   (unless buffers

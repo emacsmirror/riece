@@ -108,22 +108,33 @@ Local to the server buffers.")
 
 ;;; Variables local to the channel buffers:
 (defvar riece-freeze nil
-  "If t, channel window is not scrolled.
-If 'own, channel window is not scrolled until you speak.
+  "If t, channel window is locked and will not be scrolled.
+If 'own, channel window is locked until the user begins to speak.
+Local to the channel buffers.")
+
+(defvar riece-freeze-indicator nil
+  "String displayed on the modeline to allow the user to tell if the
+channel buffer is locked.
 Local to the channel buffers.")
 
 ;;; Modeline indicators:
 (defvar riece-channel-indicator "None"
-  "A modeline indicator of the current channel.")
+  "String displayed on the modeline to indicate the current channel.")
 (defvar riece-long-channel-indicator "None"
-  "A modeline indicator of the current channel.")
+  "String displayed on the modeline to indicate the current channel.
+Generally, this string will contain more information than
+riece-channel-indicator.")
 (defvar riece-channel-list-indicator "No channel"
-  "A modeline indicator of the current joined channels.")
-(defvar riece-user-indicator nil)
+  "String displayed on the modeline to show the joined channels.")
+(defvar riece-user-indicator nil
+  "String displayed on the modeline to show the current nickname.")
 
-(defvar riece-away-indicator "-")
-(defvar riece-operator-indicator "-")
-(defvar riece-freeze-indicator "-")
+(defvar riece-away-indicator "-"
+  "String displayed on the modeline to allow the user to tell if the
+user is away.")
+(defvar riece-operator-indicator "-"
+  "String displayed on the modeline to allow the user to tell if the
+user is a operator.")
 
 ;;; Buffers:
 (defvar riece-command-buffer nil

@@ -1,3 +1,29 @@
+2004-03-28  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece.el (riece-command-mode): Don't display
+	riece-freeze-indicator on the modeline of the command buffer.
+	(riece-dialogue-mode): Make riece-freeze-indicator local to the
+	buffer whose major-mode is derived from riece-dialogue-mode.
+
+	* riece-display.el: Add autoload setting for derived-mode-class.
+	(riece-update-status-indicators): Check riece-freeze flag for each
+	buffer visible in the selected frame.
+
+	* riece-commands.el: Add autoload setting for derived-mode-class.
+	(riece-command-toggle-freeze): Don't switch to the channel buffer
+	if major-mode of the current buffer is derived from
+	riece-dialogue-mode.  Which allows to lock "*Others*" buffer.
+	(riece-command-toggle-own-freeze): Ditto.
+
+	* riece-globals.el (riece-freeze): Fix doc.
+	(riece-freeze-indicator): Add doc.
+	(riece-channel-indicator): Fix doc.
+	(riece-long-channel-indicator): Fix doc.
+	(riece-channel-list-indicator): Fix doc.
+	(riece-user-indicator): Fix doc.
+	(riece-away-indicator): Add doc.
+	(riece-operator-indicator): Add doc.
+
 2004-03-24  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-unread.el (riece-unread-after-display-message-function):

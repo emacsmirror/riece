@@ -352,7 +352,6 @@ For a list of the generic commands type \\[riece-command-generic] ? RET.
 	 '("Riece: "
 	   riece-away-indicator
 	   riece-operator-indicator
-	   riece-freeze-indicator
 	   " "
 	   riece-user-indicator
 	   " "
@@ -377,6 +376,7 @@ Instead, these commands are available:
 \\{riece-dialogue-mode-map}"
   (kill-all-local-variables)
   (make-local-variable 'riece-freeze)
+  (make-local-variable 'riece-freeze-indicator)
   (setq riece-freeze riece-default-freeze
 	riece-away-indicator "-"
 	riece-operator-indicator "-"
