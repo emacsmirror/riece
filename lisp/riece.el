@@ -551,7 +551,7 @@ Instead, these commands are available:
 		     riece-real-nickname)))
 	  (process-send-string
 	   (cdr (car pointer))
-	   "VERSION")
+	   "VERSION\r\n")
 	  (process-send-string
 	   (cdr (car pointer))
 	   (format "PRIVMSG %s :\1VERSION\1\r\n" nickname)))
