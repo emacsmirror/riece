@@ -48,20 +48,20 @@
     (end-of-line)
     (point)))
 
-(defvar riece-read-passwd nil)
+(defvar riece-read-passwd
+  (if (functionp 'read-passwd)
+      #'read-passwd
+    (if (load "passwd" t)
+	#'read-passwd
+      (autoload 'ange-ftp-read-passwd "ange-ftp")
+      #'ange-ftp-read-passwd)))
+
 (defun riece-read-passwd (prompt)
-  (if (not riece-read-passwd)
-      (if (functionp 'read-passwd)
-	  (setq riece-read-passwd 'read-passwd)
-	(if (load "passwd" t)
-	    (setq riece-read-passwd 'read-passwd)
-	  (autoload 'ange-ftp-read-passwd "ange-ftp")
-	  (setq riece-read-passwd 'ange-ftp-read-passwd))))
   (condition-case nil
       (let (inhibit-quit)
 	(funcall riece-read-passwd prompt))
     (quit
-     (message "%s: Quit" prompt)
+     (message "%sQuit" prompt)
      'quit)))
 
 (if (string-match "0\\{0\\}" "")
