@@ -1,7 +1,11 @@
 2003-08-20  TAKAHASHI Kaoru  <kaoru@kaisei.org>
 
 	* riece-display.el (riece-configure-windows-top): New function.
-	* riece-layout.el: New add-on.
+	* riece-layout.el (riece-layout-alist): Add top.
+
+	* riece-skk-kakutei.el: New add-on.
+	* COMPILE (riece-modules): Add riece-skk-kakutei.
+	* Makefile.am (EXTRA_DIST): Add riece-skk-kakutei.el
 
 2003-08-19  Daiki Ueno  <ueno@unixuser.org>
 

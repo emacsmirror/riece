@@ -48,7 +48,8 @@
 		riece-unread
 		riece-doctor
 		riece-alias
-		riece-layout))))
+		riece-layout
+		riece-skk-kakutei))))
 
 (defun riece-compile-modules (modules)
   (let ((load-path (cons nil load-path)))
