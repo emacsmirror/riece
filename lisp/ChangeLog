@@ -3,6 +3,11 @@
 	* Riece: Version 0.2.0 released.
 	* riece-version.el (riece-version-number): Bump up to 0.2.0.
 
+	* riece-ctcp.el (riece-handle-ctcp-version-request): Fixed bug in
+	formatting target identity.
+	(riece-handle-ctcp-ping-request): Ditto.
+	(riece-handle-ctcp-clientinfo-request): Ditto.
+
 2004-03-07  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-display.el: Rename some signals.

@@ -109,10 +109,10 @@
 	    t)))))
 
 (defun riece-handle-ctcp-version-request (prefix target string)
-  (let ((buffer (if (riece-channel-p target)
-		    (riece-channel-buffer (riece-make-identity
-					   target riece-server-name))))
-	(user (riece-prefix-nickname prefix)))
+  (let* ((target-identity (riece-make-identity target riece-server-name))
+	 (buffer (if (riece-channel-p target)
+		     (riece-channel-buffer target-identity)))
+	 (user (riece-prefix-nickname prefix)))
     (riece-send-string
      (format "NOTICE %s :\1VERSION %s\1\r\n" user (riece-extended-version)))
     (riece-insert-change buffer (format "CTCP VERSION from %s\n" user))
@@ -126,14 +126,14 @@
        (format "CTCP VERSION from %s (%s) to %s"
 	       user
 	       (riece-strip-user-at-host (riece-prefix-user-at-host prefix))
-	       (riece-format-identity target t)))
+	       (riece-format-identity target-identity t)))
       "\n"))))
 
 (defun riece-handle-ctcp-ping-request (prefix target string)
-  (let ((buffer (if (riece-channel-p target)
-		    (riece-channel-buffer (riece-make-identity
-					   target riece-server-name))))
-	(user (riece-prefix-nickname prefix)))
+  (let* ((target-identity (riece-make-identity target riece-server-name))
+	 (buffer (if (riece-channel-p target)
+		     (riece-channel-buffer target-identity)))
+	 (user (riece-prefix-nickname prefix)))
     (riece-send-string
      (if string
 	 (format "NOTICE %s :\1PING %s\1\r\n" user string)
@@ -149,14 +149,14 @@
        (format "CTCP PING from %s (%s) to %s"
 	       user
 	       (riece-strip-user-at-host (riece-prefix-user-at-host prefix))
-	       (riece-format-identity target t)))
+	       (riece-format-identity target-identity t)))
       "\n"))))
 
 (defun riece-handle-ctcp-clientinfo-request (prefix target string)
-  (let ((buffer (if (riece-channel-p target)
-		    (riece-channel-buffer (riece-make-identity
-					   target riece-server-name))))
-	(user (riece-prefix-nickname prefix)))
+  (let* ((target-identity (riece-make-identity target riece-server-name))
+	 (buffer (if (riece-channel-p target)
+		     (riece-channel-buffer target-identity)))
+	 (user (riece-prefix-nickname prefix)))
     (riece-send-string
      (format "NOTICE %s :\1CLIENTINFO %s\1\r\n"
 	     user
@@ -185,7 +185,7 @@
        (format "CTCP CLIENTINFO from %s (%s) to %s"
 	       user
 	       (riece-strip-user-at-host (riece-prefix-user-at-host prefix))
-	       (riece-format-identity target t)))
+	       (riece-format-identity target-identity t)))
       "\n"))))
 
 (defun riece-handle-ctcp-action-request (prefix target string)
