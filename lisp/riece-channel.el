@@ -28,12 +28,6 @@
 (require 'riece-globals)
 (require 'riece-identity)
 
-;;; String representation of a channel:
-(defun riece-channel-p (string)
-  "Return t if STRING is a channel.
-\(i.e. it matches `riece-channel-regexp')"
-  (string-match (concat "^" riece-channel-regexp) string))
-
 ;;; Channel object:
 (defun riece-find-channel (name)
   "Get a channel object named NAME from the server buffer."

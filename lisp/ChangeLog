@@ -1,5 +1,7 @@
 2003-06-23  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-misc.el (riece-channel-p): Moved from riece-channel.el.
+
 	* riece-300.el: Rewrite using riece-decode-identity.
 
 	* riece-identity.el (riece-completing-read-identity): Signal an

@@ -79,6 +79,11 @@
   (with-current-buffer buffer
     (eq riece-freeze 'own)))
 
+(defun riece-channel-p (string)
+  "Return t if STRING is a channel.
+\(i.e. it matches `riece-channel-regexp')"
+  (string-match (concat "^" riece-channel-regexp) string))
+
 (defun riece-current-nickname ()
   "Return the current nickname."
   (riece-with-identity-buffer riece-current-channel
