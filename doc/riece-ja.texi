@@ -491,6 +491,14 @@ CTCP (Client To Client Protocol)
 発言のあったチャンネルに@samp{!}マークをつける
 @item riece-rdcc
 DCC (Direct Client to Client protocol) によるファイル転送
+(Ruby による実装)
+@item riece-ndcc
+DCC (Direct Client to Client protocol) によるファイル転送
+(Emacs 21.3 の make-network-process による実装)
+@item riece-mini
+ミニバッファのみで IRC をする
+@item riece-log
+会話のログの収集
 @end table
 
 これらのうち、@samp{riece-highlight} と @samp{riece-ctcp} はデフォルトで
