@@ -1,3 +1,8 @@
+2003-08-06  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-unread.el (riece-unread-update-channel-list-buffer): Call
+	riece-parse-identity.
+
 2003-08-04  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-server.el (riece-find-server-name): Abolish.

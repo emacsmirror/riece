@@ -59,7 +59,8 @@
 	  (goto-char (point-min))
 	  (while (not (eobp))
 	    (if (looking-at "\\( ?[0-9]+:\\)\\([ !]\\)\\(.+\\)")
-		(let ((channel (match-string 3)))
+		(let ((channel (save-match-data
+				 (riece-parse-identity (match-string 3)))))
 		  (replace-match
 		   (concat "\\1"
 			   (if (member channel riece-unread-channels)
