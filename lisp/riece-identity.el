@@ -121,6 +121,13 @@ RFC2812, 2.2 \"Character codes\" says:
     list))
 
 (defun riece-format-identity (identity &optional prefix-only)
+  "Convert IDENTITY object to a string.
+If the optional 2nd argument PREFIX-ONLY is non-nil, don't append
+server part of the identity.
+
+The returned string will be abbreviated by
+`riece-abbrev-identity-string-function', and `riece-identity' property
+will be added."
   (let ((string
 	 (if (or prefix-only
 		 (equal (riece-identity-server identity) ""))
@@ -133,6 +140,9 @@ RFC2812, 2.2 \"Character codes\" says:
     string))
 
 (defun riece-parse-identity (string)
+  "Convert STRING to an identity object.
+The string will be expanded by
+`riece-expand-identity-string-function'."
   (if riece-expand-identity-string-function
       (setq string (funcall riece-expand-identity-string-function string)))
   (riece-make-identity (if (string-match " " string)
@@ -145,6 +155,10 @@ RFC2812, 2.2 \"Character codes\" says:
 (defun riece-completing-read-identity (prompt channels
 					      &optional predicate require-match
 					      initial history default)
+  "Read an identity object in the minibuffer, with completion.
+PROMPT is a string to prompt with; normally it ends in a colon and a space.
+CHANNELS is a list of identity objects.
+The rest of arguments are the same as `completing-read'."
   (let* ((string
 	  (completing-read
 	   prompt
