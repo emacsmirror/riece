@@ -18,7 +18,10 @@
    riece-log, riece-alias, riece-ctlseq, riece-keyword が今回からデフォ
    ルトで有効になります。
 
-** ボタンウィジェットクリック時のカーソル移動の防止 (ueno)
+** 新規コマンド riece-command-suspend-resume (ueno)
+   riece-command-suspend-resume は現在のウィンドウ構成を保存・再現します。
+
+** ボタンウィジェットクリック時のカーソル移動の抑止 (ueno)
 
 ** モードラインのインジケータを face で装飾 (ueno)
 
