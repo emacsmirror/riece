@@ -32,18 +32,17 @@
   :prefix "riece-"
   :group 'riece)
 
-(defcustom riece-guess-channel-try-functions
-  '(riece-default-guess-channel)
+(defcustom riece-guess-channel-try-functions nil
   "Functions which returns a list of channels the user wants to switch."
   :type '(repeat function)
   :group 'riece-guess)
 
 (defvar riece-current-channels)
-(defun riece-default-guess-channel ()
-  (delq nil (copy-sequence riece-current-channels)))
 
 (defun riece-guess-candidates ()
-  "Call \\[riece-guess-channel-try-functions] in turn and merge the results."
+  "Build candidate list.
+This function calls \\[riece-guess-channel-try-functions] in turn and
+merge the results."
   (let ((functions riece-guess-channel-try-functions)
 	candidates)
     (while functions
@@ -51,11 +50,21 @@
 	    (nconc candidates
 		   (delq nil (mapcar
 			      (lambda (channel)
-				(if (riece-identity-member channel candidates)
-				    nil
+				(unless (riece-identity-member
+					 channel candidates)
 				  channel))
 			      (funcall (car functions)))))
 	    functions (cdr functions)))
+    ;; Merge the default.
+    (setq candidates
+	  (nconc candidates
+		 (delq nil (mapcar
+			    (lambda (channel)
+			      (if (and channel
+				       (not (riece-identity-member
+					     channel candidates)))
+				  channel))
+			    riece-current-channels))))
     candidates))
 
 (defvar riece-guess-candidates nil)
@@ -63,7 +72,8 @@
 (defun riece-command-guess-switch-to-channel ()
   "Try to switch to the channel where the user is interested in."
   (interactive)
-  (unless (eq last-command this-command)
+  (unless (and (eq last-command this-command)
+	       riece-guess-candidates)
     (setq riece-guess-candidates (riece-guess-candidates)))
   (unless riece-guess-candidates
     (error "No channel"))

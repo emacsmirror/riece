@@ -1,3 +1,11 @@
+2003-08-29  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-guess.el (riece-guess-channel-try-functions): Default to
+	nil.
+	(riece-default-guess-channel): Abolish.
+	(riece-command-guess-switch-to-channel): Reconstruct
+	riece-guess-candidates when it is empty.
+
 2003-08-28  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-highlight.el (riece-dialogue-change-face): Use defvar to
