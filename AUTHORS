@@ -1,11 +1,21 @@
 Copyright (C) 1998-2003 Daiki Ueno
 Copyright (C) 1989 Tor Lillqvist
 
-Riece is written by Daiki Ueno <ueno@unixuser.org>.
+Riece is mainly written by Daiki Ueno <ueno@unixuser.org>.
 
-Riece is a redesign of the Liece IRC client.  The code is completely rewritten.
+The development of Riece has started to redesign the Liece IRC client.
+Liece is based on Irchat (version 3.01) which has been distributed
+under GNU General Public License version 1 or later.  Liece was mainly
+written by the same author of Riece.  Tor Lillqvist <tml@iki.fi> is
+the original author of Irchat.  See doc/irchat-copyright.el for the
+original copyright statement of Irchat.
 
-Liece was mainly written by the same author of Riece.  It is based on
-Irchat (version 3.01) which has been distributed under GNU General
-Public License version 1 or later.  Special thanks to Tor Lillqvist,
-the original author of Irchat.
+Riece has code borrowed from other great elisp packages such as Gnus,
+Emacs-w3m, ECB, and SEMI.  I would like to thank the developers of
+these packages.
+
+Other authors:
+
+TAKAHASHI Kaoru  <kaoru@kaisei.org>
+OHASHI Akira  <bg66@koka-in.org>
+Yoichi NAKAYAMA  <yoichi@geiin.org>
