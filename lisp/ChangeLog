@@ -1,3 +1,9 @@
+2003-10-14  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-commands.el (riece-command-toggle-away): Check user away
+	status in the server buffer.
+	[cf. <Liece:00119>]
+
 2003-10-14  TAKAHASHI Kaoru  <kaoru@kaisei.org>
 
 	* riece.el (riece-dialogue-mode-map): Bind "N" instead of "\C-n"

@@ -534,7 +534,10 @@ the layout to the selected layout-name."
 (defun riece-command-toggle-away (&optional message)
   "Mark yourself as being away."
   (interactive
-   (if (and (not (riece-user-get-away (riece-current-nickname)))
+   (if (and (not (riece-with-server-buffer (riece-identity-server
+					    (riece-current-nickname))
+		   (riece-user-get-away (riece-identity-prefix
+					 (riece-current-nickname)))))
 	    (or (null riece-away-message)
 		current-prefix-arg))
        (let ((message (read-string "Away message: ")))
