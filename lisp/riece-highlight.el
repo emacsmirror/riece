@@ -193,23 +193,21 @@
   "Highlight IRC buffers")
 
 (defun riece-highlight-setup-dialogue ()
-  (if (featurep 'xemacs)
-      ;; In XEmacs, auto-initialization of font-lock is not affective
-      ;; when buffer-file-name is not set.
-      (font-lock-set-defaults)
-    (make-local-variable 'font-lock-defaults)
-    (setq font-lock-defaults '(riece-dialogue-font-lock-keywords t)))
+  (make-local-variable 'font-lock-defaults)
+  (setq font-lock-defaults '(riece-dialogue-font-lock-keywords t))
+  ;; In XEmacs, auto-initialization of font-lock is not affective
+  ;; when buffer-file-name is not set.
+  (font-lock-set-defaults)
   (make-local-hook 'after-change-functions)
   (add-hook 'after-change-functions
 	    'riece-highlight-hide-prefix nil 'local))
 
 (defun riece-highlight-setup-channel-list ()
-  (if (featurep 'xemacs)
-      ;; In XEmacs, auto-initialization of font-lock is not affective
-      ;; when buffer-file-name is not set.
-      (font-lock-set-defaults)
-    (make-local-variable 'font-lock-defaults)
-    (setq font-lock-defaults '(riece-channel-list-font-lock-keywords t))))
+  (make-local-variable 'font-lock-defaults)
+  (setq font-lock-defaults '(riece-channel-list-font-lock-keywords t))
+  ;; In XEmacs, auto-initialization of font-lock is not affective
+  ;; when buffer-file-name is not set.
+  (font-lock-set-defaults))
 
 (defun riece-highlight-hide-prefix (start end length)
   (save-excursion
