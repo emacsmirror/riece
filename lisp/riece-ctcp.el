@@ -28,6 +28,7 @@
 (require 'riece-misc)
 (require 'riece-highlight)
 (require 'riece-display)
+(require 'riece-debug)
 
 (defface riece-ctcp-action-face
   '((((class color)
@@ -72,27 +73,15 @@
 		  (after-hook
 		   (intern (concat "riece-ctcp-after-" request
 				   "-request-hook"))))
-	      (unless (condition-case error
-			  (run-hook-with-args-until-success
-			   hook prefix (car targets) message)
-			(error
-			 (if riece-debug
-			     (message "Error in `%S': %S" hook error))
-			 nil))
+	      (unless (riece-ignore-errors (symbol-name hook)
+			(run-hook-with-args-until-success
+			 hook prefix (car targets) message))
 		(if function
-		    (condition-case error
-			(funcall function prefix (car targets) message)
-		      (error
-		       (if riece-debug
-			   (message "Error in `%S': %S"
-				    function error))))))
-	      (condition-case error
+		    (riece-ignore-errors (symbol-name function)
+		      (funcall function prefix (car targets) message)))
+		(riece-ignore-errors (symbol-name after-hook)
 		  (run-hook-with-args-until-success
-		   after-hook prefix (car targets) message)
-		(error
-		 (if riece-debug
-		     (message "Error in `%S': %S"
-			      after-hook error)))))
+		   after-hook prefix (car targets) message))))
 	    t)))))
 
 (defun riece-handle-ctcp-version-request (prefix target string)
@@ -207,27 +196,15 @@
 		  (after-hook
 		   (intern (concat "riece-ctcp-after-" response
 				   "-response-hook"))))
-	      (unless (condition-case error
-			  (run-hook-with-args-until-success
-			   hook prefix (car targets) message)
-			(error
-			 (if riece-debug
-			     (message "Error in `%S': %S" hook error))
-			 nil))
+	      (unless (riece-ignore-errors (symbol-name hook)
+			(run-hook-with-args-until-success
+			 hook prefix (car targets) message))
 		(if function
-		    (condition-case error
-			(funcall function prefix (car targets) message)
-		      (error
-		       (if riece-debug
-			   (message "Error in `%S': %S"
-				    function error))))))
-	      (condition-case error
+		    (riece-ignore-errors (symbol-name function)
+		      (funcall function prefix (car targets) message)))
+		(riece-ignore-errors (symbol-name after-hook)
 		  (run-hook-with-args-until-success
-		   after-hook prefix (car targets) message)
-		(error
-		 (if riece-debug
-		     (message "Error in `%S': %S"
-			      after-hook error)))))
+		   after-hook prefix (car targets) message))))
 	    t)))))
 
 (defun riece-handle-ctcp-version-response (prefix target string)

@@ -1,3 +1,21 @@
+2005-02-02  Daiki Ueno  <ueno@unixuser.org>
+
+	* Makefile.am (EXTRA_DIST): Add riece-debug.el.
+
+	* COMPILE (riece-modules): Add riece-debug.
+
+	* riece-signal.el (riece-emit-signal): Use riece-ignore-errors.
+
+	* riece-filter.el (riece-handle-numeric-reply): Use
+	riece-ignore-errors.
+	(riece-handle-message): Ditto.
+
+	* riece-ctcp.el (riece-handle-ctcp-request): Use
+	riece-ignore-errors.
+	(riece-handle-ctcp-response): Ditto.
+
+	* riece-debug.el: New file.
+
 2005-02-02  OHASHI Akira  <bg66@koka-in.org>
 
 	* riece-eval.el (riece-eval-regexp): Fix regexp.

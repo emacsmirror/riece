@@ -28,6 +28,7 @@
 (require 'riece-misc)
 (require 'riece-server)			;riece-close-server
 (require 'riece-identity)
+(require 'riece-debug)
 
 (defun riece-handle-numeric-reply (prefix number name string)
   (let ((base-number (* (/ number 100) 100))
@@ -40,12 +41,9 @@
 	     (format "riece-handle-default-%03d-message" base-number))))
     (if (and function
 	     (symbol-function function))
-	(condition-case error
-	    (funcall function prefix number name
-		     (riece-decode-coding-string string))
-	  (error
-	   (if riece-debug
-	       (message "Error in `%S': %S" function error)))))))
+	(riece-ignore-errors (symbol-name function)
+	  (funcall function prefix number name
+		   (riece-decode-coding-string string))))))
 
 (defun riece-handle-message (prefix message string)
   (if (and prefix
@@ -58,23 +56,13 @@
   (let ((function (intern-soft (concat "riece-handle-" message "-message")))
 	(hook (intern (concat "riece-" message "-hook")))
 	(after-hook (intern (concat "riece-after-" message "-hook"))))
-    (unless (condition-case error
-		(run-hook-with-args-until-success hook prefix string)
-	      (error
-	       (if riece-debug
-		   (message "Error in `%S': %S" hook error))
-	       nil))
+    (unless (riece-ignore-errors (symbol-name hook)
+	      (run-hook-with-args-until-success hook prefix string))
       (if function
-	  (condition-case error
-	      (funcall function prefix string)
-	    (error
-	     (if riece-debug
-		 (message "Error in `%S': %S" function error)))))
-      (condition-case error
-	  (run-hook-with-args-until-success after-hook prefix string)
-	(error
-	 (if riece-debug
-	     (message "Error in `%S': %S" after-hook error)))))))
+	  (riece-ignore-errors (symbol-name function)
+	    (funcall function prefix string)))
+      (riece-ignore-errors (symbol-name after-hook)
+	(run-hook-with-args-until-success after-hook prefix string)))))
 
 (defun riece-filter (process input)
   (save-excursion

@@ -30,6 +30,7 @@
 ;;; Code:
 
 (require 'riece-options)
+(require 'riece-debug)
 
 (defvar riece-signal-slot-obarray
   (make-vector 31 0))
@@ -103,22 +104,14 @@ This function is for internal use only."
       (setq signal (riece-make-signal signal-name args)
 	    slots (symbol-value symbol))
       (while slots
-	(condition-case error
-	    (if (or (null (riece-slot-filter (car slots)))
-		    (condition-case error
-			(funcall (riece-slot-filter (car slots)) signal)
-		      (error
-		       (if riece-debug
-			   (message
-			    "Error in signal filter for \"%S\": %S"
-			    signal-name error)))
-		      nil))
-		(funcall (riece-slot-function (car slots))
-			 signal (riece-slot-handback (car slots))))
-	  (error
-	   (if riece-debug
-	       (message "Error in slot function for \"%S\": %S"
-			signal-name error))))
+	(riece-ignore-errors (format "slot function for \"%S\""
+				     signal-name)
+	  (if (or (null (riece-slot-filter (car slots)))
+		  (riece-ignore-errors (format "signal filter for \"%S\""
+					       symbol-name)
+		    (funcall (riece-slot-filter (car slots)) signal)))
+	      (funcall (riece-slot-function (car slots))
+		       signal (riece-slot-handback (car slots)))))
 	(setq slots (cdr slots))))))
 
 (provide 'riece-signal)
