@@ -1,5 +1,14 @@
 2003-10-24  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-url.el: Add autoload setting for 'browse-url.
+
+	* riece-menu.el: Require 'riece-options, 'riece-globals,
+	'riece-identity, 'riece-layout, and 'riece-server; bind
+	riece-command-mode-map.
+
+	* riece-history.el: Require 'riece-options, 'riece-globals,
+	'riece-highlight, and 'riece-identity.
+
 	* riece-naming.el (riece-naming-assert-rename): Fixed.
 
 2003-10-24  Daiki Ueno  <ueno@unixuser.org>

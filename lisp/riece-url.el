@@ -32,6 +32,7 @@
 (require 'riece-options)
 (require 'riece-menu)			;riece-menu-items
 
+(autoload 'browse-url "browse-url")
 (defvar browse-url-browser-function)
 
 (defgroup riece-url nil

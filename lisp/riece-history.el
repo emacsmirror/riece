@@ -31,6 +31,10 @@
 
 ;;; Code:
 
+(require 'riece-options)
+(require 'riece-globals)
+(require 'riece-highlight)
+(require 'riece-identity)
 (require 'ring)
 
 (defgroup riece-history nil

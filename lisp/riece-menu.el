@@ -29,6 +29,12 @@
 
 ;;; Code:
 
+(require 'riece-options)
+(require 'riece-globals)
+(require 'riece-identity)
+(require 'riece-layout)
+(require 'riece-server)
+
 (defvar riece-menu-items
   `("Riece"
     ["Version" riece-version t]
@@ -87,6 +93,8 @@
 			  (list 'riece-command-close-server (car entry))
 			  (riece-server-opened (car entry)))))
 	  riece-server-alist))
+
+(defvar riece-command-mode-map)
 
 (defun riece-menu-insinuate ()
   (add-hook 'riece-command-mode-hook
