@@ -1,0 +1,5 @@
+2003-05-29  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-commands.el (riece-command-invite): Don't accept channel
+	argument; throw an error when user is not on a channel.
+	(riece-command-kick): New command.

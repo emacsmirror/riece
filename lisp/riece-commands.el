@@ -161,25 +161,39 @@
 			     (riece-identity-prefix riece-current-channel)
 			     topic)))
 
-(defun riece-command-invite (&optional user channel)
+(defun riece-command-invite (user)
   (interactive
-   (let ((completion-ignore-case t)
-	 user channel)
-     (if current-prefix-arg
-	 (setq channel
-	       (completing-read
-		"Channel: "
-		(mapcar #'list riece-current-channels))))
+   (let ((completion-ignore-case t))
+     (unless (and riece-current-channel
+		  (riece-channel-p riece-current-channel))
+       (error "Not on a channel"))
      (list (completing-read
 	    "User: "
-	    (mapcar #'list (riece-get-users-on-server)))
-	   channel)))
-  (if channel
-      (riece-send-string (format "INVITE %s %s\r\n"
-				 user (riece-identity-prefix channel)))
-    (riece-send-string (format "INVITE %s %s\r\n"
-			       user (riece-identity-prefix
-				     riece-current-channel)))))
+	    (mapcar #'list (riece-get-users-on-server))))))
+  (riece-send-string (format "INVITE %s %s\r\n"
+			     user (riece-identity-prefix
+				   riece-current-channel))))
+
+(defun riece-command-kick (user &optional message)
+  (interactive
+   (let ((completion-ignore-case t))
+     (unless (and riece-current-channel
+		  (riece-channel-p riece-current-channel))
+       (error "Not on a channel"))
+     (list (completing-read
+	    "User: "
+	    (mapcar #'list (riece-channel-get-users
+			    riece-current-channel)))
+	   (if current-prefix-arg
+	       (read-string "Message: ")))))
+  (riece-send-string
+   (if message
+       (format "KICK %s %s :%s\r\n"
+	       (riece-identity-prefix riece-current-channel)
+	       user message)
+     (format "KICK %s %s\r\n"
+	     (riece-identity-prefix riece-current-channel)
+	     user))))
 
 (defun riece-command-change-mode (channel change)
   (interactive
