@@ -5,48 +5,45 @@
 	(cons (if (featurep 'xemacs)
 		  'riece-xemacs
 		'riece-emacs)
-	      (append
-	       '(riece-globals
-		 riece-options
-		 riece-version
-		 riece-inlines
-		 riece-coding
-		 riece-complete
+	      '(riece-globals
+		riece-options
+		riece-version
+		riece-inlines
+		riece-coding
+		riece-complete
 
-		 ;; riece-identity -+-> riece-channel
-		 ;;                 +-> riece-user
-		 riece-identity
-		 riece-channel
-		 riece-user
+		;; riece-identity -+-> riece-channel
+		;;                 +-> riece-user
+		riece-identity
+		riece-channel
+		riece-user
 
-		 riece-misc
-		 riece-display
-		 riece-server
+		riece-misc
+		riece-display
+		riece-server
 
-		 ;; riece-channel -+-> riece-naming
-		 ;; riece-user    -+
-		 riece-naming
-		 riece-message
+		;; riece-channel -+-> riece-naming
+		;; riece-user    -+
+		riece-naming
+		riece-message
 
-		 ;; riece-filter calls riece-{handle,000,200,300,400,500}
-		 riece-filter
-		 riece-handle
-		 riece-000
-		 riece-200
-		 riece-300
-		 riece-400
-		 riece-500
+		;; riece-filter calls riece-{handle,000,200,300,400,500}
+		riece-filter
+		riece-handle
+		riece-000
+		riece-200
+		riece-300
+		riece-400
+		riece-500
 
-		 riece-commands
-		 riece
+		riece-commands
+		riece
 
-		 ;; add-ons
-		 riece-ctcp
-		 riece-highlight
-		 riece-url
-		 riece-unread)
-	       (if (fboundp 'make-network-process)
-		   '(riece-ndcc))))))
+		;; add-ons
+		riece-ctcp
+		riece-highlight
+		riece-url
+		riece-unread))))
 
 (defun riece-compile-modules (modules)
   (let ((load-path (cons nil load-path)))
