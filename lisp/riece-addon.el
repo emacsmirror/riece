@@ -179,7 +179,7 @@
 	(error "Circular add-on dependency found"))
     (nreverse addons)))
 
-(defun riece-resolve-addon (addons)
+(defun riece-resolve-addons (addons)
   (riece-resolve-addon-dependencies
    (append addons
 	   (mapcar
