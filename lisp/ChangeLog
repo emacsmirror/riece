@@ -1,5 +1,9 @@
 2003-05-30  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-display.el (riece-configure-windows-predicate): New function.
+	(riece-configure-windows-predicate): New user option.
+	(riece-redisplay-buffers): Use it.
+
 	* riece-complete.el: Require 'cl for butlast.
 
 	* Makefile.am (elc): Renamed from "compile".

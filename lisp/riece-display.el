@@ -39,6 +39,12 @@
   :type 'function
   :group 'riece-looks)
 
+(defcustom riece-configure-windows-predicate
+  #'riece-configure-windows-predicate
+  "Function to check whether window reconfiguration is needed."
+  :type 'function
+  :group 'riece-looks)
+
 (defun riece-configure-windows ()
   (let ((buffer (current-buffer))
 	(show-user-list
@@ -251,18 +257,21 @@
     (if (riece-identity-equal-no-server identity riece-current-channel)
 	(riece-switch-to-nearest-channel pointer))))
 
+(defun riece-configure-windows-predicate ()
+  ;; The current channel is changed, and some buffers are visible.
+  (unless (equal riece-last-channel riece-current-channel)
+    (let ((buffers riece-buffer-list))
+      (catch 'found
+	(while buffers
+	  (if (and (buffer-live-p (car buffers))
+		   (get-buffer-window (car buffers)))
+	      (throw 'found t)
+	    (setq buffers (cdr buffers))))))))
+
 (defun riece-redisplay-buffers (&optional force)
   (riece-update-buffers)
   (if (or force
-	  ;; The current channel is changed, and some buffers are visible.
-	  (unless (equal riece-last-channel riece-current-channel)
-	    (let ((buffers riece-buffer-list))
-	      (catch 'found
-		(while buffers
-		  (if (and (buffer-live-p (car buffers))
-			   (get-buffer-window (car buffers)))
-		      (throw 'found t)
-		    (setq buffers (cdr buffers))))))))
+	  (funcall riece-configure-windows-predicate))
       (funcall riece-configure-windows-function)))
 
 (provide 'riece-display)
