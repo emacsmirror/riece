@@ -77,6 +77,14 @@
 (defalias 'riece-overlay-start 'extent-start-position)
 (defalias 'riece-overlay-buffer 'extent-buffer)
 
+;;; stolen (and renamed) from nnheaderxm.el.
+(defun riece-run-at-time (time repeat function &rest args)
+  (start-itimer
+   "riece-run-at-time"
+   `(lambda ()
+      (,function ,@args))
+   time repeat))
+
 (provide 'riece-xemacs)
 
 ;;; riece-xemacs.el ends here

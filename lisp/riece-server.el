@@ -225,14 +225,14 @@ the `riece-server-keyword-map' variable."
 (eval-when-compile
   (autoload 'riece-exit "riece"))
 (defun riece-quit-server-process (process &optional message)
-  (run-at-time riece-quit-timeout nil
-	       (lambda (process)
-		 (when (rassq process riece-server-process-alist)
-		   (riece-close-server-process process)
-		   ;; If no server process is available, exit.
-		   (unless riece-server-process-alist
-		     (riece-exit))))
-	       process)
+  (riece-run-at-time riece-quit-timeout nil
+		     (lambda (process)
+		       (when (rassq process riece-server-process-alist)
+			 (riece-close-server-process process)
+			 ;; If no server process is available, exit.
+			 (unless riece-server-process-alist
+			   (riece-exit))))
+		     process)
   (riece-process-send-string process
 			     (if message
 				 (format "QUIT :%s\r\n" message)

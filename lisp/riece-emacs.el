@@ -77,6 +77,8 @@
 (defalias 'riece-overlay-start 'overlay-start)
 (defalias 'riece-overlay-buffer 'overlay-buffer)
 
+(defalias 'riece-run-at-time 'run-at-time)
+
 (provide 'riece-emacs)
 
 ;;; riece-emacs.el ends here

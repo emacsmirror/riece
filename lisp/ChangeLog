@@ -1,5 +1,9 @@
 2003-10-22  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-server.el (riece-quit-server-process): Use riece-run-at-time.
+	* riece-xemacs.el (riece-run-at-time): New function.
+	* riece-emacs.el (riece-run-at-time): New alias.
+
 	* riece-misc.el (riece-get-identities-on-server): New function.
 	(riece-get-users-on-server): Use it.
 
