@@ -46,11 +46,6 @@
 			       old riece-server-name))
 	  (rename-buffer (riece-channel-buffer-name
 			  (riece-make-identity new riece-server-name))))
-	(with-current-buffer (riece-user-list-buffer-name
-			      (riece-make-identity
-			       old riece-server-name))
-	  (rename-buffer (riece-user-list-buffer-name
-			  (riece-make-identity new riece-server-name))))
 	(if (riece-identity-equal (riece-make-identity
 				   old riece-server-name)
 				  riece-current-channel)

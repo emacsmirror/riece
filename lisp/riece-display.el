@@ -239,35 +239,19 @@
 				   "\n"))))
     (current-buffer)))
 
-(defun riece-user-list-buffer-name (identity)
-  (format riece-user-list-buffer-format (riece-decode-identity identity)))
-
-(eval-when-compile
-  (autoload 'riece-user-list-mode "riece"))
-(defun riece-user-list-buffer-create (identity)
-  (with-current-buffer
-      (riece-get-buffer-create (riece-user-list-buffer-name identity))
-    (unless (eq major-mode 'riece-user-list-mode)
-      (riece-user-list-mode))
-    (current-buffer)))
-
 (defun riece-switch-to-channel (identity)
   (setq riece-last-channel riece-current-channel
 	riece-current-channel identity
 	riece-channel-buffer
-	(get-buffer (riece-channel-buffer-name identity))
-	riece-user-list-buffer
-	(get-buffer (riece-user-list-buffer-name identity)))
+	(get-buffer (riece-channel-buffer-name identity)))
   (run-hooks 'riece-channel-switch-hook))
 
 (defun riece-join-channel (identity)
   (unless (riece-identity-member identity riece-current-channels)
     (setq riece-current-channels
-	  (riece-identity-assign-binding
-	   identity riece-current-channels
-	   riece-default-channel-binding)))
-  (riece-channel-buffer-create identity)
-  (riece-user-list-buffer-create identity))
+	  (riece-identity-assign-binding identity riece-current-channels
+					 riece-default-channel-binding))
+    (riece-channel-buffer-create identity)))
 
 (defun riece-switch-to-nearest-channel (pointer)
   (let ((start riece-current-channels)

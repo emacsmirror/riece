@@ -57,6 +57,7 @@
 (defvar riece-buffer-mode-alist
   '((riece-dialogue-buffer . riece-dialogue-mode)
     (riece-others-buffer . riece-others-mode)
+    (riece-user-list-buffer . riece-user-list-mode)
     (riece-channel-list-buffer . riece-channel-list-mode)
     (riece-private-buffer . riece-dialogue-mode)
     (riece-wallops-buffer)))
@@ -361,6 +362,7 @@ Instead, these commands are available:
   "Major mode for displaying channel list.
 All normal editing commands are turned off."
   (kill-all-local-variables)
+  (buffer-disable-undo)
   (setq major-mode 'riece-channel-list-mode
         mode-name "Channels"
 	mode-line-buffer-identification
@@ -376,6 +378,7 @@ All normal editing commands are turned off.
 Instead, these commands are available:
 \\{riece-user-list-mode-map}"
   (kill-all-local-variables)
+  (buffer-disable-undo)
   (setq major-mode 'riece-user-list-mode
         mode-name "User list"
 	mode-line-buffer-identification
