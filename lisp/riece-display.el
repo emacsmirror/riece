@@ -37,6 +37,8 @@
     riece-update-short-channel-indicator
     riece-update-channel-list-indicator))
 
+(defvar riece-channel-list-changed nil)
+
 (defun riece-update-user-list-buffer ()
   (save-excursion
     (set-buffer riece-user-list-buffer)
@@ -67,27 +69,24 @@
 	    (setq users (cdr users))))))))
 
 (defun riece-update-channel-list-buffer ()
-  (save-excursion
-    (set-buffer riece-channel-list-buffer)
-    (let ((inhibit-read-only t)
-	  buffer-read-only
-	  (index 1)
-	  (channels riece-current-channels))
-      (erase-buffer)
-      (while channels
-	(if (car channels)
-	    (let ((point (point)))
-	      (insert (format "%2d:%c%s\n" index
-			      (if (riece-identity-equal
-				   (car channels)
-				   riece-current-channel)
-				  ?*
-				?\ )
-			      (riece-format-identity (car channels))))
-	      (put-text-property point (point) 'riece-identity
-				 (car channels))))
-	(setq index (1+ index)
-	      channels (cdr channels))))))
+  (if riece-channel-list-changed
+      (save-excursion
+	(set-buffer riece-channel-list-buffer)
+	(let ((inhibit-read-only t)
+	      buffer-read-only
+	      (index 1)
+	      (channels riece-current-channels))
+	  (erase-buffer)
+	  (while channels
+	    (if (car channels)
+		(let ((point (point)))
+		  (insert (format "%2d: %s\n" index
+				  (riece-format-identity (car channels))))
+		  (put-text-property point (point) 'riece-identity
+				     (car channels))))
+	    (setq index (1+ index)
+		  channels (cdr channels))))
+	(setq riece-channel-list-changed nil))))
 
 (defun riece-update-channel-indicator ()
   (setq riece-channel-indicator
@@ -108,23 +107,25 @@
 	  "None")))
 
 (defun riece-update-channel-list-indicator ()
-  (if (and riece-current-channels
-	   ;; There is at least one channel.
-	   (delq nil (copy-sequence riece-current-channels)))
-      (let ((index 1))
-	(setq riece-channel-list-indicator
-	      (mapconcat
-	       #'identity
-	       (delq nil
-		     (mapcar
-		      (lambda (channel)
-			(prog1 (if channel
-				   (format "%d:%s" index
-					   (riece-format-identity channel)))
-			  (setq index (1+ index))))
-		      riece-current-channels))
-	       ",")))
-    (setq riece-channel-list-indicator "No channel")))
+  (if riece-channel-list-changed
+      (if (and riece-current-channels
+	       ;; There is at least one channel.
+	       (delq nil (copy-sequence riece-current-channels)))
+	  (let ((index 1))
+	    (setq riece-channel-list-indicator
+		  (mapconcat
+		   #'identity
+		   (delq nil
+			 (mapcar
+			  (lambda (channel)
+			    (prog1
+				(if channel
+				    (format "%d:%s" index
+					    (riece-format-identity channel)))
+			      (setq index (1+ index))))
+			  riece-current-channels))
+		   ",")))
+	(setq riece-channel-list-indicator "No channel"))))
 
 (defun riece-update-status-indicators ()
   (if riece-current-channel
@@ -193,7 +194,8 @@
 	      (if channel
 		  (riece-parse-identity channel)))
 	    riece-default-channel-binding)))
-    (riece-channel-buffer-create identity)))
+    (riece-channel-buffer-create identity)
+    (setq riece-channel-list-changed t)))
 
 (defun riece-switch-to-nearest-channel (pointer)
   (let ((start riece-current-channels)
@@ -217,7 +219,8 @@
     (if pointer
 	(setcar pointer nil))
     (if (riece-identity-equal identity riece-current-channel)
-	(riece-switch-to-nearest-channel pointer))))
+	(riece-switch-to-nearest-channel pointer))
+    (setq riece-channel-list-changed t)))
 
 (defun riece-redisplay-buffers (&optional force)
   (riece-update-buffers)

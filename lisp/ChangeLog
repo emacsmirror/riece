@@ -1,5 +1,14 @@
 2003-08-26  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-highlight.el (riece-channel-list-mark-current-channel):
+	New function.
+
+	* riece-display.el (riece-channel-list-changed): New variable.
+	(riece-update-channel-list-buffer): Check riece-channel-list-changed.
+	(riece-update-channel-list-indicator): Ditto.
+
+2003-08-26  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-options.el (riece-addons): Enable riece-unread by default.
 
 	* riece-highlight.el (riece-channel-list-current-face): New variable.
