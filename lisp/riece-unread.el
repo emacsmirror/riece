@@ -37,9 +37,9 @@
 
 (defun riece-unread-display-message-function (message)
   (unless (or (riece-message-own-p message)
-	      (equal (riece-message-target message) riece-current-channel)
-	      (eq (window-buffer (selected-window))
-		  (get-buffer riece-command-buffer)))
+	      (and (equal (riece-message-target message) riece-current-channel)
+		   (eq (window-buffer (selected-window))
+		       (get-buffer riece-command-buffer))))
     (setq riece-unread-channels
 	  (delete (riece-message-target message) riece-unread-channels))
     (add-to-list 'riece-unread-channels
