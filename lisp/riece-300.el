@@ -229,16 +229,20 @@
 		 (substring string (match-end 0))))
 	"\n"))))
 
-(defvar riece-353-string nil)
+(defvar riece-353-message-alist nil)
 (defun riece-handle-353-message (prefix number name string)
   "RPL_NAMREPLY	\"[=\*@] <channel> :[[@|+]<nick> [[@|+]<nick> [...]]]\"."
+  (make-local-variable 'riece-353-message-alist)      
   (if (string-match "^[=\*@] *\\([^ ]+\\) +:?" string)
-      (let ((channel (match-string 1 string))
-	    (start 0)
-	    user)
-	(make-local-variable 'riece-353-string)
-	(setq riece-353-string (concat riece-353-string
-				       (substring string (match-end 0)))))))
+      (let* ((channel (match-string 1 string))
+	     (entry (assoc channel riece-353-message-alist)))
+	(if entry
+	    (setcdr entry
+		    (concat (cdr entry)
+			    (substring string (match-end 0))))
+	  (setq riece-353-message-alist
+		(cons (cons channel (substring string (match-end 0)))
+		      riece-353-message-alist))))))
 
 (defun riece-handle-322-message (prefix number name string)
   (if (string-match "^\\([^ ]+\\) \\([0-9]+\\) :?" string)
@@ -410,10 +414,12 @@
 	     (channel-identity (riece-make-identity channel
 						    riece-server-name))
 	     (buffer (riece-channel-buffer channel-identity))
-	     (string (copy-sequence riece-353-string))
+	     (entry (assoc channel riece-353-message-alist))
+	     (string (cdr entry))
 	     (start 0)
 	     users)
-	(setq riece-353-string nil)
+	(if entry
+	    (setcdr entry nil))
 	(while (string-match
 		(concat "\\([@+]\\)?\\(" riece-user-regexp "\\) *")
 		string start)

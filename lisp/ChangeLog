@@ -2,7 +2,7 @@
 
 	* riece-filter.el (riece-filter): Accept lines which end with LF.
 
-	* riece-300.el (riece-353-string): Renamed from riece-353-users.
+	* riece-300.el (riece-353-message-alist): Renamed from riece-353-users.
 	(riece-handle-353-message): Don't parse the reply.
 	(riece-handle-366-message): Parse 353 replies here; count users.
 
