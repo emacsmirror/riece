@@ -1,5 +1,7 @@
 2004-11-19  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-yank.el (riece-yank-strip-space): Bind space-width.
+
 	* riece-xemacs.el (riece-recent-messages): New function.
 	* riece-emacs.el (riece-recent-messages): New function.
 	* riece.el (riece-submit-bug-report): Use riece-recent-messages
