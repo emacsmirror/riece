@@ -127,7 +127,7 @@
        (format "CTCP VERSION from %s (%s) to %s"
 	       user
 	       (riece-strip-user-at-host (riece-prefix-user-at-host prefix))
-	       target))
+	       (riece-format-identity target t)))
       "\n"))))
 
 (defun riece-handle-ctcp-ping-request (prefix target string)
@@ -150,7 +150,7 @@
        (format "CTCP PING from %s (%s) to %s"
 	       user
 	       (riece-strip-user-at-host (riece-prefix-user-at-host prefix))
-	       target))
+	       (riece-format-identity target t)))
       "\n"))))
 
 (defun riece-handle-ctcp-clientinfo-request (prefix target string)
@@ -186,7 +186,7 @@
        (format "CTCP CLIENTINFO from %s (%s) to %s"
 	       user
 	       (riece-strip-user-at-host (riece-prefix-user-at-host prefix))
-	       target))
+	       (riece-format-identity target t)))
       "\n"))))
 
 (defun riece-handle-ctcp-action-request (prefix target string)
