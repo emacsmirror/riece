@@ -1,7 +1,6 @@
 * これは何か?
 
-Riece は Emacs 向け IRC クライアントです。IRC クライアント Liece の再
-設計するために開発が始まりました。
+Riece は Emacs 向け IRC クライアントです。
 
 Riece には以下に挙げる特長があります:
 
