@@ -1,3 +1,8 @@
+2004-01-28  Daiki Ueno  <ueno@unixuser.org>
+
+	* Riece: Version 0.1.8 released.
+	* riece-version.el (riece-version-number): Bump up to 0.1.8.
+
 2004-01-27  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-lsdb.el: Require 'riece-identity; add autoload setting for
