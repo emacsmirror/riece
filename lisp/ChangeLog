@@ -1,3 +1,8 @@
+2004-12-07  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-log.el (riece-log-insert-log): Renamed from
+	riece-log-flashback-1; simplified.
+
 2004-12-07  TAKAHASHI Kaoru  <kaoru@kaisei.org>
 
 	* riece-foolproof.el (riece-foolproof-command-send-message-function): 
