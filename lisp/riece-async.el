@@ -23,13 +23,13 @@
 
 ;;; Commentary:
 
-;; This program allows to connect IRC server via asynchronous proxy
-;; which responds to PING request from server in background.
+;; This program allows to connect to an IRC server via local proxy
+;; which responds to PING requests from server.
 
 ;; To use, add the following line to your ~/.riece/init.el:
 ;; (add-to-list 'riece-addons 'riece-async)
 
-;; If you want to enable this feature to per server, write the server
+;; If you want to enable this feature per server, write the server
 ;; spec like this:
 ;; (add-to-list 'riece-server-alist
 ;;              '("async" :host "irc.tokyo.wide.ad.jp"
