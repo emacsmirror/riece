@@ -3,7 +3,7 @@
 @setfilename riece-ja.info
 @settitle Riece -- An IRC client for Emacsen --
 @c %**end of header
-@set VERSION 0.1.7
+@set VERSION 0.1.8
 @c @documentlanguage ja
 
 @dircategory GNU Emacs Lisp
@@ -14,7 +14,7 @@
 @ifinfo
 This file describes Riece.
 
-Copyright (C) 2003 Daiki Ueno.
+Copyright (C) 2003,2004 Daiki Ueno.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.1 or
@@ -83,6 +83,7 @@ Riece $B$O!"D9$$4V%a%s%F%J%s%9IT2DG=$J>uBV$K$"$C$?(B Liece $B$N%3!<%I$r40A4$K
 $B$h$j>\$7$$>pJs$O!"0J2<$N%Z!<%8$r8fMw$/$@$5$$!#(B
 
 @itemize @bullet
+@item http://www.nongnu.org/riece/
 @item http://wiliki.designflaw.org/index.cgi?Riece&l=jp
 @item http://www.unixuser.org/~ueno/liece/
 @end itemize
@@ -123,7 +124,7 @@ make install
 XEmacs $B$N%Q%C%1!<%8$H$7$F%$%s%9%H!<%k$9$k>l9g$K$O0J2<$N$h$&$K$7$^$9!#(B
 
 @example
-./configure --with-xemacs[=xemacs-21.4.13]
+./configure --with-xemacs[=xemacs-21.4.14]
 make package
 make install-package
 @end example
@@ -322,7 +323,7 @@ IRC $B$r$d$a$^$9(B(@code{riece-command-quit})
 $B%f!<%6$KH/8@8"$rM?$($^$9!#A0CV0z?t(B (@kbd{C-u}) $B$rM?$($k$H!"%f!<%6$+$iH/8@8"$rC%$$$^$9(B(@code{riece-command-set-speakers})
 @item C-c V
 @findex riece-version
-Riece $B$N%P!<%8%g%s$rI=<($7$^$9!#(B
+Riece $B$N%P!<%8%g%s$rI=<($7$^$9!#A0CV0z?t(B (@kbd{C-u}) $B$rM?$($k$H!"$h$j>\:Y$J>pJs$rI=<($7$^$9!#(B
 @item C-c /
 @findex riece-command-raw
 $B@8$N(B IRC $B%3%^%s%I$rAw$j$^$9(B(@code{riece-command-raw})
@@ -431,9 +432,14 @@ Riece $B$NBg$-$JFCD9$K!"J#?t$N%5!<%P$KF1;~$K@\B3$9$k5!G=$,$"$j$^$9!#(B
 @node Server settings, Add-ons, Advanced usage, Advanced usage
 @section Server settings
 
-IRC $B%5!<%P$O(B @code{riece-server} $BJ8;zNs$H$7$F;XDj$7$^$9!#(B
-$B$3$3$G(B @code{riece-server} $B$N%U%)!<%^%C%H$O(B "<$B%5!<%P$N%[%9%HL>(B>:<$B%]!<%HHV9f(B>[:<$B%Q%9%o!<%I(B>]" $B$H$J$j$^$9!#(B
+$B5/F0;~$K%G%U%)%k%H$G@\B3$9$k(B IRC $B%5!<%P$O(B @code{riece-server} $B$G;XDj$7$^$9!#(B
 @vindex riece-server
+
+$B$3$3$G(B @code{riece-server} $B$OJ8;zNs$G$"$j!"$=$N%U%)!<%^%C%H$O<!$N$h$&$K(B
+$B$J$j$^$9!#(B
+@example
+ "<$B%5!<%P$N%[%9%HL>(B>:<$B%]!<%HHV9f(B>[:<$B%Q%9%o!<%I(B>]"
+@end example
 
 @code{riece-server-alist} $B$rE,@Z$K@_Dj$9$k$H!"%-!<%o!<%I$r;H$C$F!"$h$j>\(B
 $B:Y$J;XDj$,2DG=$K$J$j$^$9!#0J2<$OI.<T$N@_Dj$+$iH4$-=P$7$?Nc$G$9!#(B
@@ -524,6 +530,11 @@ SKK $B;HMQ;~$KJQ49%b!<%I$N0u$rH/8@$+$i<h$j=|$/(B
 @item riece-async
 Emacs $B$,(B busy or suspend $B>uBV$K$J$k$3$H$KHw$(!"(B
 PING $B$K1~Ez$9$k(B local proxy $B7PM3$G(B IRC $B%5!<%P$K@\B3(B
+@item riece-lsdb
+$B%"%I%l%9D"(B LSDB (Lovely Sister Database)
+@uref{http://lsdb.sourceforge.jp} $B$HO"7H(B
+@item riece-xface
+$B%f!<%6%j%9%H%P%C%U%!$K%f!<%6$N(B X-Face $B$rI=<((B
 @end table
 
 $B$3$l$i$N$&$A!"(B@samp{riece-highlight} $B$H(B @samp{riece-ctcp}$B!"(B
