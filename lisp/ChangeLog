@@ -1,3 +1,8 @@
+2005-02-04  OHASHI Akira  <bg66@koka-in.org>
+
+	* riece-biff.el (riece-biff-functions): Abolish.
+	(riece-biff-after-display-message-function): Follow the change above.
+
 2005-02-04  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-server.el (riece-close-server-process): Switch to process

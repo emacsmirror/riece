@@ -49,11 +49,6 @@
   :type 'string
   :group 'riece-biff)
 
-(defcustom riece-biff-functions nil
-  "*Functions for processing new arrival messages."
-  :type 'function
-  :group 'riece-biff)
-
 (defvar riece-biff-mode-string 'riece-biff-default-mode-string)
 
 (defvar riece-biff-enabled nil)
@@ -70,8 +65,7 @@
     (when (or (null riece-biff-check-channels)
 	      (member (riece-format-identity (riece-message-target message))
 		      riece-biff-check-channels))
-      (setq riece-biff-mode-string 'riece-biff-biff-mode-string)
-      (run-hook-with-args 'riece-biff-functions message))))
+      (setq riece-biff-mode-string 'riece-biff-biff-mode-string))))
 
 (defun riece-biff-clear (&optional dummy)
   (when riece-biff-enabled
