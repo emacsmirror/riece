@@ -1,3 +1,18 @@
+2004-11-15  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-300.el (riece-handle-302-message): Don't expect leading
+	":" before parameter list.
+	(riece-handle-301-message): Ditto.
+	(riece-handle-311-message): Ditto.
+	(riece-handle-312-message): Ditto.
+	(riece-handle-317-message): Ditto.
+	(riece-handle-319-message): Ditto.
+	(riece-handle-351-message): Ditto.
+	(riece-handle-353-message): Ditto.
+	(riece-handle-322-message): Ditto.
+	(riece-handle-set-topic): Ditto.
+	(riece-handle-366-message): Ditto.
+
 2004-11-14  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece.el (riece-exit): Reset riece-channel-status-indicator.

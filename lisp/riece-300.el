@@ -34,7 +34,10 @@
 
 (defun riece-handle-302-message (prefix number name string)
   "RPL_USERHOST \":*1<reply> *( \" \" <reply> )\""
-  (let ((replies (split-string (substring string 1) " ")))
+  (let ((replies (split-string (if (eq (aref string 0) ?:)
+				   (substring string 1)
+				 string)
+			       " ")))
     (while replies
       (if (string-match
 	   (concat "^\\(" riece-user-regexp
@@ -82,12 +85,15 @@
 		(riece-format-identity
 		 (riece-make-identity user riece-server-name)
 		 t))
-	      (split-string (substring string 1) " ")
+	      (split-string (if (eq (aref string 0) ?:)
+				(substring string 1)
+			      string)
+			    " ")
 	      "")))
     "\n")))
 
 (defun riece-handle-301-message (prefix number name string)
-  (if (string-match (concat "^\\(" riece-user-regexp "\\) :") string)
+  (if (string-match (concat "^\\(" riece-user-regexp "\\) :?") string)
       (let ((user (match-string 1 string))
 	    (message (substring string (match-end 0))))
 	(riece-user-toggle-away user t)
@@ -122,7 +128,7 @@
 (defun riece-handle-311-message (prefix number name string)
   (if (string-match
        (concat "^\\(" riece-user-regexp
-	       "\\) \\([^ ]+\\) \\([^ ]+\\) \\* :")
+	       "\\) \\([^ ]+\\) \\([^ ]+\\) \\* :?")
        string)
       (let ((user (match-string 1 string))
 	    (name (substring string (match-end 0)))
@@ -142,7 +148,7 @@
 
 (defun riece-handle-312-message (prefix number name string)
   (if (string-match
-       (concat "^\\(" riece-user-regexp "\\) \\([^ ]+\\) :")
+       (concat "^\\(" riece-user-regexp "\\) \\([^ ]+\\) :?")
        string)
       (riece-insert-info
        (list riece-dialogue-buffer riece-others-buffer)
@@ -168,7 +174,7 @@
 
 (defun riece-handle-317-message (prefix number name string)
   (if (string-match
-       (concat "^\\(" riece-user-regexp "\\) \\([0-9]+\\) [^:]*:seconds")
+       (concat "^\\(" riece-user-regexp "\\) \\([0-9]+\\) ")
        string)
       (let ((user (match-string 1 string))
 	    (idle (match-string 2 string)))
@@ -184,7 +190,7 @@
 	  "\n")))))
 
 (defun riece-handle-319-message (prefix number name string)
-  (if (string-match (concat "^\\(" riece-user-regexp "\\) :") string)
+  (if (string-match (concat "^\\(" riece-user-regexp "\\) :?") string)
       (let ((user (match-string 1 string))
 	    (channels
 	     (mapconcat
@@ -212,7 +218,7 @@
 	  "\n")))))
 
 (defun riece-handle-351-message (prefix number name string)
-  (if (string-match "\\([^ ]+\\.[^ ]+\\) \\([^ ]+\\) :" string)
+  (if (string-match "\\([^ ]+\\.[^ ]+\\) \\([^ ]+\\) :?" string)
       (riece-insert-info
        (list riece-dialogue-buffer riece-others-buffer)
        (concat
@@ -226,7 +232,7 @@
 (defvar riece-353-users nil)
 (defun riece-handle-353-message (prefix number name string)
   "RPL_NAMREPLY	\"[=\*@] <channel> :[[@|+]<nick> [[@|+]<nick> [...]]]\"."
-  (if (string-match "^[=\*@] *\\([^ ]+\\) +:" string)
+  (if (string-match "^[=\*@] *\\([^ ]+\\) +:?" string)
       (let ((channel (match-string 1 string))
 	    (start 0)
 	    user)
@@ -264,7 +270,7 @@
 	    "\n"))))))
 
 (defun riece-handle-322-message (prefix number name string)
-  (if (string-match "^\\([^ ]+\\) \\([0-9]+\\) :" string)
+  (if (string-match "^\\([^ ]+\\) \\([0-9]+\\) :?" string)
       (let* ((channel (match-string 1 string))
 	     (visible (match-string 2 string))
 	     (topic (substring string (match-end 0))))
@@ -308,7 +314,7 @@
 	    "\n"))))))
 
 (defun riece-handle-set-topic (prefix number name string remove)
-  (if (string-match "^\\([^ ]+\\) :" string)
+  (if (string-match "^\\([^ ]+\\) :?" string)
       (let* ((channel (match-string 1 string))
 	     (message (substring string (match-end 0)))
 	     (channel-identity (riece-make-identity channel riece-server-name))
@@ -428,7 +434,7 @@
 
 (defun riece-handle-366-message (prefix number name string)
   "RPL_ENDOFNAMES \"<channel> :End of NAMES list\""
-  (if (string-match "^\\([^ ]+\\) +:" string)
+  (if (string-match "^\\([^ ]+\\) " string)
       (let ((channel (match-string 1 string)))
 	(riece-naming-assert-channel-users (nreverse riece-353-users)
 					   channel)))
