@@ -1,5 +1,9 @@
 2003-10-19  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-version.el (riece-extended-version): Remove interactive spec.
+	(riece-version): New command.
+	* riece.el (riece-command-map): Bind "V" to riece-version.
+
 	* riece-options.el (riece-command-prefix): New user option.
 	(riece-tab-stop-list): Abolish.
 

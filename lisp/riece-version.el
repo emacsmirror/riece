@@ -60,7 +60,6 @@ string, be sure to use a valid format, see RFC 2616."
 (defun riece-extended-version ()
   "Stringified Riece version and Emacs version.
 See the variable `riece-user-agent'."
-  (interactive)
   (let* ((riece-v
 	  (concat riece-product-name "/"
 		  (prin1-to-string riece-version-number t)))
@@ -102,6 +101,14 @@ See the variable `riece-user-agent'."
       (concat riece-v
 	      (when emacs-v
 		(concat " " emacs-v))))))
+
+(defun riece-version (&optional arg)
+  "Version number of this version of Riece.
+If ARG, use user-agent format."
+  (interactive "P")
+  (if arg
+      (message "%s" (riece-extended-version))
+    (message "%s" riece-version)))
 
 (provide 'riece-version)
 

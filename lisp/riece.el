@@ -192,7 +192,8 @@ If optional argument SAFE is nil, overwrite previous definitions."
     "o" riece-command-set-operators
     "\C-p" riece-command-part
     "r" riece-command-configure-windows
-    "v" riece-command-set-speakers)
+    "v" riece-command-set-speakers
+    "V" riece-version)
   (set-keymap-parent riece-command-map riece-dialogue-mode-map)
 
   (riece-define-keys riece-user-list-mode-map
