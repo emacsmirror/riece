@@ -60,7 +60,7 @@
 
 (defun riece-command-browse-url (&optional url)
   (interactive
-   (list (completing-read "Open URL:" (mapcar #'list riece-urls))))
+   (list (completing-read "Open URL: " (mapcar #'list riece-urls))))
   (browse-url url))
 
 (defvar riece-dialogue-mode-map)
