@@ -38,25 +38,21 @@
 ;;; Channel object:
 (defun riece-find-channel (name)
   "Get a channel object named NAME from the server buffer."
-  (riece-with-server-buffer
-   (let ((symbol (intern-soft (riece-identity-canonicalize-prefix
-			       (riece-identity-prefix name))
-			      riece-obarray)))
-     (if symbol
-	 (symbol-value symbol)))))
+  (let ((symbol (intern-soft (riece-identity-canonicalize-prefix name)
+			     riece-obarray)))
+    (if symbol
+	(symbol-value symbol))))
 
 (defun riece-forget-channel (name)
-  (riece-with-server-buffer
-   (let ((symbol (intern-soft (riece-identity-canonicalize-prefix
-			       (riece-identity-prefix name))
-			      riece-obarray)))
-     (when symbol
-       (makunbound symbol)
-       (unintern (symbol-name symbol) riece-obarray)))))
+  (let ((symbol (intern-soft (riece-identity-canonicalize-prefix name)
+			     riece-obarray)))
+    (when symbol
+      (makunbound symbol)
+      (unintern (symbol-name symbol) riece-obarray))))
 
-(defun riece-make-channel (&optional users operators speakers
-				     topic modes banned invited uninvited
-				     key)
+(defun riece-make-channel (users operators speakers
+				 topic modes banned invited uninvited
+				 key)
   "Make an instance of channel object.
 Arguments are appropriate to channel users, operators, speakers
 \(+v), topic, modes, banned users, invited users, uninvited users, and
@@ -64,16 +60,13 @@ the channel key, respectively."
   (vector users operators speakers topic modes banned invited uninvited))
 
 (defun riece-get-channel (name)
-  (riece-with-server-buffer
-   (let ((symbol (intern-soft (riece-identity-canonicalize-prefix
-			       (riece-identity-prefix name))
-			      riece-obarray)))
-     (if symbol
-	 (symbol-value symbol)
-       (set (intern (riece-identity-canonicalize-prefix
-		     (riece-identity-prefix name))
-		    riece-obarray)
-	    (riece-make-channel))))))
+  (let ((symbol (intern-soft (riece-identity-canonicalize-prefix name)
+			     riece-obarray)))
+    (if symbol
+	(symbol-value symbol)
+      (set (intern (riece-identity-canonicalize-prefix name)
+		   riece-obarray)
+	   (riece-make-channel nil nil nil nil nil nil nil nil nil)))))
 
 (defun riece-channel-users (channel)
   "Return the users of CHANNEL."
@@ -147,55 +140,46 @@ the channel key, respectively."
   "Set the key of CHANNEL to VALUE."
   (aset channel 8 value))
 
-(defun riece-channel-get-users (&optional name)
+(defun riece-channel-get-users (name)
   "Return channel's users as list."
-  (riece-channel-users
-   (riece-get-channel (or name riece-current-channel))))
+  (riece-channel-users (riece-get-channel name)))
 
-(defun riece-channel-get-operators (&optional name)
+(defun riece-channel-get-operators (name)
   "Return channel's operators as list."
-  (riece-channel-operators
-   (riece-get-channel (or name riece-current-channel))))
+  (riece-channel-operators (riece-get-channel name)))
 
-(defun riece-channel-get-speakers (&optional name)
+(defun riece-channel-get-speakers (name)
   "Return channel's speakers as list."
-  (riece-channel-speakers
-   (riece-get-channel (or name riece-current-channel))))
+  (riece-channel-speakers (riece-get-channel name)))
 
-(defun riece-channel-get-topic (&optional name)
+(defun riece-channel-get-topic (name)
   "Return channel's topic."
-  (riece-channel-topic
-   (riece-get-channel (or name riece-current-channel))))
+  (riece-channel-topic (riece-get-channel name)))
 
-(defun riece-channel-get-modes (&optional name)
+(defun riece-channel-get-modes (name)
   "Return channel's modes as list."
-  (riece-channel-modes
-   (riece-get-channel (or name riece-current-channel))))
+  (riece-channel-modes (riece-get-channel name)))
 
-(defun riece-channel-get-banned (&optional name)
+(defun riece-channel-get-banned (name)
   "Return channel's banned users as list."
-  (riece-channel-banned
-   (riece-get-channel (or name riece-current-channel))))
+  (riece-channel-banned (riece-get-channel name)))
 
-(defun riece-channel-get-invited (&optional name)
+(defun riece-channel-get-invited (name)
   "Return channel's invited users as list."
-  (riece-channel-invited
-   (riece-get-channel (or name riece-current-channel))))
+  (riece-channel-invited (riece-get-channel name)))
 
-(defun riece-channel-get-uninvited (&optional name)
+(defun riece-channel-get-uninvited (name)
   "Return channel's uninvited users as list."
-  (riece-channel-uninvited
-   (riece-get-channel (or name riece-current-channel))))
+  (riece-channel-uninvited (riece-get-channel name)))
 
-(defun riece-channel-get-key (&optional name)
+(defun riece-channel-get-key (name)
   "Return channel's key."
-  (riece-channel-key
-   (riece-get-channel (or name riece-current-channel))))
+  (riece-channel-key (riece-get-channel name)))
 
 ;;; Functions called from `riece-handle-mode-message':
 (defun riece-channel-toggle-mode (name mode flag)
   "Add or remove channel MODE of channel."
-  (let* ((channel (riece-get-channel (or name riece-current-channel)))
+  (let* ((channel (riece-get-channel name))
 	 (modes (riece-channel-modes channel)))
     (if flag
 	(unless (memq mode modes)
@@ -205,7 +189,7 @@ the channel key, respectively."
 
 (defun riece-channel-toggle-banned (name pattern flag)
   "Add or remove banned PATTERN of channel."
-  (let* ((channel (riece-get-channel (or name riece-current-channel)))
+  (let* ((channel (riece-get-channel name))
 	 (banned (riece-channel-banned channel)))
     (if flag
 	(unless (member pattern banned)
@@ -215,7 +199,7 @@ the channel key, respectively."
 
 (defun riece-channel-toggle-invited (name pattern flag)
   "Add or remove invited PATTERN of channel."
-  (let* ((channel (riece-get-channel (or name riece-current-channel)))
+  (let* ((channel (riece-get-channel name))
 	 (invited (riece-channel-invited channel)))
     (if flag
 	(unless (member pattern invited)
@@ -225,7 +209,7 @@ the channel key, respectively."
 
 (defun riece-channel-toggle-uninvited (name pattern flag)
   "Add or remove uninvited PATTERN to channel."
-  (let* ((channel (riece-get-channel (or name riece-current-channel)))
+  (let* ((channel (riece-get-channel name))
 	 (uninvited (riece-channel-uninvited channel)))
     (if flag
 	(unless (member pattern uninvited)
@@ -236,7 +220,7 @@ the channel key, respectively."
 
 (defun riece-channel-toggle-user (name user flag)
   "Add or remove an user to channel."
-  (let* ((channel (riece-get-channel (or name riece-current-channel)))
+  (let* ((channel (riece-get-channel name))
 	 (users (riece-channel-users channel)))
     (if flag
 	(unless (member user users)
@@ -246,7 +230,7 @@ the channel key, respectively."
 
 (defun riece-channel-toggle-operator (name user flag)
   "Add or remove an operator to channel."
-  (let* ((channel (riece-get-channel (or name riece-current-channel)))
+  (let* ((channel (riece-get-channel name))
 	 (operators (riece-channel-operators channel)))
     (if flag
 	(unless (member user operators)
@@ -256,7 +240,7 @@ the channel key, respectively."
 
 (defun riece-channel-toggle-speaker (name user flag)
   "Add or remove an speaker to channel."
-  (let* ((channel (riece-get-channel (or name riece-current-channel)))
+  (let* ((channel (riece-get-channel name))
 	 (speakers (riece-channel-speakers channel)))
     (if flag
 	(unless (member user speakers)

@@ -255,16 +255,9 @@ If already connected, just pop up the windows."
 	(setq riece-server (completing-read "Server: " riece-server-alist)))
     (if (stringp riece-server)
 	(setq riece-server (riece-server-name-to-server riece-server)))
-    (riece-open-server riece-server)
     (riece-create-buffers)
     (riece-configure-windows)
-    (let ((channel-list riece-startup-channel-list))
-      (while channel-list
-	(if (listp (car channel-list))
-	    (riece-command-join (car (car channel-list))
-				(cadr (car channel-list)))
-	  (riece-command-join (car channel-list)))
-	(setq channel-list (cdr channel-list))))
+    (riece-open-server riece-server "")
     (run-hooks 'riece-startup-hook)
     (message "%s" (substitute-command-keys
 		   "Type \\[describe-mode] for help"))))
@@ -298,7 +291,7 @@ For a list of the generic commands type \\[riece-command-generic] ? RET.
 	   " "
 	   riece-user-indicator
 	   " "
-	   riece-current-channel)))
+	   riece-short-channel-indicator)))
   (riece-simplify-mode-line-format)
   (use-local-map riece-command-mode-map)
 
@@ -337,7 +330,6 @@ Instead, these commands are available:
 	   riece-channel-list-indicator " "))
 	buffer-read-only t
 	tab-stop-list riece-tab-stop-list)
-  (riece-update-status-indicators)
   (riece-simplify-mode-line-format)
   (use-local-map riece-dialogue-mode-map)
   (buffer-disable-undo)

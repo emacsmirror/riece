@@ -83,9 +83,8 @@
 
 (defun riece-handle-ctcp-version-request (prefix target string)
   (let ((buffer (if (riece-channel-p target)
-		    (cdr (riece-identity-assoc
-			  (riece-make-identity target)
-			  riece-channel-buffer-alist))))
+		    (riece-channel-buffer-name
+		     (riece-make-identity target riece-server-name))))
 	(user (riece-prefix-nickname prefix)))
     (riece-send-string
      (format "NOTICE %s :\1VERSION %s\1\r\n" user (riece-extended-version)))
@@ -105,9 +104,8 @@
 
 (defun riece-handle-ctcp-ping-request (prefix target string)
   (let ((buffer (if (riece-channel-p target)
-		    (cdr (riece-identity-assoc
-			  (riece-make-identity target)
-			  riece-channel-buffer-alist))))
+		    (riece-channel-buffer-name
+		     (riece-make-identity target riece-server-name))))
 	(user (riece-prefix-nickname prefix)))
     (riece-send-string
      (if string
@@ -129,9 +127,8 @@
 
 (defun riece-handle-ctcp-clientinfo-request (prefix target string)
   (let ((buffer (if (riece-channel-p target)
-		    (cdr (riece-identity-assoc
-			  (riece-make-identity target)
-			  riece-channel-buffer-alist))))
+		    (riece-channel-buffer-name
+		     (riece-make-identity target riece-server-name))))
 	(user (riece-prefix-nickname prefix)))
     (riece-send-string
      (format "NOTICE %s :\1CLIENTINFO %s\1\r\n"
@@ -166,9 +163,8 @@
 
 (defun riece-handle-ctcp-action-request (prefix target string)
   (let ((buffer (if (riece-channel-p target)
-		    (cdr (riece-identity-assoc
-			  (riece-make-identity target)
-			  riece-channel-buffer-alist))))
+		    (riece-channel-buffer-name
+		     (riece-make-identity target riece-server-name))))
 	(user (riece-prefix-nickname prefix)))
     (riece-insert-change buffer (concat user " " string "\n"))
     (riece-insert-change
@@ -292,9 +288,8 @@
   (riece-send-string (format "PRIVMSG %s :\1ACTION %s\1\r\n"
 			     (riece-identity-prefix channel)
 			     action))
-  (let ((buffer (cdr (riece-identity-assoc
-		      (riece-make-identity channel)
-		      riece-channel-buffer-alist))))
+  (let ((buffer (riece-channel-buffer-name
+		 (riece-make-identity channel riece-server-name))))
     (riece-insert-change
      buffer
      (concat (riece-identity-prefix (riece-current-nickname)) " " action "\n"))

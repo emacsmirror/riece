@@ -79,7 +79,8 @@
 	 (concat "^\\(" riece-user-regexp "\\) :")
 	 string)
     (let ((user (match-string 1 string))
-	  (message (substring string (match-end 0))))
+	  (message (riece-decode-coding-string
+		    (substring string (match-end 0)))))
       (riece-user-toggle-away user t)
       (riece-insert-info
        (list riece-dialogue-buffer riece-others-buffer)
@@ -111,7 +112,7 @@
 	(riece-concat-server-name
 	 (format "%s is %s (%s@%s)"
 		 (match-string 1 string)
-		 (substring string (match-end 0))
+		 (riece-decode-coding-string (substring string (match-end 0)))
 		 (match-string 2 string)
 		 (match-string 3 string)))
 	"\n"))))
@@ -191,10 +192,11 @@
   (if (string-match "^\\([^ ]+\\) \\([0-9]+\\) :" string)
       (let* ((channel (match-string 1 string))
 	     (visible (match-string 2 string))
-	     (topic (substring string (match-end 0))))
-	(let ((buffer (cdr (riece-identity-assoc
-			    (riece-make-identity channel)
-			    riece-channel-buffer-alist))))
+	     (topic (riece-decode-coding-string
+		     (substring string (match-end 0)))))
+	(riece-channel-set-topic (riece-get-channel channel) topic)
+	(let ((buffer (riece-channel-buffer-name
+		       (riece-make-identity channel riece-server-name))))
 	  (riece-insert-info buffer (concat visible " users, topic: "
 					    topic "\n"))
 	  (riece-insert-info
@@ -204,7 +206,8 @@
 	     riece-dialogue-buffer)
 	   (concat
 	    (riece-concat-server-name
-	     (format "%s users on %s, topic: %s" visible channel topic))
+	     (format "%s users on %s, topic: %s" visible
+		     (riece-decode-coding-string channel) topic))
 	    "\n"))))))
 
 (defun riece-handle-324-message (prefix number name string)
@@ -217,9 +220,8 @@
 	(while modes
 	  (riece-channel-toggle-mode channel (car modes) (eq toggle ?+))
 	  (setq modes (cdr modes)))
-	(let ((buffer (cdr (riece-identity-assoc
-			    (riece-make-identity channel)
-			    riece-channel-buffer-alist))))
+	(let ((buffer (riece-channel-buffer-name
+		       (riece-make-identity channel riece-server-name))))
 	  (riece-insert-info buffer (concat "Mode: " mode-string "\n"))
 	  (riece-insert-info
 	   (if (and riece-channel-buffer-mode
@@ -228,7 +230,8 @@
 	     riece-dialogue-buffer)
 	   (concat
 	    (riece-concat-server-name
-	     (format "Mode for %s: %s" channel mode-string))
+	     (format "Mode for %s: %s" (riece-decode-coding-string channel)
+		     mode-string))
 	    "\n")))
 	(riece-update-channel-indicator)
 	(force-mode-line-update t))))
@@ -236,10 +239,10 @@
 (defun riece-handle-set-topic (prefix number name string remove)
   (if (string-match "^\\([^ ]+\\) :" string)
       (let* ((channel (match-string 1 string))
-	     (message (substring string (match-end 0)))
-	     (buffer (cdr (riece-identity-assoc
-			   (riece-make-identity channel)
-			   riece-channel-buffer-alist))))
+	     (message (riece-decode-coding-string
+		       (substring string (match-end 0))))
+	     (buffer (riece-channel-buffer-name
+		      (riece-make-identity channel riece-server-name))))
 	(if remove
 	    (riece-channel-set-topic (riece-get-channel channel) nil)
 	  (riece-channel-set-topic (riece-get-channel channel) message)
@@ -251,23 +254,23 @@
 	   riece-dialogue-buffer)
 	 (concat
 	  (riece-concat-server-name
-	   (format "Topic for %s: %s" channel message))
+	   (format "Topic for %s: %s" (riece-decode-coding-string channel)
+		   message))
 	  "\n"))
 	(riece-update-channel-indicator)))))
 
 (defun riece-handle-331-message (prefix number name string)
-  (riece-handle-set-topic prefix name name string t))
+  (riece-handle-set-topic prefix number name string t))
 
 (defun riece-handle-332-message (prefix number name string)
-  (riece-handle-set-topic prefix name name string nil))
+  (riece-handle-set-topic prefix number name string nil))
 
 (defun riece-handle-341-message (prefix number name string)
   (if (string-match "^\\([^ ]+\\) " string)
       (let* ((channel (match-string 1 string))
 	     (user (substring string (match-end 0)))
-	     (buffer (cdr (riece-identity-assoc
-			   (riece-make-identity channel)
-			   riece-channel-buffer-alist))))
+	     (buffer (riece-channel-buffer-name
+		      (riece-make-identity channel riece-server-name))))
 	(riece-insert-info buffer (concat "Inviting " user "\n"))
 	(riece-insert-info
 	 (if (and riece-channel-buffer-mode
@@ -276,7 +279,8 @@
 	   riece-dialogue-buffer)
 	 (concat
 	  (riece-concat-server-name
-	   (format "Inviting %s to %s" user channel))
+	   (format "Inviting %s to %s" user
+		   (riece-decode-coding-string channel)))
 	  "\n")))))
 
 (defun riece-handle-352-message (prefix number name string)
@@ -290,10 +294,10 @@
 	     (operator (not (null (match-beginning 7))))
 	     (flag (match-string 8 string))
 	     (hops (match-string 9 string))
-	     (name (substring string (match-end 0)))
-	     (buffer (cdr (riece-identity-assoc
-			   (riece-make-identity channel)
-			   riece-channel-buffer-alist))))
+	     (name (riece-decode-coding-string
+		    (substring string (match-end 0))))
+	     (buffer (riece-channel-buffer-name
+		      (riece-make-identity channel riece-server-name))))
 	(riece-naming-assert-join nick channel)
 	(riece-user-toggle-away user away)
 	(riece-user-toggle-operator user operator)
@@ -324,7 +328,7 @@
 	 (concat
 	  (riece-concat-server-name
 	   (format "%s %10s = %s (%s) [%s, %s, %s hops, on %s]\n"
-		   channel
+		   (riece-decode-coding-string channel)
 		   (concat
 		    (if (memq flag '(?@ ?+))
 			(char-to-string flag)

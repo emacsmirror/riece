@@ -29,6 +29,7 @@
 (require 'riece-identity)
 (require 'riece-version)
 (require 'riece-channel)
+(require 'riece-server)
 (require 'riece-user)
 
 (defun riece-get-buffer-create (name)
@@ -78,16 +79,11 @@
   (with-current-buffer buffer
     (eq riece-freeze 'own)))
 
-(defun riece-process-send-string (process string)
-  (with-current-buffer (process-buffer process)
-    (process-send-string process (riece-encode-coding-string string))))
-
-(defun riece-send-string (string)
-  (let ((process (riece-find-server-process)))
-    (unless process
-      (error "%s" (substitute-command-keys
-		   "Type \\[riece-command-open-server] to open server.")))
-    (riece-process-send-string process string)))
+(defun riece-current-nickname ()
+  "Return the current nickname."
+  (riece-with-server-buffer (riece-identity-server riece-current-channel)
+    (if riece-real-nickname
+	(riece-make-identity riece-real-nickname riece-server-name))))
 
 (defun riece-split-parameters (string)
   (if (eq ?: (aref string 0))
@@ -104,19 +100,19 @@
 	  (setq parameters (nconc parameters (list string))))
       parameters)))
 
-(defun riece-concat-modes (target string)
-  (let ((modes
-	 (if (riece-channel-p target)
-	     (riece-channel-get-modes target)
-	   (riece-user-get-modes target))))
-    (if modes
-	(concat string " [" (apply #'string modes) "]")
-      string)))
+(defun riece-concat-channel-topic (target string)
+  (riece-with-identity-buffer target
+    (let ((topic (riece-channel-get-topic (riece-identity-prefix target))))
+      (if topic
+	  (concat string ": " topic)
+	string))))
 
-(defsubst riece-concat-current-channel-modes (string)
-  (if riece-current-channel
-      (riece-concat-modes riece-current-channel string)
-    string))
+(defun riece-concat-channel-modes (target string)
+  (riece-with-identity-buffer target
+    (let ((modes (riece-channel-get-modes (riece-identity-prefix target))))
+      (if modes
+	  (concat string " [" (apply #'string modes) "]")
+	string))))
 
 (defun riece-concat-message (string message)
   (if (or (null message)
@@ -125,10 +121,9 @@
     (concat string " (" message ")")))
 
 (defun riece-concat-server-name (string)
-  (riece-with-server-buffer
-   (if riece-server-name
-       (concat string " (from " riece-server-name ")")
-     string)))
+  (if (equal riece-server-name "")
+      string
+    (concat string " (from " riece-server-name ")")))
 
 (defun riece-prefix-user-at-host (prefix)
   (if (string-match "!" prefix)
@@ -159,16 +154,16 @@
     user-at-host))
 
 (defun riece-get-users-on-server ()
-  (riece-with-server-buffer
-   (let (users)
-     (mapatoms
-      (lambda (atom)
-	(unless (riece-channel-p (symbol-name atom))
-	  (setq users (cons (symbol-name atom) users))))
-      riece-obarray)
-     (if (member riece-real-nickname users)
-	 users
-       (cons riece-real-nickname users)))))
+  (riece-with-server-buffer (riece-identity-server riece-current-channel)
+    (let (users)
+      (mapatoms
+       (lambda (atom)
+	 (unless (riece-channel-p (symbol-name atom))
+	   (setq users (cons (symbol-name atom) users))))
+       riece-obarray)
+      (if (member riece-real-nickname users)
+	  users
+	(cons riece-real-nickname users)))))
 
 (provide 'riece-misc)
 

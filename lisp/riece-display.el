@@ -33,6 +33,7 @@
     riece-update-channel-list-buffer
     riece-update-status-indicators
     riece-update-channel-indicator
+    riece-update-short-channel-indicator
     riece-update-channel-list-indicator))
 
 (defcustom riece-configure-windows-function #'riece-configure-windows
@@ -52,7 +53,8 @@
 	 (and riece-user-list-buffer-mode
 	      riece-current-channel
 	      ;; User list buffer is nuisance for private conversation.
-	      (riece-channel-p riece-current-channel))))
+	      (riece-channel-p (riece-identity-prefix
+				riece-current-channel)))))
     ;; Can't expand minibuffer to full frame.
     (if (eq (selected-window) (minibuffer-window))
 	(other-window 1))
@@ -111,24 +113,28 @@
 
 (defun riece-update-user-list-buffer ()
   (if (and riece-user-list-buffer
-	   (get-buffer riece-user-list-buffer))
+	   (get-buffer riece-user-list-buffer)
+	   riece-current-channel
+	   (riece-channel-p (riece-identity-prefix riece-current-channel)))
       (save-excursion
-	(set-buffer riece-user-list-buffer)
-	(when (and riece-current-channel
-		   (riece-channel-p riece-current-channel))
-	  (let ((inhibit-read-only t)
-		buffer-read-only
-		(users (riece-channel-get-users riece-current-channel))
-		(operators (riece-channel-get-operators riece-current-channel))
-		(speakers (riece-channel-get-speakers riece-current-channel)))
-	    (erase-buffer)
-	    (while users
-	      (if (member (car users) operators)
-		  (insert "@" (car users) "\n")
-		(if (member (car users) speakers)
-		    (insert "+" (car users) "\n")
-		  (insert " " (car users) "\n")))
-	      (setq users (cdr users))))))))
+	(set-buffer (process-buffer (riece-server-process
+				     (riece-identity-server
+				      riece-current-channel))))
+	(let* ((inhibit-read-only t)
+	       buffer-read-only
+	       (channel (riece-identity-prefix riece-current-channel))
+	       (users (riece-channel-get-users channel))
+	       (operators (riece-channel-get-operators channel))
+	       (speakers (riece-channel-get-speakers channel)))
+	  (set-buffer riece-user-list-buffer)
+	  (erase-buffer)
+	  (while users
+	    (if (member (car users) operators)
+		(insert "@" (car users) "\n")
+	      (if (member (car users) speakers)
+		  (insert "+" (car users) "\n")
+		(insert " " (car users) "\n")))
+	    (setq users (cdr users)))))))
 
 (defun riece-update-channel-list-buffer ()
   (if (and riece-channel-list-buffer
@@ -142,20 +148,27 @@
 	  (erase-buffer)
 	  (while channels
 	    (if (car channels)
-		(insert (format "%2d: %s\n" index (car channels))))
+		(insert (format "%2d: %s\n" index
+				(riece-decode-identity (car channels)))))
 	    (setq index (1+ index)
 		  channels (cdr channels)))))))
 
 (defun riece-update-channel-indicator ()
   (setq riece-channel-indicator
 	(if riece-current-channel
-	    (riece-concat-current-channel-modes
-	     (if (and riece-current-channel
-		      (riece-channel-p riece-current-channel)
-		      (riece-channel-get-topic riece-current-channel))
-		 (concat riece-current-channel ": "
-			 (riece-channel-get-topic riece-current-channel))
-	       riece-current-channel))
+	    (if (riece-channel-p (riece-identity-prefix riece-current-channel))
+		(riece-concat-channel-modes
+		 riece-current-channel
+		 (riece-concat-channel-topic
+		  riece-current-channel
+		  (riece-decode-identity riece-current-channel)))
+	      riece-current-channel)
+	  "None")))
+
+(defun riece-update-short-channel-indicator ()
+  (setq riece-short-channel-indicator
+	(if riece-current-channel
+	    (riece-decode-identity riece-current-channel)
 	  "None")))
 
 (defun riece-update-channel-list-indicator ()
@@ -170,26 +183,28 @@
 		     (mapcar
 		      (lambda (channel)
 			(prog1 (if channel
-				   (format "%d:%s" index channel))
+				   (format "%d:%s" index
+					   (riece-decode-identity channel)))
 			  (setq index (1+ index))))
 		      riece-current-channels))
 	       ",")))
     (setq riece-channel-list-indicator "No channel")))
 
 (defun riece-update-status-indicators ()
-  (with-current-buffer riece-command-buffer
-    (riece-with-server-buffer
-     (setq riece-away-indicator
-	   (if (and riece-real-nickname
-		    (riece-user-get-away riece-real-nickname))
-	       "A"
-	     "-")
-	   riece-operator-indicator
-	   (if (and riece-real-nickname
-		    (riece-user-get-operator riece-real-nickname))
-	       "O"
-	     "-")
-	   riece-user-indicator riece-real-nickname)))
+  (if riece-current-channel
+      (with-current-buffer riece-command-buffer
+	(riece-with-server-buffer (riece-identity-server riece-current-channel)
+	  (setq riece-away-indicator
+		(if (and riece-real-nickname
+			 (riece-user-get-away riece-real-nickname))
+		    "A"
+		  "-")
+		riece-operator-indicator
+		(if (and riece-real-nickname
+			 (riece-user-get-operator riece-real-nickname))
+		    "O"
+		  "-")
+		riece-user-indicator riece-real-nickname))))
   (setq riece-freeze-indicator
 	(with-current-buffer (if (and riece-channel-buffer-mode
 				      riece-channel-buffer)
@@ -206,11 +221,14 @@
   (force-mode-line-update t)
   (run-hooks 'riece-update-buffers-hook))
 
+(defun riece-channel-buffer-name (identity)
+  (format riece-channel-buffer-format (riece-decode-identity identity)))
+
 (eval-when-compile
   (autoload 'riece-channel-mode "riece"))
 (defun riece-channel-buffer-create (identity)
   (with-current-buffer
-      (riece-get-buffer-create (format riece-channel-buffer-format identity))
+      (riece-get-buffer-create (riece-channel-buffer-name identity))
     (unless (eq major-mode 'riece-channel-mode)
       (riece-channel-mode)
       (let (buffer-read-only)
@@ -221,11 +239,14 @@
 				   "\n"))))
     (current-buffer)))
 
+(defun riece-user-list-buffer-name (identity)
+  (format riece-user-list-buffer-format (riece-decode-identity identity)))
+
 (eval-when-compile
   (autoload 'riece-user-list-mode "riece"))
 (defun riece-user-list-buffer-create (identity)
   (with-current-buffer
-      (riece-get-buffer-create (format riece-user-list-buffer-format identity))
+      (riece-get-buffer-create (riece-user-list-buffer-name identity))
     (unless (eq major-mode 'riece-user-list-mode)
       (riece-user-list-mode))
     (current-buffer)))
@@ -234,33 +255,19 @@
   (setq riece-last-channel riece-current-channel
 	riece-current-channel identity
 	riece-channel-buffer
-	(cdr (riece-identity-assoc
-	      identity riece-channel-buffer-alist))
-	riece-user-list-buffer 
-	(cdr (riece-identity-assoc
-	      identity riece-user-list-buffer-alist)))
+	(get-buffer (riece-channel-buffer-name identity))
+	riece-user-list-buffer
+	(get-buffer (riece-user-list-buffer-name identity)))
   (run-hooks 'riece-channel-switch-hook))
 
-(defun riece-join-channel (channel-name)
-  (let ((identity (riece-make-identity channel-name)))
-    (unless (riece-identity-member
-	     identity riece-current-channels)
-      (setq riece-current-channels
-	    (riece-identity-assign-binding
-	     identity riece-current-channels
-	     riece-default-channel-binding)))
-    (unless (riece-identity-assoc
-	     identity riece-channel-buffer-alist)
-      (let ((buffer (riece-channel-buffer-create identity)))
-	(setq riece-channel-buffer-alist
-	      (cons (cons identity buffer)
-		    riece-channel-buffer-alist))))
-    (unless (riece-identity-assoc
-	     identity riece-user-list-buffer-alist)
-      (let ((buffer (riece-user-list-buffer-create identity)))
-	(setq riece-user-list-buffer-alist
-	      (cons (cons identity buffer)
-		    riece-user-list-buffer-alist))))))
+(defun riece-join-channel (identity)
+  (unless (riece-identity-member identity riece-current-channels)
+    (setq riece-current-channels
+	  (riece-identity-assign-binding
+	   identity riece-current-channels
+	   riece-default-channel-binding)))
+  (riece-channel-buffer-create identity)
+  (riece-user-list-buffer-create identity))
 
 (defun riece-switch-to-nearest-channel (pointer)
   (let ((start riece-current-channels)
@@ -279,10 +286,8 @@
       (setq riece-last-channel riece-current-channel
 	    riece-current-channel nil))))
 
-(defun riece-part-channel (channel-name)
-  (let* ((identity (riece-make-identity channel-name))
-	 (pointer (riece-identity-member
-		   identity riece-current-channels)))
+(defun riece-part-channel (identity)
+  (let ((pointer (riece-identity-member identity riece-current-channels)))
     (if pointer
 	(setcar pointer nil))
     (if (riece-identity-equal identity riece-current-channel)

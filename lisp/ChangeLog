@@ -1,3 +1,28 @@
+2003-06-08  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-filter.el (riece-handle-numeric-reply): Don't decode messages.
+	(riece-handle-message): Ditto.
+	(riece-sentinel): Clear system here.
+
+	* riece-server.el (riece-server-process-name): New function.
+	(riece-server-process): New function.
+	(riece-close-server): Abolish.
+
+	* riece-identity.el: Adopt vector object representation for
+	identity objects.
+	(riece-with-identity-buffer): New macro.
+	(riece-decode-identity): New function.
+	(riece-encode-identity): New function.
+
+	* riece-globals.el (riece-process-list): New variable.
+	(riece-server-process-alist): Abolish.
+	(riece-channel-buffer-alist): Abolish.
+	(riece-user-list-buffer-alist): Abolish.
+	(riece-short-channel-indicator): New variable.
+
+	* riece-channel.el: Assume that we are already in the server buffer.
+	* riece-user.el: Likewise.
+
 2003-06-06  OHASHI Akira  <bg66@koka-in.org>
 
 	* riece-ndcc.el (riece-ndcc-server-sentinel): Close a parenthesis.

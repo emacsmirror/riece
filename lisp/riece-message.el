@@ -85,11 +85,10 @@
 
 (defun riece-message-make-name (message)
   "Makes local identity for MESSAGE."
-  (riece-identity-prefix
-   (if (and (riece-message-private-p message)
-	    (riece-message-own-p message))
-       (riece-message-target message)
-     (riece-message-speaker message))))
+  (if (and (riece-message-private-p message)
+	   (riece-message-own-p message))
+      (riece-identity-prefix (riece-message-target message))
+    (riece-identity-prefix (riece-message-speaker message))))
 
 (defun riece-message-make-global-name (message)
   "Makes global identity for MESSAGE."
@@ -97,7 +96,7 @@
       (if (riece-message-own-p message)
 	  (riece-identity-prefix (riece-message-target message))
 	(riece-identity-prefix (riece-message-speaker message)))
-    (concat (riece-identity-prefix (riece-message-target message)) ":"
+    (concat (riece-decode-identity (riece-message-target message) t) ":"
 	    (riece-identity-prefix (riece-message-speaker message)))))
 
 (defun riece-message-buffer (message)
@@ -107,16 +106,15 @@
 		      (riece-current-nickname))
 		     (riece-message-speaker message)
 		   (riece-message-target message)))
-	 (entry (riece-identity-assoc target riece-channel-buffer-alist)))
-    (unless entry
+	 (buffer (riece-channel-buffer-name target)))
+    (unless (get-buffer buffer)
       (riece-join-channel target)
       ;; If you are not joined any channel,
       ;; switch to the target immediately.
       (unless riece-current-channel
 	(riece-switch-to-channel target))
-      (riece-redisplay-buffers)
-      (setq entry (riece-identity-assoc target riece-channel-buffer-alist)))
-    (cdr entry)))
+      (riece-redisplay-buffers))
+    buffer))
 
 (defun riece-message-parent-buffers (message buffer)
   "Return the parents of BUFFER where MESSAGE should appear.
@@ -193,7 +191,8 @@ Currently possible values are `action' and `notice'."
 (defun riece-message-private-p (message)
   "Return t if MESSAGE is a private message."
   (if (riece-message-own-p message)
-      (not (riece-channel-p (riece-message-target message)))
+      (not (riece-channel-p (riece-identity-prefix
+			     (riece-message-target message))))
     (riece-identity-equal
      (riece-message-target message)
      (riece-current-nickname))))
@@ -201,9 +200,13 @@ Currently possible values are `action' and `notice'."
 (defun riece-message-external-p (message)
   "Return t if MESSAGE is from outside the channel."
   (not (riece-identity-member
-	(riece-message-target message)
-	(mapcar #'riece-make-identity
-		(riece-user-get-channels (riece-message-speaker message))))))
+	(riece-message-speaker message)
+	(let ((target (riece-message-target message)))
+	  (riece-with-identity-buffer target
+	    (mapcar
+	     (lambda (user)
+	       (riece-make-identity user (riece-identity-server target)))
+	     (riece-channel-get-users (riece-identity-prefix target))))))))
 
 (defun riece-own-channel-message (message &optional channel type)
   "Display MESSAGE as you sent to CHNL."

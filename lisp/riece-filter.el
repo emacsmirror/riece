@@ -27,6 +27,8 @@
 (require 'riece-handle)
 (require 'riece-misc)
 (require 'riece-server)			;riece-close-server
+(require 'riece-identity)
+(require 'riece-display)
 
 (defun riece-handle-numeric-reply (prefix number name string)
   (let ((base-number (* (/ number 100) 100))
@@ -43,8 +45,7 @@
     (if (and function
 	     (symbol-function function))
 	(condition-case error
-	    (funcall function prefix number name
-		     (riece-decode-coding-string string))
+	    (funcall function prefix number name string)
 	  (error
 	   (if riece-debug
 	       (message "Error occurred in `%S': %S" function error)))))))
@@ -55,7 +56,8 @@
    (list riece-dialogue-buffer riece-others-buffer)
    (concat client-prefix
 	   (riece-concat-server-name
-	    (mapconcat #'identity (riece-split-parameters string) " "))
+	    (mapconcat #'riece-decode-coding-string
+		       (riece-split-parameters string) " "))
 	   "\n")))
 
 (defun riece-handle-message (prefix message string)
@@ -64,8 +66,7 @@
       (riece-user-set-user-at-host
        (riece-get-user (substring prefix 0 (match-beginning 0)))
        (riece-parse-user-at-host (substring prefix (1+ (match-beginning 0))))))
-  (setq message (downcase message)
-	string (riece-decode-coding-string string))
+  (setq message (downcase message))
   (let ((function (intern-soft (concat "riece-handle-" message "-message")))
 	(hook (intern (concat "riece-" message "-hook")))
 	(after-hook (intern (concat "riece-after-" message "-hook"))))
@@ -123,34 +124,46 @@
 	(forward-line)))))
 
 (eval-when-compile
-  (autoload 'riece "riece"))
+  (autoload 'riece-exit "riece"))
 (defun riece-sentinel (process status)
   (if riece-reconnect-with-password
       (unwind-protect
-	  (if (eq process riece-server-process)
-	      (riece)			;Need to initialize system.
-	    (let ((server-name
-		   (car (rassq process riece-server-process-alist))))
-	      (riece-close-server server-name)
-	      (riece-open-server
-	       (riece-server-name-to-server server-name)
-	       server-name)))
+	  (let ((server-name
+		 (with-current-buffer (process-buffer process)
+		   riece-server-name)))
+	    (riece-close-server-process process)
+	    (riece-open-server
+	     (if (equal server-name "")
+		 riece-server
+	       (riece-server-name-to-server server-name))
+	     server-name))
 	(setq riece-reconnect-with-password nil))
     (let ((server-name (with-current-buffer (process-buffer process)
 			 riece-server-name)))
       (if (and (process-id process)		;not a network connection
 	       (string-match "^exited abnormally with code \\([0-9]+\\)"
 			     status))
-	  (if server-name
-	      (message "Connection to \"%s\" closed: %s"
-		       server-name (match-string 1 status))
-	    (message "Connection closed: %s" (match-string 1 status)))
-	(if server-name
+	  (if (equal server-name "")
+	      (message "Connection closed: %s" (match-string 1 status))
 	    (message "Connection to \"%s\" closed: %s"
-		     server-name (substring status 0 (1- (length status))))
-	  (message "Connection closed: %s"
-		   (substring status 0 (1- (length status))))))
-      (riece-close-server server-name))))
+		     server-name (match-string 1 status)))
+	(if (equal server-name "")
+	    (message "Connection closed: %s"
+		   (substring status 0 (1- (length status))))
+	  (message "Connection to \"%s\" closed: %s"
+		   server-name (substring status 0 (1- (length status))))))
+      (let ((riece-overriding-server-name server-name)
+	    (channels riece-current-channels))
+	(while channels
+	  (if (and (car channels)
+		   (equal (riece-identity-server (car channels))
+			  server-name))
+	      (setcar channels nil))
+	  (setq channels (cdr channels))))
+      (riece-close-server-process process)
+      ;; If no server process is available, exit.
+      (unless riece-process-list
+	(riece-exit)))))
 
 (provide 'riece-filter)
 

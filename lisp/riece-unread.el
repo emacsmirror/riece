@@ -62,7 +62,9 @@
 		(let ((channel (match-string 3)))
 		  (replace-match
 		   (concat "\\1"
-			   (if (member channel riece-unread-channels)
+			   (if (member (save-match-data
+					 (riece-encode-identity channel))
+				       riece-unread-channels)
 			       "!"
 			     " ")
 			   "\\3"))))

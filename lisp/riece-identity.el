@@ -25,48 +25,20 @@
 ;;; Code:
 
 (require 'riece-globals)
-
-(defun riece-find-server-name ()
-  (or riece-overriding-server-name
-					;already in the server buffer
-      (if (local-variable-p 'riece-server-name (current-buffer))
-	  riece-server-name
-	(if riece-current-channel
-	    (riece-identity-server riece-current-channel)))))
-
-(defun riece-find-server-process ()
-  (let ((server-name (riece-find-server-name)))
-    (if server-name
-	(cdr (assoc server-name riece-server-process-alist))
-      riece-server-process)))
-
-(defmacro riece-with-server-buffer (&rest body)
-  `(let ((process (riece-find-server-process)))
-     (if process
-	 (with-current-buffer (process-buffer process)
-	   ,@body)
-       (error "Server closed."))))
+(require 'riece-coding)
+(require 'riece-server)
 
 (defun riece-identity-prefix (identity)
   "Return the component sans its server from IDENTITY."
-  (if (string-match " " identity)
-      (substring identity 0 (match-beginning 0))
-    identity))
+  (aref identity 0))
 
 (defun riece-identity-server (identity)
   "Return the server component in IDENTITY."
-  (if (string-match " " identity)
-      (substring identity (match-end 0))))
+  (aref identity 1))
 
-(defun riece-make-identity (prefix &optional server)
+(defun riece-make-identity (prefix server)
   "Make an identity object from PREFIX and SERVER."
-  (if (riece-identity-server prefix)
-      prefix
-    (unless server
-      (setq server (riece-find-server-name)))
-    (if server
-	(concat prefix " " server)
-      prefix)))
+  (vector prefix server))
 
 (defun riece-identity-equal (ident1 ident2)
   "Return t, if IDENT1 and IDENT2 is equal."
@@ -76,18 +48,6 @@
        (equal
 	(riece-identity-server ident1)
 	(riece-identity-server ident2))))
-
-(defun riece-identity-equal-safe (ident1 ident2)
-  "Return t, if IDENT1 and IDENT2 is equal.
-The only difference with `riece-identity-equal', this function appends
-server name before comparison."
-  (riece-identity-equal
-   (if (riece-identity-server ident1)
-       ident1
-     (riece-make-identity ident1))
-   (if (riece-identity-server  ident2)
-       ident2
-     (riece-make-identity ident2))))
 
 (defun riece-identity-canonicalize-prefix (prefix)
   "Canonicalize identity PREFIX.
@@ -119,32 +79,12 @@ RFC2812, 2.2 \"Character codes\" says:
   (equal (riece-identity-canonicalize-prefix prefix1)
 	 (riece-identity-canonicalize-prefix prefix2)))
 
-(defun riece-identity-equal-no-server-safe (prefix1 prefix2)
-  "Return t, if IDENT1 and IDENT2 is equal without server.
-The only difference with `riece-identity-no-server', this function removes
-server name before comparison."
-  (equal (riece-identity-canonicalize-prefix
-	  (riece-identity-prefix prefix1))
-	 (riece-identity-canonicalize-prefix
-	  (riece-identity-prefix prefix2))))
-
 (defun riece-identity-member (elt list)
   "Return non-nil if an identity ELT is an element of LIST."
   (catch 'found
     (while list
-      (if (and (stringp (car list))
+      (if (and (vectorp (car list))
 	       (riece-identity-equal (car list) elt))
-	  (throw 'found list)
-	(setq list (cdr list))))))
-
-(defun riece-identity-member-safe (elt list)
-  "Return non-nil if an identity ELT is an element of LIST.
-The only difference with `riece-identity-member', this function uses
-`riece-identity-equal-safe' for comparison."
-  (catch 'found
-    (while list
-      (if (and (stringp (car list))
-	       (riece-identity-equal-safe (car list) elt))
 	  (throw 'found list)
 	(setq list (cdr list))))))
 
@@ -154,19 +94,8 @@ The only difference with `riece-identity-member', this function doesn't
 take server names into account."
   (catch 'found
     (while list
-      (if (and (stringp (car list))
+      (if (and (vectorp (car list))
 	       (riece-identity-equal-no-server (car list) elt))
-	  (throw 'found list)
-	(setq list (cdr list))))))
-
-(defun riece-identity-member-no-server-safe (elt list)
-  "Return non-nil if an identity ELT is an element of LIST.
-The only difference with `riece-identity-member-no-server', this function uses
-`riece-identity-equal-no-server-safe' for comparison."
-  (catch 'found
-    (while list
-      (if (and (stringp (car list))
-	       (riece-identity-equal-no-server-safe (car list) elt))
 	  (throw 'found list)
 	(setq list (cdr list))))))
 
@@ -178,18 +107,8 @@ The only difference with `riece-identity-member-no-server', this function uses
 	  (throw 'found (car alist))
 	(setq alist (cdr alist))))))
 
-(defun riece-identity-assoc-safe (elt alist)
-  "Return non-nil if an identity ELT matches the car of an element of ALIST.
-The only difference with `riece-identity-assoc', this function uses
-`riece-identity-equal-safe' for comparison."
-  (catch 'found
-    (while alist
-      (if (riece-identity-equal-safe (car (car alist)) elt)
-	  (throw 'found (car alist))
-	(setq alist (cdr alist))))))
-
 (defun riece-identity-assign-binding (item list binding)
-  (let ((slot (riece-identity-member-safe item binding))
+  (let ((slot (riece-identity-member item binding))
 	pointer)
     (unless list			;we need at least one room
       (setq list (list nil)))
@@ -208,11 +127,43 @@ The only difference with `riece-identity-assoc', this function uses
     (setcar pointer item)
     list))
 
-(defun riece-current-nickname ()
-  "Return the current nickname."
-  (riece-with-server-buffer
-   (if riece-real-nickname
-       (riece-make-identity riece-real-nickname))))
+(defmacro riece-with-identity-buffer (identity &rest body)
+  `(let ((process (riece-server-process (riece-identity-server ,identity))))
+     (if process
+	 (with-current-buffer (process-buffer process)
+	   ,@body)
+       (error "Server closed."))))
+
+(put 'riece-with-identity-buffer 'lisp-indent-function 1)
+
+(defun riece-decode-identity (identity &optional prefix-only)
+  (riece-with-identity-buffer identity
+    (let ((prefix (riece-decode-coding-string
+		   (riece-identity-prefix identity)))
+	  (server (riece-identity-server identity)))
+      (if (equal server "")
+	  prefix
+	(concat prefix " " server)))))
+
+(defun riece-encode-identity (string)
+  (let ((prefix (if (string-match " " string)
+		    (substring string 0 (match-beginning 0))
+		  string))
+	(server (if (string-match " " string)
+		    (substring string (match-end 0))
+		  "")))
+    (riece-with-server-buffer server
+      (riece-make-identity (riece-encode-coding-string prefix) server))))
+
+(defun riece-completing-read-identity (prompt table
+					      &optional predicate must-match)
+  (riece-encode-identity
+   (completing-read
+    prompt
+    (mapcar (lambda (channel)
+	      (list (riece-decode-identity channel)))
+	    table)
+    predicate must-match)))
 
 (provide 'riece-identity)
 

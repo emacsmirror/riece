@@ -26,10 +26,7 @@
 
 (require 'riece-options)
 (require 'riece-globals)		;for server local variables.
-(require 'riece-misc)			;riece-process-send-string, etc.
 (require 'riece-coding)			;riece-default-coding-system
-(require 'riece-identity)
-(require 'riece-display)
 
 (eval-and-compile
   (defvar riece-server-keyword-map
@@ -69,12 +66,14 @@ the `riece-server-keyword-map' variable."
 	     (buffer-live-p (car riece-buffer-list)))
 	(funcall riece-buffer-dispose-function (car riece-buffer-list)))
     (setq riece-buffer-list (cdr riece-buffer-list)))
-  (setq riece-channel-buffer-alist nil
-	riece-user-list-buffer-alist nil
-	riece-current-channels nil
+  (setq riece-current-channels nil
 	riece-current-channel nil
+	riece-user-indicator nil
 	riece-channel-indicator "None"
-	riece-channel-list-indicator "No channel")
+	riece-channel-list-indicator "No channel"
+	riece-away-indicator "-"
+	riece-operator-indicator "-"
+	riece-freeze-indicator "-")
   (delete-other-windows))
 
 (defun riece-server-parse-string (string)
@@ -102,19 +101,55 @@ the `riece-server-keyword-map' variable."
 	    riece-save-variables-are-dirty t))
     (cdr entry)))
 
-(defun riece-open-server (server &optional server-name)
-  (if server-name
-      (message "Connecting to %s..." server-name)
-    (message "Connecting to IRC server..."))
+(defun riece-find-server-name ()
+  (or riece-overriding-server-name
+					;already in the server buffer
+      (if (local-variable-p 'riece-server-name (current-buffer))
+	  riece-server-name
+	(if riece-current-channel
+	    (riece-identity-server riece-current-channel)
+	  (if (riece-server-opened "")
+	      "")))))
+
+(defun riece-server-process-name (server-name)
+  (if (equal server-name "")
+      "IRC"
+    (format "IRC<%s>" server-name)))
+
+(defun riece-server-process (server-name)
+  (get-process (riece-server-process-name server-name)))
+
+(defmacro riece-with-server-buffer (server-name &rest body)
+  `(let ((process (riece-server-process ,server-name)))
+     (if process
+	 (with-current-buffer (process-buffer process)
+	   ,@body)
+       (error "Server closed."))))
+
+(put 'riece-with-server-buffer 'lisp-indent-function 1)
+
+(defun riece-process-send-string (process string)
+  (with-current-buffer (process-buffer process)
+    (process-send-string process (riece-encode-coding-string string))))
+
+(defun riece-send-string (string)
+  (let ((process (riece-server-process (riece-find-server-name))))
+    (unless process
+      (error "%s" (substitute-command-keys
+		   "Type \\[riece-command-open-server] to open server.")))
+    (riece-process-send-string process string)))
+
+(defun riece-open-server (server server-name)
+  (if (equal server-name "")
+      (message "Connecting to IRC server...")
+    (message "Connecting to %s..." server-name))
   (riece-server-keyword-bind server
     (let* (selective-display
 	   (coding-system-for-read 'binary)
 	   (coding-system-for-write 'binary)
 	   (process
-	    (funcall function "IRC"
-		     (if server-name
-			 (format " *IRC*%s" server-name)
-		       " *IRC*")
+	    (funcall function (riece-server-process-name server-name)
+		     (concat " *IRC*" server-name)
 		     host service)))
       (riece-reset-process-buffer process)
       (with-current-buffer (process-buffer process)
@@ -138,14 +173,11 @@ the `riece-server-keyword-map' variable."
 	(setq riece-last-nickname riece-real-nickname
 	      riece-nick-accepted 'sent
 	      riece-coding-system coding))
-      (if server-name
-	  (setq riece-server-process-alist
-		(cons (cons server-name process)
-		      riece-server-process-alist))
-	(setq riece-server-process process))))
-  (if server-name
-      (message "Connecting to %s...done" server-name)
-    (message "Connecting to IRC server...done")))
+      (setq riece-process-list
+	    (cons process riece-process-list))))
+  (if (equal server-name "")
+      (message "Connecting to IRC server...done")
+    (message "Connecting to %s...done" server-name)))
 
 (defun riece-reset-process-buffer (process)
   (save-excursion
@@ -172,71 +204,19 @@ the `riece-server-keyword-map' variable."
     (buffer-disable-undo)
     (erase-buffer)))
 
-(defun riece-close-server-process (process &optional quit-message)
-  (if (eq 'riece-filter (process-filter process))
-      (set-process-filter process nil))
-  (if (eq 'riece-sentinel (process-sentinel process))
-      (set-process-sentinel process nil))
-  (if (memq (process-status process) '(open run))
-      (riece-process-send-string process
-				 (if quit-message
-				     (format "QUIT :%s\r\n" quit-message)
-				   "QUIT\r\n")))
+(defun riece-close-server-process (process)
   (if riece-debug
       (delete-process process)
-    (kill-buffer (process-buffer process))))
-
-(eval-when-compile
-  (autoload 'riece-exit "riece"))
-(defun riece-close-server (server-name &optional quit-message)
-  ;; Remove channels which belong to the server.
-  (let ((riece-overriding-server-name server-name)
-	(channels riece-current-channels))
-    (while channels
-      (if (and (car channels)
-	       (equal (riece-identity-server (car channels))
-		      server-name))
-	  (riece-part-channel (car channels)))
-      (setq channels (cdr channels)))
-    (riece-redisplay-buffers))
-  ;; Close now.
-  (let (process)
-    (if server-name
-	(let ((entry (assoc server-name riece-server-process-alist)))
-	  (setq process (cdr entry)
-		riece-server-process-alist
-		(delq entry riece-server-process-alist)))
-      (setq process riece-server-process
-	    riece-server-process nil))
-    (riece-close-server-process process quit-message)
-    ;; If no server process is available, exit.
-    (if (and (null riece-server-process)
-	     (null riece-server-process-alist))
-	(riece-exit))))
-
-(defun riece-close-all-server (&optional quit-message)
-  (let ((process-list
-	 (delq nil (cons riece-server-process
-			 (mapcar #'cdr riece-server-process-alist)))))
-    (while process-list
-      (riece-close-server-process (car process-list) quit-message)
-      (setq process-list (cdr process-list)))
-    (setq riece-server-process nil
-	  riece-server-process-alist nil)
-    (riece-exit)))
+    (kill-buffer (process-buffer process)))
+  (setq riece-process-list (delq process riece-process-list)))
 
 (defun riece-server-opened (&optional server-name)
-  (let ((processes
-	 (delq nil
-	       (if server-name
-		   (cdr (assoc server-name riece-server-process-alist))
-		 (cons riece-server-process
-		       (mapcar #'cdr riece-server-process-alist))))))
+  (let ((process-list riece-process-list))
     (catch 'found
-      (while processes
-	(if (memq (process-status (car processes)) '(open run))
+      (while process-list
+	(if (memq (process-status (car process-list)) '(open run))
 	    (throw 'found t))
-	(setq processes (cdr processes))))))
+	(setq process-list (cdr process-list))))))
 
 (provide 'riece-server)
 
