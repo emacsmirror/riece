@@ -29,7 +29,6 @@
 (require 'riece-coding)			;riece-default-coding-system
 (require 'riece-identity)
 (require 'riece-compat)
-(require 'riece-filter)
 
 (eval-and-compile
   (defvar riece-server-keyword-map
@@ -39,8 +38,7 @@
       (:username riece-username)
       (:password)
       (:function riece-default-open-connection-function)
-      (:coding riece-default-coding-system)
-      (:protocol))
+      (:coding riece-default-coding-system))
     "Mapping from keywords to default values.
 All keywords that can be used must be listed here."))
 
@@ -129,66 +127,36 @@ the `riece-server-keyword-map' variable."
 		   "Type \\[riece-command-open-server] to open server.")))
     (riece-process-send-string process string)))
 
-(eval-when-compile
-  (autoload 'riece-exit "riece"))
 (defun riece-open-server (server server-name)
-  (riece-server-keyword-bind server
-    (let (selective-display
-	  (coding-system-for-read 'binary)
-	  (coding-system-for-write 'binary)
-	  process)
-      (if (equal server-name "")
-	  (message "Connecting to IRC server...")
-	(message "Connecting to %s..." server-name))
-      (setq process
-	    (funcall function (riece-server-process-name server-name)
-		     (concat " *IRC*" server-name)
-		     host service))
-      (if (equal server-name "")
-	  (message "Connecting to IRC server...done")
-	(message "Connecting to %s...done" server-name))
-      (riece-reset-process-buffer process)
+  (let ((protocol (or (plist-get server :protocol)
+		      riece-protocol))
+	function
+	process)
+    (condition-case nil
+	(require (intern (concat "riece-" (symbol-name protocol))))
+      (error))
+    (setq function (intern-soft (concat "riece-"
+					(symbol-name protocol)
+					"-open-server")))
+    (unless function
+      (error "\"%S\" is not supported" protocol))
+    (setq process (funcall function server server-name))
+    (when process
       (with-current-buffer (process-buffer process)
-	(setq riece-server-name server-name))
-      (set-process-sentinel process 'riece-sentinel)
-      (set-process-filter process 'riece-filter)
-      (if (equal server-name "")
-	  (message "Logging in to IRC server...")
-	(message "Logging in to %s..." server-name))
-      (if riece-reconnect-with-password	;password incorrect or not set.
-	  (unwind-protect
-	      (setq password
-		    (condition-case nil
-			(let (inhibit-quit)
-			  (if (equal server-name "")
-			      (riece-read-passwd "Password: ")
-			    (riece-read-passwd (format "Password for %s: "
-						       server-name))))
-		      (quit
-		       (if (equal server-name "")
-			   (message "Password: Quit")
-			 (message (format "Password for %s: Quit"
-					  server-name)))
-		       'quit)))
-	    (setq riece-reconnect-with-password nil)))
-      (if (eq password 'quit)
-	  (delete-process process)
-	(if password
-	    (riece-process-send-string process
-				       (format "PASS %s\r\n" password)))
-	(riece-process-send-string process
-				   (format "USER %s * * :%s\r\n"
-					   (user-real-login-name)
-					   (or username
-					       "No information given")))
-	(riece-process-send-string process (format "NICK %s\r\n" nickname))
-	(with-current-buffer (process-buffer process)
-	  (setq riece-last-nickname riece-real-nickname
-		riece-nick-accepted 'sent
-		riece-coding-system coding))
-	(setq riece-server-process-alist
-	      (cons (cons server-name process)
-		    riece-server-process-alist))))))
+	(make-local-variable 'riece-protocol)
+	(setq riece-protocol protocol))
+      (setq riece-server-process-alist
+	    (cons (cons server-name process)
+		  riece-server-process-alist)))))
+
+(defun riece-quit-server-process (process &optional message)
+  (let ((function (intern-soft
+		   (concat "riece-"
+			   (with-current-buffer (process-buffer process)
+			     (symbol-name riece-protocol))
+			   "-quit-server-process"))))
+    (if function
+	(funcall function process message))))
 
 (defun riece-reset-process-buffer (process)
   (save-excursion
@@ -235,18 +203,6 @@ the `riece-server-keyword-map' variable."
 	  (if (riece-server-process-opened (cdr (car alist)))
 	      (throw 'found t))
 	  (setq alist (cdr alist)))))))
-
-(defun riece-quit-server-process (process &optional message)
-  (if riece-quit-timeout
-      (riece-run-at-time riece-quit-timeout nil
-			 (lambda (process)
-			   (if (rassq process riece-server-process-alist)
-			       (delete-process process)))
-			 process))
-  (riece-process-send-string process
-			     (if message
-				 (format "QUIT :%s\r\n" message)
-			       "QUIT\r\n")))
 
 (provide 'riece-server)
 

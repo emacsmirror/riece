@@ -42,6 +42,7 @@
 		riece-500
 
 		riece-commands
+		riece-irc
 		riece
 
 		;; add-ons
