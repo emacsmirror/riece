@@ -1,3 +1,16 @@
+2003-05-31  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-url.el: Fix usage.
+
+	* riece-inlines.el (string-list-member-ignore-case): Remove docstring.
+
+	* riece-unread.el: New add-on.
+	* COMPILE (riece-modules): Add riece-unread.
+	* Makefile.am (EXTRA_DIST): Add riece-unread.el
+
+	* riece-300.el (riece-handle-322-message): New handler.
+	(riece-handle-323-message): New handler.
+
 2003-05-30  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-display.el (riece-configure-windows): Select other window

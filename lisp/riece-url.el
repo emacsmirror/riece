@@ -25,7 +25,7 @@
 ;;; Commentary:
 
 ;; To use, add the following line to your ~/.riece/init.el:
-;; (add-to-list 'riece-addons 'riece-url)
+;; (add-to-list 'riece-addons 'riece-url t)
 
 ;;; Code:
 

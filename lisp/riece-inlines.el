@@ -28,7 +28,6 @@
   (string-equal (upcase s1) (upcase s2)))
 
 (defsubst string-list-member-ignore-case (thing list)
-  "Returns t if thing is member of list, not funcallable"
   (catch 'found
     (while list
       (if (and (stringp (car list))

@@ -168,6 +168,26 @@
 	  (setq users (cdr users)))
 	(riece-redisplay-buffers))))
 
+(defun riece-handle-322-message (prefix number name string)
+  (if (string-match "^\\([^ ]+\\) \\([0-9]+\\) :" string)
+      (let* ((channel (match-string 1 string))
+	     (visible (match-string 2 string))
+	     (topic (substring string (match-end 0))))
+	(let ((buffer (cdr (riece-identity-assoc-no-server
+			    (riece-make-identity channel)
+			    riece-channel-buffer-alist))))
+	  (riece-insert-info buffer (concat visible " users, topic: "
+					    topic "\n"))
+	  (riece-insert-info
+	   (if (and riece-channel-buffer-mode
+		    (not (eq buffer riece-channel-buffer)))
+	       (list riece-dialogue-buffer riece-others-buffer)
+	     riece-dialogue-buffer)
+	   (concat
+	    (riece-concat-server-name
+	     (format "%s users on %s, topic: %s" visible channel topic))
+	    "\n"))))))
+
 (defun riece-handle-324-message (prefix number name string)
   (if (string-match "^\\([^ ]+\\) \\([^ ]+\\) " string)
       (let* ((channel (match-string 1 string))
@@ -303,6 +323,7 @@
 
 (defun riece-handle-315-message (prefix number name string))
 (defun riece-handle-318-message (prefix number name string))
+(defun riece-handle-323-message (prefix number name string))
 (defun riece-handle-366-message (prefix number name string))
 
 (provide 'riece-300)

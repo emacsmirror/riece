@@ -138,11 +138,11 @@
 	  (erase-buffer)
 	  (while channels
 	    (if (car channels)
-		(insert (format "%2d:%s\n" index (car channels))))
+		(insert (format "%2d: %s\n" index (car channels))))
 	    (setq index (1+ index)
 		  channels (cdr channels)))))))
 
-(defsubst riece-update-channel-indicator ()
+(defun riece-update-channel-indicator ()
   (setq riece-channel-indicator
 	(if riece-current-channel
 	    (riece-concat-current-channel-modes
@@ -176,7 +176,8 @@
 
 (defun riece-update-buffers ()
   (run-hooks 'riece-update-buffer-functions)
-  (force-mode-line-update t))
+  (force-mode-line-update t)
+  (run-hooks 'riece-update-buffers-hook))
 
 (eval-when-compile
   (autoload 'riece-channel-mode "riece"))
@@ -210,7 +211,8 @@
 	      identity riece-channel-buffer-alist))
 	riece-user-list-buffer 
 	(cdr (riece-identity-assoc-no-server
-	      identity riece-user-list-buffer-alist))))
+	      identity riece-user-list-buffer-alist)))
+  (run-hooks 'riece-channel-switch-hook))
 
 (defun riece-join-channel (channel-name)
   (let ((identity (riece-make-identity channel-name)))
@@ -275,6 +277,9 @@
   (riece-update-buffers)
   (if (or force
 	  (funcall riece-configure-windows-predicate))
-      (funcall riece-configure-windows-function)))
+      (funcall riece-configure-windows-function))
+  (run-hooks 'riece-redisplay-buffers-hook))
 
 (provide 'riece-display)
+
+;;; riece-display.el ends here

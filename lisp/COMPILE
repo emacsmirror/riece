@@ -42,7 +42,8 @@
 		;; add-ons
 		riece-ctcp
 		riece-highlight
-		riece-url))))
+		riece-url
+		riece-unread))))
 
 (defun riece-compile-modules (modules)
   (let ((load-path (cons nil load-path)))
