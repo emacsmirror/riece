@@ -536,6 +536,82 @@ Instead, these commands are available:
 	  (funcall (nth 2 (car alist))))
 	(setq alist (cdr alist))))))
 
+(defun riece-submit-bug-report (&optional recent-keys)
+  "Submit via mail a bug report on Riece."
+  ;; This strange form ensures that (recent-keys) is the value before
+  ;; the bug subject string is read.
+  (interactive (list (recent-keys)))
+  (require 'reporter)
+  (let ((reporter-prompt-for-summary-p t))
+    (when (y-or-n-p "Do you want to submit a report on Riece? ")
+      (reporter-submit-bug-report
+       "liece@unixuser.org"
+       (riece-version)
+       '(riece-debug)
+       nil
+       nil
+       "This bug report will be sent to the Riece Development Team,
+not to your local site managers!!
+
+Please write in Japanese or English, because the Riece maintainers do
+not have translators to read other languages for them.
+
+Please describe as succinctly as possible:
+\t- What happened.
+\t- What you thought should have happened.
+\t- Precisely what you were doing at the time.
+
+Also include a reliable recipe for triggering the bug, as well as
+any lisp back-traces that you may have.
+\(setq stack-trace-on-error t\), or \(setq debug-on-error t\) if you
+are familiar with the debugger, to get a lisp back-trace.")
+      (save-excursion
+	(goto-char (point-max))
+	(insert
+	 "\nAdd-on state:\n"
+	 "------------\n"
+	 (save-window-excursion
+	   (save-excursion
+	     (riece-command-list-addons)
+	     (search-forward "\n\n")
+	     (buffer-substring (point-min) (point)))))
+	(when riece-debug
+	  (insert "Recent messages from servers:\n"
+		  "--------------------------")
+	  (let ((pointer riece-server-process-alist))
+	    (while pointer
+	      (insert "\n- \"" (car (car pointer)) "\", \n"
+		      (format "%S" (if (equal (car (car pointer)) "")
+				       riece-server
+				     (cdr (assoc (car (car pointer))
+						 riece-server-alist))))
+		      "\n"
+		      (if (process-live-p (cdr (car pointer)))
+			  (save-excursion
+			    (set-buffer (process-buffer (cdr (car pointer))))
+			    (goto-char (point-max))
+			    (beginning-of-line -20)
+			    (buffer-substring (point) (point-max)))
+			"(closed server)"))
+	      (setq pointer (cdr pointer)))))
+	;; Insert recent keystrokes.
+	(insert "\n\n"
+	"Recent keystrokes:\n-----------------\n\n")
+	(let ((before-keys (point)))
+	(insert (key-description recent-keys))
+	(save-restriction
+	  (narrow-to-region before-keys (point))
+	  (goto-char before-keys)
+	  (while (progn (move-to-column 50) (not (eobp)))
+	    (search-forward " " nil t)
+	    (insert "\n"))))
+	;; Insert recent minibuffer messages.
+	(insert "\nRecent messages (most recent first):\n"
+		"-----------------------------------\n")
+	(let ((standard-output (current-buffer)))
+	(print-recent-messages 20)
+	(insert "\n"))))))
+
 (provide 'riece)
 
 ;;; riece.el ends here
