@@ -46,23 +46,25 @@
 		   "\\)\\(\\*\\)?=\\([-+]\\)\\([^ ]+\\)")
 	   (car replies))
 	  (let ((user (match-string 1 (car replies)))
-		(away (eq (match-string 3 (car replies)) ?-)))
+		(away (eq (match-string 3 (car replies)) ?-))
+		(user-at-host (match-string 4 (car replies)))
+		(operator (not (null (match-beginning 2)))))
+	    (riece-user-toggle-away user away)
+	    (riece-user-toggle-operator user operator)
 	    (riece-insert-info
 	     (list riece-dialogue-buffer riece-others-buffer)
 	     (concat
 	      (riece-concat-server-name
 	       (format "%s is (%s) [%s, %s]"
 		       user
-		       (riece-strip-user-at-host
-			(match-string 4 (car replies)))
-		       (if (match-beginning 2)
+		       (riece-strip-user-at-host user-at-host)
+		       (if operator
 			   "operator"
 			 "not operator")
 		       (if away
 			   "away"
 			 "not away")))
-	      "\n"))
-	    (riece-user-set-away (riece-get-user user) away)))
+	      "\n"))))
       (setq replies (cdr replies)))))
 
 (defun riece-handle-303-message (prefix number name string)
@@ -76,26 +78,21 @@
   (when (string-match
 	 (concat "^\\(" riece-user-regexp "\\) :")
 	 string)
-    (let ((user (match-string 1 string)))
-      (riece-user-set-away (riece-get-user user) t)
+    (let ((user (match-string 1 string))
+	  (message (substring string (match-end 0))))
+      (riece-user-toggle-away user t)
       (riece-insert-info
        (list riece-dialogue-buffer riece-others-buffer)
        (concat
 	(riece-concat-server-name
-	 (format "%s is away: %s"
-		 user
-		 (substring string (match-end 0))))
+	 (format "%s is away: %s" user message))
 	"\n")))))
 
 (defun riece-handle-305-message (prefix number name string)
-  (riece-user-set-away (riece-get-user riece-real-nickname) nil)
-  (setq riece-away-indicator "-")
-  (force-mode-line-update t))
+  (riece-user-toggle-away riece-real-nickname nil))
 
 (defun riece-handle-306-message (prefix number name string)
-  (riece-user-set-away (riece-get-user riece-real-nickname) t)
-  (setq riece-away-indicator "A")
-  (force-mode-line-update t))
+  (riece-user-toggle-away riece-real-nickname t))
 
 (defun riece-handle-311-message (prefix number name string)
   (if (string-match
@@ -282,7 +279,7 @@
 	     (server (match-string 4 string))
 	     (nick (match-string 5 string))
 	     (away (equal (match-string 6 string) "G"))
-	     (operator (match-string 7 string))
+	     (operator (not (null (match-beginning 7))))
 	     (flag (match-string 8 string))
 	     (hops (match-string 9 string))
 	     (name (substring string (match-end 0)))
@@ -290,7 +287,8 @@
 			   (riece-make-identity channel)
 			   riece-channel-buffer-alist))))
 	(riece-naming-assert-join nick channel)
-	(riece-user-set-away (riece-get-user user) away)
+	(riece-user-toggle-away user away)
+	(riece-user-toggle-operator user operator)
 	(riece-insert-info
 	 buffer
 	 (format "%10s = %s (%s) [%s, %s, %s hops, on %s]\n"

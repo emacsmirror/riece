@@ -513,20 +513,32 @@
   "Prevent automatic scrolling of the dialogue window.
 If prefix argument ARG is non-nil, toggle frozen status."
   (interactive "P")
-  (riece-freeze (if riece-channel-buffer-mode
-		    riece-channel-buffer
-		  riece-dialogue-buffer)
-		(if arg (prefix-numeric-value arg))))
+  (with-current-buffer (if (and riece-channel-buffer-mode
+				riece-channel-buffer)
+			   riece-channel-buffer
+			 riece-dialogue-buffer)
+    (setq riece-freeze (if arg
+			   (< 0 (prefix-numeric-value arg))
+			 (not riece-freeze))))
+  (riece-update-status-indicators)
+  (force-mode-line-update t))
 
 (defun riece-command-toggle-own-freeze (&optional arg)
   "Prevent automatic scrolling of the dialogue window.
 The difference from `riece-command-freeze' is that your messages are hidden.
 If prefix argument ARG is non-nil, toggle frozen status."
   (interactive "P")
-  (riece-own-freeze (if riece-channel-buffer-mode
-			riece-channel-buffer
-		      riece-dialogue-buffer)
-		    (if arg (prefix-numeric-value arg))))
+  (with-current-buffer (if (and riece-channel-buffer-mode
+				riece-channel-buffer)
+			   riece-channel-buffer
+			 riece-dialogue-buffer)
+    (if (if arg
+	    (< 0 (prefix-numeric-value arg))
+	  (not (eq riece-freeze 'own)))
+	(setq riece-freeze 'own)
+      (setq riece-freeze nil)))
+  (riece-update-status-indicators)
+  (force-mode-line-update t))
 
 (defun riece-command-quit (&optional arg)
   "Quit IRC."

@@ -1,3 +1,31 @@
+2003-06-02  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece.el (riece-command-mode): Don't set riece-freeze-indicator.
+	(riece-dialogue-mode): Call riece-update-status-indicators.
+	(riece-channel-mode): Add riece-operator-indicator to
+	mode-line-buffer-identification.
+	* riece-user.el (riece-make-user): New attribute `operator'.
+	(riece-user-operator): New function.
+	(riece-user-set-operator): New function.
+	(riece-user-toggle-away): New function.
+	(riece-user-toggle-operator): New function.
+	* riece-misc.el (riece-own-frozen): Revive.
+	* riece-message.el (riece-display-message): Reset riece-freeze if
+	riece-freeze == 'own && (riece-message-own-p message).
+	* riece-globals.el (riece-own-freeze): Abolish; use riece-freeze.
+	(riece-operator-indicator): New variable.
+	* riece-display.el (riece-update-status-indicators): New function.
+	(riece-update-buffer-functions): Add it.
+	* riece-commands.el (riece-command-toggle-freeze): Don't call
+	riece-freeze.
+	(riece-command-toggle-own-freeze): Don't call riece-own-freeze.
+	* riece-300.el (riece-handle-302-message): Use
+	riece-user-toggle-away instead of riece-user-set-away.
+	(riece-handle-301-message): Ditto.
+	(riece-handle-305-message): Ditto.
+	(riece-handle-306-message): Ditto.
+	(riece-handle-352-message): Ditto.
+
 2003-06-02  Yoichi NAKAYAMA  <yoichi@geiin.org>
 
 	* riece-commands.el (riece-command-next-channel): Circularly

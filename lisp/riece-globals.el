@@ -107,10 +107,8 @@ Local to the command buffer.")
 
 ;;; Variables local to the channel buffers:
 (defvar riece-freeze nil
-  "If non-nil, channel window is not scrolled.
-Local to the channel buffers.")
-(defvar riece-own-freeze nil
-  "If non-nil, channel window is not scrolled until you input.
+  "If t, channel window is not scrolled.
+If 'own, channel window is not scrolled until you speak.
 Local to the channel buffers.")
 
 ;;; Modeline indicators:
@@ -120,6 +118,7 @@ Local to the channel buffers.")
   "The current joined channels, \"pretty-printed.\".")
 
 (defvar riece-away-indicator "-")
+(defvar riece-operator-indicator "-")
 (defvar riece-freeze-indicator nil)
 (defvar riece-own-freeze-indicator nil)
 

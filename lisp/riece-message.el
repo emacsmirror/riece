@@ -135,16 +135,23 @@ Normally they are *Dialogue* and/or *Others*."
 
 (defun riece-display-message (message)
   "Display MESSAGE object."
-  (let* ((open-bracket
-	  (funcall riece-message-make-open-bracket-function message))
-	 (close-bracket
-	  (funcall riece-message-make-close-bracket-function message))
-	 (name
-	  (funcall riece-message-make-name-function message))
-	 (global-name
-	  (funcall riece-message-make-global-name-function message))
-	 (buffer (riece-message-buffer message))
-	 (parent-buffers (riece-message-parent-buffers message buffer)))
+  (let ((open-bracket
+	 (funcall riece-message-make-open-bracket-function message))
+	(close-bracket
+	 (funcall riece-message-make-close-bracket-function message))
+	(name
+	 (funcall riece-message-make-name-function message))
+	(global-name
+	 (funcall riece-message-make-global-name-function message))
+	(buffer (riece-message-buffer message))
+	parent-buffers)
+    (when (and buffer
+	       (riece-message-own-p message)
+	       (riece-own-frozen buffer))
+      (with-current-buffer buffer
+	(setq riece-freeze nil))
+      (riece-update-status-indicators))
+    (setq parent-buffers (riece-message-parent-buffers message buffer))
     (riece-insert buffer
 		  (concat open-bracket name close-bracket
 			  " " (riece-message-text message) "\n"))

@@ -59,11 +59,11 @@
 	 (makunbound symbol)
 	 (unintern (symbol-name symbol) riece-obarray))))))
 
-(defun riece-make-user (&optional channels user-at-host modes away)
+(defun riece-make-user (&optional channels user-at-host modes away operator)
   "Make an instance of user object.
 Arguments are appropriate to joined channels, user-at-host, mode, and
 away status, respectively."
-  (vector channels user-at-host modes away))
+  (vector channels user-at-host modes away operator))
 
 (defun riece-get-user (name)
   (riece-with-server-buffer
@@ -90,6 +90,10 @@ away status, respectively."
   "Return t, if USER has been marked as away."
   (aref user 3))
 
+(defun riece-user-operator (user)
+  "Return t, if USER has operator privilege."
+  (aref user 4))
+
 (defun riece-user-set-channels (user value)
   "Set the joined channels of USER to VALUE."
   (aset user 0 value))
@@ -106,6 +110,10 @@ away status, respectively."
   "Set the away status of USER to VALUE."
   (aset user 3 value))
 
+(defun riece-user-set-operator (user value)
+  "Set the operator status of USER to VALUE."
+  (aset user 4 value))
+
 (defun riece-user-get-channels (&optional name)
   (riece-user-channels
    (riece-get-user (or name riece-real-nickname))))
@@ -120,6 +128,10 @@ away status, respectively."
 
 (defun riece-user-get-away (&optional name)
   (riece-user-away
+   (riece-get-user (or name riece-real-nickname))))
+
+(defun riece-user-get-operator (&optional name)
+  (riece-user-operator
    (riece-get-user (or name riece-real-nickname))))
 
 (defun riece-user-toggle-channel (name channel flag)
@@ -141,6 +153,14 @@ away status, respectively."
 	  (riece-user-set-modes user (cons mode modes)))
       (if (memq mode modes)
 	  (riece-user-set-modes user (delq mode modes))))))
+
+(defun riece-user-toggle-away (name flag)
+  (riece-user-set-away
+   (riece-get-user (or name (riece-current-nickname))) flag))
+
+(defun riece-user-toggle-operator (name flag)
+  (riece-user-set-operator
+   (riece-get-user (or name (riece-current-nickname))) flag))
 
 (provide 'riece-user)
 

@@ -208,12 +208,7 @@ way is to put Riece variables on .emacs or file loaded from there."
   :group 'riece-looks)
 
 (defcustom riece-default-freeze nil
-  "If non nil, channel buffer local freeze flag is on at starting."
-  :type 'boolean
-  :group 'riece-looks)
-
-(defcustom riece-default-own-freeze nil
-  "If non nil, channel buffer local own freeze flag is on at starting."
+  "Channel buffer local freeze flag is on at starting."
   :type 'boolean
   :group 'riece-looks)
 

@@ -72,20 +72,13 @@
 (defun riece-insert-info (buffer message)
   (riece-insert buffer (concat riece-info-prefix message)))
 
-(defun riece-freeze (buffer &optional arg)
-  (with-current-buffer buffer
-    (setq riece-freeze (if arg (< 0 arg) (not riece-freeze))
-	  riece-freeze-indicator (if riece-freeze "F" "-"))
-    (force-mode-line-update)))
-
 (defun riece-frozen (buffer)
-  (with-current-buffer buffer riece-freeze))
-
-(defun riece-own-freeze (buffer &optional arg)
   (with-current-buffer buffer
-    (setq riece-own-freeze (if arg (< 0 arg) (not riece-own-freeze))
-	  riece-own-freeze-indicator (if riece-own-freeze "M" "-"))
-    (force-mode-line-update)))
+    riece-freeze))
+
+(defun riece-own-frozen (buffer)
+  (with-current-buffer buffer
+    (eq riece-freeze 'own)))
 
 (defun riece-process-send-string (process string)
   (with-current-buffer (process-buffer process)

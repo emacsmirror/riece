@@ -31,6 +31,7 @@
 (defvar riece-update-buffer-functions
   '(riece-user-list-update-buffer
     riece-channel-list-update-buffer
+    riece-update-status-indicators
     riece-update-channel-indicator
     riece-update-channel-list-indicator))
 
@@ -176,6 +177,29 @@
 		      riece-current-channels))
 	       ",")))
     (setq riece-channel-list-indicator "No channel")))
+
+(defun riece-update-status-indicators ()
+  (riece-with-server-buffer
+   (setq riece-away-indicator
+	 (if (and riece-real-nickname
+		  (riece-user-get-away riece-real-nickname))
+	     "A"
+	   "-"))
+   (setq riece-operator-indicator
+	 (if (and riece-real-nickname
+		  (riece-user-get-operator riece-real-nickname))
+	     "O"
+	   "-")))
+  (setq riece-freeze-indicator
+	(with-current-buffer (if (and riece-channel-buffer-mode
+				      riece-channel-buffer)
+				 riece-channel-buffer
+			       riece-dialogue-buffer)
+	  (if (eq riece-freeze 'own)
+	      "f"
+	    (if riece-freeze
+		"F"
+	      "-")))))
 
 (defun riece-update-buffers ()
   (run-hooks 'riece-update-buffer-functions)

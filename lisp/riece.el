@@ -288,11 +288,8 @@ For a list of the generic commands type \\[riece-command-generic] ? RET.
   (interactive)
   (kill-all-local-variables)
 
-  (setq riece-freeze riece-default-freeze
-	riece-freeze-indicator (if riece-freeze "F" "-")
-	riece-own-freeze riece-default-own-freeze
-	riece-own-freeze-indicator (if riece-own-freeze "M" "-")
-	riece-away-indicator "-"
+  (setq riece-away-indicator "-"
+	riece-operator-indicator "-"
 	major-mode 'riece-command-mode
 	mode-name "Commands"
 	mode-line-buffer-identification
@@ -300,6 +297,7 @@ For a list of the generic commands type \\[riece-command-generic] ? RET.
 	 '("Riece: "
 	   mode-line-modified
 	   riece-away-indicator
+	   riece-operator-indicator
 	   "-- " riece-current-channel " " riece-real-nickname)))
   (riece-simplify-mode-line-format)
   (use-local-map riece-command-mode-map)
@@ -322,16 +320,11 @@ Instead, these commands are available:
   (kill-all-local-variables)
 
   (make-local-variable 'riece-freeze)
-  (make-local-variable 'riece-freeze-indicator)
-  (make-local-variable 'riece-own-freeze)
-  (make-local-variable 'riece-own-freeze-indicator)
   (make-local-variable 'tab-stop-list)
 
   (setq riece-freeze riece-default-freeze
-	riece-freeze-indicator (if riece-freeze "F" "-")
-	riece-own-freeze riece-default-own-freeze
-	riece-own-freeze-indicator (if riece-own-freeze "M" "-")
 	riece-away-indicator "-"
+	riece-operator-indicator "-"
 	major-mode 'riece-dialogue-mode
 	mode-name "Dialogue"
 	mode-line-buffer-identification
@@ -339,11 +332,13 @@ Instead, these commands are available:
 	 '("Riece: "
 	   mode-line-modified
 	   riece-away-indicator
+	   riece-operator-indicator
 	   riece-freeze-indicator
 	   riece-own-freeze-indicator
 	   " " riece-channel-list-indicator " "))
 	buffer-read-only t
 	tab-stop-list riece-tab-stop-list)
+  (riece-update-status-indicators)
   (riece-simplify-mode-line-format)
   (use-local-map riece-dialogue-mode-map)
   (buffer-disable-undo)
@@ -367,6 +362,7 @@ Instead, these commands are available:
 	 '("Riece: "
 	   mode-line-modified
 	   riece-away-indicator
+	   riece-operator-indicator
 	   riece-freeze-indicator
 	   riece-own-freeze-indicator
 	   " "
