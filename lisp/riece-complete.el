@@ -24,6 +24,8 @@
 
 ;;; Code:
 
+(eval-when-compile (require 'cl))	;butlast
+
 (require 'riece-compat)
 
 (defvar riece-minibuffer-map
