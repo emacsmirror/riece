@@ -1,3 +1,24 @@
+* Riece 1.0.8 の主な変更点
+
+** riece-log のロックの緩和 (ueno)
+
+** RPL_WHOISIDLE の秒数を日時分秒形式で表示 (ueno)
+
+** riece-obarray を riece-channel-obarray, riece-user-obarray に分離
+   (kaoru)
+
+** いくつかの個所でチャンネル名の大文字小文字が区別されるバグへの対応 (ueno)
+
+** SXEmacs のバージョン表記に対応 (Steve Youngs)
+
+** CTCP TIME に対応 (Steve Youngs)
+
+** ~/.riece/addons 以下のディレクトリを読み込まないようにした (kaoru)
+
+** riece-command-part がエラーになるバグの修正 (yoichi)
+
+** ~/.riece/addons ディレクトリがないと起動時にエラーになるバグの修正 (ueno)
+
 * Riece 1.0.7 の主な変更点
 
 ** 新規アドオン riece-toolbar (ueno)
