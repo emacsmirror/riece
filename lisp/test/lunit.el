@@ -50,6 +50,8 @@
 
 (eval-when-compile (require 'cl))
 
+(require 'pp)
+
 ;;; @ test
 ;;;
 
@@ -307,16 +309,12 @@ signal an error if not."
 
   (luna-define-internal-accessors 'lunit-test-reporter))
 
-(defun lunit-test-reporter-format-sexp (sexp)
-  (with-temp-buffer
-    (insert (pp-to-string sexp))
-    (goto-char (point-min))
-    (while (re-search-forward "\\\\" nil t)
-      (replace-match "\\\\" nil t))
-    (goto-char (point-min))
-    (while (re-search-forward "\"" nil t)
-      (replace-match "&quot;" nil t))
-    (buffer-string)))
+(defun lunit-escape-quote (string)
+  (let ((index 0))
+    (while (string-match "\"" string index)
+      (setq string (replace-match "&quot;" nil t string)
+	    index (+ 5 index)))
+    string))
     
 (luna-define-method lunit-test-listener-error ((reporter lunit-test-reporter)
 					       case error)
@@ -325,7 +323,7 @@ signal an error if not."
     (insert (format "\
       <error message=\"%s\" type=\"error\"/>
 "
-		    (lunit-test-reporter-format-sexp error)))))
+		    (lunit-escape-quote (pp-to-string error))))))
 
 (luna-define-method lunit-test-listener-failure ((reporter lunit-test-reporter)
 						 case failure)
@@ -334,7 +332,7 @@ signal an error if not."
     (insert (format "\
       <failure message=\"%s\" type=\"failure\"/>
 "
-		    (lunit-test-reporter-format-sexp failure)))))
+		    (lunit-escape-quote (pp-to-string failure))))))
 
 (luna-define-method lunit-test-listener-start ((reporter lunit-test-reporter)
 					       case)
@@ -405,12 +403,16 @@ signal an error if not."
 <testsuites>
   <testsuite name=\"\" tests=\"%d\" failures=\"%d\" \
 errors=\"%d\" time =\"%.03f\">
+    <properties>
+      <property name=\"emacs-version\" value=\"%s\"/>
+    </properties>
 "
 			(lunit-test-number-of-tests test)
 			(length failures)
 			(length errors)
 			(+ (nth 1 elapsed)
-			   (/ (nth 2 elapsed) 1000000.0))))
+			   (/ (nth 2 elapsed) 1000000.0))
+			(lunit-escape-quote (emacs-version))))
 	(goto-char (point-max))
 	(insert "\
   </testsuite>

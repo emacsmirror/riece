@@ -1,5 +1,11 @@
 2004-11-28  Daiki Ueno  <ueno@unixuser.org>
 
+	* test/lunit.el: Require 'pp.
+	(lunit-escape-quote): Rename from lunit-test-reporter-format-sexp.
+	(lunit-report): Add "emacs-version" property.
+
+2004-11-28  Daiki Ueno  <ueno@unixuser.org>
+
 	* COMPILE (riece-test): Use lunit-report instead of lunit.
 
 	* test/lunit.el: Report test result as XML.
