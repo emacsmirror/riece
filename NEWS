@@ -14,6 +14,8 @@
    riece-log, riece-alias, riece-ctlseq, and riece-keyword are now
    enabled by default.
 
+** Preserve cursor position when clicking mouse button. (ueno)
+
 ** New user option riece-part-message. (ueno)
 
 ** Add-ons located in riece-addon-directory are automatically enabled. (ueno)
