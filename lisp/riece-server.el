@@ -174,7 +174,7 @@ the `riece-server-keyword-map' variable."
       (if riece-send-queue
 	  (riece-run-at-time riece-send-delay nil
 			     (lambda (process)
-			       (if (process-buffer process)
+			       (if (process-live-p process)
 				   (riece-flush-send-queue process)))
 			     process)))))
 
