@@ -1,3 +1,8 @@
+2004-06-04  TAKAHASHI Kaoru  <kaoru@kaisei.org>
+
+	* riece-hangman.el (riece-hangman-word): Check killed-buffer or
+	not.  Fix random number generation logic.
+
 2004-06-03  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-server.el (riece-open-server): When password input is

@@ -96,7 +96,8 @@ This function is for internal use only."
 (defun riece-hangman-word ()
   "Return random word.
 The wordlist is read from `riece-hangman-words-file'."
-  (unless riece-hangman-words-buffer
+  (unless (and riece-hangman-words-buffer
+	       (buffer-name riece-hangman-words-buffer))
     (setq riece-hangman-words-buffer (generate-new-buffer " *riece-hangman*"))
     (save-excursion
       (set-buffer riece-hangman-words-buffer)
@@ -106,7 +107,7 @@ The wordlist is read from `riece-hangman-words-file'."
 	(delete-non-matching-lines "^[a-z][a-z][a-z][a-z][a-z][a-z]+"))))
   (save-excursion
     (set-buffer riece-hangman-words-buffer)
-    (goto-char (% (1+ (random)) (buffer-size)))
+    (goto-char (1+ (random (buffer-size))))
     (if (eobp)
 	(beginning-of-line -1)
       (beginning-of-line))
