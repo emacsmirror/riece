@@ -37,8 +37,9 @@
 (defun riece-command-switch-to-channel (channel)
   (interactive (list (riece-completing-read-identity
 		      "Channel/User: " riece-current-channels nil t)))
-  (riece-switch-to-channel channel)
-  (riece-redisplay-buffers))
+  (unless (equal channel riece-current-channels)
+    (riece-switch-to-channel channel)
+    (riece-redisplay-buffers)))
 
 (defun riece-command-switch-to-channel-by-number (number)
   (interactive
@@ -439,7 +440,8 @@
    (let ((completion-ignore-case t)
 	 (target
 	  (riece-completing-read-identity
-	   "Channel/User: " riece-current-channels))
+	   "Channel/User: " riece-current-channels nil nil
+	   (cons (riece-decode-identity riece-current-channel) 0)))
 	 message)
      (if (and current-prefix-arg
 	      (riece-channel-p (riece-identity-prefix target)))

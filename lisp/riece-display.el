@@ -47,9 +47,9 @@
     riece-update-short-channel-indicator
     riece-update-channel-list-indicator))
 
-(defvar riece-inhibit-update-buffers nil
-  "Non-nil means disregard update request of buffers.
-Typically, this variable is bound to a let form.")
+(defvar riece-redisplay-buffer nil
+  "Non-nil means the buffer needs to be updated.
+Local to the buffers.")
 
 (defun riece-configure-windows ()
   (let ((buffer (window-buffer))
@@ -102,35 +102,38 @@ Typically, this variable is bound to a let form.")
 		       (get-buffer-window riece-command-buffer)))))
 
 (defun riece-set-window-points ()
-  (if (and riece-user-list-buffer
-	   (get-buffer-window riece-user-list-buffer))
+  (if (get-buffer-window riece-user-list-buffer)
       (with-current-buffer riece-user-list-buffer
 	(unless (riece-frozen riece-user-list-buffer)
 	  (set-window-start (get-buffer-window riece-user-list-buffer)
 			    (point-min)))))
-  (if (and riece-channel-list-buffer
-	   (get-buffer-window riece-channel-list-buffer))
+  (if (get-buffer-window riece-channel-list-buffer)
       (with-current-buffer riece-channel-list-buffer
 	(unless (riece-frozen riece-channel-list-buffer)
 	  (set-window-start (get-buffer-window riece-channel-list-buffer)
 			    (point-min))))))
 
 (defun riece-update-user-list-buffer ()
-  (if (and riece-user-list-buffer
-	   (get-buffer riece-user-list-buffer)
-	   riece-current-channel
-	   (riece-channel-p (riece-identity-prefix riece-current-channel)))
-      (save-excursion
-	(set-buffer (process-buffer (riece-server-process
-				     (riece-identity-server
-				      riece-current-channel))))
-	(let* ((inhibit-read-only t)
-	       buffer-read-only
-	       (channel (riece-identity-prefix riece-current-channel))
-	       (users (riece-channel-get-users channel))
-	       (operators (riece-channel-get-operators channel))
-	       (speakers (riece-channel-get-speakers channel)))
-	  (set-buffer riece-user-list-buffer)
+  (save-excursion
+    (set-buffer riece-user-list-buffer)
+    (when (and riece-redisplay-buffer
+	       riece-current-channel
+	       (riece-channel-p (riece-identity-prefix riece-current-channel)))
+      (let (users operators speakers)
+	(with-current-buffer (process-buffer (riece-server-process
+					      (riece-identity-server
+					       riece-current-channel)))
+	  (setq users
+		(riece-channel-get-users
+		 (riece-identity-prefix riece-current-channel))
+		operators
+		(riece-channel-get-operators
+		 (riece-identity-prefix riece-current-channel))
+		speakers
+		(riece-channel-get-speakers
+		 (riece-identity-prefix riece-current-channel))))
+	(let ((inhibit-read-only t)
+	      buffer-read-only)
 	  (erase-buffer)
 	  (while users
 	    (if (member (car users) operators)
@@ -138,24 +141,28 @@ Typically, this variable is bound to a let form.")
 	      (if (member (car users) speakers)
 		  (insert "+" (car users) "\n")
 		(insert " " (car users) "\n")))
-	    (setq users (cdr users)))))))
+	    (setq users (cdr users)))))
+      (setq riece-redisplay-buffer nil))))
 
 (defun riece-update-channel-list-buffer ()
-  (if (and riece-channel-list-buffer
-	   (get-buffer riece-channel-list-buffer))
-      (save-excursion
-	(set-buffer riece-channel-list-buffer)
-	(let ((inhibit-read-only t)
-	      buffer-read-only
-	      (index 1)
-	      (channels riece-current-channels))
-	  (erase-buffer)
-	  (while channels
-	    (if (car channels)
+  (save-excursion
+    (set-buffer riece-channel-list-buffer)
+    (when riece-redisplay-buffer
+      (let ((inhibit-read-only t)
+	    buffer-read-only
+	    (index 1)
+	    (channels riece-current-channels))
+	(erase-buffer)
+	(while channels
+	  (if (car channels)
+	      (let ((point (point)))
 		(insert (format "%2d: %s\n" index
-				(riece-decode-identity (car channels)))))
-	    (setq index (1+ index)
-		  channels (cdr channels)))))))
+				(riece-decode-identity (car channels))))
+		(put-text-property point (point) 'riece-identity
+				   (car channels))))
+	  (setq index (1+ index)
+		channels (cdr channels))))
+      (setq riece-redisplay-buffer nil))))
 
 (defun riece-update-channel-indicator ()
   (setq riece-channel-indicator
@@ -248,6 +255,8 @@ Typically, this variable is bound to a let form.")
 (defun riece-switch-to-channel (identity)
   (setq riece-last-channel riece-current-channel
 	riece-current-channel identity)
+  (with-current-buffer riece-user-list-buffer
+    (setq riece-redisplay-buffer t))
   (run-hooks 'riece-channel-switch-hook))
 
 (defun riece-join-channel (identity)
@@ -255,7 +264,9 @@ Typically, this variable is bound to a let form.")
     (setq riece-current-channels
 	  (riece-identity-assign-binding identity riece-current-channels
 					 riece-default-channel-binding))
-    (riece-channel-buffer-create identity)))
+    (riece-channel-buffer-create identity)
+    (with-current-buffer riece-channel-list-buffer
+      (setq riece-redisplay-buffer t))))
 
 (defun riece-switch-to-nearest-channel (pointer)
   (let ((start riece-current-channels)
@@ -279,7 +290,9 @@ Typically, this variable is bound to a let form.")
     (if pointer
 	(setcar pointer nil))
     (if (riece-identity-equal identity riece-current-channel)
-	(riece-switch-to-nearest-channel pointer))))
+	(riece-switch-to-nearest-channel pointer))
+    (with-current-buffer riece-channel-list-buffer
+      (setq riece-redisplay-buffer t))))
 
 (defun riece-configure-windows-predicate ()
   ;; The current channel is changed, and some buffers are visible.
@@ -293,8 +306,7 @@ Typically, this variable is bound to a let form.")
 	    (setq buffers (cdr buffers))))))))
 
 (defun riece-redisplay-buffers (&optional force)
-  (unless riece-inhibit-update-buffers
-    (riece-update-buffers))
+  (riece-update-buffers)
   (if (or force
 	  (funcall riece-configure-windows-predicate))
       (funcall riece-configure-windows-function))

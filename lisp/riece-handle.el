@@ -118,8 +118,6 @@
 						    riece-server-name))
 	     (buffer (get-buffer (riece-channel-buffer-name
 				  channel-identity))))
-	(if (riece-identity-equal-no-server user riece-real-nickname)
-	    (riece-switch-to-channel channel-identity))
 	(riece-insert-change
 	 buffer
 	 (format "%s (%s) has joined %s\n"
@@ -147,7 +145,8 @@
 	 ;; RFC2812 3.2.2 doesn't recommend server to send part
 	 ;; messages which contain multiple targets.
 	 (channels (split-string (car parameters) ","))
-	 (message (riece-decode-coding-string (nth 1 parameters)))
+	 (message (if (nth 1 parameters)
+		      (riece-decode-coding-string (nth 1 parameters))))
 	 (user-identity (riece-make-identity user riece-server-name)))
     (while channels
       (riece-naming-assert-part user (car channels))
@@ -185,7 +184,8 @@
 	 (parameters (riece-split-parameters string))
 	 (channel (car parameters))
 	 (user (nth 1 parameters))
-	 (message (riece-decode-coding-string (nth 2 parameters)))
+	 (message (if (nth 2 parameters)
+		      (riece-decode-coding-string (nth 2 parameters))))
 	 (kicker-identity (riece-make-identity kicker riece-server-name))
 	 (channel-identity (riece-make-identity channel riece-server-name))
 	 (user-identity (riece-make-identity user riece-server-name)))
@@ -221,8 +221,9 @@
   (let* ((user (riece-prefix-nickname prefix))
 	 (channels (copy-sequence (riece-user-get-channels user)))
 	 (pointer channels)
-	 (message (riece-decode-coding-string
-		   (car (riece-split-parameters string))))
+	 (parameters (riece-split-parameters string))
+	 (message (if (car parameters)
+		      (riece-decode-coding-string (car parameters))))
 	 (user-identity (riece-make-identity user riece-server-name)))
     ;; If you are talking with the user, quit it.
     (if (riece-identity-member user-identity riece-current-channels)
@@ -264,7 +265,8 @@
   (let* ((killer (riece-prefix-nickname prefix))
 	 (parameters (riece-split-parameters string))
 	 (user (car parameters))
-	 (message (riece-decode-coding-string (nth 1 parameters)))
+	 (message (if (nth 1 parameters)
+		      (riece-decode-coding-string (nth 1 parameters))))
 	 (channels (copy-sequence (riece-user-get-channels user)))
 	 (killer-identity (riece-make-identity killer riece-server-name))
 	 (user-identity (riece-make-identity user riece-server-name))

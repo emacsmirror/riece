@@ -152,8 +152,7 @@
 		   (substring status 0 (1- (length status))))
 	  (message "Connection to \"%s\" closed: %s"
 		   server-name (substring status 0 (1- (length status))))))
-      (let ((channels riece-current-channels)
-	    (riece-inhibit-update-buffers t))
+      (let ((channels riece-current-channels))
 	(while channels
 	  (if (and (car channels)
 		   (equal (riece-identity-server (car channels))

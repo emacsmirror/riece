@@ -42,36 +42,30 @@
 	  (delete (riece-message-target message) riece-unread-channels))
     (add-to-list 'riece-unread-channels
 		 (riece-message-target message))
-    (unless riece-inhibit-update-buffers
-      (riece-unread-update-channel-list-buffer))))
+    (riece-unread-update-channel-list-buffer)))
 
 (defun riece-unread-channel-switch-hook ()
   (setq riece-unread-channels
 	(delete riece-current-channel
 		riece-unread-channels))
-  (unless riece-inhibit-update-buffers
-    (riece-unread-update-channel-list-buffer)))
+  (riece-unread-update-channel-list-buffer))
 
 (defun riece-unread-update-channel-list-buffer ()
-  (if riece-channel-list-buffer-mode
-      (save-excursion
-	(set-buffer riece-channel-list-buffer)
-	(let ((inhibit-read-only t)
-	      buffer-read-only)
-	  (goto-char (point-min))
-	  (while (not (eobp))
-	    (if (looking-at "\\( ?[0-9]+:\\)\\([ !]\\)\\(.+\\)")
-		(let ((channel (match-string 3)))
-		  (replace-match
-		   (concat "\\1"
-			   (if (member (save-match-data
-					 (riece-encode-identity channel))
-				       riece-unread-channels)
-			       "!"
-			     " ")
-			   "\\3"))))
-	    (forward-line))))))
-      
+  (save-excursion
+    (set-buffer riece-channel-list-buffer)
+    (let ((inhibit-read-only t)
+	  buffer-read-only)
+      (goto-char (point-min))
+      (while (not (eobp))
+	(if (looking-at "\\( ?[0-9]+:\\)[ !]")
+	    (let ((channel (get-text-property (match-end 0) 'riece-identity)))
+	      (replace-match
+	       (concat "\\1"
+		       (if (member channel riece-unread-channels)
+			   "!"
+			 " ")))))
+	(forward-line)))))
+
 (defun riece-unread-switch-to-channel ()
   (interactive)
   (if (car riece-unread-channels)

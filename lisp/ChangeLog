@@ -1,3 +1,33 @@
+2003-06-23  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-handle.el (riece-handle-join-message): Don't call
+	riece-switch-to-channel.
+	(riece-handle-part-message): Don't decode message if it is empty.
+	(riece-handle-kick-message): Ditto.
+	(riece-handle-quit-message): Ditto.
+	(riece-handle-kill-message): Ditto.
+
+	* riece-commands.el (riece-command-part): Show the current channel
+	as default candidate.
+
+	* riece-identity.el (riece-completing-read-identity): Accept
+	optional 5th argument `initial'.
+
+	* riece-unread.el (riece-unread-update-channel-list-buffer):
+	Simplified.
+
+	* riece-filter.el (riece-sentinel): Don't bind
+	riece-inhibit-update-buffers.
+
+	* riece-display.el (riece-redisplay-buffer): New variable.
+	(riece-inhibit-update-buffers): Abolish.
+	(riece-update-channel-list-buffer): Memorize
+	encoded identity as text property on each line.	
+
+	* riece.el (riece-channel-list-mode): Make riece-redisplay-buffer
+	buffer local.
+	(riece-user-list-mode): Ditto.
+
 2003-06-22  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-display.el (riece-inhibit-update-buffers): New variable.

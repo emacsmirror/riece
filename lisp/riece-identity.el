@@ -147,7 +147,8 @@ RFC2812, 2.2 \"Character codes\" says:
       (riece-make-identity (riece-encode-coding-string prefix) server))))
 
 (defun riece-completing-read-identity (prompt channels
-					      &optional predicate must-match)
+					      &optional predicate must-match
+					      initial)
   (let* ((decoded
 	  (completing-read
 	   prompt
@@ -155,7 +156,7 @@ RFC2812, 2.2 \"Character codes\" says:
 		     (list (riece-decode-identity channel)))
 		   (delq nil (copy-sequence (or channels
 						riece-current-channels))))
-	   predicate must-match))
+	   predicate must-match initial))
 	 (encoded
 	  (riece-encode-identity decoded)))
     (if (and (not (string-match "[ ,]" decoded))

@@ -32,6 +32,8 @@
   "The channel you currently have joined.")
 (defvar riece-current-channels nil
   "The channels you have currently joined.")
+(defvar riece-last-channel nil
+  "The channel you had joined the last time.")
 
 (defvar riece-save-variables-are-dirty nil
   "Non nil if the variables in `riece-saved-forms' are changed.")
@@ -91,17 +93,6 @@ Local to the server buffers.")
 (defvar riece-coding-system nil
   "Coding system for process I/O.
 Local to the server buffers.")
-
-;;; Variables local to the command buffer:
-(defvar riece-default-channel-candidate nil
-  "A channel name used as completion candidate.
-Local to the command buffer.")
-(defvar riece-last-channel nil
-  "The channel you joined the last time.")
-(defvar riece-command-buffer-mode 'channel
-  "Command buffer mode.
-Possible values are `chat' and `channel'.
-Local to the command buffer.")
 
 ;;; Variables local to the channel buffers:
 (defvar riece-freeze nil

@@ -312,10 +312,8 @@ All normal editing commands are turned off.
 Instead, these commands are available:
 \\{riece-dialogue-mode-map}"
   (kill-all-local-variables)
-
   (make-local-variable 'riece-freeze)
   (make-local-variable 'tab-stop-list)
-
   (setq riece-freeze riece-default-freeze
 	riece-away-indicator "-"
 	riece-operator-indicator "-"
@@ -363,6 +361,7 @@ Instead, these commands are available:
 All normal editing commands are turned off."
   (kill-all-local-variables)
   (buffer-disable-undo)
+  (make-local-variable 'riece-redisplay-buffer)
   (setq major-mode 'riece-channel-list-mode
         mode-name "Channels"
 	mode-line-buffer-identification
@@ -379,6 +378,7 @@ Instead, these commands are available:
 \\{riece-user-list-mode-map}"
   (kill-all-local-variables)
   (buffer-disable-undo)
+  (make-local-variable 'riece-redisplay-buffer)
   (setq major-mode 'riece-user-list-mode
         mode-name "User list"
 	mode-line-buffer-identification
