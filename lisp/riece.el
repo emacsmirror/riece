@@ -149,7 +149,7 @@ If optional argument SAFE is nil, overwrite previous definitions."
     "l" riece-command-list
     "M" riece-command-change-mode
     "n" riece-command-change-nickname
-    "\C-n" riece-command-names
+    "N" riece-command-names
     "o" other-window
     "O" riece-command-open-server
     "C" riece-command-close-server
