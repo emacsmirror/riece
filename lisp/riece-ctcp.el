@@ -77,7 +77,7 @@
 			(run-hook-with-args-until-success
 			 hook prefix (car targets) message))
 		(if function
-		    (riece--funcall-ignore-errors (symbol-name function)
+		    (riece-funcall-ignore-errors (symbol-name function)
 						  function prefix (car targets)
 						  message))
 		(riece-ignore-errors (symbol-name after-hook)
