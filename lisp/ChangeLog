@@ -1,3 +1,8 @@
+2003-08-20  TAKAHASHI Kaoru  <kaoru@kaisei.org>
+
+	* riece-display.el (riece-configure-windows-top): New function.
+	* riece-layout.el: New add-on.
+
 2003-08-19  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-layout.el: New add-on.

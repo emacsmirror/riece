@@ -46,7 +46,8 @@
   :group 'riece-layout)
 
 (defcustom riece-layout-alist
-  '(("default" riece-configure-windows riece-configure-windows-predicate))
+  '(("default" riece-configure-windows riece-configure-windows-predicate)
+    ("top" riece-configure-windows-top riece-configure-windows-predicate))
   "An alist mapping the names to configure/predicate functions."
   :type 'list
   :group 'riece-layout)
