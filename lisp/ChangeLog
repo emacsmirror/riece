@@ -6,6 +6,9 @@
 	* riece-skk-kakutei.el (riece-skk-kakutei-insinuate): Add
 	require riece.el when compile.
 
+	* riece.el (riece): Use `riece-redisplay-buffers' instead of
+	`riece-configure-windows'.
+
 2003-08-20  TAKAHASHI Kaoru  <kaoru@kaisei.org>
 
 	* riece-display.el (riece-configure-windows-top): New function.

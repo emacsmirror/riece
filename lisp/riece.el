@@ -244,7 +244,7 @@ If already connected, just pop up the windows."
   (riece-insinuate-addons riece-addons)
   (run-hooks 'riece-after-load-startup-hook)
   (if (riece-server-opened)
-      (riece-configure-windows)
+      (riece-redisplay-buffers)
     (switch-to-buffer (riece-get-buffer-create riece-command-buffer))
     (unless (eq major-mode 'riece-command-mode)
       (riece-command-mode))
@@ -253,7 +253,7 @@ If already connected, just pop up the windows."
     (if (stringp riece-server)
 	(setq riece-server (riece-server-name-to-server riece-server)))
     (riece-create-buffers)
-    (riece-configure-windows)
+    (riece-redisplay-buffers)
     (riece-open-server riece-server "")
     (run-hooks 'riece-startup-hook)
     (message "%s" (substitute-command-keys
