@@ -61,12 +61,10 @@
      case
      (equal "=23riece"
 	    (riece-log-encode-file-name "#riece")))
-    (message "!!! %S" (riece-log-encode-file-name "#riece:*.jp"))
     (lunit-assert-2
      case
      (equal "=23riece=3A=2A=2Ejp"
 	    (riece-log-encode-file-name "#riece:*.jp")))
-    (message "%S" (riece-log-encode-file-name "#riece="))
     (lunit-assert-2
      case
      (equal "=23riece=="
