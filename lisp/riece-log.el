@@ -68,6 +68,9 @@ If integer, flash back only this line numbers. t means all lines."
 
 (defvar riece-log-enabled nil)
 
+(defconst riece-log-description
+  "Saving IRC logs")
+
 (defun riece-log-display-message-function (message)
   (if riece-log-enabled
       (let ((file (riece-log-get-file (riece-message-target message)))

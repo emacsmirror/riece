@@ -1,5 +1,15 @@
 2004-05-21  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-addon.el (riece-command-list-addons): Change "no
+	description" -> "(no description)".
+
+	* riece-ctcp.el (riece-ctcp-description): New variable.
+	* riece-highlight.el (riece-highlight-description): New variable
+	* riece-log.el (riece-log-description): New variable.
+	* riece-mini.el (riece-mini-description): New variable.
+
+2004-05-21  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-ctcp.el (riece-ctcp-enable): Fixed typo.
 
 	* riece-addon.el (riece-addon-list-mode-map): New keymap.

@@ -189,6 +189,9 @@
 
 (defvar riece-highlight-enabled nil)
 
+(defconst riece-highlight-description
+  "Highlight IRC buffers")
+
 (defvar font-lock-support-mode)
 (defun riece-highlight-setup-dialogue ()
   (make-local-variable 'font-lock-defaults)

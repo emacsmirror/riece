@@ -45,6 +45,9 @@
 
 (defvar riece-mini-enabled nil)
 
+(defconst riece-mini-description
+  "Send arrival messages to minibuffer")
+
 (defmacro riece-mini-message-no-log (string &rest args)
   "Like `message', except that message logging is disabled."
   (if (featurep 'xemacs)

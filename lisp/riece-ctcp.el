@@ -51,6 +51,9 @@
 
 (defvar riece-ctcp-enabled nil)
 
+(defconst riece-ctcp-description
+  "CTCP (Client To Client Protocol) support")
+
 (defun riece-handle-ctcp-request (prefix string)
   (when (and riece-ctcp-enabled prefix string
 	     (riece-prefix-nickname prefix))

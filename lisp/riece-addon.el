@@ -165,7 +165,7 @@ All normal editing commands are turned off."
 			(car pointer)
 			(if description
 			    (symbol-value description)
-			  "no description")))
+			  "(no description)")))
 	(put-text-property point (point) 'riece-addon (car pointer))
 	(setq pointer (cdr pointer)))
       (insert "
