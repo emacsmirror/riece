@@ -82,8 +82,13 @@
 
 (defun riece-unread-switch-to-channel ()
   (interactive)
-  (if (car riece-unread-channels)
-      (riece-command-switch-to-channel (car riece-unread-channels))
+  (if riece-unread-channels
+      (let ((channel (car riece-unread-channels)))
+	(if (riece-identity-member channel riece-current-channels)
+	    (riece-command-switch-to-channel channel)
+	  (setq riece-unread-channels
+		(delete channel riece-unread-channels))
+	  (riece-unread-switch-to-channel)))
     (error "No unread channel!")))
 
 (defun riece-guess-channel-from-unread ()
