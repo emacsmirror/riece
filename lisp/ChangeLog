@@ -1,3 +1,8 @@
+2004-06-15  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece.el (riece-dialogue-mode-map): Bind end-of-buffer to End.
+	(riece-command-map): Bind riece-command-end-of-buffer to End.
+
 2004-06-12  TAKAHASHI Kaoru  <kaoru@kaisei.org>
 
 	* riece-commands.el (riece-command-send-message): Run
