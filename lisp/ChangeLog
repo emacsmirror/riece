@@ -1,5 +1,11 @@
 2005-02-05  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece.el (riece-exit): Clear riece-window-configuration frame
+	parameter.
+	* riece-commands.el (riece-command-suspend-resume): Don't attempt
+	to restore window-configuration if the cdr of
+	riece-window-configuration frame parameter is nil.
+
 	* riece-filter.el (riece-chomp-string): New function.
 	(riece-filter): Use it.
 

@@ -122,7 +122,7 @@
     (modify-frame-parameters (selected-frame)
 			     (list (cons 'riece-window-configuration
 					 (current-window-configuration))))
-    (if entry
+    (if (cdr entry)
 	(set-window-configuration (cdr entry))
       (delete-other-windows))
     (message

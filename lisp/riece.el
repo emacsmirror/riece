@@ -375,11 +375,9 @@ If optional argument CONFIRM is non-nil, ask which IRC server to connect."
 	riece-operator-indicator "-"
 	riece-channel-status-indicator "-"
 	riece-freeze-indicator "-")
-  (let ((window-configuration
-	 (cdr (assq 'riece-window-configuration (frame-parameters)))))
-    (if window-configuration
-	(set-window-configuration window-configuration)
-      (delete-other-windows)))
+  (modify-frame-parameters (selected-frame)
+			   (list (list 'riece-window-configuration)))
+  (delete-other-windows)
   (run-hooks 'riece-exit-hook))
 
 (defun riece-command-mode ()
