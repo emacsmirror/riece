@@ -383,9 +383,10 @@ Local to the buffer in `riece-buffer-list'.")
   (unless buffers
     (setq buffers riece-buffer-list))
   (while buffers
-    (save-excursion
-      (set-buffer (car buffers))
-      (run-hooks 'riece-update-buffer-functions))
+    (if (buffer-live-p (car buffers))
+	(save-excursion
+	  (set-buffer (car buffers))
+	  (run-hooks 'riece-update-buffer-functions)))
     (setq buffers (cdr buffers)))
   (run-hooks 'riece-update-indicator-functions)
   (force-mode-line-update t)

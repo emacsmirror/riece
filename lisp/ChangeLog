@@ -1,5 +1,11 @@
 2004-11-20  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-display.el (riece-update-buffers): Check existence each
+	buffer in riece-buffer-list.
+	* riece.el (riece): Ditto.
+
+2004-11-20  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece.el: Bind reporter-prompt-for-summary-p.
 
 2004-11-19  Daiki Ueno  <ueno@unixuser.org>
