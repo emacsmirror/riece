@@ -258,8 +258,8 @@
 	     riece-dialogue-buffer)
 	   (concat
 	    (riece-concat-server-name
-	     (format "%s users on %s, topic: %s" visible
-		     (riece-format-identity channel-identity t) topic))
+	     (format "%s: %s users, topic: %s"
+		     (riece-format-identity channel-identity t) visible topic))
 	    "\n"))))))
 
 (defun riece-handle-324-message (prefix number name string)

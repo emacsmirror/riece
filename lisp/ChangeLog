@@ -1,5 +1,7 @@
 2003-08-25  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-300.el (riece-handle-322-message): Simplify message.
+
 	* riece-commands.el (riece-command-change-layout): Call
 	riece-command-configure-windows; Use setq instead of
 	custom-set-variables.
