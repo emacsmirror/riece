@@ -556,9 +556,11 @@ If prefix argument ARG is non-nil, toggle frozen status."
 (defun riece-command-open-server (server-name)
   (interactive
    (list (completing-read "Server: " riece-server-alist)))
-  (riece-open-server
-   (riece-server-name-to-server server-name)
-   server-name))
+  (if (assoc server-name riece-server-process-alist)
+      (error "%s already opened" server-name)
+    (riece-open-server
+     (riece-server-name-to-server server-name)
+     server-name)))
 
 (defun riece-command-close-server (server-name &optional message)
   (interactive

@@ -104,7 +104,7 @@ the `riece-server-keyword-map' variable."
 
 (defun riece-open-server (server &optional server-name)
   (if server-name
-      (message "Connecting to IRC server %s..." server-name)
+      (message "Connecting to %s..." server-name)
     (message "Connecting to IRC server..."))
   (riece-server-keyword-bind server
     (let* (selective-display
@@ -145,7 +145,7 @@ the `riece-server-keyword-map' variable."
 		      riece-server-process-alist))
 	(setq riece-server-process process))))
   (if server-name
-      (message "Connecting to IRC server %s...done" server-name)
+      (message "Connecting to %s...done" server-name)
     (message "Connecting to IRC server...done")))
 
 (defun riece-reset-process-buffer (process)

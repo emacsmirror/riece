@@ -1,5 +1,10 @@
 2003-05-31  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-server.el (riece-open-server): Simplify message.
+
+	* riece-commands.el (riece-command-open-server): Throw an error
+	when the server is already opened.
+
 	* riece-filter.el (riece-sentinel): Simplified.
 
 	* riece-display.el (riece-user-list-update-buffer): Check the
