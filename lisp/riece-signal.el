@@ -108,7 +108,7 @@ This function is for internal use only."
 				     signal-name)
 	  (if (or (null (riece-slot-filter (car slots)))
 		  (riece-ignore-errors (format "signal filter for \"%S\""
-					       symbol-name)
+					       signal-name)
 		    (funcall (riece-slot-filter (car slots)) signal)))
 	      (funcall (riece-slot-function (car slots))
 		       signal (riece-slot-handback (car slots)))))
