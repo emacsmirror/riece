@@ -66,18 +66,19 @@ Riece $B$O(B Emacs $B$G(B IRC (Internet Relay Chat) $B$K;22C$9$k$?$a$N%W%m%
 @chapter Overview
 
 Riece $B$O!"D9$$4V%a%s%F%J%s%9IT2DG=$J>uBV$K$"$C$?(B Liece $B$N%3!<%I$r40A4$K(B
-$B=q$-D>$7$?$b$N$G$9!#%$%s%?!<%U%'!<%9$O!"(BLiece $B$+$i$[$H$s$I$=$N$^$^F'=1$7(B
-$B$F$$$^$9!#(B
+$B=q$-D>$7$?$b$N$G$9!#%f!<%6%$%s%?!<%U%'!<%9$NBgItJ,$O(B Liece $B$N$b$N$rF'=1(B
+$B$7$F$$$^$9!#(B
 
 $B8=:_$N$H$3$m(B IRC $B%/%i%$%"%s%H$H$7$F$N5!G=$O==J,$G$O$"$j$^$;$s$,!"(BLiece 
 $B$K$O$J$$FCD9$,$$$/$D$+$"$j$^$9!#0J2<$K$=$l$i$N0lIt$r5s$2$^$9!#(B
 
 @itemize @bullet
-@item $BJ#?t$N%5!<%P$KF1;~$K$D$J$2$k(B
-@item $B0l1~(B API $B$i$7$$(B API $B$,MQ0U$5$l$F$$$k(B
-@item $B%3!<%I%5%$%:$,>.$5$$(B (Liece $B$NH>J,DxEY(B)
-@item $B%"%I%*%s$K$h$k3HD%$,2DG=(B
-@item APEL $B$,$$$i$J$$(B
+@item $BJ#?t$N(B IRC $B%5!<%P$KF1;~$K@\B32DG=(B
+@item $B%"%I%*%s$K$h$j5!G=$NDI2C$d<h$j30$7$,2DG=(B
+@item $BB>$N(B elisp $B%Q%C%1!<%8$K0MB8$7$J$$$?$a!"%$%s%9%H!<%k$,4JC1(B
+@item $B@_Dj$,4JC1$G!"A02s5/F0;~$N@_Dj$r5-O?!&I|85$9$k;EAH$_$rDs6!(B
+@item $BCJ3,E*$JA`:n@bL@=q(B($B8=:_$OF|K\8l$N$_(B)$B$,ImB0(B
+@item $B:G?7$N(B IRC $B$N%/%i%$%"%s%H%W%m%H%3%k(B (RFC2812) $B$K=`5r(B
 @end itemize
 
 $B$h$j>\$7$$>pJs$O!"0J2<$N%Z!<%8$r8fMw$/$@$5$$!#(B
@@ -124,7 +125,7 @@ make install
 XEmacs $B$N%Q%C%1!<%8$H$7$F%$%s%9%H!<%k$9$k>l9g$K$O0J2<$N$h$&$K$7$^$9!#(B
 
 @example
-./configure --with-xemacs[=xemacs-21.4.14]
+./configure --with-xemacs[=xemacs-21.4.15]
 make package
 make install-package
 @end example
@@ -140,12 +141,12 @@ XEmacs $B$N%Q%C%1!<%8$H$7$F%$%s%9%H!<%k$7$?>l9g$K$OI,MW$"$j$^$;$s$,!"(B
 @node Startup File,  , Installation, Getting started
 @section Startup file
 
-$B$O$8$a$F$D$+$&>l9g$K$O!"$H$/$K2?$b@_Dj$9$kI,MW$O$"$j$^$;$s!#(B
+$B=i$a$F;H$&>l9g$K$O!"FC$K2?$b@_Dj$9$kI,MW$O$"$j$^$;$s!#(B
 $B$3$N>O$OFI$_Ht$P$7$F$/$@$5$$!#(B
 
 Riece $B$O@_Dj%U%!%$%k$rJQ?t(B @code{riece-directory} $B$G;X<($5$l$k%G%#%l%/%H(B
 $B%j(B ($B%G%U%)%k%H$O(B @file{~/.riece/}) $B$+$iFI$_9~$_$^$9!#$3$N%G%#%l%/%H%j$K(B
-$B$O0J2<$NFs<oN`$N@_Dj%U%!%$%k$,3JG<$5$l$^$9!#(B
+$B$O0J2<$N(B 2 $B$D$N@_Dj%U%!%$%k$,3JG<$5$l$^$9!#(B
 
 @table @code
 @item riece-saved-variables-file
@@ -195,7 +196,7 @@ Riece $B$O@_Dj%U%!%$%k$rJQ?t(B @code{riece-directory} $B$G;X<($5$l$k%G%#%l%/%
 @node Windows, Indicators, Basic usage, Basic usage
 @section Windows
 
-$B%G%U%)%k%H$N@_Dj$G$O!"%A%c%s%M%k$KF~$k$H!"2<$N?^$K<($9$h$&$J8^$D$N%&%#%s(B
+$B%G%U%)%k%H$N@_Dj$G$O!"%A%c%s%M%k$KF~$k$H!"2<$N?^$K<($9$h$&$J(B 5 $B$D$N%&%#%s(B
 $B%I%&$+$i$J$k2hLL$K@Z$jBX$o$j$^$9!#(B
 
 @example
