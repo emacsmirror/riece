@@ -295,7 +295,6 @@ For a list of the generic commands type \\[riece-command-generic] ? RET.
 	mode-line-buffer-identification
 	(riece-mode-line-buffer-identification
 	 '("Riece: "
-	   mode-line-modified
 	   "{"
 	   riece-away-indicator
 	   riece-operator-indicator
@@ -335,7 +334,6 @@ Instead, these commands are available:
 	mode-line-buffer-identification
 	(riece-mode-line-buffer-identification
 	 '("Riece: "
-	   mode-line-modified
 	   "{"
 	   riece-away-indicator
 	   riece-operator-indicator
@@ -366,7 +364,6 @@ Instead, these commands are available:
   (setq mode-line-buffer-identification
 	(riece-mode-line-buffer-identification
 	 '("Riece: "
-	   mode-line-modified
 	   "{"
 	   riece-away-indicator
 	   riece-operator-indicator
@@ -395,8 +392,7 @@ All normal editing commands are turned off.
 Instead, these commands are available:
 \\{riece-user-list-mode-map}"
   (kill-all-local-variables)
-  (setq mode-line-modified "--- "
-        major-mode 'riece-user-list-mode
+  (setq major-mode 'riece-user-list-mode
         mode-name "User list"
 	mode-line-buffer-identification
 	(riece-mode-line-buffer-identification
