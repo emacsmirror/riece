@@ -1,3 +1,18 @@
+2003-10-28  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-layout.el (riece-set-window-points): Move point in
+	the channel-buffer's window.
+
+	* riece-ctcp.el (riece-command-ctcp-version): Prompt to select
+	an identity on the current server.
+	(riece-command-ctcp-ping): Ditto.
+	(riece-command-ctcp-clientinfo): Ditto.
+	(riece-command-ctcp-action): Ditto.
+
+	* riece-commands.el (riece-command-change-mode): Prompt to select
+	an identity on the current server.
+	(riece-command-join): Ditto.
+
 2003-10-27  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-keyword.el (riece-keywords): Change custom spec.

@@ -252,7 +252,8 @@ the layout to the selected layout-name."
 	  (channel
 	   (if current-prefix-arg
 	       (riece-completing-read-identity
-		"Channel/User: " riece-current-channels)
+		"Channel/User: "
+		(riece-get-identities-on-server (riece-current-server-name)))
 	     (riece-check-channel-commands-are-usable t)
 	     riece-current-channel))
 	  (riece-overriding-server-name (riece-identity-server channel))
@@ -428,9 +429,11 @@ the layout to the selected layout-name."
 			       riece-join-channel-candidate)))
 		 (riece-completing-read-identity
 		  (format "Channel/User (default %s): " default)
-		  riece-current-channels nil nil nil nil default))
+		  (riece-get-identities-on-server (riece-current-server-name))
+		  nil nil nil nil default))
 	     (riece-completing-read-identity
-	      "Channel/User: " riece-current-channels)))
+	      "Channel/User: "
+	      (riece-get-identities-on-server (riece-current-server-name)))))
 	  key)
      (if (and current-prefix-arg
 	      (riece-channel-p (riece-identity-prefix target)))

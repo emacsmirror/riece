@@ -284,10 +284,7 @@
   (interactive
    (list (riece-completing-read-identity
 	  "Channel/User: "
-	  (apply #'nconc
-		 (mapcar (lambda (entry)
-			   (riece-get-identities-on-server (car entry)))
-			 riece-server-process-alist)))))
+	  (riece-get-identities-on-server (riece-current-server-name)))))
   (riece-send-string (format "PRIVMSG %s :\1VERSION\1\r\n"
 			     (riece-identity-prefix target))))
 
@@ -295,10 +292,7 @@
   (interactive
    (list (riece-completing-read-identity
 	  "Channel/User: "
-	  (apply #'nconc
-		 (mapcar (lambda (entry)
-			   (riece-get-identities-on-server (car entry)))
-			 riece-server-process-alist)))))
+	  (riece-get-identities-on-server (riece-current-server-name)))))
   (riece-send-string (format "PRIVMSG %s :\1PING\1\r\n"
 			     (riece-identity-prefix target)))
   (setq riece-ctcp-ping-time (current-time)))
@@ -307,10 +301,7 @@
   (interactive
    (list (riece-completing-read-identity
 	  "Channel/User: "
-	  (apply #'nconc
-		 (mapcar (lambda (entry)
-			   (riece-get-identities-on-server (car entry)))
-			 riece-server-process-alist)))))
+	  (riece-get-identities-on-server (riece-current-server-name)))))
   (riece-send-string (format "PRIVMSG %s :\1CLIENTINFO\1\r\n"
 			     (riece-identity-prefix target))))
 
@@ -319,10 +310,7 @@
    (list (if current-prefix-arg
 	     (riece-completing-read-identity
 	      "Channel/User: "
-	      (apply #'nconc
-		     (mapcar (lambda (entry)
-			       (riece-get-identities-on-server (car entry)))
-			     riece-server-process-alist)))
+	      (riece-get-identities-on-server (riece-current-server-name)))
 	   riece-current-channel)
 	 (let (message)
 	   (beginning-of-line)
