@@ -1,3 +1,9 @@
+2004-05-07  Daiki Ueno  <ueno@unixuser.org>
+
+	* configure.ac: Set AM_CONDITIONAL XEMACS.
+	* Makefile.am: Emit install-package and package target only if
+	EMACS_FLAVOR = xemacs.
+
 2004-05-04  Daiki Ueno  <ueno@unixuser.org>
 
 	* Riece: Version 0.2.2 released.

@@ -10,6 +10,8 @@ AC_CHECK_EMACS
 AC_PATH_LISPDIR
 AC_PATH_PACKAGEDIR
 
+AM_CONDITIONAL(XEMACS, test ${EMACS_FLAVOR} = xemacs)
+
 AC_OUTPUT(Makefile \
 lisp/Makefile
 doc/Makefile)
