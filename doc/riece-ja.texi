@@ -711,7 +711,7 @@ Riece は複数のサーバに同時に接続するため、サーバ毎に別々の名前空間を管理
 サーバのプロセスを得るには、まずはじめにサーバの名前を得る必要があり
 ます。サーバの名前は以下に挙げるいくつかの方法で取得できます。
 
-@table @samp
+@enumerate
 @item
 @vindex riece-overrinding-server-name
 大域変数 @code{riece-overrinding-server-name} の値
@@ -724,7 +724,7 @@ Riece は複数のサーバに同時に接続するため、サーバ毎に別々の名前空間を管理
 
 @item
 @samp{riece-identity} オブジェクトに結び付けられたサーバ名(後述)
-@end table
+@end enumerate
 
 こうして得たサーバ名で @code{riece-server-process} を呼出し、サーバの
 プロセスを取得します。
