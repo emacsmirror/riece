@@ -67,19 +67,12 @@ If integer, flash back only this line numbers. t means all lines."
   :group 'riece-log)
 
 (defun riece-log-display-message-function (message)
-  (let ((open-bracket
-	 (funcall riece-message-make-open-bracket-function message))
-	(close-bracket
-	 (funcall riece-message-make-close-bracket-function message))
-	(name
-	 (funcall riece-message-make-name-function message))
-	(file (riece-log-get-file (riece-message-target message)))
+  (let ((file (riece-log-get-file (riece-message-target message)))
 	(coding-system-for-write riece-log-coding-system))
     (unless (file-directory-p (file-name-directory file))
       (make-directory (file-name-directory file) t))
     (write-region (concat (format-time-string "%H:%M") " "
-			  open-bracket name close-bracket
-			  " " (riece-message-text message) "\n")
+			  (riece-format-message message))
 		  nil file t 0)))
 
 (defun riece-log-get-file (identity)

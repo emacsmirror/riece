@@ -1,5 +1,19 @@
 2004-05-18  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-ignore.el (riece-ignore-buffer-name): New user option.
+	(riece-ignore-discard-message): Fixed custom spec to follow the
+	logging option.
+	(riece-ignore-buffer): New variable.
+
+	* riece-log.el (riece-log-display-message-function): Use
+	riece-format-message.
+
+	* riece-message.el (riece-format-message): New function splitted
+	from riece-display-message-1.
+	(riece-display-message-1): Use it.
+
+2004-05-18  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-ignore.el (riece-ignore-user): Renamed from
 	riece-ignore-by-user.
 

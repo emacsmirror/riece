@@ -37,12 +37,23 @@
   "Ignore messages in IRC buffers."
   :group 'riece)
 
-(defcustom riece-ignore-discard-message t
-  "If non-nil, messages from ignored user are completely discarded.
-Otherwise, they are left there but not visible."
+(defcustom riece-ignore-discard-message 'log
+  "If t, messages from ignored user are completely discarded.
+If 'log, messages are removed from IRC buffers, but they are saved in
+`riece-ignore-buffer'.
+Otherwise, they are not removed from IRC buffers, but are hidden with
+'invisible text-property."
   :group 'riece-ignore
-  :type 'boolean)
+  :type '(choice (const :tag "Discard completely" t)
+		 (const :tag "Discard but save logs" log)
+		 (const :tag "Make messages invisible" nil)))
 
+(defcustom riece-ignore-buffer-name "*Ignore*"
+  "The name of buffer where ignored messages are stored."
+  :group 'riece-ignore
+  :type 'string)
+
+(defvar riece-ignore-buffer nil)
 (defvar riece-ignored-user-list nil)
 
 (defun riece-ignore-user-rename-signal-function (signal handback)
@@ -63,7 +74,7 @@ Otherwise, they are left there but not visible."
 	      (riece-get-users-on-server (riece-current-server-name))
 	      (lambda (user)
 		(not (riece-identity-member
-		      (riece-parse-identity user)
+		      (riece-parse-identity (car user))
 		      riece-ignored-user-list)))))
 	   (not current-prefix-arg))))
   (if toggle
@@ -82,7 +93,15 @@ Otherwise, they are left there but not visible."
 (defun riece-ignore-message-filter (message)
   (if (riece-identity-member (riece-message-speaker message)
 			     riece-ignored-user-list)
-      (unless riece-ignore-discard-message
+      (if riece-ignore-discard-message
+	  (when (eq riece-ignore-discard-message 'log)
+	    (unless riece-ignore-buffer
+	      (setq riece-ignore-buffer
+		    (riece-get-buffer-create riece-ignore-buffer-name)))
+	    (save-excursion
+	      (set-buffer riece-ignore-buffer)
+	      (goto-char (point-max))
+	      (insert (riece-format-message message t))))
 	(put-text-property 0 (length (riece-message-text message))
 			   'invisible 'riece-ignore
 			   (riece-message-text message))

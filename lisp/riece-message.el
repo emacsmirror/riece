@@ -142,17 +142,23 @@ Normally they are *Dialogue* and/or *Others*."
 	(list riece-dialogue-buffer riece-others-buffer)
       riece-dialogue-buffer)))
 
-(defun riece-display-message-1 (message)
+(defun riece-format-message (message &optional global)
   (let ((open-bracket
 	 (funcall riece-message-make-open-bracket-function message))
 	(close-bracket
 	 (funcall riece-message-make-close-bracket-function message))
 	(name
-	 (funcall riece-message-make-name-function message))
-	(global-name
-	 (funcall riece-message-make-global-name-function message))
-	(buffer (riece-message-buffer message))
-	(server-name (riece-identity-server (riece-message-speaker message)))
+	 (if global
+	     (funcall riece-message-make-global-name-function message)
+	   (funcall riece-message-make-name-function message)))
+	(server-name (riece-identity-server (riece-message-speaker message))))
+    (riece-with-server-buffer (riece-current-server-name)
+      (riece-concat-server-name
+       (concat open-bracket name close-bracket
+	       " " (riece-message-text message) "\n")))))
+
+(defun riece-display-message-1 (message)
+  (let ((buffer (riece-message-buffer message))
 	parent-buffers)
     (when (and buffer
 	       (riece-message-own-p message)
@@ -161,16 +167,8 @@ Normally they are *Dialogue* and/or *Others*."
 	(setq riece-freeze nil))
       (riece-emit-signal 'buffer-freeze-changed buffer nil))
     (setq parent-buffers (riece-message-parent-buffers message buffer))
-    (riece-insert buffer
-		  (concat open-bracket name close-bracket
-			  " " (riece-message-text message) "\n"))
-    (riece-insert parent-buffers
-		  (if (equal server-name "")
-		      (concat open-bracket global-name close-bracket
-			      " " (riece-message-text message) "\n")
-		     (concat open-bracket global-name close-bracket
-			     " " (riece-message-text message)
-			     " (from " server-name ")\n")))
+    (riece-insert buffer (riece-format-message message))
+    (riece-insert parent-buffers (riece-format-message message t))
     (run-hook-with-args 'riece-after-display-message-functions message)))
 
 (defun riece-display-message (message)
