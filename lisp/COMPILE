@@ -71,7 +71,8 @@
 		riece-hangman
 		riece-biff
 		riece-kakasi
-		riece-yank))))
+		riece-yank
+		riece-toolbar))))
 
 (defun riece-compile-modules (modules)
   (let ((load-path (cons nil load-path)))

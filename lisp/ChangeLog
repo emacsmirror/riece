@@ -1,3 +1,9 @@
+2004-12-11  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-toolbar.el: New add-on.
+	* COMPILE (riece-modules): Add riece-toolbar.
+	* Makefile.am (EXTRA_DIST): Add riece-toolbar.el.
+
 2004-12-10  Daiki Ueno  <ueno@unixuser.org>
 
 	* test/test-riece-log.el
