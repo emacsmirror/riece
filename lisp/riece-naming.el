@@ -70,22 +70,24 @@
 (defun riece-naming-assert-channel-users (users channel-name)
   (let ((channel-identity (riece-make-identity channel-name
 					       riece-server-name))
-	user-identity-list)
-    (while users
-      (riece-user-toggle-channel (car (car users)) channel-name t)
-      (riece-channel-toggle-user channel-name (car (car users)) t)
-      (if (memq ?o (cdr (car users)))
-	  (riece-channel-toggle-operator channel-name (car (car users)) t)
-	(if (memq ?v (cdr (car users)))
-	    (riece-channel-toggle-speaker channel-name (car (car users)) t)
-	  (riece-channel-toggle-operator channel-name (car (car users)) nil)
-	  (riece-channel-toggle-speaker channel-name (car (car users)) nil)))
-      (setq user-identity-list
-	    (cons (cons (riece-make-identity (car (car users))
-					     riece-server-name)
-			(cdr (car users)))
-		  user-identity-list)
-	    users (cdr users)))
+	(pointer users))
+    (while pointer
+      (riece-user-toggle-channel (car (car pointer)) channel-name t)
+      (riece-channel-toggle-user channel-name (car (car pointer)) t)
+      (if (memq ?o (cdr (car pointer)))
+	  (riece-channel-toggle-operator channel-name (car (car pointer)) t)
+	(if (memq ?v (cdr (car pointer)))
+	    (riece-channel-toggle-speaker channel-name (car (car pointer)) t)
+	  (riece-channel-toggle-operator channel-name (car (car pointer)) nil)
+	  (riece-channel-toggle-speaker channel-name (car (car pointer)) nil)))
+      (setq pointer (cdr pointer)))
+    ;; Remove nonexistent users.
+    (setq pointer (riece-channel-users (riece-get-channel channel-name)))
+    (while pointer
+      (unless (assq (car (car pointer)) users)
+	(riece-user-toggle-channel (car (car pointer)) channel-name nil)
+	(riece-channel-toggle-user channel-name (car (car pointer)) nil))
+      (setq pointer (cdr pointer)))
     (riece-emit-signal 'user-list-changed channel-identity)))
 
 (defun riece-naming-assert-channel-modes (channel modes)

@@ -1,5 +1,11 @@
 2004-09-01  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-naming.el (riece-naming-assert-channel-users): Remove
+	nonexistent users.
+	* riece-300.el (riece-353-users): New variable.
+	(riece-handle-353-message): Don't update user-list.
+	(riece-handle-366-message): Update user-list here.
+
 	* riece-channel.el (riece-channel-toggle-operator): Don't add ?o
 	if it already appears in user's mode.
 	(riece-channel-toggle-speaker): Don't add ?v if it already appears

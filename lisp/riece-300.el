@@ -223,12 +223,14 @@
 		 (substring string (match-end 0))))
 	"\n"))))
 
+(defvar riece-353-users nil)
 (defun riece-handle-353-message (prefix number name string)
-  "RPL_NAMREPLY	\"<channel> :[[@|+]<nick> [[@|+]<nick> [...]]]\"."
+  "RPL_NAMREPLY	\"[=\*@] <channel> :[[@|+]<nick> [[@|+]<nick> [...]]]\"."
   (if (string-match "^[=\*@] *\\([^ ]+\\) +:" string)
       (let ((channel (match-string 1 string))
 	    (start 0)
-	    user users)
+	    user)
+	(make-local-variable 'riece-353-users)
 	(setq string (substring string (match-end 0)))
 	(while (string-match
 		(concat "\\([@+]\\)?\\(" riece-user-regexp "\\) *")
@@ -245,8 +247,7 @@
 			   (if (eq (aref string (match-beginning 1)) ?+)
 			       (list (match-string 2 string) ?v)))
 		       (list (match-string 2 string)))
-		users (cons user users)))
-	(riece-naming-assert-channel-users (nreverse users) channel)
+		riece-353-users (cons user riece-353-users)))
 	(let* ((channel-identity (riece-make-identity channel
 						      riece-server-name))
 	       (buffer (riece-channel-buffer channel-identity)))
@@ -424,7 +425,14 @@
 (defun riece-handle-315-message (prefix number name string))
 (defun riece-handle-318-message (prefix number name string))
 (defun riece-handle-323-message (prefix number name string))
-(defun riece-handle-366-message (prefix number name string))
+
+(defun riece-handle-366-message (prefix number name string)
+  "RPL_ENDOFNAMES \"<channel> :End of NAMES list\""
+  (if (string-match "^\\([^ ]+\\) +:" string)
+      (let ((channel (match-string 1 string)))
+	(riece-naming-assert-channel-users (nreverse riece-353-users)
+					   channel)))
+  (setq riece-353-users nil))
 
 (provide 'riece-300)
 
