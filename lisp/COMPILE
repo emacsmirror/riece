@@ -82,13 +82,14 @@
    (riece-install-just-print-p)))
 
 (defun riece-compile-package ()
-  (riece-compile)
   (setq autoload-package-name "riece")
   (add-to-list 'command-line-args-left ".")
   (batch-update-directory)
   (add-to-list 'command-line-args-left ".")
   (Custom-make-dependencies)
-  (riece-compile-modules (list 'auto-autoloads 'custom-load)))
+  (riece-compile-modules
+   (append riece-modules
+	   '(auto-autoloads custom-load))))
 
 (defun riece-install-package ()
   (riece-install-modules
