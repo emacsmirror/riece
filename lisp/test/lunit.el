@@ -366,13 +366,13 @@ signal an error if not."
 			 (/ (nth 2 elapsed) 1000000.0))))
       (widen))))
 
-(defun lunit-report (test)
+(defun lunit-report (test file)
   "Run TEST and output result as XML."
   (let* ((printer
 	  (luna-make-entity 'lunit-test-printer))
 	 (result
 	  (lunit-make-test-result printer))
-	 (buffer (find-file-noselect "lunit-report.xml"))
+	 (buffer (find-file-noselect file))
 	 start-time)
     (save-excursion
       (set-buffer buffer)
@@ -417,8 +417,7 @@ errors=\"%d\" time =\"%.03f\">
 	(insert "\
   </testsuite>
 </testsuites>")
-	(save-buffer)
-	))))
+	(save-buffer)))))
 
 (defvar imenu-create-index-function)
 (defun lunit-create-index-function ()

@@ -1,5 +1,9 @@
 2004-11-28  Daiki Ueno  <ueno@unixuser.org>
 
+	* test/lunit.el (lunit-report): Accept output filename as the 2nd arg.
+	* Makefile.am (check-local): Supply riece-test with output filename.
+	* COMPILE (riece-test): Supply lunit-report with output filename.
+
 	* test/lunit.el: Require 'pp.
 	(lunit-escape-quote): Rename from lunit-test-reporter-format-sexp.
 	(lunit-report): Add "emacs-version" property.

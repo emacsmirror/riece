@@ -36,4 +36,4 @@ install-package: package
 		$(PACKAGEDIR) # $(MAKE)
 
 check-local:
-	$(EMACS) $(FLAGS) -l COMPILE -f riece-test
+	$(EMACS) $(FLAGS) -l COMPILE -f riece-test lunit-report.xml
