@@ -1,5 +1,14 @@
 2003-05-29  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-misc.el (riece-get-users-on-server): Moved from
+	riece-commands.el.
+
+	* riece-ctcp.el: New file.
+	* COMPILE (riece-modules): Add riece-ctcp.
+	* Makefile.am (EXTRA_DIST): Add riece-ctcp.el
+
+2003-05-29  Daiki Ueno  <ueno@unixuser.org>
+
 	* Riece: Version 0.0.1 released.
 
 	* riece-commands.el (riece-command-names): New command.

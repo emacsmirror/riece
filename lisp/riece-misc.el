@@ -167,6 +167,18 @@
       (substring user-at-host 1)
     user-at-host))
 
+(defun riece-get-users-on-server ()
+  (riece-with-server-buffer
+   (let (users)
+     (mapatoms
+      (lambda (atom)
+	(unless (riece-channel-p (symbol-name atom))
+	  (push (symbol-name atom) users)))
+      riece-obarray)
+     (if (member riece-real-nickname users)
+	 users
+       (cons riece-real-nickname users)))))
+
 (provide 'riece-misc)
 
 ;;; riece-misc.el ends here

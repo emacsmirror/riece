@@ -38,7 +38,10 @@
 		riece-500
 
 		riece-commands
-		riece))))
+		riece
+
+		;; add-ons
+		riece-ctcp))))
 
 (defun riece-compile-modules (modules)
   (let ((load-path (cons nil load-path)))

@@ -73,26 +73,22 @@
   (if (eq open-p (riece-message-own-p message))
       (if (eq (riece-message-type message) 'notice)
 	  "-"
-	(if (eq (riece-message-type message) 'action)
-	    "]"
-	  (if (riece-message-private-p message)
-	      (if (riece-message-own-p message)
-		  ">"
-		"=")
-	    (if (riece-message-external-p message)
-		")"
-	      ">"))))
-    (if (eq (riece-message-type message) 'notice)
-	"-"
-      (if (eq (riece-message-type message) 'action)
-	  "["
 	(if (riece-message-private-p message)
 	    (if (riece-message-own-p message)
-		  "<"
+		">"
 	      "=")
 	  (if (riece-message-external-p message)
-	      "("
-	    "<"))))))
+	      ")"
+	    ">")))
+    (if (eq (riece-message-type message) 'notice)
+	"-"
+      (if (riece-message-private-p message)
+	  (if (riece-message-own-p message)
+	      "<"
+	    "=")
+	(if (riece-message-external-p message)
+	    "("
+	  "<")))))
 
 (defun riece-message-make-name (message)
   "Makes local identity for MESSAGE."

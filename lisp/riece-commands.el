@@ -38,7 +38,7 @@
 ;;; Channel movement:
 (defun riece-command-switch-to-channel (channel)
   (interactive
-   (list (completing-read "Channel/user: "
+   (list (completing-read "Channel/User: "
 			  (mapcar #'list riece-current-channels)
 			  nil t)))
   (riece-switch-to-channel channel)
@@ -126,18 +126,6 @@
   (setq riece-channel-list-buffer-mode
 	(not riece-channel-list-buffer-mode))
   (riece-command-configure-windows))
-
-(defun riece-get-users-on-server ()
-  (riece-with-server-buffer
-   (let (users)
-     (mapatoms
-      (lambda (atom)
-	(unless (riece-channel-p (symbol-name atom))
-	  (push (symbol-name atom) users)))
-      riece-obarray)
-     (if (member riece-real-nickname users)
-	 users
-       (cons riece-real-nickname users)))))
 
 (defun riece-command-finger (user &optional recurse)
   (interactive
@@ -227,7 +215,7 @@
 	  (channel
 	   (if current-prefix-arg
 	       (completing-read
-		"Channel/user: "
+		"Channel/User: "
 		(mapcar #'list riece-current-channels))
 	     riece-current-channel))
 	  (riece-overriding-server-name (riece-identity-server channel))
@@ -360,7 +348,7 @@
   (interactive
    (let ((completion-ignore-case t)
 	 (target
-	  (completing-read "Channel/user: "
+	  (completing-read "Channel/User: "
 			   (mapcar #'list riece-current-channels)))
 	 key)
      (if (and current-prefix-arg
@@ -396,7 +384,7 @@
   (interactive
    (let ((completion-ignore-case t)
 	 (target
-	  (completing-read "Channel/user: "
+	  (completing-read "Channel/User: "
 			   (mapcar #'list riece-current-channels)
 			   nil t (cons riece-current-channel 0)))
 	 message)
