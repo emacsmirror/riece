@@ -72,11 +72,22 @@ This function is for internal use only."
   (aref signal 1))
 
 (defun riece-connect-signal (signal-name function &optional filter handback)
-  "Add SLOT as a listener of a signal identified by SIGNAL-NAME."
+  "Add FUNCTION as a listener of a signal identified by SIGNAL-NAME."
   (let ((symbol (intern (symbol-name signal-name) riece-signal-slot-obarray)))
     (set symbol (cons (riece-make-slot function filter handback)
 		      (if (boundp symbol)
 			  (symbol-value symbol))))))
+
+(defun riece-disconnect-signal (signal-name function)
+  "Remove FUNCTION from the listener of the signal identified by SIGNAL-NAME."
+  (let* ((symbol (intern-soft (symbol-name signal-name)
+			     riece-signal-slot-obarray))
+	 (slots (symbol-value symbol)))
+    (while slots
+      (if (eq (riece-slot-function (car slots))
+	      function)
+	  (set symbol (delq (car slots) (symbol-value symbol))))
+      (setq slots (cdr slots)))))
 
 (defun riece-emit-signal (signal-name &rest args)
   "Emit SIGNAL."

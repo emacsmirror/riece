@@ -33,26 +33,60 @@
 (require 'riece-identity)
 (require 'riece-message)
 
-(defvar riece-ignored-user nil)
+(defgroup riece-ignore nil
+  "Ignore messages in IRC buffers."
+  :group 'riece)
 
-(defun riece-ignore-by-user (user)
+(defcustom riece-ignore-discard-message t
+  "If non-nil, messages from ignored user are completely discarded.
+Otherwise, they are left there but not visible."
+  :group 'riece-ignore
+  :type 'boolean)
+
+(defvar riece-ignored-user-list nil)
+
+(defun riece-ignore-user-rename-signal-function (signal handback)
+  (let ((pointer (riece-identity-member (car (riece-signal-args signal))
+					riece-ignored-user-list)))
+    (if pointer
+	(setcar pointer (nth 1 (riece-signal-args signal))))))
+
+(defun riece-ignore-by-user (user toggle)
   (interactive
    (let ((completion-ignore-case t))
-     (list (riece-completing-read-identity
-	    "User: "
-	    (riece-get-users-on-server (riece-current-server-name))))))
-  (setq riece-ignored-user (cons user riece-ignored-user))
-  (riece-connect-signal
-   'user-renamed
-   (lambda (signal handback)
-     (let ((pointer (riece-identity-member (car (riece-signal-args signal))
-					   riece-ignored-user)))
-       (if pointer
-	   (setcar pointer (nth 1 (riece-signal-args signal))))))))
+     (list (if current-prefix-arg
+	       (riece-completing-read-identity
+		"Unignore user: "
+		riece-ignored-user-list)
+	     (riece-completing-read-identity
+	      "Ignore user: "
+	      (riece-get-users-on-server (riece-current-server-name))
+	      (lambda (user)
+		(not (riece-identity-member
+		      (riece-parse-identity user)
+		      riece-ignored-user-list)))))
+	   (not current-prefix-arg))))
+  (if toggle
+      (progn
+	(setq riece-ignored-user-list (cons user riece-ignored-user-list))
+	(riece-connect-signal
+	 'user-renamed
+	 #'riece-ignore-user-rename-signal-function))
+    (let ((pointer (riece-identity-member user riece-ignored-user-list)))
+      (setq riece-ignored-user-list (delq (car pointer)
+					  riece-ignored-user-list))
+      (riece-disconnect-signal
+       'user-renamed
+       #'riece-ignore-user-rename-signal-function))))
 
 (defun riece-ignore-message-filter (message)
-  (unless (riece-identity-member (riece-message-speaker message)
-				 riece-ignored-user)
+  (if (riece-identity-member (riece-message-speaker message)
+			     riece-ignored-user-list)
+      (unless riece-ignore-discard-message
+	(put-text-property 0 (length (riece-message-text message))
+			   'invisible 'riece-ignore
+			   (riece-message-text message))
+	message)
     message))
 
 (defvar riece-command-mode-map)
