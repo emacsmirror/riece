@@ -123,6 +123,9 @@ Local to the server buffers.")
 (defvar riece-coding-system nil
   "Coding system for process I/O.
 Local to the server buffers.")
+(defvar riece-filter-semaphore nil
+  "Semaphore for riece-filter.
+Local to the server buffers.")
 
 ;;; Variables local to the channel buffers:
 (defvar riece-freeze nil

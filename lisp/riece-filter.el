@@ -30,8 +30,6 @@
 (require 'riece-identity)
 (require 'riece-debug)
 
-(defvar riece-filter-semaphore '(nil))
-
 (defun riece-handle-numeric-reply (prefix number name string)
   (let ((base-number (* (/ number 100) 100))
 	function)

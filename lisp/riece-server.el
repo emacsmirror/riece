@@ -262,6 +262,8 @@ the `riece-server-keyword-map' variable."
     (make-local-variable 'riece-obarray)
     (setq riece-obarray (make-vector riece-obarray-size 0))
     (make-local-variable 'riece-coding-system)
+    (make-local-variable 'riece-filter-semaphore)
+    (setq riece-filter-semaphore '(nil))
     (buffer-disable-undo)
     (erase-buffer)))
 
