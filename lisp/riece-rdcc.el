@@ -80,6 +80,11 @@ puts(\"#{" address " >> 24 & 0xFF}.#{" address " >> 16 & 0xFF}.#{"
   :type 'list
   :group 'riece-rdcc)
 
+(defcustom riece-rdcc-save-directory nil
+  "Default directory where received files are saved in."
+  :type 'directory
+  :group 'riece-rdcc)
+
 (defvar riece-rdcc-requests nil)
 
 (defvar riece-rdcc-request-user nil)
@@ -225,7 +230,8 @@ puts(\"#{" address " >> 24 & 0xFF}.#{" address " >> 16 & 0xFF}.#{"
 		     (error "Invalid number"))
 		 (nth (1- number) riece-rdcc-requests))))
 	    (default-name (expand-file-name
-			   (nth 1 request) default-directory)))
+			   (nth 1 request) (or riece-rdcc-save-directory
+					       default-directory))))
        (list request
 	     (expand-file-name
 	      (read-file-name
