@@ -1,5 +1,11 @@
 2004-08-30  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-options.el (riece-window-center-line): New user option.
+	* riece-misc.el (riece-insert): Check if the current point is not
+	visible in the window.
+
+2004-08-30  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-misc.el (riece-insert): Don't use 2nd argument WINDOW of
 	recenter since it is not supported by GNU Emacs.
 

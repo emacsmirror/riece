@@ -76,13 +76,14 @@
 	(insert (format-time-string "%H:%M") " " string)
 	(setq point (point))
 	(if (and (not (riece-frozen (current-buffer)))
-		 (setq window (get-buffer-window (current-buffer))))
+		 (setq window (get-buffer-window (current-buffer)))
+		 (not (pos-visible-in-window-p point window)))
 	    (save-excursion		;save-selected-window changes
 					;current buffer
 	      (save-selected-window
 		(select-window window)
 		(goto-char point)	;select-window changes current point
-		(recenter -2))))
+		(recenter riece-window-center-line))))
 	(run-hook-with-args 'riece-after-insert-functions start (point))))
     (setq buffers (cdr buffers))))
 

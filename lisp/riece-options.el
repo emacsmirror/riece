@@ -70,6 +70,14 @@
   :type 'boolean
   :group 'riece-looks)
 
+(defcustom riece-window-center-line -2
+  "Line number of center point in window when scrolling.
+If nil, erases the entire frame and then redraws with point in the
+center of the window.  Negative means relative to bottom of window.
+See the document of the function `recenter'."
+  :type 'integer
+  :group 'riece-looks)
+
 (defcustom riece-directory (expand-file-name "~/.riece")
   "Where to look for data files."
   :type 'directory
