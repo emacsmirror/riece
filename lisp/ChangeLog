@@ -2,6 +2,8 @@
 
 	* riece-button.el (riece-identity-button-popup-menu): Changed
 	interactivbe spect "@e" -> "e".
+	(riece-identity-button-click): New function.
+	(riece-make-identity-button-map): Bind riece-identity-button-click.
 
 2005-02-04  Daiki Ueno  <ueno@unixuser.org>
 

@@ -83,6 +83,27 @@ This function is used as a callback for a channel button."
       (message "%s" (substitute-command-keys
 		     "Type \\[riece-command-join] to join the channel")))))
 
+(defun riece-identity-button-click (event)
+  "Call widget-button-click and select the last selected window."
+  (interactive "e")			;widget-button-click has
+					;interactive spec "@e"
+  (let ((buffer (current-buffer))
+	(point (point))
+	window)
+    (unwind-protect
+	(save-excursion
+	  (set-buffer (riece-event-buffer event))
+	  (goto-char (riece-event-point event))
+	  (widget-button-click event))
+      ;; riece-button-switch-to-identity changes window-configuration
+      ;; so we must select the last selected window by _buffer_.
+      (if (setq window (get-buffer-window buffer))
+	  (progn
+	    (select-window window)
+	    (set-window-point window point))
+	(if riece-debug
+	    (message "buffer %s not visible" (buffer-name buffer)))))))
+
 (defun riece-identity-button-popup-menu (event)
   "Popup the menu for identity buttons."
   (interactive "e")
@@ -179,6 +200,7 @@ This function is used as a callback for a channel button."
 (defun riece-make-identity-button-map ()
   (let ((map (make-sparse-keymap)))
     (set-keymap-parent map (current-local-map))
+    (define-key map [down-mouse-2] 'riece-identity-button-click)
     (define-key map [down-mouse-3] 'riece-identity-button-popup-menu)
     map))
 
