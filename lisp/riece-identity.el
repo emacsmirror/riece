@@ -27,13 +27,22 @@
 (require 'riece-globals)
 (require 'riece-coding)
 (require 'riece-server)
-
-(defun riece-identity-prefix (identity)
-  "Return the component sans its server from IDENTITY."
-  (aref identity 0))
+(require 'riece-compat)			;riece-set-case-syntax-pair
 
 (defvar riece-abbrev-identity-string-function nil)
 (defvar riece-expand-identity-string-function nil)
+
+(defvar riece-identity-prefix-case-table
+  (let ((table (copy-case-table (standard-case-table))))
+    (riece-set-case-syntax-pair ?\[ ?{ table)
+    (riece-set-case-syntax-pair ?\] ?} table)
+    (riece-set-case-syntax-pair ?\\ ?| table)
+    (riece-set-case-syntax-pair ?~ ?^ table)
+    table))
+    
+(defun riece-identity-prefix (identity)
+  "Return the component sans its server from IDENTITY."
+  (aref identity 0))
 
 (defun riece-identity-server (identity)
   "Return the server component in IDENTITY."
@@ -61,17 +70,12 @@ RFC2812, 2.2 \"Character codes\" says:
    considered to be the lower case equivalents of the characters []\~,
    respectively. This is a critical issue when determining the
    equivalence of two nicknames or channel names."
-  (let* ((old (current-case-table))
-	 (new (copy-case-table old)))
+  (let ((old-table (current-case-table)))
     (unwind-protect
 	(progn
-	  (riece-set-case-syntax-pair ?\[ ?{ new)
-	  (riece-set-case-syntax-pair ?\] ?} new)
-	  (riece-set-case-syntax-pair ?\\ ?| new)
-	  (riece-set-case-syntax-pair ?~ ?^ new)
-	  (set-case-table new)
+	  (set-case-table riece-identity-prefix-case-table)
 	  (downcase prefix))
-      (set-case-table old))))
+      (set-case-table old-table))))
 
 (defun riece-identity-equal-no-server (prefix1 prefix2)
   "Return t, if IDENT1 and IDENT2 is equal without server."
