@@ -3,7 +3,7 @@
 @setfilename riece-ja.info
 @settitle Riece -- An IRC client for Emacsen --
 @c %**end of header
-@set VERSION 0.1.2
+@set VERSION 0.1.3
 @c @documentlanguage ja
 
 @dircategory GNU Emacs Lisp
@@ -503,18 +503,30 @@ DCC (Direct Client to Client protocol) によるファイル転送
 doctor.el と連携して精神科医になりすます
 @item riece-alias
 チャンネル名やニックネームの別名を定義
+@item riece-skk-kakutei
+SKK 使用時に変換モードの印を発言から取り除く
+@item riece-guess
+色々な方法で移動先のチャンネルを推測
+@item riece-history
+チャンネル移動の履歴管理
+@item riece-button
+ボタンやポップアップメニューの表示
+@item riece-keyword
+キーワードの強調表示
 @end table
 
-これらのうち、@samp{riece-highlight} と @samp{riece-ctcp} はデフォルトで
-組み込まれています。
+これらのうち、@samp{riece-highlight} と @samp{riece-ctcp}、
+@samp{riece-url}、 @samp{riece-unread}、 @samp{riece-guess}、
+@samp{riece-history}、 @samp{riece-button} はデフォルトで組み込まれてい
+ます。
 
 アドオンを組み込むには @code{riece-addons} を設定します。たとえば 
-@samp{riece-url} を組み込む場合には、@file{~/.riece/init.el} に以下のよ
+@samp{riece-alias} を組み込む場合には、@file{~/.riece/init.el} に以下のよ
 うに記述します。
 @vindex riece-addons
 
 @example
-(add-to-list 'riece-addons 'riece-url)
+(add-to-list 'riece-addons 'riece-alias)
 @end example
 
 @node Writing add-ons, Handler hooks, Add-ons, Advanced usage
