@@ -24,8 +24,6 @@
 
 ;;; Code:
 
-(eval-when-compile (require 'riece-inlines))
-
 (require 'riece-misc)
 (require 'riece-commands)
 

@@ -24,8 +24,6 @@
 
 ;;; Code:
 
-(eval-when-compile (require 'riece-inlines))
-
 (require 'riece-handle)
 (require 'riece-misc)
 (require 'riece-server)			;riece-close-server

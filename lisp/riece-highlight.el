@@ -24,8 +24,6 @@
 
 ;;; Code:
 
-(eval-when-compile (require 'riece-inlines))
-
 (require 'riece-globals)
 (require 'font-lock)
 

@@ -24,8 +24,6 @@
 
 ;;; Code:
 
-(eval-when-compile (require 'riece-inlines))
-
 (require 'riece-misc)
 (require 'riece-filter)			;riece-default-handle-message
 (require 'riece-version)

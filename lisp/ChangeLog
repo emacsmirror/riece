@@ -1,3 +1,10 @@
+2003-06-04  Yoichi NAKAYAMA  <yoichi@geiin.org>
+
+	* riece-000.el,riece-200.el,riece-300.el,riece-400.el,riece-500.el,
+	riece-commands.el,riece-filter.el,riece-handle.el,riece-highlight.el
+	riece-identity.el,riece-message.el,riece-misc.el,riece-naming.el,
+	riece.el: Don't require riece-inlines since it has been removed.
+
 2003-06-03  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-display.el (riece-update-user-list-buffer): Rename from

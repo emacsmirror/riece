@@ -24,8 +24,6 @@
 
 ;;; Code:
 
-(eval-when-compile (require 'riece-inlines))
-
 (if (featurep 'xemacs)
     (require 'riece-xemacs)
   (require 'riece-emacs))

@@ -23,8 +23,6 @@
 
 ;;; Code:
 
-(eval-when-compile (require 'riece-inlines))
-
 (require 'riece-identity)
 (require 'riece-channel)
 (require 'riece-user)
