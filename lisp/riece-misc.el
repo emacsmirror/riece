@@ -84,7 +84,9 @@
 		(goto-char point)	;select-window changes current point
 		(recenter riece-window-center-line))))
 	(run-hook-with-args 'riece-after-insert-functions start (point))))
-    (setq buffers (cdr buffers))))
+    (setq buffers (cdr buffers)))
+  ;; This triggers forced redisplay under GNU Emacs.
+  (sit-for 0))
 
 (defun riece-insert-change (buffer message)
   (riece-insert buffer (concat riece-change-prefix message)))
