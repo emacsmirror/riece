@@ -32,6 +32,11 @@
 
 (eval-when-compile (require 'riece))
 
+(defvar riece-skk-kakutei-enabled nil)
+
+(defconst riece-highlight-description
+  "Deny SKK's sankaku send")
+
 (defun riece-skk-kakutei-command-enter-message ()
   "Send the current line to the current channel."
   (interactive)
@@ -61,9 +66,19 @@
 	 t)))
 
 (defun riece-skk-kakutei-insinuate ()
+  )
+
+(defun riece-skk-kakutei-enable ()
   (riece-define-keys riece-command-mode-map
     "\r" riece-skk-kakutei-command-enter-message
-    [(control return)] riece-skk-kakutei-command-enter-message-as-notice))
+    [(control return)] riece-skk-kakutei-command-enter-message-as-notice)
+  (setq riece-skk-kakutei-enabled t))
+
+(defun riece-skk-kakutei-disable ()
+  (riece-define-keys riece-command-mode-map
+    "\r" riece-command-enter-message
+    [(control return)] riece-command-enter-message-as-notice)
+  (setq riece-skk-kakutei-enabled nil))
 
 (provide 'riece-skk-kakutei)
 
