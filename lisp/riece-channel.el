@@ -192,7 +192,7 @@ respectively."
     (if flag
 	(unless (riece-identity-assoc user users t)
 	  (riece-channel-set-users channel (cons (list user) users)))
-      (if (setq user (car (riece-identity-assoc user users t)))
+      (if (setq user (riece-identity-assoc user users t))
 	  (riece-channel-set-users channel (delq user users))))))
 
 (defun riece-channel-toggle-operator (name user flag)
