@@ -325,7 +325,9 @@ Local to the buffer in `riece-buffer-list'.")
 	(while pointer
 	  (if (cdr pointer)
 	      (setcdr pointer (cons "," (cdr pointer))))
-	  (setq pointer (cdr (cdr pointer)))))
+	  (setq pointer (cdr (cdr pointer))))
+	(setq riece-channel-list-indicator
+	      (riece-normalize-modeline-string riece-channel-list-indicator)))
     (setq riece-channel-list-indicator "No channel")))
 
 (defun riece-update-status-indicators ()

@@ -122,6 +122,8 @@
     (set-extent-properties extent properties)
     (cons extent string)))
 
+(defalias 'riece-normalize-modeline-indicator 'identity)
+
 (defalias 'riece-facep 'find-face)
 
 (defun riece-put-text-property-nonsticky (start end prop value

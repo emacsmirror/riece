@@ -95,6 +95,19 @@
   (add-text-properties 0 (length string) properties string)
   string)
 
+(defun riece-normalize-modeline-string-1 (string)
+  (if string
+      (if (listp (car string))
+	  (cons (car (car string)) (riece-normalize-modeline-string-1
+				    (append (cdr (car string)) (cdr string))))
+	(cons (car string) (riece-normalize-modeline-string-1
+			    (cdr string))))))
+
+(defun riece-normalize-modeline-string (string)
+  (if (listp string)
+      (apply #'concat (riece-normalize-modeline-string-1 string))
+    string))
+
 (defun riece-put-text-property-nonsticky (start end prop value
 						     &optional object)
   (add-text-properties start end

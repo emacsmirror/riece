@@ -1,5 +1,14 @@
 2004-12-13  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-display.el (riece-update-channel-list-indicator):
+	Normalize modeline indicator.
+
+	* riece-xemacs.el (riece-normalize-modeline-indicator): New alias.
+	* riece-emacs.el (riece-normalize-modeline-string): New function.
+	(riece-normalize-modeline-string-1): New function.
+
+2004-12-13  Daiki Ueno  <ueno@unixuser.org>
+
 	* test/Makefile.am (EXTRA_DIST): Add test-riece.el.
 	* test/test-riece.el: New test cases.
 
