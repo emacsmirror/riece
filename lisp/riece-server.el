@@ -266,7 +266,8 @@ the `riece-server-keyword-map' variable."
     (erase-buffer)))
 
 (defun riece-close-server-process (process)
-  (run-hooks 'riece-after-close-hook)
+  (with-current-buffer (process-buffer process)
+    (run-hooks 'riece-after-close-hook))
   (kill-buffer (process-buffer process))
   (setq riece-server-process-alist
 	(delq (rassq process riece-server-process-alist)

@@ -1,5 +1,8 @@
 2005-02-04  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-server.el (riece-close-server-process): Switch to process
+	buffer when running riece-after-close-hook.
+
 	* COMPILE (riece-icons): Add riece-command-quit and
 	riece-submit-bug-report.
 
