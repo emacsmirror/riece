@@ -221,6 +221,15 @@
     (if (looking-at riece-prefix-regexp)
 	(put-text-property (match-beginning 1) (match-end 1) 'invisible t))))
 
+(defun riece-put-overlay-faces (start end)
+  (riece-scan-property-region
+   'riece-overlay-face
+   start end
+   (lambda (start end)
+     (riece-overlay-put (riece-make-overlay start end)
+			'face
+			(get-text-property start 'riece-overlay-face)))))
+
 (defun riece-channel-list-turn-on-font-lock ()
   (make-local-variable 'font-lock-defaults)
   (setq font-lock-defaults '(riece-channel-list-font-lock-keywords t))
@@ -260,7 +269,8 @@
   (add-hook 'riece-after-load-startup-hook
 	    'riece-channel-list-schedule-turn-on-font-lock)
   (add-hook 'riece-format-identity-for-channel-list-indicator-functions
-	    'riece-highlight-format-identity-for-channel-list-indicator))
+	    'riece-highlight-format-identity-for-channel-list-indicator)
+  (add-hook 'riece-after-insert-functions 'riece-put-overlay-faces))
 
 (provide 'riece-highlight)
 

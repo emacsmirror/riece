@@ -88,11 +88,10 @@ and the matched message object."
 	  (setq index 0)
 	  (while (string-match (car (car alist))
 			       (riece-message-text message) index)
-	    (if (memq 'riece-highlight riece-addons)
-		(put-text-property (match-beginning (cdr (car alist)))
-				   (match-end (cdr (car alist)))
-				   'riece-keyword t
-				   (riece-message-text message)))
+	    (put-text-property (match-beginning (cdr (car alist)))
+			       (match-end (cdr (car alist)))
+			       'riece-overlay-face riece-keyword-face
+			       (riece-message-text message))
 	    (run-hook-with-args 'riece-notify-keyword-functions
 				(match-string (cdr (car alist))
 					      (riece-message-text message)))
@@ -103,21 +102,12 @@ and the matched message object."
 	  (setq alist (cdr alist)))))
   message)
 
-(defun riece-keyword-scan-region (start end)
-  (riece-scan-property-region
-   'riece-keyword
-   start end
-   (lambda (start end)
-     (riece-overlay-put (riece-make-overlay start end)
-			'face riece-keyword-face))))
-
 (defun riece-keyword-requires ()
   (if (memq 'riece-highlight riece-addons)
       '(riece-highlight)))
 
 (defun riece-keyword-insinuate ()
-  (add-hook 'riece-message-filter-functions 'riece-keyword-message-filter)
-  (add-hook 'riece-after-insert-functions 'riece-keyword-scan-region))
+  (add-hook 'riece-message-filter-functions 'riece-keyword-message-filter))
 
 (provide 'riece-keyword)
 

@@ -170,24 +170,16 @@
 		   (match-string 0 (riece-message-text message)) attrs)))
     (if (and (< start end) attrs)
 	(put-text-property start end
-			   'riece-ctlseq-attributes (copy-sequence attrs)
+			   'riece-overlay-face
+			   (riece-ctlseq-face-from-cache attrs)
 			   (riece-message-text message))))
   message)
 
-(defun riece-ctlseq-scan-region (start end)
-  (riece-scan-property-region
-   'riece-ctlseq-attributes
-   start end
-   (lambda (start end)
-     (riece-overlay-put (riece-make-overlay start end)
-			'face
-			(riece-ctlseq-face-from-cache
-			 (get-text-property start
-					    'riece-ctlseq-attributes))))))
+(defun riece-ctlseq-requires ()
+  '(riece-highlight))
 
 (defun riece-ctlseq-insinuate ()
-  (add-hook 'riece-message-filter-functions 'riece-ctlseq-message-filter)
-  (add-hook 'riece-after-insert-functions 'riece-ctlseq-scan-region))
+  (add-hook 'riece-message-filter-functions 'riece-ctlseq-message-filter))
 
 (provide 'riece-ctlseq)
 
