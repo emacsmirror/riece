@@ -6,6 +6,7 @@
 	riece-command-nick-scroll-up.
 	(riece-command-scroll-down): Check if riece-current-channel is bound.
 	(riece-command-scroll-up): Ditto.
+	(riece-command-quit): Clean up if no server process is available.
 
 2003-10-25  Daiki Ueno  <ueno@unixuser.org>
 
