@@ -298,7 +298,7 @@ way is to put Riece variables on .emacs or file loaded from there."
   :type 'integer
   :group 'riece-options)
 
-(defcustom riece-max-buffer-size 65535
+(defcustom riece-max-buffer-size nil
   "Maximum size of channel buffers."
   :type '(radio (integer :tag "Number of characters")
 		(const nil))

@@ -2,6 +2,7 @@
 
 	* riece-options.el (riece-part-message): New user option.
 	(riece-addons): Enable riece-alias and riece-ctlseq by default.
+	(riece-max-buffer-size): Change the default value to nil.
 
 	* riece-commands.el (riece-command-part): Use riece-part-message.
 
