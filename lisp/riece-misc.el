@@ -81,7 +81,7 @@
 
 (defun riece-current-nickname ()
   "Return the current nickname."
-  (riece-with-server-buffer (riece-identity-server riece-current-channel)
+  (riece-with-identity-buffer riece-current-channel
     (if riece-real-nickname
 	(riece-make-identity riece-real-nickname riece-server-name))))
 

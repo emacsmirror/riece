@@ -155,14 +155,14 @@ take server names into account."
     (riece-with-server-buffer server
       (riece-make-identity (riece-encode-coding-string prefix) server))))
 
-(defun riece-completing-read-identity (prompt table
+(defun riece-completing-read-identity (prompt channels
 					      &optional predicate must-match)
   (let* ((decoded
 	  (completing-read
 	   prompt
-	   (mapcar (lambda (channel)
-		     (list (riece-decode-identity channel)))
-		   table)
+	   (delq nil (mapcar (lambda (channel)
+			       (list (riece-decode-identity channel)))
+			     (or channels riece-current-channels)))
 	   predicate must-match))
 	 (encoded
 	  (riece-encode-identity decoded)))

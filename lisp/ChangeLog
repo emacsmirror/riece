@@ -1,5 +1,17 @@
 2003-06-11  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-identity.el (riece-completing-read-identity): Remove nil
+	from channels before completing-read.
+
+	* riece-message.el (riece-message-make-name): Fix condition for priv.
+	(riece-message-make-global-name): Ditto.
+	(riece-message-buffer): Ditto.
+
+	* riece-misc.el (riece-current-nickname): Use
+	riece-with-identity-buffer.
+
+2003-06-11  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-message.el (riece-message-parent-buffers): Regard message's
 	speaker as target when priv mode.
 
