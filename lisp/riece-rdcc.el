@@ -41,7 +41,8 @@ Only used for sending files."
 
 (defcustom riece-rdcc-send-program
   '("\
-unless " address "
+address = " address "
+unless address
   sock = UDPSocket.new
   sock.connect('164.46.176.4', 7)		# www.unixuser.org/echo
   address = sock.getsockname[4 .. 7].unpack('CCCC').join('.')
