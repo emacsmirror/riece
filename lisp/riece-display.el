@@ -52,6 +52,9 @@
 	      riece-current-channel
 	      ;; User list buffer is nuisance for private conversation.
 	      (riece-channel-p riece-current-channel))))
+    ;; Can't expand minibuffer to full frame.
+    (if (eq (selected-window) (minibuffer-window))
+	(other-window 1))
     (delete-other-windows)
     (if (and riece-current-channel
 	     (or show-user-list riece-channel-list-buffer-mode))

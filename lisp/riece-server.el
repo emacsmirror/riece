@@ -196,8 +196,9 @@ If optional argument SERVICE is non-nil, open by the service name."
   (let ((riece-overriding-server-name server-name)
 	(channels riece-current-channels))
     (while channels
-      (if (equal (riece-identity-server (car channels))
-		 server-name)
+      (if (and (car channels)
+	       (equal (riece-identity-server (car channels))
+		      server-name))
 	  (riece-part-channel (car channels)))
       (setq channels (cdr channels)))
     (riece-redisplay-buffers))

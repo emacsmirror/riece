@@ -1,5 +1,18 @@
 2003-05-30  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-display.el (riece-configure-windows): Select other window
+	when minibuffer is active.
+
+	* riece-commands.el (riece-command-list): New command.
+	(riece-command-enter-message-as-notice): New command.
+	* riece.el (riece-command-mode-map): Bind
+	riece-command-enter-message-as-notice and riece-command-list.
+
+	* riece-server.el (riece-close-server): Skip nil when leaving
+	channels before closing server.
+
+2003-05-30  Daiki Ueno  <ueno@unixuser.org>
+
 	* Riece: Version 0.0.2 released.
 	* riece-version.el (riece-version-number): Bump up to 0.0.2.
 

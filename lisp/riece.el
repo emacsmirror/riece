@@ -166,9 +166,7 @@ If optional argument SAFE is nil, overwrite previous definitions."
 
   (riece-define-keys riece-command-mode-map
     "\r" riece-command-enter-message
-    [tab] riece-command-complete
-    [(meta control c) >] riece-command-push
-    [(meta control c) <] riece-command-pop)
+    [(control return)] riece-command-enter-message-as-notice)
 
   (riece-define-keys (riece-command-map "\C-c" riece-command-mode-map)
     "\177" riece-command-scroll-down
@@ -185,7 +183,7 @@ If optional argument SAFE is nil, overwrite previous definitions."
     "o" riece-command-set-operators
     "\C-p" riece-command-part
     "r" riece-command-configure-windows
-    "v" riece-command-set-voices)
+    "v" riece-command-set-speakers)
   (set-keymap-parent riece-command-map riece-dialogue-mode-map)
 
   (riece-define-keys riece-user-list-mode-map

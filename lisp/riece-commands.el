@@ -209,6 +209,19 @@
 	  (yes-or-no-p "Really want to query WHO without argument? "))
       (riece-send-string (format "WHO %s\r\n" pattern))))
 
+(defun riece-command-list (pattern)
+  (interactive
+   (let ((completion-ignore-case t))
+     (list (read-from-minibuffer
+	    "Pattern: "
+	    (if (and riece-current-channel
+		     (riece-channel-p riece-current-channel))
+		(cons (riece-identity-prefix riece-current-channel)
+		      0))))))
+  (if (or (not (equal pattern ""))
+	  (yes-or-no-p "Really want to query LIST without argument? "))
+      (riece-send-string (format "LIST %s\r\n" pattern))))
+
 (defun riece-command-change-mode (channel change)
   (interactive
    (let* ((completion-ignore-case t)
@@ -299,25 +312,43 @@
 		   (make-string (length group) ?v)
 		   (mapconcat #'identity group " ")))))))
 
-(defun riece-command-send-message (message)
+(defun riece-command-send-message (message notice)
   "Send MESSAGE to the current channel."
   (if (equal message "")
       (error "No text to send"))
   (unless riece-current-channel
     (error (substitute-command-keys
 	    "Type \\[riece-command-join] to join a channel")))
-  (riece-send-string
-   (format "PRIVMSG %s :%s\r\n"
-	   (riece-identity-prefix riece-current-channel)
-	   message))
-  (riece-own-channel-message message))
+  (if notice
+      (progn
+	(riece-send-string
+	 (format "NOTICE %s :%s\r\n"
+		 (riece-identity-prefix riece-current-channel)
+		 message))
+	(riece-own-channel-message message riece-current-channel 'notice))
+    (riece-send-string
+     (format "PRIVMSG %s :%s\r\n"
+	     (riece-identity-prefix riece-current-channel)
+	     message))
+    (riece-own-channel-message message)))
 
 (defun riece-command-enter-message ()
   "Send the current line to the current channel."
   (interactive)
   (riece-command-send-message (buffer-substring
 			       (riece-line-beginning-position)
-			       (riece-line-end-position)))
+			       (riece-line-end-position))
+			      nil)
+  (let ((next-line-add-newlines t))
+    (next-line 1)))
+
+(defun riece-command-enter-message-as-notice ()
+  "Send the current line to the current channel as NOTICE."
+  (interactive)
+  (riece-command-send-message (buffer-substring
+			       (riece-line-beginning-position)
+			       (riece-line-end-position))
+			      t)
   (let ((next-line-add-newlines t))
     (next-line 1)))
 
