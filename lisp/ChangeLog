@@ -1,5 +1,8 @@
 2003-05-29  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-300.el (riece-handle-341-message): New handler.
+	(riece-handle-352-message): New handler.
+
 	* riece-commands.el (riece-command-invite): Don't accept channel
 	argument; throw an error when user is not on a channel.
 	(riece-command-kick): New command.
