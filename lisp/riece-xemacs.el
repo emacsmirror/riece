@@ -124,6 +124,11 @@
 
 (defalias 'riece-facep 'find-face)
 
+(defun riece-put-text-property-nonsticky (start end prop value
+						     &optional object)
+  (add-text-property start end (list prop value 'start-open t 'end-open t)
+		     object))
+
 (provide 'riece-xemacs)
 
 ;;; riece-xemacs.el ends here

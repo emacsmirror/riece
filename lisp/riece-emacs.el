@@ -95,6 +95,12 @@
   (add-text-properties 0 (length string) properties string)
   string)
 
+(defun riece-put-text-property-nonsticky (start end prop value
+						     &optional object)
+  (add-text-property start end
+		     (list prop value 'front-sticky nil 'rear-nonsticky t)
+		     object))
+
 (defalias 'riece-facep 'facep)
 
 (provide 'riece-emacs)

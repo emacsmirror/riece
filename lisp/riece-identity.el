@@ -138,11 +138,13 @@ will be added."
 		   (riece-identity-server identity)))))
     (if riece-abbrev-identity-string-function
 	(setq string (funcall riece-abbrev-identity-string-function string)))
-    (put-text-property 0 (length string) 'riece-identity identity string)
+    (riece-put-text-property-nonsticky 0 (length string)
+				       'riece-identity identity
+				       string)
     (if prefix-only
-	(put-text-property 0 (length string)
-			   'riece-format-identity-prefix-only t
-			   string))
+	(riece-put-text-property-nonsticky 0 (length string)
+					   'riece-format-identity-prefix-only t
+					   string))
     string))
 
 (defun riece-parse-identity (string)

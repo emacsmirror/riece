@@ -1,3 +1,10 @@
+2004-08-28  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-xemacs.el (riece-put-text-property-nonsticky): New function.
+	* riece-emacs.el (riece-put-text-property-nonsticky): New function.
+	* riece-identity.el (riece-format-identity): Use it instead of
+	put-text-property.
+
 2004-08-27  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-commands.el (riece-command-complete-user): Move point to
