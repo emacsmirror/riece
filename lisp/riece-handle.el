@@ -42,19 +42,12 @@
 			     (riece-make-identity channel riece-server-name))
 			   channels))))
     (riece-naming-assert-rename old new)
-    (let ((pointer (riece-identity-member old-identity
-					  riece-current-channels)))
-      (when pointer
-	(setcar pointer new-identity)
-	(with-current-buffer (riece-channel-buffer-name new-identity)
-	  (rename-buffer (riece-channel-buffer-name new-identity)))
-	(if (riece-identity-equal new-identity riece-current-channel)
-	    (riece-switch-to-channel new-identity))
-	(setq channels (cons new-identity channels))))
+    (if (riece-identity-member old-identity riece-current-channels)
+	(setq channels (cons new channels)))
     (riece-insert-change (mapcar
 			  (lambda (channel)
-			    (riece-channel-buffer-name
-			     (riece-make-identity channel riece-server-name)))
+			    (riece-channel-buffer (riece-make-identity
+						   channel riece-server-name)))
 			  channels)
 			 (format "%s -> %s\n"
 				 (riece-format-identity old-identity t)
@@ -116,8 +109,7 @@
       (riece-naming-assert-join user (car channels))
       (let* ((channel-identity (riece-make-identity (car channels)
 						    riece-server-name))
-	     (buffer (get-buffer (riece-channel-buffer-name
-				  channel-identity))))
+	     (buffer (riece-channel-buffer channel-identity)))
 	(riece-insert-change
 	 buffer
 	 (format "%s (%s) has joined %s\n"
@@ -151,8 +143,7 @@
       (riece-naming-assert-part user (car channels))
       (let* ((channel-identity (riece-make-identity (car channels)
 						    riece-server-name))
-	     (buffer (get-buffer (riece-channel-buffer-name
-				  channel-identity))))
+	     (buffer (riece-channel-buffer channel-identity)))
 	(riece-insert-change
 	 buffer
 	 (concat
@@ -188,7 +179,7 @@
 	 (channel-identity (riece-make-identity channel riece-server-name))
 	 (user-identity (riece-make-identity user riece-server-name)))
     (riece-naming-assert-part user channel)
-    (let ((buffer (get-buffer (riece-channel-buffer-name channel-identity))))
+    (let ((buffer (riece-channel-buffer channel-identity)))
       (riece-insert-change
        buffer
        (concat
@@ -232,9 +223,8 @@
     (let ((buffers
 	   (mapcar
 	    (lambda (channel)
-	      (get-buffer
-	       (riece-channel-buffer-name
-		(riece-make-identity channel riece-server-name))))
+	      (riece-channel-buffer (riece-make-identity channel
+							 riece-server-name)))
 	    channels)))
       (riece-insert-change
        buffers
@@ -277,9 +267,8 @@
     (let ((buffers
 	   (mapcar
 	    (lambda (channel)
-	      (get-buffer
-	       (riece-channel-buffer-name
-		(riece-make-identity channel riece-server-name))))
+	      (riece-channel-buffer (riece-make-identity channel
+							 riece-server-name)))
 	    channels)))
       (riece-insert-change
        buffers
@@ -333,7 +322,7 @@
 	 (user-identity (riece-make-identity user riece-server-name))
 	 (channel-identity (riece-make-identity channel riece-server-name)))
     (riece-channel-set-topic (riece-get-channel channel) topic)
-    (let ((buffer (get-buffer (riece-channel-buffer-name channel-identity))))
+    (let ((buffer (riece-channel-buffer channel-identity)))
       (riece-insert-change
        buffer
        (format "Topic by %s: %s\n"
@@ -392,8 +381,7 @@
 	    string (substring string (match-end 0)))
       (riece-parse-channel-modes string channel)
       (let* ((channel-identity (riece-make-identity channel riece-server-name))
-	     (buffer (get-buffer (riece-channel-buffer-name
-				  channel-identity))))
+	     (buffer (riece-channel-buffer channel-identity)))
 	(riece-insert-change
 	 buffer
 	 (format "Mode by %s: %s\n"

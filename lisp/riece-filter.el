@@ -158,7 +158,7 @@
       (riece-redisplay-buffers)
       (riece-close-server-process process)
       ;; If no server process is available, exit.
-      (unless riece-process-list
+      (unless riece-server-process-alist
 	(riece-exit)))))
 
 (provide 'riece-filter)

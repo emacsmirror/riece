@@ -93,7 +93,7 @@ the `riece-server-keyword-map' variable."
     (format "IRC<%s>" server-name)))
 
 (defun riece-server-process (server-name)
-  (get-process (riece-server-process-name server-name)))
+  (cdr (assoc server-name riece-server-process-alist)))
 
 (defmacro riece-with-server-buffer (server-name &rest body)
   `(let ((process (riece-server-process ,server-name)))
@@ -165,8 +165,9 @@ the `riece-server-keyword-map' variable."
 	(setq riece-last-nickname riece-real-nickname
 	      riece-nick-accepted 'sent
 	      riece-coding-system coding))
-      (setq riece-process-list
-	    (cons process riece-process-list)))))
+      (setq riece-server-process-alist
+	    (cons (cons server-name process)
+		  riece-server-process-alist)))))
 
 (defun riece-reset-process-buffer (process)
   (save-excursion
@@ -197,25 +198,27 @@ the `riece-server-keyword-map' variable."
   (if riece-debug
       (delete-process process)
     (kill-buffer (process-buffer process)))
-  (setq riece-process-list (delq process riece-process-list)))
+  (setq riece-server-process-alist
+	(delq (rassq process riece-server-process-alist)
+	      riece-server-process-alist)))
 
 (defun riece-server-opened (&optional server-name)
-  (let ((process-list riece-process-list))
+  (let ((alist riece-server-process-alist))
     (catch 'found
-      (while process-list
-	(if (memq (process-status (car process-list)) '(open run))
+      (while alist
+	(if (memq (process-status (cdr (car alist))) '(open run))
 	    (throw 'found t))
-	(setq process-list (cdr process-list))))))
+	(setq alist (cdr alist))))))
 
 (eval-when-compile
   (autoload 'riece-exit "riece"))
 (defun riece-quit-server-process (process &optional message)
   (run-at-time riece-quit-timeout nil
 	       (lambda (process)
-		 (when (memq process riece-process-list)
+		 (when (rassq process riece-server-process-alist)
 		   (riece-close-server-process process)
 		   ;; If no server process is available, exit.
-		   (unless riece-process-list
+		   (unless riece-server-process-alist
 		     (riece-exit))))
 	       process)
   (riece-process-send-string process

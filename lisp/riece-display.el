@@ -29,6 +29,11 @@
 (require 'riece-misc)
 (require 'riece-layout)
 
+(defvar riece-channel-buffer-format "*Channel:%s*"
+  "Format of channel message buffer.")
+(defvar riece-channel-buffer-alist nil
+  "An alist mapping identities to channel buffers.")
+
 (defvar riece-update-buffer-functions nil
   "Functions to redisplay the buffer.
 Local to the buffer in `riece-buffer-list'.")
@@ -187,7 +192,11 @@ Local to the buffer in `riece-buffer-list'.")
   (autoload 'riece-channel-mode "riece"))
 (defun riece-channel-buffer-create (identity)
   (with-current-buffer
-      (riece-get-buffer-create (riece-channel-buffer-name identity))
+      (riece-get-buffer-create (riece-channel-buffer-name identity)
+			       'riece-channel-mode)
+    (setq riece-channel-buffer-alist
+	  (cons (cons identity (current-buffer))
+		riece-channel-buffer-alist))
     (unless (eq major-mode 'riece-channel-mode)
       (riece-channel-mode)
       (let (buffer-read-only)
@@ -199,11 +208,13 @@ Local to the buffer in `riece-buffer-list'.")
 	(run-hook-with-args 'riece-channel-buffer-create-functions identity)))
     (current-buffer)))
 
+(defun riece-channel-buffer (identity)
+  (cdr (riece-identity-assoc identity riece-channel-buffer-alist)))
+
 (defun riece-switch-to-channel (identity)
   (let ((last riece-current-channel))
     (setq riece-current-channel identity
-	  riece-channel-buffer (get-buffer (riece-channel-buffer-name
-					    riece-current-channel)))
+	  riece-channel-buffer (riece-channel-buffer riece-current-channel))
     (run-hook-with-args 'riece-after-switch-to-channel-functions last)))
 
 (defun riece-join-channel (identity)

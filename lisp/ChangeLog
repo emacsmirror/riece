@@ -1,3 +1,34 @@
+2003-10-16  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece.el (riece-buffer-alist): Rename from
+	riece-buffer-mode-alist.
+
+	* riece-misc.el (riece-get-buffer-create): Takes an optional 2nd
+	argument, init-major-mode, which is used to assert the major-mode
+	of the created buffer is 'riece-channel-mode.
+
+	* riece-naming.el (riece-naming-assert-rename): Merged buffer
+	renaming logic that riece-handle-nick-message was responsible for.
+
+	* riece-globals.el (riece-server-process-alist): Revive.
+	(riece-process-list): Abolish.
+	(riece-command-buffer): Set default to nil.
+	(riece-dialogue-buffer): Ditto.
+	(riece-others-buffer): Ditto.
+	(riece-channel-list-buffer): Ditto.
+	(riece-user-list-buffer): Ditto.
+	(riece-private-buffer): Abolish.
+	(riece-wallops-buffer): Abolish.
+
+	* riece-display.el (riece-channel-buffer-format): Moved from
+	riece-globals.
+	(riece-channel-buffer-alist): New variable.
+	(riece-channel-buffer-create): Assert the major-mode of the
+	created buffer is 'riece-channel-mode.
+	(riece-channel-buffer): New function.
+	(riece-switch-to-channel): Use riece-channel-buffer instead of
+	directly using get-buffer.
+
 2003-10-14  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-commands.el (riece-command-toggle-away): Check user away

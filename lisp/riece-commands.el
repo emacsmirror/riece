@@ -586,10 +586,10 @@ If prefix argument ARG is non-nil, toggle frozen status."
 		 (read-string "Message: ")
 	       (or riece-quit-message
 		   (riece-extended-version))))
-	    (process-list riece-process-list))
-	(while process-list
-	  (riece-quit-server-process (car process-list) message)
-	  (setq process-list (cdr process-list))))))
+	    (alist riece-server-process-alist))
+	(while alist
+	  (riece-quit-server-process (cdr (car alist)) message)
+	  (setq alist (cdr alist))))))
 
 (defun riece-command-raw (command)
   "Enter raw IRC command, which is sent to the server."
@@ -627,13 +627,7 @@ If prefix argument ARG is non-nil, toggle frozen status."
 
 (defun riece-command-close-server (server-name &optional message)
   (interactive
-   (list (completing-read
-	  "Server: "
-	  (mapcar
-	   (lambda (process)
-	     (with-current-buffer (process-buffer process)
-	       (list riece-server-name)))
-	   riece-process-list))
+   (list (completing-read "Server: " riece-server-process-alist)
 	 (if current-prefix-arg
 	     (read-string "Message: ")
 	   (or riece-quit-message
@@ -643,13 +637,7 @@ If prefix argument ARG is non-nil, toggle frozen status."
 (defun riece-command-universal-server-name-argument ()
   (interactive)
   (let* ((riece-overriding-server-name
-	  (completing-read
-	   "Server: "
-	   (mapcar
-	    (lambda (process)
-	      (with-current-buffer (process-buffer process)
-		(list riece-server-name)))
-	    riece-process-list)))
+	  (completing-read "Server: " riece-server-process-alist)))
 	 (command
 	  (key-binding (read-key-sequence
 			(format "Command to execute on \"%s\":"

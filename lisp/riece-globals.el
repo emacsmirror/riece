@@ -30,9 +30,9 @@
 (defconst riece-user-regexp
   "[][\\\\`_^{|}A-Za-z][][\\\\`_^{|}A-Za-z0-9-]\\{0,8\\}")
 
-;;; Miscellaneous global variables:
-(defvar riece-process-list nil
-  "List of processes opened in the current session.")
+;;; Global variables:
+(defvar riece-server-process-alist nil
+  "An alist mapping server names to processes.")
 
 (defvar riece-current-channel nil
   "The channel you currently have joined.")
@@ -120,23 +120,19 @@ Local to the channel buffers.")
 (defvar riece-freeze-indicator "-")
 
 ;;; Buffers:
-(defvar riece-command-buffer "*Commands*"
-  "Name of command input buffer.")
-(defvar riece-dialogue-buffer "*Dialogue*"
-  "Name of dialogue output buffer.")
-(defvar riece-private-buffer "*Private*"
-  "Name of private message buffer.")
-(defvar riece-others-buffer "*Others*"
-  "Name of others message buffer.")
+(defvar riece-command-buffer nil
+  "The command buffer.")
+(defvar riece-dialogue-buffer nil
+  "Buffer for whole conversation.")
+(defvar riece-others-buffer nil
+  "Buffer for other messages.")
+(defvar riece-channel-list-buffer nil
+  "Buffer for channel list.")
+(defvar riece-user-list-buffer nil
+  "Buffer for user list.")
+
 (defvar riece-channel-buffer nil
-  "Name of channel message buffer.")
-(defvar riece-channel-buffer-format "*Channel:%s*"
-  "Format of channel message buffer.")
-(defvar riece-channel-list-buffer "*Channels*"
-  "Name of channel list buffer.")
-(defvar riece-user-list-buffer " *Users*"
-  "Name of user list buffer.")
-(defvar riece-wallops-buffer " *WALLOPS*")
+  "Buffer for messages arrived in the current channel.")
 
 (defvar riece-buffer-list nil)
 (defvar riece-overriding-server-name nil)

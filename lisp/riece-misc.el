@@ -32,8 +32,14 @@
 (require 'riece-server)
 (require 'riece-user)
 
-(defun riece-get-buffer-create (name)
-  (let ((buffer (get-buffer-create name)))
+(defun riece-get-buffer-create (name &optional init-major-mode)
+  (let ((buffer (get-buffer name)))
+    (unless (and buffer
+		 (or (null init-major-mode)
+		     (eq (with-current-buffer buffer
+			   major-mode)
+			 init-major-mode)))
+      (setq buffer (generate-new-buffer name)))
     (unless (memq buffer riece-buffer-list)
       (setq riece-buffer-list (cons buffer riece-buffer-list)))
     buffer))
@@ -59,7 +65,7 @@
   (while buffers
     (run-hooks 'riece-before-insert-functions)
     (save-excursion
-      (set-buffer (riece-get-buffer-create (car buffers)))
+      (set-buffer (car buffers))
       (let ((inhibit-read-only t)
 	    buffer-read-only
 	    (start (goto-char (point-max))))

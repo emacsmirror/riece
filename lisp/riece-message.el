@@ -119,7 +119,7 @@
       (unless riece-current-channel
 	(riece-switch-to-channel target))
       (riece-redisplay-buffers))
-    (riece-channel-buffer-name target)))
+    (riece-channel-buffer target)))
 
 (defun riece-message-parent-buffers (message buffer)
   "Return the parents of BUFFER where MESSAGE should appear.

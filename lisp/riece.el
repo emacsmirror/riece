@@ -45,20 +45,18 @@
 
 (put 'riece-command-mode 'mode-class 'special)
 (put 'riece-dialogue-mode 'mode-class 'special)
+(put 'riece-others-mode 'derived-mode-parent 'riece-dialogue-mode)
 (put 'riece-channel-list-mode 'mode-class 'special)
 (put 'riece-user-list-mode 'mode-class 'special)
 (put 'riece-channel-mode 'derived-mode-parent 'riece-dialogue-mode)
-(put 'riece-others-mode 'derived-mode-parent 'riece-dialogue-mode)
 
-(defvar riece-buffer-mode-alist
-  '((riece-command-buffer . riece-command-mode)
-    (riece-dialogue-buffer . riece-dialogue-mode)
-    (riece-others-buffer . riece-others-mode)
-    (riece-user-list-buffer . riece-user-list-mode)
-    (riece-channel-list-buffer . riece-channel-list-mode)
-    (riece-private-buffer . riece-dialogue-mode)
-    (riece-wallops-buffer)))
-    
+(defvar riece-buffer-alist
+  '((riece-command-buffer "*Commands*" riece-command-mode)
+    (riece-dialogue-buffer "*Dialogue*" riece-dialogue-mode)
+    (riece-others-buffer "*Others*" riece-others-mode)
+    (riece-channel-list-buffer "*Channels*" riece-channel-list-mode)
+    (riece-user-list-buffer " *Users*" riece-user-list-mode)))
+
 (defvar riece-select-keys
   '("1" riece-command-switch-to-channel-by-number-1
     "2" riece-command-switch-to-channel-by-number-2
@@ -267,6 +265,7 @@ If optional argument CONFIRM is non-nil, ask which IRC server to connect."
   (setq riece-server nil
 	riece-current-channels nil
 	riece-current-channel nil
+	riece-channel-buffer-alist nil
 	riece-user-indicator nil
 	riece-long-channel-indicator "None"
 	riece-channel-list-indicator "No channel"
@@ -402,14 +401,15 @@ Instead, these commands are available:
   (run-hooks 'riece-user-list-mode-hook))
 
 (defun riece-create-buffers ()
-  (let ((alist riece-buffer-mode-alist))
+  (let ((alist riece-buffer-alist))
     (while alist
       (save-excursion
-	(set-buffer (riece-get-buffer-create
-		     (symbol-value (car (car alist)))))
-	(unless (or (null (cdr (car alist)))
-		    (eq major-mode (cdr (car alist))))
-	  (funcall (cdr (car alist))))
+	(set-buffer (apply #'riece-get-buffer-create
+			   (cdr (car alist))))
+	(set (car (car alist)) (current-buffer))
+	(unless (or (null (nth 2 (car alist)))
+		    (eq major-mode (nth 2 (car alist))))
+	  (funcall (nth 2 (car alist))))
 	(setq alist (cdr alist))))))
 
 (defun riece-load-and-build-addon-dependencies (addons)

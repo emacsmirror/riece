@@ -247,7 +247,7 @@
 	(riece-channel-set-topic (riece-get-channel channel) topic)
 	(let* ((channel-identity (riece-make-identity channel
 						      riece-server-name))
-	       (buffer (riece-channel-buffer-name channel-identity)))
+	       (buffer (riece-channel-buffer channel-identity)))
 	  (riece-insert-info buffer (concat visible " users, topic: "
 					    topic "\n"))
 	  (riece-insert-info
@@ -273,7 +273,7 @@
 	  (setq modes (cdr modes)))
 	(let* ((channel-identity (riece-make-identity channel
 						      riece-server-name))
-	       (buffer (riece-channel-buffer-name channel-identity)))
+	       (buffer (riece-channel-buffer channel-identity)))
 	  (riece-insert-info buffer (concat "Mode: " mode-string "\n"))
 	  (riece-insert-info
 	   (if (and riece-channel-buffer-mode
@@ -294,7 +294,7 @@
       (let* ((channel (match-string 1 string))
 	     (message (substring string (match-end 0)))
 	     (channel-identity (riece-make-identity channel riece-server-name))
-	     (buffer (riece-channel-buffer-name channel-identity)))
+	     (buffer (riece-channel-buffer channel-identity)))
 	(if remove
 	    (riece-channel-set-topic (riece-get-channel channel) nil)
 	  (riece-channel-set-topic (riece-get-channel channel) message)
@@ -323,7 +323,7 @@
       (let* ((channel (match-string 1 string))
 	     (user (substring string (match-end 0)))
 	     (channel-identity (riece-make-identity channel riece-server-name))
-	     (buffer (riece-channel-buffer-name channel-identity)))
+	     (buffer (riece-channel-buffer channel-identity)))
 	(riece-insert-info buffer (concat "Inviting " user "\n"))
 	(riece-insert-info
 	 (if (and riece-channel-buffer-mode
@@ -348,8 +348,8 @@
 	     (flag (match-string 8 string))
 	     (hops (match-string 9 string))
 	     (name (substring string (match-end 0)))
-	     (buffer (riece-channel-buffer-name
-		      (riece-make-identity channel riece-server-name)))
+	     (buffer (riece-channel-buffer (riece-make-identity
+					    channel riece-server-name)))
 	     (info (format "%10s = %s (%s) [%s, %s, %s hops, on %s]"
 			   (concat
 			    (if (memq flag '(?@ ?+))

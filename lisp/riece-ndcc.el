@@ -195,8 +195,8 @@ Only used for sending files."
 	    (port (string-to-number (match-string 3 message)))
 	    (size (string-to-number (match-string 4 message)))
 	    (buffer (if (riece-channel-p target)
-			(riece-channel-buffer-name
-			 (riece-make-identity target riece-server-name))))
+			(riece-channel-buffer (riece-make-identity
+					       target riece-server-name))))
 	    (user (riece-prefix-nickname prefix)))
 	(setq riece-ndcc-requests
 	      (cons (list user file address port size)

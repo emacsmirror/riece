@@ -69,7 +69,22 @@
       (if pointer
 	  (setcar pointer new-name))
       (setq channels (cdr channels)))
-    (riece-rename-user old-name new-name)))
+    (riece-rename-user old-name new-name))
+  ;; Rename the channel buffer.
+  (let* ((old-identity (riece-make-identity old-name riece-server-name))
+	 (new-identity (riece-make-identity new-name riece-server-name))
+	 (pointer (riece-identity-member old-identity riece-current-channels)))
+    (when pointer
+      (setcar pointer new-identity)
+      (with-current-buffer (riece-channel-buffer old-identity)
+	(rename-buffer (riece-channel-buffer-name new-identity) t)
+	(setq riece-channel-buffer-alist
+	      (cons (cons new-identity (current-buffer))
+		    (delq (riece-identity-assoc old-identity
+						riece-channel-buffer-alist)
+			  riece-channel-buffer-alist))))
+      (if (riece-identity-equal old-identity riece-current-channel)
+	  (riece-switch-to-channel new-identity)))))
 
 (provide 'riece-naming)
 
