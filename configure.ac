@@ -14,4 +14,5 @@ AM_CONDITIONAL(XEMACS, test ${EMACS_FLAVOR} = xemacs)
 
 AC_OUTPUT(Makefile \
 lisp/Makefile
+lisp/test/Makefile
 doc/Makefile)

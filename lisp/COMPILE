@@ -136,3 +136,19 @@
    (expand-file-name "riece"
 		     (expand-file-name "lisp" (car command-line-args-left)))
    (riece-install-just-print-p)))
+
+(defun riece-test ()
+  (require 'lunit)
+  (let ((load-path (cons (expand-file-name "test") (cons nil load-path)))
+	(files (directory-files "test" t "^test-.*\\.el$"))
+        (suite (lunit-make-test-suite)))
+    (while files
+      (when (file-regular-p (car files))
+	(load-file (car files))
+	(lunit-test-suite-add-test
+	 suite
+	 (lunit-make-test-suite-from-class
+	  (intern (file-name-sans-extension
+		   (file-name-nondirectory (car files)))))))
+      (setq files (cdr files)))
+    (lunit suite)))

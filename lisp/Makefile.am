@@ -1,3 +1,5 @@
+SUBDIRS = test
+
 EXTRA_DIST = COMPILE ChangeLog ChangeLog.Liece \
 	riece-000.el riece-200.el riece-300.el riece-400.el riece-500.el \
 	riece-addon.el riece-channel.el riece-coding.el riece-commands.el \
@@ -31,3 +33,6 @@ package:
 install-package: package
 	$(XEMACS) $(FLAGS) -l COMPILE -f riece-install-package \
 		$(PACKAGEDIR) # $(MAKE)
+
+check-local:
+	$(EMACS) $(FLAGS) -l COMPILE -f riece-test
