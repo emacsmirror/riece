@@ -1,5 +1,7 @@
 2003-08-25  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-options.el (riece-quit-timeout): Default to 10.
+
 	* riece.el (riece-dialogue-mode-map): Bind riece-command-change-layout.
 	(riece): Switch to riece-command-buffer before riece-redisplay-buffers.
 
