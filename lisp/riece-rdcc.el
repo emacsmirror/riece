@@ -124,9 +124,9 @@ puts(\"#{" address " >> 24 & 0xFF}.#{" address " >> 16 & 0xFF}.#{"
 	    "User: "
 	    (mapcar #'list (riece-get-users-on-server)))
 	   (expand-file-name (read-file-name "File: ")))))
-  (let ((process
-	 (start-process "DCC" (generate-new-buffer " *DCC*")
-			"ruby" "-rsocket")))
+  (let* ((process-connection-type nil)
+	 (process (start-process "DCC" (generate-new-buffer " *DCC*")
+				 "ruby" "-rsocket")))
     (process-send-string process
 			 (apply #'concat
 				(riece-rdcc-substitute-variables

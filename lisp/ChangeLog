@@ -1,5 +1,8 @@
 2003-08-24  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-rdcc.el (riece-command-dcc-send): Bind
+	process-connection-type to nil.
+
 	* riece-300.el (riece-handle-319-message): New handler.
 
 	* riece.el (riece-buffer-mode-alist): Add riece-command-buffer.
