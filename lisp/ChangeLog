@@ -1,3 +1,8 @@
+2004-02-16  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-300.el (riece-handle-353-message): Print user list in
+	channel buffer.
+
 2004-02-14  Yoichi NAKAYAMA  <yoichi@geiin.org>
 
 	* riece-lsdb.el (riece-lsdb-lookup-records): Build

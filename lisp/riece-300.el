@@ -238,6 +238,20 @@
 		   channel (substring (car users) 1) t))
 	      (riece-naming-assert-join (car users) channel)))
 	  (setq users (cdr users)))
+	(let* ((channel-identity (riece-make-identity channel
+						      riece-server-name))
+	       (buffer (riece-channel-buffer channel-identity)))
+	  (riece-insert-info buffer (concat "Users: " string "\n"))
+	  (riece-insert-info
+	   (if (and riece-channel-buffer-mode
+		    (not (eq buffer riece-channel-buffer)))
+	       (list riece-dialogue-buffer riece-others-buffer)
+	     riece-dialogue-buffer)
+	   (concat
+	    (riece-concat-server-name
+	     (format "Users on %s: %s"
+		     (riece-format-identity channel-identity t) string))
+	    "\n")))
 	(riece-redisplay-buffers))))
 
 (defun riece-handle-322-message (prefix number name string)
