@@ -199,9 +199,8 @@ This function is used as a callback for a channel button."
       (if (= start end)
 	  (throw 'done nil))
       ;; Search for the end of the button region.
-      (let* ((identity (get-text-property start 'riece-identity))
-	     (button-end (next-single-property-change start 'riece-identity
-						      nil end)))
+      (let ((button-end (next-single-property-change start 'riece-identity
+						     nil end)))
 	(if (= button-end end)
 	    (throw 'done nil))
 	(funcall function start button-end)
