@@ -52,9 +52,9 @@
   (let ((channel-list riece-startup-channel-list))
     (while channel-list
       (if (listp (car channel-list))
-	  (riece-command-join (car (car channel-list))
+	  (riece-command-join (riece-parse-identity (car (car channel-list)))
 			      (nth 1 (car channel-list)))
-	(riece-command-join (car channel-list)))
+	(riece-command-join (riece-parse-identity (car channel-list))))
       (setq channel-list (cdr channel-list))))
   (run-hooks 'riece-after-login-hook))
 
