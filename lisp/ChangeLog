@@ -1,6 +1,8 @@
 2005-03-12  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece.el (riece-buffer-alist): Init riece-debug-buffer.
+	(riece-submit-bug-report): Insert content of riece-debug-buffer.
+
 	* riece-globals.el (riece-debug-buffer): New variable.
 	* riece-filter.el (riece-sentinel): Use riece-debug.
 	* riece-display.el (riece-channel-buffer-name): Use riece-debug.

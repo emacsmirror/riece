@@ -623,6 +623,10 @@ are familiar with the debugger, to get a lisp back-trace.")
 			(buffer-substring (point) (point-max)))
 		    "(closed server)"))
 	  (setq pointer (cdr pointer))))
+      (insert "\n\nRecent debug messages:\n"
+	      "-----------------------------------\n"
+	      (with-current-buffer riece-debug-buffer
+		(buffer-string)))
       ;; Insert recent keystrokes.
       (insert "\n\nRecent keystrokes:\n"
 	      "-----------------\n\n")
