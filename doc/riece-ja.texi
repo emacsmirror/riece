@@ -525,6 +525,8 @@ doctor.el $B$HO"7H$7$F@:?@2J0e$K$J$j$9$^$9(B
 $B%A%c%s%M%kL>$d%K%C%/%M!<%`$NJLL>$rDj5A(B
 @item riece-skk-kakutei
 SKK $B;HMQ;~$KJQ49%b!<%I$N0u$rH/8@$+$i<h$j=|$/(B
+@item riece-foolproof
+$B%A%c%s%M%k%_%9$rKI$0(B
 @item riece-guess
 $B?'!9$JJ}K!$G0\F0@h$N%A%c%s%M%k$r?dB,(B
 @item riece-history
@@ -699,7 +701,7 @@ Emacs $B$N>l9g$O(B,$B0J2<$N@_Dj$r(B @file{~/.riece/init.el} $B$K2C$($k$3$H$
 relay.el $B$H(B connect.c $B$r;H$&$H!"(B
 HTTP $B%W%m%-%7$r2p$7$F(B IRC $B%5!<%P$K@\B3$9$k$3$H$,$G$-$^$9!#(B
 
-@table
+@table @asis
 @item relay.el
 @uref{http://www.imasy.or.jp/~gotoh/lisp/relay.el}
 
@@ -825,7 +827,7 @@ channel object $B4XO"$NDj5A(B
 user object $B4XO"$NDj5A(B 
 
 @item riece-signal
-$B%7%0%J%k(B(@xref{Signals})$B4IM}(B
+$B%7%0%J%k(B(@pxref{Signals})$B4IM}(B
 @item riece-misc
 $B;(B?$J4X?t$NDj5A(B($B%$%s%i%$%s4X?t$r=|$/(B) 
 @item riece-display
