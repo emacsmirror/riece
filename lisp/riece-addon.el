@@ -185,7 +185,7 @@
 	   (mapcar
 	    (lambda (name)
 	      (intern (file-name-sans-extension name)))
-	    (directory-files riece-addon-directory nil "\\`[^.]" t t)))))
+	    (directory-files riece-addon-directory nil "\\`[^.]" t)))))
 
 (defun riece-insinuate-addon (addon &optional verbose)
   (require addon)		;implicit dependency
