@@ -237,6 +237,15 @@ Local to the buffer in `riece-buffer-list'.")
 		    "\n")
 	    (setq users (cdr users)))))))
 
+(defun riece-format-identity-for-channel-list-buffer (index identity)
+  (or (run-hook-with-args-until-success
+       'riece-format-identity-for-channel-list-buffer-functions index identity)
+      (concat (format "%2d:%c" index
+		      (if (riece-identity-equal identity riece-current-channel)
+			  ?*
+			? ))
+	      (riece-format-identity identity))))
+
 (defun riece-update-channel-list-buffer ()
   (save-excursion
     (let ((inhibit-read-only t)
@@ -247,19 +256,11 @@ Local to the buffer in `riece-buffer-list'.")
       (riece-kill-all-overlays)
       (while channels
 	(if (car channels)
-	    (insert (riece-format-channel-list-line index (car channels))
+	    (insert (riece-format-identity-for-channel-list-buffer
+		     index (car channels))
 		    "\n"))
 	(setq index (1+ index)
 	      channels (cdr channels))))))
-
-(defun riece-format-channel-list-line (index channel)
-  (or (run-hook-with-args-until-success
-       'riece-format-channel-list-line-functions index channel)
-      (concat (format "%2d:%c" index
-		      (if (riece-identity-equal channel riece-current-channel)
-			  ?*
-			? ))
-	      (riece-format-identity channel))))
 
 (defun riece-update-channel-indicator ()
   (setq riece-channel-indicator
@@ -279,6 +280,12 @@ Local to the buffer in `riece-buffer-list'.")
 	      (riece-format-identity riece-current-channel))
 	  "None")))
 
+(defun riece-format-identity-for-channel-list-indicator (index identity)
+  (or (run-hook-with-args-until-success
+       'riece-format-identity-for-channel-list-indicator-functions
+       index identity)
+      (format "%d:%s" index (riece-format-identity identity))))
+
 (defun riece-update-channel-list-indicator ()
   (if (and riece-current-channels
 	   ;; There is at least one channel.
@@ -287,14 +294,16 @@ Local to the buffer in `riece-buffer-list'.")
 	(setq riece-channel-list-indicator
 	      (mapconcat
 	       #'identity
-	       (delq nil
-		     (mapcar
-		      (lambda (channel)
-			(prog1
-			    (if channel
-				(riece-format-channel-list-line index channel))
-			  (setq index (1+ index))))
-		      riece-current-channels))
+	       (delq
+		nil
+		(mapcar
+		 (lambda (channel)
+		   (prog1
+		       (if channel
+			   (riece-format-identity-for-channel-list-indicator
+			    index channel))
+		     (setq index (1+ index))))
+		 riece-current-channels))
 	       ",")))
     (setq riece-channel-list-indicator "No channel")))
 

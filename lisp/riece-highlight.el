@@ -233,6 +233,15 @@
   (setq font-lock-mode-hook nil)
   (turn-on-font-lock))
 
+(defun riece-highlight-format-identity-for-channel-list-indicator (index
+								   identity)
+  (if (riece-identity-equal identity riece-current-channel)
+      (let ((string (riece-format-identity identity)))
+	(put-text-property 0 (length string)
+			   'face 'riece-channel-list-current-face
+			   string)
+	(concat (format "%d:" index) string))))
+
 (defun riece-highlight-insinuate ()
   (put 'riece-channel-mode 'font-lock-defaults
        '(riece-dialogue-font-lock-keywords t))
@@ -245,7 +254,9 @@
   (put 'riece-channel-list-mode 'font-lock-defaults
        '(riece-channel-list-font-lock-keywords t))
   (add-hook 'riece-after-load-startup-hook
-	    'riece-channel-list-schedule-turn-on-font-lock))
+	    'riece-channel-list-schedule-turn-on-font-lock)
+  (add-hook 'riece-format-identity-for-channel-list-indicator-functions
+	    'riece-highlight-format-identity-for-channel-list-indicator))
 
 (provide 'riece-highlight)
 

@@ -76,10 +76,18 @@
 	(delete riece-current-channel
 		riece-unread-channels)))
 
-(defun riece-unread-format-channel-list-line (index channel)
-  (if (riece-identity-member channel riece-unread-channels)
+(defun riece-unread-format-identity-for-channel-list-buffer (index identity)
+  (if (riece-identity-member identity riece-unread-channels)
       (concat (format "%2d:!" index)
-	      (riece-format-identity channel))))
+	      (riece-format-identity identity))))
+
+(defun riece-unread-format-identity-for-channel-list-indicator (index identity)
+  (if (riece-identity-member identity riece-unread-channels)
+      (let ((string (riece-format-identity identity)))
+	(put-text-property 0 (length string)
+			   'face 'riece-channel-list-unread-face
+			   string)
+	(concat (format "%d:" index) string))))
 
 (defun riece-unread-switch-to-channel ()
   (interactive)
@@ -112,8 +120,10 @@
 	    'riece-unread-after-display-message-function)
   (add-hook 'riece-after-switch-to-channel-functions
 	    'riece-unread-after-switch-to-channel-function)
-  (add-hook 'riece-format-channel-list-line-functions
-	    'riece-unread-format-channel-list-line)
+  (add-hook 'riece-format-identity-for-channel-list-buffer-functions
+	    'riece-unread-format-identity-for-channel-list-buffer)
+  (add-hook 'riece-format-identity-for-channel-list-indicator-functions
+	    'riece-unread-format-identity-for-channel-list-indicator)
   (define-key riece-command-mode-map
     "\C-c\C-u" 'riece-unread-switch-to-channel)
   (define-key riece-dialogue-mode-map

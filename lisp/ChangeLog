@@ -1,5 +1,31 @@
 2004-03-07  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-unread.el
+	(riece-unread-format-identity-for-channel-list-indicator): New
+	function.
+	(riece-unread-insinuate): Setup
+	riece-format-identity-for-channel-list-indicator-functions.
+
+	* riece-history.el
+	(riece-history-format-identity-for-channel-list-buffer): New
+	function.
+	(riece-history-insinuate): Setup
+	riece-format-identity-for-channel-list-indicator-functions.
+
+	* riece-highlight.el
+	(riece-highlight-format-identity-for-channel-list-indicator): New
+	function.
+	(riece-highlight-insinuate): Setup
+	riece-format-identity-for-channel-list-indicator-functions.
+
+	* riece-display.el
+	(riece-format-identity-for-channel-list-buffer): Rename from
+	riece-format-channel-list-line.
+	(riece-format-identity-for-channel-list-indicator): New function.
+	(riece-update-channel-list-indicator): Use it.
+
+2004-03-07  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-handle.el (riece-parse-modes): Make sure that mode params
 	are started at the beginning of the mode string.
 	(riece-handle-channel-modes): Fixed arguments passed to
