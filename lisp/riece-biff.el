@@ -81,7 +81,8 @@
   (add-hook 'riece-after-display-message-functions
 	    'riece-biff-after-display-message-function)
   (add-hook 'riece-redisplay-buffers-hook 'riece-biff-clear)
-  (add-hook 'riece-after-switch-to-channel-functions 'riece-biff-clear))
+  (add-hook 'riece-after-switch-to-channel-functions 'riece-biff-clear)
+  (add-hook 'riece-exit-hook 'riece-biff-disable))
 
 (defun riece-biff-enable ()
   (setq global-mode-string

@@ -1,3 +1,8 @@
+2004-05-28  OHASHI Akira  <bg66@koka-in.org>
+
+	* riece-biff.el (riece-biff-insinuate): Add riece-biff-disable to
+	riece-exit-hook.
+
 2004-05-28  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-message.el (riece-message-set-speaker): New function.
