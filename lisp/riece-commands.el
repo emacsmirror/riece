@@ -660,7 +660,7 @@ If prefix argument ARG is non-nil, toggle frozen status."
 	      (display-completion-list all))
 	  (delete-region (point) (- (point) (length current)))
 	  (insert completion))))))
-  
+
 (defun riece-command-open-server (server-name)
   (interactive
    (list (completing-read "Open server: " riece-server-alist)))

@@ -80,7 +80,7 @@
   "Where to look for add-on files."
   :type 'directory
   :group 'riece-options)
-  
+
 (defcustom riece-variables-file
   (expand-file-name "init" riece-directory)
   "Where to look for variables."
@@ -159,7 +159,7 @@ way is to put Riece variables on .emacs or file loaded from there."
 	 (args (list spec)))
     (widget-put widget :args args)
     widget))
-  
+
 (defcustom riece-server-alist nil
   "An alist mapping server names to plist."
   :type 'riece-server-spec

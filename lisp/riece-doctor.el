@@ -93,13 +93,13 @@
 		(doctor-mode))
 	      (setq riece-doctor-patients (cons user riece-doctor-patients))
 	      (riece-doctor-reply
-	       (car targets)	   
+	       (car targets)
 	       (format
 		"%s: I am the psychotherapist.  \
 Please, describe your problems."
 		user)))
 	  (if (string-match riece-doctor-bye-regexp message)
-	      (let ((pointer (riece-identity-member user 
+	      (let ((pointer (riece-identity-member user
 						    riece-doctor-patients t)))
 		(when pointer
 		  (kill-buffer (riece-doctor-buffer-name user))

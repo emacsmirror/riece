@@ -55,7 +55,7 @@
 ;;; stolen (and renamed) from crm.el.
 (defvar riece-completing-read-multiple-separator ",")
 (defvar riece-completing-read-multiple-table nil)
-  
+
 (defun riece-completing-read-multiple-1 (string predicate flag)
   "Function used by `riece-completing-read-multiple'.
 The value of STRING is the string to be completed.

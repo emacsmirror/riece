@@ -110,7 +110,7 @@ merge the results."
   (define-key riece-channel-list-mode-map
     "g" nil)
   (setq riece-guess-enabled nil))
-  
+
 (provide 'riece-guess)
 
 ;;; riece-guess.el ends here

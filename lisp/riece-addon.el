@@ -219,7 +219,7 @@ All normal editing commands are turned off."
   (kill-all-local-variables)
   (buffer-disable-undo)
   (setq major-mode 'riece-addon-list-mode
-        mode-name "AddOns"
+	mode-name "AddOns"
 	mode-line-buffer-identification
 	(riece-mode-line-buffer-identification '("Riece: %12b"))
 	truncate-lines t
@@ -344,7 +344,7 @@ Useful keys:
 	    (delete-char 1)
 	    (insert "-")
 	    (put-text-property point (point) 'riece-addon addon))))))
-    
+
 (provide 'riece-addon)
 
 ;;; riece-addon.el ends here

@@ -40,7 +40,7 @@
 (defvar riece-update-buffer-functions nil
   "Functions to redisplay the buffer.
 Local to the buffer in `riece-buffer-list'.")
-  
+
 (defvar riece-update-indicator-functions
   '(riece-update-status-indicators
     riece-update-channel-indicator

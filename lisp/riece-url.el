@@ -74,7 +74,7 @@
   (mapcar (lambda (url)
 	    (vector url (list 'browse-url url)))
 	  riece-urls))
-	    
+
 (defvar riece-dialogue-mode-map)
 
 (defun riece-url-requires ()
@@ -100,7 +100,7 @@
 (defun riece-url-disable ()
   (define-key riece-dialogue-mode-map "U" nil)
   (setq riece-url-enabled nil))
-  
+
 (provide 'riece-url)
 
 ;;; riece-url.el ends here

@@ -72,7 +72,7 @@ happen unconditionally."
       (if (or force
 	      (riece-reconfigure-windows-predicate))
 	  (apply (car layout) (cdr layout))))))
-  
+
 (defun riece-set-window-points ()
   (if (get-buffer-window riece-user-list-buffer)
       (with-current-buffer riece-user-list-buffer

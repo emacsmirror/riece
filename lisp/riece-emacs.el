@@ -79,8 +79,8 @@
 (defun riece-kill-all-overlays ()
   "Delete all overlays in the current buffer."
   (let* ((overlay-lists (overlay-lists))
-         (buffer-read-only nil)
-         (overlays (delq nil (nconc (car overlay-lists) (cdr overlay-lists)))))
+	 (buffer-read-only nil)
+	 (overlays (delq nil (nconc (car overlay-lists) (cdr overlay-lists)))))
     (while overlays
       (delete-overlay (car overlays))
       (setq overlays (cdr overlays)))))

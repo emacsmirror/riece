@@ -385,7 +385,7 @@ For a list of the generic commands type \\[riece-command-generic] ? RET.
      "^[]{}'`"))
 
   (run-hooks 'riece-command-mode-hook))
-  
+
 (defun riece-dialogue-mode ()
   "Major mode for displaying the IRC dialogue.
 All normal editing commands are turned off.
@@ -441,7 +441,7 @@ All normal editing commands are turned off."
   (kill-all-local-variables)
   (buffer-disable-undo)
   (setq major-mode 'riece-channel-list-mode
-        mode-name "Channels"
+	mode-name "Channels"
 	mode-line-buffer-identification
 	(riece-mode-line-buffer-identification '("Riece: "))
 	truncate-lines t
@@ -460,7 +460,7 @@ Instead, these commands are available:
   (kill-all-local-variables)
   (buffer-disable-undo)
   (setq major-mode 'riece-user-list-mode
-        mode-name "Users"
+	mode-name "Users"
 	mode-line-buffer-identification
 	(riece-mode-line-buffer-identification
 	 '("Riece: " riece-long-channel-indicator " "))
@@ -485,7 +485,7 @@ Instead, these commands are available:
 		    (eq major-mode (nth 2 (car alist))))
 	  (funcall (nth 2 (car alist))))
 	(setq alist (cdr alist))))))
-      
+
 (provide 'riece)
 
 ;;; riece.el ends here

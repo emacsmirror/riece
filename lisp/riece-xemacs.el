@@ -82,8 +82,8 @@
 (defun riece-kill-all-overlays ()
   "Delete all extents in the current buffer."
   (map-extents (lambda (extent ignore)
-                 (delete-extent extent)
-                 nil)))
+		 (delete-extent extent)
+		 nil)))
 
 ;;; stolen (and renamed) from nnheaderxm.el.
 (defun riece-xemacs-generate-timer-name (&optional prefix)

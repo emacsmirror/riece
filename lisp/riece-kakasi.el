@@ -48,7 +48,7 @@
       (accept-process-output riece-kakasi-process))
     (prog1 (buffer-substring (point-min) (1- (point)))
       (delete-region (point-min) (point)))))
-  
+
 (defun riece-kakasi-message-filter (message)
   (if riece-kakasi-enabled
       (riece-message-set-text message

@@ -31,7 +31,7 @@
   :tag "Coding"
   :prefix "riece-"
   :group 'riece)
-  
+
 (defcustom riece-default-coding-system
   (if (featurep 'mule)
       (cons 'ctext 'iso-2022-jp-2))
