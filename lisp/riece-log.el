@@ -125,10 +125,9 @@ If integer, flash back only this line numbers. t means all lines."
   (let ((prefix (riece-identity-canonicalize-prefix
 		 (riece-identity-prefix identity)))
 	(server (riece-identity-server identity))
-	(map (assoc (riece-format-identity identity) riece-log-directory-map))
-	name)
+	(map (assoc (riece-format-identity identity) riece-log-directory-map)))
     (if map
-	(setq name (cdr map))
+	(expand-file-name (cdr map) riece-log-directory)
       (expand-file-name (riece-log-encode-file-name prefix)
 			(expand-file-name
 			 (concat "." (riece-log-encode-file-name server))

@@ -1,5 +1,8 @@
 2004-12-08  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-log.el (riece-log-get-directory): Fixed bug in
+	riece-log-directory-map handling.
+
 	* test/test-riece-log.el
 	(test-riece-log-display-message-function): New test case.
 
