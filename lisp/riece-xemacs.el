@@ -100,7 +100,7 @@
      name
      `(lambda ()
 	(,function ,@args))
-     (or time (current-time)) repeat)
+     time repeat)
     name))
 
 (defun riece-run-with-idle-timer (time repeat function &rest args)

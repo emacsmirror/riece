@@ -2,8 +2,6 @@
 
 	* riece-toolbar.el (riece-toolbar-items): Add riece-submit-bug-report.
 
-	* riece-xemacs.el (riece-run-at-time): Accept nil as the current-time.
-
 	* riece-compat.el (riece-read-passwd): Changed default value.
 
 	* riece-400.el (riece-handle-475-message): Don't bind inhibit-quit
