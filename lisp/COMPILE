@@ -66,7 +66,8 @@
 		riece-xface
 		riece-ctlseq
 		riece-ignore
-		riece-hangman))))
+		riece-hangman
+		riece-biff))))
 
 (defun riece-compile-modules (modules)
   (let ((load-path (cons nil load-path)))

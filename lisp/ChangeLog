@@ -1,3 +1,9 @@
+2004-05-27  OHASHI Akira  <bg66@koka-in.org>
+
+	* riece-biff.el: New add-on.
+	* COMPILE (riece-modules): Add riece-biff.
+	* Makefile.am (EXTRA_DIST): Add riece-biff.el.
+
 2004-05-26  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece.el (riece-exit): Don't disable addons.
