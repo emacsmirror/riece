@@ -243,10 +243,10 @@ Riece $B$O@_Dj%U%!%$%k$rJQ?t(B @code{riece-directory} $B$G;X<($5$l$k%G%#%l%/%
 $B<+J,$N8=:_$N>uBV$r<($90u$,I=<($5$l$^$9!#(B
 
 @example
-Riece: --%*-{---} ueno #Liece [n]
+Riece: --- ueno #Liece [n]
 @end example
 
-$B$3$3$G!"(B@samp{@{@}}$B$NCf$O:8$+$i=g$K0J2<$N0UL#$,$"$j$^$9!#(B
+$B$3$3$G!"(B@samp{---} $B$NItJ,$K$O:8$+$i=g$K0J2<$N0UL#$,$"$j$^$9!#(B
 
 @enumerate
 @item

@@ -295,11 +295,10 @@ For a list of the generic commands type \\[riece-command-generic] ? RET.
 	mode-line-buffer-identification
 	(riece-mode-line-buffer-identification
 	 '("Riece: "
-	   "{"
 	   riece-away-indicator
 	   riece-operator-indicator
 	   riece-freeze-indicator
-	   "} "
+	   " "
 	   riece-user-indicator
 	   " "
 	   riece-channel-indicator)))
@@ -334,11 +333,10 @@ Instead, these commands are available:
 	mode-line-buffer-identification
 	(riece-mode-line-buffer-identification
 	 '("Riece: "
-	   "{"
 	   riece-away-indicator
 	   riece-operator-indicator
 	   riece-freeze-indicator
-	   "} "
+	   " "
 	   riece-channel-list-indicator " "))
 	buffer-read-only t
 	tab-stop-list riece-tab-stop-list)
@@ -364,12 +362,9 @@ Instead, these commands are available:
   (setq mode-line-buffer-identification
 	(riece-mode-line-buffer-identification
 	 '("Riece: "
-	   "{"
 	   riece-away-indicator
 	   riece-operator-indicator
 	   riece-freeze-indicator
-	   "} "
-	   riece-user-indicator
 	   " "
 	   riece-channel-indicator))))
 
