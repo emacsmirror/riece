@@ -106,7 +106,8 @@ way is to put Riece variables on .emacs or file loaded from there."
 			  riece-unread
 			  riece-history
 			  riece-url
-			  riece-button)
+			  riece-button
+			  riece-menu)
   "Add-ons insinuated into Riece."
   :type '(repeat symbol)
   :group 'riece-options)

@@ -30,6 +30,7 @@
 ;;; Code:
 
 (require 'riece-options)
+(require 'riece-menu)			;riece-menu-items
 
 (defvar browse-url-browser-function)
 
@@ -63,15 +64,29 @@
    (list (completing-read "Open URL: " (mapcar #'list riece-urls))))
   (browse-url url))
 
+(defun riece-url-create-menu (menu)
+  (mapcar (lambda (url)
+	    (vector url (list 'browse-url url)))
+	  riece-urls))
+	    
 (defvar riece-dialogue-mode-map)
 
 (defun riece-url-requires ()
-  (if (memq 'riece-highlight riece-addons)
-      '(riece-highlight)))
+  (append (if (memq 'riece-highlight riece-addons)
+	      '(riece-highlight))
+	  (if (memq 'riece-menu riece-addons)
+	      '(riece-menu))))
 
 (defun riece-url-insinuate ()
   (add-hook 'riece-after-insert-functions 'riece-url-scan-region)
-  (define-key riece-dialogue-mode-map "U" 'riece-command-browse-url))
+  (define-key riece-dialogue-mode-map "U" 'riece-command-browse-url)
+  (if (memq 'riece-menu riece-addons)
+      (add-hook 'riece-command-mode-hook
+		(lambda ()
+		  (easy-menu-add-item
+		   nil (list (car riece-menu-items))
+		   '("Open URL..." :filter riece-url-create-menu)))
+		t)))
 
 (provide 'riece-url)
 

@@ -1,5 +1,20 @@
 2003-10-19  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-server.el (riece-server-process-opened): New function.
+	(riece-server-opened): Use it.
+
+	* riece-url.el: Require 'riece-menu.
+	(riece-url-insinuate): Add "Open URL..." menu in
+	riece-command-mode-hook.
+
+	* riece-options.el (riece-addons): Add riece-menu.
+
+	* riece-menu.el: New add-on.
+	* COMPILE (riece-modules): Add riece-menu.
+	* Makefile.am (EXTRA_DIST): Add riece-menu.el
+
+2003-10-19  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-version.el (riece-extended-version): Remove interactive spec.
 	(riece-version): New command.
 	* riece.el (riece-command-map): Bind "V" to riece-version.

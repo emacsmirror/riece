@@ -54,7 +54,8 @@
 		riece-guess
 		riece-history
 		riece-button
-		riece-keyword))))
+		riece-keyword
+		riece-menu))))
 
 (defun riece-compile-modules (modules)
   (let ((load-path (cons nil load-path)))

@@ -202,13 +202,20 @@ the `riece-server-keyword-map' variable."
 	(delq (rassq process riece-server-process-alist)
 	      riece-server-process-alist)))
 
+(defun riece-server-process-opened (process)
+  (memq (process-status process) '(open run)))
+
 (defun riece-server-opened (&optional server-name)
-  (let ((alist riece-server-process-alist))
-    (catch 'found
-      (while alist
-	(if (memq (process-status (cdr (car alist))) '(open run))
-	    (throw 'found t))
-	(setq alist (cdr alist))))))
+  (if server-name
+      (let ((process (riece-server-process server-name)))
+	(and process
+	     (riece-server-process-opened process)))
+    (let ((alist riece-server-process-alist))
+      (catch 'found
+	(while alist
+	  (if (riece-server-process-opened (cdr (car alist)))
+	      (throw 'found t))
+	  (setq alist (cdr alist)))))))
 
 (eval-when-compile
   (autoload 'riece-exit "riece"))
