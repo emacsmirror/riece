@@ -6,7 +6,8 @@ EXTRA_DIST = COMPILE ChangeLog ChangeLog.Liece \
 	riece-inlines.el riece-message.el riece-misc.el riece-naming.el \
 	riece-options.el riece-server.el riece-user.el riece-version.el \
 	riece-xemacs.el riece.el \
-	riece-ctcp.el riece-url.el riece-unread.el riece-ndcc.el
+	riece-ctcp.el riece-url.el riece-unread.el \
+	riece-ndcc.el riece-rdcc.el
 
 CLEANFILES = auto-autoloads.el custom-load.el *.elc
 FLAGS ?= -batch -q -no-site-file

@@ -1,7 +1,11 @@
 2003-06-01  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-rdcc.el: New add-on.
+	* Makefile.am (EXTRA_DIST): Add riece-rdcc.el
+
+2003-06-01  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-ndcc.el: New add-on.
-	* COMPILE (riece-modules): Add riece-ndcc
 	* Makefile.am (EXTRA_DIST): Add riece-ndcc.el
 
 2003-05-31  Daiki Ueno  <ueno@unixuser.org>
