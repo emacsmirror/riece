@@ -486,48 +486,50 @@ the layout to the selected layout-name."
 (defun riece-command-scroll-down (lines)
   "Scroll LINES down dialogue buffer from command buffer."
   (interactive "P")
-  (let ((other-window-scroll-buffer
-	 (if riece-channel-buffer-mode
-	     riece-channel-buffer
-	   riece-dialogue-buffer)))
-    (when (get-buffer-window other-window-scroll-buffer)
-      (condition-case nil
-	  (scroll-other-window-down lines)
-	(beginning-of-buffer
-	 (message "Beginning of buffer"))))))
+  (let ((buffer (if (and riece-channel-buffer-mode
+			 riece-current-channel)
+		    riece-channel-buffer
+		  riece-dialogue-buffer)))
+    (if (get-buffer-window buffer)
+	(condition-case nil
+	    (let ((other-window-scroll-buffer buffer))
+	      (scroll-other-window-down lines))
+	  (beginning-of-buffer
+	   (message "Beginning of buffer"))))))
 
 (defun riece-command-scroll-up (lines)
   "Scroll LINES up dialogue buffer from command buffer."
   (interactive "P")
-  (let* ((other-window-scroll-buffer
-	  (if riece-channel-buffer-mode
-	      riece-channel-buffer
-	    riece-dialogue-buffer)))
-    (when (get-buffer-window other-window-scroll-buffer)
-      (condition-case nil
-	  (scroll-other-window lines)
-	(end-of-buffer
-	 (message "End of buffer"))))))
+  (let ((buffer (if (and riece-channel-buffer-mode
+			 riece-current-channel)
+		    riece-channel-buffer
+		  riece-dialogue-buffer)))
+    (if (get-buffer-window buffer)
+	(condition-case nil
+	    (let ((other-window-scroll-buffer buffer))
+	      (scroll-other-window lines))
+	  (end-of-buffer
+	   (message "End of buffer"))))))
 
-(defun riece-command-nick-scroll-down (lines)
-  "Scroll LINES down nick buffer from command buffer."
+(defun riece-command-user-list-scroll-down (lines)
+  "Scroll LINES down user list buffer from command buffer."
   (interactive "P")
-  (let ((other-window-scroll-buffer riece-user-list-buffer))
-    (when (get-buffer-window other-window-scroll-buffer)
+  (if (get-buffer-window riece-user-list-buffer)
       (condition-case nil
-	  (scroll-other-window-down lines)
+	  (let ((other-window-scroll-buffer riece-user-list-buffer))
+	    (scroll-other-window-down lines))
 	(beginning-of-buffer
-	 (message "Beginning of buffer"))))))
+	 (message "Beginning of buffer")))))
 
-(defun riece-command-nick-scroll-up (lines)
-  "Scroll LINES up nick buffer from command buffer."
+(defun riece-command-user-list-scroll-up (lines)
+  "Scroll LINES up user list buffer from command buffer."
   (interactive "P")
-  (let* ((other-window-scroll-buffer riece-user-list-buffer))
-    (when (get-buffer-window other-window-scroll-buffer)
+  (if (get-buffer-window riece-user-list-buffer)
       (condition-case nil
-	  (scroll-other-window lines)
+	  (let ((other-window-scroll-buffer riece-user-list-buffer))
+	    (scroll-other-window lines))
 	(end-of-buffer
-	 (message "End of buffer"))))))
+	 (message "End of buffer")))))
 
 (defun riece-command-toggle-away (&optional message)
   "Mark yourself as being away."

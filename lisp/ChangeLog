@@ -1,3 +1,12 @@
+2003-10-26  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-commands.el (riece-command-user-list-scroll-down): Rename
+	from riece-command-nick-scroll-down.
+	(riece-command-user-list-scroll-up): Rename from
+	riece-command-nick-scroll-up.
+	(riece-command-scroll-down): Check if riece-current-channel is bound.
+	(riece-command-scroll-up): Ditto.
+
 2003-10-25  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-rdcc.el: Bind temporary-file-directory.

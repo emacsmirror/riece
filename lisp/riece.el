@@ -206,10 +206,10 @@ If optional argument SAFE is nil, overwrite previous definitions."
     "o" riece-command-set-operators
     "v" riece-command-set-voices
     "f" riece-command-finger
-    " " riece-command-nick-scroll-up
-    "\177" riece-command-nick-scroll-down
-    [delete] riece-command-nick-scroll-down
-    [backspace] riece-command-nick-scroll-down
+    " " riece-command-user-list-scroll-up
+    "\177" riece-command-user-list-scroll-down
+    [delete] riece-command-user-list-scroll-down
+    [backspace] riece-command-user-list-scroll-down
     "c" riece-command-select-command-buffer)
 
   (riece-define-keys riece-channel-list-mode-map
