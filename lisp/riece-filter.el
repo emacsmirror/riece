@@ -128,17 +128,15 @@
   (autoload 'riece-exit "riece"))
 (defun riece-sentinel (process status)
   (if riece-reconnect-with-password
-      (unwind-protect
-	  (let ((server-name
-		 (with-current-buffer (process-buffer process)
-		   riece-server-name)))
-	    (riece-close-server-process process)
-	    (riece-open-server
-	     (if (equal server-name "")
-		 riece-server
-	       (riece-server-name-to-server server-name))
-	     server-name))
-	(setq riece-reconnect-with-password nil))
+      (let ((server-name
+	     (with-current-buffer (process-buffer process)
+	       riece-server-name)))
+	(riece-close-server-process process)
+	(riece-open-server
+	 (if (equal server-name "")
+	     riece-server
+	   (riece-server-name-to-server server-name))
+	 server-name))
     (let ((server-name (with-current-buffer (process-buffer process)
 			 riece-server-name)))
       (if riece-debug

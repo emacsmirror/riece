@@ -148,13 +148,13 @@ the `riece-server-keyword-map' variable."
       (if (equal server-name "")
 	  (message "Logging in to IRC server...")
 	(message "Logging in to %s..." server-name))
-      (if (or password
-	      riece-reconnect-with-password)
+      (if riece-reconnect-with-password	;password incorrect or not set.
+	  (unwind-protect
+	      (setq password (riece-read-passwd "Password: "))
+	    (setq riece-reconnect-with-password nil)))
+      (if password
 	  (riece-process-send-string process
-				     (format "PASS %s\r\n"
-					     (or password
-						 (riece-read-passwd
-						  "Password: ")))))
+				     (format "PASS %s\r\n" password)))
       (riece-process-send-string process
 				 (format "USER %s * * :%s\r\n"
 					 (user-real-login-name)

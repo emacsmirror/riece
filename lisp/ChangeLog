@@ -1,3 +1,10 @@
+2003-10-05  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-filter.el (riece-sentinel): Don't clear
+	riece-reconnect-with-password.
+	* riece-server.el (riece-open-server): Clear
+	riece-reconnect-with-password here.
+
 2003-10-04  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-globals.el (riece-join-channel-candidate): New variable.
