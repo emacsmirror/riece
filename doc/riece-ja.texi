@@ -545,12 +545,20 @@ PING に応答する local proxy 経由で IRC サーバに接続
 ユーザリストバッファにユーザの X-Face を表示
 @item riece-ctlseq
 コントロールシーケンス (^B など) による強調表示
+@item riece-ignore
+指定したユーザの発言を無視
+@item reice-hangman
+チャンネル内で hangman(6) で遊ぶ
+@item riece-biff
+他のバッファにいる時に発言があるとモードラインに印 ("[R]") を表示
+@item riece-kakasi
+日本語の通らない端末で、日本語をローマ字で表示
 @end table
 
 これらのうち、@samp{riece-highlight} と @samp{riece-ctcp}、
 @samp{riece-url}、 @samp{riece-unread}、 @samp{riece-guess}、
-@samp{riece-history}、 @samp{riece-button}、@samp{riece-menu} はデフォル
-トで組み込まれています。
+@samp{riece-history}、 @samp{riece-button}、@samp{riece-menu}、
+@samp{riece-ignore} はデフォルトで組み込まれています。
 
 アドオンを組み込むには @code{riece-addons} を設定します。たとえば 
 @samp{riece-alias} を組み込む場合には、@file{~/.riece/init.el} に以下のよ
