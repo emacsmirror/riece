@@ -1,6 +1,8 @@
-2005-02-05  Daiki Ueno  <ueno@unixuser.org>
+2005-02-06  Daiki Ueno  <ueno@unixuser.org>
 
-	* riece-misc.el (riece-insert): Force redisplay for GNU Emacs.
+	* riece-filter.el (riece-filter): Modified regexp.
+
+2005-02-05  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece.el (riece-exit): Clear riece-window-configuration frame
 	parameter.
