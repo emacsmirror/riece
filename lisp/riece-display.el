@@ -125,11 +125,13 @@ Local to the buffer in `riece-buffer-list'.")
 		 (riece-identity-server riece-current-channel))
 	  (riece-with-server-buffer (riece-identity-server
 				     riece-current-channel)
-	    (riece-identity-assoc
-	     (riece-identity-prefix (nth 1 (riece-signal-args signal)))
-	     (riece-channel-get-users (riece-identity-prefix
-				       riece-current-channel))
-	     t)))))
+	    (when (riece-channel-p (riece-identity-prefix
+				    riece-current-channel))
+	      (riece-identity-assoc
+	       (riece-identity-prefix (nth 1 (riece-signal-args signal)))
+	       (riece-channel-get-users (riece-identity-prefix
+					 riece-current-channel))
+	       t))))))
   (riece-connect-signal
    'user-renamed
    (lambda (signal handback)
