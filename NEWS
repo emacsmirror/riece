@@ -1,0 +1,420 @@
+* Major changes in 1.0.6
+
+** Bundle url-riece, a backend of url-irc which comes with the recent
+   GNU Emacs. (Yamato-san)
+
+** New user option riece-url-regexp-alist to allow users to define
+   mapping from arbitrary strings (such as "Bug#12345") to URL. (This
+   feature is a backport from Liece) (ueno)
+
+** New modeline indicator which represents user's channel operator
+   status in the current channel. (ueno, thanks to k-to)
+
+** Remove multiple lines at a time when shrinking channel buffers.
+   Number of lines to be removed is controlled by
+   riece-shrink-buffer-remove-lines option. (ueno, thanks to ysjj)
+
+** riece-alias-alist now works again. (ueno)
+
+** Fixed a bug in flow control for sending long messages, introduced
+   in 1.0.4. (ueno)
+
+** New command riece-submit-bug-report to generate a template for good
+   problem report. (ueno)
+
+** Accept radical IRC proxy programs which break with tradition of the
+   original IRC server implementation. (ueno, thanks to k-to san)
+
+** New key bind C-c # <number> to switch channel by number. (ueno,
+   thanks to ysjj)
+
+** If a prefix-argument is given, riece-yank sends message as a NOTICE. (bg66)
+
+* Major changes in 1.0.5
+
+** Added some test cases. (ueno)
+
+** Alternate separator string for channel names. (ueno)
+   In case riece-alias-alternate-separator set to "@", rewriting will
+   be done as follows:
+
+   "#riece" -> "#riece"
+   "#riece localhost" -> "#riece@localhost"
+   "#ch@nnel" -> "#ch@@nnel"
+   "#ch@nnel localhost" -> "#ch@@nnel@localhost"
+
+** Fixed interop bug in DCC. (ueno)
+
+** New add-on riece-yank to send strings from kill-ring. (by Yamato-san)
+
+** English translation of texinfo document is included. (ueno)
+
+* Major changes in 1.0.4
+
+** Do "flow control" to avoid flooding. (ueno)
+
+** Automatically open servers when joining channels at startup.  Users
+   can now omit riece-startup-server-list settings. (ueno)
+
+** riece-mini provides a command to browse recent messages. (bg66)
+
+* Major changes in 1.0.3
+
+NOTE: This release includes some fixes to long standing bugs in essential features.  I recommend to upgrade from the older versions.
+
+** Remove nonexistent users from user list.  (Thanks to Yamashita-san)
+
+** Improved line truncation customizability.  Users can now control it
+   by simply setting truncate-lines on each buffer.  (Thanks to
+   Yamashita-san)
+
+** Added new user option riece-window-center-line to control buffer
+   scrolling behavior.
+
+** Fixed completion bug in command buffer.  (Thanks to Yamashita-san)
+
+** Remove chat partner from channel list when he/she resigned from
+   IRC.  (Thanks to Morimoto-san)
+
+** Exit immediately after an error occurred in connecting to the
+   default IRC server.  (Thanks to k-to san)
+
+* Major changes in 1.0.2
+
+** Fixed problem hiding menubar menus when riece-url is enabled.
+
+** Split IRC protocol interface from the core modules.
+
+** Fixed minor bugs.
+
+* Major changes in 1.0.1
+
+** Arranged background colors of modeline faces (for XEmacs)
+
+** When changing channel modes, do not prepend ":" to MODE message
+   (Thanks to Yamada-san)
+
+** Added riece-foolproof add-on which prevents miss posting to
+   channels (by Takahashi-san)
+
+** Arranged the order of modeline elements on channel buffers (by
+   Takahashi-san)
+
+** Changed open/close bracket for displaying own notices (by Takahashi-san)
+
+**  Don't register signal-slot functions duplicatedly.
+
+** New user command riece-command-beginning-of-buffer bound to C-c Home.
+
+** For frozen channels, preserve cursor position of channel buffers
+   while zapping between other channels.
+
+** Follow the change in emacs-cvs, check the return value of
+   current-word (by Nakayama-san)
+
+** Fixed random number generation logic for riece-hangman (by Takahashi-san)
+
+** Signal "No text to send" error if user types C-c p on an empty line.
+
+** New user option riece-startup-ignored-user-list: which can be used
+   to set up riece-ignored-user-list in ~/.riece/init.el.
+
+** Allow sending/receiving files whose names contain whitespaces.
+
+* Major changes in 1.0.0
+
+** New UI for enabling/disabling add-ons (to enter this mode, C-c ^)
+
+** Fixed bug that a user couldn't quit password input with C-g.
+
+** New add-on "riece-hangman" which allows channel members to play hangman(6).
+
+** Display error message on C-c q when no IRC process are running.
+
+** New add-on "riece-ignore" which allows to ignore messages from
+   particular users.
+
+** Accept nicknames consisting more than 9 letters.
+
+** Avoid duplicate initialization of add-ons.
+
+** New add-on "riece-biff" which displays biff mark ("[R]") on
+   mode-line. (by Ohashi-san)
+
+** New add-on "riece-kakasi" which converts Japanese to roman string.
+
+** Fixed prompt strings to indicate the current action more
+   precisely. (suggested by Yamashita-san)
+
+* Major changes in 0.2.2
+
+** Interpret control sequences used in IRC such as ^B, ^V, ^_, etc.
+   This feature is implemented as an add-on called riece-ctlseq.
+
+** Fixed bug that private messages were not treated as unread.
+
+** Buffer "freeze" status can be toggled in each buffer respectively.
+   (use C-t C-f)
+
+** Use canonicalized channel names to locate directories where log
+   files are stored. (by Ohashi-san)
+
+* Major changes in 0.2.0
+
+** Introduced "signal-slot" (as in Qt, GTK+) mechanism to routing
+   display events.
+
+** When a user requests NAMES, insert nicknames into the channel buffer. 
+
+** Fixed bug in riece-lsdb. (by Nakayama-san)
+
+* Major changes in 0.1.8
+
+** Added riece-lsdb add-on which cooperates with LSDB.
+** Added riece-xface add-on which displays X-Faces in user list buffer.
+
+** Fixed bug that channel names were treated case sensitively.
+
+** Handle messages from other clients which use the same IRC proxy.
+   (by Takahashi-san)
+
+* Major changes in 0.1.7
+
+** Added riece-async add-on which provides safe connection to an IRC
+   server via local proxy which responds to PING requests while Emacs
+   is busy or suspended.
+
+** Fixed changing user away status bug when riece-away-message is set.
+   (Thanks to Fujimura-san)
+
+** Remove side effects on standard-syntax-table when loading.
+   (Thanks to Hori-san)
+
+** Can join channels on several servers at startup by setting
+   riece-startup-server-list as well as riece-startup-channel-list.
+
+** New user option `riece-log-coding-system' to specify default coding
+   system used for log files.
+
+** New user option `riece-keyword-notify-functions' called when
+   someone spoke a message including the specified keyword. Please use
+   it instead of `riece-notify-keyword-functions'(very confusing
+   name!).
+
+** riece-log-flashback also restores faces and buttons.
+
+** riece-{unread,mini} ignores NOTICE and CTCP ACTION messages.
+
+* Major changes in 0.1.6
+
+** Fixed running problems on Emacs 20.7.
+
+** Fixed compilation failure on XEmacs 21.1.
+
+** Allow riece-rdcc to receive large files without memory consumption.
+
+** Check channel modes when joinning if riece-gather-channel-modes == t.
+
+** Fixed run-idle-timer usage to shrink channel buffers.
+
+** Fixed buffer scrolling behavior when switching channels.
+
+** Allow to specify qualified channel names in
+   riece-log-directory-map.  (by Ohashi-san)
+
+* Major changes in 0.1.5
+
+** Added 6 new window layouts.
+
+** Automatically save/restore the current window layout.
+
+** Added riece-icon add-on which decorates buffers with icons.
+
+** Speedup in redrawing the user list buffer.
+
+** Improve usability of CTCP ACTION (Thanks to knu-san)
+
+** Fixed bug in riece-rdcc which causes freeze on DCC SEND.
+
+** When riece server was opened, Do riece-command-configure-windows
+   instead of signaling.  (Thanks to Ohashi-san)
+
+** Fixed bug in C-c o (riece-command-set-operators) and C-c v
+   (riece-command-set-speakers).
+
+** Shrink buffers when they exceeds riece-max-buffer-size.
+
+* Major changes in 0.1.4
+
+** Bind "N" instead of "\C-n" to riece-command-names in channel
+   buffers. (thanks to Takahashi-san)
+
+** Fixed bug causing an error when the user typed C-c C-t a
+   (riece-command-toggle-away). (thanks to Maeda-san)
+
+** Don't redisplay buffers when the current selected window doesn't
+   display Riece buffers.
+
+** Don't reuse buffers created by different programs.  Genereate new
+   buffer in such case.
+
+** Fixed bug which doesn't allow to join a channel whose name is
+   beginning with "!!".
+
+** When riece-keyword is effective, don't check if the message from
+   myself contains given keywords.
+
+** Signal an error when the user issues a command which assumes the
+   current channel though the current channel is not available.
+
+** Added riece-menu add-on which adds a menu entry in the menubar.
+
+* Major changes in 0.1.3
+
+** Treat channel names in PRIVMSG/NOTICE messages case-insensitively.
+
+** When riece-history is effective, mark the last visited channel with "+".
+
+** Added riece-button add-on which decorates buffers with buttons and
+   define some popup-menus.
+
+** Added riece-keyword add-on which notifies the user when the arrived
+   message contains given keywords.
+
+   If you are using XEmacs and want to be notified of keywords with
+   sound, add the following lines to your ~/.riece/init.el:
+
+   (load-default-sounds)
+   (setq riece-keywords '("foo" "bar"))
+   (add-hook 'riece-notify-keyword-functions
+             (lambda (keyword) (play-sound 'cuckoo)))
+
+* Major changes in 0.1.2
+
+** Fixed bug when joinning a channel using a key.
+
+** Revive riece-startup-channel-list.
+
+** New user option riece-rdcc-save-directory is added.
+
+** Fixed unable to interrupt password input.
+
+** Fixed bug in the INVITE handler.
+
+** Prompt a channel name when the user joins the invited channel.
+
+** Fixed bug that occasionally kept riece-channel-list-indicator not
+   up to date.
+
+* Major changes in 0.1.1
+
+** Load some add-ons by default.
+
+** Fixed bug with riece-default-channel-binding not working.
+
+** Mark the current channel with "*" in *Channels* buffer.
+
+** If riece-debug is turned off, don't report connection status when exiting.
+
+** New add-on: riece-history manages channel switching history.
+
+** New add-on: riece-guess offers the next channel user may want to check.
+
+   Tips:
+
+   If you have the following lines in ~/.riece/init.el:
+
+   (setq riece-guess-channel-try-functions
+         '(riece-guess-channel-from-unread
+	   riece-guess-channel-from-history))
+
+   By hitting `C-c g' repeatedly, you can check channels in the
+   following order:
+
+   1. Channels where there is unread message.
+   2. Channels where you have visited recently.
+   3. The rest.
+
+* Major changes in 0.1.0
+
+** Use vectors to represent channels and users.
+
+** Improve process management:
+   -- Server names are now embedded in process names.
+   -- Integrate scattered connection management code into riece-server.el.
+   -- Force disconnect if the server does not respond after sending QUIT.
+
+** New add-on: riece-doctor.el allows to pretended to be a doctor.
+
+** Window configuration can be easily switched by hitting C-c t l.
+
+** New add-on: riece-skk-kakutei.el avoids ▽ being included in
+  spoken text, when you are using SKK. (by Takahashi-san)
+
+** New predefined layout which emulates "top" window-style as in Liece.
+   (by Takahashi-san)
+
+* Major changes in 0.0.4
+
+** Added riece-mini add-on which allows conversation through a
+   minibuffer (by Ohashi-san).
+
+** Added log collector add-on (riece-log) (by Ohashi-san).
+
+** riece-command-next-channel (C-c >) and
+   riece-command-previous-channel (C-c <) now follow the channel list
+   circularly (by Nakayama-san).
+
+** When riece-unread is enabled, you can quickly check the unread
+   channels by hitting C-c C-u (by Ohashi-san).
+
+** Display of status indicators obeys some IRC messages.
+
+** Replaced ptexinfmt.el with the version which does not depend on
+   APEL (Thanks to Yamaoka-san).
+
+* Major changes in 0.0.3
+
+** Fix bug connecting to two servers which require passwords (Thanks
+   to Nakayama-san)
+
+** Fix inconsistency when changing case of letters in nickname
+
+** Catch all errors occured in handler hooks
+
+** Support DCC file transfer (riece-ndcc.el, riece-rdcc.el)
+
+** Add "mark unread channels" add-on (riece-unread.el)
+
+** Add Japanese texinfo manual (I'll translate it in the future)
+
+* Major changes in 0.0.2
+
+** Don't use APEL functions (pop, push)
+
+** "depcomp" was missing in the previous archive (sorry!)
+
+** Fix bug building on Windows environment (Thanks to Ohashi-san)
+
+** Fix inconsistency when changing nickname
+
+** Fix bug on C-c C-t u (M-x riece-command-toggle-user-list-mode)
+
+** Provide add-on mechanism
+
+** Partial support for CTCP
+
+** Make font-lock related module (riece-highlight) add-on
+
+** Revive URL collector (formerly liece-url) as add-on
+
+* Major changes in 0.0.1
+
+** Initial release.
+
+* For details of changes, see the file ChangeLog.
+
+Local variables:
+mode: outline
+paragraph-separate: "[  ]*$"
+end:
