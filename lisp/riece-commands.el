@@ -262,7 +262,8 @@
 	    (concat (riece-concat-channel-modes
 		     channel "Mode (? for help)") ": ")
 	    nil riece-minibuffer-map))))
-  (riece-send-string (format "MODE %s :%s\r\n" channel change)))
+  (riece-send-string (format "MODE %s :%s\r\n" (riece-identity-prefix channel)
+			     change)))
 
 (defun riece-command-set-operators (users &optional arg)
   (interactive
