@@ -50,7 +50,7 @@
 (defcustom riece-async-server-program
   '("\
 socket = TCPSocket.new(" host ", " service ")
-$stdout.write(\"NOTICE CONNECTED\r\n\")
+$stdout.write(\"NOTICE CONNECTED #{$$}\r\n\")
 $stdout.flush
 loop do
   rfds, = select([socket, $stdin])
@@ -111,7 +111,8 @@ exit
 	  (while (and (eq (process-status process) 'run)
 		      (progn
 			(goto-char (point-min))
-			(not (looking-at "NOTICE CONNECTED"))))
+			(not (looking-at (format "NOTICE CONNECTED %d"
+						 (process-id process))))))
 	    (accept-process-output process))))
     process))
 
