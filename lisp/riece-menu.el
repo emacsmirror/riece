@@ -112,6 +112,7 @@
 				riece-menu-items)
 	      (riece-enable-addon 'riece-menu))))
 
+(defvar riece-menu)
 (defun riece-menu-enable ()
   (with-current-buffer riece-command-buffer
     (easy-menu-add riece-menu))
