@@ -1,3 +1,23 @@
+2003-06-11  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-message.el (riece-message-parent-buffers): Regard message's
+	speaker as target when priv mode.
+
+	* riece-display.el (riece-update-channel-indicator): Decode
+	riece-current-channel even in priv mode.
+
+	* riece-identity.el (riece-decode-identity): Respect prefix-only.
+	(riece-completing-read-identity): Check if illegal characters in
+	channel name.
+
+2003-06-08  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece.el (riece-buffer-mode-alist): Add riece-user-list-buffer.
+	* riece-globals.el (riece-user-buffer-format): Abolish.
+	(riece-user-list-buffer): Default to " *Users*".
+	* riece-display.el (riece-user-list-buffer-name): Abolish.
+	(riece-user-list-buffer-create): Abolish.
+
 2003-06-08  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-filter.el (riece-handle-numeric-reply): Don't decode messages.

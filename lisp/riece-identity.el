@@ -141,7 +141,7 @@ take server names into account."
     (let ((prefix (riece-decode-coding-string
 		   (riece-identity-prefix identity)))
 	  (server (riece-identity-server identity)))
-      (if (equal server "")
+      (if (or prefix-only (equal server ""))
 	  prefix
 	(concat prefix " " server)))))
 
@@ -157,13 +157,21 @@ take server names into account."
 
 (defun riece-completing-read-identity (prompt table
 					      &optional predicate must-match)
-  (riece-encode-identity
-   (completing-read
-    prompt
-    (mapcar (lambda (channel)
-	      (list (riece-decode-identity channel)))
-	    table)
-    predicate must-match)))
+  (let* ((decoded
+	  (completing-read
+	   prompt
+	   (mapcar (lambda (channel)
+		     (list (riece-decode-identity channel)))
+		   table)
+	   predicate must-match))
+	 (encoded
+	  (riece-encode-identity decoded)))
+    (if (and (not (string-match "[ ,]" decoded))
+	     (string-match "[ ,]" encoded)
+	     (not (y-or-n-p (format "The encoded channel name contains illegal character \"%s\".  continue? "
+				    (match-string 0 encoded)))))
+	(error "Invalid channel name!"))
+    encoded))
 
 (provide 'riece-identity)
 

@@ -162,7 +162,7 @@
 		 (riece-concat-channel-topic
 		  riece-current-channel
 		  (riece-decode-identity riece-current-channel)))
-	      riece-current-channel)
+	      (riece-decode-identity riece-current-channel))
 	  "None")))
 
 (defun riece-update-short-channel-indicator ()

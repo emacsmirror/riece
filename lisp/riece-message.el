@@ -121,9 +121,13 @@
 Normally they are *Dialogue* and/or *Others*."
   (if (or (and buffer (riece-frozen buffer))
 	  (and riece-current-channel
-	       (not (riece-identity-equal
-		     (riece-message-target message)
-		     riece-current-channel))))
+	       (if (riece-message-private-p message)
+		   (not (riece-identity-equal
+			 (riece-message-speaker message)
+			 riece-current-channel))
+		 (not (riece-identity-equal
+		       (riece-message-target message)
+		       riece-current-channel)))))
       (list riece-dialogue-buffer riece-others-buffer)
     riece-dialogue-buffer))
 
