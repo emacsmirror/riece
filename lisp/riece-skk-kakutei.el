@@ -30,6 +30,8 @@
 
 ;;; Code:
 
+(eval-when-compile (require 'riece))
+
 (defun riece-skk-kakutei-command-enter-message ()
   "Send the current line to the current channel."
   (interactive)

@@ -103,10 +103,10 @@ Local to the buffers.")
 
 (defun riece-configure-windows-top (&optional plist)
   "Candidate of `riece-configure-windows-function'.
-PLIST accept :command-height, :nick-width, and :channel-list-width."
-  (let ((command-height (or (plist-get plist :command-height) 5))
-	(nick-width (or (plist-get plist :nick-width) 13))
-	(channel-list-width (or (plist-get plist :channel-list-width) 25))
+PLIST accept :command-height, :user-list-width, and :channel-list-width."
+  (let ((command-height (or (plist-get plist :command-height) 4))
+	(user-list-width (or (plist-get plist :user-list-width) (+ 9 1 1)))
+	(channel-list-width (or (plist-get plist :channel-list-width) 18))
 	(buffer (window-buffer))
 	(show-user-list
 	 (and riece-user-list-buffer-mode
@@ -133,10 +133,11 @@ PLIST accept :command-height, :nick-width, and :channel-list-width."
 	 ;; channel-buffer + user-list
 	 ((and show-user-list
 	       (and riece-current-channel riece-channel-buffer-mode))
-	  (set-window-buffer
-	   (split-window (selected-window) (- (window-width) nick-width) t)
-	   riece-user-list-buffer)
-	  (set-window-buffer (selected-window) riece-channel-buffer))
+	  (let ((user-list-window (split-window (selected-window) nil t)))
+	    (set-window-buffer (selected-window) riece-channel-buffer)
+	    (set-window-buffer user-list-window riece-user-list-buffer)
+	    (select-window user-list-window)
+	    (shrink-window-horizontally (- (window-width) user-list-width))))
 	 ;; only user-list
 	 (show-user-list
 	  (set-window-buffer (selected-window) riece-user-list-buffer))
@@ -147,16 +148,11 @@ PLIST accept :command-height, :nick-width, and :channel-list-width."
     ;; bottom of frame
     (if (and riece-current-channel
 	     riece-channel-list-buffer-mode)
-	(progn
-	  (set-window-buffer
-	   (split-window (selected-window)
-			 (- (window-width) channel-list-width) t)
-	   riece-channel-list-buffer)
+	(let ((channel-list-window (split-window (selected-window) nil t)))
 	  (set-window-buffer (selected-window) riece-others-buffer)
-	  (with-current-buffer riece-channel-buffer
-	    (setq truncate-partial-width-windows nil))
-	  (with-current-buffer riece-others-buffer
-	    (setq truncate-partial-width-windows nil)))
+	  (set-window-buffer channel-list-window riece-channel-list-buffer)
+	    (select-window channel-list-window)
+	    (shrink-window-horizontally (- (window-width) channel-list-width)))
       (set-window-buffer (selected-window) riece-dialogue-buffer))
     (riece-set-window-points)
     (select-window (or (get-buffer-window buffer)
