@@ -1,5 +1,10 @@
 2004-02-27  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-display.el (riece-connect-signal): Create slot object
+	internally.
+
+2004-02-27  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece.el (riece): Setup signal slots.
 
 	* riece-unread.el (riece-unread-after-display-message-function):

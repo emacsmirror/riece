@@ -52,19 +52,23 @@ Local to the buffer in `riece-buffer-list'.")
 (defun riece-make-slot (function &optional filter handback)
   "Make an instance of slot object.
 Arguments are corresponding to callback function, filter function, and
-a handback object, respectively."
+a handback object, respectively.
+This function is for internal use only."
   (vector function filter handback))
 
 (defun riece-slot-function (slot)
-  "Return the callback function of SLOT."
+  "Return the callback function of SLOT.
+This function is for internal use only."
   (aref slot 0))
 
 (defun riece-slot-filter (slot)
-  "Return the filter function of SLOT."
+  "Return the filter function of SLOT.
+This function is for internal use only."
   (aref slot 1))
 
 (defun riece-slot-handback (slot)
-  "Return the handback object of SLOT."
+  "Return the handback object of SLOT.
+This function is for internal use only."
   (aref slot 2))
 
 (defun riece-make-signal (name &rest args)
@@ -81,11 +85,12 @@ are the data of the signal."
   "Return the data of SIGNAL."
   (aref signal 1))
 
-(defun riece-connect-signal (signal-name slot)
+(defun riece-connect-signal (signal-name function &optional filter handback)
   "Add SLOT as a listener of a signal identified by SIGNAL-NAME."
   (let ((symbol (intern (symbol-name signal-name) riece-signal-slot-obarray)))
-    (set symbol (cons slot (if (boundp symbol)
-			       (symbol-value symbol))))))
+    (set symbol (cons (riece-make-slot function filter handback)
+		      (if (boundp symbol)
+			  (symbol-value symbol))))))
 
 (defun riece-emit-signal (signal)
   "Emit SIGNAL."
@@ -115,76 +120,70 @@ are the data of the signal."
 (defun riece-display-connect-signals ()
   (riece-connect-signal
    'switch-to-channel
-   (riece-make-slot
-    (lambda (signal handback)
-      (riece-update-status-indicators)
-      (riece-update-channel-indicator)
-      (riece-update-long-channel-indicator)
-      (save-excursion
-	(set-buffer riece-user-list-buffer)
-	(run-hooks 'riece-update-buffer-functions))
-      (save-excursion
-	(set-buffer riece-channel-list-buffer)
-	(run-hooks 'riece-update-buffer-functions))
-      (save-excursion
-	(riece-redraw-layout)))))
+   (lambda (signal handback)
+     (riece-update-status-indicators)
+     (riece-update-channel-indicator)
+     (riece-update-long-channel-indicator)
+     (save-excursion
+       (set-buffer riece-user-list-buffer)
+       (run-hooks 'riece-update-buffer-functions))
+     (save-excursion
+       (set-buffer riece-channel-list-buffer)
+       (run-hooks 'riece-update-buffer-functions))
+     (save-excursion
+       (riece-redraw-layout))))
   (riece-connect-signal
    'names
-   (riece-make-slot
-    (lambda (signal handback)
-      (save-excursion
-	(set-buffer riece-user-list-buffer)
-	(run-hooks 'riece-update-buffer-functions)))))
+   (lambda (signal handback)
+     (save-excursion
+       (set-buffer riece-user-list-buffer)
+       (run-hooks 'riece-update-buffer-functions))))
   (riece-connect-signal
    'join
-   (riece-make-slot
-    (lambda (signal handback)
-      (save-excursion
-	(set-buffer riece-user-list-buffer)
-	(run-hooks 'riece-update-buffer-functions)))
-    (lambda (signal)
-      (and (riece-identity-equal (nth 1 (riece-signal-args signal))
-				 riece-current-channel)
-	   (not (riece-identity-equal (car (riece-signal-args signal))
-				      (riece-current-nickname)))))))
+   (lambda (signal handback)
+     (save-excursion
+       (set-buffer riece-user-list-buffer)
+       (run-hooks 'riece-update-buffer-functions)))
+   (lambda (signal)
+     (and (riece-identity-equal (nth 1 (riece-signal-args signal))
+				riece-current-channel)
+	  (not (riece-identity-equal (car (riece-signal-args signal))
+				     (riece-current-nickname))))))
   (riece-connect-signal
    'part
-   (riece-make-slot
-    (lambda (signal handback)
-      (save-excursion
-	(set-buffer riece-user-list-buffer)
-	(run-hooks 'riece-update-buffer-functions)))
-    (lambda (signal)
-      (and (riece-identity-equal (nth 1 (riece-signal-args signal))
-				 riece-current-channel)
-	   (not (riece-identity-equal (car (riece-signal-args signal))
-				      (riece-current-nickname)))))))
+   (lambda (signal handback)
+     (save-excursion
+       (set-buffer riece-user-list-buffer)
+       (run-hooks 'riece-update-buffer-functions)))
+   (lambda (signal)
+     (and (riece-identity-equal (nth 1 (riece-signal-args signal))
+				riece-current-channel)
+	  (not (riece-identity-equal (car (riece-signal-args signal))
+				     (riece-current-nickname))))))
   (riece-connect-signal
    'rename
-   (riece-make-slot
-    (lambda (signal handback)
-      (save-excursion
-	(set-buffer riece-user-list-buffer)
-	(run-hooks 'riece-update-buffer-functions)))
-    (lambda (signal)
-      (and (equal (riece-identity-server (nth 1 (riece-signal-args signal)))
-		  (riece-identity-server riece-current-channel))
-	   (riece-with-server-buffer (riece-identity-server
-				      riece-current-channel)
-	     (riece-identity-assoc
-	      (riece-identity-prefix (nth 1 (riece-signal-args signal)))
-	      (riece-channel-get-users (riece-identity-prefix
-					riece-current-channel))
-	      t))))))
+   (lambda (signal handback)
+     (save-excursion
+       (set-buffer riece-user-list-buffer)
+       (run-hooks 'riece-update-buffer-functions)))
+   (lambda (signal)
+     (and (equal (riece-identity-server (nth 1 (riece-signal-args signal)))
+		 (riece-identity-server riece-current-channel))
+	  (riece-with-server-buffer (riece-identity-server
+				     riece-current-channel)
+	    (riece-identity-assoc
+	     (riece-identity-prefix (nth 1 (riece-signal-args signal)))
+	     (riece-channel-get-users (riece-identity-prefix
+				       riece-current-channel))
+	     t)))))
   (riece-connect-signal
    'rename
-   (riece-make-slot
-    (lambda (signal handback)
-      (riece-update-status-indicators)
-      (riece-update-channel-indicator))
-    (lambda (signal)
-      (riece-identity-equal (nth 1 (riece-signal-args signal))
-			    (riece-current-nickname))))))
+   (lambda (signal handback)
+     (riece-update-status-indicators)
+     (riece-update-channel-indicator))
+   (lambda (signal)
+     (riece-identity-equal (nth 1 (riece-signal-args signal))
+			   (riece-current-nickname)))))
 
 (defun riece-update-user-list-buffer ()
   (save-excursion
