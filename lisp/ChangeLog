@@ -1,5 +1,7 @@
 2005-02-05  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-options.el (riece-addons): Enable riece-keyword by default.
+
 	* riece-button.el (riece-identity-button-popup-menu): Changed
 	interactivbe spect "@e" -> "e".
 	(riece-identity-button-click): New function.
