@@ -39,7 +39,7 @@
   :prefix "riece-"
   :group 'riece)
 
-(defcustom riece-eval-regexp "^, "
+(defcustom riece-eval-regexp "^, \\(.+\\)"
   "*Pattern of string evaluating."
   :type 'string
   :group 'riece-eval)
@@ -58,7 +58,7 @@
   (when (and riece-eval-enabled
 	     (riece-message-own-p message)
 	     (string-match riece-eval-regexp (riece-message-text message)))
-    (let ((form (substring (riece-message-text message) 2))
+    (let ((form (match-string 1 (riece-message-text message)))
 	  object string)
       (condition-case err
 	  (progn
