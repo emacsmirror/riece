@@ -11,12 +11,12 @@ EXTRA_DIST = COMPILE ChangeLog ChangeLog.Liece \
 CLEANFILES = auto-autoloads.el custom-load.el *.elc
 FLAGS ?= -batch -q -no-site-file
 
-all: compile
+all: elc
 
-compile:
+elc:
 	$(EMACS) $(FLAGS) -l COMPILE -f riece-compile
 
-install: compile
+install: elc
 	$(EMACS) $(FLAGS) -l COMPILE -f riece-install $(lispdir) # $(MAKE)
 
 package:

@@ -254,7 +254,8 @@
      (list users current-prefix-arg)))
   (let (group)
     (while users
-      (push (pop users) group)
+      (setq group (cons (car users) group)
+	    users (cdr users))
       (if (or (= (length group) 3)
 	      (null users))
 	  (riece-send-string
@@ -285,7 +286,8 @@
      (list users current-prefix-arg)))
   (let (group)
     (while users
-      (push (pop users) group)
+      (setq group (cons (car users) group)
+	    users (cdr users))
       (if (or (= (length group) 3)
 	      (null users))
 	  (riece-send-string
@@ -523,7 +525,9 @@ If prefix argument ARG is non-nil, toggle frozen status."
 		  server-name)))
     (with-current-buffer (process-buffer process)
       (setq riece-server-name server-name))
-    (push (cons server-name process) riece-server-process-alist)))
+    (setq riece-server-process-alist
+	  (cons (cons server-name process)
+		riece-server-process-alist))))
 
 (defun riece-command-close-server (server-name &optional message)
   (interactive

@@ -214,11 +214,15 @@
     (unless (riece-identity-assoc-no-server
 	     identity riece-channel-buffer-alist)
       (let ((buffer (riece-channel-buffer-create identity)))
-	(push (cons identity buffer) riece-channel-buffer-alist)))
+	(setq riece-channel-buffer-alist
+	      (cons (cons identity buffer)
+		    riece-channel-buffer-alist))))
     (unless (riece-identity-assoc-no-server
 	     identity riece-user-list-buffer-alist)
       (let ((buffer (riece-user-list-buffer-create identity)))
-	(push (cons identity buffer) riece-user-list-buffer-alist)))))
+	(setq riece-user-list-buffer-alist
+	      (cons (cons identity buffer)
+		    riece-user-list-buffer-alist))))))
 
 (defun riece-switch-to-nearest-channel (pointer)
   (let ((start riece-current-channels)

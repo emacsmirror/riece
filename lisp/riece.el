@@ -119,12 +119,14 @@ If optional argument SAFE is nil, overwrite previous definitions."
     (setq keymap (symbol-value (car keymap)))))
   (let (key)
     (while plist
-      (when (symbolp (setq key (pop plist)))
-	(setq key (symbol-value key)))
+      (if (symbolp (setq key (car plist)))
+	  (setq key (symbol-value key)))
+      (setq plist (cdr plist))
       (if (or (not safe)
 	      (eq (lookup-key keymap key) 'undefined))
-	  (define-key keymap key (pop plist))
-	(pop plist)))))
+	  (define-key keymap key (car plist))
+	(car plist))
+      (setq plist (cdr plist)))))
 
 (when t
   (riece-define-keys riece-dialogue-mode-map
@@ -428,11 +430,13 @@ Instead, these commands are available:
 	(while pointer
 	  (if (setq entry (assq (car pointer) dependencies))
 	      (setcar (cdr entry) (1+ (nth 1 entry)))
-	    (push (list (car pointer) 1 nil) dependencies))
+	    (setq dependencies (cons (list (car pointer) 1 nil)
+				     dependencies)))
 	  (setq pointer (cdr pointer)))
 	(if (setq entry (assq (car addons) dependencies))
 	    (setcar (nthcdr 2 entry) requires)
-	  (push (list (car addons) 0 requires) dependencies)))
+	  (setq dependencies (cons (list (car addons) 0 requires)
+				   dependencies))))
       (setq addons (cdr addons)))
     dependencies))
 
@@ -441,14 +445,14 @@ Instead, these commands are available:
 	 (pointer dependencies)
 	 queue)
     (while pointer
-      (when (zerop (nth 1 (car pointer)))
-	(setq dependencies (delq (car pointer) dependencies))
-	(push (car pointer) queue))
+      (if (zerop (nth 1 (car pointer)))
+	  (setq dependencies (delq (car pointer) dependencies)
+		queue (cons (car pointer) queue)))
       (setq pointer (cdr pointer)))
     (setq addons nil)
     (while queue
-      (push (car (car queue)) addons)
-      (setq pointer (nth 2 (car queue)))
+      (setq addons (cons (car (car queue)) addons)
+	    pointer (nth 2 (car queue)))
       (while pointer
 	(let* ((entry (assq (car pointer) dependencies))
 	       (count (1- (nth 1 entry))))

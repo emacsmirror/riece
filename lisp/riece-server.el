@@ -97,11 +97,11 @@ is running on."
 	  (service (match-string 2 string))
 	  (password (substring string (match-end 0)))
 	  plist)
-      (push `(:host ,host) plist)
+      (setq plist (cons `(:host ,host) plist))
       (unless (equal service "")
-	(push `(:service ,(string-to-int service)) plist))
+	(setq plist (cons `(:service ,(string-to-int service)) plist)))
       (unless (equal password "")
-	(push `(:password ,(substring password 1)) plist))
+	(setq plist (cons `(:password ,(substring password 1)) plist)))
       (apply #'nconc plist))))
 
 (defun riece-server-name-to-server (server-name)
@@ -109,9 +109,9 @@ is running on."
     (if entry
 	(unless (listp (cdr entry))
 	  (setcdr entry (riece-server-parse-string (cdr entry))))
-      (setq entry (cons server-name (riece-server-parse-string server-name)))
-      (push entry riece-server-alist)
-      (setq riece-save-variables-are-dirty t))
+      (setq entry (cons server-name (riece-server-parse-string server-name))
+	    riece-server-alist (cons entry riece-server-alist)
+	    riece-save-variables-are-dirty t))
     (cdr entry)))
 
 (defun riece-open-server (server server-name)

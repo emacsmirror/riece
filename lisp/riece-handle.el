@@ -53,7 +53,7 @@
 	(if (riece-identity-equal-no-server (riece-make-identity old)
 					    riece-current-channel)
 	    (riece-switch-to-channel (riece-make-identity new)))
-	(push (riece-make-identity new) channels)))
+	(setq channels (cons (riece-make-identity new) channels))))
     (riece-insert-change (mapcar
 			  (lambda (channel)
 			    (cdr (riece-identity-assoc-no-server
@@ -73,26 +73,24 @@
 (defun riece-handle-privmsg-message (prefix string)
   (let* ((user (riece-prefix-nickname prefix))
 	 (parameters (riece-split-parameters string))
-	 (targets (split-string (pop parameters) ","))
-	 (message (pop parameters)))
-    (unless (equal message "")
-      (while targets
-	(riece-display-message
-	 (riece-make-message user (riece-make-identity (pop targets))
-			     message))))))
+	 (targets (split-string (car parameters) ","))
+	 (message (nth 1 parameters)))
+    (unless (equal message "")		;not ignored by server?
+      (riece-display-message
+       (riece-make-message user (riece-make-identity (car targets))
+			   message)))))
 
 (defun riece-handle-notice-message (prefix string)
   (let* ((user (if prefix
 		   (riece-prefix-nickname prefix)))
 	 (parameters (riece-split-parameters string))
-	 (targets (split-string (pop parameters) ","))
-	 (message (pop parameters)))
-    (unless (equal message "")
+	 (targets (split-string (car parameters) ","))
+	 (message (nth 1 parameters)))
+    (unless (equal message "")		;not ignored by server?
       (if user
-	  (while targets
-	    (riece-display-message
-	     (riece-make-message user (riece-make-identity (pop targets))
-				 message 'notice)))
+	  (riece-display-message
+	   (riece-make-message user (riece-make-identity (car targets))
+			       message 'notice))
 	;; message from server
 	(riece-insert-notice
 	 (list riece-dialogue-buffer riece-others-buffer)
@@ -139,8 +137,8 @@
 (defun riece-handle-part-message (prefix string)
   (let* ((user (riece-prefix-nickname prefix))
 	 (parameters (riece-split-parameters string))
-	 (channels (split-string (pop parameters) ","))
-	 (message (pop parameters)))
+	 (channels (split-string (car parameters) ","))
+	 (message (nth 1 parameters)))
     (while channels
       (riece-naming-assert-part user (car channels))
       (let ((buffer (cdr (riece-identity-assoc-no-server
@@ -170,9 +168,9 @@
 (defun riece-handle-kick-message (prefix string)
   (let* ((kicker (riece-prefix-nickname prefix))
 	 (parameters (riece-split-parameters string))
-	 (channel (pop parameters))
-	 (user (pop parameters))
-	 (message (pop parameters)))
+	 (channel (car parameters))
+	 (user (nth 1 parameters))
+	 (message (nth 2 parameters)))
     (riece-naming-assert-part user channel)
     (let ((buffer (cdr (riece-identity-assoc-no-server
 			(riece-make-identity channel)
@@ -241,8 +239,8 @@
 (defun riece-handle-kill-message (prefix string)
   (let* ((killer (riece-prefix-nickname prefix))
 	 (parameters (riece-split-parameters string))
-	 (user (pop parameters))
-	 (message (pop parameters))
+	 (user (car parameters))
+	 (message (nth 1 parameters))
 	 (channels (copy-sequence (riece-user-get-channels user)))
 	 pointer)
     ;; You were talking with the user.
@@ -282,7 +280,7 @@
 (defun riece-handle-invite-message (prefix string)
   (let* ((user (riece-prefix-nickname prefix))
 	 (parameters (riece-split-parameters string))
-	 (channel (pop parameters)))
+	 (channel (car parameters)))
     (riece-insert-info
      (list riece-dialogue-buffer riece-others-buffer)
      (concat
@@ -293,8 +291,8 @@
 (defun riece-handle-topic-message (prefix string)
   (let* ((user (riece-prefix-nickname prefix))
 	 (parameters (riece-split-parameters string))
-	 (channel (pop parameters))
-	 (topic (pop parameters)))
+	 (channel (car parameters))
+	 (topic (nth 1 parameters)))
     (riece-channel-set-topic (riece-get-channel channel) topic)
     (let ((buffer (cdr (riece-identity-assoc-no-server
 			(riece-make-identity channel)

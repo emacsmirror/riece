@@ -173,7 +173,8 @@
       (let* ((channel (match-string 1 string))
 	     (mode-string (substring string (match-beginning 2)))
 	     (modes (string-to-list (match-string 2 string)))
-	     (toggle (pop modes)))
+	     (toggle (car modes)))
+	(setq modes (cdr modes))
 	(while modes
 	  (riece-channel-toggle-mode channel (car modes) (eq toggle ?+))
 	  (setq modes (cdr modes)))

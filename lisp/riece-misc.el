@@ -35,8 +35,8 @@
 
 (defun riece-get-buffer-create (name)
   (let ((buffer (get-buffer-create name)))
-    (or (memq buffer riece-buffer-list)
-	(push buffer riece-buffer-list))
+    (unless (memq buffer riece-buffer-list)
+      (setq riece-buffer-list (cons buffer riece-buffer-list)))
     buffer))
 
 (defun riece-insert (buffers string)
@@ -173,7 +173,7 @@
      (mapatoms
       (lambda (atom)
 	(unless (riece-channel-p (symbol-name atom))
-	  (push (symbol-name atom) users)))
+	  (setq users (cons (symbol-name atom) users))))
       riece-obarray)
      (if (member riece-real-nickname users)
 	 users

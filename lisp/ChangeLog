@@ -1,5 +1,7 @@
 2003-05-30  Daiki Ueno  <ueno@unixuser.org>
 
+	* Makefile.am (elc): Renamed from "compile".
+
 	* riece.el (riece-dialogue-mode-map): Bind
 	riece-command-toggle-channel-list-buffer-mode.
 
