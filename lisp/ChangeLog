@@ -1,7 +1,8 @@
 2003-08-25  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-commands.el (riece-command-change-layout): Call
-	riece-command-configure-windows.
+	riece-command-configure-windows; Use setq instead of
+	custom-set-variables.
 
 2003-08-25  Daiki Ueno  <ueno@unixuser.org>
 
