@@ -1,5 +1,14 @@
 2004-11-25  Daiki Ueno  <ueno@unixuser.org>
 
+	* test/Makefile.am (EXTRA_DIST): Add test-riece-url.el.
+	* test/test-riece-url.el: New test cases.
+
+	* riece-url.el (riece-url-regexp-alist): Backport from Liece 2.0.
+	(riece-url-replace-match): New function.
+	(riece-url-scan-region): Backport from Liece 2.0.
+
+2004-11-25  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-server.el (riece-server-properties): New function.
 
 2004-11-22  Daiki Ueno  <ueno@unixuser.org>

@@ -44,6 +44,18 @@
   :group 'riece-url
   :type 'regexp)
 
+(defcustom riece-url-regexp-alist nil
+  "An alist mapping regexp to URL.
+For example:
+  (setq riece-url-regexp-alist
+        '((\"\\\\bBug#\\\\([0-9]+\\\\)\\\\b\" .
+           \"http://bugs.debian.org/\\\\1\")))
+
+This will map a string \"Bug#12345\" to a URL
+\"http://bugs.debian.org/12345\"."
+  :type 'alist
+  :group 'riece-url)
+
 (defvar riece-urls nil
   "A list of URL which appears in Riece buffers.")
 
@@ -54,16 +66,42 @@
 
 (autoload 'widget-convert-button "wid-edit")
 
+(defun riece-url-replace-match (string)
+  (let ((match-data (match-data))
+	(index 0)
+	number
+	replacement)
+    (while (string-match "\\\\[&1-9\\\\]" string index)
+      (if (eq (aref string (1+ (match-beginning 0))) ?&)
+	  (setq number 0)
+	(unless (eq (aref string (1+ (match-beginning 0))) ?\\)
+	  (setq number (string-to-number (substring (match-string 0 string)
+						    1)))))
+      (if number
+	  (setq replacement
+		(buffer-substring (nth (* number 2) match-data)
+				  (nth (1+ (* number 2)) match-data)))
+	(setq replacement "\\"))
+      (setq string (concat (substring string 0 (match-beginning 0))
+			   replacement
+			   (substring string (match-end 0)))
+	    index (+ index (length replacement))))
+    string))
+
 (defun riece-url-scan-region (start end)
-  (save-excursion
-    (goto-char start)
-    (while (re-search-forward riece-url-regexp end t)
-      (let ((url (match-string 0)))
-	(if (memq 'riece-highlight riece-addons)
-	    (widget-convert-button
-	     'url-link (match-beginning 0) (match-end 0) url))
-	(unless (member url riece-urls)
-	  (setq riece-urls (cons url riece-urls)))))))
+  (let ((alist (cons (cons riece-url-regexp "\\&")
+		     riece-url-regexp-alist)))
+    (while alist
+      (save-excursion
+	(goto-char start)
+	(while (re-search-forward (car (car alist)) end t)
+	  (let ((url (riece-url-replace-match (cdr (car alist)))))
+	    (if (memq 'riece-highlight riece-addons)
+		(widget-convert-button
+		 'url-link (match-beginning 0) (match-end 0) url))
+	    (unless (member url riece-urls)
+	      (setq riece-urls (cons url riece-urls))))))
+      (setq alist (cdr alist)))))
 
 (defun riece-command-browse-url (&optional url)
   (interactive
