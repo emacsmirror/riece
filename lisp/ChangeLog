@@ -1,3 +1,7 @@
+2005-03-06  Daiki Ueno  <ueno@unixuser.org>
+
+	* COMPILE (riece-compile-modules): Print summary.
+
 2005-03-05  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-version.el: Bind emacs-program-version.

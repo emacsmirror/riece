@@ -88,15 +88,27 @@
     riece-submit-bug-report))
 
 (defun riece-compile-modules (modules)
-  (let ((load-path (cons nil load-path)))
+  (let ((load-path (cons nil load-path))
+	error-modules)
     (while modules
       (let ((source (expand-file-name
 		     (concat (symbol-name (car modules)) ".el"))))
 	(if (file-newer-than-file-p source (concat source "c"))
 	    (condition-case error
 		(byte-compile-file source)
-	      (error))))
-      (setq modules (cdr modules)))))
+	      (error
+	       (setq error-modules (cons (car modules) error-modules))))))
+      (setq modules (cdr modules)))
+    (if error-modules
+	(princ (concat "\n\
+  WARNING: ---------------------------------------------------------
+  WARNING: Couldn't compile following modules:
+  WARNING: 
+  WARNING:   " (mapconcat #'symbol-name error-modules ", ") "\n\
+  WARNING: 
+  WARNING: You should probably stop here, try \"make distclean\" to clear
+  WARNING: the last build, and then reconfigure.
+  WARNING: ---------------------------------------------------------\n\n")))))
 
 (defun riece-install-modules (modules dest just-print)
   (unless (or just-print (file-exists-p dest))
