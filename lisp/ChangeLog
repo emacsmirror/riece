@@ -1,6 +1,20 @@
 2003-06-01  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-display.el (riece-configure-windows): Use window-buffer
+	instead of current-buffer.
+
+	* riece-rdcc.el (riece-rdcc-server-address): Default to nil.
+	(riece-rdcc-ruby-command): New user option.
+	(riece-rdcc-send-program): New user option.
+	(riece-rdcc-decode-address-program): New user option.
+	(riece-rdcc-substitute-variables): New function.
+	(riece-command-dcc-send): Use it.
+	(riece-rdcc-decode-address): Use it.
+
+2003-06-01  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-rdcc.el: New add-on.
+
 	* Makefile.am (EXTRA_DIST): Add riece-rdcc.el
 
 2003-06-01  Daiki Ueno  <ueno@unixuser.org>

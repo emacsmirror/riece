@@ -46,7 +46,7 @@
   :group 'riece-looks)
 
 (defun riece-configure-windows ()
-  (let ((buffer (current-buffer))
+  (let ((buffer (window-buffer))
 	(show-user-list
 	 (and riece-user-list-buffer-mode
 	      riece-current-channel

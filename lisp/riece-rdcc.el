@@ -28,10 +28,49 @@
   :prefix "riece-"
   :group 'riece)
 
-(defcustom riece-rdcc-server-address "127.0.0.1"
+(defcustom riece-rdcc-server-address nil
   "Local address of the DCC server.
 Only used for sending files."
-  :type 'vector
+  :type 'string
+  :group 'riece-rdcc)
+
+(defcustom riece-rdcc-ruby-command "ruby"
+  "Command name for Ruby interpreter."
+  :type 'string
+  :group 'riece-rdcc)
+
+(defcustom riece-rdcc-send-program
+  '("\
+unless " address "
+  sock = UDPSocket.new
+  sock.connect('164.46.176.4', 7)		# www.unixuser.org/echo
+  address = sock.getsockname[4 .. 8].unpack('CCCC').join('.')
+end
+server = TCPServer.new(address, 0)
+puts(\"#{server.addr[3].split(/\\./).collect{|c| c.to_i}.pack('CCCC').unpack('N')[0]} #{server.addr[1]}\")
+session = server.accept
+if session
+  total = 0
+  File.open(" file ") {|file|
+    while (bytes = file.read(4096))
+      total += bytes.length
+      puts(\"#{total}\")
+      session.write(bytes)
+    end
+  }
+  session.close
+end
+")
+  "Ruby program to send file with DCC."
+  :type 'list
+  :group 'riece-rdcc)
+
+(defcustom riece-rdcc-decode-address-program
+  '("\
+puts(\"#{" address " >> 24 & 0xFF}.#{" address " >> 16 & 0xFF}.#{"
+    address " >> 8 & 0xFF}.#{" address " & 0xFF}\")")
+  "Ruby program to numeric IP address."
+  :type 'list
   :group 'riece-rdcc)
 
 (defvar riece-rdcc-requests nil)
@@ -39,6 +78,15 @@ Only used for sending files."
 (defvar riece-rdcc-request-user nil)
 (defvar riece-rdcc-request-file nil)
 (defvar riece-rdcc-request-size nil)
+
+(defun riece-rdcc-substitute-variables (program variable value)
+  (setq program (copy-sequence program))
+  (let ((pointer program))
+    (while pointer
+      (setq pointer (memq variable program))
+      (if pointer
+	  (setcar pointer value)))
+    program))
 
 (defun riece-rdcc-server-filter (process input)
   (save-excursion
@@ -64,30 +112,24 @@ Only used for sending files."
 (defun riece-command-dcc-send (user file)
   (interactive
    (let ((completion-ignore-case t))
-     (unless riece-rdcc-server-address
-       (error "Set riece-rdcc-server-address to your host"))
      (list (completing-read
 	    "User: "
 	    (mapcar #'list (riece-get-users-on-server)))
 	   (expand-file-name (read-file-name "File: ")))))
   (let ((process
 	 (start-process "DCC" " *DCC*" "ruby" "-rsocket")))
-    (process-send-string process (concat "\
-server = TCPServer.new('" riece-rdcc-server-address "', 0)
-puts(\"#{server.addr[3].split(/\\./).collect{|c| c.to_i}.pack('cccc').unpack('N')[0]} #{server.addr[1]}\")
-session = server.accept
-if session
-  total = 0
-  File.open('" file "') {|file|
-    while (bytes = file.read(1024))
-      total += bytes.length
-      puts(\"#{total}\")
-      session.write(bytes)
-    end
-  }
-  session.close
-end
-"))
+    (process-send-string process
+			 (apply #'concat
+				(riece-rdcc-substitute-variables
+				 (riece-rdcc-substitute-variables
+				  riece-rdcc-send-program
+				  'address
+				  (if riece-rdcc-server-address
+				      (concat "'" riece-rdcc-server-address
+					      "'")
+				    "nil"))
+				 'file
+				 (concat "'" file "'"))))
     (process-send-eof process)
     (save-excursion
       (set-buffer (process-buffer process))
@@ -136,8 +178,12 @@ end
 
 (defun riece-rdcc-decode-address (address)
   (with-temp-buffer
-    (call-process "ruby" nil t nil "-e" (concat "\
-puts(\"#{" address " >> 24 & 0xFF}.#{" address " >> 16 & 0xFF}.#{" address " >> 8 & 0xFF}.#{" address " & 0xFF}\")"))
+    (call-process riece-rdcc-ruby-command nil t nil "-e"
+		  (apply #'concat
+			 (riece-rdcc-substitute-variables
+			  riece-rdcc-decode-address-program
+			  'address
+			  address)))
     (buffer-substring (point-min) (1- (point-max)))))
 
 (defun riece-command-dcc-receive (request file)
