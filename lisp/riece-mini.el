@@ -71,24 +71,24 @@
 
 (defun riece-mini-display-message-function (message)
   "Show arrival messages to minibuffer."
-  (when (and riece-mini-enabled
-	     (not (or (eq (window-buffer (selected-window))
-			  (get-buffer riece-command-buffer))
-		      (riece-message-own-p message)
-		      (active-minibuffer-window))))
-    (unless (riece-message-type message)
-      (setq riece-mini-last-channel (riece-message-target message)))
-    (let ((string (concat (format-time-string "%H:%M") " "
-			  (riece-format-message message t))))
-      (when (string-match "\\(.*\\)$" string)
-	(setq string (riece-match-string-no-properties 1 string)))
-      (riece-mini-message-no-log "%s" string)
-      (while (>= (length riece-mini-backlog-history)
-		 riece-mini-backlog-size)
-	(setq riece-mini-backlog-history
-	      (cdr riece-mini-backlog-history)))
+  (let ((string (concat (format-time-string "%H:%M") " "
+			(riece-format-message message t))))
+    (when (string-match "\\(.*\\)$" string)
+      (setq string (riece-match-string-no-properties 1 string)))
+    (while (>= (length riece-mini-backlog-history)
+	       riece-mini-backlog-size)
       (setq riece-mini-backlog-history
-	    (reverse (cons string (reverse riece-mini-backlog-history)))))))
+	    (cdr riece-mini-backlog-history)))
+    (setq riece-mini-backlog-history
+	  (reverse (cons string (reverse riece-mini-backlog-history))))
+    (when (and riece-mini-enabled
+	       (not (or (eq (window-buffer (selected-window))
+			    (get-buffer riece-command-buffer))
+			(riece-message-own-p message)
+			(active-minibuffer-window))))
+      (unless (riece-message-type message)
+	(setq riece-mini-last-channel (riece-message-target message)))
+      (riece-mini-message-no-log "%s" string))))
 
 (defun riece-mini-send-message (arg)
   "Send message using minibuffer.
