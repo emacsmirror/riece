@@ -1,6 +1,28 @@
 2004-03-07  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-unread.el
+	(riece-unread-format-identity-for-channel-list-indicator): Escape
+	% -> %%; use riece-propertize-modeline-string.
+
+	* riece-history.el
+	(riece-history-format-identity-for-channel-list-indicator): Escape
+	% -> %%; use riece-propertize-modeline-string.
+
+	* riece-highlight.el
+	(riece-highlight-format-identity-for-channel-list-indicator):
+	Escape % -> %%; use riece-propertize-modeline-string.
+
+	* riece-display.el
+	(riece-format-identity-for-channel-list-indicator): Escape % ->
+	%%.
+	(riece-update-channel-list-indicator): Rewrite.
+
+	* riece-emacs.el (riece-propertize-modeline-string): New function.
+	* riece-xemacs.el (riece-propertize-modeline-string): New function.
+
+2004-03-07  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-unread.el
 	(riece-unread-format-identity-for-channel-list-indicator): New
 	function.
 	(riece-unread-insinuate): Setup

@@ -117,6 +117,11 @@
 (defun riece-match-string-no-properties (number &optional string)
   (format "%s" (match-string number string)))
 
+(defun riece-propertize-modeline-string (string &rest properties)
+  (let ((extent (make-extent nil nil)))
+    (set-extent-properties extent properties)
+    (cons extent string)))
+
 (provide 'riece-xemacs)
 
 ;;; riece-xemacs.el ends here

@@ -82,11 +82,16 @@
 								 identity)
   (if (and (not (ring-empty-p riece-channel-history))
 	   (riece-identity-equal identity (ring-ref riece-channel-history 0)))
-      (let ((string (riece-format-identity identity)))
-	(put-text-property 0 (length string)
-			   'face 'riece-channel-list-history-face
-			   string)
-	(concat (format "%d:" index) string))))
+      (let ((string (riece-format-identity identity))
+	    (start 0)
+	    extent)
+	;; Escape % -> %%.
+	(while (string-match "%" string start)
+	  (setq start (1+ (match-end 0))
+		string (replace-match "%%" nil nil string)))
+	(list (format "%d:" index)
+	      (riece-propertize-modeline-string
+	       string 'face 'riece-channel-list-history-face)))))
 
 ;;; (defun riece-history-requires ()
 ;;;   (if (memq 'riece-guess riece-addons)

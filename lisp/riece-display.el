@@ -284,27 +284,36 @@ Local to the buffer in `riece-buffer-list'.")
   (or (run-hook-with-args-until-success
        'riece-format-identity-for-channel-list-indicator-functions
        index identity)
-      (format "%d:%s" index (riece-format-identity identity))))
+      (let ((string (riece-format-identity identity))
+	    (start 0))
+	;; Escape % -> %%.
+	(while (string-match "%" string start)
+	  (setq start (1+ (match-end 0))
+		string (replace-match "%%" nil nil string)))
+	(format "%d:%s" index string))))
 
 (defun riece-update-channel-list-indicator ()
   (if (and riece-current-channels
 	   ;; There is at least one channel.
 	   (delq nil (copy-sequence riece-current-channels)))
-      (let ((index 1))
+      (let ((index 1)
+	    pointer)
 	(setq riece-channel-list-indicator
-	      (mapconcat
-	       #'identity
-	       (delq
-		nil
-		(mapcar
-		 (lambda (channel)
-		   (prog1
-		       (if channel
-			   (riece-format-identity-for-channel-list-indicator
-			    index channel))
-		     (setq index (1+ index))))
-		 riece-current-channels))
-	       ",")))
+	      (delq
+	       nil
+	       (mapcar
+		(lambda (channel)
+		  (prog1
+		      (if channel
+			  (riece-format-identity-for-channel-list-indicator
+			   index channel))
+		    (setq index (1+ index))))
+		riece-current-channels))
+	      pointer riece-channel-list-indicator)
+	(while pointer
+	  (if (cdr pointer)
+	      (setcdr pointer (cons "," (cdr pointer))))
+	  (setq pointer (cdr (cdr pointer)))))
     (setq riece-channel-list-indicator "No channel")))
 
 (defun riece-update-status-indicators ()
