@@ -56,6 +56,8 @@ Only used for sending files."
       (delete-region (point-min) (point)))))
 
 (defun riece-rdcc-server-sentinel (process status)
+  (with-current-buffer (process-buffer process)
+    (message "Sending %s...done" riece-rdcc-request-file))
   (kill-buffer (process-buffer process))
   (delete-process process))
 
@@ -77,10 +79,11 @@ session = server.accept
 if session
   total = 0
   File.open('" file "') {|file|
-    bytes = file.read(1024)
-    total += bytes.length
-    puts(\"#{total}\")
-    session.write(bytes)
+    while (bytes = file.read(1024))
+      total += bytes.length
+      puts(\"#{total}\")
+      session.write(bytes)
+    end
   }
   session.close
 end
