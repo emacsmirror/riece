@@ -1,3 +1,12 @@
+2003-06-02  Daiki Ueno  <ueno@unixuser.org>
+
+	* Riece: Version 0.0.3 released.
+	* riece-version.el (riece-version-number): Bump up to 0.0.3.
+
+	* riece-ctcp.el (riece-handle-ctcp-request): Catch errors occured
+	in hooks.
+	(riece-handle-ctcp-response): Ditto.
+
 2003-06-01  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-user.el (riece-rename-user): Don't modify entry when

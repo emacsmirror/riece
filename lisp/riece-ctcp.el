@@ -47,12 +47,21 @@
 	  (let ((request (downcase (match-string 1 message))))
 	    (if (match-beginning 2)
 		(setq message (substring (match-string 2 message) 1)))
-	    (unless (run-hook-with-args-until-success
-		     (intern (concat "riece-ctcp-" request "-request-hook"))
-		     prefix (car targets) message)
-	      (let ((function (intern-soft (concat "riece-handle-ctcp-"
-						   request
-						   "-request"))))
+	    (let ((hook
+		   (intern (concat "riece-ctcp-" request "-request-hook")))
+		  (function
+		   (intern-soft (concat "riece-handle-ctcp-" request
+					"-request")))
+		  (after-hook
+		   (intern (concat "riece-ctcp-after-" request
+				   "-request-hook"))))
+	      (unless (condition-case error
+			  (run-hook-with-args-until-success
+			   hook prefix (car targets) message)
+			(error
+			 (if riece-debug
+			     (message "Error occurred in `%S': %S" hook error))
+			 nil))
 		(if function
 		    (condition-case error
 			(funcall function prefix (car targets) message)
@@ -60,9 +69,13 @@
 		       (if riece-debug
 			   (message "Error occurred in `%S': %S"
 				    function error))))))
-	      (run-hook-with-args-until-success
-	       (intern (concat "riece-ctcp-after-" request "-request-hook"))
-	       prefix (car targets) message))
+	      (condition-case error
+		  (run-hook-with-args-until-success
+		   after-hook prefix (car targets) message)
+		(error
+		 (if riece-debug
+		     (message "Error occurred in `%S': %S"
+			      after-hook error)))))
 	    t)))))
 
 (defun riece-handle-ctcp-version-request (prefix target string)
@@ -121,12 +134,20 @@
 	  (let ((response (downcase (match-string 1 message))))
 	    (if (match-beginning 2)
 		(setq message (substring (match-string 2 message) 1)))
-	    (unless (run-hook-with-args-until-success
-		     (intern (concat "riece-ctcp-" response "-response-hook"))
-		     prefix (car targets) message)
-	      (let ((function (intern-soft (concat "riece-handle-ctcp-"
-						   response
-						   "-response"))))
+	    (let ((hook
+		   (intern (concat "riece-ctcp-" response "-response-hook")))
+		  (function (intern-soft (concat "riece-handle-ctcp-"
+						 response "-response")))
+		  (after-hook
+		   (intern (concat "riece-ctcp-after-" response
+				   "-response-hook"))))
+	      (unless (condition-case error
+			  (run-hook-with-args-until-success
+			   hook prefix (car targets) message)
+			(error
+			 (if riece-debug
+			     (message "Error occurred in `%S': %S" hook error))
+			 nil))
 		(if function
 		    (condition-case error
 			(funcall function prefix (car targets) message)
@@ -134,9 +155,13 @@
 		       (if riece-debug
 			   (message "Error occurred in `%S': %S"
 				    function error))))))
-	      (run-hook-with-args-until-success
-	       (intern (concat "riece-ctcp-after-" response "-response-hook"))
-	       prefix (car targets) message))
+	      (condition-case error
+		  (run-hook-with-args-until-success
+		   after-hook prefix (car targets) message)
+		(error
+		 (if riece-debug
+		     (message "Error occurred in `%S': %S"
+			      after-hook error)))))
 	    t)))))
 
 (defun riece-handle-ctcp-version-response (prefix target string)
