@@ -171,12 +171,12 @@ the `riece-server-keyword-map' variable."
 	  (when (<= riece-send-size riece-max-send-size)
 	    (process-send-string process string)
 	    (setq riece-last-send-time (current-time)))))
-      (if riece-send-queue
-	  (riece-run-at-time riece-send-delay nil
-			     (lambda (process)
-			       (if (process-live-p process)
-				   (riece-flush-send-queue process)))
-			     process)))))
+      (unless (riece-queue-empty riece-send-queue)
+	(riece-run-at-time riece-send-delay nil
+			   (lambda (process)
+			     (if (process-live-p process)
+				 (riece-flush-send-queue process)))
+			   process)))))
 
 (defun riece-process-send-string (process string)
   (with-current-buffer (process-buffer process)
