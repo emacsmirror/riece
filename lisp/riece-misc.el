@@ -181,7 +181,9 @@
     user-at-host))
 
 (defun riece-get-users-on-server ()
-  (riece-with-server-buffer (riece-identity-server riece-current-channel)
+  (riece-with-server-buffer (if riece-current-channel
+				(riece-identity-server riece-current-channel)
+			      "")
     (let (users)
       (mapatoms
        (lambda (atom)
@@ -191,6 +193,15 @@
       (if (member riece-real-nickname users)
 	  users
 	(cons riece-real-nickname users)))))
+
+(defun riece-check-channel-commands-are-usable (&optional channel)
+   (unless riece-current-channel
+     (error (substitute-command-keys
+	     "Type \\[riece-command-join] to join a channel")))
+   (if (and channel
+	    (not (riece-channel-p (riece-identity-prefix
+				   riece-current-channel))))
+       (error "Not on a channel")))
 
 (provide 'riece-misc)
 

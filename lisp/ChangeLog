@@ -1,5 +1,19 @@
 2003-10-18  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-commands.el (riece-command-topic): Use
+	riece-check-channel-commands-are-usable.
+	(riece-command-invite): Ditto.
+	(riece-command-kick): Ditto.
+	(riece-command-change-mode): Ditto.
+	(riece-command-set-operators): Ditto.
+	(riece-command-set-speakers): Ditto.
+	(riece-command-send-message): Ditto.
+	(riece-command-part): Ditto.
+
+	* riece-misc.el (riece-get-users-on-server): If
+	riece-current-channel is not set, check the default server.
+	(riece-check-channel-commands-are-usable): New function.
+
 	* riece-globals.el (riece-channel-regexp): Accept channel names
 	beginning with "!!".
 

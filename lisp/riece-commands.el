@@ -154,6 +154,7 @@ the layout to the selected layout-name."
 
 (defun riece-command-topic (topic)
   (interactive
+   (riece-check-channel-commands-are-usable t)
    (list (read-from-minibuffer
 	  "Topic: " (cons (or (riece-with-server-buffer
 				  (riece-identity-server riece-current-channel)
@@ -168,11 +169,8 @@ the layout to the selected layout-name."
 
 (defun riece-command-invite (user)
   (interactive
+   (riece-check-channel-commands-are-usable t)
    (let ((completion-ignore-case t))
-     (unless (and riece-current-channel
-		  (riece-channel-p (riece-identity-prefix
-				    riece-current-channel)))
-       (error "Not on a channel"))
      (list (completing-read
 	    "User: "
 	    (mapcar #'list (riece-get-users-on-server))))))
@@ -182,11 +180,8 @@ the layout to the selected layout-name."
 
 (defun riece-command-kick (user &optional message)
   (interactive
+   (riece-check-channel-commands-are-usable t)
    (let ((completion-ignore-case t))
-     (unless (and riece-current-channel
-		  (riece-channel-p (riece-identity-prefix
-				    riece-current-channel)))
-       (error "Not on a channel"))
      (list (completing-read
 	    "User: "
 	    (mapcar #'list
@@ -254,6 +249,7 @@ the layout to the selected layout-name."
 	   (if current-prefix-arg
 	       (riece-completing-read-identity
 		"Channel/User: " riece-current-channels)
+	     (riece-check-channel-commands-are-usable t)
 	     riece-current-channel))
 	  (riece-overriding-server-name (riece-identity-server channel))
 	  (riece-temp-minibuffer-message
@@ -275,6 +271,7 @@ the layout to the selected layout-name."
 
 (defun riece-command-set-operators (users &optional arg)
   (interactive
+   (riece-check-channel-commands-are-usable t)
    (let ((operators
 	  (riece-with-server-buffer
 	      (riece-identity-server riece-current-channel)
@@ -316,6 +313,7 @@ the layout to the selected layout-name."
 
 (defun riece-command-set-speakers (users &optional arg)
   (interactive
+   (riece-check-channel-commands-are-usable t)
    (let ((speakers
 	  (riece-with-server-buffer
 	      (riece-identity-server riece-current-channel)
@@ -359,9 +357,7 @@ the layout to the selected layout-name."
   "Send MESSAGE to the current channel."
   (if (equal message "")
       (error "No text to send"))
-  (unless riece-current-channel
-    (error (substitute-command-keys
-	    "Type \\[riece-command-join] to join a channel")))
+  (riece-check-channel-commands-are-usable)
   (if notice
       (progn
 	(riece-send-string
@@ -448,9 +444,6 @@ the layout to the selected layout-name."
 
 (defun riece-command-part-channel (target message)
   (let ((process (riece-server-process (riece-identity-server target))))
-    (unless process
-      (error "%s" (substitute-command-keys
-		   "Type \\[riece-command-open-server] to open server.")))
     (riece-process-send-string process
 			       (if message
 				   (format "PART %s :%s\r\n"
@@ -461,6 +454,7 @@ the layout to the selected layout-name."
 
 (defun riece-command-part (target &optional message)
   (interactive
+   (riece-check-channel-commands-are-usable)
    (let* ((completion-ignore-case t)
 	 (target
 	  (riece-completing-read-identity
