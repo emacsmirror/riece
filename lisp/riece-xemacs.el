@@ -122,7 +122,7 @@
     (set-extent-properties extent properties)
     (cons extent string)))
 
-(defalias 'riece-normalize-modeline-indicator 'identity)
+(defalias 'riece-normalize-modeline-string 'identity)
 
 (defalias 'riece-facep 'find-face)
 
