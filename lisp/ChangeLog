@@ -1,5 +1,8 @@
 2003-10-22  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-display.el (riece-update-buffers): Run
+	riece-update-buffer-hook.
+
 	* riece-button.el (riece-user-button-finger): Pass an identity
 	object instead of the prefix.
 
