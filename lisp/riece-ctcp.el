@@ -251,37 +251,36 @@
 	     string))
     "\n")))
 
+(defun riece-ctcp-completing-read-identity ()
+  (riece-completing-read-identity
+   "Channel/User: "
+   (let ((server-name (riece-current-server-name)))
+     (append (mapcar
+	      (lambda (user)
+		(riece-make-identity user server-name))
+	      (riece-get-users-on-server))
+	     riece-current-channels))))
+
 (defun riece-command-ctcp-version (user)
   (interactive
-   (let ((completion-ignore-case t))
-     (list (completing-read
-	    "Channel/User: "
-	    (mapcar #'list (riece-get-users-on-server))))))
+   (list (riece-ctcp-completing-read-identity)))
   (riece-send-string (format "PRIVMSG %s :\1VERSION\1\r\n" user)))
 
 (defun riece-command-ctcp-ping (user)
   (interactive
-   (let ((completion-ignore-case t))
-     (list (completing-read
-	    "Channel/User: "
-	    (mapcar #'list (riece-get-users-on-server))))))
+   (list (riece-ctcp-completing-read-identity)))
   (riece-send-string (format "PRIVMSG %s :\1PING\1\r\n" user))
   (setq riece-ctcp-ping-time (current-time)))
 
 (defun riece-command-ctcp-clientinfo (user)
   (interactive
-   (let ((completion-ignore-case t))
-     (list (completing-read
-	    "Channel/User: "
-	    (mapcar #'list (riece-get-users-on-server))))))
+   (list (riece-ctcp-completing-read-identity)))
   (riece-send-string (format "PRIVMSG %s :\1CLIENTINFO\1\r\n" user)))
 
 (defun riece-command-ctcp-action (channel action)
   (interactive
    (list (if current-prefix-arg
-	     (completing-read
-	      "Channel/User: "
-	      (mapcar #'list riece-current-channels))
+	     (riece-ctcp-completing-read-identity)
 	   riece-current-channel)
 	 (read-string "Action: ")))
   (if (equal action "")
@@ -289,8 +288,7 @@
   (riece-send-string (format "PRIVMSG %s :\1ACTION %s\1\r\n"
 			     (riece-identity-prefix channel)
 			     action))
-  (let ((buffer (riece-channel-buffer (riece-make-identity
-				       channel riece-server-name))))
+  (let ((buffer (riece-channel-buffer channel)))
     (riece-insert-change
      buffer
      (concat (riece-identity-prefix (riece-current-nickname)) " " action "\n"))

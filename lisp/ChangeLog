@@ -1,3 +1,13 @@
+2003-10-21  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-ctcp.el (riece-ctcp-completing-read-identity): New
+	function.
+	(riece-command-ctcp-version): Use it.
+	(riece-command-ctcp-ping): Ditto.
+	(riece-command-ctcp-clientinfo): Ditto.
+	(riece-command-ctcp-action): Ditto; don't encode CHANNEL identity
+	twice.
+
 2003-10-20  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-xemacs.el (riece-xemacs-mode-line-buffer-identification):
