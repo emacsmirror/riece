@@ -541,6 +541,20 @@ Instead, these commands are available:
   ;; This strange form ensures that (recent-keys) is the value before
   ;; the bug subject string is read.
   (interactive (list (riece-recent-messages 20) (recent-keys)))
+  (message "Checking CTCP VERSION...")
+  (let ((pointer riece-server-process-alist)
+	nickname)
+    (while pointer
+      (if (and (riece-server-process-opened (cdr (car pointer)))
+	       (setq nickname
+		     (with-current-buffer (process-buffer (cdr (car pointer)))
+		     riece-real-nickname)))
+	  (process-send-string
+	   (cdr (car pointer))
+	   (format "PRIVMSG %s :\1VERSION\1\r\n" nickname)))
+      (setq pointer (cdr pointer))))
+  (sit-for 3)
+  (message "Checking CTCP VERSION...done")
   (require 'reporter)
   (let ((reporter-prompt-for-summary-p t))
     (unless riece-debug
@@ -590,7 +604,7 @@ are familiar with the debugger, to get a lisp back-trace.")
 			(save-excursion
 			  (set-buffer (process-buffer (cdr (car pointer))))
 			  (goto-char (point-max))
-			  (beginning-of-line -20)
+			  (beginning-of-line -60)
 			  (buffer-substring (point) (point-max)))
 		      "(closed server)"))
 	    (setq pointer (cdr pointer))))
