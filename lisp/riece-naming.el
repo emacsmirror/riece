@@ -80,7 +80,7 @@
       (if pointer
 	  (setcar pointer new-name))
       (if (and riece-current-channel
-	       (riece-identity-equal (riece-make-identity channel-name
+	       (riece-identity-equal (riece-make-identity (car channels)
 							  riece-server-name)
 				     riece-current-channel))
 	  (with-current-buffer riece-user-list-buffer
