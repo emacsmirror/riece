@@ -72,31 +72,22 @@
 (defun riece-command-next-channel ()
   "Select the next channel."
   (interactive)
-  (let ((pointer (cdr (string-list-member-ignore-case
-		       riece-current-channel
-		       riece-current-channels))))
-    (while (and pointer
-		(null (car pointer)))
-      (setq pointer (cdr pointer)))
-    (if (car pointer)
-	(riece-command-switch-to-channel (car pointer))
-      (error "No such channel!"))))
+  (when (> (length riece-current-channels) 1)
+    (let ((channels (copy-sequence riece-current-channels)))
+      (setcdr (last channels) channels)	;make a circular link
+      (riece-command-switch-to-channel
+       (nth 1 (string-list-member-ignore-case
+	       riece-current-channel channels))))))
 
 (defun riece-command-previous-channel ()
   "Select the previous channel."
   (interactive)
-  (let ((pointer (string-list-member-ignore-case
-		  riece-current-channel
-		  riece-current-channels))
-	(start riece-current-channels)
-	channel)
-    (while (and start (not (eq start pointer)))
-      (if (car start)
-	  (setq channel (car start)))
-      (setq start (cdr start)))
-    (if channel
-	(riece-command-switch-to-channel channel)
-      (error "No such channel!"))))
+  (when (> (length riece-current-channels) 1)
+    (let ((channels (nreverse (copy-sequence riece-current-channels))))
+      (setcdr (last channels) channels)	;make a circular link
+      (riece-command-switch-to-channel
+       (nth 1 (string-list-member-ignore-case
+	       riece-current-channel channels))))))
 
 (defun riece-command-select-command-buffer ()
   "Select the command buffer."
