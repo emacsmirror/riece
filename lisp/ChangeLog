@@ -1,3 +1,12 @@
+2004-08-23  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-irc.el (riece-irc-open-server): Display error message if
+	connection-function fails.
+	* riece-server.el (riece-open-server): Ignore errors from
+	riece-*-open-server function.
+	* riece.el (riece): If no server process is available, exit
+	immediately.
+
 2004-08-19  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-handle.el (riece-handle-quit-message): Pass

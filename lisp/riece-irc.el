@@ -36,10 +36,16 @@
       (if (equal server-name "")
 	  (message "Connecting to IRC server...")
 	(message "Connecting to %s..." server-name))
-      (setq process
-	    (funcall function (riece-server-process-name server-name)
-		     (concat " *IRC*" server-name)
-		     host service))
+      (condition-case error
+	  (setq process
+		(funcall function (riece-server-process-name server-name)
+			 (concat " *IRC*" server-name)
+			 host service))
+	(error
+	 (if (equal server-name "")
+	     (message "Connecting to IRC server...failed: %S" error)
+	   (message "Connecting to %s...failed: %S" server-name error))
+	 (signal (car error) (cdr error))))
       (if (equal server-name "")
 	  (message "Connecting to IRC server...done")
 	(message "Connecting to %s...done" server-name))

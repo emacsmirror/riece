@@ -303,18 +303,21 @@ If optional argument CONFIRM is non-nil, ask which IRC server to connect."
     (riece-display-connect-signals)
     (riece-redisplay-buffers)
     (riece-open-server riece-server "")
-    (let ((server-list riece-startup-server-list))
-      (while server-list
-	(riece-command-open-server (car server-list))
-	(setq server-list (cdr server-list))))
-    (let ((pointer riece-addons))
-      (while pointer
-	(unless (get (car pointer) 'riece-addon-default-disabled)
-	  (riece-enable-addon (car pointer) riece-debug))
-	(setq pointer (cdr pointer))))
-    (run-hooks 'riece-startup-hook)
-    (message "%s" (substitute-command-keys
-		   "Type \\[describe-mode] for help"))))
+    ;; If no server process is available, exit.
+    (if (null riece-server-process-alist)
+	(riece-exit)
+      (let ((server-list riece-startup-server-list))
+	(while server-list
+	  (riece-command-open-server (car server-list))
+	  (setq server-list (cdr server-list))))
+      (let ((pointer riece-addons))
+	(while pointer
+	  (unless (get (car pointer) 'riece-addon-default-disabled)
+	    (riece-enable-addon (car pointer) riece-debug))
+	  (setq pointer (cdr pointer))))
+      (run-hooks 'riece-startup-hook)
+      (message "%s" (substitute-command-keys
+		     "Type \\[describe-mode] for help")))))
 
 (defun riece-shrink-buffer (buffer)
   (save-excursion

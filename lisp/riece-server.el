@@ -140,7 +140,9 @@ the `riece-server-keyword-map' variable."
 					"-open-server")))
     (unless function
       (error "\"%S\" is not supported" protocol))
-    (setq process (funcall function server server-name))
+    (condition-case nil
+	(setq process (funcall function server server-name))
+      (error))
     (when process
       (with-current-buffer (process-buffer process)
 	(make-local-variable 'riece-protocol)
