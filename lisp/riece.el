@@ -155,6 +155,7 @@ If optional argument SAFE is nil, overwrite previous definitions."
     "/" riece-command-raw
     ">" end-of-buffer
     "<" beginning-of-buffer
+    "^" riece-command-list-addons
     "\C-ta" riece-command-toggle-away
     "c" riece-command-select-command-buffer
     "f" riece-command-finger

@@ -1,3 +1,8 @@
+2004-05-21  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece.el (riece-dialogue-mode-map): Bind
+	riece-command-list-addons as "^".
+
 2004-05-21  TAKAHASHI Kaoru  <kaoru@kaisei.org>
 
 	* riece-skk-kakutei.el (riece-skk-kakutei-enabled): New flag.
