@@ -107,7 +107,7 @@
     (while channels
       (riece-naming-assert-join user (car channels))
       ;;XXX
-      (if (scandinavian-equal-ignore-case user riece-real-nickname)
+      (if (riece-identity-equal-no-server user riece-real-nickname)
 	  (riece-switch-to-channel (riece-make-identity (car channels))))
       (let ((buffer (cdr (riece-identity-assoc
 			  (riece-make-identity (car channels))
@@ -200,7 +200,7 @@
 	 (pointer channels)
 	 (message (car (riece-split-parameters string))))
     ;; If you are quitting, no need to cleanup.
-    (unless (scandinavian-equal-ignore-case user riece-real-nickname)
+    (unless (riece-identity-equal-no-server user riece-real-nickname)
       ;; You were talking with the user.
       (if (riece-identity-member (riece-make-identity user)
 				 riece-current-channels)

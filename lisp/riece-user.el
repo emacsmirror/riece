@@ -23,8 +23,6 @@
 
 ;;; Code:
 
-(eval-when-compile (require 'riece-inlines))	;scandinavian-downcase
-
 (require 'riece-identity)
 
 (defconst riece-user-regexp
@@ -34,7 +32,7 @@
 (defun riece-find-user (name)
   "Get a user object named NAME from the server buffer."
   (riece-with-server-buffer
-   (let ((symbol (intern-soft (scandinavian-downcase
+   (let ((symbol (intern-soft (riece-identity-canonicalize-prefix
 			       (riece-identity-prefix name))
 			      riece-obarray)))
      (if symbol
@@ -42,7 +40,7 @@
 
 (defun riece-forget-user (name)
   (riece-with-server-buffer
-   (let ((symbol (intern-soft (scandinavian-downcase
+   (let ((symbol (intern-soft (riece-identity-canonicalize-prefix
 			       (riece-identity-prefix name)))))
      (when symbol
        (makunbound symbol)
@@ -50,15 +48,15 @@
 
 (defun riece-rename-user (old-name new-name)
   (riece-with-server-buffer
-   (unless (equal (scandinavian-downcase
+   (unless (equal (riece-identity-canonicalize-prefix
 		   (riece-identity-prefix old-name))
-		  (scandinavian-downcase
+		  (riece-identity-canonicalize-prefix
 		   (riece-identity-prefix new-name)))
-     (let ((symbol (intern-soft (scandinavian-downcase
+     (let ((symbol (intern-soft (riece-identity-canonicalize-prefix
 				 (riece-identity-prefix old-name))
 				riece-obarray)))
        (when symbol
-	 (set (intern (scandinavian-downcase
+	 (set (intern (riece-identity-canonicalize-prefix
 		       (riece-identity-prefix new-name))
 		      riece-obarray)
 	      (symbol-value symbol))
@@ -73,12 +71,12 @@ away status, respectively."
 
 (defun riece-get-user (name)
   (riece-with-server-buffer
-   (let ((symbol (intern-soft (scandinavian-downcase
+   (let ((symbol (intern-soft (riece-identity-canonicalize-prefix
 			       (riece-identity-prefix name))
 			      riece-obarray)))
      (if symbol
 	 (symbol-value symbol)
-       (set (intern (scandinavian-downcase
+       (set (intern (riece-identity-canonicalize-prefix
 		     (riece-identity-prefix name)) riece-obarray)
 	    (riece-make-user))))))
 

@@ -1,5 +1,20 @@
 2003-06-03  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-identity.el (riece-identity-canonicalize-prefix): Moved
+	from riece-inlines.el; renamed from scandinavian-downcase.
+	(riece-identity-equal-no-server): Moved from riece-inlines.el;
+	renamed from scandinavian-equal-ignore-case.
+	(riece-identity-equal-no-server-safe): New function.
+	(riece-identity-member-no-server): Moved from riece-inlines.el;
+	renamed from scandinavian-member-ignore-case.
+	(riece-identity-member-no-server-safe): New function.
+
+	* riece-inlines.el: Removed.
+	* COMPILE (riece-modules): Remove riece-inlines.
+	* Makefile.am (EXTRA_DIST): Remove riece-inlines.el.
+
+2003-06-03  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-rdcc.el (riece-rdcc-sentinel): Don't call delete-process
 	explicitly.
 	* riece-ndcc.el: Don't call delete-process explicitly.

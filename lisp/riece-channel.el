@@ -24,8 +24,6 @@
 
 ;;; Code:
 
-(eval-when-compile (require 'riece-inlines))	;scandinavian-downcase
-
 (require 'riece-options)
 (require 'riece-identity)
 
@@ -47,7 +45,7 @@
 (defun riece-find-channel (name)
   "Get a channel object named NAME from the server buffer."
   (riece-with-server-buffer
-   (let ((symbol (intern-soft (scandinavian-downcase
+   (let ((symbol (intern-soft (riece-identity-canonicalize-prefix
 			       (riece-identity-prefix name))
 			      riece-obarray)))
      (if symbol
@@ -55,7 +53,7 @@
 
 (defun riece-forget-channel (name)
   (riece-with-server-buffer
-   (let ((symbol (intern-soft (scandinavian-downcase
+   (let ((symbol (intern-soft (riece-identity-canonicalize-prefix
 			       (riece-identity-prefix name)))))
      (when symbol
        (makunbound symbol)
@@ -72,12 +70,12 @@ the channel key, respectively."
 
 (defun riece-get-channel (name)
   (riece-with-server-buffer
-   (let ((symbol (intern-soft (scandinavian-downcase
+   (let ((symbol (intern-soft (riece-identity-canonicalize-prefix
 			       (riece-identity-prefix name))
 			      riece-obarray)))
      (if symbol
 	 (symbol-value symbol)
-       (set (intern (scandinavian-downcase
+       (set (intern (riece-identity-canonicalize-prefix
 		     (riece-identity-prefix name))
 		    riece-obarray)
 	    (riece-make-channel))))))

@@ -91,6 +91,45 @@ server name before comparison."
        ident2
      (riece-make-identity ident2))))
 
+(defun riece-identity-canonicalize-prefix (prefix)
+  "Canonicalize identity PREFIX.
+This function downcases PREFIX first, then does special treatment for
+Scandinavian alphabets.
+
+RFC2812, 2.2 \"Character codes\" says:
+   Because of IRC's Scandinavian origin, the characters {}|^ are
+   considered to be the lower case equivalents of the characters []\~,
+   respectively. This is a critical issue when determining the
+   equivalence of two nicknames or channel names."
+  (let* ((result (downcase prefix))
+	 (length (length result))
+	 (index 0))
+    (while (< index length)
+      (if (eq (aref result index) ?\[)
+	  (aset result index ?{)
+	(if (eq (aref result index) ?\])
+	    (aset result index ?})
+	  (if (eq (aref result index) ?\\)
+	      (aset result index ?|)
+	    (if (eq (aref result index) ?~)
+		(aset result index ?^)))))
+      (setq index (1+ index)))
+    result))
+
+(defun riece-identity-equal-no-server (prefix1 prefix2)
+  "Return t, if IDENT1 and IDENT2 is equal without server."
+  (equal (riece-identity-canonicalize-prefix prefix1)
+	 (riece-identity-canonicalize-prefix prefix2)))
+
+(defun riece-identity-equal-no-server-safe (prefix1 prefix2)
+  "Return t, if IDENT1 and IDENT2 is equal without server.
+The only difference with `riece-identity-no-server', this function removes
+server name before comparison."
+  (equal (riece-identity-canonicalize-prefix
+	  (riece-identity-prefix prefix1))
+	 (riece-identity-canonicalize-prefix
+	  (riece-identity-prefix prefix2))))
+
 (defun riece-identity-member (elt list)
   "Return non-nil if an identity ELT is an element of LIST."
   (catch 'found
@@ -108,6 +147,28 @@ The only difference with `riece-identity-member', this function uses
     (while list
       (if (and (stringp (car list))
 	       (riece-identity-equal-safe (car list) elt))
+	  (throw 'found list)
+	(setq list (cdr list))))))
+
+(defun riece-identity-member-no-server (elt list)
+  "Return non-nil if an identity ELT is an element of LIST.
+The only difference with `riece-identity-member', this function doesn't
+take server names into account."
+  (catch 'found
+    (while list
+      (if (and (stringp (car list))
+	       (riece-identity-equal-no-server (car list) elt))
+	  (throw 'found list)
+	(setq list (cdr list))))))
+
+(defun riece-identity-member-no-server-safe (elt list)
+  "Return non-nil if an identity ELT is an element of LIST.
+The only difference with `riece-identity-member-no-server', this function uses
+`riece-identity-equal-no-server-safe' for comparison."
+  (catch 'found
+    (while list
+      (if (and (stringp (car list))
+	       (riece-identity-equal-no-server-safe (car list) elt))
 	  (throw 'found list)
 	(setq list (cdr list))))))
 
