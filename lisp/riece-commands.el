@@ -466,7 +466,7 @@ the layout to the selected layout-name."
 				 (format "PART %s\r\n"
 					 (riece-identity-prefix target))))))
 
-(defun riece-command-part (target &optional message)
+(defun riece-command-part (target)
   (interactive
    (progn
      (riece-check-channel-commands-are-usable)
@@ -477,10 +477,10 @@ the layout to the selected layout-name."
 		      (riece-format-identity riece-current-channel))
 	      riece-current-channels nil nil nil nil
 	      (riece-format-identity riece-current-channel)))
-	    message)
-       (if (and current-prefix-arg
-		(riece-channel-p (riece-identity-prefix target)))
-	   (setq message (read-string "Message: ")))
+	    (message
+	     (if current-prefix-arg
+		 (read-string "Message: ")
+	       riece-part-message)))
        (list target message))))
   (if (riece-identity-member target riece-current-channels)
       (if (riece-channel-p (riece-identity-prefix target))
@@ -609,7 +609,7 @@ If prefix argument ARG is non-nil, toggle frozen status."
 	(let ((message
 	       (if arg
 		   (read-string "Message: ")
-	       riece-quit-message))
+		 riece-quit-message))
 	      (alist riece-server-process-alist))
 	  (while alist
 	    (riece-quit-server-process (cdr (car alist)) message)

@@ -270,6 +270,12 @@ way is to put Riece variables on .emacs or file loaded from there."
   :type '(string :tag "Quit message")
   :group 'riece-options)
 
+(defcustom riece-part-message nil
+  "Default part message."
+  :type '(choice (const :tag "No message" nil)
+		 (string :tag "Part message"))
+  :group 'riece-options)
+
 (defcustom riece-away-message "Gone"
   "Default away message."
   :type '(string :tag "Away message")
