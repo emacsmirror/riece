@@ -183,7 +183,7 @@ way is to put Riece variables on .emacs or file loaded from there."
   :type 'integer
   :group 'riece-server)
 
-(defcustom riece-send-delay 8
+(defcustom riece-send-delay 2
   "Duration of multiple send."
   :type 'integer
   :group 'riece-server)

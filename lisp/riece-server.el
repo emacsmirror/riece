@@ -105,6 +105,31 @@ the `riece-server-keyword-map' variable."
 (put 'riece-with-server-buffer 'lisp-indent-function 1)
 (put 'riece-with-server-buffer 'edebug-form-spec '(form body))
 
+(defun riece-make-queue ()
+  "Make a queue object."
+  (vector nil nil))
+
+(defun riece-queue-enqueue (queue object)
+  "Add OBJECT to the end of QUEUE."
+  (if (aref queue 1)
+      (let ((last (list object)))
+	(nconc (aref queue 1) last)
+	(aset queue 1 last))
+    (aset queue 0 (list object))
+    (aset queue 1 (aref queue 0))))
+
+(defun riece-queue-dequeue (queue)
+  "Remove an object from the beginning of QUEUE."
+  (unless (aref queue 0)
+    (error "Empty queue"))
+  (prog1 (car (aref queue 0))
+    (unless (aset queue 0 (cdr (aref queue 0)))
+      (aset queue 1 nil))))
+
+(defun riece-queue-empty (queue)
+  "Return t if QUEUE is empty."
+  (null (aref queue 0)))
+
 ;; stolen (and renamed) from time-date.el.
 (defun riece-seconds-to-time (seconds)
   "Convert SECONDS (a floating point number) to a time value."
@@ -135,24 +160,24 @@ the `riece-server-keyword-map' variable."
       (if (riece-time-less-p (riece-seconds-to-time riece-send-delay)
 			     (riece-time-since riece-last-send-time))
 	  (setq riece-send-size 0))
-      (while (and riece-send-queue
+      (while (and (not (riece-queue-empty riece-send-queue))
 		  (<= riece-send-size riece-max-send-size))
-	(setq string (riece-encode-coding-string (car riece-send-queue))
+	(setq string (riece-encode-coding-string
+		      (riece-queue-dequeue riece-send-queue))
 	      length (length string))
 	(if (> length riece-max-send-size)
 	    (message "Long message (%d > %d)" length riece-max-send-size)
 	  (setq riece-send-size (+ riece-send-size length))
 	  (when (<= riece-send-size riece-max-send-size)
 	    (process-send-string process string)
-	    (setq riece-last-send-time (current-time))))
-	(setq riece-send-queue (cdr riece-send-queue)))
+	    (setq riece-last-send-time (current-time)))))
       (if riece-send-queue
 	  (riece-run-at-time riece-send-delay nil
 			     #'riece-flush-send-queue process)))))
 
 (defun riece-process-send-string (process string)
   (with-current-buffer (process-buffer process)
-    (setq riece-send-queue (nconc riece-send-queue (list string))))
+    (riece-queue-enqueue riece-send-queue string))
   (riece-flush-send-queue process))
 
 (defun riece-current-server-name ()
@@ -226,6 +251,7 @@ the `riece-server-keyword-map' variable."
     (make-local-variable 'riece-read-point)
     (setq riece-read-point (point-min))
     (make-local-variable 'riece-send-queue)
+    (setq riece-send-queue (riece-make-queue))
     (make-local-variable 'riece-send-size)
     (setq riece-send-size 0)
     (make-local-variable 'riece-last-send-time)
