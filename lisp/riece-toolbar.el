@@ -37,7 +37,8 @@
     riece-command-part
     riece-command-previous-channel
     riece-command-next-channel
-    riece-command-change-layout))
+    riece-command-change-layout
+    riece-submit-bug-report))
 
 (defun riece-toolbar-find-menu-item (command)
   (let ((pointer riece-menu-items)

@@ -1,5 +1,7 @@
 2005-02-04  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-toolbar.el (riece-toolbar-items): Add riece-submit-bug-report.
+
 	* riece-xemacs.el (riece-run-at-time): Accept nil as the current-time.
 
 	* riece-compat.el (riece-read-passwd): Changed default value.
