@@ -67,7 +67,7 @@
 			  (get-buffer riece-command-buffer))
 		      (riece-message-own-p message)
 		      (riece-message-type message))))
-    (when (or (null riece-biff-channels)
+    (when (or (null riece-biff-check-channels)
 	      (member (riece-format-identity (riece-message-target message))
 		      riece-biff-check-channels))
       (setq riece-biff-mode-string 'riece-biff-biff-mode-string)
