@@ -24,6 +24,7 @@
 
 ;;; Code:
 
+(require 'riece-version)
 (require 'riece-globals)
 
 ;; User modifiable variables.
@@ -244,14 +245,14 @@ way is to put Riece variables on .emacs or file loaded from there."
   :type 'boolean
   :group 'riece-options)
 
-(defcustom riece-quit-message nil
+(defcustom riece-quit-message (riece-extended-version)
   "Default quit message."
-  :type '(radio (string :tag "Quit message"))
+  :type '(string :tag "Quit message")
   :group 'riece-options)
 
-(defcustom riece-away-message nil
+(defcustom riece-away-message "Gone"
   "Default away message."
-  :type '(radio (string :tag "Away message"))
+  :type '(string :tag "Away message")
   :group 'riece-options)
 
 (defcustom riece-gather-channel-modes nil

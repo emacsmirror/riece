@@ -1,3 +1,17 @@
+2003-12-15  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-options.el: Require 'riece-version.
+	(riece-quit-message): Set default to (riece-extended-version).
+	(riece-away-message): Set default to "Gone".
+
+	* riece-commands.el: Don't require 'riece-version.
+	(riece-command-quit): Don't check riece-quit-message.
+	(riece-command-close-server): Ditto.
+	(riece-command-toggle-away): Always supply a parameter to the AWAY
+	command when the user is not away.  Thanks to Yuki Fujimura
+	<fujimura@wakhok.ac.jp>
+	[cf. <Liece:00139>]
+
 2003-12-14  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece.el (riece): Connect to servers in riece-startup-server-list.

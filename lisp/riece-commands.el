@@ -28,7 +28,6 @@
 (require 'riece-complete)
 (require 'riece-layout)
 (require 'riece-display)
-(require 'riece-version)
 (require 'riece-server)
 (require 'riece-misc)
 (require 'riece-identity)
@@ -541,13 +540,16 @@ the layout to the selected layout-name."
 					    (riece-current-nickname))
 		   (riece-user-get-away (riece-identity-prefix
 					 (riece-current-nickname)))))
-	    (or (null riece-away-message)
-		current-prefix-arg))
-       (let ((message (read-string "Away message: ")))
-	 (list message))))
-  (if message
-      (riece-send-string (format "AWAY :%s\r\n" message))
-    (riece-send-string "AWAY\r\n")))
+	    current-prefix-arg)
+       (list (read-from-minibuffer
+	      "Away message: " (cons (or riece-away-message "") 0)))))
+  (if (riece-with-server-buffer (riece-identity-server
+				 (riece-current-nickname))
+	(riece-user-get-away (riece-identity-prefix
+			      (riece-current-nickname))))
+      (riece-send-string "AWAY\r\n")
+    (riece-send-string (format "AWAY :%s\r\n" (or message
+						  riece-away-message)))))
 
 (defun riece-command-toggle-freeze (&optional arg)
   "Prevent automatic scrolling of the dialogue window.
@@ -590,8 +592,7 @@ If prefix argument ARG is non-nil, toggle frozen status."
 	  (let ((message
 		 (if arg
 		     (read-string "Message: ")
-		   (or riece-quit-message
-		       (riece-extended-version))))
+		   riece-quit-message))
 		(alist riece-server-process-alist))
 	    (while alist
 	      (riece-quit-server-process (cdr (car alist)) message)
@@ -638,8 +639,7 @@ If prefix argument ARG is non-nil, toggle frozen status."
    (list (completing-read "Server: " riece-server-process-alist)
 	 (if current-prefix-arg
 	     (read-string "Message: ")
-	   (or riece-quit-message
-	       (riece-extended-version)))))
+	   riece-quit-message)))
   (riece-quit-server-process (riece-server-process server-name) message))
 
 (defun riece-command-universal-server-name-argument ()
