@@ -1,5 +1,14 @@
 2004-09-10  OHASHI Akira  <bg66@koka-in.org>
 
+	* riece-mini.el (riece-mini): New group.
+	(riece-mini-backlog-size): New user option.
+	(riece-mini-backlog-history): New internal variable.
+	(riece-mini-backlog-shown): Ditto.
+	(riece-mini-show-backlog): New function.
+	(riece-mini-pre-command): Ditto.
+	(riece-mini-display-message-function): Use them.
+	(riece-mini-insinuate): Ditto.
+
 	* riece-biff.el (toplevel): Remove eval-when-compile.
 	* riece-log.el (toplevel): Ditto.
 	* riece-mini.el (toplevel): Ditto.

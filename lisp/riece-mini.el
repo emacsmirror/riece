@@ -32,16 +32,28 @@
 ;; To use, add the following line to your ~/.riece/init.el:
 ;; (add-to-list 'riece-addons 'riece-mini)
 ;;
-;; And for using conveniently, bind any global key to
-;; `riece-mini-send-message'.
+;; For using conveniently, bind any global key to
+;; `riece-mini-send-message' and `riece-mini-show-backlog'.
 ;; For example:
 ;; (global-set-key "\C-cm" 'riece-mini-send-message)
+;; (global-set-key "\C-cb" 'riece-mini-show-backlog)
 
 ;;; Code:
 
 (require 'riece-message)
 
+(defgroup riece-mini nil
+  "riece on minibuffer"
+  :group 'riece)
+
+(defcustom riece-mini-backlog-size 10
+  "*Line numbers for logging back log."
+  :type 'integer
+  :group 'riece-mini)
+
 (defvar riece-mini-last-channel nil)
+(defvar riece-mini-backlog-history nil)
+(defvar riece-mini-backlog-shown nil)
 
 (defvar riece-mini-enabled nil)
 
@@ -66,9 +78,13 @@
 		      (active-minibuffer-window))))
     (unless (riece-message-type message)
       (setq riece-mini-last-channel (riece-message-target message)))
-    (riece-mini-message-no-log
-     "%s" (concat (format-time-string "%H:%M") " "
-		  (riece-format-message message t)))))
+    (let ((string (concat (format-time-string "%H:%M") " "
+			  (riece-format-message message t))))
+      (riece-mini-message-no-log "%s" string)
+      (when (>= (length riece-mini-backlog-history)
+		riece-mini-backlog-size)
+	(pop riece-mini-backlog-history))
+      (push string riece-mini-backlog-history))))
 
 (defun riece-mini-send-message (arg)
   "Send message using minibuffer.
@@ -94,9 +110,26 @@ If twice (C-u C-u), then ask the channel."
        (riece-make-message (riece-current-nickname) target
 			   message nil t)))))
 
+(defun riece-mini-show-backlog ()
+  "Send back logs to minibuffer."
+  (interactive)
+  (let ((max-mini-window-height riece-mini-backlog-size)
+	(resize-mini-windows t))
+    (when riece-mini-backlog-history
+      (setq riece-mini-backlog-shown t)
+      (riece-mini-message-no-log
+       (mapconcat 'identity (reverse riece-mini-backlog-history) "")))))
+
+(defun riece-mini-pre-command ()
+  (when riece-mini-backlog-shown
+    (let ((resize-mini-windows t))
+      (setq riece-mini-backlog-shown nil)
+      (riece-mini-message-no-log ""))))
+
 (defun riece-mini-insinuate ()
   (add-hook 'riece-after-display-message-functions
-	    'riece-mini-display-message-function))
+	    'riece-mini-display-message-function)
+  (add-hook 'pre-command-hook 'riece-mini-pre-command))
 
 (defun riece-mini-enable ()
   (setq riece-mini-enabled t))
