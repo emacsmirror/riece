@@ -46,7 +46,7 @@
   :group 'riece-log)
 
 (defcustom riece-log-lock-directory
-  (expand-file-name ".lock" riece-log-directory)
+  (expand-file-name "=lock" riece-log-directory)
   "*Lock directory for riece-log.
 It is created if there is at least one instance of Emacs running riece-log."
   :type 'directory
@@ -274,9 +274,10 @@ If LINES is t, insert today's logs entirely."
 
 (defun riece-log-disable ()
   (define-key riece-command-mode-map "\C-cd" nil)
-  (condition-case nil
-      (delete-directory riece-log-lock-directory)
-    (error))
+  (if riece-log-enabled
+      (condition-case nil
+	  (delete-directory riece-log-lock-directory)
+	(error)))
   (setq riece-log-enabled nil))
 
 (provide 'riece-log)
