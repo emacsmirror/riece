@@ -33,7 +33,7 @@
   (autoload 'lsdb-maybe-load-hash-tables "lsdb")
   (autoload 'lsdb-lookup-records "lsdb")
   (autoload 'lsdb-puthash "lsdb")
-  (autoload 'lsdb-remhash "lsdb")
+  (autoload 'lsdb-maphash "lsdb")
   (autoload 'lsdb-gethash "lsdb")
   (autoload 'lsdb-display-records "lsdb"))
 
@@ -42,21 +42,30 @@
 (defun riece-lsdb-update-cache (record)
   (let ((irc (cdr (assq 'irc record))))
     (while irc
-      (lsdb-puthash (car irc) (car record) riece-lsdb-cache)
+      (lsdb-puthash (car irc)
+		    (cons (car record)
+			  (lsdb-gethash (car irc) riece-lsdb-cache))
+		    riece-lsdb-cache)
       (setq irc (cdr irc)))))
 
 (defun riece-lsdb-delete-cache (record)
   (let ((irc (cdr (assq 'irc record))))
     (while irc
-      (lsdb-remhash (car irc) riece-lsdb-cache)
+      (lsdb-puthash (car irc)
+		    (delete (car record)
+			    (lsdb-gethash (car irc) riece-lsdb-cache))
+		    riece-lsdb-cache)
       (setq irc (cdr irc)))))
 
 (defun riece-lsdb-lookup-records (user)
   (lsdb-maybe-load-hash-tables)
-  (let ((name (lsdb-gethash (riece-format-identity user t)
-			    riece-lsdb-cache)))
-    (if name
-	(lsdb-lookup-records name))))
+  (let ((names (lsdb-gethash (riece-format-identity user t)
+			     riece-lsdb-cache))
+	records)
+    (while names
+      (setq records (append records (lsdb-lookup-records (car names))))
+      (setq names (cdr names)))
+    records))
 
 (defun riece-lsdb-display-records (user)
   (interactive
@@ -69,6 +78,28 @@
 	(lsdb-display-records records)
       (message "No entry for `%s'" (riece-format-identity user t)))))
 
+(defun riece-lsdb-add-user (user full-name)
+  (interactive
+   (let ((completion-ignore-case t)
+	 (table lsdb-hash-table))
+     (unless (vectorp table)
+       (setq table (make-vector 29 0))
+       (lsdb-maphash (lambda (key value)
+		       (intern key table))
+		     lsdb-hash-table))
+     (list (riece-completing-read-identity
+	    "User: "
+	    (riece-get-users-on-server (riece-current-server-name)))
+	   (completing-read "Full name: " table))))
+  (let* ((record (lsdb-gethash full-name lsdb-hash-table))
+	 (irc (riece-format-identity user t))
+	 (old (cdr (assq 'irc record))))
+    ;; Remove all properties before adding entry.
+    (set-text-properties 0 (length irc) nil irc)
+    (unless (member irc old)
+      (lsdb-update-record (list full-name)
+			  (list (cons 'irc (cons irc old)))))))
+
 (defun riece-lsdb-insinuate ()
   (require 'lsdb)
   (add-to-list 'lsdb-secondary-hash-tables
@@ -78,7 +109,9 @@
   (add-to-list 'lsdb-after-delete-record-functions
 	       'riece-lsdb-delete-cache)
   (define-key riece-command-mode-map
-    "\C-cL" 'riece-lsdb-display-records))
+    "\C-c\C-ll" 'riece-lsdb-display-records)
+  (define-key riece-command-mode-map
+    "\C-c\C-la" 'riece-lsdb-add-user))
 
 (provide 'riece-lsdb)
 
