@@ -545,14 +545,15 @@ Instead, these commands are available:
 		     (recent-keys)))
   (require 'reporter)
   (let ((reporter-prompt-for-summary-p t))
-    (when (y-or-n-p "Do you want to submit a report on Riece? ")
-      (reporter-submit-bug-report
-       "liece@unixuser.org"
-       (riece-version)
-       '(riece-debug)
-       nil
-       nil
-       "This bug report will be sent to the Riece Development Team,
+    (unless riece-debug
+      (error "Please turn on riece-debug and restart Riece."))
+    (reporter-submit-bug-report
+     "liece@unixuser.org"
+     (riece-version)
+     '(riece-debug)
+     nil
+     nil
+     "This bug report will be sent to the Riece Development Team,
 not to your local site managers!!
 
 Please write in Japanese or English, because the Riece maintainers do
@@ -610,7 +611,7 @@ are familiar with the debugger, to get a lisp back-trace.")
 	;; Insert recent minibuffer messages.
 	(insert "\nRecent messages (most recent first):\n"
 		"-----------------------------------\n"
-		recent-messages)))))
+		recent-messages))))
 
 (provide 'riece)
 
