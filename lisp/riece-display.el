@@ -343,7 +343,10 @@ Local to the buffer in `riece-buffer-list'.")
 			   (riece-user-get-operator riece-real-nickname))
 		      "O"
 		    "-")
-		  riece-user-indicator riece-real-nickname)))))
+		  riece-user-indicator
+		  (riece-format-identity
+		   (riece-make-identity riece-real-nickname riece-server-name)
+		   t))))))
   (walk-windows
    (lambda (window)
      (with-current-buffer (window-buffer window)

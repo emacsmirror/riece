@@ -1,5 +1,10 @@
 2004-11-22  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-display.el (riece-update-status-indicators): Format
+	riece-user-indicator as an identity.
+
+2004-11-22  Daiki Ueno  <ueno@unixuser.org>
+
 	* test/test-riece-alias.el (test-riece-alias-alist-1): New test case.
 	(test-riece-alias-alist-2): New test case.
 
