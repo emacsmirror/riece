@@ -61,6 +61,11 @@ If integer, flash back only this line numbers. t means all lines."
   :type 'symbol
   :group 'riece-log)
 
+(defcustom riece-log-file-name-coding-system file-name-coding-system
+  "*Coding system used to convert pathnames of log files."
+  :type 'symbol
+  :group 'riece-log)
+
 (defun riece-log-display-message-function (message)
   (let ((open-bracket
 	 (funcall riece-message-make-open-bracket-function message))
@@ -69,7 +74,8 @@ If integer, flash back only this line numbers. t means all lines."
 	(name
 	 (funcall riece-message-make-name-function message))
 	(file (riece-log-get-file (riece-message-target message)))
-	(coding-system-for-write riece-log-coding-system))
+	(coding-system-for-write riece-log-coding-system)
+	(file-name-coding-system riece-log-file-name-coding-system))
     (unless (file-directory-p (file-name-directory file))
       (make-directory (file-name-directory file) t))
     (write-region (concat (format-time-string "%H:%M") " "
@@ -101,7 +107,8 @@ If integer, flash back only this line numbers. t means all lines."
 
 (defun riece-log-flashback (identity)
   (when riece-log-flashback
-    (let ((file (riece-log-get-file identity)))
+    (let ((file (riece-log-get-file identity))
+	  (file-name-coding-system riece-log-file-name-coding-system))
       (when (file-exists-p file)
 	(let (string)
 	  (with-temp-buffer

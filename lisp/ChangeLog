@@ -1,7 +1,12 @@
 2003-12-17  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-log.el (riece-log-file-name-coding-system): New user option.
+	(riece-log-display-message-function): Bind file-name-coding-system.
+	(riece-log-flashback): Ditto.
+
 	* riece-log.el (riece-log-flashback): Use
 	riece-match-string-no-properties instead of match-string-no-properties.
+
 	* riece-xemacs.el (riece-match-string-no-properties): New function.
 	* riece-emacs.el (riece-match-string-no-properties): New alias.
 
