@@ -293,7 +293,7 @@ puts(\"#{" address " >> 24 & 0xFF}.#{" address " >> 16 & 0xFF}.#{"
 
 (defvar riece-dialogue-mode-map)
 (defun riece-rdcc-insinuate ()
-  (add-to-list 'riece-ctcp-additional-clientinfo "DCC" t)
+  (add-to-list 'riece-ctcp-additional-clientinfo "DCC")
   (add-hook 'riece-ctcp-dcc-request-hook 'riece-handle-dcc-request)
   (define-key riece-dialogue-mode-map "\C-ds" 'riece-command-dcc-send)
   (define-key riece-dialogue-mode-map "\C-dr" 'riece-command-dcc-receive))
