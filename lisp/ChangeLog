@@ -1,5 +1,20 @@
 2004-11-05  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-alias.el (riece-alias-alternate-separator): New user
+	option.
+	(riece-alias-use-atmark): Abolished.
+	(riece-alias-escape-alternate-separator): Renamed from
+	riece-alias-escape-atmark; use riece-alias-alternate-separator
+	instead of hard-coded "@".
+	(riece-alias-abbrev-alternate-separator): Renamed from
+	riece-alias-abbrev-atmark; use riece-alias-alternate-separator
+	instead of hard-coded "@".
+	(riece-alias-expand-alternate-separator): Renamed from
+	riece-alias-expand-atmark; use riece-alias-alternate-separator
+	instead of hard-coded "@".
+
+2004-11-05  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-alias.el (riece-alias-abbrev-atmark): Don't append "@" to
 	a channel on default server.
 
