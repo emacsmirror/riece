@@ -1,5 +1,8 @@
 2004-05-04  Daiki Ueno  <ueno@unixuser.org>
 
+	* Riece: Version 0.2.2 released.
+	* riece-version.el (riece-version-number): Bump up to 0.2.2.
+
 	* riece-ctlseq.el (riece-ctlseq-hide-controls): New user option.
 
 	* riece-keyword.el (riece-keyword): Fixed the parent custom group.
