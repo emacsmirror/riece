@@ -1,3 +1,10 @@
+2004-07-09  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-ignore.el (riece-startup-ignored-user-list): New user
+	option.
+	(riece-ignore-insinuate): Add identity objects from
+	riece-startup-ignored-user-list to riece-ignored-user-list.
+
 2004-07-07  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-commands.el (riece-command-enter-message-to-user): Signal

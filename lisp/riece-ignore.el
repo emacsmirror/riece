@@ -53,13 +53,18 @@ Otherwise, they are not removed from IRC buffers, but are hidden with
   :group 'riece-ignore
   :type 'string)
 
+(defcustom riece-startup-ignored-user-list nil
+  "List of user names whose messages are ignored."
+  :group 'riece-ignore
+  :type '(repeat string))
+
 (defvar riece-ignore-buffer nil)
-(defvar riece-ignored-user-list nil)
 
 (defvar riece-ignore-enabled nil)
 
 (defconst riece-ignore-description
   "Ignore users")
+(defvar riece-ignored-user-list nil)
 
 (defun riece-ignore-user-rename-signal-function (signal handback)
   (let ((pointer (riece-identity-member (car (riece-signal-args signal))
@@ -124,6 +129,8 @@ Otherwise, they are not removed from IRC buffers, but are hidden with
 
 (defvar riece-command-mode-map)
 (defun riece-ignore-insinuate ()
+  (setq riece-ignored-user-list
+	(mapcar #'riece-parse-identity riece-startup-ignored-user-list))
   (add-hook 'riece-message-filter-functions 'riece-ignore-message-filter))
 
 (defun riece-ignore-enable ()
