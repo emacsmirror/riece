@@ -1,3 +1,7 @@
+2004-09-13  OHASHI Akira  <bg66@koka-in.org>
+
+	* riece-mini.el (riece-mini-show-backlog): Fix for long messages.
+
 2004-09-12  OHASHI Akira  <bg66@koka-in.org>
 
 	* riece-mini.el (riece-mini-show-backlog): Protect 1st arg of

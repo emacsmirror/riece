@@ -117,12 +117,17 @@ If twice (C-u C-u), then ask the channel."
 (defun riece-mini-show-backlog ()
   "Send back logs to minibuffer."
   (interactive)
-  (let ((max-mini-window-height (1+ riece-mini-backlog-size))
-	(resize-mini-windows t))
-    (when riece-mini-backlog-history
-      (setq riece-mini-backlog-shown t)
-      (riece-mini-message-no-log "%s"
-       (mapconcat 'identity riece-mini-backlog-history "\n")))))
+  (when riece-mini-backlog-history
+    (let ((height (1+ riece-mini-backlog-size)))
+      (mapc #'(lambda (string)
+		(setq height (+ height
+				(/ (length string) (window-width)))))
+	    riece-mini-backlog-history)
+      (let ((max-mini-window-height height)
+	    (resize-mini-windows t))
+	(setq riece-mini-backlog-shown t)
+	(riece-mini-message-no-log
+	 "%s" (mapconcat #'identity riece-mini-backlog-history "\n"))))))
 
 (defun riece-mini-pre-command ()
   (when riece-mini-backlog-shown
