@@ -2,6 +2,10 @@
 
 	* riece-log.el (riece-log-enable): Add debug message.
 
+	* riece-keepalive.el: New add-on.
+	* COMPILE (riece-modules): Add riece-keepalive.
+	* Makefile.am (EXTRA_DIST): Add riece-keepalive.el.
+
 2005-02-04  OHASHI Akira  <bg66@koka-in.org>
 
 	* riece-biff.el (riece-biff-functions): Abolish.

@@ -75,7 +75,8 @@
 		riece-yank
 		riece-toolbar
 		riece-eval
-		riece-google))))
+		riece-google
+		riece-keepalive))))
 
 (defvar riece-icons
   '(riece-command-quit
