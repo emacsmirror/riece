@@ -67,7 +67,7 @@ RFC2812, 2.2 \"Character codes\" says:
   "Canonicalize identity PREFIX."
   (let ((i 0)
 	c)
-    (setq prefix (copy-sequence prefix))
+    (setq prefix (downcase prefix))
     (while (< i (length prefix))
       (if (setq c (cdr (assq (aref prefix i)
 			     riece-identity-prefix-case-pair-alist)))

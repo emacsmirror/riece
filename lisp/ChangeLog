@@ -1,3 +1,8 @@
+2004-01-21  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-identity.el (riece-identity-canonicalize-prefix): Convert
+	characters in prefix to lower case.
+
 2004-01-18  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-misc.el (riece-concat-user-status): New function.
