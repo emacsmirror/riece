@@ -134,7 +134,6 @@ If optional argument SERVICE is non-nil, open by the service name."
 					     (or password
 						 (riece-read-passwd
 						  "Password: ")))))
-      (setq riece-reconnect-with-password nil)
       (riece-process-send-string process
 				 (format "USER %s * * :%s\r\n"
 					 (user-real-login-name)
