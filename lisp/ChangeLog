@@ -3,8 +3,7 @@
 	* riece-log.el, riece-mini.el, riece-unread.el, riece-url.el:
 	Fix example setting, don't use 3rd arg of add-to-list.
 
-	* riece-coding.el (riece-default-coding-system): Fix default value
-	for XEmacs without mule.
+	* riece-coding.el (riece-default-coding-system): Fix default value.
 
 2003-06-17  OHASHI Akira  <bg66@koka-in.org>
 
