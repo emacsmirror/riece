@@ -1,3 +1,8 @@
+2004-07-04  Yoichi NAKAYAMA  <yoichi@geiin.org>
+
+	* riece-commands.el (riece-command-complete-user): current-word
+	can return nil (follow the change in emacs-cvs).
+
 2004-07-01  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece.el (riece-exit): Clear signal-slots.

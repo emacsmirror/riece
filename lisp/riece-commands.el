@@ -668,7 +668,7 @@ If prefix argument ARG is non-nil, toggle frozen status."
 			  (list (riece-format-identity user t)))
 			(riece-get-users-on-server
 			 (riece-current-server-name))))
-	 (current (current-word))
+	 (current (or (current-word) ""))
 	 (completion (try-completion current table))
 	 (all (all-completions current table)))
     (if (eq completion t)
