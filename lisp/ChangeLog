@@ -1,5 +1,10 @@
 2004-08-30  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-misc.el (riece-insert): Don't use 2nd argument WINDOW of
+	recenter since it is not supported by GNU Emacs.
+
+2004-08-30  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-misc.el (riece-insert): Use (recenter -1) to set window
 	point instead of doing so manually.
 
