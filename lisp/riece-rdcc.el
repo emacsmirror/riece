@@ -263,6 +263,17 @@ puts(\"#{" address " >> 24 & 0xFF}.#{" address " >> 16 & 0xFF}.#{"
     (set-process-filter process #'riece-rdcc-filter)
     (set-process-sentinel process #'riece-rdcc-sentinel)))
 
+(defun riece-rdcc-format-size (size)
+  (if (< size 1024)
+      (format "%0.1fB" size)
+    (setq size (/ size 1024.0))
+    (if (< size 1024)
+	(format "%0.1fKB" size)
+      (setq size (/ size 1024.0))
+      (if (< size 1024)
+	  (format "%0.1fMB" size)
+	(format "%0.1fGB" (/ size 1024.0))))))
+
 (defun riece-handle-dcc-request (prefix target message)
   (let ((case-fold-search t))
     (when (string-match
@@ -279,7 +290,14 @@ puts(\"#{" address " >> 24 & 0xFF}.#{" address " >> 16 & 0xFF}.#{"
 	(setq riece-rdcc-requests
 	      (cons (list user file address port size)
 		    riece-rdcc-requests))
-	(riece-insert-change buffer (format "DCC SEND from %s\n" user))
+	(message "%s"
+		 (substitute-command-keys
+		  (format
+		   "DCC SEND from %s, \\[riece-command-dcc-receive] to receive"
+		   user)))
+	(riece-insert-change buffer (format "DCC SEND from %s: %s (%s)\n"
+					    user file
+					    (riece-rdcc-format-size size)))
 	(riece-insert-change
 	 (if (and riece-channel-buffer-mode
 		  (not (eq buffer riece-channel-buffer)))
@@ -287,11 +305,13 @@ puts(\"#{" address " >> 24 & 0xFF}.#{" address " >> 16 & 0xFF}.#{"
 	   riece-dialogue-buffer)
 	 (concat
 	  (riece-concat-server-name
-	   (format "DCC SEND from %s (%s) to %s"
+	   (format "DCC SEND from %s (%s) to %s: %s (%s)"
 		   user
 		   (riece-strip-user-at-host
 		    (riece-prefix-user-at-host prefix))
-		   (riece-decode-coding-string target)))
+		   (riece-decode-coding-string target)
+		   file
+		   (riece-rdcc-format-size size)))
 	  "\n")))
       t)))
 

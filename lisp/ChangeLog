@@ -4,6 +4,9 @@
 	accepting a connection.
 	(riece-command-dcc-send): Use riece-completing-read-identity; take
 	an identity object in the 1st argument.
+	(riece-rdcc-format-size): New function.
+	(riece-handle-dcc-request): Use it.
+
 	* riece-ndcc.el (riece-command-dcc-send): Use
 	riece-completing-read-identity; take an identity object in the 1st
 	argument.
