@@ -105,9 +105,10 @@ This function is for internal use only."
 	    slots (symbol-value symbol))
       (while slots
 	(if (or (null (riece-slot-filter (car slots)))
-		(riece-ignore-errors (format "signal filter for \"%S\""
-					     signal-name)
-		  (funcall (riece-slot-filter (car slots)) signal)))
+		(riece-funcall-ignore-errors (format "signal filter for \"%S\""
+						     signal-name)
+					     (riece-slot-filter (car slots))
+					     signal))
 	    (riece-funcall-ignore-errors (format "slot function for \"%S\""
 						 signal-name)
 					 (riece-slot-function (car slots))
