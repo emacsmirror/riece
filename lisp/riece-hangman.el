@@ -138,7 +138,7 @@ The wordlist is read from `riece-hangman-words-file'."
 	 (targets (split-string (car parameters) ","))
 	 (message (nth 1 parameters))
 	 case-fold-search
-	 pointer word guessed)
+	 pointer word guessed index)
     (if (string-match riece-hangman-hello-regexp message)
 	(if (riece-identity-assoc user riece-hangman-player-context-alist t)
 	    (riece-hangman-reply
