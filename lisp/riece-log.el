@@ -45,13 +45,6 @@
   :type 'directory
   :group 'riece-log)
 
-(defcustom riece-log-lock-directory
-  (expand-file-name "=lock" riece-log-directory)
-  "*Lock directory for riece-log.
-It is created if there is at least one instance of Emacs running riece-log."
-  :type 'directory
-  :group 'riece-log)
-
 (defcustom riece-log-directory-map nil
   "*The map of channel name and directory name."
   :type '(repeat (cons (string :tag "Channel name")
@@ -96,6 +89,10 @@ If integer, flash back only this line numbers. t means all lines."
   :group 'riece-highlight-faces)
 (defvar riece-log-date-face 'riece-log-date-face)
 
+(defvar riece-log-lock-file nil
+  "Lock file for riece-log.
+It is created if there is at least one instance of Emacs running riece-log.")
+
 (defvar riece-log-enabled nil)
 
 (defconst riece-log-description
@@ -111,7 +108,8 @@ If integer, flash back only this line numbers. t means all lines."
 	  (make-directory (file-name-directory file) t))
 	(write-region (concat (format-time-string "%H:%M") " "
 			      (riece-format-message message))
-		      nil file t 0))))
+		      nil file t 0
+		      riece-log-lock-file))))
 
 (defun riece-log-get-file (identity)
   (expand-file-name
@@ -255,6 +253,13 @@ If LINES is t, insert today's logs entirely."
       '(riece-button)))
 
 (defun riece-log-insinuate ()
+  (make-directory riece-log-directory t)
+  (setq riece-log-lock-file
+	(expand-file-name (format "=lock.%s@%s.%d"
+				  (user-login-name)
+				  (system-name)
+				  (emacs-pid))
+			  riece-log-directory))
   ;; FIXME: Use `riece-after-insert-functions' for trapping change,
   ;; notice, wallops and so on. But must add argument.
   (add-hook 'riece-after-display-message-functions
@@ -265,19 +270,7 @@ If LINES is t, insert today's logs entirely."
 (defvar riece-command-mode-map)
 (defun riece-log-enable ()
   (define-key riece-command-mode-map "\C-cd" 'riece-log-open-directory)
-  (make-directory riece-log-directory t)
-  (condition-case nil
-      (progn
-	(make-directory riece-log-lock-directory)
-	(add-hook 'riece-exit-hook
-		  (lambda ()
-		    (condition-case nil
-			(delete-directory riece-log-lock-directory)
-		      (error))))
-	(setq riece-log-enabled t))
-    (error
-     (if riece-debug
-	 (message "Can't create lock directory for riece-log")))))
+  (setq riece-log-enabled t))
 
 (defun riece-log-disable ()
   (define-key riece-command-mode-map "\C-cd" nil)

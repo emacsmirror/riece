@@ -1,3 +1,10 @@
+2005-03-02  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-log.el (riece-log-lock-file): Define with defvar.
+	(riece-log-display-message-function): Use riece-log-lock-file as
+	LOCKNAME of write-region.
+	(riece-log-insinuate): Set riece-log-lock-file.
+
 2005-02-27  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-300.el (riece-handle-317-message): Format idle seconds in
