@@ -34,7 +34,7 @@
 
 (defvar riece-skk-kakutei-enabled nil)
 
-(defconst riece-highlight-description
+(defconst riece-skk-kakutei-description
   "Deny SKK's sankaku send")
 
 (defun riece-skk-kakutei-command-enter-message ()
