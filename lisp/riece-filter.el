@@ -87,29 +87,27 @@
     (goto-char (prog1 riece-read-point
 		 (setq riece-read-point (point))))
     (beginning-of-line)
-    (catch 'contiguous
-      (while (not (eobp))
-	(save-excursion
-	  (if (looking-at
-	       ":\\([^ ]+\\) +\\([0-5][0-9][0-9]\\) +\\([^ ]+\\) +\\(.*\\)\r\n")
-	      (riece-handle-numeric-reply
-	       (match-string 1)		;prefix
-	       (string-to-number (match-string 2)) ;number
-	       (match-string 3)		;name
-	       (match-string 4))		;reply string
-	    (if (looking-at "\\(:\\([^ ]+\\) +\\)?\\([^ ]+\\) +\\(.*\\)\r\n")
-		(riece-handle-message
-		 (match-string 2)	;optional prefix
-		 (match-string 3)	;command
-		 (match-string 4))	;params & trailing
-	      (if (looking-at ".*\r\n")
-		  (if riece-debug
-		      (message "Weird message from server: %s"
-			       (buffer-substring (point) (progn
-							   (end-of-line)
-							   (point)))))
-		(throw 'contiguous nil)))))
-	(forward-line)))))
+    (while (and (not (eobp))
+		(looking-at ".*\r\n"))	;the input line is not finished
+      (save-excursion
+	(if (looking-at
+	     ":\\([^ ]+\\) +\\([0-5][0-9][0-9]\\) +\\([^ ]+\\) +\\(.*\\)\r\n")
+	    (riece-handle-numeric-reply
+	     (match-string 1)		;prefix
+	     (string-to-number (match-string 2)) ;number
+	     (match-string 3)		;name
+	     (match-string 4))		;reply string
+	  (if (looking-at "\\(:\\([^ ]+\\) +\\)?\\([^ ]+\\) +\\(.*\\)\r\n")
+	      (riece-handle-message
+	       (match-string 2)	;optional prefix
+	       (match-string 3)	;command
+	       (match-string 4))	;params & trailing
+	    (if riece-debug
+		(message "Weird message from server: %s"
+			 (buffer-substring (point) (progn
+						     (end-of-line)
+						     (point))))))))
+      (forward-line))))
 
 (eval-when-compile
   (autoload 'riece-exit "riece"))
