@@ -154,23 +154,25 @@ the layout to the selected layout-name."
 
 (defun riece-command-topic (topic)
   (interactive
-   (riece-check-channel-commands-are-usable t)
-   (list (read-from-minibuffer
-	  "Topic: " (cons (or (riece-with-server-buffer
-				  (riece-identity-server riece-current-channel)
-				(riece-channel-get-topic
-				 (riece-identity-prefix
-				  riece-current-channel)))
-			      "")
-			  0))))
+   (progn
+     (riece-check-channel-commands-are-usable t)
+     (list (read-from-minibuffer
+	    "Topic: " (cons (or (riece-with-server-buffer
+				    (riece-identity-server
+				     riece-current-channel)
+				  (riece-channel-get-topic
+				   (riece-identity-prefix
+				    riece-current-channel)))
+				"")
+			    0)))))
   (riece-send-string (format "TOPIC %s :%s\r\n"
 			     (riece-identity-prefix riece-current-channel)
 			     topic)))
 
 (defun riece-command-invite (user)
   (interactive
-   (riece-check-channel-commands-are-usable t)
    (let ((completion-ignore-case t))
+     (riece-check-channel-commands-are-usable t)
      (list (completing-read
 	    "User: "
 	    (mapcar #'list (riece-get-users-on-server))))))
@@ -180,8 +182,8 @@ the layout to the selected layout-name."
 
 (defun riece-command-kick (user &optional message)
   (interactive
-   (riece-check-channel-commands-are-usable t)
    (let ((completion-ignore-case t))
+     (riece-check-channel-commands-are-usable t)
      (list (completing-read
 	    "User: "
 	    (mapcar #'list
@@ -271,31 +273,32 @@ the layout to the selected layout-name."
 
 (defun riece-command-set-operators (users &optional arg)
   (interactive
-   (riece-check-channel-commands-are-usable t)
-   (let ((operators
-	  (riece-with-server-buffer
-	      (riece-identity-server riece-current-channel)
-	    (riece-channel-get-operators
-	     (riece-identity-prefix riece-current-channel))))
-	 (completion-ignore-case t)
-	 users)
-     (if current-prefix-arg
+   (progn
+     (riece-check-channel-commands-are-usable t)
+     (let ((operators
+	    (riece-with-server-buffer
+		(riece-identity-server riece-current-channel)
+	      (riece-channel-get-operators
+	       (riece-identity-prefix riece-current-channel))))
+	   (completion-ignore-case t)
+	   users)
+       (if current-prefix-arg
+	   (setq users (riece-completing-read-multiple
+			"Users"
+			(mapcar #'list operators)))
 	 (setq users (riece-completing-read-multiple
 		      "Users"
-		      (mapcar #'list operators)))
-       (setq users (riece-completing-read-multiple
-		    "Users"
-		    (delq nil (mapcar
-			       (lambda (user)
-				 (unless (member user operators)
-				   (list user)))
-			       (riece-with-server-buffer
-				   (riece-identity-server
-				    riece-current-channel)
-				 (riece-channel-get-users
-				  (riece-identity-prefix
-				   riece-current-channel))))))))
-     (list users current-prefix-arg)))
+		      (delq nil (mapcar
+				 (lambda (user)
+				   (unless (member user operators)
+				     (list user)))
+				 (riece-with-server-buffer
+				     (riece-identity-server
+				      riece-current-channel)
+				   (riece-channel-get-users
+				    (riece-identity-prefix
+				     riece-current-channel))))))))
+       (list users current-prefix-arg))))
   (let (group)
     (while users
       (setq group (cons (car users) group)
@@ -313,31 +316,32 @@ the layout to the selected layout-name."
 
 (defun riece-command-set-speakers (users &optional arg)
   (interactive
-   (riece-check-channel-commands-are-usable t)
-   (let ((speakers
-	  (riece-with-server-buffer
-	      (riece-identity-server riece-current-channel)
-	    (riece-channel-get-speakers
-	     (riece-identity-prefix riece-current-channel))))
-	 (completion-ignore-case t)
-	 users)
-     (if current-prefix-arg
+   (progn
+     (riece-check-channel-commands-are-usable t)
+     (let ((speakers
+	    (riece-with-server-buffer
+		(riece-identity-server riece-current-channel)
+	      (riece-channel-get-speakers
+	       (riece-identity-prefix riece-current-channel))))
+	   (completion-ignore-case t)
+	   users)
+       (if current-prefix-arg
+	   (setq users (riece-completing-read-multiple
+			"Users"
+			(mapcar #'list speakers)))
 	 (setq users (riece-completing-read-multiple
 		      "Users"
-		      (mapcar #'list speakers)))
-       (setq users (riece-completing-read-multiple
-		    "Users"
-		    (delq nil (mapcar
-			       (lambda (user)
-				 (unless (member user speakers)
-				   (list user)))
-			       (riece-with-server-buffer
-				   (riece-identity-server
-				    riece-current-channel)
-				 (riece-channel-get-users
-				  (riece-identity-prefix
-				   riece-current-channel))))))))
-     (list users current-prefix-arg)))
+		      (delq nil (mapcar
+				 (lambda (user)
+				   (unless (member user speakers)
+				     (list user)))
+				 (riece-with-server-buffer
+				     (riece-identity-server
+				      riece-current-channel)
+				   (riece-channel-get-users
+				    (riece-identity-prefix
+				     riece-current-channel))))))))
+       (list users current-prefix-arg))))
   (let (group)
     (while users
       (setq group (cons (car users) group)
@@ -454,19 +458,20 @@ the layout to the selected layout-name."
 
 (defun riece-command-part (target &optional message)
   (interactive
-   (riece-check-channel-commands-are-usable)
-   (let* ((completion-ignore-case t)
-	 (target
-	  (riece-completing-read-identity
-	   (format "Channel/User (default %s): "
-		   (riece-format-identity riece-current-channel))
-	   riece-current-channels nil nil nil nil
-	   (riece-format-identity riece-current-channel)))
-	 message)
-     (if (and current-prefix-arg
-	      (riece-channel-p (riece-identity-prefix target)))
-	 (setq message (read-string "Message: ")))
-     (list target message)))
+   (progn
+     (riece-check-channel-commands-are-usable)
+     (let* ((completion-ignore-case t)
+	    (target
+	     (riece-completing-read-identity
+	      (format "Channel/User (default %s): "
+		      (riece-format-identity riece-current-channel))
+	      riece-current-channels nil nil nil nil
+	      (riece-format-identity riece-current-channel)))
+	    message)
+       (if (and current-prefix-arg
+		(riece-channel-p (riece-identity-prefix target)))
+	   (setq message (read-string "Message: ")))
+       (list target message))))
   (if (riece-identity-member target riece-current-channels)
       (if (riece-channel-p (riece-identity-prefix target))
 	  (riece-command-part-channel target message)
