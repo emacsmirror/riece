@@ -368,6 +368,7 @@ For a list of the generic commands type \\[riece-command-generic] ? RET.
   (interactive)
   (kill-all-local-variables)
 
+  (make-local-variable 'truncate-partial-width-windows)
   (setq riece-away-indicator "-"
 	riece-operator-indicator "-"
 	major-mode 'riece-command-mode
@@ -380,7 +381,8 @@ For a list of the generic commands type \\[riece-command-generic] ? RET.
 	   " "
 	   riece-user-indicator
 	   " "
-	   riece-channel-indicator)))
+	   riece-channel-indicator))
+	truncate-partial-width-windows nil)
   (riece-simplify-mode-line-format)
   (use-local-map riece-command-mode-map)
 

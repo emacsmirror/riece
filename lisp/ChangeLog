@@ -3,6 +3,8 @@
 	* riece.el (riece-dialogue-mode): Make
 	truncate-partial-width-windows local to channel buffers and set it
 	to nil.
+	(riece-command-mode): Ditto.
+
 	* riece-layout.el (riece-configure-windows): Don't affect
 	truncate-partial-width-windows.
 	(riece-configure-windows-top): Ditto.
