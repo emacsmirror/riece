@@ -1,3 +1,8 @@
+2003-12-04  OHASHI Akira  <bg66@koka-in.org>
+
+	* riece-server.el (riece-with-server-buffer): Store 'edebug-form-spec
+	property.
+
 2003-12-03  OHASHI Akira  <bg66@koka-in.org>
 
 	* riece-log.el (riece-log-requires): New function.

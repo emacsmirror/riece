@@ -103,6 +103,7 @@ the `riece-server-keyword-map' variable."
        (error "Server closed"))))
 
 (put 'riece-with-server-buffer 'lisp-indent-function 1)
+(put 'riece-with-server-buffer 'edebug-form-spec '(form body))
 
 (defun riece-process-send-string (process string)
   (with-current-buffer (process-buffer process)
