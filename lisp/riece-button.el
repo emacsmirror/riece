@@ -116,7 +116,8 @@ This function is used as a callback for a channel button."
   (let (group)
     (if (riece-region-active-p)
 	(save-excursion
-	  (riece-button-map-identity-region
+	  (riece-scan-property-region
+	   'riece-identity
 	   (region-beginning) (region-end)
 	   (lambda (start end)
 	     (setq group (cons (get-text-property start 'riece-identity)
@@ -147,7 +148,8 @@ This function is used as a callback for a channel button."
   (let (group)
     (if (riece-region-active-p)
 	(save-excursion
-	  (riece-button-map-identity-region
+	  (riece-scan-property-region
+	   'riece-identity
 	   (region-beginning) (region-end)
 	   (lambda (start end)
 	     (setq group (cons (get-text-property start 'riece-identity)
@@ -189,26 +191,10 @@ This function is used as a callback for a channel button."
     (define-key map [down-mouse-3] 'riece-identity-button-popup-menu)
     map))
 
-(defun riece-button-map-identity-region (start end function)
-  (catch 'done
-    (while t
-      ;; Search for the beginning of the button region.
-      (unless (get-text-property start 'riece-identity)
-	(setq start (next-single-property-change start 'riece-identity
-						 nil end)))
-      (if (= start end)
-	  (throw 'done nil))
-      ;; Search for the end of the button region.
-      (let ((button-end (next-single-property-change start 'riece-identity
-						     nil end)))
-	(if (= button-end end)
-	    (throw 'done nil))
-	(funcall function start button-end)
-	(setq start button-end)))))
-
 (defvar riece-identity-button-map)
 (defun riece-button-add-identity-button (start end)
-  (riece-button-map-identity-region
+  (riece-scan-property-region
+   'riece-identity
    start end
    (lambda (start end)
      (let ((inhibit-read-only t)

@@ -29,6 +29,8 @@
 
 ;;; Code:
 
+(require 'riece-message)
+
 (defgroup riece-keyword nil
   "Highlight keyword in IRC buffer."
   :group 'riece-vars)
@@ -69,25 +71,9 @@
 	  (setq index (match-end 0)))))
   message)
 
-(defun riece-keyword-map-region (start end function)
-  (catch 'done
-    (while t
-      ;; Search for the beginning of the button region.
-      (unless (get-text-property start 'riece-keyword)
-	(setq start (next-single-property-change start 'riece-keyword
-						 nil end)))
-      (if (= start end)
-	  (throw 'done nil))
-      ;; Search for the end of the button region.
-      (let ((button-end (next-single-property-change start 'riece-keyword
-						     nil end)))
-	(if (= button-end end)
-	    (throw 'done nil))
-	(funcall function start button-end)
-	(setq start button-end)))))
-
 (defun riece-keyword-scan-region (start end)
-  (riece-keyword-map-region
+  (riece-scan-property-region
+   'riece-keyword
    start end
    (lambda (start end)
      (riece-overlay-put (riece-make-overlay start end)

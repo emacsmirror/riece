@@ -85,9 +85,8 @@ Local to the buffer in `riece-buffer-list'.")
       (erase-buffer)
       (while channels
 	(if (car channels)
-	    (let ((point (point)))
-	      (insert (riece-format-channel-list-line
-		       index (car channels)))))
+	    (insert (riece-format-channel-list-line
+		     index (car channels))))
 	(setq index (1+ index)
 	      channels (cdr channels))))))
 

@@ -38,6 +38,21 @@
       (setq riece-buffer-list (cons buffer riece-buffer-list)))
     buffer))
 
+(defun riece-scan-property-region (property start end function)
+  (catch 'done
+    (while t
+      ;; Search for the beginning of the property region.
+      (unless (get-text-property start property)
+	(setq start (next-single-property-change start property nil end)))
+      (if (= start end)
+	  (throw 'done nil))
+      ;; Search for the end of the property region.
+      (let ((region-end (next-single-property-change start property nil end)))
+	(if (= region-end end)
+	    (throw 'done nil))
+	(funcall function start region-end)
+	(setq start region-end)))))
+
 (defun riece-insert (buffers string)
   (unless (listp buffers)
     (setq buffers (list buffers)))

@@ -1,5 +1,18 @@
 2003-10-13  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-button.el (riece-button-map-identity-region): Abolish.
+	(riece-user-button-set-operators): Use riece-scan-property-region.
+	(riece-user-button-set-speakers): Ditto.
+	(riece-button-add-identity-button): Ditto.
+
+	* riece-keyword.el: Require 'riece-message.
+	(riece-keyword-map-region): Abolish.
+	(riece-keyword-scan-region): Use riece-scan-property-region.
+
+	* riece-misc.el (riece-scan-property-region): New function.
+
+2003-10-13  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-xemacs.el (riece-make-overlay): New alias.
 	(riece-overlay-put): New alias.
 	(riece-overlay-start): New alias.
