@@ -405,7 +405,7 @@
 	(riece-user-toggle-away user away)
 	(riece-emit-signal 'riece-user-toggle-away
 			   (riece-make-identity user riece-server-name)
-			   away))
+			   away)
 	(riece-user-toggle-operator user operator)
 	(riece-emit-signal 'riece-user-toggle-operator
 			   (riece-make-identity user riece-server-name)

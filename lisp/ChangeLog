@@ -1,5 +1,8 @@
 2004-02-27  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-display.el (riece-emit-signal): Create signal object
+	internally.
+
 	* riece-message.el (riece-display-message-1): Emit
 	'riece-buffer-toggle-freeze signal.
 
