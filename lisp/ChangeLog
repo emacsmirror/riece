@@ -1,3 +1,8 @@
+2003-10-18  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-globals.el (riece-channel-regexp): Accept channel names
+	beginning with "!!".
+
 2003-10-16  TAKAHASHI Kaoru  <kaoru@kaisei.org>
 
 	* riece-commands.el (riece-command-universal-server-name-argument):
