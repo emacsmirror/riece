@@ -67,7 +67,8 @@
   "Non nil if add-ons are already insinuated.")
 
 (defvar riece-select-keys
-  `("1" riece-command-switch-to-channel-by-number-1
+  `("#" riece-command-switch-to-channel-by-number
+    "1" riece-command-switch-to-channel-by-number-1
     "2" riece-command-switch-to-channel-by-number-2
     "3" riece-command-switch-to-channel-by-number-3
     "4" riece-command-switch-to-channel-by-number-4
@@ -363,6 +364,7 @@ If optional argument CONFIRM is non-nil, ask which IRC server to connect."
 	riece-channel-list-indicator "No channel"
 	riece-away-indicator "-"
 	riece-operator-indicator "-"
+	riece-channel-status-indicator "-"
 	riece-freeze-indicator "-")
   (delete-other-windows)
   (run-hooks 'riece-exit-hook))
@@ -384,6 +386,7 @@ For a list of the generic commands type \\[riece-command-generic] ? RET.
 
   (setq riece-away-indicator "-"
 	riece-operator-indicator "-"
+	riece-channel-status-indicator "-"
 	major-mode 'riece-command-mode
 	mode-name "Command"
 	mode-line-buffer-identification
@@ -391,6 +394,7 @@ For a list of the generic commands type \\[riece-command-generic] ? RET.
 	 '("Riece: "
 	   riece-away-indicator
 	   riece-operator-indicator
+	   riece-channel-status-indicator
 	   " "
 	   riece-user-indicator
 	   " "
@@ -426,6 +430,7 @@ Instead, these commands are available:
   (setq riece-freeze riece-default-freeze
 	riece-away-indicator "-"
 	riece-operator-indicator "-"
+	riece-channel-status-indicator "-"
 	major-mode 'riece-dialogue-mode
 	mode-name "Dialogue"
 	mode-line-buffer-identification
@@ -434,6 +439,7 @@ Instead, these commands are available:
 	   riece-away-indicator
 	   riece-operator-indicator
 	   riece-freeze-indicator
+	   riece-channel-status-indicator
 	   " "
 	   riece-channel-list-indicator " "))
 	truncate-lines nil
@@ -463,6 +469,7 @@ Instead, these commands are available:
 	   riece-away-indicator
 	   riece-operator-indicator
 	   riece-freeze-indicator
+	   riece-channel-status-indicator
 	   " "
 	   riece-long-channel-indicator))))
 

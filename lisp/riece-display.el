@@ -43,6 +43,7 @@ Local to the buffer in `riece-buffer-list'.")
 
 (defvar riece-update-indicator-functions
   '(riece-update-status-indicators
+    riece-update-channel-status-indicator
     riece-update-channel-indicator
     riece-update-long-channel-indicator
     riece-update-channel-list-indicator)
@@ -70,6 +71,7 @@ Local to the buffer in `riece-buffer-list'.")
    'channel-switched
    (lambda (signal handback)
      (riece-update-status-indicators)
+     (riece-update-channel-status-indicator)
      (riece-update-channel-indicator)
      (riece-update-long-channel-indicator)
      (force-mode-line-update t)
@@ -199,6 +201,7 @@ Local to the buffer in `riece-buffer-list'.")
   (riece-connect-signal
    'channel-operators-changed
    (lambda (signal handback)
+     (riece-update-channel-status-indicator)
      (riece-emit-signal 'user-list-changed riece-current-channel))
    (lambda (signal)
      (and riece-current-channel
@@ -207,6 +210,7 @@ Local to the buffer in `riece-buffer-list'.")
   (riece-connect-signal
    'channel-speakers-changed
    (lambda (signal handback)
+     (riece-update-channel-status-indicator)
      (riece-emit-signal 'user-list-changed riece-current-channel))
    (lambda (signal)
      (and riece-current-channel
@@ -325,20 +329,21 @@ Local to the buffer in `riece-buffer-list'.")
     (setq riece-channel-list-indicator "No channel")))
 
 (defun riece-update-status-indicators ()
-  (if riece-current-channel
-      (with-current-buffer riece-command-buffer
-	(riece-with-server-buffer (riece-identity-server riece-current-channel)
-	  (setq riece-away-indicator
-		(if (and riece-real-nickname
-			 (riece-user-get-away riece-real-nickname))
-		    "A"
-		  "-")
-		riece-operator-indicator
-		(if (and riece-real-nickname
-			 (riece-user-get-operator riece-real-nickname))
-		    "O"
-		  "-")
-		riece-user-indicator riece-real-nickname))))
+  (let ((server-name (riece-current-server-name)))
+    (if server-name
+	(with-current-buffer riece-command-buffer
+	  (riece-with-server-buffer server-name
+	    (setq riece-away-indicator
+		  (if (and riece-real-nickname
+			   (riece-user-get-away riece-real-nickname))
+		      "A"
+		    "-")
+		  riece-operator-indicator
+		  (if (and riece-real-nickname
+			   (riece-user-get-operator riece-real-nickname))
+		      "O"
+		    "-")
+		  riece-user-indicator riece-real-nickname)))))
   (walk-windows
    (lambda (window)
      (with-current-buffer (window-buffer window)
@@ -350,6 +355,29 @@ Local to the buffer in `riece-buffer-list'.")
 		   (if riece-freeze
 		       "F"
 		     "-"))))))))
+
+(defun riece-update-channel-status-indicator ()
+  (if (and riece-current-channel
+	   (riece-channel-p (riece-identity-prefix riece-current-channel)))
+      (let ((users
+	     (riece-with-server-buffer (riece-identity-server
+					riece-current-channel)
+	       (riece-channel-get-users (riece-identity-prefix
+					 riece-current-channel))))
+	    (nickname
+	     (riece-with-server-buffer (riece-identity-server
+					riece-current-channel)
+	       riece-real-nickname)))
+	(with-current-buffer riece-command-buffer
+	  (setq riece-channel-status-indicator
+		(if nickname
+		    (let ((user (cdr (riece-identity-assoc nickname users t))))
+		      (if (memq ?o user)
+			  "@"
+			(if (memq ?v user)
+			    "+")
+			"-"))
+		  "-"))))))
 
 (defun riece-update-buffers (&optional buffers)
   (unless buffers

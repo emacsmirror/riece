@@ -1,3 +1,21 @@
+2004-11-14  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece.el (riece-exit): Reset riece-channel-status-indicator.
+	(riece-command-mode): Display riece-channel-status-indicator.
+	(riece-dialogue-mode): Ditto.
+	(riece-channel-mode): Ditto.
+
+	* riece-display.el (riece-update-channel-status-indicator): New
+	function.
+	(riece-update-indicator-functions): Add it.
+
+	* riece-globals.el (riece-channel-status-indicator): New indicator.
+
+2004-11-13  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece.el (riece-select-keys): Bind
+	riece-command-switch-to-channel-by-number to "#".
+
 2004-11-11  Masatake YAMATO  <jet@gyve.org>
 
 	* riece-yank.el (riece-command-yank): Fix a typo in comments.

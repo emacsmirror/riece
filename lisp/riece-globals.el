@@ -156,7 +156,10 @@ riece-channel-indicator.")
 user is away.")
 (defvar riece-operator-indicator "-"
   "String displayed on the modeline to allow the user to tell if the
-user is a operator.")
+user is an operator.")
+(defvar riece-channel-status-indicator "-"
+  "String displayed on the modeline to allow the user to tell if the
+user's status on the current channel.")
 
 ;;; Buffers:
 (defvar riece-command-buffer nil
