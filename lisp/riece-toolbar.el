@@ -52,31 +52,34 @@
     item))
 
 (if (featurep 'xemacs)
-    (progn
-      (defun riece-make-toolbar-from-menu (items menu-items map)
-	(let ((pointer items)
-	      toolbar
-	      file
-	      menu-item)
-	  (while pointer
-	    (setq file (locate-file (symbol-name (car pointer))
-				    load-path
-				    '(".xpm" ".pbm" ".xbm"))
-		  menu-item (riece-toolbar-find-menu-item (car pointer)))
-	    (if (and file (file-exists-p file))
-		(setq toolbar
-		      (toolbar-add-item
-		       toolbar
-		       (toolbar-new-button
-			file
-			(car pointer)
-			(if menu-item
-			    (aref menu-item 0)
-			  (symbol-name (car pointer)))))))
-	    (setq pointer (cdr pointer)))
-	  toolbar))
-      (defun riece-set-toolbar (toolbar)
-	(set-specifier default-toolbar toolbar (current-buffer))))
+    (if (featurep 'toolbar)
+	(progn
+	  (defun riece-make-toolbar-from-menu (items menu-items map)
+	    (let ((pointer items)
+		  toolbar
+		  file
+		  menu-item)
+	      (while pointer
+		(setq file (locate-file (symbol-name (car pointer))
+					load-path
+					'(".xpm" ".pbm" ".xbm"))
+		      menu-item (riece-toolbar-find-menu-item (car pointer)))
+		(if (and file (file-exists-p file))
+		    (setq toolbar
+			  (toolbar-add-item
+			   toolbar
+			   (toolbar-new-button
+			    file
+			    (car pointer)
+			    (if menu-item
+				(aref menu-item 0)
+			      (symbol-name (car pointer)))))))
+		(setq pointer (cdr pointer)))
+	      toolbar))
+	  (defun riece-set-toolbar (toolbar)
+	    (set-specifier default-toolbar toolbar (current-buffer))))
+      (defalias 'riece-make-toolbar-from-menu 'ignore)
+      (defalias 'riece-set-toolbar 'ignore))
   (defun riece-make-toolbar-from-menu (items menu-items map)
     (let ((pointer items)
 	  (tool-bar-map (make-sparse-keymap)))
