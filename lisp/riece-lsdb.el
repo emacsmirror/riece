@@ -62,6 +62,8 @@
 
 (defun riece-lsdb-lookup-records (user)
   (lsdb-maybe-load-hash-tables)
+  (unless riece-lsdb-cache
+    (lsdb-rebuild-secondary-hash-tables))
   (let ((names (lsdb-gethash (riece-format-identity user t)
 			     riece-lsdb-cache))
 	records)

@@ -1,3 +1,8 @@
+2004-02-14  Yoichi NAKAYAMA  <yoichi@geiin.org>
+
+	* riece-lsdb.el (riece-lsdb-lookup-records): Build
+	riece-lsdb-cache if necessary.
+
 2004-01-29  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-ctcp.el (riece-handle-ctcp-version-request): Format target
