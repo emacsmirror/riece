@@ -12,6 +12,10 @@ AC_PATH_PACKAGEDIR
 
 AM_CONDITIONAL(XEMACS, test ${EMACS_FLAVOR} = xemacs)
 
+AC_EMACS_LISP(mule, (if (featurep (quote mule)) \"mule\" \"nomule\"))
+AM_CONDITIONAL(XEMACS_NOMULE, test ${EMACS_FLAVOR} = xemacs-nomule -a \
+	$mule = mule)
+
 AC_OUTPUT(Makefile \
 lisp/Makefile
 lisp/test/Makefile
