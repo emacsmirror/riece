@@ -1,5 +1,12 @@
 2004-03-07  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-display.el: Rename some signals.
+
+	* riece-commands.el (riece-command-set-operators): Reverse user-list.
+	(riece-command-set-speakers): Ditto.
+
+2004-03-07  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-unread.el
 	(riece-unread-format-identity-for-channel-list-indicator): Escape
 	% -> %%; use riece-propertize-modeline-string.

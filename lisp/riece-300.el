@@ -52,11 +52,11 @@
 	    (if operator
 		(setq status (cons "operator" status)))
 	    (riece-user-toggle-away user away)
-	    (riece-emit-signal 'riece-user-toggle-away
+	    (riece-emit-signal 'user-away-changed
 			       (riece-make-identity user riece-server-name)
 			       away)
 	    (riece-user-toggle-operator user operator)
-	    (riece-emit-signal 'riece-user-toggle-operator
+	    (riece-emit-signal 'user-operator-changed
 			       (riece-make-identity user riece-server-name)
 			       operator)
 	    (riece-insert-info
@@ -93,7 +93,7 @@
       (let ((user (match-string 1 string))
 	    (message (substring string (match-end 0))))
 	(riece-user-toggle-away user t)
-	(riece-emit-signal 'riece-user-toggle-away
+	(riece-emit-signal 'user-away-changed
 			   (riece-make-identity user riece-server-name)
 			   t)
 	(riece-insert-info
@@ -109,14 +109,14 @@
 
 (defun riece-handle-305-message (prefix number name string)
   (riece-user-toggle-away riece-real-nickname nil)
-  (riece-emit-signal 'riece-user-toggle-away
+  (riece-emit-signal 'user-away-changed
 		      (riece-make-identity riece-real-nickname
 					   riece-server-name)
 		      nil))
 
 (defun riece-handle-306-message (prefix number name string)
   (riece-user-toggle-away riece-real-nickname t)
-  (riece-emit-signal 'riece-user-toggle-away
+  (riece-emit-signal 'user-away-changed
 		     (riece-make-identity riece-real-nickname
 					  riece-server-name)
 		     t))
@@ -296,7 +296,7 @@
 	(while modes
 	  (riece-channel-toggle-mode channel (car modes) (eq toggle ?+))
 	  (setq modes (cdr modes)))
-	(riece-emit-signal 'riece-channel-toggle-modes
+	(riece-emit-signal 'channel-modes-changed
 			   (riece-make-identity channel riece-server-name)
 			   modes (eq toggle ?+))
 	(let* ((channel-identity (riece-make-identity channel
@@ -336,7 +336,7 @@
 		     (riece-format-identity channel-identity t)
 		     message))
 	    "\n")))
-	(riece-emit-signal 'riece-channel-set-topic
+	(riece-emit-signal 'channel-topic-changed
 			    channel-identity
 			    (unless remove
 			      message)))))
@@ -403,11 +403,11 @@
 	    (setq status (nreverse status)))
 	(riece-naming-assert-join nick channel)
 	(riece-user-toggle-away user away)
-	(riece-emit-signal 'riece-user-toggle-away
+	(riece-emit-signal 'user-away-changed
 			   (riece-make-identity user riece-server-name)
 			   away)
 	(riece-user-toggle-operator user operator)
-	(riece-emit-signal 'riece-user-toggle-operator
+	(riece-emit-signal 'user-operator-changed
 			   (riece-make-identity user riece-server-name)
 			   operator)
 	(riece-insert-info buffer (concat (riece-concat-user-status

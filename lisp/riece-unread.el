@@ -69,7 +69,7 @@
 				     riece-unread-channels))
     (setq riece-unread-channels
 	  (cons (riece-message-target message) riece-unread-channels))
-    (riece-emit-signal 'riece-update-buffer riece-channel-list-buffer)))
+    (riece-emit-signal 'channel-list-changed)))
 
 (defun riece-unread-after-switch-to-channel-function (last)
   (setq riece-unread-channels

@@ -302,7 +302,7 @@ the layout to the selected layout-name."
 		     ?-
 		   ?+)
 		 (make-string (length group) ?o)
-		 (mapconcat #'identity group " ")))
+		 (mapconcat #'identity (nreverse group) " ")))
 	(setq group nil)))))
 
 (defun riece-command-set-speakers (users &optional arg)
@@ -335,7 +335,7 @@ the layout to the selected layout-name."
 		     ?-
 		   ?+)
 		 (make-string (length group) ?v)
-		 (mapconcat #'identity group " ")))
+		 (mapconcat #'identity (nreverse group) " ")))
 	(setq group nil)))))
 
 (defun riece-command-send-message (message notice)
@@ -559,7 +559,7 @@ If prefix argument ARG is non-nil, toggle frozen status."
     (setq riece-freeze (if arg
 			   (< 0 (prefix-numeric-value arg))
 			 (not riece-freeze)))
-    (riece-emit-signal 'riece-buffer-toggle-freeze
+    (riece-emit-signal 'buffer-freeze-changed
 		       (current-buffer) riece-freeze)))
 
 (defun riece-command-toggle-own-freeze (&optional arg)
@@ -576,7 +576,7 @@ If prefix argument ARG is non-nil, toggle frozen status."
 	  (not (eq riece-freeze 'own)))
 	(setq riece-freeze 'own)
       (setq riece-freeze nil)))
-  (riece-emit-signal 'riece-buffer-toggle-freeze
+  (riece-emit-signal 'buffer-freeze-changed
 		     (current-buffer) riece-freeze))
 
 (eval-when-compile

@@ -323,7 +323,7 @@
 	 (user-identity (riece-make-identity user riece-server-name))
 	 (channel-identity (riece-make-identity channel riece-server-name)))
     (riece-channel-set-topic (riece-get-channel channel) topic)
-    (riece-emit-signal 'riece-channel-set-topic
+    (riece-emit-signal 'channel-topic-changed
 		       channel-identity topic)
     (let ((buffer (riece-channel-buffer channel-identity)))
       (riece-insert-change
@@ -371,7 +371,7 @@
       (riece-channel-toggle-operator channel
 				     (nth 2 (car modes))
 				     (nth 1 (car modes)))
-      (riece-emit-signal 'riece-channel-toggle-operator
+      (riece-emit-signal 'channel-operators-changed
 			 (riece-make-identity channel
 					      riece-server-name)
 			 (riece-make-identity (nth 2 (car modes))
@@ -381,7 +381,7 @@
       (riece-channel-toggle-speaker channel
 				    (nth 2 (car modes))
 				    (nth 1 (car modes)))
-      (riece-emit-signal 'riece-channel-toggle-speaker
+      (riece-emit-signal 'channel-speakers-changed
 			 (riece-make-identity channel
 					      riece-server-name)
 			 (riece-make-identity (nth 2 (car modes))
@@ -402,7 +402,7 @@
      (t
       (apply #'riece-channel-toggle-mode channel (car modes))))
     (setq modes (cdr modes)))
-  (riece-emit-signal 'riece-channel-set-modes
+  (riece-emit-signal 'channel-modes-changed
 		     (riece-make-identity channel
 					  riece-server-name)))
 

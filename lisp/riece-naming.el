@@ -32,7 +32,7 @@
 (defun riece-naming-assert-join (user-name channel-name)
   (riece-user-toggle-channel user-name channel-name t)
   (riece-channel-toggle-user channel-name user-name t)
-  (riece-emit-signal 'riece-naming-assert-join
+  (riece-emit-signal 'user-joined-channel
 		     (riece-make-identity user-name
 					  riece-server-name)
 		     (riece-make-identity channel-name
@@ -43,7 +43,7 @@
   (riece-channel-toggle-user channel-name user-name nil)
   (riece-channel-toggle-operator channel-name user-name nil)
   (riece-channel-toggle-speaker channel-name user-name nil)
-  (riece-emit-signal 'riece-naming-assert-part
+  (riece-emit-signal 'user-left-channel
 		     (riece-make-identity user-name
 					  riece-server-name)
 		     (riece-make-identity channel-name
@@ -63,7 +63,7 @@
 	  (setcar user new-name))
       (setq channels (cdr channels)))
     (riece-rename-user old-name new-name))
-  (riece-emit-signal 'riece-naming-assert-rename
+  (riece-emit-signal 'user-renamed
 		     (riece-make-identity old-name riece-server-name)
 		     (riece-make-identity new-name riece-server-name)))
 
@@ -86,8 +86,7 @@
 			(cdr (car users)))
 		  user-identity-list)
 	    users (cdr users)))
-    (riece-emit-signal 'riece-naming-assert-channel-users
-		       (nreverse user-identity-list) channel-identity)))
+    (riece-emit-signal 'user-list-changed)))
 
 (provide 'riece-naming)
 
