@@ -64,19 +64,31 @@ Riece is a program to participate in IRC (Internet Relay Chat) from Emacs.
 @chapter Overview
 
 Riece is a full rewrite of the predecessor product "Liece" (whose code
-has been unmaintainable for a long time), while providing user interface
-compatible with Liece.
+has been unmaintainable for a long time), while providing a user
+interface (mostly) compatible with Liece.
 
 For now it does not have rich functions as an IRC client, but there are
 noteworthy improvements as compared with Liece:
 
 @itemize @bullet
-@item Several IRC servers may be used at the same time.
-@item Essential features can be built upon the extension framework (called "add-on") capable of dependency tracking.
-@item Installation is easy.  Riece doesn't depend on other packages.
-@item Setup is easy.  Automatically save/restore the configuration.
-@item Step-by-step instructions (currently written in Japanese) are included.
-@item Mostly compliant with the latest IRC client protocol (RFC 2812).
+@item
+Several IRC servers may be used at the same time.
+
+@item
+Essential features can be built upon the extension framework (called
+"add-on") capable of dependency tracking.
+
+@item
+Installation is easy.  Riece doesn't depend on other packages.
+
+@item
+Setup is easy.  Automatically save/restore the configuration.
+
+@item
+Step-by-step instructions are included.
+
+@item
+Mostly compliant with the latest IRC client protocol (RFC 2812).
 @end itemize
 
 For more details, please look at the following pages:
@@ -99,7 +111,7 @@ For more details, please look at the following pages:
 @node Required Environments, Installation, Getting started, Getting started
 @section Required Environments
 
-We have checked this version working on the following environments.
+We checked this version working on the following environments.
 
 @itemize @bullet
 @item Emacs 20.7 or later
@@ -129,7 +141,8 @@ make install-package
 @end example
 
 If you do not so, it is necessery to add autoload setting to your Emacs
-startup file to be able to start Riece by typing @kbd{M-x riece}.
+startup file (probably @file{~/.emacs}) to be able to start Riece by
+typing @kbd{M-x riece}.
 
 @lisp
 (autoload 'riece "riece" "Start Riece" t)
@@ -138,7 +151,7 @@ startup file to be able to start Riece by typing @kbd{M-x riece}.
 @node Startup File,  , Installation, Getting started
 @section Startup file
 
-In this section, we describe Riece's startup files.
+In this section we describe Riece's startup files.
 
 If you are attempting to use Riece by way of trial, nothing needed to be
 written in startup files.  Thus you can skip this section.
@@ -158,17 +171,17 @@ Users can edit this file to configure their own settings (by default, it
 is located at @file{~/.riece/init})
 @end table
 
-At startup, Riece will first read @code{riece-saved-variables-file} ,
+At startup, Riece will first read @code{riece-saved-variables-file},
 and then @code{riece-variables-file}.  That is to say, automatically
 saved variables may be refered/modified by user configuration.
 
 @node Basic usage, Index, Getting started, Top
 @chapter Basic usage
 
-To start Riece, type @kbd{M-x riece}.  Then you need to select an IRC
-server to connect.  Typical IRC network consists of several IRC servers
-and you can pick up appropriate one.  Most of them provide a list of
-available servers on their Web pages:
+To start Riece, you just type @kbd{M-x riece}.  Then you will prompted
+for the name of an IRC server.  A typical IRC network may consist of
+several IRC servers and you will need to pick up appropriate one.  Most
+of IRC networks provide a list of available servers on their Web pages:
 
 @itemize @bullet
 @item http://irc.kyoto-u.ac.jp
@@ -181,12 +194,12 @@ default, your nickname is generated from your login name.
 @vindex riece-nickname
 
 After successfully connecting to an IRC server, you can join a channel
-and talk with people in there.  To join a channel, type @kbd{C-c j}.
-There is the channel @samp{#Riece} on IRCnet, so feel free to use it for
-testing.
+and talk with people there.  To join a channel, type @kbd{C-c j}.  By
+the way there is a channel called @samp{#Riece} on IRCnet, so feel free
+to use it for testing.
 
-Now you can send the current line by simply hitting Enter key.  Messages
-from other people will appear on the top-left window.
+Now you enter a message and it will be seen by everyone else on the
+channel.  Messages from other people will appear on the top-left window.
 
 @menu
 * Windows::                     
@@ -198,7 +211,7 @@ from other people will appear on the top-left window.
 @node Windows, Indicators, Basic usage, Basic usage
 @section Windows
 
-By default, Riece uses 5 window to inform user of his status:
+By default, Riece uses 5 windows to inform user of his status:
 
 @example
 +-----+-----------------+
