@@ -17,8 +17,8 @@ EXTRA_DIST = COMPILE ChangeLog ChangeLog.Liece \
 	riece-biff.el riece-kakasi.el riece-foolproof.el riece-yank.el \
 	riece-toolbar.el riece-eval.el riece-google.el riece-keepalive.el \
 	url-riece.el \
-	riece-command-quit.xpm riece-command-previous-channel.xpm \
-	riece-command-next-channel.xpm riece-submit-bug-report.xpm
+	riece-command-previous-channel.xpm riece-command-next-channel.xpm \
+	riece-submit-bug-report.xpm
 
 CLEANFILES = auto-autoloads.el custom-load.el *.elc
 FLAGS ?= -batch -q -no-site-file
