@@ -51,7 +51,7 @@
   '("\
 require 'io/nonblock'
 socket = TCPSocket.new(" host ", " service ")
-$stdout.write(\"NOTICE CONNECTED #{$$}\r\n\")
+$stdout.write(\"NOTICE CONNECTED #{$$}\\r\\n\")
 $stdout.flush
 $stdout.nonblock = true
 trap('STOP', 'IGNORE')
@@ -61,12 +61,12 @@ buf = ''
 loop do
   rfds, wfds, = select([socket, $stdin], wfds_in)
   unless wfds.empty?
+    until buf.length <= " max-buffer-size "
+      i = buf.index(\"\\r\\n\")
+      break unless i
+      buf.slice!(0 .. i + 1)
+    end
     begin
-      until buf.length <= " max-buffer-size "
-        i = buf.index(\"\r\n\")
-        break unless i
-        buf.slice!(0 .. i + 1)
-      end
       until buf.empty?
         len = $stdout.syswrite(buf)
         buf.slice!(0 .. len)
@@ -76,10 +76,10 @@ loop do
     end
   end
   if rfds.include?(socket)
-    line = socket.gets(\"\r\n\")
+    line = socket.gets(\"\\r\\n\")
     break unless line
-    if line =~ /^(?::[^ ]+ +)?PING +(.+)\r\n/i
-      socket.write(\"PONG #{$1}\r\n\")
+    if line =~ /^(?::[^ ]+ +)?PING +(.+)\\r\\n/i
+      socket.write(\"PONG #{$1}\\r\\n\")
       socket.flush
     else
       wfds_in = [$stdout]
@@ -87,14 +87,13 @@ loop do
     end
   end
   if rfds.include?($stdin)
-    line = $stdin.gets(\"\r\n\")
+    line = $stdin.gets(\"\\r\\n\")
     break unless line
     socket.write(line)
     socket.flush
   end
 end
 socket.close
-exit
 ")
   "Ruby program of asynchronous proxy."
   :type 'list
