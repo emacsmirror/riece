@@ -38,7 +38,8 @@
       (:username riece-username)
       (:password)
       (:function riece-default-open-connection-function)
-      (:coding riece-default-coding-system))
+      (:coding riece-default-coding-system)
+      (:protocol))
     "Mapping from keywords to default values.
 All keywords that can be used must be listed here."))
 

@@ -1,5 +1,7 @@
 2004-07-18  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-server.el (riece-server-keyword-map): Add :protocol.
+
 	* riece-handle.el (riece-300): Require 'riece-000, 'riece-200,
 	'riece-300, 'riece-400, and 'riece-500.
 	(riece-default-handle-numeric-reply): Moved from riece-filter.el.
