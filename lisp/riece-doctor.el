@@ -40,10 +40,10 @@
 						      riece-server-name))))
 
 (defun riece-doctor-reply (target string)
-  (riece-send-string (format "NOTICE %s :%s\r\n" target string))
   (riece-own-channel-message string
 			     (riece-make-identity target riece-server-name)
-			     'notice))
+			     'notice)
+  (riece-send-string (format "NOTICE %s :%s\r\n" target string)))
 
 (defun riece-doctor-after-privmsg-hook (prefix string)
   (let* ((user (riece-prefix-nickname prefix))
@@ -71,21 +71,20 @@
 	      (setq riece-doctor-patients (delq (car pointer)
 						riece-doctor-patients))
 	      (riece-doctor-reply (car targets) "Good bye.")))
-	(when (riece-identity-member-no-server user riece-doctor-patients)
-	  (riece-doctor-reply
-	   (car targets)
-	   (save-excursion
-	     (set-buffer (get-buffer (riece-doctor-buffer-name user)))
-	     (goto-char (point-max))
-	     (insert message "\n")
-	     (let ((point (point))
-		   string)
-	       (doctor-read-print)
-	       (setq string (buffer-substring (1+ point)(- (point) 2)))
-	       (with-temp-buffer
-		 (insert string)
-		 (subst-char-in-region (point-min) (point-max) ?\n ? )
-		 (buffer-string))))))))))
+	(if (riece-identity-member-no-server user riece-doctor-patients)
+	    (save-excursion
+	      (let ((point (point))
+		    string)
+		(set-buffer (get-buffer (riece-doctor-buffer-name user)))
+		(goto-char (point-max))
+		(insert message "\n")
+		(doctor-read-print)
+		(setq string (buffer-substring (1+ point) (- (point) 2)))
+		(with-temp-buffer
+		  (insert string)
+		  (subst-char-in-region (point-min) (point-max) ?\n ? )
+		  (setq string (buffer-string)))
+		(riece-doctor-reply (car targets) string))))))))
 
 (defun riece-doctor-insinuate ()
   (make-variable-buffer-local 'riece-doctor-patients)
