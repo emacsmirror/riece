@@ -151,9 +151,10 @@ RFC2812, 2.2 \"Character codes\" says:
   (let* ((decoded
 	  (completing-read
 	   prompt
-	   (delq nil (mapcar (lambda (channel)
-			       (list (riece-decode-identity channel)))
-			     (or channels riece-current-channels)))
+	   (mapcar (lambda (channel)
+		     (list (riece-decode-identity channel)))
+		   (delq nil (copy-sequence (or channels
+						riece-current-channels))))
 	   predicate must-match))
 	 (encoded
 	  (riece-encode-identity decoded)))

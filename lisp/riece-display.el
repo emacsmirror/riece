@@ -28,14 +28,6 @@
 (require 'riece-channel)
 (require 'riece-misc)
 
-(defvar riece-update-buffer-functions
-  '(riece-update-user-list-buffer
-    riece-update-channel-list-buffer
-    riece-update-status-indicators
-    riece-update-channel-indicator
-    riece-update-short-channel-indicator
-    riece-update-channel-list-indicator))
-
 (defcustom riece-configure-windows-function #'riece-configure-windows
   "Function to configure windows."
   :type 'function
@@ -46,6 +38,18 @@
   "Function to check whether window reconfiguration is needed."
   :type 'function
   :group 'riece-looks)
+
+(defvar riece-update-buffer-functions
+  '(riece-update-user-list-buffer
+    riece-update-channel-list-buffer
+    riece-update-status-indicators
+    riece-update-channel-indicator
+    riece-update-short-channel-indicator
+    riece-update-channel-list-indicator))
+
+(defvar riece-inhibit-update-buffers nil
+  "Non-nil means disregard update request of buffers.
+Typically, this variable is bound to a let form.")
 
 (defun riece-configure-windows ()
   (let ((buffer (window-buffer))
@@ -221,8 +225,7 @@
       (setq riece-channel-buffer (get-buffer (riece-channel-buffer-name
 					      riece-current-channel))))
   (run-hooks 'riece-update-buffer-functions)
-  (force-mode-line-update t)
-  (run-hooks 'riece-update-buffers-hook))
+  (force-mode-line-update t))
 
 (defun riece-channel-buffer-name (identity)
   (format riece-channel-buffer-format (riece-decode-identity identity)))
@@ -290,7 +293,8 @@
 	    (setq buffers (cdr buffers))))))))
 
 (defun riece-redisplay-buffers (&optional force)
-  (riece-update-buffers)
+  (unless riece-inhibit-update-buffers
+    (riece-update-buffers))
   (if (or force
 	  (funcall riece-configure-windows-predicate))
       (funcall riece-configure-windows-function))

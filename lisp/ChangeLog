@@ -1,3 +1,23 @@
+2003-06-22  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-display.el (riece-inhibit-update-buffers): New variable.
+	* riece-filter.el (riece-sentinel): Bind
+	riece-inhibit-update-buffers while removing channels from
+	riece-current-channels.
+	* riece-unread.el (riece-unread-display-message-function): Don't
+	update channel list buffer when riece-inhibit-update-buffers is
+	non-nil.
+	(riece-unread-channel-switch-hook): Ditto.
+	(riece-unread-insinuate): Add
+	riece-unread-update-channel-list-buffer to
+	riece-update-buffer-functions.
+
+	* riece-commands.el (riece-command-switch-to-channel): Call
+	riece-redisplay-buffers instead of riece-command-configure-windows.
+
+	* riece-identity.el (riece-completing-read-identity): Remove nil
+	from riece-current-channels before converting it to an alist.
+
 2003-06-12  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-naming.el (riece-naming-assert-join): Call

@@ -38,7 +38,7 @@
   (interactive (list (riece-completing-read-identity
 		      "Channel/User: " riece-current-channels nil t)))
   (riece-switch-to-channel channel)
-  (riece-command-configure-windows))
+  (riece-redisplay-buffers))
 
 (defun riece-command-switch-to-channel-by-number (number)
   (interactive
