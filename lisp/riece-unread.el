@@ -81,15 +81,15 @@
 	      buffer-read-only)
 	  (goto-char (point-min))
 	  (while (not (eobp))
-	    (if (looking-at "\\( ?[0-9]+:\\)\\(.\\)\\(.+\\)")
-		(let ((channel (save-match-data
-				 (riece-parse-identity (match-string 3)))))
+	    (if (looking-at "\\( ?[0-9]+:\\)\\(.\\)")
+		(let ((channel (get-text-property (match-end 0)
+						  'riece-identity)))
 		  (replace-match
 		   (concat "\\1"
-			   (if (member channel riece-unread-channels)
+			   (if (riece-identity-member channel
+						      riece-unread-channels)
 			       "!"
-			     "\\2")
-			   "\\3"))))
+			     "\\2")))))
 	    (forward-line))))))
       
 (defun riece-unread-switch-to-channel ()
@@ -118,8 +118,10 @@
 	    'riece-unread-after-display-message-function)
   (add-hook 'riece-after-switch-to-channel-functions
 	    'riece-unread-after-switch-to-channel-function)
-  (add-hook 'riece-update-buffer-functions
-	    'riece-unread-update-channel-list-buffer t)
+  (add-hook 'riece-channel-list-mode-hook
+	    (lambda ()
+	      (add-hook 'riece-update-buffer-functions
+			'riece-unread-update-channel-list-buffer t)))
   (define-key riece-command-mode-map
     "\C-c\C-u" 'riece-unread-switch-to-channel)
   (define-key riece-dialogue-mode-map

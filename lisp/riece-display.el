@@ -80,10 +80,9 @@
 	  (while channels
 	    (if (car channels)
 		(let ((point (point)))
-		  (insert (format "%2d: %s\n" index
-				  (riece-format-identity (car channels))))
-		  (put-text-property point (point) 'riece-identity
-				     (car channels))))
+		  (insert (format "%2d: " index)
+			  (riece-format-identity (car channels))
+			  "\n")))
 	    (setq index (1+ index)
 		  channels (cdr channels)))))))
 

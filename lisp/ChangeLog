@@ -1,3 +1,20 @@
+2003-10-13  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-options.el (riece-addons): Add riece-button.
+
+	* riece-display.el (riece-update-channel-list-buffer): Avoid to
+	use format to preserve 'riece-identity property.
+
+	* riece-unread.el (riece-unread-update-channel-list-buffer):
+	Simplified.
+	(riece-unread-insinuate): Delay adding
+	riece-unread-update-channel-list-buffer to
+	riece-update-buffer-functions.
+
+	* riece-button.el: New add-on.
+	* COMPILE (riece-modules): Add riece-button.
+	* Makefile.am (EXTRA_DIST): Add riece-button.el
+
 2003-10-08  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-server.el (riece-close-server-process): 
