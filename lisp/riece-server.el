@@ -211,7 +211,7 @@ the `riece-server-keyword-map' variable."
   (run-at-time riece-quit-timeout nil
 	       (lambda (process)
 		 (if (memq process riece-process-list)
-		     (kill-process (process-buffer process))))
+		     (riece-close-server-process process)))
 	       process)
   (riece-process-send-string process
 			     (if message

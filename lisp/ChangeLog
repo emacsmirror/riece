@@ -1,3 +1,8 @@
+2003-10-08  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-server.el (riece-quit-server-process): Call
+	riece-close-server-process instead of kill-process.
+
 2003-10-07  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-display.el (riece-channel-buffer-name): Check whether
