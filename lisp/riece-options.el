@@ -233,11 +233,6 @@ way is to put Riece variables on .emacs or file loaded from there."
   :type 'boolean
   :group 'riece-options)
 
-(defcustom riece-connection-timeout 60
-  "Default timeout interval."
-  :type 'integer
-  :group 'riece-server)
-  
 (defcustom riece-buffer-dispose-function #'bury-buffer
   "Function called after the buffer was disposed."
   :type 'function
@@ -246,6 +241,11 @@ way is to put Riece variables on .emacs or file loaded from there."
 (defcustom riece-format-time-function #'current-time-string
   "Function to convert the specified time to the human readable form."
   :type 'function
+  :group 'riece-options)
+
+(defcustom riece-channel-history-length 3
+  "Length of riece-channel-history."
+  :type 'integer
   :group 'riece-options)
 
 (provide 'riece-options)

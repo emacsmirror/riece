@@ -29,6 +29,8 @@
 (require 'riece-misc)
 (require 'riece-layout)
 
+(autoload 'ring-insert "ring")
+
 (defvar riece-update-buffer-functions
   '(riece-update-user-list-buffer
     riece-update-channel-list-buffer
@@ -180,8 +182,8 @@
     (current-buffer)))
 
 (defun riece-switch-to-channel (identity)
-  (setq riece-last-channel riece-current-channel
-	riece-current-channel identity)
+  (ring-insert riece-channel-history riece-current-channel)
+  (setq riece-current-channel identity)
   (run-hooks 'riece-channel-switch-hook))
 
 (defun riece-join-channel (identity)
@@ -211,8 +213,8 @@
       (setq identity (car pointer)))
     (if identity
 	(riece-switch-to-channel identity)
-      (setq riece-last-channel riece-current-channel
-	    riece-current-channel nil))))
+      (ring-insert riece-channel-history riece-current-channel)
+      (setq riece-current-channel nil))))
 
 (defun riece-part-channel (identity)
   (let ((pointer (riece-identity-member identity riece-current-channels)))

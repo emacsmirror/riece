@@ -30,6 +30,8 @@
 (require 'riece-compat)
 (require 'riece-commands)
 
+(autoload 'make-ring "ring")
+
 (defvar riece-channel-list-mode-map (make-sparse-keymap))
 (defvar riece-user-list-mode-map (make-sparse-keymap))
 
@@ -255,13 +257,28 @@ If optional argument CONFIRM is non-nil, ask which IRC server to connect."
   (riece-redisplay-buffers)
   (riece-open-server riece-server "")
   (run-hooks 'riece-startup-hook)
+  (setq riece-channel-history (make-ring riece-channel-history-length))
   (message "%s" (substitute-command-keys "Type \\[describe-mode] for help")))
 
 (defun riece-exit ()
-  (setq riece-server nil)
   (if riece-save-variables-are-dirty
       (riece-save-variables-files))
-  (riece-clear-system)
+  (while riece-buffer-list
+    (if (and (get-buffer (car riece-buffer-list))
+	     (buffer-live-p (car riece-buffer-list)))
+	(funcall riece-buffer-dispose-function (car riece-buffer-list)))
+    (setq riece-buffer-list (cdr riece-buffer-list)))
+  (setq riece-server nil
+	riece-current-channels nil
+	riece-current-channel nil
+	riece-user-indicator nil
+	riece-channel-indicator "None"
+	riece-channel-list-indicator "No channel"
+	riece-away-indicator "-"
+	riece-operator-indicator "-"
+	riece-freeze-indicator "-"
+	riece-channel-history nil)
+  (delete-other-windows)
   (run-hooks 'riece-exit-hook))
 
 (defun riece-command-mode ()

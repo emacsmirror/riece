@@ -62,22 +62,6 @@ the `riece-server-keyword-map' variable."
 (put 'riece-server-keyword-bind 'lisp-indent-function 1)
 (put 'riece-server-keyword-bind 'edebug-form-spec '(form body))
 
-(defun riece-clear-system ()
-  (while riece-buffer-list
-    (if (and (get-buffer (car riece-buffer-list))
-	     (buffer-live-p (car riece-buffer-list)))
-	(funcall riece-buffer-dispose-function (car riece-buffer-list)))
-    (setq riece-buffer-list (cdr riece-buffer-list)))
-  (setq riece-current-channels nil
-	riece-current-channel nil
-	riece-user-indicator nil
-	riece-channel-indicator "None"
-	riece-channel-list-indicator "No channel"
-	riece-away-indicator "-"
-	riece-operator-indicator "-"
-	riece-freeze-indicator "-")
-  (delete-other-windows))
-
 (defun riece-server-parse-string (string)
   "Convert a STRING set as `riece-server' and return a property list."
   (when (or (string-match "^\\[\\([^]]+\\)\\]:?\\([0-9]*\\)" string)
