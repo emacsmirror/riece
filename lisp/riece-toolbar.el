@@ -34,7 +34,10 @@
 (defvar riece-toolbar-items
   '(riece-command-quit
     riece-command-join
-    riece-command-part))
+    riece-command-part
+    riece-command-previous-channel
+    riece-command-next-channel
+    riece-command-change-layout))
 
 (defun riece-toolbar-find-menu-item (command)
   (let ((pointer riece-menu-items)
