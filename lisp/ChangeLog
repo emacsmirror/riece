@@ -1,5 +1,18 @@
 2003-10-13  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-button.el (riece-button-insinuate): Buttonize channel buffers.
+
+	* riece-history.el (riece-channel-list-history-face): New face.
+	(riece-history-format-channel-list-line): New function.
+	(riece-history-insinuate): Add ?+ to
+	riece-channel-list-mark-face-alist; add
+	riece-history-format-channel-list-line to
+	riece-format-channel-list-line-functions.
+
+	* riece-highlight.el (riece-channel-list-current-face): Arrange colors.
+
+2003-10-13  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-unread.el (riece-unread-after-display-message-function):
 	Do nothing when message-target is already in
 	riece-unread-channels; call riece-redisplay-buffers.

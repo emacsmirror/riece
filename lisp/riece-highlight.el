@@ -162,10 +162,10 @@
 (defface riece-channel-list-current-face
   '((((class color)
       (background dark))
-     (:foreground "PaleTurquoise" :underline t))
+     (:foreground "turquoise" :underline t))
     (((class color)
       (background light))
-     (:foreground "ForestGreen" :underline t))
+     (:foreground "SeaGreen" :underline t))
     (t
      ()))
   "Face used for displaying the current channel."

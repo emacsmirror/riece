@@ -44,6 +44,19 @@
   :type 'integer
   :group 'riece-history)
 
+(defface riece-channel-list-history-face
+  '((((class color)
+      (background dark))
+     (:foreground "PaleTurquoise"))
+    (((class color)
+      (background light))
+     (:foreground "SeaGreen3"))
+    (t
+     (:bold t)))
+  "Face used for displaying history channels."
+  :group 'riece-highlight-faces)
+(defvar riece-channel-list-history-face 'riece-channel-list-history-face)
+
 (defvar riece-channel-history nil)
 
 (defun riece-guess-channel-from-history ()
@@ -54,6 +67,13 @@
       (setq result (cons (ring-ref riece-channel-history index) result)
 	    index (1+ index)))
     (nreverse result)))
+
+(defun riece-history-format-channel-list-line (index channel)
+  (if (and (not (ring-empty-p riece-channel-history))
+	   (riece-identity-equal channel (ring-ref riece-channel-history 0)))
+      (concat (format "%2d:+" index)
+		(riece-format-identity channel)
+		"\n")))
 
 ;;; (defun riece-history-requires ()
 ;;;   (if (memq 'riece-guess riece-addons)
@@ -69,7 +89,14 @@
 	      (setq riece-channel-history nil)))
   (add-hook 'riece-after-switch-to-channel-functions
 	    (lambda (last)
-	      (ring-insert riece-channel-history last)))
+	      (unless (riece-identity-equal last riece-current-channel)
+		(ring-insert riece-channel-history last))))
+  (add-hook 'riece-format-channel-list-line-functions
+	    'riece-history-format-channel-list-line)
+  (if (memq 'riece-highlight riece-addons)
+      (setq riece-channel-list-mark-face-alist
+	    (cons '(?+ . riece-channel-list-history-face)
+		  riece-channel-list-mark-face-alist)))
 ;;;  (if (memq 'riece-guess riece-addons)
 ;;;      (add-hook 'riece-guess-channel-try-functions
 ;;;		'riece-guess-channel-from-history))

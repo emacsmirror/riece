@@ -60,7 +60,7 @@
       (message "%s" (substitute-command-keys
 		     "Type \\[riece-command-join] to join the channel")))))
 
-(defun riece-button-add-channel-buttons (start end length)
+(defun riece-button-add-channel-buttons (start end)
   (save-excursion
     (catch 'done
       (while t
@@ -85,7 +85,7 @@
 	(set-buffer riece-channel-list-buffer)
 	(let ((inhibit-read-only t)
 	      buffer-read-only)
-	  (riece-button-add-channel-buttons (point-min) (point-max) nil)))))
+	  (riece-button-add-channel-buttons (point-min) (point-max))))))
 
 (defun riece-button-requires ()
   '(riece-highlight))
@@ -95,7 +95,11 @@
 	    (lambda ()
 	      (set-keymap-parent riece-channel-list-mode-map widget-keymap)
 	      (add-hook 'riece-update-buffer-functions
-			'riece-button-update-channel-list-buffer t))))
+			'riece-button-update-channel-list-buffer t)))
+  (add-hook 'riece-dialogue-mode-hook
+	    (lambda ()
+	      (set-keymap-parent riece-dialogue-mode-map widget-keymap)))
+  (add-hook 'riece-after-insert-functions 'riece-button-add-channel-buttons))
 
 (provide 'riece-button)
 
