@@ -4,7 +4,7 @@
 
 ** Format idle seconds in human readable form. (ueno)
 
-** Separate riece-obarray to riece-channel-obarray and
+** Separate riece-obarray into riece-channel-obarray and
    riece-user-obarray. (kaoru)
 
 ** Fixed bugs caused by mishandling of channel names (which should be
