@@ -85,8 +85,7 @@
 		  (put-text-property point (point) 'riece-identity
 				     (car channels))))
 	    (setq index (1+ index)
-		  channels (cdr channels))))
-	(setq riece-channel-list-changed nil))))
+		  channels (cdr channels)))))))
 
 (defun riece-update-channel-indicator ()
   (setq riece-channel-indicator
@@ -158,6 +157,7 @@
       (setq riece-channel-buffer (get-buffer (riece-channel-buffer-name
 					      riece-current-channel))))
   (run-hooks 'riece-update-buffer-functions)
+  (setq riece-channel-list-changed nil)
   (force-mode-line-update t))
 
 (defun riece-channel-buffer-name (identity)

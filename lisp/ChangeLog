@@ -1,3 +1,18 @@
+2003-10-04  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-identity.el (riece-completing-read-identity): Pass 6th &
+	7th arguments to completing-read.
+
+	* riece-commands.el (riece-command-part): Use 6th argument DEFAULT
+	of riece-completing-read-identity.
+
+	* riece-handle.el (riece-handle-invite-message): Fix parsing of
+	parameters.
+
+	* riece-display.el (riece-update-channel-list-buffer): Don't clear
+	riece-channel-list-changed.
+	(riece-update-buffers): Clear it.
+
 2003-10-01  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-rdcc.el (riece-rdcc-save-directory): New user option.

@@ -308,14 +308,17 @@
 (defun riece-handle-invite-message (prefix string)
   (let* ((user (riece-prefix-nickname prefix))
 	 (parameters (riece-split-parameters string))
-	 (channel (car parameters)))
+	 (invited (car parameters))
+	 (channel (nth 1 parameters)))
     (riece-insert-info
      (list riece-dialogue-buffer riece-others-buffer)
      (concat
       (riece-concat-server-name
-       (format "%s invites you to %s"
+       (format "%s invites %s to %s"
 	       (riece-format-identity (riece-make-identity
 				       user riece-server-name))
+	       (riece-format-identity (riece-make-identity
+				       invited riece-server-name))
 	       (riece-format-identity (riece-make-identity
 				       channel riece-server-name))))
       "\n"))))

@@ -143,8 +143,8 @@ RFC2812, 2.2 \"Character codes\" says:
 			 "")))
 
 (defun riece-completing-read-identity (prompt channels
-					      &optional predicate must-match
-					      initial)
+					      &optional predicate require-match
+					      initial history default)
   (let* ((string
 	  (completing-read
 	   prompt
@@ -152,7 +152,7 @@ RFC2812, 2.2 \"Character codes\" says:
 		     (list (riece-format-identity channel)))
 		   (delq nil (copy-sequence (or channels
 						riece-current-channels))))
-	   predicate must-match initial))
+	   predicate require-match initial history default))
 	 (identity
 	  (riece-parse-identity string)))
     (unless (string-match (concat "^\\(" riece-channel-regexp "\\|"

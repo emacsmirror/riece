@@ -455,8 +455,10 @@ the layout to the selected layout-name."
    (let* ((completion-ignore-case t)
 	 (target
 	  (riece-completing-read-identity
-	   "Channel/User: " riece-current-channels nil nil
-	   (cons (riece-format-identity riece-current-channel) 0)))
+	   (format "Channel/User (default %s): "
+		   (riece-format-identity riece-current-channel))
+	   riece-current-channels nil nil nil nil
+	   (riece-format-identity riece-current-channel)))
 	 message)
      (if (and current-prefix-arg
 	      (riece-channel-p (riece-identity-prefix target)))
