@@ -144,7 +144,7 @@
       (setq addons (cdr addons)))
     dependencies))
 
-(defun riece-resolve-addons (addons)
+(defun riece-resolve-addon-dependencies (addons)
   (let ((pointer addons)
 	dependencies queue)
     ;; Uniquify, first.
@@ -178,6 +178,14 @@
     (if dependencies
 	(error "Circular add-on dependency found"))
     (nreverse addons)))
+
+(defun riece-resolve-addon (addons)
+  (riece-resolve-addon-dependencies
+   (append addons
+	   (mapcar
+	    (lambda (name)
+	      (intern (file-name-sans-extension name)))
+	    (directory-files riece-addon-directory nil "\\`[^.]" t t)))))
 
 (defun riece-insinuate-addon (addon &optional verbose)
   (require addon)		;implicit dependency

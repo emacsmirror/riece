@@ -1,3 +1,9 @@
+2005-02-03  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-addon.el (riece-resolve-addon-dependencies): Rename from
+	riece-resolve-addon.
+	(riece-resolve-addon): Append add-ons under riece-addon-directory.
+
 2005-02-02  TAKAHASHI Kaoru  <kaoru@kaisei.org>
 
 	* riece-message.el (riece-display-message): When filter-function
