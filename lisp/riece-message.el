@@ -63,32 +63,27 @@
 
 (defun riece-message-make-open-bracket (message)
   "Makes `open-bracket' string for MESSAGE."
-  (riece-message-make-bracket message t))
-
-(defun riece-message-make-close-bracket (message)
-  "Makes `close-bracket' string for MESSAGE."
-  (riece-message-make-bracket message nil))
-
-(defun riece-message-make-bracket (message open-p)
-  (if (eq open-p (riece-message-own-p message))
-      (if (eq (riece-message-type message) 'notice)
-	  "-"
-	(if (riece-message-private-p message)
-	    (if (riece-message-own-p message)
-		">"
-	      "=")
-	  (if (riece-message-external-p message)
-	      ")"
-	    ">")))
+  (if (riece-message-own-p message)
+      ">"
     (if (eq (riece-message-type message) 'notice)
-	"-"
+	"{"
       (if (riece-message-private-p message)
-	  (if (riece-message-own-p message)
-	      "<"
-	    "=")
+	  "="
 	(if (riece-message-external-p message)
 	    "("
 	  "<")))))
+
+(defun riece-message-make-close-bracket (message)
+  "Makes `close-bracket' string for MESSAGE."
+  (if (riece-message-own-p message)
+      "<"
+    (if (eq (riece-message-type message) 'notice)
+	"}"
+      (if (riece-message-private-p message)
+	  "="
+	(if (riece-message-external-p message)
+	    ")"
+	  ">")))))
 
 (defun riece-message-make-name (message)
   "Makes local identity for MESSAGE."

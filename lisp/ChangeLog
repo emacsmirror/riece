@@ -1,5 +1,9 @@
 2003-05-30  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-message.el (riece-message-make-bracket): Abolish.
+	* riece-highlight.el (riece-highlight-font-lock-keywords):
+	Give up to fontify "-nick-" or "-nick server-".
+
 	* riece-highlight.el (riece-highlight-font-lock-keywords):
 	Simplified regexp.
 
