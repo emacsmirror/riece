@@ -1,5 +1,8 @@
 2005-02-24  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-unread.el (riece-unread-after-switch-to-channel-function):
+	Clear riece-unread-channels case insensitively.
+
 	* riece-300.el (riece-handle-353-message): Use
 	riece-identity-assoc to pick an entry from
 	riece-353-message-alist.

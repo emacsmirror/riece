@@ -88,8 +88,9 @@
 (defun riece-unread-after-switch-to-channel-function (last)
   (if riece-unread-enabled
       (setq riece-unread-channels
-	    (delete riece-current-channel
-		    riece-unread-channels))))
+	    (delq (car (riece-identity-member riece-current-channel
+					      riece-unread-channels))
+		  riece-unread-channels))))
 
 (defun riece-unread-format-identity-for-channel-list-buffer (index identity)
   (if (and riece-unread-enabled
