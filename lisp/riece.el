@@ -578,25 +578,24 @@ are familiar with the debugger, to get a lisp back-trace.")
 	     (riece-command-list-addons)
 	     (search-forward "\n\n")
 	     (buffer-substring (point-min) (point)))))
-	(when riece-debug
-	  (insert "Recent messages from servers:\n"
-		  "--------------------------")
-	  (let ((pointer riece-server-process-alist))
-	    (while pointer
-	      (insert "\n- \"" (car (car pointer)) "\", \n"
-		      (format "%S" (if (equal (car (car pointer)) "")
-				       riece-server
-				     (cdr (assoc (car (car pointer))
-						 riece-server-alist))))
-		      "\n"
-		      (if (process-live-p (cdr (car pointer)))
-			  (save-excursion
-			    (set-buffer (process-buffer (cdr (car pointer))))
-			    (goto-char (point-max))
-			    (beginning-of-line -20)
-			    (buffer-substring (point) (point-max)))
-			"(closed server)"))
-	      (setq pointer (cdr pointer)))))
+	(insert "Recent messages from servers:\n"
+		"--------------------------")
+	(let ((pointer riece-server-process-alist))
+	  (while pointer
+	    (insert "\n- \"" (car (car pointer)) "\", \n"
+		    (format "%S" (if (equal (car (car pointer)) "")
+				     riece-server
+				   (cdr (assoc (car (car pointer))
+					       riece-server-alist))))
+		    "\n"
+		    (if (process-live-p (cdr (car pointer)))
+			(save-excursion
+			  (set-buffer (process-buffer (cdr (car pointer))))
+			  (goto-char (point-max))
+			  (beginning-of-line -20)
+			  (buffer-substring (point) (point-max)))
+		      "(closed server)"))
+	    (setq pointer (cdr pointer))))
 	;; Insert recent keystrokes.
 	(insert "\n\n"
 	"Recent keystrokes:\n-----------------\n\n")
