@@ -1,4 +1,4 @@
-;;; riece-toolbar.el --- show icons on toolbar
+;;; riece-toolbar.el --- show toolbar icons
 ;; Copyright (C) 1998-2004 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>
