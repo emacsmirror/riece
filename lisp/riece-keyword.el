@@ -37,7 +37,9 @@
 
 (defcustom riece-keywords nil
   "Keywords to be highlightened."
-  :type '(repeat string)
+  :type '(repeat (choice (string :tag "Keyword")
+			 (cons (string :tag "Regexp")
+			       (integer :tag "Match"))))
   :group 'riece-keyword)
 
 (defcustom riece-notify-keyword-functions nil
@@ -60,17 +62,33 @@
   (if (and riece-keywords
 	   ;; Ignore messages which belongs to myself.
 	   (not (riece-message-own-p message)))
-      (let ((regexp (regexp-opt riece-keywords))
-	    (index 0))
-	(while (string-match regexp (riece-message-text message) index)
-	  (if (memq 'riece-highlight riece-addons)
-	      (put-text-property (match-beginning 0) (match-end 0)
-				 'riece-keyword t
-				 (riece-message-text message)))
-	  (save-match-data
-	    (run-hook-with-args 'riece-notify-keyword-functions
-				(match-string 0 (riece-message-text message))))
-	  (setq index (match-end 0)))))
+      (let* (keywords
+	     (alist
+	      (nconc
+	       (delq nil (mapcar
+			  (lambda (matcher)
+			    (if (stringp matcher)
+				(ignore
+				 (setq keywords (cons matcher keywords)))
+			      matcher))
+			  riece-keywords))
+	       (list (cons (regexp-opt keywords) 0))))
+	     index)
+	(while alist
+	  (setq index 0)
+	  (while (string-match (car (car alist))
+			       (riece-message-text message) index)
+	    (if (memq 'riece-highlight riece-addons)
+		(put-text-property (match-beginning (cdr (car alist)))
+				   (match-end (cdr (car alist)))
+				   'riece-keyword t
+				   (riece-message-text message)))
+	    (save-match-data
+	      (run-hook-with-args 'riece-notify-keyword-functions
+				  (match-string (cdr (car alist))
+						(riece-message-text message))))
+	    (setq index (match-end (cdr (car alist)))))
+	  (setq alist (cdr alist)))))
   message)
 
 (defun riece-keyword-scan-region (start end)

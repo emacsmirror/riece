@@ -1,5 +1,8 @@
 2003-10-27  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-keyword.el (riece-keywords): Change custom spec.
+	(riece-keyword-message-filter): Normalize riece-keywords.
+
 	* riece-identity.el (riece-identity-prefix-case-table): Use
 	riece-copy-case-table to define.
 
