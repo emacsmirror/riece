@@ -86,7 +86,8 @@
 			(cdr (car users)))
 		  user-identity-list)
 	    users (cdr users)))
-    (riece-emit-signal 'user-list-changed)))
+    (riece-emit-signal 'user-list-changed
+		       (riece-make-identity channel-name riece-server-name))))
 
 (provide 'riece-naming)
 
