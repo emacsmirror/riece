@@ -68,7 +68,7 @@
 (defun riece-get-semaphore (semaphore)
   "Wait until SEMAPHORE is released."
   (while (/= (length (nconc (symbol-value semaphore) (list nil))) 2)
-    (sleep-for 1)))
+    (sleep-for 0.1)))
 
 (defun riece-release-semaphore (semaphore)
   "Release SEMAPHORE."
