@@ -124,7 +124,7 @@ make install
 XEmacs のパッケージとしてインストールする場合には以下のようにします。
 
 @example
-./configure --with-xemacs[=xemacs-21.4.15]
+./configure --with-xemacs[=xemacs-21.4.17]
 make package
 make install-package
 @end example
