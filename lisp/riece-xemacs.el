@@ -122,6 +122,8 @@
     (set-extent-properties extent properties)
     (cons extent string)))
 
+(defalias 'riece-facep 'find-face)
+
 (provide 'riece-xemacs)
 
 ;;; riece-xemacs.el ends here

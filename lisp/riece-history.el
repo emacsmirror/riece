@@ -62,7 +62,7 @@
   :group 'riece-highlight-faces)
 (defvar riece-channel-list-history-face 'riece-channel-list-history-face)
 
-(unless (find-face 'riece-modeline-history-face)
+(unless (riece-facep 'riece-modeline-history-face)
   (make-face 'riece-modeline-history-face
 	     "Face used for displaying history channels in modeline.")
   (if (featurep 'xemacs)

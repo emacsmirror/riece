@@ -189,7 +189,7 @@
   :type '(repeat (list string))
   :group 'riece-highlight)
 
-(unless (find-face 'riece-modeline-current-face)
+(unless (riece-facep 'riece-modeline-current-face)
   (make-face 'riece-modeline-current-face
 	     "Face used for displaying the current channel in modeline.")
   (if (featurep 'xemacs)

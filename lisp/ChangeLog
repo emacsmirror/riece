@@ -1,3 +1,15 @@
+2004-06-02  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-unread.el: Use riece-facep to check existence of
+	'riece-modeline-unread-face.
+	* riece-history.el: Use riece-facep to check existence of
+	'riece-modeline-history-face.
+	* riece-highlight.el: Use riece-facep to check existence of
+	'riece-modeline-current-face.
+
+	* riece-xemacs.el (riece-facep): Define as an alias of 'find-face.
+	* riece-emacs.el (riece-facep): Define as an alias of 'facep.
+
 2004-06-01  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-button.el (riece-button-disable): On XEmacs, BUFFER arg of

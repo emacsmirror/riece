@@ -58,7 +58,7 @@
   :group 'riece-highlight-faces)
 (defvar riece-channel-list-unread-face 'riece-channel-list-unread-face)
 
-(unless (find-face 'riece-modeline-unread-face)
+(unless (riece-facep 'riece-modeline-unread-face)
   (make-face 'riece-modeline-unread-face
 	     "Face used for displaying unread channels in modeline.")
   (if (featurep 'xemacs)

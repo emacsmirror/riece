@@ -95,6 +95,8 @@
   (add-text-properties 0 (length string) properties string)
   string)
 
+(defalias 'riece-facep 'facep)
+
 (provide 'riece-emacs)
 
 ;;; riece-emacs.el ends here
