@@ -1,7 +1,7 @@
 /* dcc.c
- * Copyright (C) 1998-2002  Daiki Ueno
+ * Copyright (C) 1998-2003  Daiki Ueno
  *
- * This file is part of Liece.
+ * This file is part of Riece.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -75,24 +75,26 @@ static u_long get_address_externally();
 static char *progname;
 
 void version () {
-	printf("%s (Liece) 1.4.0\n"
-				 "Copyright (C) 1998, 1999 Daiki Ueno\n"
-				 "This is free software; see the source for copying conditions.  There is NO\n"
-				 "warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n", 
-				 progname);
+	fprintf(stderr,
+					"%s (%s) %s\n"
+					"Copyright (C) 1998-2003 Daiki Ueno\n"
+					"This is free software; see the source for copying conditions.  There is NO\n"
+					"warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n", 
+					progname, PACKAGE, VERSION);
 }
 
-void usage() {
-  printf("Usage: %s [global-options] command [command-options-and-arguments]\n"
-				 "where global-options are -v, -h, etc.\n"
-				 "where command is one of send, receive, chat, resolve.\n"
-				 "where command-options-and-arguments depend on the specific command.\n\n"
-				 "send <host> <port> <filename>\n"
-				 "receive <host> <port> <size> <filename>\n"
-				 "chat listen <port>\n"
-				 "chat connect <host> <port>\n"
-				 "resolve [hosts ...]\n",
-				 progname);
+void usage () {
+  fprintf(stderr,
+					"Usage: %s [global-options] command [arguments...]\n"
+					"where global-options are -v, -h, etc.\n"
+					"where command is one of send, receive, chat, resolve.\n"
+					"where arguments depend on the specific command.\n\n"
+					"send <port> <filename>\n"
+					"receive <host> <port> <size> <filename>\n"
+					"chat listen <port>\n"
+					"chat connect <host> <port>\n"
+					"resolve [hosts ...]\n",
+					progname);
 }
 
 int prepare_listen_port (int ip_port) {
@@ -412,11 +414,11 @@ int main (int argc, char **argv) {
 		switch (c) {
 		case 'v':
 			version();
-			exit(1);
+			exit(0);
 			break;
 		case 'h':
 			usage();
-			exit(1);
+			exit(0);
 			break;
 		default:
 			break;

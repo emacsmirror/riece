@@ -1,8 +1,8 @@
 /* tcp.c - TCP/IP stream emulation for GNU Emacs.
  * Copyright (C) 1988, 1989, 1992, 1993 Free Software Foundation, Inc.
- * Copyright (C) 1998-2002  Daiki Ueno
+ * Copyright (C) 1998-2003  Daiki Ueno
  *
- * This file is part of Liece.
+ * This file is part of Riece.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -55,15 +55,16 @@
 static char *progname;
 
 void version () {
-	printf("%s (Liece) 1.4.0\n"
-	       "Copyright (C) 1998, 1999 Daiki Ueno\n"
-	       "This is free software; see the source for copying conditions.  There is NO\n"
-	       "warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n", 
-	       progname);
+  fprintf(stderr,
+	  "%s (%s) %s\n"
+	  "Copyright (C) 1998-2003 Daiki Ueno\n"
+	  "This is free software; see the source for copying conditions.  There is NO\n"
+	  "warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n", 
+	  progname, PACKAGE, VERSION);
 }
 
-void usage() {
-  printf("Usage: %s [options] host [service]\n", progname);
+void usage () {
+  fprintf(stderr, "Usage: %s [options] host [service]\n", progname);
 }
 
 
@@ -111,11 +112,11 @@ main (argc, argv)
 	{
 	case 'v':
 	  version ();
-	  exit (1);
+	  exit (0);
 	  break;
 	case 'h':
 	  usage ();
-	  exit (1);
+	  exit (0);
 	  break;
 	default:
 	  break;

@@ -1,14 +1,14 @@
 DEFS = -I$(srcdir) -I$(top_srcdir) $(CFLAGS) @DEFS@
 LIBOBJS = @LIBOBJS@
 EXTRA_DIST = basename.c getopt.c getopt.h getopt1.c
-CLEANFILES = ldcc ltcp
+CLEANFILES = rdcc rtcp
 
-bin_PROGRAMS = ldcc ltcp
+bin_PROGRAMS = rdcc rtcp
 
-ltcp_SOURCES = tcp.c
-ltcp_LDADD = $(LIBOBJS)
-ldcc_SOURCES = dcc.c
-ldcc_LDADD = $(LIBOBJS)
+rtcp_SOURCES = tcp.c
+rtcp_LDADD = $(LIBOBJS)
+rdcc_SOURCES = dcc.c
+rdcc_LDADD = $(LIBOBJS)
 
 package: all
 install-package: package install
