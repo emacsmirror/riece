@@ -433,7 +433,7 @@
 	    (setq riece-353-message-alist
 		  (delq entry riece-353-message-alist)))
 	(while (string-match
-		(concat "\\([@+]\\)?\\(" riece-user-regexp "\\) *")
+		(concat "\\([@+]\\)?\\([^ ]+\\) *")
 		string start)
 	  (put-text-property (match-beginning 2) (match-end 2)
 			     'riece-identity

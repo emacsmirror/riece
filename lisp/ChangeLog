@@ -1,3 +1,7 @@
+2005-04-04  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-300.el (riece-handle-366-message): Don't use riece-user-regexp.
+
 2005-03-22  Daiki Ueno  <ueno@unixuser.org>
 
 	* rubyserv.rb: New file.
