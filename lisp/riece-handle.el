@@ -107,6 +107,8 @@
 	 (user-identity (riece-make-identity user riece-server-name)))
     (while channels
       (riece-naming-assert-join user (car channels))
+      (if riece-gather-channel-modes
+	  (riece-send-string (format "MODE %s\r\n" (car channels))))
       (let* ((channel-identity (riece-make-identity (car channels)
 						    riece-server-name))
 	     (buffer (riece-channel-buffer channel-identity)))

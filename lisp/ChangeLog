@@ -1,5 +1,9 @@
 2003-10-24  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-options.el (riece-gather-channel-modes): Default to nil.
+	* riece-handle.el (riece-handle-join-message): Send MODE if
+	riece-gather-channel-modes is non-nil.
+
 	* riece-url.el: Add autoload setting for 'browse-url.
 
 	* riece-menu.el: Require 'riece-options, 'riece-globals,

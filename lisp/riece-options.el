@@ -244,7 +244,7 @@ way is to put Riece variables on .emacs or file loaded from there."
   :type '(radio (string :tag "Away message"))
   :group 'riece-options)
 
-(defcustom riece-gather-channel-modes t
+(defcustom riece-gather-channel-modes nil
   "If non-nil, gather channel modes when we join a channel."
   :type 'boolean
   :group 'riece-options)
