@@ -85,7 +85,7 @@ This function is used as a callback for a channel button."
 
 (defun riece-identity-button-popup-menu (event)
   "Popup the menu for identity buttons."
-  (interactive "@e")
+  (interactive "e")
   (save-excursion
     (set-buffer (riece-event-buffer event))
     (goto-char (riece-event-point event))
