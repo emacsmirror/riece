@@ -1,6 +1,7 @@
 2003-08-26  Daiki Ueno  <ueno@unixuser.org>
 
-	* riece-unread.el (riece-channel-list-unread-face): Change colors.
+	* riece-display.el (riece-update-channel-list-buffer): Don't add
+	'riece-identity property.
 
 	* riece-options.el (riece-addons): Enable riece-unread by default.
 

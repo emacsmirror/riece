@@ -83,9 +83,7 @@
 				     riece-current-channel)
 				    ?*
 				  ?\ )
-				(riece-format-identity (car channels))))
-	      (put-text-property point (point) 'riece-identity
-				 (car channels))))
+				(riece-format-identity (car channels))))))
 	(setq index (1+ index)
 	      channels (cdr channels))))))
 
