@@ -125,22 +125,29 @@ the `riece-server-keyword-map' variable."
     (riece-process-send-string process string)))
 
 (defun riece-open-server (server server-name)
-  (if (equal server-name "")
-      (message "Connecting to IRC server...")
-    (message "Connecting to %s..." server-name))
   (riece-server-keyword-bind server
-    (let* (selective-display
-	   (coding-system-for-read 'binary)
-	   (coding-system-for-write 'binary)
-	   (process
+    (let (selective-display
+	  (coding-system-for-read 'binary)
+	  (coding-system-for-write 'binary)
+	  process)
+      (if (equal server-name "")
+	  (message "Connecting to IRC server...")
+	(message "Connecting to %s..." server-name))
+      (setq process
 	    (funcall function (riece-server-process-name server-name)
 		     (concat " *IRC*" server-name)
-		     host service)))
+		     host service))
+      (if (equal server-name "")
+	  (message "Connecting to IRC server...done")
+	(message "Connecting to %s...done" server-name))
       (riece-reset-process-buffer process)
       (with-current-buffer (process-buffer process)
 	(setq riece-server-name server-name))
       (set-process-sentinel process 'riece-sentinel)
       (set-process-filter process 'riece-filter)
+      (if (equal server-name "")
+	  (message "Logging in to IRC server...")
+	(message "Logging in to %s..." server-name))
       (if (or password
 	      riece-reconnect-with-password)
 	  (riece-process-send-string process
@@ -159,10 +166,7 @@ the `riece-server-keyword-map' variable."
 	      riece-nick-accepted 'sent
 	      riece-coding-system coding))
       (setq riece-process-list
-	    (cons process riece-process-list))))
-  (if (equal server-name "")
-      (message "Connecting to IRC server...done")
-    (message "Connecting to %s...done" server-name)))
+	    (cons process riece-process-list)))))
 
 (defun riece-reset-process-buffer (process)
   (save-excursion

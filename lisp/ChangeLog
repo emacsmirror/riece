@@ -1,3 +1,10 @@
+2003-09-20  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-server.el (riece-open-server): Display "Logging in to
+	XXX..." message.
+	* riece-000.el (riece-handle-001-message): Clear "Logging in to
+	XXX..." message; call riece-after-login-hook.
+
 2003-09-07  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-unread.el (riece-unread-after-display-message-function):
