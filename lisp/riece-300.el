@@ -52,7 +52,19 @@
 	    (if operator
 		(setq status (cons "operator" status)))
 	    (riece-user-toggle-away user away)
+	    (riece-emit-signal (riece-make-signal
+				'riece-user-toggle-away
+				(riece-make-identity
+				 user
+				 riece-server-name)
+				away))
 	    (riece-user-toggle-operator user operator)
+	    (riece-emit-signal (riece-make-signal
+				'riece-user-toggle-operator
+				(riece-make-identity
+				 user
+				 riece-server-name)
+				operator))
 	    (riece-insert-info
 	     (list riece-dialogue-buffer riece-others-buffer)
 	     (concat
@@ -65,9 +77,7 @@
 			 t)
 			(riece-strip-user-at-host user-at-host))))
 	      "\n"))))
-      (setq replies (cdr replies)))
-  (riece-update-status-indicators)
-  (force-mode-line-update t)))
+      (setq replies (cdr replies)))))
 
 (defun riece-handle-303-message (prefix number name string)
   (riece-insert-info
@@ -89,6 +99,12 @@
       (let ((user (match-string 1 string))
 	    (message (substring string (match-end 0))))
 	(riece-user-toggle-away user t)
+	(riece-emit-signal (riece-make-signal
+			    'riece-user-toggle-away
+			    (riece-make-identity
+			     user
+			     riece-server-name)
+			    t))
 	(riece-insert-info
 	 (list riece-dialogue-buffer riece-others-buffer)
 	 (concat
@@ -98,19 +114,25 @@
 		    (riece-make-identity user riece-server-name)
 		    t)
 		   message))
-	  "\n"))))
-  (riece-update-status-indicators)
-  (force-mode-line-update t))
+	  "\n")))))
 
 (defun riece-handle-305-message (prefix number name string)
   (riece-user-toggle-away riece-real-nickname nil)
-  (riece-update-status-indicators)
-  (force-mode-line-update t))
+  (riece-emit-signal (riece-make-signal
+		      'riece-user-toggle-away
+		      (riece-make-identity
+		       riece-real-nickname
+		       riece-server-name)
+		      nil)))
 
 (defun riece-handle-306-message (prefix number name string)
   (riece-user-toggle-away riece-real-nickname t)
-  (riece-update-status-indicators)
-  (force-mode-line-update t))
+  (riece-emit-signal (riece-make-signal
+		      'riece-user-toggle-away
+		      (riece-make-identity
+		       riece-real-nickname
+		       riece-server-name)
+		      t)))
 
 (defun riece-handle-311-message (prefix number name string)
   (if (string-match
@@ -239,7 +261,7 @@
 			       (list (match-string 2 string) ?v)))
 		       (list (match-string 2 string)))
 		users (cons user users)))
-	(riece-naming-assert-names (nreverse users) channel)
+	(riece-naming-assert-channel-users (nreverse users) channel)
 	(let* ((channel-identity (riece-make-identity channel
 						      riece-server-name))
 	       (buffer (riece-channel-buffer channel-identity)))
@@ -287,6 +309,12 @@
 	(while modes
 	  (riece-channel-toggle-mode channel (car modes) (eq toggle ?+))
 	  (setq modes (cdr modes)))
+	(riece-emit-signal (riece-make-signal
+			    'riece-channel-toggle-modes
+			    (riece-make-identity
+			     channel
+			     riece-server-name)
+			    modes (eq toggle ?+)))
 	(let* ((channel-identity (riece-make-identity channel
 						      riece-server-name))
 	       (buffer (riece-channel-buffer channel-identity)))
@@ -301,9 +329,7 @@
 	     (format "Mode for %s: %s"
 		     (riece-format-identity channel-identity t)
 		     mode-string))
-	    "\n")))
-	(riece-update-channel-indicator)
-	(force-mode-line-update t))))
+	    "\n"))))))
 
 (defun riece-handle-set-topic (prefix number name string remove)
   (if (string-match "^\\([^ ]+\\) :" string)
@@ -314,19 +340,23 @@
 	(if remove
 	    (riece-channel-set-topic (riece-get-channel channel) nil)
 	  (riece-channel-set-topic (riece-get-channel channel) message)
-	(riece-insert-info buffer (concat "Topic: " message "\n"))
-	(riece-insert-info
-	 (if (and riece-channel-buffer-mode
-		  (not (eq buffer riece-channel-buffer)))
-	     (list riece-dialogue-buffer riece-others-buffer)
-	   riece-dialogue-buffer)
-	 (concat
-	  (riece-concat-server-name
-	   (format "Topic for %s: %s"
-		   (riece-format-identity channel-identity t)
-		   message))
-	  "\n"))
-	(riece-update-channel-indicator)))))
+	  (riece-insert-info buffer (concat "Topic: " message "\n"))
+	  (riece-insert-info
+	   (if (and riece-channel-buffer-mode
+		    (not (eq buffer riece-channel-buffer)))
+	       (list riece-dialogue-buffer riece-others-buffer)
+	     riece-dialogue-buffer)
+	   (concat
+	    (riece-concat-server-name
+	     (format "Topic for %s: %s"
+		     (riece-format-identity channel-identity t)
+		     message))
+	    "\n")))
+	(riece-emit-signal (riece-make-signal
+			    'riece-channel-set-topic
+			    channel-identity
+			    (unless remove
+			      message))))))
 
 (defun riece-handle-331-message (prefix number name string)
   (riece-handle-set-topic prefix number name string t))
@@ -390,7 +420,19 @@
 	    (setq status (nreverse status)))
 	(riece-naming-assert-join nick channel)
 	(riece-user-toggle-away user away)
+	(riece-emit-signal (riece-make-signal
+			    'riece-user-toggle-away
+			    (riece-make-identity
+			     user
+			     riece-server-name)
+			    away))
 	(riece-user-toggle-operator user operator)
+	(riece-emit-signal (riece-make-signal
+			    'riece-user-toggle-operator
+			    (riece-make-identity
+			     user
+			     riece-server-name)
+			    operator))
 	(riece-insert-info buffer (concat (riece-concat-user-status
 					   status info)
 					  "\n"))

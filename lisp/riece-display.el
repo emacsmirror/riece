@@ -119,11 +119,12 @@ are the data of the signal."
 
 (defun riece-display-connect-signals ()
   (riece-connect-signal
-   'switch-to-channel
+   'riece-switch-to-channel
    (lambda (signal handback)
      (riece-update-status-indicators)
      (riece-update-channel-indicator)
      (riece-update-long-channel-indicator)
+     (force-mode-line-update t)
      (save-excursion
        (set-buffer riece-user-list-buffer)
        (run-hooks 'riece-update-buffer-functions))
@@ -133,13 +134,13 @@ are the data of the signal."
      (save-excursion
        (riece-redraw-layout))))
   (riece-connect-signal
-   'names
+   'riece-naming-assert-channel-users
    (lambda (signal handback)
      (save-excursion
        (set-buffer riece-user-list-buffer)
        (run-hooks 'riece-update-buffer-functions))))
   (riece-connect-signal
-   'join
+   'riece-naming-assert-join
    (lambda (signal handback)
      (save-excursion
        (set-buffer riece-user-list-buffer)
@@ -150,7 +151,7 @@ are the data of the signal."
 	  (not (riece-identity-equal (car (riece-signal-args signal))
 				     (riece-current-nickname))))))
   (riece-connect-signal
-   'part
+   'riece-naming-assert-part
    (lambda (signal handback)
      (save-excursion
        (set-buffer riece-user-list-buffer)
@@ -161,7 +162,7 @@ are the data of the signal."
 	  (not (riece-identity-equal (car (riece-signal-args signal))
 				     (riece-current-nickname))))))
   (riece-connect-signal
-   'rename
+   'riece-naming-assert-rename
    (lambda (signal handback)
      (save-excursion
        (set-buffer riece-user-list-buffer)
@@ -177,13 +178,64 @@ are the data of the signal."
 				       riece-current-channel))
 	     t)))))
   (riece-connect-signal
-   'rename
+   'riece-naming-assert-rename
    (lambda (signal handback)
      (riece-update-status-indicators)
-     (riece-update-channel-indicator))
+     (riece-update-channel-indicator)
+     (force-mode-line-update t))
    (lambda (signal)
      (riece-identity-equal (nth 1 (riece-signal-args signal))
-			   (riece-current-nickname)))))
+			   (riece-current-nickname))))
+  (riece-connect-signal
+   'riece-user-toggle-away
+   (lambda (signal handback)
+     (riece-update-status-indicators)
+     (force-mode-line-update t))
+   (lambda (signal)
+     (riece-identity-equal (nth 1 (riece-signal-args signal))
+			   (riece-current-nickname))))
+  (riece-connect-signal
+   'riece-user-toggle-operator
+   (lambda (signal handback)
+     (riece-update-status-indicators)
+     (force-mode-line-update t))
+   (lambda (signal)
+     (riece-identity-equal (nth 1 (riece-signal-args signal))
+			   (riece-current-nickname))))
+  (riece-connect-signal
+   'riece-channel-set-topic
+   (lambda (signal handback)
+     (riece-update-long-channel-indicator)
+     (force-mode-line-update t))
+   (lambda (signal)
+     (riece-identity-equal (car (riece-signal-args signal))
+			   riece-current-channel)))
+  (riece-connect-signal
+   'riece-channel-toggle-modes
+   (lambda (signal handback)
+     (riece-update-status-indicators)
+     (force-mode-line-update t))
+   (lambda (signal)
+     (riece-identity-equal (car (riece-signal-args signal))
+			   riece-current-channel)))
+  (riece-connect-signal
+   'riece-channel-toggle-operator
+   (lambda (signal handback)
+     (save-excursion
+       (set-buffer riece-user-list-buffer)
+       (run-hooks 'riece-update-buffer-functions)))
+   (lambda (signal)
+     (riece-identity-equal (car (riece-signal-args signal))
+			   riece-current-channel)))
+  (riece-connect-signal
+   'riece-channel-toggle-speaker
+   (lambda (signal handback)
+     (save-excursion
+       (set-buffer riece-user-list-buffer)
+       (run-hooks 'riece-update-buffer-functions)))
+   (lambda (signal)
+     (riece-identity-equal (car (riece-signal-args signal))
+			   riece-current-channel))))
 
 (defun riece-update-user-list-buffer ()
   (save-excursion
@@ -349,7 +401,7 @@ are the data of the signal."
     (setq riece-current-channel identity
 	  riece-channel-buffer (riece-channel-buffer riece-current-channel))
     (run-hook-with-args 'riece-after-switch-to-channel-functions last)
-    (riece-emit-signal (riece-make-signal 'switch-to-channel))))
+    (riece-emit-signal (riece-make-signal 'riece-switch-to-channel))))
 
 (defun riece-join-channel (identity)
   (unless (riece-identity-member identity riece-current-channels)
@@ -380,7 +432,7 @@ are the data of the signal."
       (let ((last riece-current-channel))
 	(run-hook-with-args 'riece-after-switch-to-channel-functions last)
 	(setq riece-current-channel nil)
-	(riece-emit-signal (riece-make-signal 'switch-to-channel))))))
+	(riece-emit-signal (riece-make-signal 'riece-switch-to-channel))))))
 
 (defun riece-part-channel (identity)
   (let ((pointer (riece-identity-member identity riece-current-channels)))

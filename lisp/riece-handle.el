@@ -323,6 +323,10 @@
 	 (user-identity (riece-make-identity user riece-server-name))
 	 (channel-identity (riece-make-identity channel riece-server-name)))
     (riece-channel-set-topic (riece-get-channel channel) topic)
+    (riece-emit-signal (riece-make-signal
+			'riece-channel-set-topic
+			channel-identity
+			topic))
     (let ((buffer (riece-channel-buffer channel-identity)))
       (riece-insert-change
        buffer
@@ -355,10 +359,28 @@
 	      (cond
 	       ((eq (car modes) ?o)
 		(riece-channel-toggle-operator channel parameter
-					       (eq toggle ?+)))
+					       (eq toggle ?+))
+		(riece-emit-signal (riece-make-signal
+				    'riece-channel-toggle-operator
+				    (riece-make-identity
+				     channel
+				     riece-server-name)
+				    (riece-make-identity
+				     parameter
+				     riece-server-name)
+				    (eq toggle ?+))))
 	       ((eq (car modes) ?v)
 		(riece-channel-toggle-speaker channel parameter
-					      (eq toggle ?+)))
+					      (eq toggle ?+))
+		(riece-emit-signal (riece-make-signal
+				    'riece-channel-toggle-speaker
+				    (riece-make-identity
+				     channel
+				     riece-server-name)
+				    (riece-make-identity
+				     parameter
+				     riece-server-name)
+				    (eq toggle ?+))))
 	       ((eq (car modes) ?b)
 		(riece-channel-toggle-banned channel parameter
 					     (eq toggle ?+)))
@@ -370,7 +392,13 @@
 					      (eq toggle ?+)))))
 	  (riece-channel-toggle-mode channel (car modes)
 				     (eq toggle ?+)))
-	(setq modes (cdr modes))))))
+	(setq modes (cdr modes)))
+      (riece-emit-signal (riece-make-signal
+			  'riece-channel-toggle-modes
+			  (riece-make-identity
+			   channel
+			   riece-server-name)
+			  modes toggle)))))
 
 (defun riece-handle-mode-message (prefix string)
   (let* ((user (riece-prefix-nickname prefix))

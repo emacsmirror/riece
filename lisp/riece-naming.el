@@ -40,7 +40,7 @@
       (riece-join-channel channel-identity)
       (riece-switch-to-channel channel-identity)
       (setq riece-join-channel-candidate nil))
-    (riece-emit-signal (riece-make-signal 'join
+    (riece-emit-signal (riece-make-signal 'riece-naming-assert-join
 					  user-identity
 					  channel-identity))))
 
@@ -55,7 +55,7 @@
 					       riece-server-name)))
     (if (riece-identity-equal-no-server user-name riece-real-nickname)
 	(riece-part-channel channel-identity))
-    (riece-emit-signal (riece-make-signal 'part
+    (riece-emit-signal (riece-make-signal 'riece-naming-assert-part
 					  user-identity
 					  channel-identity))))
 
@@ -88,9 +88,10 @@
 			  riece-channel-buffer-alist))))
       (if (riece-identity-equal old-identity riece-current-channel)
 	  (riece-switch-to-channel new-identity)))
-    (riece-emit-signal (riece-make-signal 'rename old-identity new-identity))))
+    (riece-emit-signal (riece-make-signal 'riece-naming-assert-rename
+					  old-identity new-identity))))
 
-(defun riece-naming-assert-names (users channel-name)
+(defun riece-naming-assert-channel-users (users channel-name)
   (let ((channel-identity (riece-make-identity channel-name
 					       riece-server-name))
 	user-identity-list)
@@ -98,16 +99,15 @@
       (riece-user-toggle-channel (car (car users)) channel-name t)
       (riece-channel-toggle-user channel-name (car (car users)) t)
       (if (memq ?o (cdr (car users)))
-	  (riece-channel-toggle-operator channel-name
-					 (car (car users))
-					 t)
+	  (riece-channel-toggle-operator channel-name (car (car users)) t)
 	(if (memq ?v (cdr (car users)))
-	    (riece-channel-toggle-speaker channel-name
-					  (car (car users))
-					  t)))
+	    (riece-channel-toggle-speaker channel-name (car (car users)) t)
+	  (riece-channel-toggle-operator channel-name (car (car users)) nil)
+	  (riece-channel-toggle-speaker channel-name (car (car users)) nil)))
       (setq user-identity-list
-	    (cons (riece-make-identity (car (car users))
-				       riece-server-name)
+	    (cons (cons (riece-make-identity (car (car users))
+					     riece-server-name)
+			(cdr (car users)))
 		  user-identity-list))
       (when (riece-identity-equal-no-server (car (car users))
 					    riece-real-nickname)
@@ -115,7 +115,7 @@
 	(riece-switch-to-channel channel-identity)
 	(setq riece-join-channel-candidate nil))
       (setq users (cdr users)))
-    (riece-emit-signal (riece-make-signal 'names
+    (riece-emit-signal (riece-make-signal 'riece-naming-assert-channel-users
 					  (nreverse user-identity-list)
 					  channel-identity))))
 

@@ -1,5 +1,42 @@
 2004-02-27  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-naming.el (riece-naming-assert-join): Rename signal 'join
+	-> 'riece-naming-assert-join.
+	(riece-naming-assert-part): Rename signal 'part ->
+	'riece-naming-assert-part.
+	(riece-naming-assert-rename): Rename signal 'rename ->
+	'riece-naming-assert-rename.
+	(riece-naming-assert-channel-users): Rename from
+	riece-naming-assert-users; rename signal 'users ->
+	'riece-naming-assert-channel-users.
+
+	* riece-handle.el (riece-handle-topic-message): Emit
+	'riece-channel-set-topic signal.
+	(riece-parse-channel-modes): Emit 'riece-channel-toggle-operator,
+	'riece-channel-toggle-speaker, and 'riece-channel-toggle-modes signals.
+
+	* riece-display.el (riece-display-connect-signals): Rename some
+	signals; connect more signals.
+
+	* riece-300.el (riece-handle-302-message): Emit
+	'riece-user-toggle-away, and 'riece-user-toggle-operator signals;
+	don't update status indicators manually.
+	(riece-handle-301-message): Emit 'riece-user-toggle-away signal;
+	don't update status indicators manually.
+	(riece-handle-305-message): Ditto.
+	(riece-handle-306-message): Ditto.
+	(riece-handle-353-message): Follow the name change of
+	riece-naming-assert-users.
+	(riece-handle-324-message): Emit 'riece-channel-toggle-modes
+	signal; don't update status indicators manually.
+	(riece-handle-set-topic): Emit 'riece-channel-set-topic signal;
+	don't update channel indicator manually.
+	(riece-handle-352-message): Emit 'riece-user-toggle-away, and
+	'riece-user-toggle-operator signals; don't update status
+	indicators manually.
+
+2004-02-27  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-display.el (riece-connect-signal): Create slot object
 	internally.
 
