@@ -204,7 +204,8 @@ respectively."
     (setq user (riece-identity-assoc user users t))
     (if flag
 	(if user
-	    (setcdr user (cons ?o (cdr user)))
+	    (unless (memq ?o (cdr user))
+	      (setcdr user (cons ?o (cdr user))))
 	  (riece-channel-set-users channel (cons (list user ?o) users)))
       (if user
 	  (setcdr user (delq ?o (cdr user)))))))
@@ -216,7 +217,8 @@ respectively."
     (setq user (riece-identity-assoc user users t))
     (if flag
 	(if user
-	    (setcdr user (cons ?v (cdr user)))
+	    (unless (memq ?v (cdr user))
+	      (setcdr user (cons ?v (cdr user))))
 	  (riece-channel-set-users channel (cons (list user ?v) users)))
       (if user
 	  (setcdr user (delq ?v (cdr user)))))))

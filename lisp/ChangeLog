@@ -1,3 +1,10 @@
+2004-09-01  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-channel.el (riece-channel-toggle-operator): Don't add ?o
+	if it already appears in user's mode.
+	(riece-channel-toggle-speaker): Don't add ?v if it already appears
+	in user's mode.
+
 2004-08-31  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece.el (riece-command-mode): Set truncate-lines to nil.
