@@ -24,7 +24,7 @@
 ;;; Commentary:
 
 ;; To use, add the following line to your ~/.riece/init.el:
-;; (add-to-list 'riece-addons 'riece-hangman t)
+;; (add-to-list 'riece-addons 'riece-hangman)
 
 ;;; Code:
 

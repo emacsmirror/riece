@@ -26,7 +26,7 @@
 ;; This add-on allows you to become a psychotherapist.
 
 ;; To use, add the following line to your ~/.riece/init.el:
-;; (add-to-list 'riece-addons 'riece-doctor t)
+;; (add-to-list 'riece-addons 'riece-doctor)
 
 ;;; Code:
 
