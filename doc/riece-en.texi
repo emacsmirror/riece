@@ -63,13 +63,12 @@ Riece is a program to participate in IRC (Internet Relay Chat) from Emacs.
 @node Overview, Getting started, Top, Top
 @chapter Overview
 
-Riece is an IRC (Internet Relay Chat) client for Emacs and is a full
-rewrite of the predecessor product "Liece" (whose code has been
-unmaintainable for a long time), while providing user interface
+Riece is a full rewrite of the predecessor product "Liece" (whose code
+has been unmaintainable for a long time), while providing user interface
 compatible with Liece.
 
 For now it does not have rich functions as an IRC client, but there are
-noteworthy points as compared with Liece:
+noteworthy improvements as compared with Liece:
 
 @itemize @bullet
 @item Several IRC servers may be used at the same time.
