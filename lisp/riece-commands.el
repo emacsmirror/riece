@@ -189,8 +189,11 @@ the layout to the selected layout-name."
        (error "Not on a channel"))
      (list (completing-read
 	    "User: "
-	    (mapcar #'list (riece-channel-get-users
-			    riece-current-channel)))
+	    (mapcar #'list
+		    (riece-with-server-buffer
+			(riece-identity-server riece-current-channel)
+		      (riece-channel-get-users
+		       (riece-identity-prefix riece-current-channel)))))
 	   (if current-prefix-arg
 	       (read-string "Message: ")))))
   (riece-send-string

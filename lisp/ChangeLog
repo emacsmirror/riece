@@ -1,3 +1,8 @@
+2003-10-07  TAKAHASHI Kaoru  <kaoru@kaisei.org>
+
+	* riece-commands.el (riece-command-kick): Fix completing-read
+	collection argument.
+
 2003-10-05  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-000.el: Require 'riece-commands.
