@@ -5,6 +5,38 @@
 	reading input.  Thanks to Akinori MUSHA  <knu@iDaemons.org>
 	[cf. <Liece:00123>]
 
+	* riece.el: Add autoload setting for derived-mode-class.
+	(riece-shrink-buffer-idle-timer): New variable.
+	(riece): Set idle timer to shrink channel buffers.
+	(riece-shrink-buffer): New function.
+
+	* riece-xemacs.el (riece-overlays-in): New function.
+	(riece-delete-overlay): New alias.
+	(riece-kill-all-overlays): New function.
+
+	* riece-server.el (riece-quit-server-process): Don't set timer if
+	riece-quit-timeout is nil.
+
+	* riece-options.el (riece-quit-timeout): Change custom type.
+	(riece-shrink-buffer-idle-time-delay): New user option.
+	(riece-max-buffer-size): New user option.
+
+	* riece-icon.el (riece-icon-add-image-region) [XEmacs]: Delete
+	extents if already exists.
+
+	* riece-emacs.el (riece-overlays-in): New alias.
+	(riece-delete-overlay): New alias.
+	(riece-kill-all-overlays): New function.
+	(riece-run-with-idle-timer): New alias.
+	(riece-cancel-timer): New alias.
+
+	* riece-display.el (riece-update-user-list-buffer): Kill all
+	overlays in buffer.
+	(riece-update-channel-list-buffer): Ditto.
+
+	* riece-commands.el (riece-command-set-operators): Reset group.
+	(riece-command-set-speakers): Ditto.
+
 2003-10-23  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-naming.el (riece-naming-assert-rename): Follow the
