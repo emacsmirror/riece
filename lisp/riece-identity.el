@@ -131,7 +131,7 @@ will be added."
   (let ((string
 	 (if (or prefix-only
 		 (equal (riece-identity-server identity) ""))
-	     (riece-identity-prefix identity)
+	     (copy-sequence (riece-identity-prefix identity))
 	   (concat (riece-identity-prefix identity) " "
 		   (riece-identity-server identity)))))
     (if riece-abbrev-identity-string-function

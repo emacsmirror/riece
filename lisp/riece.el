@@ -402,7 +402,7 @@ Instead, these commands are available:
   (kill-all-local-variables)
   (buffer-disable-undo)
   (setq major-mode 'riece-user-list-mode
-        mode-name "User list"
+        mode-name "Users"
 	mode-line-buffer-identification
 	(riece-mode-line-buffer-identification
 	 '("Riece: " riece-long-channel-indicator " "))
