@@ -1,5 +1,10 @@
 2004-03-21  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece.el (riece-exit): Don't clear riece-user-list-buffer and
+	riece-channel-list-buffer.
+
+2004-03-21  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece.el (riece-exit): Clear riece-channel-buffer,
 	riece-user-list-buffer, and riece-channel-list-buffer.
 
