@@ -25,7 +25,6 @@
 ;;; Code:
 
 (require 'riece-misc)
-(require 'riece-commands)
 
 (eval-when-compile
   (autoload 'riece-default-handle-numeric-reply "riece-filter"))

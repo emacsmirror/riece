@@ -25,7 +25,6 @@
 ;;; Code:
 
 (require 'riece-misc)
-(require 'riece-commands)
 
 (require 'riece-filter)			;riece-default-handle-message
 

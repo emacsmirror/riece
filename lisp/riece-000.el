@@ -27,6 +27,7 @@
 (require 'riece-misc)
 (require 'riece-filter)			;riece-default-handle-message
 (require 'riece-version)
+(require 'riece-commands)		;riece-command-join
 
 (eval-when-compile
   (autoload 'riece-default-handle-numeric-reply "riece-filter"))

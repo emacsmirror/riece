@@ -1,5 +1,11 @@
 2003-10-05  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-000.el: Require 'riece-commands.
+	* riece-200.el: Don't require 'riece-commands.
+	* riece-300.el: Ditto.
+
+2003-10-05  Daiki Ueno  <ueno@unixuser.org>
+
 	* Riece: Version 0.1.2 released.
 	* riece-version.el (riece-version-number): Bump up to 0.1.2.
 
