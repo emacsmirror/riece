@@ -280,9 +280,9 @@ Local to the buffer in `riece-buffer-list'.")
   (setq riece-long-channel-indicator
 	(if riece-current-channel
 	    (if (riece-channel-p (riece-identity-prefix riece-current-channel))
-		(riece-concat-channel-modes
+		(riece-concat-channel-topic
 		 riece-current-channel
-		 (riece-concat-channel-topic
+		 (riece-concat-channel-modes
 		  riece-current-channel
 		  (riece-format-identity riece-current-channel)))
 	      (riece-format-identity riece-current-channel))

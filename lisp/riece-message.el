@@ -66,10 +66,10 @@
 
 (defun riece-message-make-open-bracket (message)
   "Make `open-bracket' string for MESSAGE."
-  (if (riece-message-own-p message)
-      ">"
-    (if (eq (riece-message-type message) 'notice)
-	"{"
+  (if (eq (riece-message-type message) 'notice)
+      "{"
+    (if (riece-message-own-p message)
+	">"
       (if (riece-message-private-p message)
 	  "="
 	(if (riece-message-external-p message)
@@ -78,10 +78,10 @@
 
 (defun riece-message-make-close-bracket (message)
   "Make `close-bracket' string for MESSAGE."
-  (if (riece-message-own-p message)
-      "<"
-    (if (eq (riece-message-type message) 'notice)
-	"}"
+  (if (eq (riece-message-type message) 'notice)
+      "}"
+    (if (riece-message-own-p message)
+	"<"
       (if (riece-message-private-p message)
 	  "="
 	(if (riece-message-external-p message)
