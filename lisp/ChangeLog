@@ -1,3 +1,13 @@
+2004-09-27  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-options.el (riece-send-delay): Set default to 2.
+
+	* riece-server.el (riece-make-queue): New function.
+	(riece-queue-enqueue): New function.
+	(riece-queue-dequeue): New function.
+	(riece-queue-empty): New function.
+	(riece-flush-send-queue): Use a queue object.
+
 2004-09-25  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-server.el: Implement flood protection.
