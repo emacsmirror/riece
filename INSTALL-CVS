@@ -1,0 +1,20 @@
+Development of Riece uses CVS, Concurrent Versions System.
+Latest developing version is available at CVS.
+
+(0) logging in to anonymous CVS server.
+
+  % cvs -d :pserver:anonymous@cvs.m17n.org:/cvs/root login
+
+  CVS password: [CR] # NULL string
+
+(1) checkout modules
+
+  % cvs -d :pserver:anonymous@cvs.m17n.org:/cvs/root checkout riece
+
+Specify revision tag in front of the module name.
+
+(2) bootstrapping
+
+  % autoreconf -f -i
+
+You will need newer versions of autoconf & automake.
