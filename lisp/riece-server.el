@@ -112,10 +112,9 @@ the `riece-server-keyword-map' variable."
 	   (coding-system-for-write 'binary)
 	   (process
 	    (funcall function "IRC"
-		     (get-buffer-create
-		      (if server-name
-			  (format " *IRC*%s" server-name)
-			" *IRC*"))
+		     (if server-name
+			 (format " *IRC*%s" server-name)
+		       " *IRC*")
 		     host service)))
       (riece-reset-process-buffer process)
       (with-current-buffer (process-buffer process)

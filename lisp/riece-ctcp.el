@@ -28,6 +28,7 @@
 (require 'riece-misc)
 
 (defvar riece-ctcp-ping-time nil)
+(defvar riece-ctcp-additional-clientinfo nil)
 
 (defvar riece-dialogue-mode-map)
 
@@ -36,7 +37,8 @@
   (add-hook 'riece-notice-hook 'riece-handle-ctcp-response)
   (define-key riece-dialogue-mode-map "\C-cv" 'riece-command-ctcp-version)
   (define-key riece-dialogue-mode-map "\C-cp" 'riece-command-ctcp-ping)
-  (define-key riece-dialogue-mode-map "\C-ca" 'riece-command-ctcp-action))
+  (define-key riece-dialogue-mode-map "\C-ca" 'riece-command-ctcp-action)
+  (define-key riece-dialogue-mode-map "\C-cc" 'riece-command-ctcp-clientinfo))
 
 (defun riece-handle-ctcp-request (prefix string)
   (when (and prefix string
@@ -125,6 +127,43 @@
 	       target))
       "\n"))))
 
+(defun riece-handle-ctcp-clientinfo-request (prefix target string)
+  (let ((buffer (if (riece-channel-p target)
+		    (cdr (riece-identity-assoc-no-server
+			  (riece-make-identity target)
+			  riece-channel-buffer-alist))))
+	(user (riece-prefix-nickname prefix)))
+    (riece-send-string
+     (format "NOTICE %s :\1CLIENTINFO %s\1\r\n"
+	     user
+	     (let (messages)
+	       (mapatoms
+		(lambda (atom)
+		  (let ((case-fold-search t))
+		    (if (and (fboundp atom)
+			     (string-match
+			      "riece-handle-ctcp-\\(.+\\)-request"
+			      (symbol-name atom)))
+			(setq messages
+			      (cons (match-string 1 (symbol-name atom))
+				    messages))))))
+	       (mapconcat #'upcase (append messages
+					   riece-ctcp-additional-clientinfo)
+			  " "))))
+    (riece-insert-change buffer (format "CTCP CLIENTINFO from %s\n" user))
+    (riece-insert-change
+     (if (and riece-channel-buffer-mode
+	      (not (eq buffer riece-channel-buffer)))
+	 (list riece-dialogue-buffer riece-others-buffer)
+       riece-dialogue-buffer)
+     (concat
+      (riece-concat-server-name
+       (format "CTCP CLIENTINFO from %s (%s) to %s"
+	       user
+	       (riece-strip-user-at-host (riece-prefix-user-at-host prefix))
+	       target))
+      "\n"))))
+
 (defun riece-handle-ctcp-action-request (prefix target string)
   (let ((buffer (if (riece-channel-p target)
 		    (cdr (riece-identity-assoc-no-server
@@ -204,6 +243,17 @@
 	       elapsed))
       "\n"))))
 
+(defun riece-handle-ctcp-clientinfo-response (prefix target string)
+  (riece-insert-change
+   (list riece-dialogue-buffer riece-others-buffer)
+   (concat
+    (riece-concat-server-name
+     (format "CTCP CLIENTINFO for %s (%s) = %s"
+	     (riece-prefix-nickname prefix)
+	     (riece-strip-user-at-host (riece-prefix-user-at-host prefix))
+	     string))
+    "\n")))
+
 (defun riece-command-ctcp-version (user)
   (interactive
    (let ((completion-ignore-case t))
@@ -220,6 +270,14 @@
 	    (mapcar #'list (riece-get-users-on-server))))))
   (riece-send-string (format "PRIVMSG %s :\1PING\1\r\n" user))
   (setq riece-ctcp-ping-time (current-time)))
+
+(defun riece-command-ctcp-clientinfo (user)
+  (interactive
+   (let ((completion-ignore-case t))
+     (list (completing-read
+	    "Channel/User: "
+	    (mapcar #'list (riece-get-users-on-server))))))
+  (riece-send-string (format "PRIVMSG %s :\1CLIENTINFO\1\r\n" user)))
 
 (defun riece-command-ctcp-action (channel action)
   (interactive

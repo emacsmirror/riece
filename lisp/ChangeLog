@@ -1,5 +1,20 @@
 2003-06-03  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-rdcc.el: Require 'riece-ctcp.
+	(riece-rdcc-insinuate): Add "DCC" to
+	riece-ctcp-additional-clientinfo.
+
+	* riece-ctcp.el (riece-ctcp-additional-clientinfo): New variable.
+	(riece-command-ctcp-clientinfo): New command.
+	(riece-ctcp-insinuate): Bind it in riece-dialogue-mode-map.
+	(riece-handle-ctcp-clientinfo-request): New handler.
+	(riece-handle-ctcp-clientinfo-response): New handler.
+
+	* riece-server.el (riece-open-server): No need to use
+	get-buffer-create to reuse process buffer.
+
+2003-06-03  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-rdcc.el (riece-command-dcc-send): Generate new buffer for
 	DCC process.
 	(riece-command-dcc-receive): Likewise; don't set buffer-file-name.
