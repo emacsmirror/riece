@@ -92,7 +92,7 @@
 	    (server (substring string (match-end 0))))
 	(concat (riece-alias-escape-atmark prefix) "@"
 		(riece-alias-escape-atmark server)))
-    (concat (riece-alias-escape-atmark string) "@")))
+    (riece-alias-escape-atmark string)))
 
 (defun riece-alias-expand-atmark (string)
   (let ((index 0)
@@ -107,14 +107,15 @@
 	    index (+ (match-beginning 0) (/ length 2)))
       (unless (zerop (% length 2))
 	(setq prefix (substring string 0 index))))
-    (setq server (substring string index)
-	  index 0)
-    (if (equal server "")
-	prefix
-      (while (string-match "@@" server index)
-	(setq server (replace-match "@" nil nil server)
-	      index (1- (match-end 0))))
-      (concat prefix " " server))))
+    (if (null prefix)
+	string
+      (setq server (substring string index)
+	    index 0)
+      (if (equal server "")
+	  (while (string-match "@@" server index)
+	    (setq server (replace-match "@" nil nil server)
+		  index (1- (match-end 0))))
+	(concat prefix " " server)))))
 
 (defun riece-alias-abbrev-identity-string (string)
   (if riece-alias-enable-percent-hack

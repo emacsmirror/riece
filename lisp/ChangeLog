@@ -1,5 +1,10 @@
 2004-11-05  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-alias.el (riece-alias-abbrev-atmark): Don't append "@" to
+	a channel on default server.
+
+2004-11-05  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-alias.el (riece-alias-use-atmark): New user option.  If
 	this option enabled, atmark "@" will be used to separate prefix
 	and server. (e.g. "#riece@server")
