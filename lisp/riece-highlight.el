@@ -190,14 +190,7 @@
   :group 'riece-highlight-faces)
 
 (defface riece-channel-list-default-face
-  '((((class color)
-      (background dark))
-     (:foreground "turquoise"))
-    (((class color)
-      (background light))
-     (:foreground "CadetBlue4"))
-    (t
-     ()))
+  '((t ()))
   "Face used for displaying channels."
   :group 'riece-highlight-faces)
 
