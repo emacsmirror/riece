@@ -48,14 +48,8 @@
     (end-of-line)
     (point)))
 
-(defvar riece-read-passwd
-  (if (functionp 'read-passwd)
-      #'read-passwd
-    (if (load "passwd" t)
-	#'read-passwd
-      (autoload 'ange-ftp-read-passwd "ange-ftp")
-      #'ange-ftp-read-passwd)))
-
+(autoload 'read-passwd "passwd")
+(defvar riece-read-passwd #'read-passwd)
 (defun riece-read-passwd (prompt)
   (condition-case nil
       (let (inhibit-quit)
