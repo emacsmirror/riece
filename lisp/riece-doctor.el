@@ -35,7 +35,9 @@
 (defvar riece-doctor-patients nil)
 
 (defun riece-doctor-buffer-name (user)
-  (concat " *riece-doctor*" (riece-identity-canonicalize-prefix user)))
+  (concat " *riece-doctor*"
+	  (riece-decode-identity (riece-make-identity user
+						      riece-server-name))))
 
 (defun riece-doctor-reply (target string)
   (riece-send-string (format "NOTICE %s :%s\r\n" target string))
