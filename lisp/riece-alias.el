@@ -143,7 +143,7 @@
 	  (setq string (cdr (car alist))
 		alist nil)
 	(setq alist (cdr alist)))))
-  string)
+  (copy-sequence string))
 
 (defun riece-alias-expand-identity-string (string)
   (let ((alist riece-alias-alist))
@@ -156,7 +156,7 @@
       (setq string (riece-alias-expand-alternate-separator string)))
   (if riece-alias-enable-percent-hack
       (setq string (riece-alias-expand-percent-hack string)))
-  string)
+  (copy-sequence string))
 
 (defun riece-alias-insinuate ()
   )

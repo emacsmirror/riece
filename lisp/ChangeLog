@@ -1,5 +1,9 @@
 2004-12-14  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-alias.el (riece-alias-abbrev-identity-string): Return a
+	copy of a string since text properties will be set on it.
+	(riece-alias-expand-identity-string): Ditto.
+
 	* riece-emacs.el (riece-normalize-modeline-string): Don't
 	concatenate elements in modeline string.
 
