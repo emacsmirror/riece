@@ -162,11 +162,9 @@
 
 (defcustom riece-highlight-font-lock-keywords
   (append
-   (list
-    `(,(concat
-	"^" riece-time-prefix-regexp 
-	"\\(<[^>]+>\\|>[^<]+<\\|-[^-]+-\\|([^)]+)\\|=[^=]+=\\)")
-      (1 riece-prefix-face append t)))
+   (list (list (concat "^" riece-time-prefix-regexp
+		       "\\(<[^>]+>\\|>[^<]+<\\|([^)]+)\\|-[^ ]+ [^-]+-\\|=[^ ]+ [^=]+=\\|\\([+-]\\)[^ ]+\\2\\)")
+	       '(1 riece-prefix-face append t)))
    ;; set property to the whole line
    (mapcar
     (lambda (line)
