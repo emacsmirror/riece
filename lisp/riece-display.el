@@ -154,6 +154,15 @@ This function is for internal use only."
 	  (not (riece-identity-equal (car (riece-signal-args signal))
 				     (riece-current-nickname))))))
   (riece-connect-signal
+   'riece-naming-assert-join
+   (lambda (signal handback)
+     (riece-join-channel (nth 1 (riece-signal-args signal)))
+     (riece-switch-to-channel (nth 1 (riece-signal-args signal)))
+     (setq riece-join-channel-candidate nil))
+   (lambda (signal)
+     (riece-identity-equal (car (riece-signal-args signal))
+			   riece-current-nickname)))
+  (riece-connect-signal
    'riece-naming-assert-part
    (lambda (signal handback)
      (save-excursion
@@ -164,6 +173,13 @@ This function is for internal use only."
 				riece-current-channel)
 	  (not (riece-identity-equal (car (riece-signal-args signal))
 				     (riece-current-nickname))))))
+  (riece-connect-signal
+   'riece-naming-assert-part
+   (lambda (signal handback)
+     (riece-part-channel (nth 1 (riece-signal-args signal)))
+   (lambda (signal)
+     (riece-identity-equal (car (riece-signal-args signal))
+			   riece-current-nickname))))
   (riece-connect-signal
    'riece-naming-assert-rename
    (lambda (signal handback)
@@ -189,6 +205,13 @@ This function is for internal use only."
    (lambda (signal)
      (riece-identity-equal (nth 1 (riece-signal-args signal))
 			   (riece-current-nickname))))
+  (riece-connect-signal
+   'riece-naming-assert-rename
+   (lambda (signal handback)
+     (riece-switch-to-channel (nth 1 (riece-signal-args signal))))
+   (lambda (signal)
+     (riece-identity-equal (car (riece-signal-args signal))
+			   riece-current-channel)))
   (riece-connect-signal
    'riece-user-toggle-away
    (lambda (signal handback)

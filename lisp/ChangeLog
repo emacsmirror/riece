@@ -1,3 +1,14 @@
+2004-02-28  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-display.el (riece-display-connect-signals): Connect some
+	signals.
+
+	* riece-naming.el (riece-naming-assert-join): Don't change the
+	current channel manually.
+	(riece-naming-assert-part): Ditto.
+	(riece-naming-assert-rename): Ditto.
+	(riece-naming-assert-channel-users): Ditto.
+
 2004-02-27  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-display.el (riece-emit-signal): Create signal object
