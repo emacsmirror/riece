@@ -1,3 +1,28 @@
+2003-06-06  OHASHI Akira  <bg66@koka-in.org>
+
+	* riece-ndcc.el (riece-ndcc-server-sentinel): Close a parenthesis.
+
+	* riece-rdcc.el (riece-rdcc-insinuate): Don't use the 3rd argument of
+	`add-to-list'.
+
+2003-06-06  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-channel.el (riece-forget-channel): Fixed.
+	(riece-channel-modeless-regexp): Abolish.
+	(riece-channel-modeless-p): Abolish.
+
+2003-06-06  OHASHI Akira  <bg66@koka-in.org>
+
+	* riece-unread.el (riece-unread-display-message-function): Delete the
+	target before adding to list.
+	(riece-unread-switch-to-channel): New function.
+	(riece-unread-insinuate): Bind "\C-c\C-u" to riece-command-mode-map.
+	Bind "u" to riece-dialogue-mode-map.
+	Bind "u" to riece-channel-list-mode-map.
+
+	* riece.el (riece-channel-list-mode-map): Don't bind
+	`riece-command-unread-channel'.
+
 2003-06-04  Yoichi NAKAYAMA  <yoichi@geiin.org>
 
 	* riece-000.el,riece-200.el,riece-300.el,riece-400.el,riece-500.el,

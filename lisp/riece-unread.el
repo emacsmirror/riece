@@ -38,6 +38,8 @@
 (defun riece-unread-display-message-function (message)
   (unless (or (riece-message-own-p message)
 	      (equal (riece-message-target message) riece-current-channel))
+    (setq riece-unread-channels
+	  (delete (riece-message-target message) riece-unread-channels))
     (add-to-list 'riece-unread-channels
 		 (riece-message-target message))
     (riece-unread-update-channel-list-buffer)))
@@ -66,13 +68,29 @@
 			   "\\3"))))
 	    (forward-line))))))
       
+(defun riece-unread-switch-to-channel ()
+  (interactive)
+  (if (car riece-unread-channels)
+      (riece-command-switch-to-channel (car riece-unread-channels))
+    (error "No unread channel!")))
+
+(defvar riece-command-mode-map)
+(defvar riece-dialogue-mode-map)
+(defvar riece-channel-list-mode-map)
+
 (defun riece-unread-insinuate ()
   (add-hook 'riece-after-display-message-functions
 	    'riece-unread-display-message-function)
   (add-hook 'riece-channel-switch-hook
 	    'riece-unread-channel-switch-hook)
   (add-hook 'riece-update-buffers-hook
-	    'riece-unread-update-channel-list-buffer))
+	    'riece-unread-update-channel-list-buffer)
+  (define-key riece-command-mode-map
+    "\C-c\C-u" 'riece-unread-switch-to-channel)
+  (define-key riece-dialogue-mode-map
+    "u" 'riece-unread-switch-to-channel)
+  (define-key riece-channel-list-mode-map
+    "u" 'riece-unread-switch-to-channel))
 
 (provide 'riece-unread)
 

@@ -81,7 +81,7 @@ Only used for sending files."
 	(message "Sending %s...done"
 		 (buffer-file-name)))
       (kill-buffer (process-buffer (get-process parent-name))))
-    (kill-buffer (process-buffer process))
+    (kill-buffer (process-buffer process))))
 
 (defun riece-command-dcc-send (user file)
   (interactive
