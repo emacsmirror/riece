@@ -1,5 +1,13 @@
 2005-03-12  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece.el (riece-buffer-alist): Init riece-debug-buffer.
+	* riece-globals.el (riece-debug-buffer): New variable.
+	* riece-filter.el (riece-sentinel): Use riece-debug.
+	* riece-display.el (riece-channel-buffer-name): Use riece-debug.
+	* riece-button.el (riece-identity-button-click): Use riece-debug.
+	* riece-debug.el (riece-debug): New function.
+	(riece-ignore-errors): Use it.
+
 	* riece-filter.el (riece-filter): Removed (eobp) check.
 
 2005-03-06  Daiki Ueno  <ueno@unixuser.org>

@@ -404,7 +404,8 @@ Local to the buffer in `riece-buffer-list'.")
     (if channels
 	(setq identity (car channels))
       (if riece-debug
-	  (message "%S is not a member of riece-current-channels" identity)))
+	  (riece-debug (format "%S is not a member of riece-current-channels"
+			       identity))))
     (format riece-channel-buffer-format (riece-format-identity identity))))
 
 (eval-when-compile

@@ -102,7 +102,8 @@ This function is used as a callback for a channel button."
 	    (select-window window)
 	    (set-window-point window point))
 	(if riece-debug
-	    (message "buffer %s not visible" (buffer-name buffer)))))))
+	    (riece-debug (format "buffer %s not visible"
+				 (buffer-name buffer))))))))
 
 (defun riece-identity-button-popup-menu (event)
   "Popup the menu for identity buttons."

@@ -117,10 +117,11 @@
 			 riece-server-name)))
       (if riece-debug
 	  (if (equal server-name "")
-	      (message "Connection closed: %s"
-		       (substring status 0 (1- (length status))))
-	    (message "Connection to \"%s\" closed: %s"
-		     server-name (substring status 0 (1- (length status)))))
+	      (riece-debug (format "Connection closed: %s"
+				   (substring status 0 (1- (length status)))))
+	    (riece-debug (format "Connection to \"%s\" closed: %s"
+				 server-name
+				 (substring status 0 (1- (length status))))))
 	(if (equal server-name "")
 	    (message "Connection closed")
 	  (message "Connection to \"%s\" closed" server-name)))

@@ -59,7 +59,8 @@
     (riece-others-buffer "*Others*" riece-others-mode)
     (riece-channel-list-buffer "*Channels*" riece-channel-list-mode)
     (riece-user-list-buffer " *Users*" riece-user-list-mode)
-    (riece-temp-buffer " *Temp*")))
+    (riece-temp-buffer " *Temp*")
+    (riece-debug-buffer " *Debug*")))
 
 (defvar riece-shrink-buffer-idle-timer nil
   "Timer object to periodically shrink channel buffers.")
