@@ -4,7 +4,10 @@
 	(riece-flush-send-queue): New function.
 	(riece-process-send-string): Use it.
 	(riece-reset-process-buffer): Reset riece-send-queue,
-	riece-send-size.
+	riece-send-size, and riece-last-send-time.
+	(riece-seconds-to-time): New function.
+	(riece-time-less-p): New function.
+	(riece-time-since): New function.
 	* riece-options.el (riece-max-send-size): New user option.
 	(riece-send-delay): New user option.
 	* riece-globals.el (riece-send-queue): New variable.
