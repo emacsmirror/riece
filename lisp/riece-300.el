@@ -220,24 +220,31 @@
   "RPL_NAMREPLY	\"<channel> :[[@|+]<nick> [[@|+]<nick> [...]]]\"."
   (if (string-match "^[=\*@] *\\([^ ]+\\) +:" string)
       (let ((channel (match-string 1 string))
-	    users)
+	    (start 0))
 	(setq string (substring string (match-end 0)))
-	(if (string-match " *$" string)
-	    (setq string (substring string 0 (match-beginning 0))))
-	(setq users (split-string string))
-	(while users
-	  (if (eq (aref (car users) 0) ?@)
-	      (progn
-		(riece-naming-assert-join (substring (car users) 1) channel)
-		(riece-channel-toggle-operator
-		 channel (substring (car users) 1) t))
-	    (if (eq (aref (car users) 0) ?+)
-		(progn
-		  (riece-naming-assert-join (substring (car users) 1) channel)
-		  (riece-channel-toggle-speaker
-		   channel (substring (car users) 1) t))
-	      (riece-naming-assert-join (car users) channel)))
-	  (setq users (cdr users)))
+	(while (string-match
+		(concat "\\([@+]\\)?\\(" riece-user-regexp "\\) ")
+		string start)
+	  (put-text-property (match-beginning 2) (match-end 2)
+			     'riece-identity
+			     (riece-make-identity (match-string 2 string)
+						  riece-server-name)
+			     string)
+	  (setq start (match-end 0))
+	  (if (match-beginning 1)
+	      (if (eq (aref string (match-beginning 1)) ?@)
+		  (progn
+		    (riece-naming-assert-join
+		     (match-string 2 string) channel)
+		    (riece-channel-toggle-operator
+		     channel (match-string 2 string) t))
+		(if (eq (aref string (match-beginning 1)) ?+)
+		    (progn
+		      (riece-naming-assert-join
+		       (match-string 2 string) channel)
+		      (riece-channel-toggle-speaker
+		       channel (match-string 2 string) t))))
+	    (riece-naming-assert-join (match-string 2 string) channel)))
 	(let* ((channel-identity (riece-make-identity channel
 						      riece-server-name))
 	       (buffer (riece-channel-buffer channel-identity)))
