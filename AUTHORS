@@ -10,7 +10,7 @@ written by the same author of Riece.  Tor Lillqvist <tml@iki.fi> is
 the original author of Irchat.  See doc/irchat-copyright.el for the
 original copyright statement of Irchat.
 
-Riece has code borrowed from other great elisp packages such as Gnus,
+Riece has code borrowed from other elisp packages such as Gnus,
 Emacs-w3m, ECB, and SEMI.  I would like to thank the developers of
 these packages.
 
