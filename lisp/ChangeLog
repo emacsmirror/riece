@@ -1,3 +1,13 @@
+2004-11-28  Daiki Ueno  <ueno@unixuser.org>
+
+	* COMPILE (riece-test): Use lunit-report instead of lunit.
+
+	* test/lunit.el: Report test result as XML.
+	(lunit-time-since): New function.
+	(lunit-test-reporter): New test-listener.
+	(lunit-test-reporter-format-sexp): New function.
+	(lunit-report): New function.
+
 2004-11-27  Daiki Ueno  <ueno@unixuser.org>
 
 	* test/lunit.el: Update copyright year.

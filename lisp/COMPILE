@@ -144,6 +144,7 @@
     (require 'lunit)
     (setq suite (lunit-make-test-suite))
     (while files
+
       (when (file-regular-p (car files))
 	(load-file (car files))
 	(lunit-test-suite-add-test
@@ -152,4 +153,4 @@
 	  (intern (file-name-sans-extension
 		   (file-name-nondirectory (car files)))))))
       (setq files (cdr files)))
-    (lunit suite)))
+    (lunit-report suite)))
