@@ -29,13 +29,16 @@
 
 ;;; Code:
 
+(require 'riece-identity)
+
 (eval-when-compile
   (autoload 'lsdb-maybe-load-hash-tables "lsdb")
   (autoload 'lsdb-lookup-records "lsdb")
   (autoload 'lsdb-puthash "lsdb")
   (autoload 'lsdb-maphash "lsdb")
   (autoload 'lsdb-gethash "lsdb")
-  (autoload 'lsdb-display-records "lsdb"))
+  (autoload 'lsdb-display-records "lsdb")
+  (autoload 'lsdb-update-record "lsdb"))
 
 (defvar riece-lsdb-cache nil)
 
@@ -78,6 +81,7 @@
 	(lsdb-display-records records)
       (message "No entry for `%s'" (riece-format-identity user t)))))
 
+(defvar lsdb-hash-table)
 (defun riece-lsdb-add-user (user full-name)
   (interactive
    (let ((completion-ignore-case t)
@@ -104,6 +108,7 @@
 				    ""))
 			  (list (cons 'irc (cons irc old)))))))
 
+(defvar riece-command-mode-map)
 (defun riece-lsdb-insinuate ()
   (require 'lsdb)
   (add-to-list 'lsdb-secondary-hash-tables
