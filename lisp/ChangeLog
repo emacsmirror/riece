@@ -1,3 +1,9 @@
+2004-07-07  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-commands.el (riece-command-enter-message-to-user): Signal
+	"No text to send" error if user attempt to call this command on
+	an empty line.
+
 2004-07-04  Yoichi NAKAYAMA  <yoichi@geiin.org>
 
 	* riece-commands.el (riece-command-complete-user): current-word

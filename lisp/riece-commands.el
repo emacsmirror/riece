@@ -398,11 +398,13 @@ the layout to the selected layout-name."
 (defun riece-command-enter-message-to-user (user)
   "Send the current line to USER."
   (interactive
-   (let ((completion-ignore-case t))
-     (list (riece-completing-read-identity
-	    "Message to user: "
-	    (riece-get-users-on-server (riece-current-server-name))
-	    nil nil nil nil nil t))))
+   (if (and (bolp) (eolp))
+       (error "No text to send")
+     (let ((completion-ignore-case t))
+       (list (riece-completing-read-identity
+	      "Message to user: "
+	      (riece-get-users-on-server (riece-current-server-name))
+	      nil nil nil nil nil t)))))
   (let ((text (buffer-substring
 	       (riece-line-beginning-position)
 	       (riece-line-end-position))))
