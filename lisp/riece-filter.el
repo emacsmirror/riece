@@ -152,14 +152,14 @@
 		   (substring status 0 (1- (length status))))
 	  (message "Connection to \"%s\" closed: %s"
 		   server-name (substring status 0 (1- (length status))))))
-      (let ((riece-overriding-server-name server-name)
-	    (channels riece-current-channels))
+      (let ((channels riece-current-channels))
 	(while channels
 	  (if (and (car channels)
 		   (equal (riece-identity-server (car channels))
 			  server-name))
-	      (setcar channels nil))
-	  (setq channels (cdr channels))))
+	      (riece-part-channel (car channels)))
+	  (setq channels (cdr channels)))
+	(riece-redisplay-buffers))
       (riece-close-server-process process)
       ;; If no server process is available, exit.
       (unless riece-process-list

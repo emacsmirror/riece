@@ -30,9 +30,9 @@
 (require 'riece-display)
 
 (defun riece-naming-assert-join (user-name channel-name)
-  (if (riece-identity-equal-no-server user-name riece-real-nickname)
-      (riece-join-channel (riece-make-identity channel-name
-					       riece-server-name)))
+  (when (riece-identity-equal-no-server user-name riece-real-nickname)
+    (riece-join-channel (riece-make-identity channel-name riece-server-name))
+    (riece-update-buffers))
   (riece-user-toggle-channel user-name channel-name t)
   (riece-channel-toggle-user channel-name user-name t))
 
@@ -41,6 +41,7 @@
       (progn
 	(riece-part-channel (riece-make-identity channel-name
 						 riece-server-name))
+	(riece-update-buffers)
 	(riece-forget-channel channel-name))
     (riece-user-toggle-channel user-name channel-name nil)
     (riece-channel-toggle-user channel-name user-name nil)

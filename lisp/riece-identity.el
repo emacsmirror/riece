@@ -123,7 +123,7 @@ RFC2812, 2.2 \"Character codes\" says:
      (if process
 	 (with-current-buffer (process-buffer process)
 	   ,@body)
-       (error "Server closed."))))
+       (error "Server closed"))))
 
 (put 'riece-with-identity-buffer 'lisp-indent-function 1)
 

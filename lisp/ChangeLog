@@ -1,5 +1,22 @@
 2003-06-12  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-naming.el (riece-naming-assert-join): Call
+	riece-update-buffers.
+	(riece-naming-assert-part): Ditto.
+
+	* riece-filter.el (riece-sentinel): Don't bind
+	riece-overriding-server-name; use riece-part-channel.
+
+	* riece-display.el (riece-switch-to-channel): Don't set
+	riece-channel-buffer.
+	(riece-update-buffers): Set riece-channel-buffer here.
+
+	* riece-commands.el (riece-command-switch-to-channel-by-number): Fixed.
+	(riece-command-close-server): Fixed completion bug.
+	(riece-command-universal-server-name-argument): Ditto.
+
+2003-06-12  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-doctor.el: Don't require 'doctor; autoload doctor-mode and
 	doctor-read-print.
 

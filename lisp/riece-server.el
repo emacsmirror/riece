@@ -124,7 +124,7 @@ the `riece-server-keyword-map' variable."
      (if process
 	 (with-current-buffer (process-buffer process)
 	   ,@body)
-       (error "Server closed."))))
+       (error "Server closed"))))
 
 (put 'riece-with-server-buffer 'lisp-indent-function 1)
 

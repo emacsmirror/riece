@@ -217,6 +217,9 @@
 	      "-")))))
 
 (defun riece-update-buffers ()
+  (if riece-current-channel
+      (setq riece-channel-buffer (get-buffer (riece-channel-buffer-name
+					      riece-current-channel))))
   (run-hooks 'riece-update-buffer-functions)
   (force-mode-line-update t)
   (run-hooks 'riece-update-buffers-hook))
@@ -241,9 +244,7 @@
 
 (defun riece-switch-to-channel (identity)
   (setq riece-last-channel riece-current-channel
-	riece-current-channel identity
-	riece-channel-buffer
-	(get-buffer (riece-channel-buffer-name identity)))
+	riece-current-channel identity)
   (run-hooks 'riece-channel-switch-hook))
 
 (defun riece-join-channel (identity)
