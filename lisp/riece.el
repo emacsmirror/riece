@@ -337,15 +337,14 @@ If optional argument CONFIRM is non-nil, ask which IRC server to connect."
     (while (> (buffer-size) riece-max-buffer-size)
       (let* ((inhibit-read-only t)
 	     buffer-read-only
-	     (start (point))
-	     (end (progn (beginning-of-line
-			  (1+ riece-shrink-buffer-remove-lines))
-			 (point)))
-	     (overlays (riece-overlays-in start end)))
+	     (end (progn
+		    (goto-char riece-shrink-buffer-remove-chars)
+		    (beginning-of-line 2)))
+	     (overlays (riece-overlays-in (point-min) end)))
 	(while overlays
 	  (riece-delete-overlay (car overlays))
 	  (setq overlays (cdr overlays)))
-	(delete-region start end)))))
+	(delete-region (point-min) end)))))
 
 (defun riece-exit ()
   (if riece-save-variables-are-dirty

@@ -1,3 +1,11 @@
+2004-12-10  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece.el (riece-shrink-buffer): Shrink buffer based on chars
+	instead of lines.
+
+	* riece-options.el (riece-shrink-buffer-remove-chars): New user option.
+	(riece-shrink-buffer-remove-lines): Abolish.
+
 2004-12-08  Daiki Ueno  <ueno@unixuser.org>
 
 	* test/test-riece-log.el (test-riece-log-delete-directory):
