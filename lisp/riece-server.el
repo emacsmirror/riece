@@ -105,35 +105,11 @@ the `riece-server-keyword-map' variable."
 (put 'riece-with-server-buffer 'lisp-indent-function 1)
 (put 'riece-with-server-buffer 'edebug-form-spec '(form body))
 
-;; stolen (and renamed) from time-date.el.
-(defun riece-seconds-to-time (seconds)
-  "Convert SECONDS (a floating point number) to a time value."
-  (list (floor seconds 65536)
-	(floor (mod seconds 65536))
-	(floor (* (- seconds (ffloor seconds)) 1000000))))
-
-;; stolen (and renamed) from time-date.el.
-(defun riece-time-since (time)
-  "Return the time elapsed since TIME."
-  (let* ((current (current-time))
-	 (rest (when (< (nth 1 current) (nth 1 time))
-		 (expt 2 16))))
-    (list (- (+ (car current) (if rest -1 0)) (car time))
-	  (- (+ (or rest 0) (nth 1 current)) (nth 1 time)))))
-
-;; stolen (and renamed) from time-date.el.
-(defun riece-time-less-p (t1 t2)
-  "Say whether time value T1 is less than time value T2."
-  (or (< (car t1) (car t2))
-      (and (= (car t1) (car t2))
-	   (< (nth 1 t1) (nth 1 t2)))))
-
-(defun riece-flush-send-queue (process)
+(defun riece-flush-send-queue (process &optional force)
   (with-current-buffer (process-buffer process)
     (let ((length 0)
 	  string)
-      (if (riece-time-less-p (riece-seconds-to-time riece-send-delay)
-			     (riece-time-since riece-last-send-time))
+      (if force
 	  (setq riece-send-size 0))
       (while (and riece-send-queue
 		  (<= riece-send-size riece-max-send-size))
@@ -148,12 +124,12 @@ the `riece-server-keyword-map' variable."
 	(setq riece-send-queue (cdr riece-send-queue)))
       (if riece-send-queue
 	  (riece-run-at-time riece-send-delay nil
-			     #'riece-flush-send-queue process)))))
+			     #'riece-flush-send-queue process t)))))
 
 (defun riece-process-send-string (process string)
   (with-current-buffer (process-buffer process)
     (setq riece-send-queue (nconc riece-send-queue (list string))))
-  (riece-flush-send-queue process))
+  (riece-flush-send-queue process nil))
 
 (defun riece-current-server-name ()
   (or riece-overriding-server-name

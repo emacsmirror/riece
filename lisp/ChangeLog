@@ -3,9 +3,6 @@
 	* riece-server.el: Implement flood protection.
 	(riece-flush-send-queue): New function.
 	(riece-process-send-string): Use it.
-	(riece-seconds-to-time): New function.
-	(riece-time-since): New function.
-	(riece-time-less-p): New function.
 	(riece-reset-process-buffer): Reset riece-send-queue,
 	riece-last-send-time, riece-send-size.
 	* riece-options.el (riece-max-send-size): New user option.
