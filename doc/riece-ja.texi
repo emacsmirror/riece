@@ -490,7 +490,7 @@ CTCP (Client To Client Protocol)
 @item riece-unread
 発言のあったチャンネルに@samp{!}マークをつける
 @item riece-rdcc
-DCC (Direct Client Connection) によるファイル転送
+DCC (Direct Client to Client protocol) によるファイル転送
 @end table
 
 これらのうち、@samp{riece-highlight} と @samp{riece-ctcp} はデフォルトで
@@ -682,9 +682,10 @@ CTCP (Client To Client Protocol)
 @item riece-unread
 発言のあったチャンネルに@samp{!}マークをつける
 @item riece-rdcc
-DCC (Direct Client Connection) によるファイル転送 (Ruby による実装)
+DCC (Direct Client to Client protocol) によるファイル転送 (Ruby による実装)
 @item riece-ndcc
-DCC (Direct Client Connection) によるファイル転送 (Emacs 21.3 の @code{make-network-connection} による実装)
+DCC (Direct Client to Client protocol) によるファイル転送 (Emacs 21.3 の 
+@code{make-network-connection} による実装)
 @end table
 
 @node Namespace management,  , Modules, Development
