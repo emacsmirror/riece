@@ -51,12 +51,7 @@
 (autoload 'read-passwd "passwd")
 (defvar riece-read-passwd #'read-passwd)
 (defun riece-read-passwd (prompt)
-  (condition-case nil
-      (let (inhibit-quit)
-	(funcall riece-read-passwd prompt))
-    (quit
-     (message "%sQuit" prompt)
-     'quit)))
+  (funcall riece-read-passwd prompt))
 
 (if (string-match "0\\{0\\}" "")
     (defun riece-make-interval-regexp (regexp min &optional max)

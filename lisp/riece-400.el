@@ -71,9 +71,15 @@
 	 key)
     (message "%s: %s" (car parameters) (nth 1 parameters))
     (setq key
-	  (riece-read-passwd
-	   (format "Key for %s: "
-		   (riece-format-identity channel-identity t))))
+	  (condition-case nil
+	      (let (inhibit-quit)
+		(riece-read-passwd
+		 (format "Key for %s: "
+			 (riece-format-identity channel-identity t))))
+	    (quit
+	     (message "Key for %s: Quit"
+		      (riece-format-identity channel-identity t))
+	     'quit)))
     (unless (eq key 'quit)
       (riece-command-join-channel channel-identity key))))
 
