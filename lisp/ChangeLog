@@ -1,3 +1,8 @@
+2003-06-22  Yoichi NAKAYAMA  <yoichi@geiin.org>
+
+	* riece-coding.el (riece-default-coding-system): Fix default value
+	for XEmacs without mule.
+
 2003-06-17  OHASHI Akira  <bg66@koka-in.org>
 
 	* riece-unread.el (riece-unread-display-message-function): Check a
