@@ -14,7 +14,7 @@ class RubyServ
   def dispatch(line)
     case line.chomp
     when /\AD /
-      return @buf << unescape($')
+      @buf << unescape($')
     when /\A(\S+)\s*/
       c = $1
       r = $'
@@ -86,13 +86,11 @@ class RubyServ
   end
 
   def send_data(d)
+    d = escape(d)
     begin
-      r = [d.length, 998].min   # 998 = 1000 - CRLF
-      (0 ... r).each do |i|
-        r -= 2 if d[i] =~ /[%\r\n]/
-      end
-      puts("D #{escape(d[0 ... r])}\r\n")
-      d = d[r .. -1]
+      len = [d.length, 998].min   # 998 = 1000 - "D "
+      puts("D #{d[0 ... len]}\r\n")
+      d = d[len .. -1]
     end until d.empty?
   end
 
