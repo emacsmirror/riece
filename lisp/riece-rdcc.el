@@ -115,8 +115,7 @@ puts(\"#{" address " >> 24 & 0xFF}.#{" address " >> 16 & 0xFF}.#{"
 (defun riece-rdcc-server-sentinel (process status)
   (with-current-buffer (process-buffer process)
     (message "Sending %s...done" riece-rdcc-request-file))
-  (kill-buffer (process-buffer process))
-  (delete-process process))
+  (kill-buffer (process-buffer process)))
 
 (defun riece-command-dcc-send (user file)
   (interactive
@@ -186,8 +185,7 @@ puts(\"#{" address " >> 24 & 0xFF}.#{" address " >> 16 & 0xFF}.#{"
     (let ((coding-system-for-write 'binary)
 	  jka-compr-compression-info-list jam-zcat-filename-list)
       (write-region (point-min) (point-max) riece-rdcc-request-file)))
-  (kill-buffer (process-buffer process))
-  (delete-process process))
+  (kill-buffer (process-buffer process)))
 
 (defun riece-rdcc-decode-address (address)
   (with-temp-buffer

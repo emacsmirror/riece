@@ -1,5 +1,13 @@
 2003-06-03  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-rdcc.el (riece-rdcc-sentinel): Don't call delete-process
+	explicitly.
+	* riece-ndcc.el: Don't call delete-process explicitly.
+	* riece-server.el (riece-close-server-process): Don't call
+	delete-process explicitly unless riece-debug == t.
+
+2003-06-03  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-inlines.el (scandinavian-downcase): New inline function.
 	(scandinavian-equal-ignore-case): Rename from
 	string-equal-ignore-case.

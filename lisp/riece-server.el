@@ -177,14 +177,14 @@ the `riece-server-keyword-map' variable."
       (set-process-filter process nil))
   (if (eq 'riece-sentinel (process-sentinel process))
       (set-process-sentinel process nil))
-  (when (memq (process-status process) '(open run))
-    (riece-process-send-string process
-			       (if quit-message
-				   (format "QUIT :%s\r\n" quit-message)
-				 "QUIT\r\n"))
-    (unless riece-debug
-      (kill-buffer (process-buffer process))))
-  (delete-process process))
+  (if (memq (process-status process) '(open run))
+      (riece-process-send-string process
+				 (if quit-message
+				     (format "QUIT :%s\r\n" quit-message)
+				   "QUIT\r\n")))
+  (if riece-debug
+      (delete-process process)
+    (kill-buffer (process-buffer process))))
 
 (eval-when-compile
   (autoload 'riece-exit "riece"))

@@ -71,7 +71,6 @@ Only used for sending files."
 	       (substring (process-name process) 0 (match-beginning 0)))))
       (save-excursion
 	(set-buffer (process-buffer (get-process parent-name)))
-	(delete-process parent-name)
 	(goto-char (point-min))
 	(while (not (eobp))
 	  (process-send-region process
@@ -80,9 +79,9 @@ Only used for sending files."
 	  (message "Sending %s...(%d/%d)"
 		   (buffer-file-name) (1- (point)) (buffer-size)))
 	(message "Sending %s...done"
-		 (buffer-file-name))))
+		 (buffer-file-name)))
+      (kill-buffer (process-buffer (get-process parent-name))))
     (kill-buffer (process-buffer process))
-    (delete-process process)))
 
 (defun riece-command-dcc-send (user file)
   (interactive
