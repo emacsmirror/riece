@@ -28,7 +28,6 @@
   'set-case-syntax-pair)
 
 ;;; stolen (and renamed) from gnus-ems.el.
-
 ;;; In GNU Emacs, user can intercept whole mouse tracking events by
 ;;; assigning [mouse-X].  In XEmacs, however, which causes different
 ;;; effect, that is, the command assigned to [mouse-X] only catches
@@ -53,12 +52,25 @@
 	   function)))))
 
 (defun riece-popup-menu-popup (menu event)
-  (let ((function (riece-popup-menu-bogus-filter-constructor menu))
-	(pos (event-start event)))
-    (when (symbolp function)
-      (select-window (posn-window pos))
-      (goto-char (posn-point pos))
-      (funcall function))))
+  (let ((function (riece-popup-menu-bogus-filter-constructor menu)))
+    (if function
+	(funcall function))))
+
+(defun riece-event-buffer (event)
+  "Return the buffer of the window over which mouse event EVENT occurred."
+  (window-buffer (posn-window (event-start event))))
+
+(defun riece-event-point (event)
+  "Return the character position of the mouse event EVENT."
+  (posn-point (event-start event)))
+
+;;; stolen (and renamed) from gnus-ems.el.
+(defun riece-region-active-p ()
+  "Say whether the region is active."
+  (and (boundp 'transient-mark-mode)
+       transient-mark-mode
+       (boundp 'mark-active)
+       mark-active))
 
 (provide 'riece-emacs)
 

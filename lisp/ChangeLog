@@ -1,5 +1,40 @@
 2003-10-13  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-history.el (riece-history-insinuate): In
+	riece-after-switch-to-channel-functions, check whether the last
+	channel is nil.
+
+	* riece-xemacs.el (riece-event-buffer): New alias.
+	(riece-event-point): New alias.
+
+	* riece-emacs.el (riece-event-buffer): New function.
+	(riece-event-point): New function.
+
+	* riece-display.el (riece-update-user-list-buffer): Use
+	riece-format-identity to add 'riece-identity property to user
+	names.
+
+	* riece-button.el (riece-user-button-popup-menu): New variable.
+	(riece-identity-button): Rename from riece-channel-button.
+	(riece-button-switch-to-identity): Rename from
+	riece-channel-button-action.
+	(riece-identity-button-popup-menu): Rename from
+	riece-channel-button-popup-menu; set point to the position the
+	event occurred.
+	(riece-user-button-join-partner): New function.
+	(riece-user-button-set-operators): New function.
+	(riece-user-button-set-speakers): New function.
+	(riece-user-button-finger): New function.
+	(riece-make-identity-button-map): New function.
+	(riece-button-map-identity-region): New function; splitted from
+	riece-button-add-identity-button.
+	(riece-button-add-identity-button): Use it.
+	(riece-button-update-user-list-buffer): New function.
+	(riece-button-insinuate): Add riece-button-update-user-list-buffer
+	to riece-update-buffer-functions.
+
+2003-10-13  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-xemacs.el (riece-mouse-2): New variable.
 	(riece-popup-menu-popup): New function.
 

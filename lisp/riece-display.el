@@ -59,11 +59,17 @@
 	      buffer-read-only)
 	  (erase-buffer)
 	  (while users
-	    (if (member (car users) operators)
-		(insert "@" (car users) "\n")
-	      (if (member (car users) speakers)
-		  (insert "+" (car users) "\n")
-		(insert " " (car users) "\n")))
+	    (insert (if (member (car users) operators)
+			"@"
+		      (if (member (car users) speakers)
+			  "+"
+			" "))
+		    (riece-format-identity
+		     (riece-make-identity (car users)
+					  (riece-identity-server
+					   riece-current-channel))
+		     t)
+		    "\n")
 	    (setq users (cdr users))))))))
 
 (defun riece-update-channel-list-buffer ()

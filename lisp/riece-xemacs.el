@@ -71,8 +71,7 @@ Modify whole identification by side effect."
 (defalias 'riece-set-case-syntax-pair
   'put-case-table-pair)
 
-;;; stolen (and renamed) from gnus-ems.el.
-
+;;; stolen (and renamed) from gnus-xmas.el.
 ;;; In GNU Emacs, user can intercept whole mouse tracking events by
 ;;; assigning [mouse-X].  In XEmacs, however, which causes different
 ;;; effect, that is, the command assigned to [mouse-X] only catches
@@ -83,9 +82,14 @@ Modify whole identification by side effect."
 ;;; semi-def.el.
 (defun riece-popup-menu-popup (menu event)
   (let ((response (get-popup-menu-response menu event)))
-    (set-buffer (event-buffer event))
-    (goto-char (event-point event))
-    (funcall (event-function response) (event-object response))))
+    (if response
+	(funcall (event-function response) (event-object response)))))
+
+(defalias 'riece-event-buffer 'event-buffer)
+(defalias 'riece-event-point 'event-point)
+
+;;; stolen (and renamed) from gnus-xmas.el.
+(defalias 'riece-region-active-p 'region-active-p)
 
 (provide 'riece-xemacs)
 

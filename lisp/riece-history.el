@@ -89,8 +89,9 @@
 	      (setq riece-channel-history nil)))
   (add-hook 'riece-after-switch-to-channel-functions
 	    (lambda (last)
-	      (unless (riece-identity-equal last riece-current-channel)
-		(ring-insert riece-channel-history last))))
+	      (if (and last
+		       (not (riece-identity-equal last riece-current-channel)))
+		  (ring-insert riece-channel-history last))))
   (add-hook 'riece-format-channel-list-line-functions
 	    'riece-history-format-channel-list-line)
   (if (memq 'riece-highlight riece-addons)
