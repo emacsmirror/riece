@@ -1,11 +1,6 @@
 EXTRA_DIST = texinfo.tex infohack.el ptexinfmt.el irchat-copyright.el
 
-
-if XEMACS_NOMULE
-info_TEXINFOS = riece-en.texi
-else
 info_TEXINFOS = riece-ja.texi riece-en.texi
-endif
 
 package: all
 	$(MAKE) EMACS=$(XEMACS)
