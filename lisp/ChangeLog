@@ -1,5 +1,24 @@
 2003-08-25  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-unread.el (riece-unread-update-channel-list-buffer):
+	Restore channel marks if exist.
+
+	* riece-naming.el (riece-naming-assert-join): Don't set
+	riece-redisplay-buffers.
+	(riece-naming-assert-part): Ditto.
+	(riece-naming-assert-rename): Ditto.
+
+	* riece-display.el (riece-redisplay-buffers): Abolish.
+	(riece-update-user-list-buffer): Don't check
+	riece-redisplay-buffers.
+	(riece-update-channel-list-buffer): Ditto; prefix "*" at the
+	beginning of the current channel.
+	(riece-switch-to-channel): Don't set riece-redisplay-buffers.
+	(riece-join-channel): Ditto.
+	(riece-part-channel): Ditto.
+
+2003-08-25  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-display.el (riece-join-channel): Parse non-nil elements in
 	riece-default-channel-binding.
 

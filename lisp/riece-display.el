@@ -37,15 +37,10 @@
     riece-update-short-channel-indicator
     riece-update-channel-list-indicator))
 
-(defvar riece-redisplay-buffer nil
-  "Non-nil means the buffer needs to be updated.
-Local to the buffers.")
-
 (defun riece-update-user-list-buffer ()
   (save-excursion
     (set-buffer riece-user-list-buffer)
-    (when (and riece-redisplay-buffer
-	       riece-current-channel
+    (when (and riece-current-channel
 	       (riece-channel-p (riece-identity-prefix riece-current-channel)))
       (let (users operators speakers)
 	(with-current-buffer (process-buffer (riece-server-process
@@ -69,28 +64,30 @@ Local to the buffers.")
 	      (if (member (car users) speakers)
 		  (insert "+" (car users) "\n")
 		(insert " " (car users) "\n")))
-	    (setq users (cdr users)))))
-      (setq riece-redisplay-buffer nil))))
+	    (setq users (cdr users))))))))
 
 (defun riece-update-channel-list-buffer ()
   (save-excursion
     (set-buffer riece-channel-list-buffer)
-    (when riece-redisplay-buffer
-      (let ((inhibit-read-only t)
-	    buffer-read-only
-	    (index 1)
-	    (channels riece-current-channels))
-	(erase-buffer)
-	(while channels
-	  (if (car channels)
-	      (let ((point (point)))
-		(insert (format "%2d: %s\n" index
+    (let ((inhibit-read-only t)
+	  buffer-read-only
+	  (index 1)
+	  (channels riece-current-channels))
+      (erase-buffer)
+      (while channels
+	(if (car channels)
+	    (let ((point (point)))
+	      (insert (format "%2d:%c%s\n" index
+				(if (riece-identity-equal
+				     (car channels)
+				     riece-current-channel)
+				    ?*
+				  ?\ )
 				(riece-format-identity (car channels))))
-		(put-text-property point (point) 'riece-identity
-				   (car channels))))
-	  (setq index (1+ index)
-		channels (cdr channels))))
-      (setq riece-redisplay-buffer nil))))
+	      (put-text-property point (point) 'riece-identity
+				 (car channels))))
+	(setq index (1+ index)
+	      channels (cdr channels))))))
 
 (defun riece-update-channel-indicator ()
   (setq riece-channel-indicator
@@ -184,8 +181,6 @@ Local to the buffers.")
 (defun riece-switch-to-channel (identity)
   (setq riece-last-channel riece-current-channel
 	riece-current-channel identity)
-  (with-current-buffer riece-user-list-buffer
-    (setq riece-redisplay-buffer t))
   (run-hooks 'riece-channel-switch-hook))
 
 (defun riece-join-channel (identity)
@@ -198,9 +193,7 @@ Local to the buffers.")
 	      (if channel
 		  (riece-parse-identity channel)))
 	    riece-default-channel-binding)))
-    (riece-channel-buffer-create identity)
-    (with-current-buffer riece-channel-list-buffer
-      (setq riece-redisplay-buffer t))))
+    (riece-channel-buffer-create identity)))
 
 (defun riece-switch-to-nearest-channel (pointer)
   (let ((start riece-current-channels)
@@ -224,9 +217,7 @@ Local to the buffers.")
     (if pointer
 	(setcar pointer nil))
     (if (riece-identity-equal identity riece-current-channel)
-	(riece-switch-to-nearest-channel pointer))
-    (with-current-buffer riece-channel-list-buffer
-      (setq riece-redisplay-buffer t))))
+	(riece-switch-to-nearest-channel pointer))))
 
 (defun riece-redisplay-buffers (&optional force)
   (riece-update-buffers)
