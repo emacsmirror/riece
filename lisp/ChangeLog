@@ -1,5 +1,12 @@
 2004-05-26  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece.el (riece-exit): Don't disable addons.
+
+	* riece-commands.el (riece-command-quit): Don't query user to
+	input y/n if there is no server process.
+
+2004-05-26  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-highlight.el: Require 'derived.
 	(riece-highlight-setup-dialogue): Turn on font-lock if
 	riece-highlight-enabled.

@@ -592,18 +592,19 @@ If prefix argument ARG is non-nil, toggle frozen status."
 (defun riece-command-quit (&optional arg)
   "Quit IRC."
   (interactive "P")
-  (if (y-or-n-p "Really quit IRC? ")
-      (if riece-server-process-alist
-	  (let ((message
-		 (if arg
-		     (read-string "Message: ")
-		   riece-quit-message))
-		(alist riece-server-process-alist))
-	    (while alist
-	      (riece-quit-server-process (cdr (car alist)) message)
-	      (setq alist (cdr alist))))
-	;; If no server process is available, exit immediately.
-	(riece-exit))))
+  (if (null riece-server-process-alist)
+      (progn
+	(message "No server process")
+	(ding))
+    (if (y-or-n-p "Really quit IRC? ")
+	(let ((message
+	       (if arg
+		   (read-string "Message: ")
+	       riece-quit-message))
+	      (alist riece-server-process-alist))
+	  (while alist
+	    (riece-quit-server-process (cdr (car alist)) message)
+	    (setq alist (cdr alist)))))))
 
 (defun riece-command-raw (command)
   "Enter raw IRC command, which is sent to the server."

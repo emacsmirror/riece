@@ -328,10 +328,6 @@ If optional argument CONFIRM is non-nil, ask which IRC server to connect."
 	(delete-region start end)))))
 
 (defun riece-exit ()
-  (let ((pointer riece-addons))
-    (while pointer
-      (riece-disable-addon (car pointer) riece-debug)
-      (setq pointer (cdr pointer))))
   (if riece-save-variables-are-dirty
       (riece-save-variables-files))
   (while riece-buffer-list
