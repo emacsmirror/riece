@@ -117,7 +117,8 @@
   "Select a layout-name from all current available layouts and change
 the layout to the selected layout-name."
   (interactive (list (completing-read "Layout: " riece-layout-alist)))
-  (setq riece-layout name)
+  (setq riece-layout name
+	riece-save-variables-are-dirty t)
   (riece-command-configure-windows))
 
 (defun riece-command-toggle-channel-buffer-mode ()

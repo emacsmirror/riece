@@ -38,15 +38,24 @@
   :group 'riece-layout)
 
 (defcustom riece-layout-alist
-  '(("default" riece-configure-windows riece-reconfigure-windows-predicate)
-    ("top" riece-configure-windows-top riece-reconfigure-windows-predicate))
+  '(("middle-right" riece-configure-windows right middle)
+    ("middle-left" riece-configure-windows left middle)
+    ("top-right" riece-configure-windows right top)
+    ("top-left" riece-configure-windows left top)
+    ("bottom-right" riece-configure-windows right bottom)
+    ("bottom-left" riece-configure-windows left bottom)
+    ("top" riece-configure-windows-top)
+    ("default" . "middle-right"))
   "An alist mapping the names to layout functions.
-An element of this alist is in the following form:
-(NAME CONFIGURE-FUNCTION RECONFIGURE-PREDICATE)
-NAME is a string which specifies the layout setting.
-CONFIGURE-FUNCTION is a function which does window splitting, etc.
-RECONFIGURE-PREDICATE is a function to examine whether windows
-reconfiguration is needed."
+An element of this alist is either in the following forms:
+
+(NAME CONFIGURE-FUNCTION [PARAMETERS])
+(NAME1 . NAME2)
+
+In the first form, NAME is a string which specifies the layout
+setting, and CONFIGURE-FUNCTION is a function which does window
+splitting, etc.  PARAMETERS are collected and passed to CONFIGURE-FUNCTION.
+In the second form, NAME1 is an alias for NAME2."
   :type 'list
   :group 'riece-layout)
 
@@ -57,9 +66,12 @@ happen unconditionally."
   (let ((layout (cdr (assoc riece-layout riece-layout-alist))))
     (unless layout
       (error "No such layout!"))
-    (if (or force
-	    (funcall (nth 1 layout)))
-	(funcall (car layout)))))
+    (if (stringp layout)
+	(let ((riece-layout layout))
+	  (riece-redraw-layout force))
+      (if (or force
+	      (riece-reconfigure-windows-predicate))
+	  (apply (car layout) (cdr layout))))))
   
 (defun riece-set-window-points ()
   (if (get-buffer-window riece-user-list-buffer)
@@ -73,9 +85,13 @@ happen unconditionally."
 	  (set-window-start (get-buffer-window riece-channel-list-buffer)
 			    (point-min))))))
 
-(defun riece-configure-windows ()
-  "Configure windows.
+(defun riece-reconfigure-windows-predicate ()
+  "Return t, if window reconfiguration is needed.
 This function is used by \"default\" layout."
+  (memq (window-buffer (selected-window))
+	riece-buffer-list))
+
+(defun riece-configure-windows (hpos vpos)
   (let ((buffer (window-buffer))
 	(show-user-list
 	 (and riece-user-list-buffer-mode
@@ -90,7 +106,14 @@ This function is used by \"default\" layout."
     (if (and riece-current-channel
 	     (or show-user-list riece-channel-list-buffer-mode))
 	(let ((rest-window (split-window (selected-window)
-					 (/ (window-width) 5) t)))
+					 (if (eq hpos 'left)
+					     (- (window-width)
+						(/ (window-width) 5))
+					   (/ (window-width) 5))
+					 t)))
+	  (when (eq hpos 'left)
+	    (setq rest-window (selected-window))
+	    (other-window 1))
 	  (if (and show-user-list riece-channel-list-buffer-mode)
 	      (progn
 		(set-window-buffer (split-window)
@@ -106,30 +129,48 @@ This function is used by \"default\" layout."
 	  (select-window rest-window)))
     (if (and riece-current-channel
 	     riece-channel-buffer-mode)
-	(let ((rest-window (split-window)))
-	  (set-window-buffer (selected-window)
-			     riece-channel-buffer)
-	  (set-window-buffer (split-window rest-window 4)
-			     riece-others-buffer)
+	(progn
+	  (if (eq vpos 'top)
+	      (let ((rest-window (split-window nil 4)))
+		(set-window-buffer (selected-window)
+				   riece-command-buffer)
+		(select-window rest-window)
+		(set-window-buffer (split-window rest-window)
+				   riece-others-buffer)
+		(set-window-buffer (selected-window)
+				   riece-channel-buffer))
+	    (if (eq vpos 'middle)
+		(let ((rest-window (split-window)))
+		  (set-window-buffer (selected-window)
+				     riece-channel-buffer)
+		  (set-window-buffer (split-window rest-window 4)
+				     riece-others-buffer)
+		  (set-window-buffer rest-window
+				     riece-command-buffer))
+	      (let ((rest-window (split-window nil (- (window-height) 4))))
+		(set-window-buffer (selected-window)
+				   riece-others-buffer)
+		(set-window-buffer (split-window)
+				   riece-channel-buffer)
+		(set-window-buffer rest-window
+				   riece-command-buffer))))
 	  (with-current-buffer riece-channel-buffer
 	    (setq truncate-partial-width-windows nil))
 	  (with-current-buffer riece-others-buffer
-	    (setq truncate-partial-width-windows nil))
-	  (set-window-buffer rest-window
-			     riece-command-buffer))
-      (set-window-buffer (split-window (selected-window) 4)
-			 riece-dialogue-buffer)
-      (set-window-buffer (selected-window)
-			 riece-command-buffer))
+	    (setq truncate-partial-width-windows nil)))
+      (if (eq vpos 'bottom)
+	  (progn
+	    (set-window-buffer (selected-window)
+			       riece-command-buffer)
+	    (set-window-buffer (split-window (selected-window) 4)
+			       riece-dialogue-buffer))
+	(set-window-buffer (split-window (selected-window) 4)
+			   riece-dialogue-buffer)
+	(set-window-buffer (selected-window)
+			   riece-command-buffer)))
     (riece-set-window-points)
     (select-window (or (get-buffer-window buffer)
 		       (get-buffer-window riece-command-buffer)))))
-
-(defun riece-reconfigure-windows-predicate ()
-  "Return t, if window reconfiguration is needed.
-This function is used by \"default\" layout."
-  (memq (window-buffer (selected-window))
-	riece-buffer-list))
 
 (defun riece-configure-windows-top (&optional plist)
   "Candidate of `riece-configure-windows-function'.

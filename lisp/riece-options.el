@@ -38,7 +38,8 @@
 (defcustom riece-saved-forms
   '(riece-server-alist
     riece-channel-buffer-mode
-    riece-user-list-buffer-mode)
+    riece-user-list-buffer-mode
+    riece-layout)
   "Variables saved after each session is completed."
   :type 'string
   :group 'riece-options)

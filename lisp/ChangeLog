@@ -1,3 +1,14 @@
+2003-10-20  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-options.el (riece-saved-forms): Add riece-layout.
+
+	* riece-layout.el (riece-layout-alist): Change format.
+	(riece-configure-windows): Take 2 args to specify the position of
+	the command buffer window.
+
+	* riece-commands.el (riece-command-change-layout): Set
+	riece-save-variables-are-dirty.
+
 2003-10-19  Daiki Ueno  <ueno@unixuser.org>
 
 	* Riece: Version 0.1.4 released.
