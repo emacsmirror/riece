@@ -469,9 +469,12 @@ Instead, these commands are available:
       (setq queue (cdr queue)))
     (if dependencies
 	(error "Circular add-on dependency found"))
+    (setq addons (nreverse addons))
     (while addons
       (require (car addons))		;implicit dependency
       (funcall (intern (concat (symbol-name (car addons)) "-insinuate")))
+      (if riece-debug
+	  (message "Add-on %S is loaded" (car addons)))
       (setq addons (cdr addons)))))
 
 (provide 'riece)
