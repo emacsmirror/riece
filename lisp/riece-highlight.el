@@ -289,7 +289,7 @@
 	  (with-current-buffer (car buffers)
 	    (font-lock-mode -1)))
       (setq buffers (cdr buffers))))
-  (setq riece-highlight-disable nil))
+  (setq riece-highlight-enabled nil))
 
 (provide 'riece-highlight)
 
