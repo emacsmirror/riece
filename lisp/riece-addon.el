@@ -24,10 +24,92 @@
 
 ;;; Code:
 
+(defgroup riece-addon-list nil
+  "Add-on management"
+  :tag "Addon"
+  :prefix "riece-"
+  :group 'riece)
+
+(defgroup riece-addon-list-faces nil
+  "Faces for riece-addon-list-mode"
+  :tag "Faces"
+  :prefix "riece-addon-list"
+  :group 'riece-addon)
+
+(defface riece-addon-list-enabled-face
+  '((((class color) (background dark))
+     (:foreground "PaleTurquoise" :bold t))
+    (t
+     (:bold t)))
+  "Face used for displaying the enabled addon."
+  :group 'riece-addon-list-faces)
+(defvar riece-addon-list-enabled-face 'riece-addon-list-enabled-face)
+
+(defface riece-addon-list-disabled-face
+  '((((class color) (background dark))
+     (:foreground "PaleTurquoise" :italic t))
+    (t
+     (:italic t)))
+  "Face used for displaying the disabled addon."
+  :group 'riece-addon-list-faces)
+(defvar riece-addon-list-disabled-face 'riece-addon-list-disabled-face)
+
+(defface riece-addon-list-unsupported-face
+  '((((class color) (background dark))
+     (:foreground "PaleTurquoise"))
+    (t
+     ()))
+  "Face used for displaying the unsupported addon."
+  :group 'riece-addon-list-faces)
+(defvar riece-addon-list-unsupported-face 'riece-addon-list-unsupported-face)
+
+(defface riece-addon-list-unknown-face
+  '((t
+     (:foreground "red")))
+  "Face used for displaying the unknown addon."
+  :group 'riece-addon-list-faces)
+(defvar riece-addon-list-unknown-face 'riece-addon-list-unknown-face)
+
+(defface riece-addon-list-description-face
+  '((((class color)
+      (background dark))
+     (:foreground "lightyellow"))
+    (((class color)
+      (background light))
+     (:foreground "blue4"))
+    (t
+     ()))
+  "Face used for displaying the description addon."
+  :group 'riece-addon-list-faces)
+(defvar riece-addon-list-description-face 'riece-addon-list-description-face)
+
+(defcustom riece-addon-list-mark-face-alist
+  '((?+ . riece-addon-list-enabled-face)
+    (?- . riece-addon-list-disabled-face)
+    (?= . riece-addon-list-unsupported-face)
+    (?? . riece-addon-list-unknown-face))
+  "An alist mapping marks on riece-addon-list-buffer to faces."
+  :type 'list
+  :group 'riece-addon-list)
+
+(defcustom riece-addon-list-font-lock-keywords
+  '(("^\\([-+=?] [^:]+\\): \\(.*\\)"
+     (1 (cdr (assq (aref (match-string 1) 0)
+		   riece-addon-list-mark-face-alist)))
+     (2 riece-addon-list-description-face)))
+  "Default expressions to addon in riece-addon-list-mode."
+  :type '(repeat (list string))
+  :group 'riece-addon-list)
+
 (defvar riece-addon-list-mode-map
   (let ((keymap (make-sparse-keymap)))
     (define-key keymap "+" 'riece-command-enable-addon)
     (define-key keymap "-" 'riece-command-disable-addon)
+    (define-key keymap "n" 'next-line)
+    (define-key keymap "p" 'previous-line)
+    (define-key keymap " " 'scroll-up-command)
+    (define-key keymap [delete] 'scroll-down-command)
+    (define-key keymap "q" 'bury-buffer)
     keymap))
 
 (defun riece-load-and-build-addon-dependencies (addons)
@@ -123,6 +205,9 @@
 	(if verbose
 	    (message "Can't disable add-on %S" addon))))))
 
+(put 'riece-addon-list-mode 'font-lock-defaults
+     '(riece-addon-list-font-lock-keywords t))
+
 (defun riece-addon-list-mode ()
   "Major mode for displaying addon list.
 All normal editing commands are turned off."
@@ -135,54 +220,57 @@ All normal editing commands are turned off."
 	truncate-lines t
 	buffer-read-only t)
   (use-local-map riece-addon-list-mode-map)
+  (make-local-variable 'font-lock-defaults)
+  (setq font-lock-defaults '(riece-addon-list-font-lock-keywords t))
   (run-hooks 'riece-addon-list-mode-hook))
 
 (defun riece-command-list-addons ()
   (interactive)
-  (save-excursion
-    (set-buffer (riece-get-buffer-create "*AddOns*" 'riece-addon-list-mode))
-    (riece-addon-list-mode)
-    (let ((inhibit-read-only t)
-	  buffer-read-only
-	  (pointer riece-addons)
-	  enabled description point)
-      (erase-buffer)
-      (riece-kill-all-overlays)
-      (while pointer
-	(setq enabled (intern-soft (concat (symbol-name (car pointer))
-					   "-enabled"))
-	      description (intern-soft (concat (symbol-name (car pointer))
-					       "-description")))
-	(setq point (point))
-	(insert (format "%c %S: %s\n"
-			(if (not (featurep (car pointer)))
-			    ??
-			  (if (null enabled)
-			      ?=
-			    (if (symbol-value enabled)
-				?+
-			      ?-)))
-			(car pointer)
-			(if description
-			    (symbol-value description)
-			  "(no description)")))
-	(put-text-property point (point) 'riece-addon (car pointer))
-	(setq pointer (cdr pointer)))
-      (insert "
+  (set-buffer (riece-get-buffer-create "*AddOns*" 'riece-addon-list-mode))
+  (riece-addon-list-mode)
+  (let ((inhibit-read-only t)
+	buffer-read-only
+	(pointer riece-addons)
+	enabled description point)
+    (erase-buffer)
+    (riece-kill-all-overlays)
+    (while pointer
+      (setq enabled (intern-soft (concat (symbol-name (car pointer))
+					 "-enabled"))
+	    description (intern-soft (concat (symbol-name (car pointer))
+					     "-description")))
+      (setq point (point))
+      (insert (format "%c %S: %s\n"
+		      (if (not (featurep (car pointer)))
+			  ??
+			(if (null enabled)
+			    ?=
+			  (if (symbol-value enabled)
+			      ?+
+			    ?-)))
+		      (car pointer)
+		      (if description
+			  (symbol-value description)
+			"(no description)")))
+      (put-text-property point (point) 'riece-addon (car pointer))
+      (setq pointer (cdr pointer)))
+    (insert "
 Symbols in the leftmost column:
 
   +     The add-on is enabled.
   -     The add-on is disabled.
   =	The add-on doesn't support enable/disable operation.
-  ?	The add-on status is not known.
+  ?	The add-on status is unknown.
 ")
-      (insert (substitute-command-keys "
+    (insert (substitute-command-keys "
 Useful keys:
 
   `\\[riece-command-enable-addon]' to enable the current add-on.
   `\\[riece-command-disable-addon]' to disable the current add-on.
-")))
-    (pop-to-buffer (current-buffer))))
+"))
+    (goto-char (point-min))
+    (pop-to-buffer (current-buffer))
+    (delete-other-windows)))
 
 (defun riece-command-enable-addon (addon)
   (interactive
@@ -190,15 +278,30 @@ Useful keys:
     (or (if (eq major-mode 'riece-addon-list-mode)
 	    (get-text-property (point) 'riece-addon))
 	(completing-read "Add-on: "
-			 (mapcar #'list riece-addons)
+			 (mapcar (lambda (addon)
+				   (list (symbol-name addon)))
+				 riece-addons)
 			 (lambda (pointer)
-			   (setq enabled (intern-soft (concat (car pointer)
-							      "-enabled")))
-			   (and enabled
-				(null (symbol-value enabled))))
+			   (let ((enabled
+				  (intern-soft (concat (symbol-name
+							(car pointer))
+						       "-enabled"))))
+			     (and enabled
+				  (null (symbol-value enabled)))))
 			 t))))
   (riece-enable-addon addon t)
-  (riece-command-list-addons))
+  (let ((enabled (intern-soft (concat (symbol-name addon) "-enabled"))))
+    (if (and (eq major-mode 'riece-addon-list-mode)
+	     (get-text-property (point) 'riece-addon)
+	     enabled (symbol-value enabled))
+	(save-excursion
+	  (beginning-of-line)
+	  (let ((point (point))
+		(inhibit-read-only t)
+		buffer-read-only)
+	    (delete-char 1)
+	    (insert "+")
+	    (put-text-property point (point) 'riece-addon addon))))))
 
 (defun riece-command-disable-addon (addon)
   (interactive
@@ -206,16 +309,31 @@ Useful keys:
     (or (if (eq major-mode 'riece-addon-list-mode)
 	    (get-text-property (point) 'riece-addon))
 	(completing-read "Add-on: "
-			 (mapcar #'list riece-addons)
+			 (mapcar (lambda (addon)
+				   (list (symbol-name addon)))
+				 riece-addons)
 			 (lambda (pointer)
-			   (setq enabled (intern-soft (concat (car pointer)
-							      "-enabled")))
-			   (and enabled
-				(symbol-value enabled)))
+			   (let ((enabled
+				  (intern-soft (concat (symbol-name
+							(car pointer))
+						       "-enabled"))))
+			     (and enabled
+				  (symbol-value enabled))))
 			 t))))
   (riece-disable-addon addon t)
-  (riece-command-list-addons))
-      
+  (let ((enabled (intern-soft (concat (symbol-name addon) "-enabled"))))
+    (if (and (eq major-mode 'riece-addon-list-mode)
+	     (get-text-property (point) 'riece-addon)
+	     enabled (null (symbol-value enabled)))
+	(save-excursion
+	  (beginning-of-line)
+	  (let ((point (point))
+		(inhibit-read-only t)
+		buffer-read-only)
+	    (delete-char 1)
+	    (insert "-")
+	    (put-text-property point (point) 'riece-addon addon))))))
+    
 (provide 'riece-addon)
 
 ;;; riece-addon.el ends here

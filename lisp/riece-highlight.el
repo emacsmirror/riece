@@ -30,13 +30,13 @@
 (require 'font-lock)
 
 (defgroup riece-highlight nil
-  "Highlight your IRC buffer"
+  "Highlight IRC buffers"
   :tag "Highlight"
   :prefix "riece-"
   :group 'riece)
 
 (defgroup riece-highlight-faces nil
-  "Faces for highlight your IRC buffer"
+  "Faces for highlight IRC buffers"
   :tag "Faces"
   :prefix "riece-highlight-"
   :group 'riece-highlight)

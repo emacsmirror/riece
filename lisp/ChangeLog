@@ -1,5 +1,16 @@
 2004-05-21  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-addon.el (riece-addon-list-enabled-face): New face.
+	(riece-addon-list-disabled-face): New face.
+	(riece-addon-list-unsupported-face): New face.
+	(riece-addon-list-unknown-face): New face.
+	(riece-addon-list-description-face): New face.
+	(riece-addon-list-mark-face-alist): New user option.
+	(riece-addon-list-font-lock-keywords): New variable.
+	(riece-addon-list-mode-map): Bind some keys.
+
+2004-05-21  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-addon.el (riece-insinuate-addon): Add optional 2nd
 	argument `verbose'
 	(riece-enable-addon): Ditto.
