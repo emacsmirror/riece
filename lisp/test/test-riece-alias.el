@@ -13,6 +13,29 @@
       (riece-alias-expand-percent-hack "%riece")
       "#riece:*.jp"))))
 
+(luna-define-method test-riece-alias-alist-1 ((case test-riece-alias))
+  (let ((riece-alias-alist '(("#riece" . "#r"))))
+    (lunit-assert
+     (equal
+      (riece-alias-abbrev-identity-string "#riece")
+      "#r"))
+    (lunit-assert
+     (equal
+      (riece-alias-expand-identity-string "#r")
+      "#riece"))))
+
+(luna-define-method test-riece-alias-alist-2 ((case test-riece-alias))
+  (let ((riece-alias-alist '(("%riece" . "%r")))
+	(riece-alias-percent-hack-mask "*.jp"))
+    (lunit-assert
+     (equal
+      (riece-alias-abbrev-identity-string "#riece:*.jp")
+      "%r"))
+    (lunit-assert
+     (equal
+      (riece-alias-expand-identity-string "%r")
+      "#riece:*.jp"))))
+
 (luna-define-method test-riece-alias-altsep-1 ((case test-riece-alias))
   (let ((riece-alias-alternate-separator "@"))
     (lunit-assert

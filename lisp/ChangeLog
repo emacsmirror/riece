@@ -1,3 +1,12 @@
+2004-11-22  Daiki Ueno  <ueno@unixuser.org>
+
+	* test/test-riece-alias.el (test-riece-alias-alist-1): New test case.
+	(test-riece-alias-alist-2): New test case.
+
+	* riece-alias.el (riece-alias-abbrev-identity-string): Fixed
+	riece-alias-alist handling.
+	(riece-alias-expand-identity-string): Ditto.
+
 2004-11-21  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-options.el (riece-shrink-buffer-remove-lines): New user option.

@@ -138,25 +138,25 @@
   (if riece-alias-alternate-separator
       (setq string (riece-alias-abbrev-alternate-separator string)))
   (let ((alist riece-alias-alist))
-    (catch 'done
-      (while alist
-	(if (equal (car (car alist)) string)
-	    (throw 'done (cdr (car alist))))
-	(setq alist (cdr alist)))
-      string)))
+    (while alist
+      (if (equal (car (car alist)) string)
+	  (setq string (cdr (car alist))
+		alist nil)
+	(setq alist (cdr alist)))))
+  string)
 
 (defun riece-alias-expand-identity-string (string)
   (let ((alist riece-alias-alist))
-    (catch 'done
-      (while alist
-	(if (equal (cdr (car alist)) string)
-	    (throw 'done (car (car alist))))
-	(setq alist (cdr alist)))
-      string))
+    (while alist
+      (if (equal (cdr (car alist)) string)
+	  (setq string (car (car alist))
+		alist nil)
+	(setq alist (cdr alist)))))
   (if riece-alias-alternate-separator
       (setq string (riece-alias-expand-alternate-separator string)))
   (if riece-alias-enable-percent-hack
-      (setq string (riece-alias-expand-percent-hack string))))
+      (setq string (riece-alias-expand-percent-hack string)))
+  string)
 
 (defun riece-alias-insinuate ()
   )
