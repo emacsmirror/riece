@@ -4,6 +4,7 @@
 	riece-identity-assoc to pick an entry from
 	riece-353-message-alist.
 	(riece-handle-366-message): Ditto.
+	Reported by Steve Youngs <steve@sxemacs.org>.
 
 2005-02-19  Daiki Ueno  <ueno@unixuser.org>
 
