@@ -1,5 +1,9 @@
 2003-10-24  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-naming.el (riece-naming-assert-rename): Fixed.
+
+2003-10-24  Daiki Ueno  <ueno@unixuser.org>
+
 	* Riece: Version 0.1.5 released.
 	* riece-version.el (riece-version-number): Bump up to 0.1.5.
 

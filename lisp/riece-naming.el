@@ -57,7 +57,7 @@
 	 users user)
     (while channels
       (setq users (riece-channel-get-users (car channels))
-	    user (car (riece-identity-assoc old-name users t)))
+	    user (riece-identity-assoc old-name users t))
       (if user
 	  (setcar user new-name))
       (setq channels (cdr channels)))
