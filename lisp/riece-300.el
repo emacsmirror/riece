@@ -65,7 +65,9 @@
 			   "away"
 			 "not away")))
 	      "\n"))))
-      (setq replies (cdr replies)))))
+      (setq replies (cdr replies)))
+  (riece-update-status-indicators)
+  (force-mode-line-update t)))
 
 (defun riece-handle-303-message (prefix number name string)
   (riece-insert-info
@@ -86,13 +88,19 @@
        (concat
 	(riece-concat-server-name
 	 (format "%s is away: %s" user message))
-	"\n")))))
+	"\n")))
+  (riece-update-status-indicators)
+  (force-mode-line-update t)))
 
 (defun riece-handle-305-message (prefix number name string)
-  (riece-user-toggle-away riece-real-nickname nil))
+  (riece-user-toggle-away riece-real-nickname nil)
+  (riece-update-status-indicators)
+  (force-mode-line-update t))
 
 (defun riece-handle-306-message (prefix number name string)
-  (riece-user-toggle-away riece-real-nickname t))
+  (riece-user-toggle-away riece-real-nickname t)
+  (riece-update-status-indicators)
+  (force-mode-line-update t))
 
 (defun riece-handle-311-message (prefix number name string)
   (if (string-match
