@@ -1,3 +1,15 @@
+2004-05-28  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-message.el (riece-message-set-speaker): New function.
+	(riece-message-set-target): New function.
+	(riece-message-set-text): New function.
+	(riece-message-set-type): New function.
+	(riece-message-set-own-p): New function.
+
+	* riece-kakasi.el: New add-on.
+	* COMPILE (riece-modules): Add riece-kakasi.
+	* Makefile.am (EXTRA_DIST): Add riece-kakasi.el.
+
 2004-05-27  OHASHI Akira  <bg66@koka-in.org>
 
 	* riece-biff.el: New add-on.

@@ -217,6 +217,27 @@ Currently possible values are `action' and `notice'."
   "Return t if MESSAGE is not from the network."
   (aref message 4))
 
+(defun riece-message-set-speaker (message speaker)
+  "Set the sender of MESSAGE."
+  (aset message 0 speaker))
+
+(defun riece-message-set-target (message target)
+  "Set the receiver of MESSAGE."
+  (aset message 1 target))
+
+(defun riece-message-set-text (message text)
+  "Set the text part of MESSAGE."
+  (aset message 2 text))
+
+(defun riece-message-set-type (message type)
+  "Set the type of MESSAGE.
+Currently possible values are `action' and `notice'."
+  (aset message 3 type))
+
+(defun riece-message-set-own-p (message own-p)
+  "Set t if MESSAGE is not from the network."
+  (aset message 4 own-p))
+
 (defun riece-message-private-p (message)
   "Return t if MESSAGE is a private message."
   (not (or (riece-channel-p (riece-identity-prefix

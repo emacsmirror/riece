@@ -12,7 +12,7 @@ EXTRA_DIST = COMPILE ChangeLog ChangeLog.Liece \
 	riece-guess.el riece-history.el riece-button.el riece-keyword.el \
 	riece-menu.el riece-icon.el riece-async.el riece-lsdb.el \
 	riece-xface.el riece-ctlseq.el riece-ignore.el riece-hangman.el \
-	riece-biff.el
+	riece-biff.el riece-kakasi.el
 
 CLEANFILES = auto-autoloads.el custom-load.el *.elc
 FLAGS ?= -batch -q -no-site-file
