@@ -56,7 +56,9 @@
 (autoload 'doctor-read-print "doctor")
 
 (defun riece-doctor-buffer-name (user)
-  (concat " *riece-doctor*" (riece-format-identity user)))
+  (concat " *riece-doctor*"
+	  (riece-format-identity
+	   (riece-make-identity user riece-server-name))))
 
 (defun riece-doctor-reply (target string)
   (riece-display-message
@@ -67,17 +69,15 @@
   (riece-send-string (format "NOTICE %s :%s\r\n" target string)))
 
 (defun riece-doctor-after-privmsg-hook (prefix string)
-  (let* ((user (riece-make-identity (riece-prefix-nickname prefix)
-				    riece-server-name))
+  (let* ((user (riece-prefix-nickname prefix))
 	 (parameters (riece-split-parameters string))
 	 (targets (split-string (car parameters) ","))
 	 (message (nth 1 parameters)))
     (if (string-match riece-doctor-hello-regexp message)
-	(if (riece-identity-member user riece-doctor-patients)
+	(if (riece-identity-member user riece-doctor-patients t)
 	    (riece-doctor-reply
 	     (car targets)
-	     (format "%s: You are already talking with me."
-		     (riece-format-identity user t)))
+	     (format "%s: You are already talking with me." user))
 	  (save-excursion
 	    (set-buffer (get-buffer-create (riece-doctor-buffer-name user)))
 	    (erase-buffer)
@@ -87,17 +87,17 @@
 	   (car targets)	   
 	   (format
 	    "%s: I am the psychotherapist.  Please, describe your problems."
-	    (riece-format-identity user t))))
+	    user)))
       (if (string-match riece-doctor-bye-regexp message)
-	  (let ((pointer (riece-identity-member user riece-doctor-patients)))
+	  (let ((pointer (riece-identity-member user riece-doctor-patients t)))
 	    (when pointer
 	      (kill-buffer (riece-doctor-buffer-name user))
 	      (setq riece-doctor-patients (delq (car pointer)
 						riece-doctor-patients))
 	      (riece-doctor-reply
 	       (car targets)
-	       (format "%s: Good bye." (riece-format-identity user t)))))
-	(if (riece-identity-member user riece-doctor-patients)
+	       (format "%s: Good bye." user))))
+	(if (riece-identity-member user riece-doctor-patients t)
 	    (let (string)
 	      (save-excursion
 		(set-buffer (get-buffer (riece-doctor-buffer-name user)))
@@ -112,7 +112,7 @@
 		  (setq string (buffer-string))))
 	      (riece-doctor-reply
 	       (car targets)
-	       (format "%s: %s" (riece-format-identity user t) string))))))))
+	       (format "%s: %s" user string))))))))
 
 (defun riece-doctor-insinuate ()
   (add-hook 'riece-after-privmsg-hook 'riece-doctor-after-privmsg-hook))

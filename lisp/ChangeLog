@@ -1,5 +1,12 @@
 2004-05-20  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-doctor.el (riece-doctor-buffer-name): Assume that the 1st
+	argument is nickname rather than identity object.
+	(riece-doctor-after-privmsg-hook): Don't send formatted identity
+	as a patient's nickname.
+
+2004-05-20  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-hangman.el (riece-hangman-player-context-alist): Renamed
 	from riece-hangman-players.
 	(riece-hangman-make-context): Add doc.
