@@ -738,7 +738,8 @@ Riece は複数のサーバに同時に接続するため、サーバ毎に別々の名前空間を管理
 ルでは、以下のような関数が定義されています。
 
 @defun riece-make-identity prefix &optional server
-大域表記を作り出します。server が省略された場合には、riece-find-server-name を使って取得したサーバ名を使います
+大域表記を作成します。server が省略された場合には、
+riece-find-server-name を使って取得したサーバ名を使います
 @end defun
 
 @defun riece-identity-prefix identity
@@ -748,14 +749,38 @@ Riece は複数のサーバに同時に接続するため、サーバ毎に別々の名前空間を管理
 @defun riece-identity-server identity
 大域表記からサーバを除く部分を返します
 @end defun
+
+@defun riece-identity-canonicalize-prefix prefix
+大域表記のサーバ名を除く部分を正規化します。すなわち、
+@var{prefix} を全て小文字に直した上で、RFC2812 2.2 にならい、
+@samp{[]\~} のそれぞれの文字を @samp{@{@}|^} に置き換えます。
+@end defun
  
-@defun riece-identity-equal a b
+@defun riece-identity-equal ident1 ident2
 二つの大域表記が同等か調べます。
 @end defun
 
-@defun riece-identity-equal-safe a b
+@defun riece-identity-equal-safe ident1 ident2
 @code{riece-identity-equal} と一緒ですが、引数として与えられた文字列にサー
 バ名が付加されていなければ、付加してから検査を行います。
+@end defun
+
+@defun riece-identity-equal-no-server ident1 ident2
+二つの大域表記のサーバ以外の部分が同等か調べます。
+@end defun
+
+@defun riece-identity-member elt list
+大域表記 @var{elt} が @var{list} に含まれるか検査します。
+@end defun
+
+@defun riece-identity-member-safe elt list
+@code{riece-identity-member} と一緒ですが、引数にサーバ名が付加されてい
+なければ、付加してから検査を行います。
+@end defun
+
+@defun riece-identity-member-no-server elt list
+@code{riece-identity-member} と一緒ですが、大域表記のサーバ以外の部分だ
+けを検査します。
 @end defun
 
 @subsection Channel and user management
