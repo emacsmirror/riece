@@ -126,8 +126,8 @@
 
 (defun riece-put-text-property-nonsticky (start end prop value
 						     &optional object)
-  (add-text-property start end (list prop value 'start-open t 'end-open t)
-		     object))
+  (add-text-properties start end (list prop value 'start-open t 'end-open t)
+		       object))
 
 (provide 'riece-xemacs)
 
