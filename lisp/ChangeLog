@@ -1,3 +1,8 @@
+2004-02-17  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-lsdb.el: Add autoload setting for
+	lsdb-rebuild-secondary-hash-tables to suppress warning.
+
 2004-02-16  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-300.el (riece-handle-353-message): Print user list in

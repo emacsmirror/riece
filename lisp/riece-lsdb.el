@@ -33,6 +33,7 @@
 
 (eval-when-compile
   (autoload 'lsdb-maybe-load-hash-tables "lsdb")
+  (autoload 'lsdb-rebuild-secondary-hash-tables "lsdb")
   (autoload 'lsdb-lookup-records "lsdb")
   (autoload 'lsdb-puthash "lsdb")
   (autoload 'lsdb-maphash "lsdb")
