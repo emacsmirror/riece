@@ -1,7 +1,9 @@
+Copyright (C) 1998-2003 Daiki Ueno
+Copyright (C) 1989 Tor Lillqvist
+
 Riece is written by Daiki Ueno <ueno@unixuser.org>.
 
-Riece is a redesign of the Liece IRC client.  The code is almost
-completely rewritten.
+Riece is a redesign of the Liece IRC client.  The code is completely rewritten.
 
 Liece was mainly written by the same author of Riece.  It is based on
 Irchat (version 3.01) which has been distributed under GNU General
