@@ -9,7 +9,6 @@
 		riece-options
 		riece-version
 		riece-inlines
-		riece-highlight
 		riece-coding
 		riece-complete
 
@@ -41,7 +40,9 @@
 		riece
 
 		;; add-ons
-		riece-ctcp))))
+		riece-ctcp
+		riece-highlight
+		riece-url))))
 
 (defun riece-compile-modules (modules)
   (let ((load-path (cons nil load-path)))

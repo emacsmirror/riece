@@ -1,5 +1,8 @@
 2003-05-30  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-url.el: New add-on.
+	* COMPILE (riece-modules): Add riece-url.
+
 	* riece-message.el (riece-message-make-bracket): Abolish.
 	* riece-highlight.el (riece-highlight-font-lock-keywords):
 	Give up to fontify "-nick-" or "-nick server-".
