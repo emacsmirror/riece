@@ -43,7 +43,7 @@
   :group 'riece-log)
 
 (defcustom riece-log-directory-map nil
-  "The map of channel name and directory name."
+  "*The map of channel name and directory name."
   :type '(repeat (cons (string :tag "Channel name")
 		       (string :tag "Directory name")))
   :group 'riece-log)

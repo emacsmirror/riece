@@ -1,5 +1,9 @@
 2003-06-17  OHASHI Akira  <bg66@koka-in.org>
 
+	* riece-mini.el: New add-on.
+	* COMPILE (riece-modules): Add `riece-mini'.
+	* Makefile.am (EXTRA_DIST): Add `riece-mini.el'.
+
 	* riece-display.el (riece-channel-buffer-create): Add new hook.
 	* riece-log.el: New add-on for saving irc logs.
 	* COMPILE (riece-modules): Add `riece-log'.
