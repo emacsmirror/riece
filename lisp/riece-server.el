@@ -118,9 +118,8 @@ the `riece-server-keyword-map' variable."
 	(if (> length riece-max-send-size)
 	    (message "Long message (%d > %d)" length riece-max-send-size)
 	  (setq riece-send-size (+ riece-send-size length))
-	  (when (<= riece-send-size riece-max-send-size)
-	    (process-send-string process string)
-	    (setq riece-last-send-time (current-time))))
+	  (if (<= riece-send-size riece-max-send-size)
+	      (process-send-string process string)))
 	(setq riece-send-queue (cdr riece-send-queue)))
       (if riece-send-queue
 	  (riece-run-at-time riece-send-delay nil
@@ -201,8 +200,6 @@ the `riece-server-keyword-map' variable."
     (make-local-variable 'riece-server-name)
     (make-local-variable 'riece-read-point)
     (make-local-variable 'riece-send-queue)
-    (make-local-variable 'riece-last-send-time)
-    (setq riece-last-send-time '(0 0 0))
     (make-local-variable 'riece-send-size)
     (setq riece-send-size 0)
     (setq riece-read-point (point-min))
