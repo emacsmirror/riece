@@ -41,6 +41,7 @@
 		;; add-ons
 		riece-ctcp
 		riece-highlight
+		riece-log
 		riece-rdcc
 		riece-url
 		riece-unread))))

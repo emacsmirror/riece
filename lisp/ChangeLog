@@ -1,3 +1,13 @@
+2003-06-17  OHASHI Akira  <bg66@koka-in.org>
+
+	* riece-display.el (riece-channel-buffer-create): Add new hook.
+	* riece-log.el: New add-on for saving irc logs.
+	* COMPILE (riece-modules): Add `riece-log'.
+	* Makefile.am (EXTRA_DIST): Add `riece-log.el'.
+
+	* riece-commands.el (riece-command-join): Use `let*' instead of `let'.
+	(riece-command-part): Ditto.
+
 2003-06-06  OHASHI Akira  <bg66@koka-in.org>
 
 	* riece-ndcc.el (riece-ndcc-server-sentinel): Close a parenthesis.
