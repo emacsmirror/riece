@@ -1,5 +1,8 @@
 2005-03-05  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-version.el: Bind emacs-program-version.
+	* riece-debug.el: Require 'riece-options for riece-debug.
+
 	* riece-log.el (riece-log-insinuate): Use user-uid instead of
 	user-login-name and escape system-name for riece-log-lock-file.
 

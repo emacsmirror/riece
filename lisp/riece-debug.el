@@ -25,6 +25,7 @@
 ;;; Code:
 
 (require 'riece-globals)
+(require 'riece-options)
 
 (defun riece-debug-reset-standard-output ()
   "Reset `riece-temp-buffer' to be used as `standard-output'."

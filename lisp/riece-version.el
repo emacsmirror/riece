@@ -55,6 +55,7 @@ string, be sure to use a valid format, see RFC 2616."
   "Version string for this version of Riece.")
 
 (eval-when-compile
+  (defvar emacs-program-version)
   (defvar xemacs-codename)
   (defvar sxemacs-codename))
 
