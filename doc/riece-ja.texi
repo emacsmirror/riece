@@ -348,6 +348,9 @@ Riece $B$N%P!<%8%g%s$rI=<($7$^$9!#A0CV0z?t(B (@kbd{C-u}) $B$rM?$($k$H!"$h$j>\
 @item C-c >
 @findex riece-command-next-channel
 $B<!$N%A%c%s%M%k$K0\$j$^$9(B(@code{riece-command-next-channel})
+@item C-c ^
+@findex riece-command-list-addons
+$B%"%I%*%s$N0lMw$rI=<($7$^$9(B(@code{riece-command-list-addons})
 @item C-c $B?t;z(B
 @findex riece-command-switch-to-channel-by-number
 @var{n}$BHVL\$N%A%c%s%M%k$K0\F0$7$^$9(B(@code{riece-command-switch-to-channel-by-number})
@@ -1082,9 +1085,9 @@ Qt $B$d(B GTK+ $B$H$$$C$?(B GUI $B%D!<%k%-%C%H$KMQ0U$5$l$F$$$k$b$N$HF1MM$G$
 $B$k$3$H$b$G$-$^$9!#$3$NJ8;zNs$O(B @kbd{M-x riece-command-list-addons} $B$K$h(B
 $B$k%"%I%*%s$N0lMwI=<($K;H$o$l$^$9!#(B
 
-$BL58z2=$KBP1~$7$?%"%I%*%s$O!"JQ?t(B @samp{<$B%b%8%e!<%kL>(B>-enabled} $B$K8=:_$N(B
-$B>uBV$rJ];}$7$^$9!#CM$,(B @samp{nil} $B$G$"$l$PL58z!"(B@samp{t} $B$G$"$l$PM-8z$G(B
-$B$9!#2C$($F!"0J2<$N4X?t$rDs6!$7$^$9!#(B
+$BM-8z2=!&L58z2=$KBP1~$7$?%"%I%*%s$O!"JQ?t(B @samp{<$B%b%8%e!<%kL>(B>-enabled} 
+$B$K8=:_$N>uBV$rJ];}$7$^$9!#CM$,(B @samp{nil} $B$G$"$l$PL58z!"(B@samp{t} $B$G$"$l(B
+$B$PM-8z$G$9!#2C$($F!"0J2<$N4X?t$rDs6!$7$^$9!#(B
 
 @table @samp
 @item <$B%b%8%e!<%kL>(B>-enable
@@ -1093,7 +1096,7 @@ Qt $B$d(B GTK+ $B$H$$$C$?(B GUI $B%D!<%k%-%C%H$KMQ0U$5$l$F$$$k$b$N$HF1MM$G$
 $B%"%I%*%s$rL58z$K$7$^$9(B
 @end table
 
-Riece $BB&$G$O0J2<$N=hM}$r9T$$$^$9!#(B
+Riece $B$O5/F0;~$K0J2<$N=hM}$r9T$$$^$9!#(B
 
 @enumerate
 @item
@@ -1107,6 +1110,10 @@ Riece $BB&$G$O0J2<$N=hM}$r9T$$$^$9!#(B
 
 @item
 $BF@$i$l$?0MB8=g=x$K=>$C$F(B @samp{<$B%b%8%e!<%kL>(B>-insinuate} $B8F$S=P$9(B
+
+@item
+$B$b$7!"%"%I%*%s$,M-8z2=!&L58z2=$KBP1~$7$F$*$j!"L@<(E*$KL58z2=$5$l$F$$$J$1$l$P!"(B
+@samp{<$B%b%8%e!<%kL>(B>-enable}$B$r8F$S=P$9!#(B
 @end enumerate
 
 $B:n@.$7$?%"%I%*%s$O!"(B@code{load-path} $B$NDL$C$?%G%#%l%/%H%j!"$^$?$O(B 
