@@ -286,6 +286,15 @@ the `riece-server-keyword-map' variable."
 	      (throw 'found t))
 	  (setq alist (cdr alist)))))))
 
+(defun riece-server-properties (server-name)
+  "Return a list of properties associated with SERVER-NAME."
+  (if (equal server-name "")
+      riece-server
+    (let ((entry (assoc server-name riece-server-alist)))
+      (unless entry
+	(error "No such server"))
+      (cdr entry))))
+
 (provide 'riece-server)
 
 ;;; riece-server.el ends here
