@@ -1,3 +1,8 @@
+2003-10-16  TAKAHASHI Kaoru  <kaoru@kaisei.org>
+
+	* riece-commands.el (riece-command-universal-server-name-argument):
+	Fix parenthesis.
+
 2003-10-16  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece.el (riece-buffer-alist): Rename from

@@ -637,7 +637,7 @@ If prefix argument ARG is non-nil, toggle frozen status."
 (defun riece-command-universal-server-name-argument ()
   (interactive)
   (let* ((riece-overriding-server-name
-	  (completing-read "Server: " riece-server-process-alist)))
+	  (completing-read "Server: " riece-server-process-alist))
 	 (command
 	  (key-binding (read-key-sequence
 			(format "Command to execute on \"%s\":"
