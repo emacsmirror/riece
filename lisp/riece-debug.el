@@ -31,10 +31,7 @@
 (defun riece-debug-reset-standard-output ()
   (unless riece-debug-standard-output-buffer
     (setq riece-debug-standard-output-buffer
-	  (generate-new-buffer " *riece-debug-standard-output*")
-	  riece-buffer-list
-	  (cons riece-debug-standard-output-buffer
-		riece-buffer-list)))
+	  (generate-new-buffer " *riece-debug-standard-output*")))
   (save-excursion
     (set-buffer riece-debug-standard-output-buffer)
     (buffer-disable-undo)
