@@ -322,7 +322,7 @@ IRC をやめます(@code{riece-command-quit})
 チャンネルのモードを設定します(@code{riece-command-change-mode})
 @item C-c o
 @findex riece-command-set-operators
-ユーザにオペレータ権限を与えます。前置引数 (@kbd{C-u}) を与えると、ユーザから発言権を奪います(@code{riece-command-set-operators})
+ユーザにオペレータ権限を与えます。前置引数 (@kbd{C-u}) を与えると、ユーザからオペレータ権限を奪います(@code{riece-command-set-operators})
 @item C-c v
 @findex riece-command-set-speakers
 ユーザに発言権を与えます。前置引数 (@kbd{C-u}) を与えると、ユーザから発言権を奪います(@code{riece-command-set-speakers})
