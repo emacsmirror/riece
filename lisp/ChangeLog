@@ -1,3 +1,12 @@
+2004-03-05  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-unread.el (riece-unread-after-display-message-function):
+	Emit 'riece-unread-channel-list-update signal.
+	(riece-unread-insinuate): Connect the signal to the function which
+	updates channel-list buffer.
+
+	* riece-display.el (riece-display-connect-signals): Fix parenthesis.
+
 2004-03-04  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-display.el (riece-emit-signal): Fixed bug that errors

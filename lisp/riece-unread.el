@@ -67,7 +67,8 @@
 	      (riece-identity-member (riece-message-target message)
 				     riece-unread-channels))
     (setq riece-unread-channels
-	  (cons (riece-message-target message) riece-unread-channels))))
+	  (cons (riece-message-target message) riece-unread-channels))
+    (riece-emit-signal 'riece-unread-channel-list-update)))
 
 (defun riece-unread-after-switch-to-channel-function (last)
   (setq riece-unread-channels
@@ -126,7 +127,12 @@
 ;;;  (if (memq 'riece-guess riece-addons)
 ;;;      (add-hook 'riece-guess-channel-try-functions
 ;;;		'riece-guess-channel-from-unread))
-  )
+  (riece-connect-signal
+   'riece-unread-channel-list-update
+   (lambda (signal handback)
+     (save-excursion
+       (set-buffer riece-channel-list-buffer)
+       (run-hooks 'riece-update-buffer-functions)))))
 
 (provide 'riece-unread)
 

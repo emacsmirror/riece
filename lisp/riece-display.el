@@ -179,10 +179,10 @@ This function is for internal use only."
   (riece-connect-signal
    'riece-naming-assert-part
    (lambda (signal handback)
-     (riece-part-channel (nth 1 (riece-signal-args signal)))
+     (riece-part-channel (nth 1 (riece-signal-args signal))))
    (lambda (signal)
      (riece-identity-equal (car (riece-signal-args signal))
-			   (riece-current-nickname)))))
+			   (riece-current-nickname))))
   (riece-connect-signal
    'riece-naming-assert-rename
    (lambda (signal handback)
