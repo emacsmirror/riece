@@ -265,7 +265,7 @@ puts(\"#{" address " >> 24 & 0xFF}.#{" address " >> 16 & 0xFF}.#{"
 
 (defun riece-rdcc-format-size (size)
   (if (< size 1024)
-      (format "%0.1fB" size)
+      (format "%0.1f" size)
     (setq size (/ size 1024.0))
     (if (< size 1024)
 	(format "%0.1fKB" size)
