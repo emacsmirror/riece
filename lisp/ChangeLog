@@ -34,7 +34,7 @@
 
 2004-06-16  Daiki Ueno  <ueno@unixuser.org>
 
-	* riece-commands.el (riece-command-end-of-buffer): New command.
+	* riece-commands.el (riece-command-beginning-of-buffer): New command.
 	* riece.el (riece-dialogue-mode-map): Bind beginning-of-buffer to Home.
 	(riece-command-map): Bind riece-command-beginning-of-buffer to Home.
 
@@ -68,7 +68,7 @@
 2004-06-10  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-commands.el (riece-command-change-mode): Don't send ":" to
-	query a channe mode.
+	query a channel mode.
 	* riece-mode.el (riece-parse-modes): Accept mode spec not
 	delimited with " " such as "-n+s".
 
