@@ -47,6 +47,16 @@
   :type '(list function)
   :group 'riece-keyword)
 
+(make-obsolete-variable 'riece-notify-keyword-functions
+			'riece-keyword-notify-functions)
+
+(defcustom riece-keyword-notify-functions nil
+  "Functions used to notify keyword match.
+Two arguments are passed to each function: the keyword used to match
+and the matched message object."
+  :type '(list function)
+  :group 'riece-keyword)
+
 (defface riece-keyword-face
   '((((class color))
      (:foreground "red" :underline t))
@@ -83,10 +93,12 @@
 				   (match-end (cdr (car alist)))
 				   'riece-keyword t
 				   (riece-message-text message)))
-	    (save-match-data
-	      (run-hook-with-args 'riece-notify-keyword-functions
-				  (match-string (cdr (car alist))
-						(riece-message-text message))))
+	    (run-hook-with-args 'riece-notify-keyword-functions
+				(match-string (cdr (car alist))
+					      (riece-message-text message)))
+	    (run-hook-with-args 'riece-keyword-notify-functions
+				(cdr (car alist))
+				message)
 	    (setq index (match-end (cdr (car alist)))))
 	  (setq alist (cdr alist)))))
   message)
