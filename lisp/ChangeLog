@@ -1,3 +1,8 @@
+2004-12-15  Yoichi NAKAYAMA  <yoichi@geiin.org>
+
+	* riece-addon.el (riece-command-enable-addon): Fixed.
+	(riece-command-disable-addon): Ditto.
+
 2004-12-14  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-alias.el (riece-alias-abbrev-identity-string): Return a

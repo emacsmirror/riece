@@ -288,18 +288,18 @@ Useful keys:
    (list
     (or (if (eq major-mode 'riece-addon-list-mode)
 	    (get-text-property (point) 'riece-addon))
-	(completing-read "Add-on: "
-			 (mapcar (lambda (addon)
-				   (list (symbol-name addon)))
-				 riece-addons)
-			 (lambda (pointer)
-			   (let ((enabled
-				  (intern-soft (concat (symbol-name
-							(car pointer))
-						       "-enabled"))))
-			     (and enabled
-				  (null (symbol-value enabled)))))
-			 t))))
+	(intern-soft
+	 (completing-read "Add-on: "
+			  (mapcar (lambda (addon)
+				    (list (symbol-name addon)))
+				  riece-addons)
+			  (lambda (pointer)
+			    (let ((enabled
+				   (intern-soft (concat (car pointer)
+							"-enabled"))))
+			      (and enabled
+				   (null (symbol-value enabled)))))
+			  t)))))
   (riece-enable-addon addon t)
   (let ((enabled (intern-soft (concat (symbol-name addon) "-enabled"))))
     (if (and (eq major-mode 'riece-addon-list-mode)
@@ -319,18 +319,18 @@ Useful keys:
    (list
     (or (if (eq major-mode 'riece-addon-list-mode)
 	    (get-text-property (point) 'riece-addon))
-	(completing-read "Add-on: "
-			 (mapcar (lambda (addon)
-				   (list (symbol-name addon)))
-				 riece-addons)
-			 (lambda (pointer)
-			   (let ((enabled
-				  (intern-soft (concat (symbol-name
-							(car pointer))
-						       "-enabled"))))
-			     (and enabled
-				  (symbol-value enabled))))
-			 t))))
+	(intern-soft
+	 (completing-read "Add-on: "
+			  (mapcar (lambda (addon)
+				    (list (symbol-name addon)))
+				  riece-addons)
+			  (lambda (pointer)
+			    (let ((enabled
+				   (intern-soft (concat (car pointer)
+							"-enabled"))))
+			      (and enabled
+				   (symbol-value enabled))))
+			  t)))))
   (riece-disable-addon addon t)
   (let ((enabled (intern-soft (concat (symbol-name addon) "-enabled"))))
     (if (and (eq major-mode 'riece-addon-list-mode)
