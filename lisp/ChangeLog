@@ -1,3 +1,8 @@
+2004-07-01  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece.el (riece-exit): Clear signal-slots.
+	* riece-signal.el (riece-clear-signal-slots): New function.
+
 2004-06-28  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-misc.el (riece-split-parameters): Fixed parenthesis.
