@@ -1,3 +1,7 @@
+2004-05-24  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-addon.el (riece-command-list-addons): Sort add-ons.
+
 2004-05-23  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-menu.el: Don't put 'riece-addon-default-disabled property.

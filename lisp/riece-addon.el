@@ -233,7 +233,10 @@ All normal editing commands are turned off."
   (riece-addon-list-mode)
   (let ((inhibit-read-only t)
 	buffer-read-only
-	(pointer riece-addons)
+	(pointer (sort (copy-sequence riece-addons)
+		       (lambda (symbol1 symbol2)
+				  (string-lessp (symbol-name symbol1)
+						(symbol-name symbol2)))))
 	enabled description point)
     (erase-buffer)
     (riece-kill-all-overlays)
