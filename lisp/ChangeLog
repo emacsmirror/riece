@@ -1,3 +1,8 @@
+2004-06-26  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-commands.el (riece-command-change-mode): Don't send ":".
+	[cf. <Liece:00191>]
+
 2004-06-18  TAKAHASHI Kaoru  <kaoru@kaisei.org>
 
 	* riece-display.el (riece-update-long-channel-indicator): Change

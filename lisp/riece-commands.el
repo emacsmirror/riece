@@ -278,7 +278,7 @@ the layout to the selected layout-name."
   (if (equal change "")
       (riece-send-string (format "MODE %s\r\n"
 				 (riece-identity-prefix channel)))
-    (riece-send-string (format "MODE %s :%s\r\n"
+    (riece-send-string (format "MODE %s %s\r\n"
 			       (riece-identity-prefix channel)
 			       change))))
 
