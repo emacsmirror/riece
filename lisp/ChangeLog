@@ -1,21 +1,16 @@
 2004-07-18  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece.el: Don't require 'riece-filter.
-
 	* riece-server.el: Require 'riece-filter.
 
 	* riece-500.el: Autoload riece-default-handle-numeric-reply from
 	"riece-handle".
-
 	* riece-400.el: Autoload riece-default-handle-numeric-reply from
 	"riece-handle".
-
 	* riece-300.el: Don't require 'riece-filter; autoload
 	riece-default-handle-numeric-reply from "riece-handle".
-
 	* riece-200.el: Autoload riece-default-handle-numeric-reply from
 	"riece-handle".
-
 	* riece-000.el: Don't require 'riece-filter; autoload
 	riece-default-handle-numeric-reply from "riece-handle".
 
