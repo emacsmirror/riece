@@ -30,7 +30,7 @@
 ;; are visiting other buffers.
 
 ;; To use, add the following line to your ~/.riece/init.el:
-;; (add-to-list 'riece-addons 'riece-mini t)
+;; (add-to-list 'riece-addons 'riece-mini)
 ;;
 ;; And for using conveniently, bind any global key to
 ;; `riece-mini-send-message'.

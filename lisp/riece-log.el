@@ -26,7 +26,7 @@
 ;; This add-on saves irc logs for every channel.
 
 ;; To use, add the following line to your ~/.riece/init.el:
-;; (add-to-list 'riece-addons 'riece-log t)
+;; (add-to-list 'riece-addons 'riece-log)
 
 ;;; Code:
 

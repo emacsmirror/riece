@@ -27,7 +27,7 @@
 ;; "unread messages".
 
 ;; To use, add the following line to your ~/.riece/init.el:
-;; (add-to-list 'riece-addons 'riece-unread t)
+;; (add-to-list 'riece-addons 'riece-unread)
 
 ;;; Code:
 

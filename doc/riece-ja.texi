@@ -502,7 +502,7 @@ DCC (Direct Client to Client protocol) によるファイル転送
 @vindex riece-addons
 
 @example
-(add-to-list 'riece-addons 'riece-url t)
+(add-to-list 'riece-addons 'riece-url)
 @end example
 
 @node Writing add-ons, Handler hooks, Add-ons, Advanced usage
