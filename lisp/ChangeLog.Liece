@@ -1,0 +1,4696 @@
+2003-05-24  Daiki Ueno  <ueno@unixuser.org>
+
+	* liece-000.el (liece-handle-000-messages): Don't set liece-nickname.
+	* liece-400.el (liece-iterate-nick): Abolish.
+	(liece-handle-433-message): Don't use liece-iterate-nick.
+	* liece-channel.el: Abolish channel representation format.
+	(liece-default-channel-representation-format): Abolish.
+	(liece-dcc-channel-representation-format): Abolish.
+	(liece-channel-prepare-representation): Abolish.
+	(liece-channel-parse-representation): Abolish.
+	* liece-commands.el (liece-command-save-variables): Rename from
+	liece-command-save-vars; simplify using with-temp-file.
+	* liece-ctcp.el: Require liece-version.
+	* liece-globals.el: Rearrange variables by usage; don't require
+	liece-version.
+	(liece-last-nickname): Rename from liece-nickname-last.
+	(liece-last-who-expression): Rename from liece-who-expression.
+	(liece-real-userhost): Rename from liece-my-userhost.
+	(liece-last-chat-partner): Rename from liece-privmsg-partner.
+	(liece-last-friends): Rename from liece-friends-last.
+	(liece-real-server-name): New variable.
+	(liece-server-process-alist): New variable.
+	(liece-command-buffer-mode-indicator): Rename from
+	liece-private-indicator.
+	(liece-server-buffer): Abolish.
+	* liece-inlines.el (liece-next-line): Abolish.
+	* liece-misc.el (liece-send-pong): Abolish.
+	(liece-increment-long-reply-count): Define as function.
+	(liece-reset-long-reply-count): Ditto.
+	(liece-check-long-reply-count): Ditto.
+	* liece-q-el.el (liece-quote-el-decode-string): Fix typo.
+	* liece-vars.el (liece-saved-forms): Don't purecopy.
+	(liece-want-traditional): Abolish.
+	(liece-command-window-on-top): Abolish.
+	(liece-one-buffer-mode): Abolish.
+	(liece-saved-variables-file): New variable.
+	(liece-server-alist): Default to nil.
+	(liece-my-userhost): Remove.
+	(liece-nick-max-length): Abolish.
+	(liece-real-nickname): Remove.
+	(liece-grow-tail): Abolish.
+	(liece-retry-with-new-nickname): Rename from liece-auto-iterate-nick.
+	(liece-after-registration): Abolish.
+	(liece-status-message-string): Abolish.
+	(liece-channel-unread-list): Moved to liece-globals.el.
+	* liece-version.el: Bind utf-2000-version, and mule-version.
+	* liece-xemacs.el: Require liece-version.
+	* liece.el (liece-tmp-server-name): Abolish.
+	(liece-read-variables-files): Remove migration logic.
+	(liece): Don't add liece-nickname to liece-nick-alist.
+	(liece-accept-response): Don't retry with the new nickname.
+	
+2003-05-23  Daiki Ueno  <ueno@unixuser.org>
+
+	* liece-message.el: Overhaul; don't depend on dynamic binding.
+	(liece-message-brackets): Abolish.
+	(liece-message-tags): Abolish.
+	(liece-message-empty-predicate): Abolish.
+	(liece-message-make-open-bracket-function): New variable.
+	(liece-message-make-close-bracket-function): New variable.
+	(liece-message-make-name-function): New variable.
+	(liece-message-make-global-name-function): New variable.
+	(liece-message-type): Abolish; define as function.
+	(liece-message-target): Abolish; define as function.
+	(liece-message-speaker): Abolish; define as function.
+	(liece-message-direction): Abolish; use liece-message-own-p.
+	(liece-message-predicate): Abolish.
+	(liece-message-brackets-function): Abolish.
+	(liece-message-tags-function): Abolish.
+	(liece-message-buffer-function): Rename to liece-message-buffers.
+	(liece-message-parent-buffer): Rename to liece-message-parent-buffers.
+	(liece-message-make-open-bracket): New function.
+	(liece-message-make-close-bracket): New function.
+	(liece-message-make-bracket): New function.
+	(liece-message-make-name): New function.
+	(liece-message-make-global-name): New function.
+	(liece-display-message): Rewrite; remove autoload cookie.
+	(liece-make-message): New function.
+	(liece-message-private-p): New function.
+	(liece-message-external-p): New function.
+	* liece-misc.el (liece-own-channel-message): Move to liece-message.el.
+	(liece-own-private-message): Ditto.
+	* liece-commands.el (liece-command-message): Don't use
+	liece-message-empty-predicate.
+	* liece-ctcp.el (liece-ctcp-action-message): Use new API.
+	(liece-ctcp-insert): Ditto.
+	* liece-dcc.el (liece-dcc-chat-filter): Use new API.
+	* liece-handle.el (liece-handle-notice-message): Use new API.
+	(liece-handle-privmsg-message): Ditto.
+
+2003-05-23  Daiki Ueno  <ueno@unixuser.org>
+
+	* liece-misc.el (liece-insert-timestamp): Abolish.
+	(liece-own-frozen): Abolish.
+	(liece-own-message): Abolish.
+	(liece-scroll-if-visible): Abolish.
+	(liece-generate-hex-timestamp): Abolish.
+	(liece-hex-timestamp-valid): Abolish.
+
+2003-05-22  Daiki Ueno  <ueno@unixuser.org>
+
+	* liece-commands.el (liece-command-tag-region): Simplify.
+	* liece-misc.el (liece-remove-properties-region): Abolish.
+
+2003-05-18  OHASHI Akira  <bg66@koka-in.org>
+
+	* liece.el (liece-dialogue-mode-map): Don't bind
+	`liece-command-open-server'.
+
+2003-04-30  OHASHI Akira  <bg66@koka-in.org>
+
+	* liece-channel.el (liece-channel-list-redisplay-buffer): Search a
+	channel correctly.
+
+2003-04-17  Daiki Ueno  <daiki@xemacs.org>
+
+	* liece-channel.el: Require 'liece-misc when compiling.
+	(liece-channel-equal): Define as function.
+	(liece-channel-buffer-create): Define as function.
+	(liece-channel-switch-to-last): Define before it is used.
+	* liece-ctcp.el: Require 'liece-misc when compiling.
+	* liece-message.el: Require 'liece-misc when compiling.
+	* liece-misc.el: Move some macros to the beginning of the file.
+	* liece-nick.el: Require 'liece-inlines when compiling.
+	(liece-nick-equal): Define as function.
+	(liece-nick-buffer-create): Define as function.
+
+2003-03-26  Steve Youngs  <youngs@xemacs.org>
+
+	* liece-channel.el (liece-channel-p): Don't wrap the string-match
+	in a 'eval-when-compile' to avoid a void variable error.
+	(liece-channel-modeless-p): Ditto.
+
+2003-03-09  Ben Wing  <ben@xemacs.org>
+
+	* Makefile.lisp:
+	* Makefile.lisp (autoload): New.
+	Separate autoload building from elc building.
+	
+	* liece-make.el (install-update-package-files):
+	Use new `batch-update-directory-autoloads' if available.
+
+2002-12-08  Ville Skyttä  <scop@xemacs.org>
+
+	* Makefile.lisp (all): Not a double-colon any more.
+
+2002-10-11  Yoichi NAKAYAMA  <yoichi@eken.phys.nagoya-u.ac.jp>
+
+	* liece-emacs.el: Require pces to avoid compile error.
+
+2002-09-26  Daiki Ueno  <ueno@unixuser.org>
+
+	* liece-minibuf.el (liece-minibuf-completing-read): Don't use the
+	7th argument of completing-read.
+
+2002-09-24  Daiki Ueno  <ueno@unixuser.org>
+
+	* liece-handle.el (liece-handle-mode-message): Check chnlp before
+	passing mode argument to liece-channel-set-*.
+	[cf. <Bug#161779>]
+
+2002-09-03  Daiki Ueno  <ueno@unixuser.org>
+
+	* liece-handle.el (liece-handle-quit-message): Don't use
+	liece-nick-mark-as-apart.
+	(liece-handle-join-message): Ditto.	
+	[cf. <Liece:00080>]
+
+2002-09-01  Daiki Ueno  <ueno@unixuser.org>
+
+	* liece-handle.el (liece-handle-mode-message): The arglist of
+	liece-nick-set-mode was changed.
+
+2002-08-27  Daiki Ueno  <ueno@unixuser.org>
+
+	* liece-commands.el (liece-command-join-channel): User
+	liece-nick-get-joined-channels.
+
+	* liece-channel.el (liece-channel-set-topic): Define as function.
+	(liece-channel-add-mode): Ditto.
+	(liece-channel-remove-mode): Ditto.
+	(liece-channel-set-mode): Ditto.
+	(liece-channel-add-ban): Ditto.
+	(liece-channel-remove-ban): Ditto.
+	(liece-channel-set-ban): Ditto.
+	(liece-channel-add-exception): Ditto.
+	(liece-channel-remove-exception): Ditto.
+	(liece-channel-set-exception): Ditto.
+	(liece-channel-add-invite): Ditto.
+	(liece-channel-remove-invite): Ditto.
+	(liece-channel-set-invite): Ditto.
+	* liece-nick.el (liece-nick-mark-as-part): Replace
+	liece-nick-{mark,unmark}-as-apart.
+	(liece-nick-get-modes): Define as function.
+	(liece-nick-add-mode): Ditto.
+	(liece-nick-remove-mode): Ditto.
+	(liece-nick-set-mode): Ditto.
+	* liece-handle.el (liece-handle-mode-message): Follow the changes
+	of arglists of liece-channel-set-mode and liece-nick-set-mode.
+
+	* liece.el: Fix typo.
+	* liece-misc.el (liece-current-nickname): Define as function.
+	(liece-current-channel): Ditto.
+	(liece-current-channels): Ditto.
+	(liece-current-chat-partner): Ditto.
+	(liece-current-chat-partners): Ditto.
+
+2002-08-26  Daiki Ueno  <ueno@unixuser.org>
+
+	* liece-handle.el (liece-handle-mode-message): Care
+	liece-channel-set-* are defined as macros.
+	* liece-inlines.el (string-equal-ignore-case): Don't use
+	compare-strings.
+	(string-list-member-ignore-case): Don't use member-ignore-case.
+	Suggested by "Akinori MUSHA" <knu@iDaemons.org>.
+	[cf. <Liece:00075>]
+
+2002-08-11  OHASHI Akira  <bg66@koka-in.org>
+
+	* liece-window.el (liece-configure-windows): Set
+	`liece-channel-buffer' to nil when `liece-current-chat-partner' or
+	`liece-current-channel' is nil.
+	(Suggested by Kazushige Maeda <pff@softai.co.jp>.)
+
+	* liece-dcc.el (liece-dcc-dequeue-request): Do nothing when
+	`liece-dcc-requests' is empty.
+	(liece-command-dcc-accept): Ditto.
+	(liece-command-dcc-chat-connect): Ditto.
+
+2002-07-15  Daiki Ueno  <ueno@unixuser.org>
+
+	* liece-url.el (liece-url-regexp-alist): New user option.
+	(liece-url-add-buttons): Respect liece-url-regexp-alist.  This
+	function is the slightly modified version of the implementation by
+	akira yamada <akira@arika.org>.  [cf. <Liece:00070>]
+
+2002-07-13  Daiki Ueno  <daiki@xemacs.org>
+
+	* liece-menu.el (liece-menu-add-url): Always switch to *Commands*
+	buffer.
+	* liece-xemacs.el (liece-fix-menu-path-switch-buffer): Removed old
+	defadvice to easy-menu-add-item.
+ 
+2002-06-08  Adrian Aichner  <adrian@xemacs.org>
+
+	* liece-commands.el (liece-command-nickname): Use
+	truncate-string-to-width instead of non-existent truncate-string.
+	* liece.el (liece-open-server): Ditto.
+
+2002-06-05  Steve Youngs  <youngs@xemacs.org>
+
+	* liece-inlines.el (string-equal-ignore-case): Don't try to use
+	'compare-strings'.
+ 
+2002-05-19  Daiki Ueno  <ueno@unixuser.org>
+
+	* liece-xemacs.el (liece-xemacs-modeline-glyph): Check 'xbm.
+
+2002-05-04  Stephen J. Turnbull  <stephen@xemacs.org>
+
+	* liece-make.el (config-liece-package-directory):
+	* liece-config.el (PACKAGEDIR):
+	Handle case when dirs is nil.
+
+	* Makefile.lisp (package): Preload advice.
+
+2002-05-12  Daiki Ueno  <ueno@unixuser.org>
+
+	* gettext.el (gettext-default-locale): New variable.
+	(bind-text-domain): Use it.
+
+2002-05-07  Daiki Ueno  <ueno@unixuser.org>
+
+	* gettext.el (gettext-mapcar*): Eliminate recursion.
+
+2002-04-14  Daiki Ueno  <ueno@unixuser.org>
+
+	* bitmap-stipple.el (bitmap-stipple-frame-char-width): New function.
+	(bitmap-stipple-frame-char-height): New function.
+
+	* liece-compat.el (liece-region-active-p): New function.
+	(liece-truncate-string-to-width): New function.
+
+	* liece-misc.el: Sort macrodefs.
+	(liece-maybe-poll): Abolish.
+
+	* liece-channel.el (liece-channel-last): Simplified.
+	(liece-channel-switch-to-last): Define as function.
+
+	* liece-commands.el (liece-command-ping): Send system-name until
+	liece-server-name is determined.
+
+	* liece-ctcp.el: Load `liece-q-*' even when compiling.
+
+	* liece-hilit.el (liece-highlight-turn-on-font-lock): Don't set
+	font-lock-support-mode if it isn't bound.
+	
+2002-03-28  Daiki Ueno  <ueno@unixuser.org>
+
+	* liece-400.el (liece-handle-475-message): New handler.
+
+	* liece-commands.el (liece-command-join): Don't encode a channel
+	name before treating it as an integer.
+
+	* liece-ctcp.el: Don't throw an error when liece-q-ccl is not found.
+
+2002-04-08  Daiki Ueno  <daiki@xemacs.org>
+
+	* liece-misc.el: Don't require pccl and broken.
+
+2002-04-07  Daiki Ueno  <daiki@xemacs.org>
+
+	* liece-modules.el: Don't compile liece-q-ccl.el.
+	* liece-ctcp.el: Don't require liece-q-ccl.el.
+
+2002-03-24  Daiki Ueno  <daiki@xemacs.org>
+
+	* liece-coding.el (liece-mime-charset-for-write): Use
+	`mime-charset-to-coding-system' instead of `mime-charset-p'.
+ 	(liece-mime-charset-for-read): Ditto.
+ 
+2002-03-20  Daiki Ueno  <ueno@unixuser.org>
+
+	* gettext.el (bind-text-domain): Respect LC_ALL and LC_MESSAGES;
+	reverse lang-paths.
+
+2002-03-20  Daiki Ueno  <ueno@unixuser.org>
+
+	* gettext.el (gettext-parse-Content-Type): Bind `case-fold-search'
+	to t to extract Content-Type: field properly.
+
+2002-03-19  Daiki Ueno  <ueno@unixuser.org>
+
+	* gettext.el: Autoload `mime-content-type-parameter' and
+	`mime-read-Content-Type' only when compiling.
+	(gettext-parse-Content-Type): Add bogus detection logic.
+
+2002-03-19  Daiki Ueno  <ueno@unixuser.org>
+
+	* liece-compat.el (liece-string-to-list): New definition.
+	* liece-000.el (liece-handle-004-message): Use it.
+	* liece-nick.el (liece-nick-remove-mode): Use it.
+	* liece-channel.el (liece-channel-read-mode): Use it.
+	* liece-handle.el (liece-handle-mode-message): Use it.
+
+	* gettext.el: Require `poem' and `static'.
+	(gettext-string-to-list): New definition.
+
+2002-02-17  OHASHI Akira  <bg66@koka-in.org>
+
+	* gettext.el (bind-text-domain): Implement a catalog probe mechanism.
+	(Implemented by YAMASHITA Junji <ysjj@unixuser.org>)
+
+2002-02-12  Daiki Ueno  <ueno@unixuser.org>
+
+	* liece-modules.el (liece-modules-to-compile): Add `liece-coding'.
+
+	* liece-coding.el (liece-mime-charset-for-write): Use
+	default-mime-charset-for-write as its default.
+	(liece-mime-charset-for-read): Use default-mime-charset as its
+	default.
+
+2002-01-28  Daiki Ueno  <ueno@unixuser.org>
+
+	* liece-dcc.el (liece-dcc-start-process): New function.
+	(liece-command-dcc-send): Use it.
+	(liece-command-dcc-receive): Use it.
+	(liece-command-dcc-chat-listen): Use it.
+	(liece-command-dcc-chat-connect): Use it.
+
+2001-11-09  Yoichi NAKAYAMA  <yoichi@eken.phys.nagoya-u.ac.jp>
+
+	* liece-vars.el (liece-truncate-partial-width-windows): Change
+	default value to fix the inconsistency with docstring.
+
+	* liece-window.el (liece-configure-windows): Ditto.
+
+2001-11-03  OHASHI Akira  <bg66@koka-in.org>
+
+        * liece-emacs.el (liece-emacs-unread-mark): Use regexp-quote.
+        (liece-emacs-read-mark): Ditto.
+        * liece-xemacs.el (liece-xemacs-unread-mark): Ditto.
+        (liece-xemacs-read-mark): Ditto.
+
+2001-10-07   Daiki Ueno  <ueno@unixuser.org>
+
+	* liece-misc.el (liece-subtract-time): New function.
+	(liece-time-difference): Use it.
+
+2001-10-05   Daiki Ueno  <ueno@unixuser.org>
+
+	* liece-misc.el (liece-time-difference): Fix the arglist.	
+	[cf. <Liece:45>]
+
+2001-10-02   Daiki Ueno  <ueno@unixuser.org>
+
+	* liece-compat.el (replace-in-string): Follow a change in XEmacs.
+
+2001-10-02   Daiki Ueno  <ueno@unixuser.org>
+
+	* liece-vars.el (liece-buffer-min-size): Rename from
+	`liece-buffer-default-size'.
+
+	* liece-commands.el (liece-command-kill): Use `liece-time-elapsed'
+	instead of `liece-time-add'.
+
+	* liece.el (liece-check-buffers-if-interval-expired): Swap the
+	arguments supplied to `liece-time-difference'.
+	(liece-check-buffers): Use `liece-buffer-min-size' instead of
+	`liece-buffer-default-size'.
+
+	* liece-misc.el (liece-time-difference): Define as function.
+	(liece-time-elapsed): Rename from `liece-time-add'.
+	(liece-generate-hex-timestamp): Define as function.
+
+2001-10-02  Katsuhiro Hermit Endo  <hermit@koka-in.org>
+
+	* liece-misc.el (liece-time-difference): Use `abs' for
+	`liece-check-buffers-if-interval-expired'.
+
+2001-09-16  Katsuhiro Hermit Endo  <hermit@koka-in.org>
+
+	* liece-vars.el (liece-server-alist): Update default value.
+
+2001-06-19  OHASHI Akira  <bg66@koka-in.org>
+
+        * liece-url.el (liece-url-regexp): Fix regexp.
+
+        * liece-vars.el (liece-display-unread-mark): Set default to t.
+
+2001-06-14  OHASHI Akira  <bg66@koka-in.org>
+
+        * liece-channel.el (liece-channel-add-buttons): Fix regexp.
+
+        * liece-handle.el (liece-handle-notice-message): Don't set `temp'
+        to nil.
+
+        * liece-menu.el (liece-menu-channel-menu): Don't enable
+        `liece-command-unread-channel' if `liece-channel-unread-list' is nil.
+        (liece-menu-private-menu): Don't bind `liece-command-userhost'.
+
+        * liece-window.el (liece-command-set-window-style): Run
+        `liece-command-reconfigure-windows'.
+
+2001-06-09  OHASHI Akira  <bg66@koka-in.org>
+
+	* liece-handle.el (liece-handle-privmsg-message): Don't compare when
+	`item' and `liece-current-chat-partner' are nil.
+
+2001-02-12   Daiki Ueno  <ueno@unixuser.org>
+
+	* liece-compat.el (liece-read-passwd): Revive.
+
+	* liece-clfns.el (liece-clfns-subr-fboundp): Check existence of
+	the function `symbol-file'.
+
+	* liece-q-ccl.el: Require `poem' for char-int.
+	(liece-quote-ccl-256-table): Simplified.
+
+2001-01-02   Daiki Ueno  <ueno@unixuser.org>
+
+	* liece-modules.el: Simplified.
+
+2000-12-09   Tanaka Akira  <akr@m17n.org>
+
+	* liece.el (liece-refresh-buffer-window): Simplified.
+
+2000-11-30   Tanaka Akira  <akr@m17n.org>
+
+	* liece.el (liece-refresh-buffer-window): Force to display a last
+	non-empty line in last line in a window on Emacs 21.
+
+2000-10-19   Daiki Ueno  <ueno@unixuser.org>
+
+	* liece-ctcp.el: Remove autoload cookies of
+	`liece-command-ctcp-generic',
+	`liece-command-ctcp-userinfo-from-minibuffer',
+	`liece-command-ctcp-x-face-from-xbm-file' and
+	`liece-command-send-file'.
+
+	* liece-commands.el: Add autoload setting for
+	`liece-command-ctcp-action',
+	`liece-command-ctcp-userinfo-from-minibuffer' and
+	`liece-command-ctcp-x-face-from-xbm-file'.
+
+2000-10-16   Daiki Ueno  <ueno@unixuser.org>
+
+	* liece-commands.el (liece-command-quit): Use `liece-close-server'.
+
+	* liece.el (liece): Simplify.
+	(liece-close-server): Accept optional argument `quit-string'.
+
+2000-10-12   Akira Ohashi  <bg66@luck.gr.jp>
+
+	* liece-menu.el (liece-menu-ctcp-menu): Follow the CTCP command
+	changed from `liece-command-client-*' to `liece-command-ctcp-*'.
+
+2000-10-07   Daiki Ueno  <ueno@unixuser.org>
+
+	* liece-commands.el (liece-command-qualify-nicks): Refer 1st argument.
+
+2000-10-05   Daiki Ueno  <ueno@unixuser.org>
+
+	* liece-minibuf.el (liece-minibuffer-complete-channel-modes):
+	Don't use old style backquotes.
+	(liece-minibuffer-completing-read-multiple-1): Remove a partially
+	matched word construct if it exists.
+
+2000-10-03   Daiki Ueno  <ueno@unixuser.org>
+
+	* liece-commands.el (liece-command-set-operators): Reset `run'.
+	(liece-command-set-voices): Ditto.
+
+2000-09-30   Daiki Ueno  <ueno@unixuser.org>
+
+	* liece-xemacs.el (liece-xemacs-modeline-glyph): Add 'xpm check.
+	(liece-xemacs-create-nick-glyph): Ditto.
+	(liece-xemacs-unread-mark): Ditto.
+
+2000-09-23  Akira Ohashi  <bg66@luck.gr.jp>
+
+	* liece-menu.el (liece-command-toggle-freeze): Rename from
+	`liece-command-freeze'.
+	(liece-command-toggle-own-freeze): Rename from
+	`liece-command-own-freeze'.
+	(liece-command-toggle-beep): Rename from `liece-dialogue-beep'.
+
+2000-09-22   Daiki Ueno  <ueno@unixuser.org>
+
+	* liece-handle.el (liece-handle-kill-message): Call
+	`liece-close-server' instead of `liece-clear-system'.
+
+	* liece-commands.el: Don't autoload `liece-window-configuration-pop'.
+	(liece-command-quit): Just send quit.
+
+	* liece.el (liece-close-server): Run `liece-exit-hook'; abolish
+	argument `quit-string'.
+
+	* liece-filter.el (liece-sentinel): Call `liece-close-server'.
+
+2000-09-20   Daiki Ueno  <ueno@unixuser.org>
+
+	* liece-compat.el: Require `wid-edit'.
+
+	* liece-inlines.el (liece-locate-icon-file): Don't check existence
+	of the file.
+
+	* liece-emacs.el: Don't require `static' and `wid-edit'.
+	(liece-splash-image): Set default to nil.
+	(liece-emacs-splash-function): New variable.
+	(liece-emacs-splash-with-image): New function splitted from
+	`liece-emacs-splash'; use `image-size'; hide cursor.
+	(liece-emacs-splash-with-stipple): New function.
+
+2000-09-20   Daiki Ueno  <ueno@unixuser.org>
+
+	* liece-commands.el (liece-command-toggle-away): Rename from
+	`liece-command-away'.
+	(liece-command-toggle-freeze): Rename from `liece-command-freeze'.
+	(liece-command-toggle-own-freeze): Rename from
+	`liece-command-own-freeze'.
+	(liece-command-toggle-beep): Rename from `liece-command-beep'.
+	(liece-command-load-vars): Abolish.
+
+	* liece.el (liece-dialogue-beep): Abolish.
+	(liece-dialogue-freeze): Abolish.
+	(liece-dialogue-own-freeze): Abolish.
+	(liece-initialize-buffers): Don't parse error message.
+	(liece): Assume `liece-away-message' is nil.
+	(liece-command-map): Don't bind `liece-command-freeze' and
+	`liece-command-own-freeze'.
+	(liece-dialogue-mode-map): Don't bind `liece-command-timestamp'
+	and `liece-command-find-timestamp'; bind
+	`liece-command-toggle-private' to "C-t p"; bind
+	`liece-command-toggle-away' to "C-t a"; bind
+	`liece-command-toggle-freeze' to "C-t f"; bind
+	`liece-command-toggle-own-freeze' to "C-t o".
+
+	* liece-minibuf.el (liece-minibuffer-parse-modes): Don't complete
+	mode flags when completing an argument.
+
+2000-09-19   Daiki Ueno  <ueno@unixuser.org>
+
+	* liece-version.el (liece-version): Bump up to 2.0.0.
+
+	* liece-menu.el (liece-menu-callback-set-operators): Rename from
+	`liece-menu-callback-mode+o'.
+	(liece-menu-callback-set-voices): Rename from
+	`liece-menu-callback-mode+v'.
+	(liece-menu-callback-unset-operators): Rename from
+	`liece-menu-callback-mode-o'.
+	(liece-menu-callback-unset-voices): Rename from
+	`liece-menu-callback-mode-v'.
+
+	* liece-nick.el (liece-nick-region-opers): Abolish.
+	(liece-nick-region-voices): Abolish.
+	(liece-nick-update-region): Don't set them.
+
+	* liece.el (liece-dialogue-mode-map): Don't bind `liece-command-exec',
+	`liece-command-lusers' and `liece-command-userhost'.
+
+	* liece-commands.el (liece-command-exec): Abolish.
+	(liece-command-inline): Abolish.
+	(liece-command-set-operators): Rename from `liece-command-mode+o'.
+	(liece-command-set-voices): Rename from `liece-command-mode+v'.
+	(liece-command-qualify-nicks): New function.
+	(liece-command-mode-o): Abolish.
+	(liece-command-mode-v): Abolish.
+	(liece-command-userhost): Abolish.
+	(liece-command-lusers): Abolish.
+
+2000-09-18   Daiki Ueno  <ueno@unixuser.org>
+
+	* liece-vars.el (liece-channel-buffer-mode): Set default to t.
+	(liece-nick-buffer-mode): Ditto.
+	(liece-channel-list-buffer-mode): Ditto.
+
+	* liece.el (liece-open-server-internal): Simplify.
+	(liece-open-server): Strip bracketed server name here.
+	(liece-start-server): Fix last change.
+
+2000-09-17   Daiki Ueno  <ueno@unixuser.org>
+
+	* liece-vars.el (liece-highlight-mode): Set default to t.
+
+	* liece.el (liece-open-server): Simplify.
+	(liece-start-server): Canonicalize `liece-server' here.
+
+2000-09-17  Akira Ohashi  <bg66@luck.gr.jp>
+
+	* liece-menu.el (liece-menu-channel-menu): Move `liece-command-freeze'
+	from `liece-menu-IRC-menu'.
+	(liece-menu-channel-menu): Move `liece-command-own-freeze'
+	from 'liece-menu-IRC-menu'.
+	(liece-menu-channel-menu): New menu item `liece-dialogue-beep'.
+	(liece-menu-channel-menu): New menu item
+	`liece-command-unread-channel'.
+
+2000-09-17  Akira Ohashi  <bg66@luck.gr.jp>
+
+	* liece-channel.el (liece-channel-read-functions): Rename from
+	`liece-channel-read-hook'.
+
+	* liece-handle.el (liece-channel-unread-functions): Rename from
+	`liece-channel-unread-hook'.
+
+	* liece-emacs.el (toplevel): Use them.
+
+	* liece-xemacs.el (toplevel): Ditto.
+
+2000-09-17   Daiki Ueno  <ueno@unixuser.org>
+
+	* liece-make.el (make-liece-sample-files): Abolish.
+	(make-liece-info-files): Abolish.
+
+	* liece-url.el (liece-add-url-functions): Rename from `liece-url-add-hook'.
+
+	* liece.el (liece-after-insert-functions): Rename from `liece-insert-hook'.
+	(liece-before-insert-functions): Rename from `liece-before-insert-hook'.
+
+	* liece-handle.el (liece-notice-cleartext-hook): Abolish.
+	(liece-privmsg-cleartext-hook): Abolish.
+
+	* liece-filter.el (liece-handle-message): Simplify.
+
+	* liece-ctcp.el (liece-ctcp-message): Don't ignore errors in hooks.
+	(liece-ctcp-notice): Ditto.
+	(liece-ctcp-file-notice): Ditto.
+
+	* liece-channel.el (liece-channel-add-mode): Don't use pushnew.
+	(liece-channel-add-exception): Ditto.
+	(liece-channel-add-invite): Ditto.
+
+2000-09-12   Daiki Ueno  <ueno@unixuser.org>
+
+	* liece-vars.el (liece-inhibit-startup-message): New user option.
+
+2000-09-11   Daiki Ueno  <ueno@unixuser.org>
+
+	* liece-xemacs.el (liece-xemacs-splash-at-point): Don't check `console-type'.
+	(liece-x-face-insert-with-xemacs): Ditto.
+
+2000-09-11  Akira Ohashi  <bg66@luck.gr.jp>
+
+	* liece-emacs.el (liece-emacs-unread-character): Abolish.
+
+	* liece-vars.el (liece-channel-unread-character): New variable.
+
+	* liece-xemacs.el (liece-xemacs-unread-mark): Simplify; Don't use
+	`featurep' and `console-type'.
+	(toplevel): Ditto.
+
+2000-09-11   Daiki Ueno  <ueno@unixuser.org>
+
+	* liece-minibuf.el: Autoload `completing-read-multiple'; declare
+	`crm-separator'.
+	(liece-minibuffer-completing-read): Rename from
+	`liece-minibuffer-completing-default-read'; accept optional arguments
+	`history' and `default'.
+	(liece-minibuffer-completion-separator): New variable.
+	(liece-minibuffer-completion-table): New variable.
+	(liece-minibuffer-completing-read-multiple-1): New completion function.
+	(liece-minibuffer-completing-read-multiple): Rename from
+	`liece-minibuffer-completing-sequential-read'; accept optional
+	arguments `history' and `default'; use `completing-read-multiple'
+	when optional 8th argument `multiple-candidate' is specified.
+
+	* liece-xemacs.el (liece-xemacs-redisplay-unread-mark): Don't bind `chnl'.
+
+2000-09-11   Daiki Ueno  <ueno@unixuser.org>
+
+	* liece-commands.el (liece-command-quit): Don't send QUIT.
+
+	* liece-emacs.el (liece-emacs-splash): Use `generate-new-buffer'
+	instead of `liece-get-buffer-create'
+
+	* liece-xemacs.el (liece-xemacs-splash): Synch with liece-emacs.el
+
+	* liece.el (liece-clear-system): Call
+	`liece-buffer-dispose-function' instead of burying buffer.
+	(liece-open-server-internal): Simplify; Don't use
+	`liece-get-buffer-create' to prepare process-buffer.
+	(liece-close-server): Accept optional argument `quit-string'.
+
+	* liece-vars.el (liece-buffer-dispose-function): New variable.
+
+2000-09-10   Daiki Ueno  <ueno@unixuser.org>
+
+	* liece-inlines.el (string-list-remove-ignore-case): Remove car of the element.
+	(string-list-delete-ignore-case): Ditto.
+	(string-list-remove): Ditto.
+	(string-list-delete): Ditto.
+
+2000-09-06   Daiki Ueno  <ueno@unixuser.org>
+
+	* liece-clfns.el (remq): New compiler macro.
+
+2000-09-05  Akira Ohashi  <bg66@luck.gr.jp>
+
+	* liece-channel.el (liece-channel-redisplay-buffer): New hook
+	`liece-channel-read-hook'.
+	(liece-channel-change): Run `liece-redisplay-unread-mark'.
+
+	* liece-handle.el (liece-handle-privmsg-message): New hook
+	`liece-channel-unread-hook'.
+
+	* liece-vars.el (liece-display-unread-mark): New variable.
+
+	* liece-xemacs.el (liece-xemacs-unread-icon): Rename from
+	`liece-xemacs-channel-balloon-icon'.
+	(liece-xemacs-unread-mark): Rename and simplified from
+	`liece-xemacs-channel-balloon'.
+	(liece-xemacs-read-mark): Rename and simplified from
+	`liece-xemacs-channel-balloon-kill'.
+	(liece-xemacs-redisplay-unread-mark): New function.
+	(toplevel): Add them to hook.
+
+	* liece-emacs.el (liece-emacs-unread-character): New variable.
+	(liece-emacs-unread-mark): New function.
+	(liece-emacs-read-mark): Ditto.
+	(liece-emacs-redisplay-unread-mark): Ditto.
+	(toplevel): Add them to hook.
+
+2000-09-04   Daiki Ueno  <ueno@unixuser.org>
+
+	* liece-inlines.el (string-equal-ignore-case): Check return value
+	of `compare-strings'.
+
+2000-09-03   Daiki Ueno  <ueno@unixuser.org>
+
+	* liece-clfns.el: Require `pym'.
+	(liece-clfns-subr-fboundp): New macro.
+	(last,member-if,member-if-not,delete-if,remove-if,remove-if-not,
+	assoc-if,rassoc-if): Use it.
+
+	* liece-inlines.el (string-list-member-ignore-case): Use
+	`member-ignore-case'.
+	(string-list-remove-ignore-case): Use remq.
+	(string-list-member): Abolish.
+	(string-list-delete-ignore-case): Use delq.
+	(string-equal-ignore-case): Use `compare-strings' if available.
+
+2000-09-01   Daiki Ueno  <ueno@unixuser.org>
+
+	* liece-channel.el (liece-channel-change): Handle
+	`liece-current-chat-partner'.
+
+	* Makefile.am (SOURCES): Remove `liece-crypt'.
+
+	* liece-crypt.el: Remove.
+
+	* liece-400.el (liece-handle-433-message): Use `liece-beep'
+	(liece-handle-432-message): Ditto.
+
+	* liece-misc.el (liece-beep): New macro.
+	(liece-set-beep): Rename from `liece-beep'.
+
+	* liece-xemacs.el (liece-xemacs-channel-balloon): Abolish local
+	variable `chnl'.
+
+	* liece.el: Don't require `liece-crypt'.
+	(liece-crypt-map): Abolish.
+	(liece-buffer-mode-alist): Remove `liece-CRYPT-buffer'.
+	(liece-command-mode-map): Don't bind
+	`liece-command-enter-message-opposite-crypt-mode'.
+	(liece): Don't initialize crypt indicator.
+	(liece-command-mode): Ditto.
+	(liece-dialogue-mode): Ditto.
+	(liece-channel-mode): Ditto.
+
+	* liece-xemacs.el: Don't require `liece-crypt'.
+	(liece-toolbar-crypt-active-icon): Abolish.
+	(liece-toolbar-crypt-inactive-icon): Abolish.
+	(liece-toolbar-crypt-icon): Abolish.
+	(liece-toolbar-crypt-glyph): Abolish.
+	(liece-toolbar-crypt-active-glyph): Abolish.
+	(liece-toolbar-crypt-inactive-glyph): Abolish.
+	(liece-toolbar-spec-list): Don't set `liece-toolbar-crypt-glyph'.
+	(liece-xemacs-setup-toolbar-hook): Remove `liece-toolbar-setup-crypt-glyph'.
+	(liece-toolbar-setup-crypt-glyph): Abolish.
+	(liece-toolbar-toggle-crypt): Abolish.
+
+	* liece-vars.el (liece-defected-message-prefix): Abolish.
+	(liece-suspicious-message-prefix): Abolish.
+	(liece-beep-function): New variable.
+
+	* liece-message.el (liece-message-brackets-function): Don't handle
+	`liece-message-encrypted-p'.
+	(liece-message-encrypted-p): Abolish.
+	(liece-message-suspicious-p): Abolish.
+	(liece-message-garbled-p): Abolish.
+	(liece-message-fingerprint): Abolish.
+	(liece-message-timestamp): Abolish.
+
+	* liece-menu.el (liece-menu-crypt-menu): Abolish.
+	(liece-menu-channel-menu): Remove `liece-menu-crypt-menu'.
+	(liece-menu-alist): Ditto.
+	(liece-menu-crypt-menu-map): Abolish.
+
+	* liece-handle.el (liece-handle-notice-message): Don't use
+	`with-liece-decryption'.
+	(liece-handle-privmsg-message): Ditto.
+	Use `liece-beep' instead of `beep'.
+
+	* liece-modules.el (liece-modules-to-compile): Remove `liece-crypt'.
+
+	* liece-globals.el (liece-crypt-indicator): Abolish.
+	(liece-CRYPT-buffer): Abolish.
+	(liece-C-buffer): Abolish.
+
+	* liece-commands.el: Don't require `liece-crypt'.
+	(liece-command-send-message): Abolish optional argument ARG and KEY.
+	(liece-command-enter-message): Ditto.
+	(liece-command-message): Ditto.
+	(liece-enter-message): Abolish.
+	(liece-command-part): Don't set crypt indicator.
+	(liece-switch-to-channel): Ditto.
+	(liece-switch-to-channel-no): Ditto.
+	(liece-command-private-conversation): Ditto.
+	(liece-command-toggle-crypt): Abolish.
+
+2000-08-31  Akira Ohashi  <bg66@luck.gr.jp>
+
+	* liece-handle.el (liece-handle-privmsg-message): Fixed.
+
+2000-08-30  Akira Ohashi  <bg66@luck.gr.jp>
+
+	* liece-commands.el (liece-command-unread-channel): New function.
+
+	* liece.el (liece-command-map): Bind "\C-u" to it.
+	(liece-channel-list-mode-map): Bind "u" to it.
+
+2000-08-29   Daiki Ueno  <ueno@unixuser.org>
+
+	* liece-channel.el (liece-channel-change): Run
+	`liece-redisplay-buffer-functions' only when
+	`liece-current-channel' is non-nil.
+
+	* liece-commands.el (liece-command-who): Check
+	`liece-current-channel'.
+	(liece-command-names): Ditto.
+	Suggested by: Yoichi NAKAYAMA <yoichi@eken.phys.nagoya-u.ac.jp>.
+
+2000-08-30  Akira Ohashi <bg66@luck.gr.jp>
+
+	* liece-vars.el (liece-channel-unread-list): New variable.
+
+	* liece-channel.el (liece-channel-unread-p): New function.
+	(liece-channel-redisplay-buffer): Use it.
+
+	* liece-handle.el (liece-handle-privmsg-message): Ditto.
+
+2000-08-29  Akira Ohashi  <bg66@luck.gr.jp>
+
+	* liece-channel.el (liece-channel-change): Run
+	`liece-redisplay-buffer-functions'.
+
+2000-08-23   Daiki Ueno  <ueno@unixuser.org>
+
+	* liece-handle.el (liece-handle-privmsg-message): Use
+	`liece-pick-buffer-1' to construct channel buffer name.
+
+2000-08-23  Akira Ohashi  <bg66@luck.gr.jp>
+
+	* liece-xemacs.el (liece-xemacs-channel-balloon): New function.
+	Show balloon icon to `liece-cahnnel-list-buffer' as XEmacs glyphs
+	when non-current channel message is received.
+	(liece-xemacs-channel-balloon-kill): New function.
+	Kill the balloon icon.
+	
+2000-08-17   Daiki Ueno  <ueno@unixuser.org>
+
+	* liece.el (liece-server-keyword-map): Bind connection type.
+
+2000-08-16   Daiki Ueno  <ueno@unixuser.org>
+
+	* liece.el (liece-open-server-internal): Use
+	`liece-open-network-stream'; bind liece-tcp-connection-type.
+
+	* liece-tcp.el (liece-tcp-open-program-stream-as-binary): Abolish.
+	(liece-tcp-open-ssl-stream-as-binary): Abolish.
+	(liece-tcp-open-rlogin-stream-as-binary): Abolish.
+	(liece-tcp-wait-for-string): Abolish.
+	(liece-tcp-stream-alist): New variable.
+	(liece-open-network-stream): Abolish 5th argument `type'.
+
+2000-08-01  Yoshiki Hayashi  <yoshiki@xemacs.org>
+
+	* liece-xemacs.el (liece-toolbar-position): Use
+	function defaul-toolbar-position instead of variable.
+
+2000-07-17   Daiki Ueno  <ueno@unixuser.org>
+
+	* liece-emacs.el (create-image): Don't advise.
+	(liece-widget-keymap): Remove checking about 'button3.
+	(liece-emacs-widget-button-click): Save point in window explicitly.
+
+	* liece-ctcp.el (liece-command-ctcp-generic): Fix format string.
+
+2000-07-16  Akira Ohashi  <bg66@luck.gr.jp>
+
+	* liece-commands.el (liece-command-beep): New function.
+	Toggle the automatic beep notice when the channel message is received.
+
+	* liece.el (liece-dialogue-mode-map): Bind "B" to liece-dialogue-beep.
+
+	* liece-vars.el (liece-default-beep): New variable.
+	(liece-beep-when-invited): Ditto.
+	(liece-beep-when-privmsg): Ditto.
+	(liece-beep-words-list): Ditto.
+
+2000-05-07   Daiki Ueno  <ueno@unixuser.org>
+
+	* liece-tcp.el
+	(liece-tcp-rlogin-parameters): Use `socket' instead of `telnet'.
+	(liece-tcp-open-rlogin-stream): Don't wait for a connection.
+	(liece-tcp-open-rlogin-stream-as-binary): Simply wrap
+	`liece-tcp-open-rlogin-stream'.
+
+2000-04-21   Daiki Ueno  <ueno@unixuser.org>
+
+	* liece-ctcp.el
+	(liece-ctcp-make-menu-command-wrapper): Quote CTCP subcommands.
+
+	* liece-mail.el (liece-maintainer-address): New ML address.
+
+2000-04-12   Daiki Ueno  <ueno@unixuser.org>
+
+	* liece-url.el: Don't require browse-url when compiling.
+	(liece-url-browser-name): Abolish.
+	(liece-url-prepare-browser-function): Abolish.
+	(liece-url-mail-regexp): Abolish.
+	(liece-url-browser-function): Abolish.
+	(liece-url-link-action): Use browse-url directly.
+	(liece-command-browse-url): Ditto.
+	(liece-url-add-buttons): Remove local variable `url-start',
+	`url-end' and `url'.
+	Suggested by: Kenichi OKADA <okada@opaopa.org>
+
+	* liece-xemacs.el
+	(liece-toolbar-position): Check feature 'toolbar was provided.
+
+2000-04-08   Daiki Ueno  <ueno@unixuser.org>
+
+	* liece-xemacs.el (liece-xemacs-setup-toolbar): Run
+	`liece-xemacs-setup-toolbar-hook' only once.
+	(liece-setup-toolbar): Don't check return value
+	of `liece-xemacs-setup-toolbar'.
+	Reported by: Yosuke MITSUMASU <werdna@ntn.org>
+
+2000-04-05   Daiki Ueno  <ueno@unixuser.org>
+
+	* liece-commands.el: Add autoload for liece-command-ctcp-version,
+	liece-command-ctcp-userinfo,liece-command-ctcp-clientinfo,
+	liece-command-ctcp-ping,liece-command-ctcp-time,
+	liece-command-ctcp-x-face,liece-command-ctcp-comment,
+	liece-command-ctcp-help.
+	Suggested by: HARUYAMA Seigo <haruyama@unixuser.org>.
+
+	* liece-ctcp.el
+	(liece-ctcp-make-menu-command-wrapper): Don't use `#'.
+	(liece-ctcp-make-command-wrapper): Ditto.
+
+2000-04-04   Daiki Ueno  <ueno@unixuser.org>
+
+	* liece.el (liece-client-query-keys): Rename all commands.
+
+	* liece-vars.el
+	(liece-ctcp-userinfo): Rename from `liece-client-userinfo'.
+	(liece-ctcp-x-face): Ditto.
+
+	* liece-ctcp.el (liece-ctcp-message): Abolish macro.
+	(liece-ctcp-file-message): Ditto.
+
+2000-03-28   Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* liece-emacs.el: Require `derived'.
+
+2000-03-24   Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* liece-inlines.el (liece-locate-path): Use
+	`liece-locate-data-directory' instead of `locate-data-directory'.
+
+2000-03-23   Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* liece-q-ccl.el (ccl-set-register-right): Abolish.
+	(liece-quote-ccl-decode): Simplified.
+
+	* liece-compat.el (liece-suppress-mode-line-format): Copy original
+	`mode-line-format' before modification.
+	(locate-data-directory): Abolish.
+	(liece-locate-data-directory): New function.
+
+	* liece-xemacs.el (liece-xemacs-suppress-modeline-format): Ditto.
+	(liece-locate-data-directory): Override with `locate-data-directory'.
+
+	* liece.el
+	(liece-command-mode): Define `mode-line-format' as buffer local.
+	(liece-dialogue-mode): Exchange `mode-line-modified' position.
+	(liece-clear-system): Check buffer status.
+
+	* liece-ctcp.el (liece-ctcp-xyzzy-message): Abolish.
+	(liece-command-send-file): Don't narrowing buffer.
+	(liece-ctcp-file-save-directory): Default to `liece-directory'.
+	(liece-register-file-handler): New macro.
+	(liece-ctcp-notice): Rewrite.
+	(liece-ctcp-message): Rewrite.
+	(liece-query-client-insert-to-generic): Abolish.
+	(liece-query-client-version): Abolish.
+	(liece-query-client-userinfo): Abolish.
+	(liece-query-client-help): Abolish.
+	(liece-query-client-clientinfo): Abolish.
+	(liece-query-client-ping): Abolish.
+	(liece-query-client-time): Abolish.
+	(liece-query-client-x-face): Abolish.
+	(liece-query-client-last-command): Rename from
+	`liece-query-client-lastcommand'.
+	(liece-query-client-alist): Abolish.
+	(liece-ctcp-last-nick): Rename from `liece-query-client-nick'.
+	(liece-command-ctcp-x-face-from-minibuffer): Abolish.
+	(liece-command-ctcp-x-face-from-commandbuffer): Abolish.
+	(liece-command-ctcp-userinfo-from-commandbuffer): Abolish.
+
+2000-03-22   Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* liece-xemacs.el (liece-xemacs-icon-path): Abolish.
+	(liece-toolbar-position): Default to `default-toolbar-position'.
+	(liece-xemacs-setup-toolbar): Remove directory checking.
+	(liece-xemacs-modeline-glyph): Suppress glyph specs.
+	(liece-xemacs-create-nick-glyph): Ditto.
+
+	* liece-emacs.el (liece-emacs-icon-path): Abolish.
+
+	* liece-intl.el (liece-intl-load-catalogue): Rewrite with
+	`liece-locate-path'; remove local binding.
+
+	* liece-window.el (liece-window-load-style-file): Rewrite with
+	`liece-locate-path'; remove local binding.
+
+	* liece-compat.el (locate-data-directory): New function.
+
+	* liece-inlines.el (liece-find-data-directory): Abolish.
+	(liece-locate-path): Rename from `liece-find-path'; use
+	`locate-data-directory'; reorder arguments.
+	(liece-locate-icon-file): New function.
+
+2000-03-20   Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* liece-globals.el
+	(liece-command-buffer,liece-dialogue-buffer,liece-private-buffer,
+	liece-others-buffer,liece-channel-buffer,
+	liece-channel-buffer-format,liece-channel-list-buffer,
+	liece-nick-buffer,liece-nick-buffer-format,
+	liece-KILLS-buffer,liece-IGNORED-buffer,liece-WALLOPS-buffer,
+	liece-CRYPT-buffer,liece-server-buffer): Remove preceding `*IRC*'.
+
+	* liece-xemacs.el
+	(liece-xemacs-splash-at-point): Bind
+	`liece-insert-environment-version' to nil.
+	(liece-xemacs-splash): Ditto.
+	(liece-xemacs-suppress-modeline-format): New function.
+	(liece-suppress-mode-line-format): Override with
+	`liece-xemacs-suppress-modeline-format'.
+	(liece-xemacs-mode-line-buffer-identification): Decorate 1st
+	element	and modify whole identification by side effect.
+
+	* liece-compat.el (current-language-environment): Abolish.
+	(frame-title-format): Abolish.
+	(enable-multibyte-characters): Abolish.
+	(liece-suppress-mode-line-format): New function.
+
+	* liece-version.el: Use product.el.
+	(liece-version): New function.
+	(liece-user-interface-product): Abolish.
+	(liece-product-name): Abolish.
+	(liece-product-version): Abolish.
+	(liece-product-code-name): Abolish.
+	(liece-user-agent-value): Abolish.
+	(liece-command-version): Abolish.
+	(liece-environment-version): Rename from
+	`liece-emacs-user-agent-value'.
+
+	* bitmap-stipple.el
+	(bitmap-stipple-insert-pixmap): Don't set point to `point-min'.
+
+	* liece-xbm.el: Update.
+
+	* liece-emacs.el (liece-emacs-splash): Display version number;
+	bind `liece-insert-environment-version' to nil.
+	(liece-emacs-mode-line-buffer-identification): Decorate 1st
+	element	and modify whole identification by side effect.
+
+	* liece-vars.el (liece-nick-max-length): New variable.
+	(liece-insert-environment-version): New variable.
+
+	* liece.el (liece-truncate-nickname): Abolish.
+	(liece-client-query-keys,liece-dialogue-keys,
+	liece-select-keys,liece-crypt-keys): Define as a plist.
+	(liece-local-set-keys): New function borrowed from gnus-util.el.
+	(liece-define-keys): Ditto.
+	(liece-define-keys-safe): Ditto.
+	(liece-define-keys-1): Ditto.
+	(liece-command-map): Bind "\C-m" to liece-command-modec.
+	(liece-command-mode): Don't set `mode-line-format' directly;
+	exchange `mode-line-modified' position;
+	(liece-dialogue-mode): Ditto.
+	(liece-others-mode): Ditto.
+	(liece-channel-mode): Ditto.
+	(liece-nick-mode): Ditto.
+	(liece-channel-list-mode): Ditto.
+
+2000-03-19   Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* gettext.el (bind-text-domain): Don't refer "PATHNAME/DOMAIN.mo"
+	directly.
+
+	* bitmap-stipple.el,gettext.el,liece-000.el,liece-200.el,
+	liece-300.el,liece-400.el,liece-500.el,liece-commands.el,
+	liece-config.el,liece-crypt.el,liece-ctcp.el,liece-dcc.el,
+	liece-filter.el,liece-globals.el,liece-handle.el,liece-hilit.el,
+	liece-inlines.el,liece-intl.el,liece-mail.el,liece-make.el,
+	liece-menu.el,liece-message.el,liece-minibuf.el,liece-misc.el,
+	liece-nick.el,liece-q-ccl.el,liece-q-el.el,liece-tcp.el,
+	liece-version.el,liece-window.el,liece-x-face.el: Checkdoc.
+
+	* liece-menu.el (liece-nick-popup-menu): Use copy-sequence instead
+	of copy-tree.
+
+	* liece-modules.el (liece-modules-to-compile): Modify for
+	`liece-clfns' and `liece-handler'.
+
+	* liece-handler.el: Rename from llunf.el.
+
+	* liece-clfns.el: New file.
+
+	* liece-channel.el (liece-channel-add-buttons): Fix regexp.
+	(liece-channel-add-ban): Use add-to-list instead of pushnew.
+
+	* liece-coding.el
+	(liece-default-coding-system): Abolish.
+	(liece-mime-charset-for-write): Rename from
+	`liece-default-mime-charset'.
+	(liece-mime-charset-for-read): Rename from
+	`liece-default-mime-charset-for-read'.
+
+	* liece.el (liece-client-query-map,liece-dcc-map,
+	liece-crypt-map,liece-friends-map,liece-channel-list-mode-map,
+	liece-nick-mode-map,): Use make-sparse-keymap when initialising.
+	(liece-command-mode): Don't set liece-display-frame-title to nil.
+	(liece-dialogue-mode-map): Bind `L' to liece-command-load-vars
+	instead of `C-l'; bind `S' to liece-command-save-vars instead of
+	`s'; bind `M' to liece-command-modec instead of `C-m'; bind `O' to
+	liece-dialogue-own-freeze instead of `M'.
+	(liece-buffer-last-check-time): Rename from
+	`liece-last-checkbuffer-time'.
+	(liece-check-buffers): Define as function.
+	(liece-check-buffers-if-interval-expired): Simplified.
+
+	* liece-vars.el
+	(liece-buffer-max-size): Rename from `liece-buffer-maxsize'.
+	(liece-buffer-default-size): Rename from `liece-buffer-defsize'.
+	(liece-buffer-check-interval): Rename from
+	`liece-checkbuffer-interval'.
+
+	* liece-emacs.el (liece-emacs-widget-button-click): Don't use
+	`event-buffer'.
+
+	* liece-xemacs.el
+	(liece-xemacs-get-buffer-window-list): Abolish.
+	(liece-xemacs-run-at-time): Abolish.
+	(liece-xemacs-put-text-property): Abolish.
+	(liece-xemacs-add-text-property): Abolish.
+
+	* liece-minibuf.el (liece-minibuffer-map): Use `set-keymap-parent'
+	instead of `liece-set-keymap-parents'.
+
+	* liece-compat.el: Don't require emu, broken, alist.
+	(remassoc): Abolish.
+	(remassq): Abolish.
+	(liece-run-at-time): Abolish.
+	(liece-cancel-timer): Abolish.
+	(with-timeout): Abolish.
+	(with-timeout-handler): Abolish.
+	(liece-get-buffer-window-list): Abolish.
+	(liece-set-keymap-parents): Abolish.
+	(event-buffer): Abolish.
+	(event-point): Abolish.
+	(truncate-string-to-width): Abolish.
+	(plist-get): Abolish.
+	(read-passwd): Abolish.
+	(colon-keyword-usable): Abolish.
+	(turn-on-font-lock): Abolish.
+	(liece-make-overlay): Abolish.
+	(liece-delete-overlay): Abolish.
+	(liece-overlay-put): Abolish.
+	(liece-move-overlay): Abolish.
+	(liece-overlay-end): Abolish.
+	(liece-overlay-get): Abolish.
+	(liece-overlays-at): Abolish.
+	(liece-put-text-property): Abolish.
+	(liece-add-text-property): Abolish.
+	(buffer-disable-undo): Abolish.
+	(valid-plist-p): Abolish.
+
+	* liece-url.el (liece-url-browser-netscape): Abolish.
+
+2000-03-08   Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* liece-compat.el (liece-get-buffer-window): Search all frames.
+
+2000-02-28   Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* liece.el (liece-command-mode): Set frame-title-format when
+	running on window-system environment.
+
+2000-02-18   Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* liece-emacs.el (liece-emacs-splash): Use `frame-char-width' and
+	`frame-char-height' when calculating logo centering.
+
+2000-02-17   Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* liece-400.el (liece-handle-443-message): Check channel name.
+
+2000-02-13   Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* liece-coding.el
+	(liece-coding-encode-charset-region): Define as function.
+	(liece-coding-encode-charset-string): Define as function.
+
+	* liece-dcc.el
+	(liece-dcc-chat-send): Switch to liece-command-buffer.
+	(liece-dcc-enqueue-request): Rename.
+	(liece-dcc-dequeue-request): Ditto.
+
+	* liece-misc.el (liece-send-as-binary): Abolish.
+	(liece-repair-crlf): Abolish.
+	(liece-send): Switch to liece-command-buffer.
+
+	* liece-emacs.el (liece-emacs-splash): Use `font-info' if 'font
+	parameter of the selected frame is not a fontset name.
+
+	* liece.el (liece-open-server-internal): Set process-buffer of
+	open-network-stream as unibyte.
+
+2000-02-10   Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* liece-xemacs.el (liece-toolbar-icon-convert-1): New function.
+	(liece-toolbar-icon-states): New variable.
+
+	* liece-emacs.el (liece-emacs-widget-button-click): Don't preserve
+	previously selected window.
+
+2000-01-23   Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* liece-emacs.el: Require `image' when compiling.
+	(create-image): Add optional argument `data-p'.
+
+2000-01-22   Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* liece-message.el (liece-message-empty-predicate): New variable.
+
+	* liece-commands.el
+	(liece-command-message): Use `liece-message-empty-predicate'.
+
+2000-01-16   Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* liece-modules.el (liece-modules): Don't install `queue-m'.
+
+	* liece-dcc.el: Don't require `queue-m' at runtime.
+
+	* liece-hilit.el:
+	Add autoload setting for `liece-channel-add-buttons' and
+	`liece-nick-add-buttons'.
+	(liece-highlight-maybe-turn-on-font-lock): Activate
+	`liece-channel-add-buttons' and `liece-nick-add-buttons' when
+	inserting every line.
+
+	* liece-compat.el (liece-map-overlays): New function.
+	(liece-kill-all-overlays): Use it.
+
+	* liece-xemacs.el (liece-xemacs-map-extents): New function.
+	(liece-xemacs-kill-all-overlays): Use it.
+	(liece-map-overlays): New alias to `liece-xemacs-map-extents'.
+
+	* liece-nick.el (liece-nick-redisplay-buffer): New function.
+	(liece-nick-add-buttons): New function.
+
+	* liece-channel.el
+	(liece-channel-redisplay-buffer): New function.
+	(liece-channel-list-redisplay-buffer): New function.
+	(liece-channel-buffer-invisible-p): Remove redundant cond.
+	(liece-channel-part-internal): Remove redundant `function'.
+	(liece-channel-list-add-button): Rename from
+	`liece-channel-add-button'.
+	(liece-channel-push-button-action): Use `liece-command-join'
+	instead of `liece-switch-to-channel'.
+
+	* liece-commands.el (liece-switch-to-channel-1): Abolish.
+	(liece-redisplay-buffer-functions): New variable.
+
+2000-01-07   Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* liece-commands.el
+	(liece-command-next-channel): Traverse channel list circularly.
+	(liece-command-previous-channel): Likewise.
+
+1999-12-26   Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* liece-commands.el
+	(liece-command-previous-channel): Remove nil from channel list.
+	(liece-command-next-channel): Ditto.
+
+1999-12-24   Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* liece-emacs.el (liece-emacs-splash): Check whether logo height
+	is larger than frame height.
+
+	* liece-crypt.el (liece-crypt-maybe-encrypt-message): Simplified.
+
+	* liece-commands.el
+	(liece-command-enter-message-encrypted): Abolish.
+	(liece-command-enter-message-cleartext): Abolish.
+	(liece-command-enter-message-opposite-crypt-mode): Abolish.
+	(liece-command-enter-message-with-key): Abolish.
+
+1999-12-23   Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* liece-version.el (liece-user-agent-value): Add APEL version.
+
+	* liece-inlines.el (liece-next-line): New macro.
+
+	* liece-ctcp.el
+	(liece-command-client-action): Use `liece-next-line'.
+	(liece-command-client-userinfo-from-commandbuffer): Ditto.
+
+	* liece-channel.el (liece-channel-member): Use `member-if' instead
+	of `find-if'.
+
+	* liece.el (liece): Don't use `liece-command-describe-briefly'.
+	(liece-command-mode): Don't bind `next-line-add-newlines'.
+	(liece-dialogue-keys): Don't bind `C-u'.
+
+	* liece-commands.el (liece-command-topic): If called with prefix
+	argument insert the current topic as default.
+	(liece-command-finger): Add documentation about optional 2nd
+	argument.
+	(liece-command-describe-briefly): Abolish.
+	(liece-enter-message): Abolish local variable `message'.
+	(liece-command-join-channel): Fix paren style.
+	(liece-command-join-partner): Ditto.
+	(liece-command-join): Ditto.
+	(liece-command-part): Ditto.
+	(liece-switch-to-channel-no): Ditto.
+	(liece-command-complete): Ditto.
+	(liece-command-next-channel): Rewrite with using
+	`liece-channel-member'.
+	(liece-command-previous-channel):
+	(liece-command-push): Abolish local variable `rest-sym' and
+	`item'; don't use `liece-channel-remove'.
+	(liece-command-pop): Abolish local variable `rest-sym'.
+	(liece-command-tag-region): Don't create temp buffer.
+
+1999-12-21   Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* liece-misc.el (liece-set-channel-indicator): Switch to
+	`liece-command-buffer' when updating modeline.
+
+1999-12-19   Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* liece-minibuf.el (liece-minibuffer-map): Don't use
+	`set-keymap-parents'.
+
+	* liece-compat.el (liece-set-keymap-parents): Rename from
+	`set-keymap-parents'.
+	(turn-on-font-lock,event-buffer,event-point,region-active-p,
+	remassoc,remassq,valid-plist-p,plist-get): Add document.
+
+1999-12-14   Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* liece.el (liece-insert-internal): Don't bind `tab-stop-list'.
+	(liece-dialogue-mode): Declare `tab-stop-list' as buffer local.
+
+1999-12-01   Daiki Ueno  <ueno@unixuser.org>
+
+	* liece-message.el (liece-message-parent-buffer): Add condtion.
+
+1999-11-13   Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* liece.el (liece-read-variables-files): Make the `~/.liece/'
+	directory if there is no initialization file.
+
+1999-11-10   Kenichi OKADA  <okada@opaopa.org>
+
+	* liece-xemacs.el (liece-xemacs-splash-at-point): Calculate
+	horizontal position of the splash logo.
+
+1999-11-10   Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* liece-emacs.el (liece-emacs-splash): Check the number of
+	the arguments of `insert-image'.
+
+1999-11-07   Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* liece-coding.el (detect-coding-string): Remove.
+	(liece-detect-coding-string): Don't define if
+	`detect-coding-string' does not exist.
+
+1999-11-05   Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* liece-url.el (liece-url-add-buttons): Accept optional arguments
+	`start' and `end'.
+
+	* liece.el (liece-save-point): New macro; borrowed from SKK.
+	(liece-before-insert-hook): New variable.
+	(liece-insert-internal): Refine.
+
+1999-11-01   Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* liece-misc.el (liece-get-buffer-create): Use memq instead of
+	member to search over buffers list.
+
+1999-10-29  Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* liece-handle.el (liece-handle-ping-message): Return the
+	argument correctly.
+
+	* liece.el (liece-insert-internal): Remove `inline'.
+
+1999-10-27  Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* liece-commands.el (liece-command-nick-scroll-down): Fix
+	argument list.
+	(liece-command-nick-scroll-up): Ditto.
+
+	* liece-hilit.el (liece-highlight-turn-on-font-lock): Set
+	`liece-highlight-maybe-play-jingle' as local hook.
+	(liece-highlight-font-lock-keywords): Undo last change.
+
+1999-10-26   Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* liece.el (liece-refresh-windows): Remove.
+	(liece-refresh-buffer-window): New function `liece-refresh-windows'.
+	(liece-insert-internal): Preserve old point unconditionally when
+	the buffer is frozen.
+
+1999-10-21   Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* liece-misc.el (liece-freeze): Rename from `liece-freeze-toggle'.
+	(liece-own-freeze): Rename from `liece-own-freeze-toggle'.
+
+	* liece.el: Add autoload for `liece-command-submit-bug-report'.
+	(liece-overriding-command-keys): Rename.
+	(liece-dialogue-keys): Bind `liece-command-submit-bug-report'.
+
+	* liece-commands.el (liece-command-scroll-down): Use
+	`scroll-other-window'; accept prefix value.
+	(liece-command-scroll-up): Ditto.
+	(liece-command-nick-scroll-down): Ditto.
+	(liece-command-nick-scroll-up): Ditto.
+	(liece-command-freeze): Accept prefix argument.
+	(liece-command-own-freeze): Ditto.
+	(liece-command-quit): Refine.
+
+1999-10-20   Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* liece-commands.el (liece-command-display-friends): Remove
+	`save-excursion'.
+
+	* liece.el (liece-read-variables-files): Prepare startup
+	directory if it does not exist.
+
+	* liece-vars.el (liece-directory): New variable.
+	(liece-variables-file): Relocate under `liece-directory'.
+
+	* liece-ctcp.el (liece-ctcp-version-message): Refer
+	`liece-user-agent-value'.
+
+	* liece-menu.el: Check features about menubars.
+
+	* liece-xemacs.el (liece-xemacs-hide-scrollbars): Set
+	`scrollbar-height' to 0 if `horizontal-scrollbar-visible-p' is not
+	available.
+
+	* liece-mail.el (liece-command-submit-bug-report): New function.
+	(liece-maintainer-address): New variable.
+
+	* gettext.el (gettext-load-message-catalogue): Enclose with
+	`as-binary-input-file' instead of using `set-buffer-multibyte' twice.
+	(gettext-load-portable-message-catalogue): Likewise.
+	(dgettext): Check the cdr of catalogue entry.
+	(gettext-gmo-read-32bit-word): Mask each byte with 255.
+
+	* liece-compat.el (truncate-string-to-width): New alias.
+
+	* liece.el (liece-server-keyword-bind): Quote colon keywords.
+
+	* liece-make.el (make-liece-info-files): Check if
+	`set-language-environment' exists.
+
+	* liece-misc.el (liece-server-host): Quote colon keyword.
+
+1999-10-19   Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* liece-hilit.el (liece-highlight-font-lock-keywords): Undo last
+	change; accept partial matcher as the value of
+	`liece-highlight-pattern'.
+	(liece-highlight-maybe-play-jingle): New function.
+	(liece-highlight-maybe-turn-on-font-lock): Add
+	`liece-highlight-maybe-play-jingle' to `after-change-functions'.
+
+1999-10-14   Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* gettext.el (gettext-load-message-catalogue): Use hashtable.
+	(gettext-load-portable-message-catalogue): Likewise.
+
+1999-10-13  Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* liece-misc.el (next-visible-point): Don't advise.
+	(liece-remove-properties-region): Enclose by `save-restriction'.
+
+1999-10-12   Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* liece-commands.el (liece-command-send-action): Remove.
+
+	* liece-ctcp.el (liece-command-client-action): Move from
+	`liece-commands.el'; mark `liece-command-send-action' as obsolete.
+	(liece-client-x-face-notice): Remove whitespaces.
+
+	* liece-handle.el (liece-handle-kick-message): Fix message.
+
+1999-10-11  Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* gettext.el (gettext-default-mime-charset): New variable.
+	(gettext-parse-Content-Type): Use it.
+
+1999-10-07  Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* liece-misc.el (liece-message): Fix message prefix.
+
+	* liece-compat.el (liece-find-data-directory): Move to
+	`liece-inlines'.
+
+	* liece-xemacs.el (liece-xemacs-icon-path): Use `liece-find-path'.
+
+	* liece-emacs.el (liece-emacs-icon-path): Use `liece-find-path'.
+
+	* liece-inlines.el (liece-find-path): New function.
+
+1999-10-05  Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* liece-version.el (liece-user-interface-product): Renamed from
+	`liece-client-product'.
+	(liece-client-version-major): Abolish.
+	(liece-client-version-minor): Abolish.
+	(liece-client-version-beta): Abolish.
+	(liece-client-version-alpha): Abolish.
+	(liece-client-version-codename): Abolish.
+	(liece-product-name): New macro.
+	(liece-product-version): New macro.
+	(liece-product-code-name): New macro.
+
+1999-10-03   Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* liece-hilit.el (liece-highlight-jingle-function): New variable.
+	(liece-highlight-font-lock-keywords): If liece-highlight-pattern
+	matches, play jingle.
+
+1999-10-01   Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* liece-message.el (liece-message-parent-buffer): Check the
+	message	direction in private conversation.
+
+1999-09-28   Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* liece-version.el (liece-emacs-user-agent-value): Include
+	`emacs-patch-level'.  It exists in XEmacs 21.1.1 or later.
+
+1999-09-22  Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* liece.el (liece-channel-mode): Make `truncate-lines' local.
+	(liece-others-mode): Ditto.
+	(liece-channel-list-mode): Ditto.
+	(liece-nick-mode): Ditto.
+
+1999-09-18   Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* liece.el (liece-open-server): Set `liece-status-message-string'
+	when timeout is expired.
+
+1999-09-14   Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* liece-menu.el (liece-use-localized-menu): New variable.
+	(liece-command-define-menus): Use it.
+	(liece-command-define-menus-1): New function; to raverse menu
+	items recursively.
+
+	* liece.el (liece): Call `liece-intl-load-catalogue' before switch
+	to the command buffer.
+
+	* liece-dcc.el: Refine.
+
+	* liece-ctcp.el (liece-client-x-face-notice): Do not decode empty
+	`X-Face'.
+
+1999-09-11   Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* liece-vars.el (liece-dcc-program): Rename to `ldcc'.
+
+	* liece-tcp.el (liece-tcp-program): Rename to `ltcp'.
+
+	* gettext.el (gettext-parse-Content-Type): Require `path-util'.
+
+	* liece-x-face.el: Require `path-util'.
+
+1999-09-10   Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* Makefile.am (SOURCES): Add `gettext.el'.
+
+	* liece-modules.el (liece-modules-to-compile): Add `gettext.el'.
+
+	* liece-intl.el: Use `gettext.el'.
+	(liece-intl-domains-alist): Abolish.
+	(liece-intl-domain-to-mime-charset-alist): Abolish.
+	(liece-intl-prepare-prefix): Abolish.
+	(liece-intl-parse-Content-Type): Abolish.
+	(liece-intl-convert-string): Abolish.
+	(liece-intl-catalogue-path): Abolish.
+
+	* gettext.el: New file.
+
+	* liece-ctcp.el: Add autoload setting for `liece-ctcp-dcc-message'.
+
+	* liece.el (liece): Save window	splitting only when called
+	interactively.
+	(liece-clear-system): Do not restore window splitting.
+	(liece-command-mode): Set syntax table explicitly; make
+	`frame-title-format' buffer local.
+
+	* liece-window.el (liece-window-configuration-push): Do not save
+	`frame-title-format'.
+	(liece-window-configuration-pop): Likewise.
+
+	* liece-commands.el (liece-command-quit): Restore window splitting
+	only when called interactively.
+
+1999-09-09   Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* liece.el (liece-server-keyword-map): New variable.
+	(liece-server-keyword-bind): New macro modified	version of
+	`mail-source-bind' from `mail-source.el'.
+	(liece-server-parse-string): New function.
+	(liece-open-server): Use them.
+
+1999-09-08   Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* liece-300.el (liece-handle-353-message): Reverse reply list.
+
+	* All files are renamed from `irchat-*' to `liece-*'.
+	All symbols are renamed too.
+
+	* irchat-vars.el (irchat-connection-timeout): Default to 60.
+
+	* irchat-nick.el (irchat-nick-insert): Handle reverse order
+	sorting.
+
+1999-09-07  Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* irchat.el (irchat): Call `irchat-command-mode' just once.
+	(irchat-initialize-buffers): Likewise.
+
+	* irchat-channel.el (irchat-channel-buffer-create): Call
+	`irchat-channel-mode' just once.
+
+	* irchat-nick.el (irchat-nick-buffer-create): Call
+	`irchat-nick-mode' just once.
+
+	* irchat-message.el (irchat-message-parent-buffer): Fix condition.
+
+1999-09-06  Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* irchat-nick.el (irchat-nick-sort-nicks): New variable.
+
+	* irchat-intl.el (irchat-intl-load-catalogue): Ignore all errors
+	when reading catalogue file.
+
+	* irchat-menu.el: Do not require `irchat-ctcp'; add autoload
+	settings for `irchat-menu-callback-ctcp-version',
+	`irchat-menu-callback-ctcp-userinfo',
+	`irchat-menu-callback-ctcp-help',
+	`irchat-menu-callback-ctcp-clientinfo' and
+	`irchat-menu-callback-ctcp-ping'; add `irchat-menu-add-url' to
+	`irchat-url-add-hook'.
+
+	* irchat-url.el (irchat-url-add-buttons): Enclose with
+	`save-excursion'; run `irchat-url-add-hook'.
+
+1999-09-06  Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* Liece 1.3.7.
+
+	* irchat-xemacs.el (irchat-xemacs-setup-menu): Abolish.
+
+	* irchat-intl.el (irchat-intl-get-msgstr-if): Abolish.
+
+	* irchat-vars.el: Remove defconst for colon keyword.
+
+1999-09-05  Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* irchat-menu.el: All the menu specs are expanded immediately.
+	(irchat-menu-prepare-menus): Abolish.
+	(irchat-menu-define): New function.
+	(irchat-menu-alist): New variable.
+
+	* irchat-handle.el (irchat-handle-topic-message): Check empty
+	topic line.
+
+	* irchat.el (irchat): When `irchat-startup-channel-list' contains
+	list element send cadr as a channel key.
+
+	* irchat-emacs.el (irchat-emacs-widget-convert-button): Make the
+	keymap `irchat-widget-keymap' parented from current local map.
+
+	* irchat-nick.el (irchat-nick-sort-predicate): New variable.
+	(irchat-nick-update): Sort nicknames with
+	`irchat-nick-sort-predicate'.
+	(irchat-nick-insert): Search sorted position before insertion.
+	(irchat-nick-replace): Call `irchat-nick-insert' when
+	`irchat-nick-sort-predicate' is valid.
+
+	* irchat-message.el (irchat-message-parent-buffer): Add condition
+	for private conversation.
+
+	* irchat-make.el (make-irchat-info-files): Set language
+	environment to `Japanese'.
+
+	* irchat-dcc.el (irchat-dcc-channel-representation-format):
+	Remove.
+
+	* irchat-minibuf.el (irchat-minibuffer-complete-channel-modes):
+	Use `string-list-member-ignore-case' instead of
+	`string-list-ci-member'.
+
+	* irchat-url.el: Remove `irchat-insert-hook'.
+
+	* irchat-hilit.el (irchat-highlight-maybe-turn-on-font-lock):
+	Add `irchat-url-add-buttons' to `irchat-insert-hook'.
+
+	* irchat.el (irchat-initialize-buffers): Fix last change.
+
+	* irchat-300.el: Enclose autoloads by `eval-and-compile'.
+
+	* irchat-channel.el: Declare variable
+	`irchat-dcc-channel-representation-format'.
+
+1999-09-04  Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* Liece 1.3.6.
+
+	* irchat.el: Add autoload for `irchat-command-browse-url'; do not
+	require `irchat-url' and `irchat-dcc'; add autoload for
+	`irchat-command-mail-compose'.
+	(irchat-initialize-timers): Rewrite with `dolist'; do
+	not check `irchat-timers-list-initialized-p'.
+	(irchat-truncate-nickname): Use `truncate-string-to-width' instead
+	of `truncate-string'.
+	(irchat-buffer-mode-alist): New variable.
+	(irchat-dialogue-setup-buffer): Abolish.
+	(irchat-others-setup-buffer): Abolish.
+	(irchat-channel-list-setup-buffer): Abolish.
+	(irchat-private-setup-buffer): Abolish.
+	(irchat-KILLS-setup-buffer): Abolish.
+	(irchat-IGNORED-setup-buffer): Abolish.
+	(irchat-WALLOPS-setup-buffer): Abolish.
+	(irchat-CRYPT-setup-buffer): Abolish.
+	(irchat-initialize-buffers): Rewrite.
+
+	* irchat-ctcp.el (irchat-client-version-insert): Do not indent
+	explicitly.
+	(irchat-client-message-no-lf): Abolish.
+
+	* irchat-300.el, irchat-xemacs.el, irchat-commands.el: Do not
+	require `irchat-dcc' and `irchat-mail'.
+
+	* irchat-dcc.el (irchat-command-dcc-send): Remove autoload cookie.
+
+1999-09-03  Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* irchat-inlines.el (forward-line): Do not advise.
+
+	* irchat-intl.el: Do not require `alist'; require `mcharset',
+	`static' and `cl' during compilation.
+	(irchat-intl-msgid-regexp): Fix regexp.
+	(irchat-intl-msgstr-regexp): Ditto.
+	(irchat-intl-set-msgstr): Abolish.
+	(irchat-intl-load-catalogue): Optimize with side-effects.
+
+	* irchat.el (irchat): Load message catalogue only once.
+
+1999-08-31  Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* irchat.el (irchat-close-server-internal): Use
+	`irchat-server-opened'.
+
+	* irchat-hilit.el (irchat-highlight-maybe-turn-on-widget):
+	Abolish.
+
+	* irchat-channel.el (irchat-channel-add-button): Use
+	`irchat-widget-convert-button'.
+
+	* irchat-nick.el (irchat-nick-insert): Use
+	`irchat-widget-convert-button'.
+	(irchat-nick-replace): Ditto.
+
+	* irchat-compat.el (irchat-widget-convert-button): New alias.
+	(irchat-widget-button-click): Alias to `widget-button-click'.
+
+	* irchat-emacs.el (irchat-widget-keymap): New variable.
+	(irchat-emacs-widget-convert-button): New function.
+	(irchat-emacs-widget-button-click): New function.
+	(irchat-widget-convert-button): Redefine here.
+	(irchat-widget-button-click): Redefine here.
+
+	* irchat-url.el (irchat-url-add-buttons): Use
+	`irchat-widget-convert-button'.
+
+1999-08-23  Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* irchat-emacs.el (irchat-emacs-splash): Use `fontset-pixel-size'.
+
+1999-08-22  Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* irchat-compat.el: Do not require `wid-browse' during
+	compilation.
+	(irchat-widget-button-click): New function.
+
+	* irchat-emacs.el: Enclose autoloads with `eval-and-compile'.
+	(irchat-emacs-create-mode-line-image): Specify
+	`:ascent' property when creating the image.
+	(irchat-emacs-create-nick-image): Ditto.
+
+1999-08-22  Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* Makefile.am (EXTRA_DIST): Add `irchat-emacs.el'.
+
+	* irchat-xemacs.el (irchat-xemacs-glyph-nick-buffer): Abolish.
+	(irchat-xemacs-glyph-nick-region): Remove interactive spec.
+
+	* irchat-intl.el: Do not require `mime-parse'.
+
+	* irchat-tcp.el: Bind `ssl-program-arguments'.
+
+1999-08-22  Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* irchat-modules.el (irchat-modules-to-compile): Add
+	`irchat-emacs'.
+
+	* irchat-xemacs.el (irchat-xemacs-glyph-nick-buffer): Refine.
+
+	* irchat-vars.el (irchat-icon-directory): Move from
+	`irchat-xemacs.el'.; To be used under FSF Emacs 20.4.91.
+	(irchat-nick-image-alist): Move from `irchat-xemacs.el'.
+
+	* irchat-emacs.el: New file.; Most of FSF Emacs specific routines
+	are stored here.
+	(irchat-emacs-icon-path): New macro.
+	(irchat-emacs-mode-line-buffer-identification): New function.
+	(irchat-emacs-mode-line-buffer-identification): New variable.
+
+1999-08-20  Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* liece.xpm: Reduce colors.
+
+1999-08-20  Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* irchat-x-face.el (irchat-x-face-insert-function): Don't use
+	`eval-when-compile' while checking bitmap-mule.
+
+1999-08-20  Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* irchat.el (irchat-splash-pixmap): Renamed from
+	`irchat-stipple-pixmap'; use the XPM data under FSF Emacs 20.4.91.
+	(irchat-x-splash): Likewise.
+
+	* irchat-channel.el (irchat-channel-virtual): Undo last change.
+
+1999-08-15  Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* irchat-400.el (irchat-handle-400-messages): Do not pass empty
+	channel names to `irchat-channel-virtual'.
+
+	* irchat-channel.el (irchat-channel-virtual): Make channel ID for
+	`!' channels invisible from user.
+
+	* irchat-vars.el (irchat-channel-id-length): Default to 5.
+
+1999-08-14  Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* irchat-300.el (irchat-353-channel): Abolish.
+	(irchat-handle-366-message): Do not use `irchat-353-channel'.
+
+1999-08-13  Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* irchat-200.el (irchat-handle-218-message): Do not indent
+	explicitly.
+
+1999-08-08  Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* irchat-compat.el (with-timeout): New macro for compatibility.
+
+	* irchat-xemacs.el: Check `horizontal-scrollbar-visible-p' for
+	XEmacs 20.4.
+
+	* irchat.el (irchat-open-server): Do not truncate trailing `_'.
+
+	* Liece 1.3.5.
+
+	* irchat-handle.el (irchat-handle-mode-message): Handle channel
+	invite list.
+	(irchat-handle-join-message): Pass optional argument to
+	`match-string'.
+
+	* irchat-channel.el (irchat-channel-get-invites): New macro.
+	(irchat-channel-add-invite): New macro.
+	(irchat-channel-remove-invite): New macro.
+	(irchat-channel-set-invite): New macro.
+
+	* irchat-300.el: Handle channel invite list.
+	(irchat-handle-346-message) <RPL_INVITELIST>: New handler.
+	(irchat-handle-347-message) <RPL_ENDOFINVITE>: New handler
+
+1999-08-07  Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* irchat-200.el: Register 200 handler again.
+	(irchat-handle-200-message): Do not indent explicitly.
+	(irchat-handle-201-message): Likewise.
+	(irchat-handle-213-message): Likewise.
+	(irchat-handle-214-message): Likewise.
+	(irchat-handle-262-message) <RPL_ENDOFTRACE>: New handler.
+
+	* irchat-300.el (irchat-handle-365-message): Turn hops count into
+	string.
+
+	* irchat-xemacs.el (irchat-toolbar-map-button-list): Fix typo.
+
+1999-08-06  Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* irchat-intl.el (irchat-intl-load-catalogue): Add nil check.
+	(irchat-intl-catalogue-path): Fix last change.
+
+1999-08-06  Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* irchat-window.el (irchat-window-load-style-file): Cache
+	`irchat-window-style-directory'.
+
+	* irchat-xemacs.el (irchat-xemacs-icon-path): Cache
+	`irchat-icon-directory'.
+
+	* irchat-intl.el (irchat-intl-catalogue-path): New macro.
+	(irchat-intl-load-catalogue): Use it.
+
+	* irchat-make.el (install-update-manifest-file): Fix for data
+	directories.
+	(config-irchat-package-directory): Splitt into
+	`config-irchat-package'.
+
+	* irchat-xemacs.el: Do not require `smiley'.
+	(irchat-xemacs-icon-path): New macro.
+	(irchat-toolbar-icon-plist-get): Use it.
+	(irchat-xemacs-setup-toolbar): Use it.
+	(irchat-xemacs-create-nick-glyph): Use it.
+	(irchat-xemacs-modeline-glyph): Use it.
+
+	* irchat-vars.el (irchat-use-smiley): Abolish.
+
+	* irchat-hilit.el (irchat-maybe-smiley-region): Abolish. If you
+	want to use this functionality, please setup `irchat-insert-hook'.
+
+1999-08-05  Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* liece.xpm: New splash logo.
+
+	* irchat-xemacs.el (irchat-xemacs-splash-at-point): Use
+	`glyph-width', `glyph-height' and `window-pixel-height' to
+	calculate position of the splash logo.
+
+1999-08-04  Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* irchat-compat.el (irchat-find-data-directory): Move from
+	`irchat-misc'.
+
+	* irchat-intl.el: Use new style macros.
+	(irchat-intl-parse-Content-Type): Check statically if
+	`mime-content-type-parameter' is available.
+	(irchat-intl-load-catalogue): Use `irchat-find-data-directory'.
+
+	* irchat.el (irchat-open-server): Add server parameter `relay'.
+
+	* irchat-window.el (irchat-window-set-default-style): Use
+	`irchat-find-data-directory'.
+
+	* irchat-tcp.el: Fix comment string.
+	(irchat-tcp-open-rlogin-stream): New function.
+	(irchat-tcp-open-rlogin-stream-as-binary): New function.
+	(irchat-tcp-default-connection-type): Add rlogin to custom spec.
+	(irchat-tcp-rlogin-program): New variable.
+	(irchat-tcp-relay-host): New variable.
+	(irchat-tcp-rlogin-parameters): New variable.
+	(irchat-tcp-rlogin-user-name): New variable.
+
+1999-08-03  Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* irchat-config.el (irchat-config-info-file-regexp): New variable.
+
+	* irhcat-hilit.el: Require font-lock during compilation.
+
+	* irchat-vars.el (irchat-tab-stop-list): New variable.
+
+	* irhcat-000.el, irchat-200.el, irchat-300.el, irchat-400.el,
+	irchat-ctcp.el:	Do not use `mapcar' when registering handlers.
+
+	* irchat-misc.el (irchat-find-etc-directory): New function.
+
+	* irchat.el: Add autoloads for
+	`bitmap-stipple-xbm-file-to-stipple' and
+	`bitmap-stipple-insert-pixmap'.
+
+	* irchat-xemacs.el (irchat-x-face-insert-with-xemacs): Use xface
+	glyph if this feature has been provided and `console-type' returns
+	'tty or 'pc, or otherwise make string glyph.
+	[Rename from overriding function `irchat-x-face-insert']
+	(irchat-xemacs-create-nick-glyph): Call `console-type' instead of
+	referring `window-system'.
+	(irchat-xemacs-modeline-glyph): Check current console type.
+	(irchat-xemacs-splash-at-point): Ditto.
+	(irchat-find-etc-directory): Advise it.
+
+	* irchat-compat.el (irchat-static-autoload): New macro.
+	(colon-keyword-usable): New facility checking.
+
+	* irchat-x-face.el: Add autoloads for `x-face-encode',
+	`x-face-read-existing-file-name', `bitmap-insert-xbm-buffer',
+	`bitmap-decode-xbm', `bitmap-read-xbm-buffer' and `bitmap-compose'.
+	(irchat-x-face-insert-function): New variable.
+	(irchat-x-face-insert-with-bitmap): Rename from overriding
+	function `irchat-x-face-insert'.
+
+	* irchat-url.el: Do not check with requiring browse-url. Assume
+	that function `browse-url' have already been autoloaded.
+
+1999-08-01  Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* irchat.el (irchat-command-mode): Set local value of
+	`next-line-add-newlines' 't.
+	(irchat-wait-for-response): Use `with-timeout'.
+	(irchat): Do not use `make-variable-buffer-local' when
+	`irchat-freeze' and `irchat-own-freeze' are initialized.
+	(irchat-dialogue-mode): Define `irchat-freeze' and
+	`irchat-own-freeze' here.
+
+	* irchat-misc.el (next-line): Abolish.
+
+	* irchat-handle.el (irchat-handle-nick-message): Fix typo.
+
+1999-07-30  Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* irchat-inlines.el (string-list-modify-ignore-case): Fix typo.
+
+1999-07-29  Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* irchat-make.el: Generate file `MANIFEST.liece'.
+	(install-update-manifest-file): New function.
+
+1999-07-28  Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* irchat-commands.el (irchat-command-end-of-buffer): Do not use
+	`set-window-point'.
+
+	* irchat-300.el (irchat-handle-367-message): Use
+	`irchat-channel-add-ban' instead of temp variable.
+	(irchat-367-channel): Abolish.
+	(irchat-367-regexps): Abolish.
+	(irchat-handle-348-message): New handler for handling channel
+	exception list.
+	(irchat-handle-349-message): New handler for handling channel
+	exception list.
+
+1999-07-27  Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* irchat-handle.el (irchat-handle-mode-message): Handle channel
+	exception list.
+
+	* irchat-channel.el: (irchat-channel-get-exceptions): New macro.
+	(irchat-channel-add-exception): New macro.
+	(irchat-channel-remove-exception): New macro.
+	(irchat-channel-set-exception): New macro.
+
+1999-07-25  Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* irchat-commands.el (irchat-command-end-of-buffer): Do not use
+	`pop-to-buffer'.
+	(irchat-command-describe-briefly): Do not use backquote.
+
+1999-07-24  Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* irchat-compat.el: Do not refer `widget-minor-mode-map'.
+
+	* irchat-hilit.el (irchat-highlight-maybe-turn-on-widget): Use
+	`current-local-map' instead of `widget-minor-mode-map'.
+
+	* Liece 1.3.4.
+
+	* irchat-q-ccl.el (irchat-quote-ccl-encode-region): Fix typo.
+
+	* irchat-crypt.el: Add autoload for `crc32-string'.
+	(irchat-crypt-hash-crc32-string): New function.
+	(irchat-crypt-default-hash-function): New variable.
+	(irchat-crypt-key-fingerprint): Rewrite with above functions.
+
+	* irchat-handle.el (irchat-handle-topic-message): Fix argument
+	order of `irchat-channel-set-topic'.
+
+	* irchat-misc.el (irchat-maybe-update-channel-indicator): Abolish.
+	Call `irchat-set-channel-indicator' directly.
+
+	* irchat-nick.el (irchat-nick-replace): Remove widgets.
+
+	* irchat-menu.el (irchat-nick-popup-menu): Move "Kick" menu to the
+	bottom of menu entries.
+
+	* irchat-xemacs.el (irchat-xemacs-setup-menu): Ditto.
+
+1999-07-23  Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* irchat-globals.el (irchat-frame-title-format-last): Abolish.
+
+	* irchat.el (irchat-accept-response): Call `irchat' with no
+	arguments. Here's the point that take care of growing tail.
+	(irchat): Call `irchat-window-configuration-pop' and
+	`irchat-window-configuration-push' consequently.
+
+	* irchat-commands.el (irchat-command-keepalive): Call `irchat'
+	with no arguments.
+
+	* irchat-filter.el (irchat-sentinel): Call `irchat' with no
+	arguments.
+
+	* irchat-window.el: Add window configuration stack utility.
+	(irchat-window-configuration-push): New function.
+	(irchat-window-configuration-pop): New function.
+	(irchat-window-configuration-stack): New variable.
+
+	* irchat-compat.el: Require wid-edit and wid-browse during
+	compilation.
+	(widget-minor-mode-map): Bind `mouse-button-3'.
+	(irchat-dont-set-event-point): New advice against
+	`widget-button-click' for FSF Emacs.
+	(irchat-save-current-buffer): New advice against
+	`widget-button-click' for FSF Emacs.
+	(remassq): New function.
+
+	* irchat-channel.el (irchat-channel-push-button): Abolish.
+	(irchat-channel-list-insert): Abolish.
+	(irchat-channel-button): New widget.
+	(irchat-channel-add-button): New function.
+	(irchat-channel-button-action): New function.
+
+	* irchat-url.el: Use widget.
+	(irchat-url-link): New widget.
+	(irchat-url-add-button): New function.
+	(irchat-url-iterate-buffer): Abolish.
+	(irchat-url-search-forward): Abolish.
+	(irchat-url-add-to-completion): Abolish
+	(irchat-url-link-action): Renamed from irchat-url-push-button.
+
+	* irchat-hilit.el: Renamed from irchat-hilight.el.
+	(irchat-highlight-overlay-put-mouse-face): Abolish.
+	(irchat-highlight-insert-with-mouse-face): Abolish.
+	(irchat-highlight-insert-line-with-mouse-face): Abolish.
+	(irchat-highlight-with-widget): Abolish.
+	(irchat-url-face): Abolish.
+	(irchat-mouse-face): Abolish.
+	(irchat-highlight-maybe-turn-on-widget): New function.
+	This function turns on `widget-minor-mode' in
+	`irchat-nick-mode', `irchat-channel-list-mode' or
+	`irchat-dialogue-mode'.
+
+1999-07-21  Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* Liece 1.3.3.
+
+	* irchat.el (irchat-override-command-keys): Bind "\C-c\C-a" to
+	`irchat-command-previous-channel'.
+
+	* irchat-crypt.el: Add routines for encapsulate cipher algorithms.
+	(irchat-crypt-import-cipher-algorithm): New function.
+	(irchat-crypt-key-fingerprint): New function.
+	(irchat-crypt-build-decryption-key): New function.
+	(irchat-crypt-build-encryption-key): New function.
+	(irchat-crypt-encrypt-string): New function.
+	(irchat-crypt-decrypt-string): New function.
+	(irchat-crypt-algorithm-major-version): New function.
+	(irchat-crypt-algorithm-minor-version): New function.
+	(irchat-crypt-secure-passphrase-read): Abolish.
+	(irchat-crypt-ignore-suspicious): Abolish.
+	(irchat-crypt-ignore-defected): Abolish.
+	(irchat-get-idea-decryption-key): Abolish.
+	(irchat-command-set-default-key): Check if this function was
+	called interactively.
+	(irchat-command-add-decryption-key): Renamed from
+	`irchat-command-add-new-key'.
+	(irchat-command-delete-decryption-key): Renamed from
+	`irchat-command-delete-key'.
+	(irchat-crypt-decryption-keys): Renamed from
+	`irchat-crypt-known-keys'.
+	(irchat-crypt-encryption-keys): Renamed from
+	`irchat-crypt-default-keys'.
+
+	* irchat-coding.el (irchat-default-mime-charset-for-read): New
+	variable. Default to 'x-ctext.
+
+	* irchat-compat.el: Do not require 'defface.
+	(irchat-compat-enable-to-read-multibyte): Abolish.
+
+	* irchat-modules.el (irchat-modules-to-compile): Remove
+	`irchat-ck-*' and `defface'. Use `japanese-zenkaku-*' with hook.
+
+	* irchat-vars.el (irchat-convert-hankaku-katakana): Abolished.
+
+	* irchat-inlines.el: All string functions are rewritten.
+
+1999-07-05  Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* irchat-ctcp.el: Register ACTION handler.
+
+1999-07-04  Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* irchat-version.el (irchat-emacs-user-agent-value): Modify for
+	XEmacs UTF-2000-MULE.
+
+	* irchat-crypt.el: Do not use IDEA as the default cipher algorithm.
+	(irchat-crypt-cipher-algorithm): New variable.
+	(irchat-crypt-encrypt-message-format): Add version field of
+	the cipher algorithm.
+	(irchat-crypt-current-keys): Always restore the computed keys into
+	this variable. [Renamed from irchat-default-idea-key-list]
+
+1999-06-26  Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* irchat-xemacs.el (irchat-use-toolbar): Add custom spec.
+	(irchat-toolbar-toggle-crypt): Check irchat-use-toolbar.
+	(irchat-setup-toolbar): Ditto.
+
+1999-06-14  Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* Liece 1.3.2.
+
+	* irchat.el (irchat-define-keys): Rewrite.
+	(irchat-truncate-nickname): Rewrite; rename from irchat-read-nickname.
+
+	* irchat-handle.el, irchat-400.el, irchat-300.el, irchat-200.el,
+	irchat-000.el:
+	Declarations of hook variables are splitted into each file.
+
+	* irchat-300.el: Register 322 reply handler.
+
+1999-06-11  Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* irchat.el (irchat-dialogue-mode-map):	Bind mouse-button-2 to
+	irchat-url-push-button.
+
+	* irchat-url.el (irchat-url-push-button): Check all overlays
+	around event point.
+
+	* irchat-filter.el (irchat-handle-message): Ignore errors which
+	occurs during hook evaluation.
+
+	* irchat-ctcp.el (irchat-ctcp-message): Ignore errors which
+	occurrs during hook evaluation.
+	(irchat-ctcp-notice): Likewise.
+	(irchat-ctcp-file-notice): Likewise.
+
+	* irchat-channel.el (irchat-channel-push-button): Use
+	irchat-overlays-at instead of overlays-at.
+
+1999-06-10  Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* irchat-hilight.el (irchat-quoted-colors-mirc):
+	Rename from irchat-quoted-colors.
+	(irchat-quoted-colors-ircle): New color table.
+	(irchat-highlight-maybe-hide-prefix): Fix regexp.
+	(irchat-highlight-colorize-quote): Check vender specific extension.
+
+	* irchat-channel.el (irchat-channel-push-button):
+	Check all overlays under the point.
+
+	* irchat-filter.el: Rename default backend name to "generic".
+
+	* irchat-handle.el: Use multiple values bindings.
+	(irchat-handle-notice-message):	Fix argument against
+	irchat-ctcp-notice.
+
+	*irchat-misc.el (irchat-compose-time-string): Use
+	format-time-string. Now only accepts encoded time.
+
+	* irchat-misc.el (irchat-pick-buffer): Check if chnl is string and
+	apropriate buffer does not exist.
+	(irchat-pick-buffer-1): Do not return buffer list.
+
+1999-06-10  Daiki Ueno  <ueno@unixuser.org>
+
+	* irchat.el (irchat-debug-mode-map): Abolish.
+	(irchat-debug-keys): Abolish.
+	(irchat-command-keys): Fix return key code.
+
+	* irchat-window.el (irchat-window-to-buffer):
+	Remove irchat-debug-buffer.
+
+	* irchat-vars.el (irchat-debug-mode-hook): Abolish.
+	(irchat-debug-prefix): Abolish.
+
+	* irchat-nick.el (irchat-nick-equal): New alias to string-ci-equal.
+	(irchat-nick-member): New function.
+	(irchat-command-toggle-nick-buffer-mode): Do not toggle when
+	irchat-nick-buffer has not been created.
+
+	* llhandler.el, irchat-modules.el (irchat-modules-to-compile):
+	Remove llhandler.
+
+	* irchat-misc.el (irchat-split-line): New function.
+	(irchat-split-rest): Abolish.
+	(irchat-with-split-rest): Abolish.
+	(irchat-maybe-update-channel-indicator): Do not use backquote.
+	(irchat-freeze-toggle): Use irchat-nick-equal.
+	(irchat-message-from-ignored): Rename from irchat-msg-from-ignored.
+
+	* irchat-message.el (irchat-message-parent-buffer):
+	Use irchat-nick-equal.
+
+	* irchat-make.el (compile-irchat): Add comments.
+
+	* irchat-intl.el (irchat-intl-prepare-prefix):
+	Do not treat irchat-debug-prefix.
+
+	* irchat-inlines.el (filter-elements): Move from irchat-compat.
+
+	* irchat-globals.el (irchat-debug-buffer): Remove.
+
+	* irchat-crypt.el (irchat-idea-encrypt-message-format): Rename from
+	irchat-idea-encrypt-msg-format.
+	(irchat-crypt-maybe-decrypt-message): Use irchat-nick-equal.
+
+	* irchat-compat.el: Require cl at load time.
+	(buffer-or-string-p): Remove.
+	(irchat-get-buffer-window): Enclose with eval-and-compile.
+	(irchat-get-buffer-window-list): Ditto.
+	(irchat-mode-line-buffer-identification): New alias to 'identity.
+	(mapvector): Remove.
+
+	* irchat-commands.el (irchat-command-debug): Abolished.
+	(irchat-command-join-channel): Use irchat-channel-equal.
+	(irchat-command-join): Use force-mode-line-update.
+	(irchat-command-private-conversation): Ditto.
+	(irchat-command-list): Check if 1st argument is empty string.
+	(irchat-command-who): Ditto.
+	(irchat-command-names): Ditto.
+	(irchat-command-mode+o): Use irchat-nick-member.
+
+	* irchat-channel.el (irchat-command-toggle-channel-buffer-mode):
+	Do not toggle when
+	irchat-channel-buffer has not been created.
+
+	* irchat-handle.el, irchat-filter.el, irchat-dcc.el,
+	irchat-ctcp.el, irchat-500.el, irchat-400.el, irchat-300.el,
+	irchat-200.el, irchat-000.el: Use llunf instead of llhandler.
+
+	* llunf.el: New file.
+
+	* idea.el, b64.el (>>): Move from irchat-compat.
+	(<<): Ditto.
+
+1999-06-06  Daiki Ueno  <ueno@unixuser.org>
+
+	* irchat-misc.el (irchat-freeze-toggle): Use force-mode-line-update.
+	(irchat-own-freeze-toggle): Ditto.
+
+	* irchat-dcc.el: Require irchat-minibuf.el.
+	(irchat-command-dcc-send): Use
+	irchat-minibuffer-completing-default-read.
+	(irchat-command-dcc-chat-listen): Ditto.
+
+1999-06-04  Daiki Ueno  <ueno@unixuser.org>
+
+	* irchat.el (irchat-override-command-keys): Add "\C-v" and "l".
+	(irchat-dialogue-keys): Remove "\C-v" and "\C-f".
+
+	* irchat.el (irchat-override-command-keys):
+	Add "\C-n", "\C-p" and "\C-a".
+	(irchat-dialogue-keys): Remove "\C-n" and "\C-p".
+
+	* irchat-nick.el (irchat-nick-set-user-at-host): New macro.
+	(irchat-nick-mark-as-apart): New macro.
+	(irchat-nick-unmark-as-apart): New macro.
+
+	* irchat-version.el (irchat-emacs-user-agent-value):
+	 Ignore parenthesis in
+	`emacs-version' for XEmacs 21.2.15.
+
+1999-06-03  Daiki Ueno  <ueno@unixuser.org>
+
+	* irchat-handle.el, irchat-dcc.el, irchat-500.el, irchat-300.el,
+	irchat-200.el: Do not check "strange" reply.
+
+	* irchat-message.el (irchat-message-parent-buffer):
+	Check if irchat-current-channel exists.
+
+	* irchat-coding.el: Do not require irchat-vars.
+
+	* irchat-menu.el (irchat-nick-popup-menu):
+	Enclose save-selected-window.
+
+	* irchat-misc.el (irchat-get-buffer-create): Do not use unless.
+
+	* irchat-nick.el (irchat-nick-change): Set chnl property internally.
+
+	* irchat-dcc.el (irchat-command-dcc-chat-listen):
+	Use irchat-get-buffer-create instead
+	of get-buffer-create.
+	(irchat-command-dcc-chat-connect): Ditto.
+	(irchat-dcc-compare-hostnames): Ditto.
+
+	* irchat-ctcp.el (irchat-file-start):
+	Use irchat-get-buffer-create instead of
+	get-buffer-create.
+	(irchat-file-cont): Ditto.
+	(irchat-file-end): Ditto.
+	(irchat-ctcp-client-notice): Ditto.
+
+	* irchat.el (irchat-open-server-internal):
+	Use irchat-get-buffer-create instead of
+	get-buffer-create.
+	(irchat-dialogue-setup-buffer): Ditto.
+	(irchat-others-setup-buffer): Ditto.
+	(irchat-channel-list-setup-buffer): Ditto.
+	(irchat-private-setup-buffer): Ditto.
+	(irchat-KILLS-setup-buffer): Ditto.
+
+1999-06-02  Daiki Ueno  <ueno@unixuser.org>
+
+	* irchat-xemacs.el (irchat-xemacs-nick-popup-menu):
+	Remove save-excursion.
+
+	* irchat-channel.el (irchat-channel-push-button):
+	Remove save-excursion, just use save-selected-window instead.
+	(irchat-channel-real): Remove save-match-data.
+
+	* irchat.el (irchat-clear-system):
+	Check irchat-obarray has been initialized.
+
+	* Makefile.am (SOURCES): Add irchat-message.el and irchat-coding.el.
+	(EXTRA_DIST): Add liece.xbm.
+
+1999-06-02  Daiki Ueno  <ueno@unixuser.org>
+
+	* Liece 1.3.1.
+
+	* irchat-url.el (url-irc-liece): New function.
+	[should be called from url-irc.el]
+
+	* Makefile.am (EXTRA_DIST): Add bitmap-stipple.
+
+1999-06-02  Daiki Ueno  <ueno@unixuser.org>
+
+	* irchat-coding.el (irchat-detect-coding-region): New function.
+	(irchat-detect-coding-region-function): Use above.
+
+	* irchat-coding.el (irchat-detect-coding-string): New function.
+	(irchat-detect-coding-string-function): Use above.
+
+	* irchat-channel.el (irchat-channel-push-button):
+	Switch to channel list buffer.
+
+1999-06-02  Daiki Ueno  <ueno@unixuser.org>
+
+	* irchat-nick.el (irchat-nick-update-region): Undo last change.
+
+	* irchat-menu.el (irchat-nick-popup-menu): Switch to nick buffer.
+
+	* irchat-filter.el: fix comments.
+	(irchat-filter): Split multiple lines without string matching.
+	(irchat-handle-message): Renamed from irchat-handle-message-2.
+	(irchat-parse-user-at-host): New function.
+
+	* irchat-coding.el (irchat-detect-coding-region-function): Renamed from
+	irchat-custom-detect-coding-region-function.
+	(irchat-detect-coding-string-function): Renamed from
+	irchat-custom-detect-coding-string-function.
+
+1999-06-01  Daiki Ueno  <ueno@unixuser.org>
+
+	* irchat.el (irchat-command-mode): Do not use mapvector.
+
+	* irchat-handle.el (irchat-handle-notice-msg): Fix arguments against
+	with-irchat-decryption.
+	(irchat-handle-privmsg-msg): Likewise.
+
+	* irchat-commands.el (irchat-command-send-message): Fix arguments of
+	with-irchat-encryption.
+	(irchat-command-message): Likewise.
+
+	* irchat-crypt.el (irchat-crypt-maybe-decrypt-message):
+	Exchange car with cdr in arglist.
+	(with-irchat-encryption): Accept flat arglist.
+	(with-irchat-decryption): Likewise.
+
+	* irchat.el (irchat-nick-mode-map): Define as prefix commands.
+
+	* irchat.el (irchat-channel-mode): Eliminate channel indicator.
+	(irchat-others-mode): Likewise.
+	(irchat-dialogue-mode): Likewise.
+
+	* irchat-misc.el (irchat-set-channel-indicator):
+	Eliminate channel indicator.
+
+	* irchat-ctcp.el (irchat-ctcp-action-msg):
+	Use irchat-display-message.
+
+1999-06-01  Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* irchat-400.el: Remove redundancies on regexps.
+	(irchat-handle-432-msg) <ERR_ERRONEUSNICKNAME>: Rewrite.
+	(irchat-handle-433-msg) <ERR_NICKNAMEINUSE>: Resend NICK command only
+	if irchat-auto-iterate-nick is non-nil.
+
+	* irchat.el (irchat-command-keys): Add irchat-command-mode+o,
+	irchat-command-mode-o, irchat-command-mode+v, irchat-command-mode-v.
+	XXX: Should be prefixed commands?
+
+1999-05-31  Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* irchat-message.el (irchat-message-predicate):
+	Normalize irchat-message-blackets-predicate.
+
+	* irchat-inlines.el (irchat-eval-form): New function.
+
+	* irchat-message.el (irchat-message-predicate):
+	Rename specifier typep to type.
+
+	* irchat-misc.el (irchat-own-channel-message):
+	Bind irchat-message-direction 'outgoing.
+	(irchat-own-private-message): Ditto.
+
+	* irchat-message.el (irchat-message-tags): New variable.
+	(irchat-message-tags-function): New function.
+	(irchat-message-private-buffer): Abolished.
+	Use irchat-message-buffer-function.
+
+1999-05-31  Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* irchat-nick.el (irchat-nick-update-region):
+	Move opening save-excursion.
+
+	* irchat-channel.el (irchat-channel-push-button):
+	Move point to event ocurred position before calling
+	irchat-nick-update-region.
+
+	* irchat-nick.el (irchat-nick-update-region):
+	Remove argument event from arglist.
+
+	* irchat-menu.el (irchat-nick-popup-menu):
+	Move point to event ocurred position before calling
+	irchat-nick-update-region.
+
+	* irchat-xemacs.el (irchat-xemacs-setup-menu):
+	Remove argument event from arglist.
+	(irchat-xemacs-nick-popup-menu): Move point to event ocurred
+	position before calling	irchat-nick-update-region.
+
+	* irchat.el: Use modern key sequence expression.
+	(irchat-command-map): New keymap which override
+	irchat-dialogue-keys with prefix command ("\C-c").
+	(irchat-friends-map): New keymap. [prefix command for friends]
+	(irchat-dialogue-keys): Import some useful command keys.
+
+	* irchat-channel.el (irchat-channel-parse-representation):
+	To remove let, construct representation object directly.
+
+	* irchat-channel.el (irchat-channel-list-insert): Remove format.
+
+	* irchat-vars.el: Do not require mcharset.
+
+	* irchat.el (irchat-nick-mode-map): Do not check xemacs.
+
+	* irchat-xemacs.el (irchat-nick-popup-menu): New alias to
+	irchat-xemacs-nick-popup-menu which override original one.
+
+	* irchat-compat.el: Use emu's mouse-button emulation.
+	(irchat-button2): Abolished.
+	(irchat-button3): Abolished.
+
+	* irchat-vars.el (irchat-variables-files): Do not load
+	`~/.irchat3_vars.el' at startup time.
+
+	* irchat-vars.el (irchat-debug-prefix): Clear.
+
+	* irchat.el: Do not check `set-face-stipple' is bound.
+	(irchat-x-splash): Add interactive spec.
+
+1999-05-30  Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* irchat.el (irchat-x-splash): Do centering.
+
+	* bitmap-stipple.el (bitmap-stipple-insert-pixmap):
+	Add optional argument center.
+
+	* liece.xbm: New file.
+
+	* irchat.el: Check if liece.xbm exists.
+
+	* irchat.el (irchat-stipple-pixmap): New variable.
+	(irchat-x-splash): New function.
+
+	* bitmap-stipple.el: New file.
+
+	* irchat-modules.el (irchat-modules-to-compile): Add bitmap-stipple.
+
+	* irchat-commands.el (irchat-command-send-action): Fix typo.
+
+	* irchat-hilight.el (irchat-highlight-font-lock-keywords):
+	Fix regexp.
+
+	* irchat-inlines.el (irchat-or): New function.
+	(irchat-and): New function.
+
+	* irchat-filter.el (irchat-handle-msg-msg): Abolished.
+
+	* irchat-crypt.el (irchat-message-encrypted-p):	Move into
+	irchat-message.
+	(irchat-message-suspicious-p): Ditto.
+	(irchat-message-garbled-p): Ditto.
+	(irchat-message-fingerprint): Ditto.
+	(irchat-message-timestamp): Ditto.
+
+	* irchat-vars.el: All format strings are removed.
+	(irchat-format-string): Abolished.
+
+	* irchat-modules.el (irchat-modules-to-compile): Add
+	irchat-message.
+
+	* irchat-dcc.el (irchat-dcc-chat-filter): Use
+	irchat-display-message.
+
+	* irchat-commands.el (irchat-command-send-action):
+	Bind irchat-message-type.
+
+	* irchat-handle.el (irchat-handle-privmsg-msg):
+	Use irchat-display-message.
+	(irchat-handle-privmsglike-msg): Abolished.
+
+	* irchat-misc.el (irchat-own-channel-message):
+	Use irchat-display-message.
+	(irchat-own-private-message): Likewise.
+
+	* irchat-message.el: New file.
+
+1999-05-29  Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* irchat.el, irchat-vars.el (irchat-before-kill-emacs-hook): New hook.
+
+1999-05-29  Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* irchat-vars.el (irchat-signoff-message):
+	Renamed from irchat-signoff-msg.
+
+	* irchat.el (irchat-obarray-size): Moved from irchat-globals.el.
+
+	* irchat-globals.el: Remove obsolete variables.
+
+	* irchat-ctcp.el (irchat-client-error-message):
+	Moved from irchat-globals.el.
+
+	* irchat-commands.el (irchat-save-variables-are-dirty): Renamed
+	from irchat-save-vars-is-dirty.
+	(irchat-command-send-action): Add prefix.
+
+	* irchat-400.el (irchat-nickname-last): Renamed from
+	irchat-old-nickname.
+
+	* irchat-000.el (irchat-servername): Abolished.
+
+1999-05-28  Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* irchat-crypt.el: Do not require 'idea.
+
+	* irchat-commands.el (irchat-command-message): Treat channel target.
+
+	* irchat-300.el	(irchat-handle-317-msg) <RPL_WHOISIDLE>:
+	Add argument rest to match-string.
+
+1999-05-28  Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* Liece 1.2.8.25.
+
+	* irchat.el (irchat-command-keys): Do not bind lisp-complete-symbol.
+
+	* irchat-commands.el (irchat-command-load-vars): Enclose body with
+	unwind-protect.
+	(irchat-command-complete): Use irchat-minibuffer-finalize-completion.
+	(get-word-left): Abolished.
+	(irchat-switch-to-channel-1): New function.
+	(irchat-switch-to-channel): Use irchat-switch-to-channel-1.
+	(irchat-switch-to-channel-no): Likewise.
+	(irchat-command-message): Check crypt-type.
+
+	* irchat-minibuf.el (irchat-minibuffer-complete-channel-modes):
+	Complete ban patterns.
+	(irchat-minibuffer-parse-modes): Rename property 'uah to 'ban.
+
+	* irchat-handle.el (irchat-handle-mode-msg):
+	Use irchat-channel-set-ban.
+
+	* irchat-channel.el (irchat-channel-add-ban): New macro.
+	(irchat-channel-remove-ban): New macro.
+	(irchat-channel-set-ban): New macro.
+	(irchat-channel-get-bans): New function.
+
+	* irchat-300.el:
+	(irchat-handle-317-msg) <RPL_WHOISIDLE>: Remove condtionals for
+	obsolete servers. [2.5 or 2.6].
+	(irchat-handle-367-msg) <RPL_BANLIST>: Treat it as generic long
+	reply handler.
+	(irchat-367-channel): New variable.
+	(irchat-367-regexps): New variable.
+	(irchat-handle-368-msg) <RPL_ENDOF_BANLIST>: Save ban patterns as
+	'ban property.
+
+1999-05-26  Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* irchat.el (irchat-clear-system):
+	Use dotimes when initializing irchat-obarray.
+
+1999-05-26  Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* irchat.el (irchat-command-keys):
+	Bind irchat-command-display-friends.
+
+	* irchat-commands.el (irchat-command-display-friends): New command.
+
+	* irchat-vars.el (irchat-display-friends-function): New variable.
+
+	* irchat-300.el (irchat-303-display-friends): New function.
+	(irchat-303-display-all-friends): New function.
+
+	* irchat-minibuf.el (irchat-minibuffer-complete-channel-modes):
+	Complete nickname using operators and voices.
+	(irchat-minibuffer-parse-modes): Likewise.
+	(irchat-minibuffer-finalize-completion): Notice no match found.
+
+	* Makefile.am: New file.
+
+1999-05-25  UENO Daiki  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* irchat.el (irchat-others-mode): Set parent mode explicitly.
+	(irchat-channel-mode): Ditto.
+
+1999-05-24  Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* irchat-minibuf.el (irchat-minibuffer-parse-modes): Parse ban
+	pattern.
+
+	* irchat-200.el (irchat-handle-206-msg) <RPL_TRACESERVER>:
+	Use multiline display format.
+	(irchat-handle-214-msg) <RPL_STATSNLINE>: Likewise.
+	(irchat-handle-213-msg) <RPL_STATSCLINE>: Likewise.
+
+	* irchat-ctcp.el (irchat-client-insert): Quote format string.
+
+1999-05-23  Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* Liece 1.2.8.24.
+
+	* irchat-ctcp.el (irchat-minibuffer-complete-client-query): Use
+	`irchat-minibuffer-finalize-completion'.
+
+	* irchat-minibuf.el (irchat-minibuffer-finalize-completion): New
+	function.
+	(irchat-minibuffer-complete-channel-modes): Use above.
+
+	* irchat.el (irchat-check-buffers): Fix loop condition.
+
+1999-05-23  Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* irchat-dcc.el (irchat-dcc-message): New function.
+
+	* irchat-nick.el (irchat-nick-join-1): Check dups.
+
+	* irchat-ctcp.el (irchat-client-insert): New function.
+
+	* irchat-commands.el (irchat-command-prepare-message-prefix):
+	Abolished.
+	(irchat-command-prepare-own-message-prefix): Ditto.
+
+	* irchat-misc.el (irchat-own-private-message): Generate prefix
+	string automatically.
+	(irchat-own-channel-message): Likewise.
+
+1999-05-22  Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* irchat-compat.el (run-hook-with-args-until-success): Abolished.
+
+	* irchat.el (irchat-command-mode): Change mode-line-format.
+	(irchat-open-server): Save password.
+	(irchat-insert-internal): Rewrite.
+
+	* irchat-200.el (irchat-handle-215-msg) <RPL_STATSILINE>:
+	Fix regexp.
+	(irchat-handle-242-msg) <RPL_STATSUPTIME>: Cut off preceding `:'.
+	(irchat-handle-205-msg) <RPL_TRACEUSER>: Fix typo.
+	(irchat-handle-218-msg) <RPL_STATSYLINE>: Fix display format.
+
+1999-05-13  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* irchat-inlines.el (format-quote): Abolished.
+
+	* irchat-ctcp.el (irchat-ctcp-action-msg): Pass arguments to
+	PRIVMSG handler.
+
+	* irchat-hilight.el (irchat-highlight-turn-on-font-lock): Make
+	`after-change-hook' local.
+
+1999-05-12  sphere      <sphere@pop12.odn.ne.jp>
+
+	* irchat-url.el (irchat-command-browse-url): Fix typo.
+
+1999-05-11  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* irchat-crypt.el (irchat-command-set-default-key): Fix typo.
+
+	* irchat-window.el (irchat-command-set-window-style): Fix typo.
+
+	* irchat-url.el (irchat-command-browse-url): Fix typo.
+
+	* irchat-channel.el (irchat-channel-set-voice): Quote regexp.
+
+1999-05-09  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* irchat-ctcp.el (irchat-command-client-time): Fix typo.
+
+	* irchat.el (irchat-channel-mode): Explicitly define as
+	it derives from `irchat-dialogue-mode'.
+	(irchat-others-mode): Ditto.
+
+	* irchat-compat.el (irchat-kill-all-overlays): New function.
+
+	* irchat-nick.el (irchat-nick-update): Do not switch to buffer.
+	(irchat-nick-join): Do not check whether nickname has been inserted.
+	(irchat-nick-update): Kill all overlays.
+
+	* irchat-mail.el: Follow the value of `mail-user-agent'.
+	(irchat-mail-pop-to-buffer): Abolished.
+	(irchat-mail-compose-with-mail): Abolished.
+	(irchat-mail-compose-with-gnus): Abolished.
+
+	* irchat-inlines.el (nth1, nth1cdr):Abolished.
+	(matching-substring): Abolished.
+	(irchat-greater-flags): Abolished.
+
+1999-05-08  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* irchat-300.el (irchat-353-scan-channels): New macro.
+
+	* irchat-minibuf.el (irchat-minibuffer-completing-default-read):
+	Renamed from `irchat-completing-default-read'.
+	(irchat-minibuffer-completing-sequential-read): Renamed from
+	`irchat-completing-sequential-read'.
+
+	* irchat-channel.el (irchat-channel-set-operator-1): Renamed from
+	`irchat-set-channel-operator' within irchat-misc.el.
+	Restrict its use to internal only.
+	(irchat-channel-set-voice-1): Likewise.
+
+	* irchat-commands.el (irchat-command-wait): Abolished.
+
+	* irchat-nick.el (irchat-nick-update): Assume that the 2nd
+	argument CHNL is one of channels we've already joined.
+
+	* irchat-misc.el (irchat-change-nick-of): Change nicks, opers and
+	voices properties properly.
+	(irchat-change-nick-of-1): New function. Modify nick alist by
+	side effect.
+	(irchat-change-nick-of-2): New function which resembles above,
+	but it acts on singular list.
+	(irchat-greet-user): Abolished.
+	(irchat-user-on-my-channel): Abolished.
+	(irchat-user-on-this-channel): Abolished.
+
+	* irchat-handle.el (irchat-handle-channel-msg): Do not use
+	`irchat-change-nick-of' directly.
+	(irchat-handle-nick-msg): Likewise.
+	(irchat-handle-quit-msg): Likewise.
+
+1999-05-07  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* irchat-commands.el (irchat-command-nickname): Do not set
+	`irchat-real-nickname'.
+
+1999-05-06  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* Liece 1.2.8.23.
+
+	* irchat-hilight.el (irchat-quoted-colors): New variable.
+	(irchat-highlight-colorize-quote): New function.
+	(irchat-highlight-turn-on-font-lock): Add buffer locality to
+	some members of `after-change-hook'.
+
+	* Makefile (install): Do not depend on `dcc'.
+
+1999-05-05  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* irchat-handle.el (irchat-handle-part-msg): Call
+	`irchat-channel-part' and `irchat-nick-part' exclusively.
+	(irchat-handle-kick-msg): Likewise.
+
+	* irchat-channel.el (irchat-channel-equal): New alias.
+	(irchat-channel-member): Renamed from `irchat-channel-memberp'.
+	(irchat-channel-join-internal): New function.
+	(irchat-channel-part-internal): New function.
+
+	* irchat-ctcp.el (irchat-ctcp-client-msg): Fix reply string.
+
+	* irchat-minibuf.el (irchat-minibuffer-parse-modes): Completion
+	fixed for ban pattern.
+
+	* irchat-nick.el (irchat-nick-normalize): New macro.
+	(irchat-nick-strip): New macro.
+	(irchat-nick-parse-nick-after): New function.
+
+	* irchat-handle.el (irchat-handle-silence-msg): New handler.
+
+1999-05-04  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* irchat-handle.el (irchat-handle-part-msg): Fix quotation of part
+	message.
+
+	* irchat-400.el: Fix unconsistent user data returned from pirc.
+	(irchat-handle-442-msg): `ERR_NOTONCHANNEL'.
+	(irchat-handle-443-msg): `ERR_USERONCHANNEL'.
+
+	* irchat-misc.el (irchat-update-thischannel): Abolished.
+
+	* irchat-commands.el (irchat-channel-virtual): Save matched data.
+	(irchat-channel-real): Likewise.
+
+	* irchat-300.el (irchat-handle-364-msg): `RPL_LINKS'. Fix regexp.
+	(irchat-handle-333-msg): New hander for `RPL_TOPICWHOTIME'.
+	(irchat-handle-namereply-msg): Abolished.
+	(irchat-handle-whoreply-msg): Abolished.
+
+	* irchat-000.el (irchat-handle-005-msg): `RPL_MAP'.
+	Support for ircu server mapping facility.
+	(irchat-handle-006-msg): New handler for `RPL_MAPMORE'.
+	(irchat-handle-007-msg): New handler for `RPL_MAPEND'.
+
+1999-05-03  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* irchat-handle.el (irchat-handle-part-msg): Handle left message.
+
+	* irchat-custom.el (irchat-connection-timeout): New variable.
+
+	* irchat.el (irchat-accept-response): Add optional arg timeout.
+	(irchat-accept-process-output): New function.
+	(irchat-clear-system): Reset `irchat-timers-list-initialized-p'.
+	(irchat-initialize-timers): Fix secs parameter.
+
+	* irchat-xemacs.el (irchat-xemacs-run-at-time): New function.
+
+	* irchat-compat.el (irchat-run-at-time): New alias.
+	(irchat-cancel-timer): New alias.
+
+	* irchat-commands.el (irchat-command-start-ison-timer): Abolished.
+	(irchat-command-cancel-ison-timer): Abolished.
+
+	* irchat-timer.el: Removed.
+
+1999-04-29  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* irchat.el (irchat-initialize-timers): New function.
+
+	* irchat-q-ccl.el (irchat-quote-ccl-decode-region): New function.
+	(irchat-quote-ccl-encode-region): New function.
+
+	* irchat-q-el.el (irchat-quote-el-decode-region): New function.
+	(irchat-quote-el-encode-region): New function.
+
+	* irchat-ctcp.el (irchat-complete-client): New macro.
+	(irchat-complete-query): New macro.
+	(irchat-command-client-time): New command.
+	(irchat-ctcp-client-msg): Rename each *-msg-hook to *-hook.
+	(irchat-minibuffer-complete-client-query): New function.
+
+	* irchat-commands.el (irchat-command-activate-friends): Fix
+	completion.
+
+	* irchat-compat.el (filter-elements): Add `lisp-indent-function'
+	property with value 2.
+
+1999-04-28  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* irchat-dcc.el (irchat-dcc-object): Implement as cl-struct.
+
+	* irchat-compat.el (irchat-static-require): New macro.
+	(irchat-static-require-if): New macro.
+	(irchat-static-defun-if): New macro.
+
+	* Liece 1.2.8.22.
+
+1999-04-27  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* README-styles.ja, TODO.ja, sample.dot.liece.ja: Removed.
+
+1999-04-26  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* irchat-inlines.el: Require irchat-setup.
+
+	* irchat-x-face.el: Use `static.el'.
+
+	* irchat-handle.el (irchat-handle-join-msg): Set user-at-host
+	information after calling `irchat-nick-join'.
+
+	* irchat-globals.el (irchat-default-channel-candidate): New
+	variable.
+
+1999-04-22  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* irchat-handle.el (irchat-handle-324-msg): Fix regexp.
+
+1999-04-16  Daiki Ueno  <ueno@bleu.ueda.info.waseda.ac.jp>
+
+	* irchat-xemacs.el: Add hooks to hide modelines.
+
+1999-04-12  Daiki Ueno  <ueno@bleu.ueda.info.waseda.ac.jp>
+
+	* irchat.el (irchat-refresh-windows): New function.
+
+	* irchat-300.el: Remove all occurrences of `matching-substring'.
+	(irchat-handle-352-msg): Do not pick-up channel	buffer.
+
+	* irchat-config.el, irchat-modules.el: New files.
+
+1999-04-07  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* irchat.el (irchat-switch-to-channel-no-*): Use `dotimes' on the
+	definitions of themselves.
+
+	* irchat-vars.el (irchat-ignore-spec-convert): Fix tag.
+
+1999-04-06  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* dcc.c (send_file): Use `get_address_externally'.
+	(chat_listen): Likewise.
+
+1999-04-05  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* getaddrinfo.c: Include `stdlib.h'.
+
+1999-04-04  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* Liece 1.2.8.21.
+
+	* irchat-handle.el (irchat-handle-mode-msg): Fix channel mode parser.
+
+	* irchat-commands.el (irchat-command-ban-kick): New command.
+	(irchat-command-ban): New command.
+
+	* irchat-ctcp.el (irchat-ctcp-version-msg): Eliminate the client
+	version string.
+	(irchat-client-version-notice): Fix regexp.
+	(irchat-client-version-insert): New function.
+
+	* irchat-misc.el (irchat-repair-crlf): Fixed.
+
+1999-04-01  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* tcp.c (NI_MAXHOST): Add check if it has been already defined.
+
+	* irchat.el (irchat-command-keys): Bind `C-c C-j'.
+
+1999-03-31  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* irchat-handle.el (irchat-handle-mode-msg): Fix regexp.
+
+	* irchat-commands.el (irchat-command-finger): Add prefix arg.
+
+1999-03-30  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* irchat-filter.el (irchat-handle-message): Fix regexp.
+
+	* irchat-handle.el (irchat-handle-join-msg): Fix regexp.
+	(irchat-handle-nick-msg): Fix regexp.
+
+1999-03-24  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* irchat-commands.el (irchat-command-finger): Specify nick twice.
+
+	* liece-faq.texinfo: Fix URI of APEL's ftp sites.
+
+1999-03-17  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* Liece 1.2.8.20.
+
+	* irchat-crypt.el (with-irchat-encryption): New macro.
+	(with-irchat-decryption): New macro.
+
+	* irchat-compat.el (valid-plist-p): Fixed.
+
+	* irchat-tcp.el (irchat-tcp-default-connection-type): Renamed from
+	`irchat-tcp-connection-type'.
+	(irchat-open-network-stream-as-binary): Add optional arg `type'.
+	(irchat-open-network-stream): Likewise.
+
+	* irchat-vars.el (irchat-server-alist): Add `:prescript' and
+	`:type' keywords.
+
+1999-03-16  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* irchat-compat.el: Require `pcustom'.
+	(point-at-bol): Abolished. Use `line-beginning-position'.
+	(point-at-eol): Abolished. Use `line-end-position'.
+
+	* tcp.c: New file.
+
+	* irchat-tcp.el: New file; TCP/IP emulation using external program.
+
+	* irchat-compat.el (read-passwd): New function to keep compatibility.
+	(passwd-echo): New variable to keep compatibility.
+
+	* irchat-commands.el (irchat-command-who): Confirm really send WHO
+	command with no arguments.
+	(irchat-command-list): Likewise.
+	(irchat-command-names): Likewise.
+
+	* irchat-misc.el (irchat-set-crypt-indicator): Activate crypt mode
+	also in private mode.
+	(irchat-read-passwd): Abolished. Use `read-passwd'.
+
+	* irchat-crypt.el (irchat-crypt-maybe-encrypt-message): Renamed
+	from `irchat-crypt-with-encrypt-message'.
+	(irchat-crypt-maybe-decrypt-message): Likewise.
+
+1999-03-15  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* irchat-handle.el (irchat-handle-join-msg): Fix regexp.
+
+	* irchat-hilight.el (irchat-highlight-maybe-hide-quote): Fixed.
+
+1999-03-14  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* Liece 1.2.8.19.
+
+	* irchat-commands.el (irchat-command-poll-names): Check if
+	`irchat-server-opened' returns t.
+	(irchat-command-poll-friends): Likewise.
+
+	* irchat-hilight.el (irchat-highlight-turn-on-font-lock): Remove
+	all hooks before calling `turn-on-font-lock'.
+
+	* irchat-compat.el (run-hook-with-args-until-success): Do not use
+	`run-hook-with-args'.
+
+	* irchat-filter.el (irchat-handle-message-2): Use
+	`run-hook-with-args-until-success' instead of
+	`run-hook-with-args'.
+
+	* irchat-handle.el (irchat-handle-with-running-cleartext-hook):
+	Use `run-hook-with-args-until-success' instead of
+	`run-hook-with-args'.
+	(irchat-handle-run-cleartext-hook): Likewise.
+	(irchat-handle-run-hook-with-args): Likewise.
+
+	* irchat-timer.el (irchat-start-timer): Use `run-at-time' with 1st
+	argument 0 instead of nil.
+
+	* irchat-ctcp.el (irchat-query-client-nick-maybe-change): Return
+	with nil explicitly.
+
+	* irchat-vars.el (irchat-service-spec): New widget.
+	(irchat-service-spec-convert): New function; widget-converter.
+	(irchat-server-spec): New widget.
+	(irchat-server-spec-convert): New function; widget-converter.
+	(irchat-ignore-spec): New widget.
+	(irchat-ignore-spec-convert): New function; widget-converter.
+
+	* irchat-url.el (irchat-command-browse-url): Use the URL added
+	most recently, if `current-prefix' equals `-'.
+	(irchat-url-browser-netscape): Do not bind the process buffer.
+
+	* irchat-menu.el (irchat-menu-add-button): Add 3rd argument.
+
+1999-03-13  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* irchat-xemacs.el: Use extents instead of overlays.
+	(irchat-xemacs-put-text-property): New function.
+	(irchat-xemacs-get-text-property): New function.
+	(irchat-xemacs-kill-all-overlays): New function.
+	(irchat-xemacs-overlays-at): New function.
+
+	* irchat-compat.el (irchat-make-overlay): New emulation function.
+	(irchat-delete-overlay): Ditto.
+	(irchat-overlay-put): Ditto.
+	(irchat-move-overlay): Ditto.
+	(irchat-overlay-end): Ditto.
+	(irchat-overlay-get): Ditto.
+	(irchat-overlays-at): Ditto.
+	(irchat-kill-all-overlays): Ditto.
+
+1999-03-12  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* irchat-xemacs.el (irchat-toolbar-toggle-crypt): New function.
+	(irchat-toolbar-icon-convert): New function; widget-converter.
+	(irchat-toolbar-icon): New widget.
+	(irchat-toolbar-icon-plist-get): New function.
+	(irchat-toolbar-map-button-list): New function.
+	(irchat-xemacs-setup-toolbar): Renamed from
+	`irchat-xemacs-setup-toolbar-list'.
+	(irchat-toolbar-setup-crypt-glyph): New function.
+	(irchat-toolbar-toggle-crypt): New function.
+	(irchat-use-toolbar): New customizable variable.
+
+	* irchat-compat.el (irchat-put-text-property): Implemented as
+	function.
+
+	* irchat.el (irchat-after-load-startup-hook): New hook variable.
+
+	* irchat-hilight.el (irchat-highlight-maybe-turn-on-font-lock):
+	New function.
+
+	* Liece 1.2.8.18.
+
+	* irchat-channel.el (irchat-channel-create-buffer): Use
+	`irchat-format-time-function'.
+
+	* irchat-hilight.el: Use font-lock.el.
+
+1999-03-11  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* irchat-debug.el (irchat-debug-enter-handler): Moved from
+	llhandler.el.
+	(irchat-debug-leave-handler): Ditto.
+
+	* llhandler.el (llhandler-debug-enter): Abolished.
+	(llhandler-debug-leave): Abolished.
+
+	* irchat-version.el (irchat-emacs-user-agent-value): New variable
+	imported from `mime-edit-user-agent-value' of SEMI.
+	(irchat-user-agent-value): New variable.
+	(irchat-make-user-agent-string): Abolished.
+	(irchat-make-emacs-user-agent-string): Abolished.
+	(irchat-command-version): New command.
+
+	* irchat-hilight.el (irchat-maybe-highlight-region): New function.
+	(irchat-maybe-smiley-region): New function.
+	(irchat-maybe-highlight-url-region): New function.
+	(irchat-highlight-put-url-properties-region): New function.
+
+	* irchat-ctcp.el: Add hooks in order to let
+	`irchat-query-client-nick' follow the changes.
+	(irchat-query-client-nick-maybe-change): New function.
+	(irchat-query-client-nick-maybe-reset): New function.
+
+	* irchat-url.el (irchat-url-gather-hook): New hook variable.
+	(irchat-command-browse-url): Use `_'.
+	(irchat-url-gather-urls-region): New function.
+	(irchat-url-search-forward): New function.
+
+	* irchat-compat.el (easy-menu-add-item): New alias.
+
+	* irchat-xemacs.el (easy-menu-add-item): New advice.
+
+1999-03-10 Tsunehiko Baba <tbaba@mtl.t.u-tokyo.ac.jp>
+
+	* dcc.c (main): Add cast against return value of basename(3).
+
+1999-03-10  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* irchat-menu.el (irchat-menu-url-menu): New variable.
+
+	* Liece 1.2.8.17.
+
+	* irchat-misc.el (irchat-compose-time-string): Renamed from
+	`irchat-compose-servertimestring'.
+
+	* irchat-compat.el (plist-get): New function for compatibility.
+
+	* irchat-ctcp.el (irchat-client-time-notice): New handler.
+	(irchat-ctcp-time-msg): Ditto.
+
+	* irchat-minibuf.el (irchat-minibuffer-complete-channel-modes):
+	Also display candidates when `irchat-minibuffer-parse-modes'
+	returns 'flag.
+
+	* irchat-400.el (irchat-handle-433-msg): `ERR_NICKNAMEINUSE'.
+	Do grow-tail iteration on `irchat-real-nickname' only if
+	`irchat-auto-iterate-nick' is specified.
+
+	* irchat-vars.el (irchat-server-alist): Enable to specify keywords
+	(:host, :service, :password, etc.).
+	(irchat-auto-iterate-nick): New customizable variable.
+
+	* irchat-menu.el (irchat-menu-add-url): New function.
+	(irchat-command-mode-url-menu): New menu entry.
+
+	* irchat.el (irchat): Do not ping to server.
+	(irchat-open-server): Use new format of `irchat-server-alist'.
+
+1999-03-02  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* irchat-handle.el (irchat-handle-privmsglike-msg): Define as subst.
+
+	* irchat-make.el (install-just-print-p): New function
+	imported from APEL 9.13's `APEL-MK'.
+	(config-irchat-package): Likewise.
+	(compile-irchat-package): Likewise.
+	(install-irchat-package): Likewise.
+	(install-update-package-files): Likewise.
+	(make-irchat-sample-files): New function imported from packaged
+	version of Liece.
+	(make-irchat-info-files): Ditto.
+
+	* irchat-300.el (irchat-handle-366-msg): Do not update nicks when
+	`irchat-353-nameslist' holds no element.
+
+1999-03-01  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* irchat-handle.el (irchat-handle-quit-msg,
+	irchat-handle-mode-msg, irchat-handle-join-msg,
+	irchat-handle-part-msg): Quote regexp.
+
+1999-02-28  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* irchat.el (irchat-clear-system): Fix backquotes.
+
+1999-02-25  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* irchat-300.el (irchat-handle-303-msg): Fix. Add check for empty
+	reply.
+
+1999-02-24  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* irchat-handle.el (irchat-handle-notice-msg): Fix. Call handler
+	with `funcall'.
+
+	* irchat.el (irchat-channel-mode-map): Make keymap as sparse.
+	(irchat-others-mode-map): Likewise.
+
+	* irchat-commands.el (irchat-command-deactivate-friends):
+	Fix argument.
+
+	* Liece 1.2.8.16.
+
+	* irchat-globals.el (irchat-who-expression): New variable.
+
+	* irchat-misc.el (irchat-toggle-command-buffer-mode): Change
+	`irchat-private-indicator'.
+
+	* irchat-300.el (irchat-handle-315-msg): `RPL_ENDOFWHO'.
+	Display `no matches found' message
+	(irchat-handle-{322,323,353,366}-msg): Count iterations.
+
+	* irchat.el (irchat-command-mode): Do not save
+	`frame-title-format' twice. Use `irchat-current-channel' in place
+	of `irchat-channel-indicator'.
+
+	* llhandler.el (llhandler-debug-enter): New function.
+	(llhandler-debug-leave): New function.
+	(llhandler-define-handler): New macro.
+	(llhandler-eval-args): Abolished.
+
+	* irchat-crypt.el (irchat-encrypt-message): Encode messages.
+	(irchat-decrypt-message): Likewise. Decode messages.
+	(irchat-crypt-with-encrypted-message): Do not encode message which
+	has type `cleartext'.
+
+1999-02-23  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* irchat-misc.el (irchat-send-pong): New macro.
+	(irchat-increment-long-reply-count): New macro.
+	(irchat-reset-long-reply-count): New macro.
+	(irchat-check-long-reply-count): New macro.
+
+	* irchat-globals.el (irchat-long-reply-count) New variable.
+	(irchat-long-reply-max): New variable.
+
+	* irchat-commands.el (irchat-command-save-vars): Fix. Set marker
+	at output position.
+
+1999-02-21  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* irchat-300.el (irchat-handle-303-msg): Add differential IsON.
+
+	* irchat-commands.el (irchat-command-start-ison-timer,
+	irchat-command-cancel-ison-timer, irchat-command-activate-friends,
+	irchat-command-deactivate-friends): Do completion case
+	insensitively.
+
+	* irchat-vars.el (irchat-saved-forms): Add symbol `irchat-friends'
+	to be saved its value.
+
+1999-02-20  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* Liece 1.2.8.15.
+
+	* irchat-filter.el (irchat-sentinel): Do not throw signal, just
+	clear whole system.
+	(irchat-sentinel-error): Ditto.
+
+	* irchat-vars.el (irchat-friends): New user customizable variable.
+	(irchat-poll-friends-interval): New user customizable variable.
+	(irchat-poll-names-interval): New user customizable variable.
+
+	* irchat-commands.el (irchat-command-poll-names): Renamed from
+	`irchat-command-pollnames'; implemented as function.
+	(irchat-command-keepalive): Implemented as function.
+	(irchat-command-poll-friends): New function.
+	(irchat-command-activate-friends): New command.
+	(irchat-command-deactivate-friends): New command.
+
+	* irchat-300.el (irchat-handle-331-msg): Call
+	`irchat-set-channel-indicator'.
+	(irchat-handle-332-msg): Ditto.
+
+	* irchat-globals.el (irchat-channel-status-indicator): New
+	variable; default value of `frame-title-format'.
+	(irchat-friends-last): New variable.
+	(irchat-frame-title-format-last): New variable.
+
+	* irchat-misc.el (irchat-set-frame-title-format): Do not calculate
+	`frame-title-format' directly.
+	(irchat-maybe-update-channel-indicator): New macro.
+
+1999-02-20  P.F.FrontJr. <pff@softai.co.jp>:
+
+	* irchat-misc.el (irchat-set-channel-indicator): Display channel
+	status on mode line.
+
+	* irchat-vars.el (irchat-display-status-on-channel-indicator):
+	New user customizable variable.
+
+1999-02-15  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* irchat.el (irchat-read-variables-files): Set alternative
+	startup file as primary one.
+
+	* irchat-timer.el (irchat-start-timer): Do not require `timer' or
+	`itimer'; autoload timer functions.
+	(irchat-cancel-timer): Ditto.
+
+1999-02-14  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* irchat-ck-ccl (irchat-ck-ccl): Remove.
+	(irchat-ck-ccl-cj-to-ck-string): Use `ccl-execute-on-string'.
+	(irchat-ck-ccl-ck-to-cj-string): Ditto.
+
+	* irchat-xemacs.el (irchat-xemacs-setup-toolbar): New function.
+
+	* irchat-menu.el (irchat-command-add-menus): New function; add
+	menubar menus explicitly.
+
+	* irchat-coding.el (irchat-coding-custom-detect-coding-region):
+	New variable; set user customizable function to detect coding system.
+	(irchat-coding-custom-detect-coding-string): Likewise.
+	(irchat-detect-coding-string-tcljp): Transported from
+	`tclKanjiUtil.c'; trivial encoding detection routine.
+	(irchat-default-coding-system): Moved from `irchat-vars.el'.
+	(irchat-default-mime-charset): Ditto.
+	(irchat-detect-coding-system): Ditto.
+
+	* crc32.el (crc32-region): Remove `mark-active'.
+
+	* irchat-timer.el (irchat-cancel-timer): Fix for XEmacs's
+	`itimer'.
+
+	* Liece 1.2.8.14.
+
+	* irchat-dcc.el (irchat-dcc-requests): Rename from
+	`irchat-dcc-request-list'; implemented as actually a queue.
+
+	* queue-m.el: New file; imported from elib.
+
+	* irchat-filter.el (irchat-filter): Remove checking whether
+	process output line contains LF; remove duplicated LF checking
+	likewise; enclose with `save-match-data'.
+	(irchat-handle-message): Add checking user-at-host cookie with
+	restricted line.
+
+	* irchat-window.el (irchat-window-functionp): Remove; use
+	`irchat-functionp'.
+
+	* irchat-channel.el (irchat-channel-get-nicks): Fix; apply car
+	against each elements.
+
+1999-02-13  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* irchat-commands.el (irchat-command-mode+o,
+	irchat-command-mode+v): Build completion list using
+	`filter-elements'.
+
+	* irchat-vars.el (irchat-exit-hook): Rename from
+	`irchat-Exit-hook'.
+
+	* irchat-inlines.el (irchat-functionp): New macro.
+
+	* irchat-compat.el (mapvector): New macro.
+
+	* irchat-misc.el (irchat-greet-author): Remove.
+	(irchat-split-rest): Fix arguments.
+	(irchat-completing-default-read): 3rd and later arguments become
+	optional.
+	(irchat-completing-sequential-read): Evaluate completion table
+	consequently; Add optional argument `multiple-candidate', if this
+	arg is non-nil always create new table with its initial state.
+
+	* llhandler.el (llhandler-define-entry-point): Add debugging
+	triger in frount of function definition.
+	(llhandler-define-with-return): Ditto.
+	(llhandler-define): Ditto.
+	(llhandler-enter-format-string): New constant; for debugging use.
+	(llhandler-leave-format-string): Ditto.
+	(llhandler-eval-args): New macro.
+
+	* irchat.el (irchat-open-server-internal): Use
+	`open-network-stream-as-binary'.
+	(irchat-startup-hook): Rename from `irchat-Startup-hook'.
+
+1999-02-07  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* Liece 1.2.8.13.
+
+	* idea.el (idea-ecb-decrypt-string): Enclose Base64 decoded string
+	with `string-as-unibyte'.
+	(idea-cbc-decrypt-string): Ditto.
+
+	* idea.el: Sync up with Irchat-980625-2.
+
+	* crc32.el: Ditto.
+
+	* irchat-300.el (irchat-handle-303-msg): Fix matched string.
+
+	* irchat-handle.el (irchat-handle-privmsg-msg): Check whether
+	private	message has come from entirely outer.
+
+	* irchat-filter.el (irchat-handle-message): Remove all occurence
+	of CR out of inputs :(
+
+1999-02-06  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* irchat.el (irchat-read-variables-files): Save alternatively
+	specified startup file name into `irchat-variables-files'.
+
+1999-02-04  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* irchat-dcc.el (irchat-command-dcc-accept): Remove destructive
+	checking.
+
+	* irchat-make.el: Do not use `add-to-list' for Emacs19.
+
+	* irchat-nick.el (irchat-nick-replace): Fixed regexp.
+
+1999-02-03  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* irchat-coding.el (irchat-coding-detect-coding-region)
+	(irchat-coding-detect-coding-string): New function.
+	(irchat-coding-decode-mime-charset-region): Use above directly.
+	(irchat-coding-decode-mime-charset-string): Ditto.
+
+1999-02-02  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* irchat-commands.el (irchat-command-who): Fixed setting
+	`irchat-channel-alist.
+
+	* Liece 1.2.8.12.
+
+	* irchat-nick.el (irchat-nick-get-user-at-host): New macro.
+
+	* irchat-compat.el (temp-minibuffer-message): New function.
+
+	* irchat-minibuf.el: New file; custom minibuffer completion.
+
+	* irchat.el (irchat-open-server-internal): Add check for dotless
+	IP or IPv6 address representation.
+
+	* irchat-channel.el (irchat-channel-set-voice): Replace with
+	regexp.
+
+1999-02-01  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* irchat-300.el (irchat-handle-319-msg): Fixed channel conversion.
+
+	* irchat-commands.el (irchat-command-modec): Fixed completion.
+	(irchat-command-mode-o,irchat-command-mode+v,irchat-command-mode-v):
+	Fix format string.
+
+	* dcc.c (chat_listen): Print connection result.
+
+	* irchat-dcc.el (irchat-command-dcc-chat-listen): Add dummy
+	argument `chat' for compatibility.
+
+	* irchat-channel.el (irchat-channel-remove-mode): Use `delq'.
+	(irchat-nick-remove-mode): Ditto.
+
+	* Liece 1.2.8.11.
+
+	* irchat-menu.el (irchat-menu-popup-menu): Check whether XEmacs or
+	not compile time.
+
+1999-01-31  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* irchat-compat.el (set-keymap-parents): New macro.
+
+	* irchat-commands.el (irchat-command-join-channel): Add flag
+	whether `irchat-command-buffer-mode' is toggled.
+	(irchat-command-join-partner): Ditto.
+
+	* irchat-300.el (irchat-count-words-from-string): Count	postfix
+	white spaces.
+
+	* irchat-q-el.el: Splited from `irchat-ctcp.el'; binary data
+	quotation in emacs-lisp.
+	* irchat-q-ccl.el: Same functionality as above but implemented in
+	Emacs CCL.
+
+	* b64.el (b64-encode-string, b64-decode-string): Add autoload
+	cookie.
+
+	* irchat.el (irchat-channel-list-keys): New variable.
+	(irchat-define-keys): Add lisp-mode indentation.
+	(irchat-channel-mode-map, irchat-others-mode-map): Set
+	`irchat-dialogue-mode-map' as its keymap parent.
+
+1999-01-28  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* Liece 1.2.8.10.
+
+	* dcc.c: Rewritten but this is obsoleted.
+
+	* irchat-commands.el (irchat-command-end-of-buffer): Renamed from
+	`irchat-command-eod-buffer'; this works also in `irchat-{channel,
+	others}-buffer-mode'.
+
+	* dcc.ml (getaddr_ext): New function.
+
+	* irchat-dcc.el (irchat-dcc-send-filter): Fix regexp.
+	(irchat-dcc-add-to-process-alist): Add process key as symbol.
+	(irchat-dcc-get-process-object): Likewise.
+	(irchat-command-dcc-receive): Fixed arguments of
+	`irchat-dcc-add-to-process-alist'.
+	(irchat-command-dcc-send): Likewise.
+	(irchat-command-dcc-accept): Fix typo.
+
+1999-01-27  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* irchat.el (irchat-others-mode-map): Add key binding of
+	`irchat-command-tag-region'
+
+	* irchat-commands.el (irchat-command-join-channel): Use
+	`irchat-channel-memberp'.
+	(irchat-command-modec): Make completion from supported mode list.
+	(irchat-channel-real): Try match with
+	`irchat-channel-conversion-map' case insensitively.
+	(irchat-channel-virtual): Ditto.
+
+1999-01-26  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* irchat-globals.el (irchat-supported-channel-mode-alist):
+	(irchat-supported-user-mode-alist): New variable
+
+	* irchat-nick.el (irchat-nick-get-modes): New macro.
+	(irchat-nick-add-mode): New macro.
+	(irchat-nick-remove-mode): New macro.
+	(irchat-nick-set-mode): New macro.
+
+	* irchat-000.el (irchat-handle-004-msg): Save server supported
+	modes.
+
+	* Liece 1.2.8.9.
+
+	* irchat-make.el: Add local copy of APEL to `load-path'.
+	(autoload-irchat): New function to generate autoload file.
+
+	* irchat.el (irchat-command-keys): Add key definition of
+	`irchat-command-set-window-style' (C-c s).
+	(irchat): Parse `irchat-variables-files' specified in command
+	line.
+	(irchat-read-variables-files): Add optional argument `file'.
+
+	* irchat-window.el (irchat-window-set-default-style): Fallback
+	style used when encountered an error at style-file loading time.
+
+	* irchat-handle.el (irchat-handle-mode-msg): Gather channel modes
+	correctly.
+
+	* irchat-channel.el (irchat-channel-get-modes): New macro.
+	(irchat-channel-set-mode): New macro.
+	(irchat-channel-add-mode): New macro.
+	(irchat-channel-remove-mode): New macro.
+
+	* irchat-menu.el (irchat-menu-prepare-menus): Fix typo in
+	`irchat-command-previous-channel'.
+	(irchat-menu-IRC-menu): Add menu items.
+
+1999-01-23  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* irchat-misc.el (irchat-change-nick-of): Fixed.
+
+1999-01-22  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* llhandler.el: New file.
+
+	* Liece 1.2.8.8.
+
+	* irchat-handle.el (irchat-handler-defun-*): Abolished.
+	(irchat-handler-defsubst-*): Abolished.
+	(irchat-handler-obarray): New variable.
+	(irchat-handle-error-msg): New handler.
+	Handler API has been rewritten with `irchat-handler-obarray',
+	which enables faster handler lookup from hash.
+
+1999-01-21  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* irchat-ctcp.el: Rewritten with new handler API.
+	(irchat-ctcp-file-save-directory): New user variable.
+	(irchat-client-message): New macro.
+	(irchat-client-file-message): New macro.
+
+	* irchat-vars.el (irchat-gather-channel-modes): New user variable.
+	(irchat-*-buffer): Moved into `irchat-globals.el'.
+
+	* irchat-misc.el: Require `invisible'.
+	(irchat-remove-properties-region): Use
+	`next-single-property-change' instead of `next-property-change'.
+	(next-visible-point): Add advice to pass optional argument
+	`limit'.
+	(irchat-change-nick-of): Fixed.
+
+1999-01-20  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* irchat-compat.el (filter-elements): Renamed from `filtercar'.
+	Rewritten as macro with referring to `dabbrev-filter-elements'.
+
+	* defface.el (defface-set-face-inverse): New function.
+	(defface-face-inverse): Ditto.
+	(defface-set-face-bold): Abolished. Use `face-set-bold-p'.
+	(defface-face-bold): Abolished. Use `face-bold-p'.
+	(defface-set-face-italic): Abolished. Use `face-set-italic-p'.
+	(defface-face-italic): Abolished. Use `face-italic-p'.
+
+1999-01-19  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* irchat-commands.el (irchat-command-tag-region): Renamed from
+	`irchat-dialogue-tag-line'. Add removing 'face and 'invisible
+	properties from text moved into kill ring.
+
+	* sample.dot.liece{,.ja}: Fixed documentation about window
+	configuration.
+
+	* irchat-misc.el (irchat-pick-buffer): Assume that channel names
+	are associated to channel buffers case insensitively.
+	(irchat-remove-properties-region): New macro.
+
+1999-01-18  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* irchat-compat.el (keymap-accept-event-array): Abolished.
+
+	* Liece 1.2.8.7.
+
+	* irchat-misc.el (matching-substring): Became an alias for
+	`match-string'.
+
+	* irchat.el (irchat-open-server): Fixed.
+	(irchat-open-server-internal): Fixed.
+	Do not require `smiley'.
+
+1999-01-17  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* irchat-300.el (irchat-handle-364-msg): Fixed.
+
+	* irchat-200.el (irchat-handle-213-msg): Fixed.
+
+	* irchat-intl.el (irchat-intl-load-catalogue): Do not bind `lang'
+	to `current-language-environment'.
+
+	* irchat-window.el (irchat-configure-windows): Switch to
+	`irchat-command-buffer' before calling function
+	`irchat-window-configure-frame'.
+
+	* irchat-timer.el: Enclose statement which has newly styled macros
+	with `eval'.
+
+	* irchat-compat.el (run-hook-with-args-until-success): New macro
+	for compatibility.
+
+	* irchat-misc.el (irchat-convert-received-input): New macro.
+	No longer require `irchat-filter'.
+
+1999-01-16  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* irchat-caesar.el: Abolished.
+
+	* irchat-compat.el (function-documentation): New macro.
+
+	* irchat-commands.el (irchat-command-point-back-to-command-buffer):
+	New command. Bind key to `c'.
+	(irchat-command-caesar-line): Abolished. Use `mule-caesar-region'.
+
+	* irchat-misc.el (irchat-is-message-ignored): Moved from
+	`irchat.el'.
+	(irchat-maybe-poll): Ditto.
+	(irchat-set-crypt-indicator): Ditto.
+	(irchat-get-buffer-create): Ditto.
+	(irchat-hex-char-to-integer): Imported from `misty1.el'.
+	(irchat-hex-string-to-integer): Ditto.
+
+1999-01-15  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* irchat.el (irchat-read-variables-files): New function.
+	(irchat-command-read-variables-files): New alias to
+	`irchat-read-variables-files'.
+	(irchat-initialize-buffers): New wrapper function.
+	(irchat-replace-internal): New macro.
+	(irchat-insert-internal): New macro.
+
+	* irchat-compat.el (ccl-enable-to-read-multibyte): New broken
+	facility.
+	(buffer-or-string-p): New macro.
+
+	* irchat-misc.el (irchat-send-as-binary): New macro.
+	(irchat-send): Add `string-as-unibyte' while checking length of
+	string.
+	(irchat-replace-in-string): Abolished.
+
+	* irchat-ck-ccl.el: CCL version of `ck' to `cj' converter.
+
+	* irchat-ck-el.el: Renamed from `irchat-hankana.el'.
+
+	* irchat-make.el: irchat-make.el: Add checking whether CCL accepts
+	`read-multibyte-character'.
+
+1999-01-14  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* irchat-misc.el (irchat-nickname): New macro.
+
+	* irchat-window.el (irchat-configure-windows): Enclose
+	calling function `irchat-window-configure-frame' with
+	`save-excursion'.
+
+	* irchat-crypt.el (irchat-crypt-with-decrypt-message):
+	Renamed from `irchat-crypt-with-encrypted-message'.
+	(irchat-crypt-with-encrypt-message): New macro.
+
+	* irchat-commands.el (irchat-command-join-partner): Fixed.
+	(irchat-command-timestamp): Fixed.
+	(irchat-command-send-message): Fixed.
+	(irchat-command-message): Fixed.
+	(irchat-command-prepare-message-prefix): New macro.
+	(irchat-command-prepare-own-message-prefix): New macro.
+
+	* Liece 1.2.8.6.
+
+	* irchat-channel.el (irchat-channel-join): Fixed.
+
+	* irchat-url.el (irchat-url-prepare-browser-function): New macro.
+	(irchat-url-command-browse-url): Add checking
+	`irchat-url-browser-name' prior to `irchat-url-browser-function'.
+
+1999-01-13  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* README-styles.ja: New file.
+
+	* irchat-channel.el (irchat-channel-change): Enclose with
+	`save-excursion'.
+
+1999-01-11  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* irchat.el (irchat): Fixed bug in XEmacs toolbar specification.
+
+1999-01-10  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* irchat-nick.el (irchat-nick-get-joined-channels): New macro.
+
+	* irchat-channel.el (irchat-channel-get-nicks): New macro.
+	(irchat-channel-get-opers): Ditto.
+	(irchat-channel-get-voices): Ditto.
+	(irchat-channel-get-topic): Ditto.
+
+	* styles/{top,bottom}: Fixed command buffer lines.
+
+	* Liece 1.2.8.5.
+
+	* irchat.el (irchat-insert): Remove checking "(featurep 'custom)".
+
+	* defface.el: New file.
+
+1999-01-09  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* irchat-handle.el (irchat-handler-define-entry-point): New alias.
+	(irchat-handler-defun-with-return): New macro.
+	(irchat-handler-defsubst-with-return): New macro.
+
+	* irchat-{000,200,300,400,500}.el: Rewritten with new handler API.
+
+	* irchat-handle.el (irchat-handler-entry-point-defun): New macro.
+	(irchat-handler-entry-point-defsubst): New macro.
+
+	* irchat-handle.el (irchat-handle-with-running-cleartext-hook):
+	Renamed from `irchat-handle-with-cleartext-hook'.
+	(irchat-handle-run-cleartext-hook):
+	Renamed from `irchat-handle-cleartext-hook'.
+
+1999-01-08  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* styles/top: New file.
+
+	* irchat-misc.el (irchat-message): New macro.
+
+	* Liece 1.2.8.4.
+
+	* styles/{bottom,middle}: New file.
+
+	* irchat-window.el (irchat-configure-windows): Moved from
+	`irchat'.
+
+	* irchat-window.el: New file for style-based window configuration.
+
+	* irchat-nick.el (irchat-nick-replace): Fixed moving point to
+	highlight mouse face.
+
+1999-01-05  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* irchat-nick.el (irchat-nick-update-region): Set point to mouse
+	clicked position.
+
+	* Liece 1.2.8.3.
+
+	* irchat.el (irchat-nick-mode-map): Add popup menu.
+
+	* irchat-menu.el (irchat-nick-popup-menu): New function.
+	(irchat-menu-popup-menu): New macro.
+
+	* irchat-intl.el (irchat-intl-get-msgstr-if): New macro.
+
+	* irchat-nick.el (irchat-nick-update-region): New function.
+	(irchat-nick-region-nicks): Moved from `irchat-xemacs'.
+	(irchat-nick-region-opers): Ditto.
+	(irchat-nick-region-voices): Ditto.
+
+	* irchat-menu.el (irchat-menu-callback-*): Moved from
+	`irchat-xemacs'.
+	(irchat-menu-define-menus): Moved to defadviced block.
+
+	* irchat-xemacs.el (irchat-xemacs-setup-menu): Shared
+	`irchat-nick-update-region'.
+
+	* irchat-channel.el (irchat-channel-set-operator): Fixed regexp.
+
+	* irchat-nick.el (irchat-nick-replace): Fixed regexp.
+
+1999-01-04  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* irchat-nick.el (irchat-nick-replace): Fixed execution order.
+
+	* irchat-nick.el (irchat-nick-replace): Fixed regexp.
+	And enclose `save-restriction'.
+
+	* irchat-menu.el: Add easymenu support.
+
+	* Liece 1.2.8.2.
+
+	* irchat-crypt.el (irchat-crypt-with-encrypted-message):
+	New macro.
+
+	* irchat-handle.el (irchat-handler-defsubst): New macro.
+	(irchat-handler-defun): Ditto.
+	(irchat-handler-return): Ditto.
+	All handler routines are defined with new form.
+	(irchat-handle-with-cleartext-hook): New macro.
+	(irchat-handle-cleartext-hook): Ditto.
+	(irchat-handle-run-hook-with-args): Ditto.
+	Handler code eliminated by global jump.
+	(irchat-handle-set-channel-prefix): New macro.
+	(irchat-handle-set-dialogue-prefix): Ditto.
+	(irchat-handle-set-private-prefix): Ditto.
+
+	* irchat-misc.el (irchat-insert-change): New macro.
+	(irchat-insert-notice): Ditto.
+	(irchat-insert-broadcast): Ditto.
+	(irchat-insert-wallops): Ditto.
+	(irchat-insert-error): Ditto.
+	(irchat-insert-info): Ditto.
+	(irchat-insert-timestamp): Ditto.
+	(irchat-insert-dcc): Ditto.
+	(irchat-insert-client): Ditto.
+
+1999-01-03  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* irchat-commands.el (irchat-switch-to-channel-no): Fixed.
+
+	* irchat-hilight.el (irchat-highlight-region): Check
+	`irchat-display-prefix-tag'.
+
+	* irchat-vars.el (irchat-display-prefix-tag): New variable.
+
+	* irchat-hilight.el (irchat-highlight-hide-prefix-region):
+	New function.
+
+	* irchat-version.el (irchat-version-user-agent-style): Abolished.
+	(liece-client-product): New variable.
+	(liece-client-name): New macro.
+	(liece-client-version-major): Ditto.
+	(liece-client-version-minor): Ditto.
+	(liece-client-version-beta): Ditto.
+	(liece-client-version-alpha): Ditto.
+	(liece-client-codename): Ditto.
+
+	* irchat-version.el (irchat-make-emacs-user-agent-string): New
+	function.
+
+	* irchat.el (irchat-insert): Renamed from `irchat-w-insert'.
+	(irchat-replace): Renamed from `irchat-w-replace'.
+
+	* irchat-intl.el (irchat-intl-domain-to-mime-charset-alist): New
+	variable.
+
+	* irchat-intl.el (irchat-intl-parse-Content-Type): Do not use
+	`mime-parse-Content-Type' when `mime-parse' is not loaded.
+
+	* irchat.el: Remove extra calls of `suppress-keymap'.
+
+	* irchat-compat.el: Remove all CL emulation.
+
+	* Liece 1.2.8.1.
+
+	* irchat-intl.el (irchat-intl-use-localized-messages): New
+	variable.
+
+1999-01-02  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* irchat-intl.el (irchat-intl-parse-Content-Type): Parse
+	"Content-Type:" header to recognize coding used in PO files.
+
+1999-01-01  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* irchat-intl.el (irchat-intl-domains-to-coding-system-alist):
+	Abolished.
+
+	* irchat-commands.el (irchat-command-find-timestamp): Regexp fixed.
+
+1998-12-30  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* Add experimental i18n feature.
+
+	* po/ja.po: New file.
+
+	* irchat-intl.el: New file.
+
+	* irchat-ctcp.el (irchat-ctcp-msg): Message format fixed.
+
+	* irchat-channel.el (irchat-channel-join): Fixed.
+	(irchat-channel-create-buffer): Fixed.
+
+1998-12-29  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* irchat-commands.el (irchat-switch-to-channel{,-no}):
+	Do not reconfigure windows.
+
+	* TODO.ja: New file.
+
+	* Liece 1.2.6.13/1.2.8.0.
+
+	* irchat-commands.el (irchat-switch-to-channel): Fixed.
+	(irchat-switch-to-channel-no): Fixed.
+
+	* irchat-misc.el (irchat-toggle-command-buffer-mode): When hiding
+	state of nick buffer is toggled, reconfigure windows every time.
+
+	* irchat-handle.el (irchat-handle-join-msg): Check whether joined
+	channel is modeless.
+
+	* irchat-misc.el (irchat-channel-modeless-p): New macro.
+	(irchat-channel-modeless-regexp): New variable.
+
+	* irchat-handle.el (irchat-handle-{join,quit,mode,part}-msg):
+	Compression of changes reworked.
+
+	* irchat-vars.el (irchat-display-time): Rename from
+	`irchat-print-time'.
+	(irchat-time-prefix-regexp): Regexp for time prefix.
+
+	* irchat-mail.el: Add autoloads instead of all requires
+	(`gnus-msg', `sendmail', `mime-edit').
+	(irchat-mail-compose-with-mail): Add evals to silence
+	byte-compiler.
+	(irchat-command-mail-compose): Fix completion.
+
+	* irchat-channel.el (irchat-channel-buffer-create):
+	Rewritten as a macro.
+
+	* irchat-nick.el (irchat-nick-buffer-create): Ditto.
+
+	* irchat-compat.el: `<<' and `>>' are become aliases of lsh.
+
+	* irchat.el: Rename `irchat-Select-keys' to `irchat-select-keys'.
+
+	* sample.liece{,.ja}: Add sample setting of
+	`irchat-startup-channel-list'.
+
+	* irchat.el (irchat-command-keys): Bind `C-c b' and `C-c N b' to
+	`irchat-command{,-nick}-scroll-down' (synced up with irchat-2.4jp24f).
+	(irchat-nick-keys): Bind scrolling functions.
+
+	* irchat.el (irchat-command-mode): Display `minor-mode-alist' on
+	mode-line.
+
+	* irchat-globals.el (irchat-obarray):
+	Set initial array length to 1.
+
+	* irchat.el: Remove preparation code of `irchat-obarray'.
+
+	* liece-faq.texinfo: Change formatting style.
+
+1998-12-10  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* irchat-commands.el (irchat-command-nick-scroll-down): Add check
+	whether `irchat-nick-buffer' is visible.
+	(irchat-command-nick-scroll-up): Ditto.
+
+	* irchat-commands.el (irchat-command-scroll-down): Add check
+	whether `irchat-channel-buffer' is visible.
+	(irchat-command-scroll-up): Ditto.
+
+1998-12-09  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* irchat-misc.el (irchat-set-channel-indicator): Add check for
+	`irchat-display-frame-title'.
+
+	* irchat.el (irchat-configure-windows): Bind
+	`irchat-channel-buffer-mode' and `irchat-nick-buffer-mode' at the
+	entry point.
+
+	* irchat-channel.el (irchat-channel-switch-to-last): New macro.
+
+	* Liece 1.2.6.12.
+
+	* irchat-commands.el (irchat-channel-real): Fix spelling.
+	(irchat-channel-virtual): Ditto.
+
+	* irchat-channel.el (irchat-channel-switch-to-last): New function.
+
+	* irchat-channel.el (irchat-channel-last): New macro.
+
+	* irchat-misc.el (irchat-change-nick-of): Fixed.
+
+1998-12-04  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* irchat-misc.el (irchat-own-channel-message):
+	(ircaht-own-private-message): Remove dialogue buffer from target
+	buffers.
+
+	* liece-faq.texinfo: Fix hook for auto invisible.
+
+1998-12-03  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* irchat-handle.el (irchat-pick-buffer): Moved to `irchat-misc.el'.
+
+	* irchat-highlit.el (irchat-highlight-pattern-alist): Fix regexp
+	for DCC chatting line.
+
+	* irchat-commands.el (irchat-command-modec): Select target channel.
+
+	* irchat-dcc.el (irchat-command-dcc-chat-listen):
+	(irchat-command-dcc-chat-listen): Use `as-binary-process'
+	block.
+
+	* irchat.el (irchat-open-server-internal): Ditto.
+
+	* irchat-vars.el (irchat-binary-coding-system): Abolished.
+
+	* irchat.el (irchat-open-server-internal): Bind
+	`file-coding-system-for-{read|write}' for Mule 2.3.
+
+	* irchat.el: `irchat-switch-to-channel-no-*' registered automatically.
+
+1998-12-02  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* irchat-vars.el: Require `mcharset'.
+
+	* Liece 1.2.6.11.
+
+	* irchat-vars.el (irchat-default-mime-charset): New variable.
+
+	* irchat-coding.el: Use `mcharset' instead of
+	`{encode|decode}-coding-*'.
+	(irchat-coding-encode-charset-region):
+	(irchat-coding-encode-charset-string): New macro.
+
+	* irchat-dcc.el (irchat-dcc-pop-request-object): Fixed.
+
+	* irchat-compat.el (caar): New macro.
+
+	* irchat-misc.el (irchat-repair-crlf): New function.
+
+	* Liece 1.2.6.10.
+
+	* irchat.el (irchat-dcc-map): New keymap.
+
+	* irchat-dcc.el (irchat-command-dcc-accept): New function.
+	(irchat-dcc-get-*): Access method for request object.
+	(irchat-dcc-pop-request-object): New macro.
+
+	* Liece 1.2.6.9.
+
+	* irchat-dcc.el: Very experimental DCC chat support added.
+	(irchat-command-dcc-chat-listen): New function.
+	(irchat-command-dcc-chat-connect): Ditto.
+	(irchat-dcc-chat-listen-filter): Ditto.
+	(irchat-dcc-chat-connect-filter): Ditto.
+	(irchat-dcc-chat-filter): Ditto.
+	(irchat-dcc-channel-representation-format): New variable.
+
+	* irchat-channel.el: Very experimental multiple server support
+	added.
+	(irchat-default-channel-representation-format): New variable. This
+	is unified channel locater. Set default as
+	"@<server abbreviation>+<channel name>".
+	(irchat-channel-parse-representation): New function.
+	(irchat-channel-prepare-representation): Ditto.
+
+	* irchat-misc.el (irchat-own-channel-message): New function.
+
+	* irchat-misc.el (irchat-own-message): New macro.
+
+	* dcc.ml: Explicitly return with code 0.
+
+	* irchat-dcc.el (irchat-dcc-send-filter): Fixed.
+	(irchat-dcc-receive-filter): Fixed.
+
+1998-12-01  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* irchat-vars.el (irchat-dcc-prefix): New variable.
+
+	* irchat-compat.el (cdddr): New macro.
+
+	* irchat-dcc.el (irchat-dcc-add-to-receive-list): New macro.
+	(irchat-dcc-add-to-process-alist): Ditto.
+	(irchat-dcc-get-process-object): Ditto.
+	(irchat-dcc-sentinel): New sentinel function.
+	(irchat-dcc-prepare-directory): New function.
+	(irchat-ctcp-dcc-msg): Add handler for DCC chat.
+	(irchat-command-dcc-send): Rewritten.
+	(irchat-command-dcc-receive): Ditto.
+	(irchat-command-dcc-list): Ditto.
+
+	* Liece 1.2.6.8.
+
+	* dcc.ml: New file.
+
+	* naddr.mli: Ditto.
+
+	* naddr.ml: Ditto.
+
+	* irchat-misc.el (irchat-own-message):
+	(irchat-own-private-message): Add check whether channel buffer has
+	been created.
+
+	* sample.dot.liece: Fix typo.
+
+	* sample.dot.liece.ja: Ditto.
+
+	* irchat-url.el (irchat-url-browser-netscape): Use builtin
+	composer when encounted `mailto:'.
+
+	* irchat-commands.el (irchat-dialogue-insert): Abolished.
+
+1998-11-28  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* irchat-misc.el (irchat-own-private-message): Check if
+	`irchat-command-buffer-mode' is not 'chat.
+
+	* Liece 1.2.6.7.
+
+	* irchat-channel.el (irchat-channel-prepare-partner):
+	Fixed for setting `irchat-current-chat-partner'.
+
+	* irchat.el: Do not require `irchat-mail'.
+
+1998-11-27  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* irchat.el: Set default `truncate-lines'.
+
+1998-11-26  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* irchat-vars.el (irchat-display-frame-title): New variable.
+
+	* Liece 1.2.6.6.
+
+	* irchat-channel.el (irchat-command-toggle-channel-buffer-mode):
+	Remove setting dirty flag.
+
+	* irchat-nick.el (irchat-command-toggle-nick-buffer-mode):
+	Ditto
+
+1998-11-25  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* irchat-mail.el: New file.
+
+	* irchat-vars.el (irchat-convert-hankaku-katakana): New variable.
+
+	* irchat-hankana.el: New file.
+
+	* Liece 1.2.6.5.
+
+	* irchat-300.el (irchat-handle-303-msg): Print come back
+	messages for private conversation.
+
+	* irchat-misc.el (irchat-set-channel-indicator): New macro.
+
+	* irchat-handle.el (irchat-handle-nick-msg): Fixed channel indicator.
+
+	* irchat.el (irchat-close-server): Set `irchat-server' to nil.
+
+	* irchat-handle.el (irchat-handle-join-msg): Fixed for private
+	conversation.
+
+	* Add copylefts.
+
+1998-11-23  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* irchat-globals.el (irchat-ison-timer): New variable.
+
+	* irchat-vars.el (irchat-ison-interval): New variable.
+
+	* irchat-commands.el (irchat-command-set-ison-timer): New
+	function.
+	(irchat-command-cancel-ison-timer): Ditto.
+
+	* irchat-misc.el (irchat-completing-sequential-read): New function.
+
+	* Liece 1.2.6.4.
+
+	* irchat-compat.el (irchat-button3): Moved into `eval-and-compile'
+	enclosure.
+
+	* irchat.el: Do not require alist.
+
+	* irchat-handle.el (irchat-handle-quit-msg): Rewritten.
+
+	* irchat-handle.el (irchat-handle-nick-msg): Handle nick message
+	and reflect changes to private buffers.
+
+1998-11-21  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* Liece 1.2.6.3.
+
+	* irchat-misc.el (irchat-channel-p): New macro.
+	(irchat-toggle-command-buffer-mode): New wrapper function.
+
+	* irchat.el (irchat-windows-reconfiguration-needed): Fixed
+	predicate for nick buffer mode and channel list mode.
+
+	* irchat.el (irchat-command-keys): Removed duplicated binding of
+	`irchat-command-enter-message'(`\C-j' and `\M-\C-j').
+
+1998-11-19  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* irchat-handle.el (irchat-handle-privmsg-msg): Fixed.
+
+	* etc/ball.*.xpm: Remove background color in each XPM file
+	(From Yasushi Shoji <yashi@yashi.com>).
+
+	* sample.dot.liece: Add sample customizations of new feature.
+	`irchat-channel-list-buffer-mode',
+	`irchat-channel-list-window-width-percent',
+	`irchat-auto-join-partner'.
+
+	* irchat-filter.el (irchat-filter): Remove unreferenced binding.
+
+	* irchat-handle.el (irchat-handle-privmsg-msg): Handle private
+	message and join automatically.
+
+	* Liece 1.2.6.2.
+
+	* irchat-vars.el (irchat-auto-join-partner): New variable.
+	(irchat-channel-list-window-width-percent): Ditto.
+
+	* irchat-compat.el (irchat-button3): New variable.
+
+	* irchat-channel.el (irchat-channel-push-button): New handler.
+	(irchat-channel-list-insert): New function.
+	(irchat-channel-prepare-partner): New function.
+
+	* irchat-url.el (irchat-url-push-button): Search URL string around
+	event line.
+
+	* irchat.el (irchat-channel-list-mode): New major mode.
+	(irchat-configure-windows): Fixed for channel list window.
+	(irchat-channel-list-mode-map); New keymap.
+
+	* All irchat-{`Command', `Nick', `Channel', `Others', `Crypt'}-*
+	symbols renamed with uncapitalized one.
+
+1998-11-16  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* Liece 1.2.4.4.
+
+	* irchat-filter.el: Do not require mcharset.
+
+	* irchat-timer.el: Macro expression fixed (for Emacs19).
+
+	* Liece 1.2.4.3/1.2.6.1.
+
+	* irchat-vars.el (irchat-binary-coding-system):
+	New variable.
+
+	* irchat-coding.el: New file.
+
+	* irchat-filter.el (irchat-run-message-hook-types):
+	Abolished.
+	(irchat-handle-message): Rewritten.
+	(irchat-handle-message-2): Rewritten.
+
+1998-11-15  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* irchat.el (irchat-Dialogue-mode-map):
+	(irchat-Channel-mode-map):
+	(irchat-Others-mode-map): Add check whether array style keymap
+	expression is acceptable.
+
+	* liece-faq.texinfo: New FAQ added for older version of emacsen.
+
+	* irchat-handle.el (irchat-handle-privmsg-msg):
+	Rewritten.
+
+	* irchat-200.el (irchat-handle-200-msgs):
+	Channel mask regexp fixed.
+
+	* irchat-300.el (irchat-handle-300-msgs):
+	Ditto.
+
+	* irchat-400.el (irchat-handle-400-msgs):
+	Ditto.
+
+	* sample.dot.liece: Add sample hook for auto invisible.
+
+	* Liece 1.2.3.5.
+
+	* irchat-vars.el (irchat-default-coding-system):
+	Set default to 'iso-2022-jp.
+	(irchat-detect-coding-system): New custom variable.
+
+	* irchat-misc.el (irchat-send): Add code conversion with
+	`encode-coding-region' .
+
+	* irchat-filter.el (irchat-filter): Add coding-system detection.
+
+	* irchat-compat.el (irchat-set-process-coding-system):
+	(irchat-buffer-disable-undo): Abolished.
+	(buffer-disable-undo): New macro.
+
+	* defsubst.el: Removed.
+
+1998-11-14  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* irchat-ctcp.el (irchat-ccl-quote-decode): Fixed.
+
+1998-11-13  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* irchat-ctcp.el (ccl-cascade-write):
+	(ccl-set-register-right): New broken facility.
+	(irchat-ccl-quote-decode): Rewritten with checking broken CCL
+	facilities.
+
+	* irchat-timer.el (irchat-start-timer):
+	Fixed macro expression for older versions of emacsen.
+
+	* irchat-compat.el (defface): New macro for older versions of
+	emacsen.
+
+1998-11-12  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* irchat-ctcp.el: Add CCL usability checking with `ccl-usable'.
+
+1998-11-11  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* irchat-version.el (irchat-make-user-agent-string):
+	(irchat-make-version-string):
+	Regexp fixed.
+
+	* irchat-ctcp.el (irchat-ccl-quote-decode):
+	(irchat-ccl-quote-encode): Check if module `pccl' exists.
+
+	* sample.dot.liece: Renamed from sample.irchat3_vars.el.
+
+	* irchat-version.el (liece-client-minor-version):
+	Numbered as 1.2.3.3.
+	(irchat-version-user-agent-style):
+	Declaration revereted to `defvar' from `defcustom'.
+
+	* Makefile: Removed `-lnsl'.
+
+1998-10-20  Daiki Ueno  <daiki@kake.info.waseda.ac.jp>
+
+	* irchat-nick.el (irchat-Nick-update): Bug fixed in splitting 353
+	(NAMEREPLY) message.
+
+	* irchat-inlines.el (list-to-assoclist): Rewritten.
+
+1998-10-08  Daiki Ueno  <daiki@dice.cache.waseda.ac.jp>
+
+	* irchat-xemacs.el (irchat-toolbar-spec-list): Replace
+	`irchat-Command-push' and `irchat-Command-pop' with
+	`irchat-Command-previous-channel' and `irchat-Command-next-channel'.
+	(irchat-x-face-face-insert): Evaluate also when loaded.
+
+1998-10-07  Daiki Ueno  <daiki@dice.cache.waseda.ac.jp>
+
+	* irchat-crypt.el (base64-encode-string): Fixed autoload with
+	`mel' to `mel-b' package.
+	(base64-decode-string): Ditto.
+
+1998-10-06  Daiki Ueno  <daiki@dice.cache.waseda.ac.jp>
+
+	* irchat-xemacs.el (irchat-xemacs-splash-logo): Splash screen with
+	"liece.xpm" on every loadup time.
+
+	* irchat-version.el (liece-client-version): Numbered as 1.2.1.
+
+	* irchat-x-face.el (irchat-x-face-face-insert): Display X-Face on
+	each prefix line align middle.
+
+	* irchat-debug.el: New file.
+
+1998-10-02  Daiki Ueno  <daiki@dice.cache.waseda.ac.jp>
+
+	* irchat.el (irchat-Debug-mode): New major mode for
+	`irchat-Command-debug'.
+
+	* liece-faq.texinfo: New file.
+
+	* irchat-commands.el (irchat-Client-query-map): Key binding for
+	`irchat-Command-client-x-face-from-minibuffer' substituted with
+	`irchat-Command-client-x-face-from-xbm-file'.
+
+	* irchat-compat.el (replace-in-string): New function from XEmacs
+	subr.el.
+
+	* irchat-x-face.el: New file.
+	(irchat-x-face-insert): Now works properly with GNU Emacs.
+
+	* irchat-xemacs.el (irchat-x-face-insert): New function.
+	(irchat-x-face-encode): Ditto.
+
+	* irchat-ctcp.el (irchat-ctcp-x-face-msg): X-Face query support.
+	Now it works only with X-Face utility.
+
+	* irchat-version.el (liece-client-version-beta): New variable.
+
+1998-10-01  Daiki Ueno  <daiki@dice.cache.waseda.ac.jp>
+
+	* irchat.el (irchat-clear-system): Restart now reworked.
+
+	* irchat-make.el (config-irchat): Add check wheter APEL version is
+	9.0 or later.
+
+	* irchat-ctcp.el (irchat-ctcp-version-msg): Rewritten with new
+	style version string.
+
+	* irchat-version.el (irchat-version-user-agent-style): New
+	variable.
+	(irchat-make-user-agent-string): New function.
+	(irchat-make-client-version-string): Ditto.
+	(irchat-make-version-string): Ditto.
+
+	* irchat-make.el (config-irchat): Rewritten.
+
+	* irchat-ctcp.el: Renamed from irchat-cta.el.
+	(irchat-ccl-quote-cs): New coding system for file transfer.
+	(irchat-ccl-quote-encode): New CCL program.
+	(irchat-ccl-quote-decode): Ditto.
+	(irchat-ctcp-msg): Hook checking code eliminated.
+	(irchat-ctcp-client-msg): Ditto.
+
+1998-09-30  Daiki Ueno  <daiki@dice.cache.waseda.ac.jp>
+
+	* irchat-hilight.el (irchat-highlight-buffer):
+	Add check whether there is point has
+
+	* irchat-compat (irchat-get-text-property):
+	Add signal handler for XEmacs extents.
+
+	* irchat-commands.el: Require `irchat-dcc.el'.
+
+	* Makefile: New rule for .texinfo to .info.
+
+	* irchat-hilight.el (irchat-highlight-buffer): Bug fix for
+	`irchat-highlight-pattern'.
+
+1998-09-29  Daiki Ueno  <daiki@kiss.kake.info.waseda.ac.jp>
+
+	* irchat-make.el (install-irchat): Fixed usage of function
+	install-files.
+
+	* irchat-nick.el: Do not require widget wid-edit.
+
+	* irchat-make.el (irchat-modules-to-compile): Added
+	irchat-channel, irchat-nick to module list.
+
+	* irchat-hilight.el (irchat-highlight-insert-with-mouse-face):
+	Addded check whether function widget-create is bounded.
+
+	* irchat-compat.el: Require cl.
+
+	* Makefile: Require cl. Machine specific option removed.
+
+	* irchat-commands.el (irchat-Command-send-message):
+	New signal handler for `encode-coding-string' with unknown coding
+	system.	This encoding is needed when `irchat-crypt-mode-active-p'
+	is non nil.
+
+	* irchat.el: Renamed from irchat-main.el.
+
+	* irchat-main.el: Removed.
+
+1998-09-29  Daiki Ueno  <daiki@dice.cache.waseda.ac.jp>
+
+	* irchat-crypt.el (irchat-read-passphrase): New alias.
+
+1998-09-28  Daiki Ueno  <daiki@dice.cache.waseda.ac.jp>
+
+	* irchat-make.el: New file.
+
+	* irchat-compat.el: New file.
+
+	* irchat-ja.texinfo: New file.
+
+	* setpath.el: Removed.
+
+	* irchat-url.el (irchat-url-button-push): New handler.
+
+	* irchat-main.el (irchat-Select-map): New keymap.
+
+	* irchat-filter.el: Added autoloads for entry points of 000, 200,
+	300, 400, 500 message handlers.
+
+	* irchat-misc.el (irchat-greet-author): Abolished.
+
+	* irchat-channel.el: Splitted from irchat-commands.el.
+
+	* irchat-nick.el: Ditto.

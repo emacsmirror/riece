@@ -1,0 +1,99 @@
+;;; -*- Emacs-Lisp -*-
+
+(defvar riece-modules
+  (cons 'riece-compat
+	(cons (if (featurep 'xemacs)
+		  'riece-xemacs
+		'riece-emacs)
+	      '(riece-globals
+		riece-options
+		riece-version
+		riece-inlines
+		riece-highlight
+		riece-coding
+		riece-complete
+
+		;; riece-identity -+-> riece-channel
+		;;                 +-> riece-user
+		riece-identity
+		riece-channel
+		riece-user
+
+		riece-misc
+		riece-display
+		riece-server
+
+		;; riece-channel -+-> riece-naming
+		;; riece-user    -+
+		riece-naming
+		riece-message
+
+		;; riece-filter calls riece-{handle,000,200,300,400,500}
+		riece-filter
+		riece-handle
+		riece-000
+		riece-200
+		riece-300
+		riece-400
+		riece-500
+
+		riece-commands
+		riece))))
+
+(defun riece-compile-modules (modules)
+  (let ((load-path (cons nil load-path)))
+    (while modules
+      (let ((source (expand-file-name
+		     (concat (symbol-name (car modules)) ".el"))))
+	(if (file-newer-than-file-p source (concat source "c"))
+	    (byte-compile-file source)))
+      (setq modules (cdr modules)))))
+
+(defun riece-install-modules (modules dest just-print)
+  (unless (or just-print (file-exists-p dest))
+    (make-directory dest t))
+  (while modules
+    (let ((name (symbol-name (car modules))))
+      (princ (format "%s.el -> %s\n" name dest))
+      (unless just-print
+	(copy-file (expand-file-name (concat name ".el"))
+		   (expand-file-name (concat name ".el") dest)
+		   t t))
+      (princ (format "%s.elc -> %s\n" name dest))
+      (unless just-print
+	(copy-file (expand-file-name (concat name ".elc"))
+		   (expand-file-name (concat name ".elc") dest)
+		   t t)))
+    (setq modules (cdr modules))))
+
+(defun riece-install-just-print-p ()
+  (let ((flag (getenv "MAKEFLAGS"))
+	case-fold-search)
+    (if flag
+	(string-match "^\\(\\(--[^ ]+ \\)+-\\|[^ =-]\\)*n" flag))))
+
+(defun riece-compile ()
+  (riece-compile-modules riece-modules))
+
+(defun riece-install ()
+  (riece-install-modules
+   riece-modules
+   (expand-file-name "riece" (car command-line-args-left))
+   (riece-install-just-print-p)))
+
+(defun riece-compile-package ()
+  (riece-compile)
+  (setq autoload-package-name "riece")
+  (add-to-list 'command-line-args-left ".")
+  (batch-update-directory)
+  (add-to-list 'command-line-args-left ".")
+  (Custom-make-dependencies)
+  (riece-compile-modules (list 'auto-autoloads 'custom-load)))
+
+(defun riece-install-package ()
+  (riece-install-modules
+   (append riece-modules
+	   '(auto-autoloads custom-load))
+   (expand-file-name "riece"
+		     (expand-file-name "lisp" (car command-line-args-left)))
+   (riece-install-just-print-p)))

@@ -1,0 +1,29 @@
+* What's this?
+
+Riece is a redesign of the Liece IRC client.
+
+Note that the letter "R" means not only "redesign" but also "radical
+development version".  Please use at your own risk :-)
+
+* Directory tree
+
+This package contains following directories:
+
+lisp/ - Emacs Lisp files.
+
+dcc/  - DCC external program source.  (currently not used)
+
+* Bug reports
+
+If you write bug reports and/or suggestions for improvement, 
+please send them to the Liece Mailing List.
+
+This mailing list is also for other general discussions (about
+future enhancements, customization, etc). To join the Liece ML,
+send an e-mail to:
+
+     liece-ctl@unixuser.org
+
+with the message body, 
+
+     subscribe Your Name
