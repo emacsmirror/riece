@@ -220,6 +220,8 @@ the `riece-server-keyword-map' variable."
 (defun riece-close-server-process (process)
   (if riece-debug
       (delete-process process)
+    (set-process-filter process nil)
+    (set-process-sentinel process nil)
     (kill-buffer (process-buffer process)))
   (setq riece-server-process-alist
 	(delq (rassq process riece-server-process-alist)

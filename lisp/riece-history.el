@@ -62,6 +62,16 @@
   :group 'riece-highlight-faces)
 (defvar riece-channel-list-history-face 'riece-channel-list-history-face)
 
+(unless (find-face 'riece-modeline-history-face)
+  (make-face 'riece-modeline-history-face
+	     "Face used for displaying history channels in modeline.")
+  (if (featurep 'xemacs)
+      (set-face-parent 'riece-modeline-history-face 'modeline))
+  (set-face-foreground 'riece-modeline-history-face
+		       (face-foreground 'riece-channel-list-history-face)))
+
+(defvar riece-modeline-history-face 'riece-modeline-history-face)
+
 (defvar riece-channel-history nil)
 
 (defvar riece-history-enabled nil)
@@ -98,7 +108,7 @@
 		string (replace-match "%%" nil nil string)))
 	(list (format "%d:" index)
 	      (riece-propertize-modeline-string
-	       string 'face 'riece-channel-list-history-face)))))
+	       string 'face 'riece-modeline-history-face)))))
 
 ;;; (defun riece-history-requires ()
 ;;;   (if (memq 'riece-guess riece-addons)

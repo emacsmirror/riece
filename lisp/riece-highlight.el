@@ -189,6 +189,14 @@
   :type '(repeat (list string))
   :group 'riece-highlight)
 
+(unless (find-face 'riece-modeline-current-face)
+  (make-face 'riece-modeline-current-face
+	     "Face used for displaying the current channel in modeline.")
+  (if (featurep 'xemacs)
+      (set-face-parent 'riece-modeline-current-face 'modeline))
+  (set-face-foreground 'riece-modeline-current-face
+		       (face-foreground 'riece-channel-list-current-face)))
+
 (defvar riece-highlight-enabled nil)
 
 (defconst riece-highlight-description
@@ -243,7 +251,7 @@
 		string (replace-match "%%" nil nil string)))
 	(list (format "%d:" index)
 	      (riece-propertize-modeline-string
-	       string 'face 'riece-channel-list-current-face)))))
+	       string 'face 'riece-modeline-current-face)))))
 
 (defun riece-highlight-insinuate ()
   (put 'riece-channel-mode 'font-lock-defaults

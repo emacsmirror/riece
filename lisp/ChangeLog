@@ -1,3 +1,15 @@
+2004-06-01  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-unread.el (riece-modeline-unread-face): New face;
+	setup the properties are inherited from 'modeline.
+	* riece-history.el (riece-modeline-history-face): New face;
+	setup the properties are inherited from 'modeline.
+	* riece-highlight.el (riece-modeline-current-face): New face;
+	setup the properties are inherited from 'modeline.
+
+	* riece-server.el (riece-close-server-process): Reset
+	process-filter/process-sentinel.
+
 2004-05-31  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-hangman.el (riece-hangman-after-privmsg-hook): Display answer.

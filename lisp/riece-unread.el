@@ -58,6 +58,14 @@
   :group 'riece-highlight-faces)
 (defvar riece-channel-list-unread-face 'riece-channel-list-unread-face)
 
+(unless (find-face 'riece-modeline-unread-face)
+  (make-face 'riece-modeline-unread-face
+	     "Face used for displaying unread channels in modeline.")
+  (if (featurep 'xemacs)
+      (set-face-parent 'riece-modeline-unread-face 'modeline))
+  (set-face-foreground 'riece-modeline-unread-face
+		       (face-foreground 'riece-channel-list-unread-face)))
+
 (defvar riece-unread-channels nil)
 
 (defvar riece-unread-enabled nil)
@@ -100,7 +108,7 @@
 		string (replace-match "%%" nil nil string)))
 	(list (format "%d:" index)
 	      (riece-propertize-modeline-string
-	       string 'face 'riece-channel-list-unread-face)))))
+	       string 'face 'riece-modeline-unread-face)))))
 
 (defun riece-unread-switch-to-channel ()
   (interactive)
