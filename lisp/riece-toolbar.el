@@ -24,8 +24,6 @@
 
 ;;; Commentary:
 
-;; NOTE: This add-on doesn't support XEmacs yet.
-
 ;; To use, add the following line to your ~/.riece/init.el:
 ;; (add-to-list 'riece-addons 'riece-toolbar)
 
@@ -33,48 +31,76 @@
 
 (require 'riece-menu)
 
-(defvar riece-toolbar-item-list
-  '((riece-command-quit "riece-command-quit")
-    (riece-command-join "riece-command-join")
-    (riece-command-part "riece-command-part")
-    (riece-command-next-channel "riece-command-next-channel")
-    (riece-command-previous-channel "riece-command-previous-channel")
-    (riece-command-change-window-layout "riece-command-change-window-layout")))
+(defvar riece-toolbar-items
+  '(riece-command-quit
+    riece-command-join
+    riece-command-part))
 
-(if (fboundp 'tool-bar-local-item-from-menu)
-    (defalias 'riece-tool-bar-local-item-from-menu
-      'tool-bar-local-item-from-menu)
-  (if (fboundp 'tool-bar-add-item-from-menu)
-      (defun riece-tool-bar-local-item-from-menu (command icon in-map
-							  &optional from-map
-							  &rest props)
-	"Define tool bar binding for COMMAND using the given ICON in \
-keymap IN-MAP."
-	(let ((tool-bar-map in-map))
-	  (apply #'tool-bar-add-item-from-menu command icon from-map props)))
-    (defalias 'riece-tool-bar-local-item-from-menu 'ignore)))
+(defun riece-toolbar-find-menu-item (command)
+  (let ((pointer riece-menu-items)
+	item)
+    (while pointer
+      (if (and (not (stringp (car pointer)))
+	       (vectorp (car pointer))
+	       (eq (aref (car pointer) 1) command))
+	  (setq item (car pointer)
+		pointer nil)
+	(setq pointer (cdr pointer))))
+    item))
+
+(if (featurep 'xemacs)
+    (progn
+      (defun riece-make-toolbar-from-menu (items menu-items map)
+	(let ((pointer items)
+	      toolbar
+	      file
+	      menu-item)
+	  (while pointer
+	    (setq file (locate-file (symbol-name (car pointer))
+				    load-path
+				    '(".xpm" ".pbm" ".xbm"))
+		  menu-item (riece-toolbar-find-menu-item (car pointer)))
+	    (if (and file (file-exists-p file))
+		(setq toolbar
+		      (toolbar-add-item
+		       toolbar
+		       (toolbar-new-button
+			file
+			(car pointer)
+			(if menu-item
+			    (aref menu-item 0)
+			  (symbol-name (car pointer)))))))
+	    (setq pointer (cdr pointer)))
+	  toolbar))
+      (defun riece-set-toolbar (toolbar)
+	(set-specifier default-toolbar toolbar (current-buffer))))
+  (defun riece-make-toolbar-from-menu (items menu-items map)
+    (let ((pointer items)
+	  (tool-bar-map (make-sparse-keymap)))
+      (while pointer
+	(tool-bar-add-item-from-menu (car pointer)
+				     (symbol-name (car pointer))
+				     map)
+	(setq pointer (cdr pointer)))
+      tool-bar-map))
+  (defun riece-set-toolbar (toolbar)
+    (make-local-variable 'tool-bar-map)
+    (setq tool-bar-map toolbar)))
 
 (defvar riece-command-mode-map)
 (defun riece-toolbar-insinuate-in-command-buffer ()
-  (when (boundp 'tool-bar-map)
-    (make-local-variable 'tool-bar-map)
-    (setq tool-bar-map
-	  (let ((map (make-sparse-keymap))
-		(pointer riece-toolbar-item-list))
-	    (while pointer
-	      (riece-tool-bar-local-item-from-menu (car (car pointer))
-						   (nth 1 (car pointer))
-						   map riece-command-mode-map)
-	      (setq pointer (cdr pointer)))
-	    map))))
+  (riece-set-toolbar
+   (riece-make-toolbar-from-menu
+    riece-toolbar-items
+    riece-menu-items
+    riece-command-mode-map)))
 
 (defun riece-toolbar-requires ()
   '(riece-menu))
 
 (defun riece-toolbar-insinuate ()
   (add-hook 'riece-command-mode-hook
-	    (lambda ()
-	      (riece-toolbar-insinuate-in-command-buffer))
+	    'riece-toolbar-insinuate-in-command-buffer
 	    t))
 
 (provide 'riece-toolbar)

@@ -1,3 +1,17 @@
+2004-12-12  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-menu.el (riece-menu-items): Add "Next Channel" and
+	"Previous Channel".
+
+	* riece-toolbar.el: Support XEmacs.
+	(riece-toolbar-items): Renamed from
+	riece-toolbar-item-list.
+	(riece-tool-bar-local-item-from-menu): Abolished.
+	(riece-toolbar-find-menu-item): New function.
+	(riece-make-toolbar-from-menu): New function.
+	(riece-set-toolbar): New function.
+	(riece-toolbar-insinuate-in-command-buffer): Use them.
+
 2004-12-11  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-toolbar.el: New add-on.

@@ -61,6 +61,9 @@
     ["Kick User" riece-command-kick riece-current-channel]
     ["Invite User" riece-command-invite riece-current-channel]
     "----"
+    ["Next Channel" riece-command-next-channel riece-current-channels]
+    ["Previous Channel" riece-command-previous-channel riece-current-channels]
+    "----"
     ("Channels" :filter riece-menu-create-channels-menu)
     ("Servers" :filter riece-menu-create-servers-menu))
   "Menu used in command mode.")
