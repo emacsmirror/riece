@@ -47,7 +47,13 @@
     "----"
     ["Join Channel" riece-command-join t]
     ["Change Nickname" riece-command-change-nickname t]
+    ["Mark As Away" riece-command-toggle-away t]
     ["Quit IRC" riece-command-quit t]
+    "----"
+    ["Part Channel" riece-command-part riece-current-channel]
+    ["Set Channel Topic" riece-command-topic riece-current-channel]
+    ["Kick User" riece-command-kick riece-current-channel]
+    ["Invite User" riece-command-invite riece-current-channel]
     "----"
     ("Channels" :filter riece-menu-create-channels-menu)
     ("Servers" :filter riece-menu-create-servers-menu))
