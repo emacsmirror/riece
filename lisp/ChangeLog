@@ -3,7 +3,7 @@
 	* riece-log.el (riece-log-lock-file): Define with defvar.
 	(riece-log-display-message-function): Use riece-log-lock-file as
 	LOCKNAME of write-region.
-	(riece-log-insinuate): Set riece-log-lock-file.
+	(riece-log-insinuate): Generate name for riece-log-lock-file.
 
 2005-02-27  Daiki Ueno  <ueno@unixuser.org>
 
