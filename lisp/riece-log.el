@@ -90,7 +90,7 @@ If integer, flash back only this line numbers. t means all lines."
 
 (defun riece-log-get-file (identity)
   (expand-file-name
-   (concat (format-time-string "%Y%m%d") ".log")
+   (concat (format-time-string "%Y%m%d") ".txt")
    (riece-log-get-directory identity)))
 
 (defun riece-log-get-files (identity)
@@ -99,7 +99,7 @@ If integer, flash back only this line numbers. t means all lines."
 	(nreverse (sort (directory-files directory t
 			 (concat "^"
 				 (riece-make-interval-regexp "[0-9]" 8)
-				 "\\.log$")
+				 "\\.txt$")
 			 t)
 		  #'string-lessp)))))
 
@@ -163,7 +163,7 @@ If LINES is t, insert today's logs entirely."
       (while (and (< lines 0) files)
 	(if (and (file-exists-p (car files))
 		 (string-match (concat "\\([0-9][0-9][0-9][0-9]\\)"
-				       "\\([0-9][0-9]\\)\\([0-9][0-9]\\).log$")
+				       "\\([0-9][0-9]\\)\\([0-9][0-9]\\).txt$")
 			       (car files)))
 	    (save-restriction
 	      (narrow-to-region (point) (point))

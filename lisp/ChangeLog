@@ -6,6 +6,7 @@
 	riece-log-flashback-1; simplified.
 	(riece-log-get-files): Check existence of directory.
 	(riece-log-get-directory): New implementation.
+	[cf. <Liece:00396>]
 
 2004-12-07  TAKAHASHI Kaoru  <kaoru@kaisei.org>
 
