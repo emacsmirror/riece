@@ -78,8 +78,10 @@
 		riece-google))))
 
 (defvar riece-icons
-  '(riece-command-previous-channel
-    riece-command-next-channel))
+  '(riece-command-quit
+    riece-command-previous-channel
+    riece-command-next-channel
+    riece-submit-bug-report))
 
 (defun riece-compile-modules (modules)
   (let ((load-path (cons nil load-path)))

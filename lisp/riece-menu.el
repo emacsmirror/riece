@@ -38,6 +38,7 @@
 (defvar riece-menu-items
   `("Riece"
     ["Version" riece-version t]
+    ["Submit Bug Report" riece-submit-bug-report t]
     "----"
     ("Change Window Layout..." :filter riece-menu-create-layouts-menu)
     ["Toggle Freeze Channel Buffer"
