@@ -198,7 +198,7 @@
 					   (format "%d %s"
 						   (car unit) (cdr unit))))
 				     units))
-			      ", ")))
+			      " ")))
 	  "\n")))))
 
 (defun riece-handle-319-message (prefix number name string)
