@@ -105,7 +105,7 @@
 
 (defun riece-normalize-modeline-string (string)
   (if (listp string)
-      (apply #'concat (riece-normalize-modeline-string-1 string))
+      (riece-normalize-modeline-string-1 string)
     string))
 
 (defun riece-put-text-property-nonsticky (start end prop value
