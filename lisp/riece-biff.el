@@ -1,5 +1,5 @@
 ;;; riece-biff.el --- biff add-on
-;; Copyright (C) 2003 OHASHI Akira
+;; Copyright (C) 2004 OHASHI Akira
 
 ;; Author: OHASHI Akira <bg66@koka-in.org>
 ;; Keywords: IRC, riece
