@@ -1,3 +1,8 @@
+2003-06-01  Daiki Ueno  <ueno@unixuser.org>
+
+	* configure.ac: Simplified.
+	* Makefile.am (SUBDIRS): Remove dcc.
+
 2003-05-30  Daiki Ueno  <ueno@unixuser.org>
 
 	* Riece: Version 0.0.2 released.
