@@ -57,7 +57,9 @@
 		riece-keyword
 		riece-menu
 		riece-icon
-		riece-async))))
+		riece-async
+		riece-lsdb
+		riece-xface))))
 
 (defun riece-compile-modules (modules)
   (let ((load-path (cons nil load-path)))

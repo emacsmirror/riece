@@ -1,3 +1,13 @@
+2004-01-02  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-lsdb.el: New add-on.
+	* COMPILE (riece-modules): Add riece-lsdb.
+	* Makefile.am (EXTRA_DIST): Add riece-lsdb.el
+
+	* riece-xface.el: New add-on.
+	* COMPILE (riece-modules): Add riece-xface.
+	* Makefile.am (EXTRA_DIST): Add riece-xface.el
+
 2003-12-25  Daiki Ueno  <ueno@unixuser.org>
 
 	* Riece: Version 0.1.7 released.
