@@ -257,7 +257,7 @@ Indicators are characters which indicate your status.  Usually they are
 put on the left side of the modeline like:
 
 @example
-Riece: --- ueno #Liece [n]
+Riece: --- ueno #Riece [n]
 @end example
 
 In this case, @samp{---} are indicators.  From left to right their
