@@ -1,5 +1,8 @@
 2003-08-09  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-rdcc.el (riece-command-dcc-send): Accept output only from
+	the ruby process.
+
 	* riece-xemacs.el: Don't require 'riece-compat.
 
 2003-08-06  Daiki Ueno  <ueno@unixuser.org>

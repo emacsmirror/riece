@@ -146,7 +146,7 @@ puts(\"#{" address " >> 24 & 0xFF}.#{" address " >> 16 & 0xFF}.#{"
 		  (progn
 		    (goto-char (point-min))
 		    (not (looking-at "\\([0-9]+\\) \\([0-9]+\\)"))))
-	(accept-process-output))
+	(accept-process-output process))
       (if (eq (process-status process) 'run)
 	  (let ((address (match-string 1))
 		(port (match-string 2)))
