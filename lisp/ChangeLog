@@ -1,5 +1,9 @@
 2003-05-31  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-filter.el (riece-sentinel): Don't call riece when
+	riece-reconnect-with-password = t and process !=
+	riece-server-process.
+
 	* riece-url.el: Fix usage.
 
 	* riece-inlines.el (string-list-member-ignore-case): Remove docstring.

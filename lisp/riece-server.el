@@ -64,9 +64,6 @@ the `riece-server-keyword-map' variable."
 (put 'riece-server-keyword-bind 'edebug-form-spec '(form body))
 
 (defun riece-start-server (server &optional server-name)
-  "Open network stream to remote irc server.
-If optional argument CONFIRM is non-nil, ask the host that the server
-is running on."
   (if server-name
       (message "Connecting to IRC server on %s..." server-name)
     (message "Connecting to IRC server..."))
