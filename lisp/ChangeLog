@@ -1,5 +1,8 @@
 2005-02-04  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-000.el (riece-handle-001-message): Use
+	riece-command-join-channel to join startup channels.
+
 	* riece-filter.el (riece-filter): Accept lines which end with LF.
 
 	* riece-300.el (riece-353-message-alist): Renamed from riece-353-users.

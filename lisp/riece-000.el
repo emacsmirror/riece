@@ -60,7 +60,7 @@
       (if (equal (riece-identity-server
 		  (setq identity (riece-parse-identity (car entry))))
 		 riece-server-name)
-	  (riece-command-join identity (nth 1 entry)))
+	  (riece-command-join-channel identity (nth 1 entry)))
       (setq channel-list (cdr channel-list))))
   (run-hooks 'riece-after-login-hook))
 
