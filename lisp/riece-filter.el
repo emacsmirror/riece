@@ -72,25 +72,21 @@
 (defun riece-filter (process input)
   (save-excursion
     (set-buffer (process-buffer process))
-    (goto-char riece-read-point)
-    (unless riece-debug
-      (delete-region (riece-line-beginning-position) (point-min))
-      (setq riece-read-point (point)))
+    (goto-char (point-max))
     (insert input)
-    (goto-char (prog1 riece-read-point
-		 (setq riece-read-point (point))))
+    (goto-char riece-read-point)
     (beginning-of-line)
     (while (and (not (eobp))
 		(looking-at ".*\n"))	;the input line is not finished
       (save-excursion
 	(if (looking-at
-	     ":\\([^ ]+\\) +\\([0-5][0-9][0-9]\\) +\\([^ ]+\\) +\\(.*\\)\n")
+	     ":\\([^ ]+\\) +\\([0-5][0-9][0-9]\\) +\\([^ ]+\\) +\\(.*\\)")
 	    (riece-handle-numeric-reply
 	     (match-string 1)		;prefix
 	     (string-to-number (match-string 2)) ;number
 	     (match-string 3)		;name
 	     (riece-chomp-string (match-string 4))) ;reply string
-	  (if (looking-at "\\(:\\([^ ]+\\) +\\)?\\([^ ]+\\) +\\(.*\\)\n")
+	  (if (looking-at "\\(:\\([^ ]+\\) +\\)?\\([^ ]+\\) +\\(.*\\)")
 	      (riece-handle-message
 	       (match-string 2)		;optional prefix
 	       (match-string 3)		;command
@@ -100,7 +96,10 @@
 			 (buffer-substring (point) (progn
 						     (end-of-line)
 						     (point))))))))
-      (forward-line))))
+      (forward-line))
+    (unless riece-debug
+      (delete-region (point-min) (point)))
+    (setq riece-read-point (point))))
 
 (eval-when-compile
   (autoload 'riece-exit "riece"))

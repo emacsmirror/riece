@@ -1,5 +1,7 @@
 2005-02-07  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-filter.el (riece-filter): Simplified.
+
 	* riece-addon.el (riece-resolve-addons): Check the existence of
 	riece-addon-directory.
 
