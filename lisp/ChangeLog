@@ -1,5 +1,10 @@
 2004-12-13  Daiki Ueno  <ueno@unixuser.org>
 
+	* test/Makefile.am (EXTRA_DIST): Add test-riece.el.
+	* test/test-riece.el: New test cases.
+
+	* riece.el (riece-shrink-buffer): Fixed bug.
+
 	* riece-options.el (riece-username): Changed the default value to
 	user-full-name.
 
