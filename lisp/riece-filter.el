@@ -76,8 +76,7 @@
     (insert input)
     (goto-char riece-read-point)
     (beginning-of-line)
-    (while (and (not (eobp))
-		(looking-at ".*\n"))	;the input line is not finished
+    (while (looking-at ".*\n")	;the input line is finished
       (save-excursion
 	(if (looking-at
 	     ":\\([^ ]+\\) +\\([0-5][0-9][0-9]\\) +\\([^ ]+\\) +\\(.*\\)")
