@@ -131,7 +131,7 @@
 	(riece-log-enabled t)
 	riece-log-directory-map
 	(riece-server-process-alist
-	 (list (cons "" (start-process "" (current-buffer) "yes")))))
+	 (list (cons "" (start-process "" (current-buffer) "true")))))
     (riece-log-display-message-function
      (riece-make-message
       (riece-make-identity "ueno" "")

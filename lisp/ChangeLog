@@ -1,5 +1,13 @@
 2004-12-10  Daiki Ueno  <ueno@unixuser.org>
 
+	* test/test-riece-log.el
+	(test-riece-log-display-message-function): "yes" -> "true".
+
+	* test/Makefile.am (EXTRA_DIST): Add lunit-report.el and
+	test-riece-log.el.
+
+2004-12-10  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece.el (riece-shrink-buffer): Shrink buffer based on chars
 	instead of lines.
 
