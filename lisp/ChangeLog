@@ -1,5 +1,10 @@
 2004-12-08  Daiki Ueno  <ueno@unixuser.org>
 
+	* test/test-riece-log.el
+	(test-riece-log-display-message-function): New test case.
+
+2004-12-08  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-log.el (riece-log-flashback): Fixed custom spec.
 	(riece-log-date-face): New face.
 	(riece-log-insert): Don't append date string to the end of log

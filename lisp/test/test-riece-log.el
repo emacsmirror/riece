@@ -32,9 +32,8 @@
 (luna-define-method lunit-test-case-teardown ((case test-riece-log))
   (test-riece-log-delete-directory riece-log-directory))
 
-(luna-define-method test-riece-log-flashback-1 ((case test-riece-log))
-  (let ((riece-log-flashback 3)
-	riece-log-directory-map)
+(luna-define-method test-riece-log-insert-1 ((case test-riece-log))
+  (let (riece-log-directory-map)
     (lunit-assert-2
      case
      (equal
@@ -42,17 +41,16 @@
 	      "03:14 <test> a b c (2038/01/19)\n"
 	      "03:15 <test> a b c (2038/01/19)\n")
       (with-temp-buffer
-	(riece-log-flashback (riece-make-identity "#riece" ""))
+	(riece-log-insert (riece-make-identity "#riece" "") 3)
 	(buffer-string))))))
 
-(luna-define-method test-riece-log-flashback-2 ((case test-riece-log))
-  (let ((riece-log-flashback t)
-	riece-log-directory-map)
+(luna-define-method test-riece-log-insert-2 ((case test-riece-log))
+  (let (riece-log-directory-map)
     (lunit-assert-2
      case
      (equal ""
 	    (with-temp-buffer
-	      (riece-log-flashback (riece-make-identity "#riece" ""))
+	      (riece-log-insert (riece-make-identity "#riece" "") t)
 	      (buffer-string))))))
 
 (luna-define-method test-riece-log-encode-file-name ((case test-riece-log))
@@ -124,3 +122,32 @@
 		    (make-char 'japanese-jisx0208 36 57))
 	    (riece-log-decode-file-name
 	     "=23=1B=24B=24j=21=3C=249=1B=28B")))))
+
+(luna-define-method test-riece-log-display-message-function
+  ((case test-riece-log))
+  (let ((riece-log-file-name-coding-system 'euc-jp)
+	(riece-log-enabled t)
+	riece-log-directory-map
+	(riece-server-process-alist
+	 (list (cons "" (start-process "" (current-buffer) "sleep" "10")))))
+    (riece-log-display-message-function
+     (riece-make-message
+      (riece-make-identity "ueno" "")
+      (riece-make-identity (format "#%c%c%c"
+				   (make-char 'japanese-jisx0208 36 106)
+				   (make-char 'japanese-jisx0208 33 60)
+				   (make-char 'japanese-jisx0208 36 57))
+			   "")
+      "a b c\n" nil t)))
+  (let (file-name-coding-system)
+    (lunit-assert-2
+     case
+     (file-directory-p
+      (expand-file-name
+       (encode-coding-string
+	(format "=23%c%c%c"
+		(make-char 'japanese-jisx0208 36 106)
+		(make-char 'japanese-jisx0208 33 60)
+		(make-char 'japanese-jisx0208 36 57))
+	'euc-jp)
+       riece-log-directory)))))
