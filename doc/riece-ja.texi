@@ -56,6 +56,7 @@ Riece $B$O(B Emacs $B$G(B IRC (Internet Relay Chat) $B$K;22C$9$k$?$a$N%W%m%
 * Getting started::             
 * Basic usage::                 $B4pK\E*$J$D$+$$$+$?(B
 * Advanced usage::              $B?J$s$@$D$+$$$+$?(B
+* Tips::                        $BJXMx$J@_Dj(B
 * Development::                 $B3+H/<T8~$1>pJs(B
 * Index::                       
 * Function Index::              
@@ -423,7 +424,7 @@ Riece $B$NBg$-$JFCD9$K!"J#?t$N%5!<%P$KF1;~$K@\B3$9$k5!G=$,$"$j$^$9!#(B
 $BFCDj$N%5!<%P$KBP$7$F!"B3$/%3%^%s%I$rH/9T$7$^$9(B(@code{riece-command-universal-server-name-argument})
 @end table
 
-@node Advanced usage, Development, Basic usage, Top
+@node Advanced usage, Tips, Basic usage, Top
 @chapter Advanced usage
 
 $B$3$N>O$G$O!"$b$C$H?J$s$@;H$$J}$r2r@b$7$^$9!#(B
@@ -431,8 +432,6 @@ Riece $B$NBg$-$JFCD9$K!"J#?t$N%5!<%P$KF1;~$K@\B3$9$k5!G=$,$"$j$^$9!#(B
 @menu
 * Server settings::             $B%5!<%P$N>\:Y@_Dj(B
 * Add-ons::                     $B%"%I%*%s$H$O(B
-* Writing add-ons::             $B@lMQ$N%"%I%*%s$r=q$/$K$O(B
-* Handler hooks::               $B%O%s%I%i$N?6Iq$$$NJQ99(B
 @end menu
 
 @node Server settings, Add-ons, Advanced usage, Advanced usage
@@ -559,7 +558,181 @@ PING $B$K1~Ez$9$k(B local proxy $B7PM3$G(B IRC $B%5!<%P$K@\B3(B
 (add-to-list 'riece-addons 'riece-alias)
 @end example
 
-@node Development, Index, Advanced usage, Top
+@node Tips, Development, Advanced usage, Top
+@comment  node-name,  next,  previous,  up
+@chapter Tips
+
+$B$3$N>O$G$O!"$h$/J9$+$l$k<ALd$KBP$9$kEz$($d!"JXMx$J@_Dj$r>R2p$7$^$9!#(B
+
+@section $B%A%c%s%M%kL>!V(B#$B$[$2(B:*.jp$B!W$r!V(B%$B$[$2!W$HN,5-$7$?$$(B
+
+$B0J2<$N9T$r(B @file{~/.riece/init.el} $B$KDI2C$7$^$9!'(B
+
+@example
+(add-to-list 'riece-addons 'riece-alias)
+@end example
+
+@section $BD>A0$K$$$?%A%c%s%M%k$KLa$j$?$$(B
+
+$B0J2<$N9T$r(B @file{~/.riece/init.el} $B$KDI2C$9$k$3$H$G!"(B
+@kbd{C-c g} $B$GMzNr$rC)$j$D$D0\F0$G$-$^$9!#(B
+
+@example
+(add-hook 'riece-guess-channel-try-functions
+          'riece-guess-channel-from-history)
+@end example
+
+@section $BH/8@$,$"$k$H%P%C%U%!$,%9%/%m!<%k$9$k$N$r;_$a$?$$(B
+
+@kbd{C-c C-t f} $B$G$9!#(B(irchat $B$G$O(B @kbd{C-c C-f}) "t"oggle "f"reeze $B$H3P(B
+$B$($^$7$g$&!#(B
+
+@section $BGI<j$JAu>~$rM^@)$7$?$$(B
+
+@code{riece-addons} $B$+$i!"?'IU$1(B (@samp{riece-highlight})$B!"%\%?%s(B 
+(@samp{riece-button})$B!"%"%$%3%s(B (@samp{riece-icon}) $B$r=|$-$^$9!#(B
+
+$B$?$H$($P?'IU$1$r$d$a$?$$$N$G$"$l$P!"0J2<$N9T$r(B @file{~/.riece/init.el} 
+$B$KDI2C$7$^$9!'(B
+
+@example
+(setq riece-addons (delq 'riece-highlight riece-addons))
+@end example
+
+@section $B%-!<%o!<%I$KH?1~$7$F2;$rLD$i$7$?$$(B
+
+XEmacs $B$G$O!"0J2<$N@_Dj$r(B @file{~/.riece/init.el} $B$K2C$($k$3$H$G!"(B"$B$[$2(B" 
+$B$d(B "$B$U$,(B" $B$KH?1~$7$F8z2L2;(B($B$3$NNc$G$O!"%+%C%3!<$NLD$-@<(B)$B$rLD$i$9$3$H$,$G(B
+$B$-$^$9!#(B
+
+@example
+(load-default-sounds)
+(setq riece-keywords '("$B$[$2(B" "$B$U$,(B"))
+(add-hook 'riece-keyword-notify-functions
+          (lambda (keyword message) (play-sound 'cuckoo)))
+@end example
+
+Emacs $B$N>l9g$O(B,$B0J2<$N@_Dj$r(B @file{~/.riece/init.el} $B$K2C$($k$3$H$G(B,
+"$B$[$2(B" $B$d(B "$B$U$,(B" $B$KH?1~$7$F2;$rLD$i$9$3$H$,$G$-$^$9!#(B
+
+@example
+(defun cuckoo ()
+  "play cuckoo.au"
+  (call-process "play" nil 0 t
+                ".../cuckoo.au"))
+  (setq riece-keywords '("$B$[$2(B" "$B$U$,(B"))
+  (add-hook 'riece-keyword-notify-functions
+            (lambda (keyword message) (cuckoo)))
+@end example
+
+$B8z2L2;$G$O$J$/%7%s%W%k$K%S!<%W2;$rLD$i$7$?$$>l9g$O!"0J2<$N@_Dj$r(B 
+@file{~/.riece/init.el} $B$K2C$($^$9!#(B
+
+@example
+(setq riece-keywords '("$B$[$2(B" "$B$U$,(B"))
+(add-hook 'riece-keyword-notify-functions
+          (lambda (keyword message) (ding)))
+@end example
+
+@section SKK $B$r;H$C$F$$$F!"JQ49%b!<%I$N0u(B ($B"&(B) $B$rAw?.$7$?$/$J$$(B
+
+$B0J2<$N9T$r(B @file{~/.riece/init.el} $B$KDI2C$7$^$9!'(B
+
+@example
+(add-to-list 'riece-addons 'riece-skk-kakutei)
+@end example
+
+@section $B%A%c%s%M%k$NHV9f$r8GDj$7$?$$(B
+
+$B0J2<$N9T$r(B @file{~/.riece/init.el} $B$KDI2C$7$^$9!'(B
+
+@example
+(setq riece-default-channel-binding
+     '("#Liece" "#emacsen" nil "#debianjp"))
+@end example
+
+1: #Liece, 2: #emacsen, 4: #debianjp $B$N$h$&$K3dEv$F$i$l$^$9!#(Bnil $B$O%G%U%)(B
+$B%k%H$G$O<+F03dEv$F$NBP>]$K$J$i$J$$$3$H0UL#$7!"?7$?$J%A%c%s%M%k$K;22C$7$?(B
+$B>l9g!"$=$N%A%c%s%M%k$,(B 3 $BHVL\$N%A%c%s%M%k$H$7$F07$o$l$^$9!#(B
+
+@section $B5/F0;~$K%Q%9%o!<%I$D$-$N%A%c%s%M%k$K;22C$7$?$$(B
+
+$B0J2<$N9T$r(B @file{~/.riece/init.el} $B$KDI2C$7$^$9!'(B
+
+@example
+(setq riece-startup-channel-list
+     '(("#secret" "password") "#Liece"))
+@end example
+
+$BJ#?t$N%5!<%P>e$N%A%c%s%M%k$K;22C$9$k$K$O!"(B
+@code{riece-startup-server-list} $B$bJ;$;$F@_Dj$9$kI,MW$,$"$j$^$9!#(B
+
+$BNc$H$7$F!"(B@code{riece-server} $B$H(B @code{riece-server-alist} $B$r0J2<$N$h$&(B
+$B$K@_Dj$7$?$H$7$^$9!#(B
+
+@example
+(setq riece-server "ircnet"
+      riece-server-alist '(("ircnet" :host "irc6.nara.wide.ad.jp")
+                           ("freenode" :host "irc.ipv6.freenode.net")))
+@end example
+
+$B$3$N>l9g!"%G%U%)%k%H$G$O(B "ircnet" $B$@$1$K@\B3$7$^$9$,!"(B
+@code{riece-startup-server-list} $B$r0J2<$N$h$&$K@_Dj$9$k$3$H$G!"(B
+"freenode" $B$K$b@\B3$9$k$h$&$K$J$j$^$9!#(B
+
+@example
+(setq riece-startup-server-list '("freenode"))
+@end example
+
+@section HTTP $B%W%m%-%71[$7$K(B IRC $B%5!<%P$K@\B3$7$?$$(B
+relay.el $B$H(B connect.c $B$r;H$&$H!"(B
+HTTP $B%W%m%-%7$r2p$7$F(B IRC $B%5!<%P$K@\B3$9$k$3$H$,$G$-$^$9!#(B
+
+@table
+@item relay.el
+@uref{http://www.imasy.or.jp/~gotoh/lisp/relay.el}
+
+@item connect.c
+@uref{http://www.imasy.or.jp/~gotoh/ssh/connect.html}
+@end table
+
+$B$?$H$($P!"(B"proxy.example.com:8080" $B7PM3$G(B irc.tokyo.wide.ad.jp $B$K@\B3$9(B
+$B$k>l9g$K$O!"0J2<$N9T$r(B @file{~/.riece/init.el} $B$KDI2C$7$^$9!'(B
+
+@example
+(require 'relay)
+(setq relay-command-alist (cons '("^irc\.tokyo\.wide\.ad\.jp$"
+                                  "connect" "-H" "proxy.example.com:8080"
+                                  host service)
+                                relay-command-alist)
+      riece-server-alist (cons '("proxy-tokyo" :host "irc.tokyo.wide.ad.jp"
+                                 :function relay-open-network-stream)
+                               riece-server-alist))
+@end example
+
+@section IRC $B%m%0$r%U%!%$%k$KJ]B8$7$?$$(B
+
+$B0J2<$N9T$r(B @file{~/.riece/init.el} $B$KDI2C$7$^$9!'(B
+
+@example
+(add-to-list 'riece-addons 'riece-log)
+@end example
+
+$B%m%0%U%!%$%k$O%G%U%)%k%H$G$O(B @file{~/.riece/log} $B$N2<$K%5!<%PL>!"%A%c%s(B
+$B%M%kL>$N%G%#%l%/%j$,:n@.$5$l!"$=$NCf$KF|$K$AKh$KJ]B8$5$l$^$9!#$?$@$7%G%U%)(B
+$B%k%H$N%5!<%P$N>l9g$O!"%5!<%PL>$N%G%#%l%/%H%j$O>JN,$5$l$^$9!#(B
+
+US-ASCII $B0J30$N%G%#%l%/%H%jL>$,J8;z2=$1$9$k$H$$$&?M$O!"(B
+@code{file-name-coding-system} $B$NCM$rE,@Z$K@_Dj$9$k$+!"$"$k$$$O(B 
+@code{riece-log-directory-map} $B$G%A%c%s%M%kL>$HJ]B8@h$N%G%#%l%/%H%jL>$H(B
+$B$NBP1~%j%9%H$r0J2<$NNc$N$h$&$K!"(BUS-ASCII $B$N$_$r;HMQ$7$?%G%#%l%/%H%jL>$K(B
+$B$J$k$h$&$K@_Dj$9$k;v$G2sHr=PMh$^$9!'(B
+
+@example
+(setq riece-log-directory-map '(("#$B$j!<$9(B" . "riece")))
+@end example
+
+@node Development, Index, Tips, Top
 @chapter Development
 
 $B3+H/<TJg=8Cf!#(B
