@@ -32,6 +32,9 @@
   "Return the component sans its server from IDENTITY."
   (aref identity 0))
 
+(defvar riece-abbrev-identity-string-function nil)
+(defvar riece-expand-identity-string-function nil)
+
 (defun riece-identity-server (identity)
   "Return the server component in IDENTITY."
   (aref identity 1))
@@ -51,28 +54,24 @@
 
 (defun riece-identity-canonicalize-prefix (prefix)
   "Canonicalize identity PREFIX.
-This function downcases PREFIX first, then does special treatment for
-Scandinavian alphabets.
+This function downcases PREFIX with Scandinavian alphabet rule.
 
 RFC2812, 2.2 \"Character codes\" says:
    Because of IRC's Scandinavian origin, the characters {}|^ are
    considered to be the lower case equivalents of the characters []\~,
    respectively. This is a critical issue when determining the
    equivalence of two nicknames or channel names."
-  (let* ((result (downcase prefix))
-	 (length (length result))
-	 (index 0))
-    (while (< index length)
-      (if (eq (aref result index) ?\[)
-	  (aset result index ?{)
-	(if (eq (aref result index) ?\])
-	    (aset result index ?})
-	  (if (eq (aref result index) ?\\)
-	      (aset result index ?|)
-	    (if (eq (aref result index) ?~)
-		(aset result index ?^)))))
-      (setq index (1+ index)))
-    result))
+  (let* ((old (current-case-table))
+	 (new (copy-case-table old)))
+    (unwind-protect
+	(progn
+	  (riece-set-case-syntax-pair ?\[ ?{ new)
+	  (riece-set-case-syntax-pair ?\] ?} new)
+	  (riece-set-case-syntax-pair ?\\ ?| new)
+	  (riece-set-case-syntax-pair ?~ ?^ new)
+	  (set-case-table new)
+	  (downcase prefix))
+      (set-case-table old))))
 
 (defun riece-identity-equal-no-server (prefix1 prefix2)
   "Return t, if IDENT1 and IDENT2 is equal without server."
@@ -118,57 +117,45 @@ RFC2812, 2.2 \"Character codes\" says:
     (setcar pointer item)
     list))
 
-(defmacro riece-with-identity-buffer (identity &rest body)
-  `(let ((process (riece-server-process (riece-identity-server ,identity))))
-     (if process
-	 (with-current-buffer (process-buffer process)
-	   ,@body)
-       (error "Server closed"))))
+(defun riece-format-identity (identity &optional prefix-only)
+  (let ((string
+	 (if (or prefix-only
+		 (equal (riece-identity-server identity) ""))
+	     (riece-identity-prefix identity)
+	   (concat (riece-identity-prefix identity) " "
+		   (riece-identity-server identity)))))
+    (if riece-abbrev-identity-string-function
+	(funcall riece-abbrev-identity-string-function string)
+      string)))
 
-(put 'riece-with-identity-buffer 'lisp-indent-function 1)
-
-(defun riece-decode-identity (identity &optional prefix-only)
-  (riece-with-identity-buffer identity
-    (let ((prefix (riece-decode-coding-string
-		   (riece-identity-prefix identity)))
-	  (server (riece-identity-server identity)))
-      (if (or prefix-only (equal server ""))
-	  prefix
-	(concat prefix " " server)))))
-
-(defun riece-encode-identity (string)
-  (let ((prefix (if (string-match " " string)
-		    (substring string 0 (match-beginning 0))
-		  string))
-	(server (if (string-match " " string)
-		    (substring string (match-end 0))
-		  "")))
-    (riece-with-server-buffer server
-      (riece-make-identity (riece-encode-coding-string prefix) server))))
+(defun riece-parse-identity (string)
+  (if riece-expand-identity-string-function
+      (setq string (funcall riece-expand-identity-string-function string)))
+  (riece-make-identity (if (string-match " " string)
+			   (substring string 0 (match-beginning 0))
+			 string)
+		       (if (string-match " " string)
+			   (substring string (match-end 0))
+			 "")))
 
 (defun riece-completing-read-identity (prompt channels
 					      &optional predicate must-match
 					      initial)
-  (let* ((decoded
+  (let* ((string
 	  (completing-read
 	   prompt
 	   (mapcar (lambda (channel)
-		     (list (riece-decode-identity channel)))
+		     (list (riece-format-identity channel)))
 		   (delq nil (copy-sequence (or channels
 						riece-current-channels))))
 	   predicate must-match initial))
-	 (encoded
-	  (riece-encode-identity decoded)))
+	 (identity
+	  (riece-parse-identity string)))
     (unless (string-match (concat "^\\(" riece-channel-regexp "\\|"
 				  riece-user-regexp "\\)")
-			  (riece-identity-prefix encoded))
+			  (riece-identity-prefix identity))
       (error "Invalid channel name!"))
-    (if (and (not (string-match "[ ,]" decoded))
-	     (string-match "[ ,]" (riece-identity-prefix encoded))
-	     (not (y-or-n-p (format "The encoded channel name contains illegal character \"%s\".  continue? "
-				    (match-string 0 (riece-identity-prefix encoded))))))
-	(error "Invalid channel name!"))
-    encoded))
+    identity))
 
 (provide 'riece-identity)
 

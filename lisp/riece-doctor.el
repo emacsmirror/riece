@@ -51,7 +51,7 @@
 (autoload 'doctor-read-print "doctor")
 
 (defun riece-doctor-buffer-name (user)
-  (concat " *riece-doctor*" (riece-decode-identity user)))
+  (concat " *riece-doctor*" (riece-format-identity user)))
 
 (defun riece-doctor-reply (target string)
   (riece-display-message

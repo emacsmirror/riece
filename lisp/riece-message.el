@@ -87,18 +87,18 @@
   "Make local identity for MESSAGE."
   (if (riece-message-private-p message)
       (if (riece-message-own-p message)
-	  (riece-decode-identity (riece-message-target message) t)
-	(riece-decode-identity (riece-message-speaker message) t))
-    (riece-decode-identity (riece-message-speaker message) t)))
+	  (riece-format-identity (riece-message-target message) t)
+	(riece-format-identity (riece-message-speaker message) t))
+    (riece-format-identity (riece-message-speaker message) t)))
 
 (defun riece-message-make-global-name (message)
   "Make global identity for MESSAGE."
   (if (riece-message-private-p message)
       (if (riece-message-own-p message)
-	  (riece-decode-identity (riece-message-target message) t)
-	(riece-decode-identity (riece-message-speaker message) t))
-    (concat (riece-decode-identity (riece-message-target message) t) ":"
-	    (riece-decode-identity (riece-message-speaker message) t))))
+	  (riece-format-identity (riece-message-target message) t)
+	(riece-format-identity (riece-message-speaker message) t))
+    (concat (riece-format-identity (riece-message-target message) t) ":"
+	    (riece-format-identity (riece-message-speaker message) t))))
 
 (defun riece-message-buffer (message)
   "Return the buffer where MESSAGE should appear."
@@ -213,7 +213,7 @@ Currently possible values are `action' and `notice'."
   (not (riece-identity-member
 	(riece-message-speaker message)
 	(let ((target (riece-message-target message)))
-	  (riece-with-identity-buffer target
+	  (riece-with-server-buffer (riece-identity-server target)
 	    (mapcar
 	     (lambda (user)
 	       (riece-make-identity user riece-server-name))

@@ -70,6 +70,9 @@ Modify whole identification by side effect."
 (defalias 'riece-simplify-mode-line-format
   'riece-xemacs-simplify-modeline-format)
 
+(defalias 'riece-set-case-syntax-pair
+  'put-case-table-pair)
+
 (provide 'riece-xemacs)
 
 ;;; riece-xemacs.el ends here

@@ -24,10 +24,6 @@
 
 ;;; Code:
 
-(if (featurep 'xemacs)
-    (require 'riece-xemacs)
-  (require 'riece-emacs))
-
 (require 'riece-filter)
 (require 'riece-display)
 (require 'riece-server)

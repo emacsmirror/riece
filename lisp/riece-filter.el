@@ -45,7 +45,8 @@
     (if (and function
 	     (symbol-function function))
 	(condition-case error
-	    (funcall function prefix number name string)
+	    (funcall function prefix number name
+		     (riece-decode-coding-string string))
 	  (error
 	   (if riece-debug
 	       (message "Error occurred in `%S': %S" function error)))))))
@@ -56,8 +57,7 @@
    (list riece-dialogue-buffer riece-others-buffer)
    (concat client-prefix
 	   (riece-concat-server-name
-	    (mapconcat #'riece-decode-coding-string
-		       (riece-split-parameters string) " "))
+	    (mapconcat #'identity (riece-split-parameters string) " "))
 	   "\n")))
 
 (defun riece-handle-message (prefix message string)
@@ -66,7 +66,8 @@
       (riece-user-set-user-at-host
        (riece-get-user (substring prefix 0 (match-beginning 0)))
        (riece-parse-user-at-host (substring prefix (1+ (match-beginning 0))))))
-  (setq message (downcase message))
+  (setq message (downcase message)
+	string (riece-decode-coding-string string))
   (let ((function (intern-soft (concat "riece-handle-" message "-message")))
 	(hook (intern (concat "riece-" message "-hook")))
 	(after-hook (intern (concat "riece-after-" message "-hook"))))

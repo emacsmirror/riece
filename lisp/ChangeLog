@@ -1,3 +1,27 @@
+2003-08-04  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-filter.el (riece-handle-numeric-reply): Decode messages.
+	(riece-handle-message): Ditto.
+
+	* riece-identity.el (riece-abbrev-identity-string-function): New
+	variable.
+	(riece-expand-identity-string-function): New variable.
+	(riece-format-identity): Rename from riece-decode-identity.
+	(riece-parse-identity): Rename from riece-encode-identity.
+	(riece-with-identity-buffer): Abolish.
+	(riece-identity-canonicalize-prefix): Use case-table.
+
+	* riece-alias.el: New add-on.
+	* COMPILE (riece-modules): Add riece-alias.
+	* Makefile.am (EXTRA_DIST): Add riece-alias.el.
+
+	* riece-identity.el (riece-with-identity-buffer): Use
+	riece-with-server-buffer.
+
+	* riece-emacs.el (riece-set-case-syntax-pair): New alias.
+	* riece-xemacs.el (riece-set-case-syntax-pair): New alias.
+	* riece-identity.el (riece-identity-canonicalize-prefix): Simplified.
+
 2003-06-23  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-misc.el (riece-channel-p): Moved from riece-channel.el.

@@ -24,6 +24,9 @@
 
 ;;; Code:
 
+(defalias 'riece-set-case-syntax-pair
+  'set-case-syntax-pair)
+
 (provide 'riece-emacs)
 
 ;;; riece-emacs.el ends here

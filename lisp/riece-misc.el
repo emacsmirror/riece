@@ -86,7 +86,7 @@
 
 (defun riece-current-nickname ()
   "Return the current nickname."
-  (riece-with-identity-buffer riece-current-channel
+  (riece-with-server-buffer (riece-identity-server riece-current-channel)
     (if riece-real-nickname
 	(riece-make-identity riece-real-nickname riece-server-name))))
 
@@ -106,14 +106,14 @@
       parameters)))
 
 (defun riece-concat-channel-topic (target string)
-  (riece-with-identity-buffer target
+  (riece-with-server-buffer (riece-identity-server target)
     (let ((topic (riece-channel-get-topic (riece-identity-prefix target))))
       (if topic
 	  (concat string ": " topic)
 	string))))
 
 (defun riece-concat-channel-modes (target string)
-  (riece-with-identity-buffer target
+  (riece-with-server-buffer (riece-identity-server target)
     (let ((modes (riece-channel-get-modes (riece-identity-prefix target))))
       (if modes
 	  (concat string " [" (apply #'string modes) "]")

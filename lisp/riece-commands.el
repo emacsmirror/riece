@@ -146,7 +146,8 @@
 (defun riece-command-topic (topic)
   (interactive
    (list (read-from-minibuffer
-	  "Topic: " (cons (or (riece-with-identity-buffer riece-current-channel
+	  "Topic: " (cons (or (riece-with-server-buffer
+				  (riece-identity-server riece-current-channel)
 				(riece-channel-get-topic
 				 (riece-identity-prefix
 				  riece-current-channel)))
@@ -200,7 +201,7 @@
 	    (if (and riece-current-channel
 		     (riece-channel-p (riece-identity-prefix
 				       riece-current-channel)))
-		(cons (riece-decode-identity riece-current-channel t)
+		(cons (riece-format-identity riece-current-channel t)
 		      0))))))
   (if (or (not (equal pattern ""))
 	  (yes-or-no-p "Really want to query NAMES without argument? "))
@@ -214,7 +215,7 @@
 	    (if (and riece-current-channel
 		     (riece-channel-p (riece-identity-prefix
 				       riece-current-channel)))
-		(cons (riece-decode-identity riece-current-channel t)
+		(cons (riece-format-identity riece-current-channel t)
 		      0))))))
   (if (or (not (equal pattern ""))
 	  (yes-or-no-p "Really want to query WHO without argument? "))
@@ -228,7 +229,7 @@
 	    (if (and riece-current-channel
 		     (riece-channel-p (riece-identity-prefix
 				       riece-current-channel)))
-		(cons (riece-decode-identity riece-current-channel t)
+		(cons (riece-format-identity riece-current-channel t)
 		      0))))))
   (if (or (not (equal pattern ""))
 	  (yes-or-no-p "Really want to query LIST without argument? "))
@@ -263,7 +264,8 @@
 (defun riece-command-set-operators (users &optional arg)
   (interactive
    (let ((operators
-	  (riece-with-identity-buffer riece-current-channel
+	  (riece-with-server-buffer
+	      (riece-identity-server riece-current-channel)
 	    (riece-channel-get-operators
 	     (riece-identity-prefix riece-current-channel))))
 	 (completion-ignore-case t)
@@ -278,8 +280,9 @@
 			       (lambda (user)
 				 (unless (member user operators)
 				   (list user)))
-			       (riece-with-identity-buffer
-				   riece-current-channel
+			       (riece-with-server-buffer
+				   (riece-identity-server
+				    riece-current-channel)
 				 (riece-channel-get-users
 				  (riece-identity-prefix
 				   riece-current-channel))))))))
@@ -302,7 +305,8 @@
 (defun riece-command-set-speakers (users &optional arg)
   (interactive
    (let ((speakers
-	  (riece-with-identity-buffer riece-current-channel
+	  (riece-with-server-buffer
+	      (riece-identity-server riece-current-channel)
 	    (riece-channel-get-speakers
 	     (riece-identity-prefix riece-current-channel))))
 	 (completion-ignore-case t)
@@ -317,8 +321,9 @@
 			       (lambda (user)
 				 (unless (member user speakers)
 				   (list user)))
-			       (riece-with-identity-buffer
-				   riece-current-channel
+			       (riece-with-server-buffer
+				   (riece-identity-server
+				    riece-current-channel)
 				 (riece-channel-get-users
 				  (riece-identity-prefix
 				   riece-current-channel))))))))
@@ -441,7 +446,7 @@
 	 (target
 	  (riece-completing-read-identity
 	   "Channel/User: " riece-current-channels nil nil
-	   (cons (riece-decode-identity riece-current-channel) 0)))
+	   (cons (riece-format-identity riece-current-channel) 0)))
 	 message)
      (if (and current-prefix-arg
 	      (riece-channel-p (riece-identity-prefix target)))

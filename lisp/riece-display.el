@@ -157,7 +157,7 @@ Local to the buffers.")
 	  (if (car channels)
 	      (let ((point (point)))
 		(insert (format "%2d: %s\n" index
-				(riece-decode-identity (car channels))))
+				(riece-format-identity (car channels))))
 		(put-text-property point (point) 'riece-identity
 				   (car channels))))
 	  (setq index (1+ index)
@@ -172,14 +172,14 @@ Local to the buffers.")
 		 riece-current-channel
 		 (riece-concat-channel-topic
 		  riece-current-channel
-		  (riece-decode-identity riece-current-channel)))
-	      (riece-decode-identity riece-current-channel))
+		  (riece-format-identity riece-current-channel)))
+	      (riece-format-identity riece-current-channel))
 	  "None")))
 
 (defun riece-update-short-channel-indicator ()
   (setq riece-short-channel-indicator
 	(if riece-current-channel
-	    (riece-decode-identity riece-current-channel)
+	    (riece-format-identity riece-current-channel)
 	  "None")))
 
 (defun riece-update-channel-list-indicator ()
@@ -195,7 +195,7 @@ Local to the buffers.")
 		      (lambda (channel)
 			(prog1 (if channel
 				   (format "%d:%s" index
-					   (riece-decode-identity channel)))
+					   (riece-format-identity channel)))
 			  (setq index (1+ index))))
 		      riece-current-channels))
 	       ",")))
@@ -235,7 +235,7 @@ Local to the buffers.")
   (force-mode-line-update t))
 
 (defun riece-channel-buffer-name (identity)
-  (format riece-channel-buffer-format (riece-decode-identity identity)))
+  (format riece-channel-buffer-format (riece-format-identity identity)))
 
 (eval-when-compile
   (autoload 'riece-channel-mode "riece"))
