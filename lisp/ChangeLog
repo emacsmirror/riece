@@ -5,7 +5,7 @@
 
 	* riece-misc.el (riece-get-buffer-create): Takes an optional 2nd
 	argument, init-major-mode, which is used to assert the major-mode
-	of the created buffer is 'riece-channel-mode.
+	of the created buffer.
 
 	* riece-naming.el (riece-naming-assert-rename): Merged buffer
 	renaming logic that riece-handle-nick-message was responsible for.
