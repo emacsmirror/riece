@@ -181,7 +181,7 @@ Normally they are *Dialogue* and/or *Others*."
   "Display MESSAGE object."
   (let ((functions riece-message-filter-functions))
     (setq message (copy-sequence message))
-    (while functions
+    (while (and functions message)
       (setq message (funcall (car functions) message)
 	    functions (cdr functions)))
     (if message

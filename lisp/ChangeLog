@@ -1,3 +1,8 @@
+2005-02-02  TAKAHASHI Kaoru  <kaoru@kaisei.org>
+
+	* riece-message.el (riece-display-message): When filter-function
+	return nil, escape from while loop.
+
 2005-02-02  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-debug.el (riece-debug-standard-output-buffer): Use
