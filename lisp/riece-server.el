@@ -197,7 +197,10 @@ the `riece-server-keyword-map' variable."
   (if riece-debug
       (delete-process process)
     (kill-buffer (process-buffer process)))
-  (setq riece-process-list (delq process riece-process-list)))
+  (setq riece-process-list (delq process riece-process-list))
+  ;; If no server process is available, exit.
+  (unless riece-process-list
+    (riece-exit)))
 
 (defun riece-server-opened (&optional server-name)
   (let ((process-list riece-process-list))

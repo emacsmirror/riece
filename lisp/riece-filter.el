@@ -156,10 +156,7 @@
 	      (riece-part-channel (car channels)))
 	  (setq channels (cdr channels))))
       (riece-redisplay-buffers)
-      (riece-close-server-process process)
-      ;; If no server process is available, exit.
-      (unless riece-process-list
-	(riece-exit)))))
+      (riece-close-server-process process))))
 
 (provide 'riece-filter)
 
