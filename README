@@ -12,7 +12,7 @@ Riece provides the following features:
 - Setup is easy.  Automatically save/restore the configuration.
 - Riece uses separate windows to display users, channels, and
   dialogues.  The user can select the window layout.
-- Step-by-step instructions are included.
+- Step-by-step instructions (in info format) are included.
 - Mostly compliant with RFC 2812.
 
 * Directory tree
