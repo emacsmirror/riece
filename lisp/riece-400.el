@@ -63,6 +63,26 @@
   (message "Password incorrect from %s." prefix)
   (setq riece-reconnect-with-password t))
 
+(defun riece-handle-475-message (prefix number name string)
+  "ERR_BADCHANNELKEY \"<channel> :Cannot join channel (+k)\"."
+  (let* ((parameters (riece-split-parameters string))
+	 (channel-identity (riece-make-identity (car parameters)
+						riece-server-name))
+	 key)
+    (message "%s: %s" (car parameters) (nth 1 parameters))
+    (setq key
+	  (condition-case nil
+	      (let (inhibit-quit)
+		(riece-read-passwd
+		 (format "Key for %s: "
+			 (riece-format-identity channel-identity t))))
+	    (quit
+	     (message (format "Key for %s: Quit"
+			      (riece-format-identity channel-identity t)))
+	     'quit)))
+    (unless (eq key 'quit)
+      (riece-command-join-channel channel-identity key))))
+
 (provide 'riece-400)
 
 ;;; riece-400.el ends here

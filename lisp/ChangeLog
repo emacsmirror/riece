@@ -1,5 +1,10 @@
 2005-02-03  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-400.el (riece-handle-475-message): New handler; query
+	channel key.
+
+2005-02-03  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-addon.el (riece-resolve-addon-dependencies): Rename from
 	riece-resolve-addon.
 	(riece-resolve-addon): Append add-ons under riece-addon-directory.
