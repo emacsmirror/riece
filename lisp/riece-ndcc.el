@@ -192,7 +192,7 @@ Only used for sending files."
 	    (port (string-to-number (match-string 3 message)))
 	    (size (string-to-number (match-string 4 message)))
 	    (buffer (if (riece-channel-p target)
-			(cdr (riece-identity-assoc-no-server
+			(cdr (riece-identity-assoc
 			      (riece-make-identity target)
 			      riece-channel-buffer-alist))))
 	    (user (riece-prefix-nickname prefix)))

@@ -83,7 +83,7 @@
 
 (defun riece-handle-ctcp-version-request (prefix target string)
   (let ((buffer (if (riece-channel-p target)
-		    (cdr (riece-identity-assoc-no-server
+		    (cdr (riece-identity-assoc
 			  (riece-make-identity target)
 			  riece-channel-buffer-alist))))
 	(user (riece-prefix-nickname prefix)))
@@ -105,7 +105,7 @@
 
 (defun riece-handle-ctcp-ping-request (prefix target string)
   (let ((buffer (if (riece-channel-p target)
-		    (cdr (riece-identity-assoc-no-server
+		    (cdr (riece-identity-assoc
 			  (riece-make-identity target)
 			  riece-channel-buffer-alist))))
 	(user (riece-prefix-nickname prefix)))
@@ -129,7 +129,7 @@
 
 (defun riece-handle-ctcp-clientinfo-request (prefix target string)
   (let ((buffer (if (riece-channel-p target)
-		    (cdr (riece-identity-assoc-no-server
+		    (cdr (riece-identity-assoc
 			  (riece-make-identity target)
 			  riece-channel-buffer-alist))))
 	(user (riece-prefix-nickname prefix)))
@@ -166,7 +166,7 @@
 
 (defun riece-handle-ctcp-action-request (prefix target string)
   (let ((buffer (if (riece-channel-p target)
-		    (cdr (riece-identity-assoc-no-server
+		    (cdr (riece-identity-assoc
 			  (riece-make-identity target)
 			  riece-channel-buffer-alist))))
 	(user (riece-prefix-nickname prefix)))
@@ -292,7 +292,7 @@
   (riece-send-string (format "PRIVMSG %s :\1ACTION %s\1\r\n"
 			     (riece-identity-prefix channel)
 			     action))
-  (let ((buffer (cdr (riece-identity-assoc-no-server
+  (let ((buffer (cdr (riece-identity-assoc
 		      (riece-make-identity channel)
 		      riece-channel-buffer-alist))))
     (riece-insert-change

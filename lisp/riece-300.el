@@ -194,7 +194,7 @@
       (let* ((channel (match-string 1 string))
 	     (visible (match-string 2 string))
 	     (topic (substring string (match-end 0))))
-	(let ((buffer (cdr (riece-identity-assoc-no-server
+	(let ((buffer (cdr (riece-identity-assoc
 			    (riece-make-identity channel)
 			    riece-channel-buffer-alist))))
 	  (riece-insert-info buffer (concat visible " users, topic: "
@@ -219,7 +219,7 @@
 	(while modes
 	  (riece-channel-toggle-mode channel (car modes) (eq toggle ?+))
 	  (setq modes (cdr modes)))
-	(let ((buffer (cdr (riece-identity-assoc-no-server
+	(let ((buffer (cdr (riece-identity-assoc
 			    (riece-make-identity channel)
 			    riece-channel-buffer-alist))))
 	  (riece-insert-info buffer (concat "Mode: " mode-string "\n"))
@@ -239,7 +239,7 @@
   (if (string-match "^\\([^ ]+\\) :" string)
       (let* ((channel (match-string 1 string))
 	     (message (substring string (match-end 0)))
-	     (buffer (cdr (riece-identity-assoc-no-server
+	     (buffer (cdr (riece-identity-assoc
 			   (riece-make-identity channel)
 			   riece-channel-buffer-alist))))
 	(if remove
@@ -267,7 +267,7 @@
   (if (string-match "^\\([^ ]+\\) " string)
       (let* ((channel (match-string 1 string))
 	     (user (substring string (match-end 0)))
-	     (buffer (cdr (riece-identity-assoc-no-server
+	     (buffer (cdr (riece-identity-assoc
 			   (riece-make-identity channel)
 			   riece-channel-buffer-alist))))
 	(riece-insert-info buffer (concat "Inviting " user "\n"))
@@ -293,7 +293,7 @@
 	     (flag (match-string 8 string))
 	     (hops (match-string 9 string))
 	     (name (substring string (match-end 0)))
-	     (buffer (cdr (riece-identity-assoc-no-server
+	     (buffer (cdr (riece-identity-assoc
 			   (riece-make-identity channel)
 			   riece-channel-buffer-alist))))
 	(riece-naming-assert-join nick channel)

@@ -23,7 +23,7 @@
 
 ;;; Code:
 
-(eval-when-compile (require 'riece-inlines))	;string-assoc-ignore-case, etc.
+(eval-when-compile (require 'riece-inlines))	;scandinavian-downcase
 
 (require 'riece-identity)
 
@@ -34,26 +34,32 @@
 (defun riece-find-user (name)
   "Get a user object named NAME from the server buffer."
   (riece-with-server-buffer
-   (let ((symbol (intern-soft (downcase (riece-identity-prefix name))
+   (let ((symbol (intern-soft (scandinavian-downcase
+			       (riece-identity-prefix name))
 			      riece-obarray)))
      (if symbol
 	 (symbol-value symbol)))))
 
 (defun riece-forget-user (name)
   (riece-with-server-buffer
-   (let ((symbol (intern-soft (downcase (riece-identity-prefix name)))))
+   (let ((symbol (intern-soft (scandinavian-downcase
+			       (riece-identity-prefix name)))))
      (when symbol
        (makunbound symbol)
        (unintern (symbol-name symbol) riece-obarray)))))
 
 (defun riece-rename-user (old-name new-name)
   (riece-with-server-buffer
-   (unless (equal (downcase (riece-identity-prefix old-name))
-		  (downcase (riece-identity-prefix new-name)))
-     (let ((symbol (intern-soft (downcase (riece-identity-prefix old-name))
+   (unless (equal (scandinavian-downcase
+		   (riece-identity-prefix old-name))
+		  (scandinavian-downcase
+		   (riece-identity-prefix new-name)))
+     (let ((symbol (intern-soft (scandinavian-downcase
+				 (riece-identity-prefix old-name))
 				riece-obarray)))
        (when symbol
-	 (set (intern (downcase (riece-identity-prefix new-name))
+	 (set (intern (scandinavian-downcase
+		       (riece-identity-prefix new-name))
 		      riece-obarray)
 	      (symbol-value symbol))
 	 (makunbound symbol)
@@ -67,11 +73,13 @@ away status, respectively."
 
 (defun riece-get-user (name)
   (riece-with-server-buffer
-   (let ((symbol (intern-soft (downcase (riece-identity-prefix name))
+   (let ((symbol (intern-soft (scandinavian-downcase
+			       (riece-identity-prefix name))
 			      riece-obarray)))
      (if symbol
 	 (symbol-value symbol)
-       (set (intern (downcase (riece-identity-prefix name)) riece-obarray)
+       (set (intern (scandinavian-downcase
+		     (riece-identity-prefix name)) riece-obarray)
 	    (riece-make-user))))))
 
 (defun riece-user-channels (user)

@@ -234,28 +234,28 @@
   (setq riece-last-channel riece-current-channel
 	riece-current-channel identity
 	riece-channel-buffer
-	(cdr (riece-identity-assoc-no-server
+	(cdr (riece-identity-assoc
 	      identity riece-channel-buffer-alist))
 	riece-user-list-buffer 
-	(cdr (riece-identity-assoc-no-server
+	(cdr (riece-identity-assoc
 	      identity riece-user-list-buffer-alist)))
   (run-hooks 'riece-channel-switch-hook))
 
 (defun riece-join-channel (channel-name)
   (let ((identity (riece-make-identity channel-name)))
-    (unless (riece-identity-member-no-server
+    (unless (riece-identity-member
 	     identity riece-current-channels)
       (setq riece-current-channels
 	    (riece-identity-assign-binding
 	     identity riece-current-channels
 	     riece-default-channel-binding)))
-    (unless (riece-identity-assoc-no-server
+    (unless (riece-identity-assoc
 	     identity riece-channel-buffer-alist)
       (let ((buffer (riece-channel-buffer-create identity)))
 	(setq riece-channel-buffer-alist
 	      (cons (cons identity buffer)
 		    riece-channel-buffer-alist))))
-    (unless (riece-identity-assoc-no-server
+    (unless (riece-identity-assoc
 	     identity riece-user-list-buffer-alist)
       (let ((buffer (riece-user-list-buffer-create identity)))
 	(setq riece-user-list-buffer-alist
@@ -281,12 +281,11 @@
 
 (defun riece-part-channel (channel-name)
   (let* ((identity (riece-make-identity channel-name))
-	 (pointer (riece-identity-member-no-server
+	 (pointer (riece-identity-member
 		   identity riece-current-channels)))
     (if pointer
 	(setcar pointer nil))
-    ;;XXX
-    (if (riece-identity-equal-no-server identity riece-current-channel)
+    (if (riece-identity-equal identity riece-current-channel)
 	(riece-switch-to-nearest-channel pointer))))
 
 (defun riece-configure-windows-predicate ()

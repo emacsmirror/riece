@@ -32,13 +32,13 @@
 (require 'riece-display)
 
 (defun riece-naming-assert-join (user-name channel-name)
-  (if (string-equal-ignore-case user-name riece-real-nickname)
+  (if (scandinavian-equal-ignore-case user-name riece-real-nickname)
       (riece-join-channel channel-name))
   (riece-user-toggle-channel user-name channel-name t)
   (riece-channel-toggle-user channel-name user-name t))
 
 (defun riece-naming-assert-part (user-name channel-name)
-  (if (string-equal-ignore-case user-name riece-real-nickname)
+  (if (scandinavian-equal-ignore-case user-name riece-real-nickname)
       (progn
 	(riece-part-channel channel-name)
 	(riece-forget-channel channel-name))
@@ -46,15 +46,15 @@
     (riece-channel-toggle-user channel-name user-name nil)
     (riece-channel-toggle-operator channel-name user-name nil)
     (riece-channel-toggle-speaker channel-name user-name nil)
-    (if (riece-identity-equal user-name (riece-current-nickname))
+    (if (riece-identity-equal-safe user-name (riece-current-nickname))
 	(let* ((identity (riece-make-identity channel-name))
-	       (pointer (riece-identity-member
+	       (pointer (riece-identity-member-safe
 			 identity riece-current-channels)))
 	  (if pointer
 	      (setcar pointer nil))))))
 
 (defun riece-naming-assert-rename (old-name new-name)
-  (if (string-equal-ignore-case old-name riece-real-nickname)
+  (if (scandinavian-equal-ignore-case old-name riece-real-nickname)
       (setq riece-last-nickname riece-real-nickname
 	    riece-real-nickname new-name))
   (let* ((old (riece-get-user old-name))

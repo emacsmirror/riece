@@ -1,5 +1,21 @@
 2003-06-03  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-inlines.el (scandinavian-downcase): New inline function.
+	(scandinavian-equal-ignore-case): Rename from
+	string-equal-ignore-case.
+	(scandinavian-member-ignore-case): Rename from
+	string-list-member-ignore-case.
+
+	* riece-identity.el (riece-identity-equal): Rename from
+	riece-identity-equal-no-server; use scandinavian-equal-ignore-case.
+	(riece-identity-equal-safe): Rename from riece-identity-equal.
+	(riece-identity-member): Rename from riece-identity-member-no-server.
+	(riece-identity-member-safe): Rename from riece-identity-member.
+	(riece-identity-assoc): Rename from riece-identity-assoc-no-server.
+	(riece-identity-assoc-safe): Rename from riece-identity-assoc.
+
+2003-06-03  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-rdcc.el: Require 'riece-ctcp.
 	(riece-rdcc-insinuate): Add "DCC" to
 	riece-ctcp-additional-clientinfo.

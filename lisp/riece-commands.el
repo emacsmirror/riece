@@ -73,7 +73,7 @@
   "Select the next channel."
   (interactive)
   (when (> (length riece-current-channels) 1)
-    (let ((pointer (cdr (string-list-member-ignore-case
+    (let ((pointer (cdr (scandinavian-member-ignore-case
 			 riece-current-channel
 			 riece-current-channels))))
       (while (and pointer
@@ -92,7 +92,7 @@
   "Select the previous channel."
   (interactive)
   (when (> (length riece-current-channels) 1)
-    (let ((pointer (string-list-member-ignore-case
+    (let ((pointer (scandinavian-member-ignore-case
 		    riece-current-channel
 		    riece-current-channels))
 	  (start riece-current-channels)
@@ -384,7 +384,7 @@
 					 (riece-identity-prefix target))))))
 
 (defun riece-command-join-partner (target)
-  (let ((pointer (riece-identity-member target riece-current-channels)))
+  (let ((pointer (riece-identity-member-safe target riece-current-channels)))
     (if pointer
 	(riece-command-switch-to-channel (car pointer))
       (riece-join-channel target)
@@ -403,7 +403,7 @@
 	 (setq key
 	       (riece-read-passwd (format "Key for %s: " target))))
      (list target key)))
-  (let ((pointer (riece-identity-member target riece-current-channels)))
+  (let ((pointer (riece-identity-member-safe target riece-current-channels)))
     (if pointer
 	(riece-command-switch-to-channel (car pointer))
       (if (riece-channel-p target)
@@ -439,7 +439,7 @@
 	      (riece-channel-p target))
 	 (setq message (read-string "Message: ")))
      (list target message)))
-  (if (riece-identity-member target riece-current-channels)
+  (if (riece-identity-member-safe target riece-current-channels)
       (if (riece-channel-p target)
 	  (riece-command-part-channel target message)
 	(riece-part-channel target)

@@ -22,45 +22,41 @@
 ;; Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 ;; Boston, MA 02111-1307, USA.
 
+;;; Commentary:
+
+;; RFC2812, 2.2 "Character codes" says:
+;;    Because of IRC's Scandinavian origin, the characters {}|^ are
+;;    considered to be the lower case equivalents of the characters []\~,
+;;    respectively. This is a critical issue when determining the
+;;    equivalence of two nicknames or channel names.
+
 ;;; Code:
 
-(defsubst string-equal-ignore-case (s1 s2)
-  (string-equal (upcase s1) (upcase s2)))
+(defsubst scandinavian-downcase (string)
+  (let* ((result (downcase string))
+	 (length (length result))
+	 (index 0))
+    (while (< index length)
+      (if (eq (aref result index) ?\[)
+	  (aset result index ?{)
+	(if (eq (aref result index) ?\])
+	    (aset result index ?})
+	  (if (eq (aref result index) ?\\)
+	      (aset result index ?|)
+	    (if (eq (aref result index) ?~)
+		(aset result index ?^)))))
+      (setq index (1+ index)))
+    result))
 
-(defsubst string-list-member-ignore-case (thing list)
+(defsubst scandinavian-equal-ignore-case (s1 s2)
+  (string-equal (scandinavian-downcase s1) (scandinavian-downcase s2)))
+
+(defsubst scandinavian-member-ignore-case (thing list)
   (catch 'found
     (while list
       (if (and (stringp (car list))
-	       (string-equal-ignore-case (car list) thing))
+	       (scandinavian-equal-ignore-case (car list) thing))
 	  (throw 'found list)
-	(setq list (cdr list))))))
-
-(defsubst string-list-delete-ignore-case (thing list)
-  (let ((pointer (string-list-member-ignore-case thing list)))
-    (if pointer
-	(delq (car pointer) list)
-      list)))
-
-(defsubst string-list-delete (thing list)
-  (let ((pointer (member thing list)))
-    (if pointer
-	(delq (car pointer) list)
-      list)))
-
-(defsubst string-list-modify-ignore-case (modifiers list)
-  (while modifiers
-    (let ((pointer (string-list-member-ignore-case
-		    (car (car modifiers)) list)))
-      (if pointer
-	  (setcar pointer (cdr (car modifiers))))
-      (setq modifiers (cdr modifiers)))))
-
-(defsubst string-assoc-ignore-case (key list)
-  (catch 'found
-    (while list
-      (if (and (car-safe (car list))
-	       (string-equal-ignore-case key (car (car list))))
-	  (throw 'found (car list))
 	(setq list (cdr list))))))
 
 (provide 'riece-inlines)

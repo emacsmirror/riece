@@ -104,13 +104,12 @@
 
 (defun riece-message-buffer (message)
   "Return the buffer where MESSAGE should appear."
-  (let* ((target (if (riece-identity-equal-no-server
+  (let* ((target (if (riece-identity-equal
 		      (riece-message-target message)
 		      (riece-current-nickname))
 		     (riece-message-speaker message)
 		   (riece-message-target message)))
-	 (entry (riece-identity-assoc-no-server
-		 target riece-channel-buffer-alist)))
+	 (entry (riece-identity-assoc target riece-channel-buffer-alist)))
     (unless entry
       (riece-join-channel target)
       ;; If you are not joined any channel,
@@ -118,8 +117,7 @@
       (unless riece-current-channel
 	(riece-switch-to-channel target))
       (riece-redisplay-buffers)
-      (setq entry (riece-identity-assoc-no-server
-		   target riece-channel-buffer-alist)))
+      (setq entry (riece-identity-assoc target riece-channel-buffer-alist)))
     (cdr entry)))
 
 (defun riece-message-parent-buffers (message buffer)
@@ -127,7 +125,7 @@
 Normally they are *Dialogue* and/or *Others*."
   (if (or (and buffer (riece-frozen buffer))
 	  (and riece-current-channel
-	       (not (riece-identity-equal-no-server
+	       (not (riece-identity-equal
 		     (riece-message-target message)
 		     riece-current-channel))))
       (list riece-dialogue-buffer riece-others-buffer)
@@ -198,13 +196,13 @@ Currently possible values are `action' and `notice'."
   "Return t if MESSAGE is a private message."
   (if (riece-message-own-p message)
       (not (riece-channel-p (riece-message-target message)))
-    (riece-identity-equal-no-server
+    (riece-identity-equal
      (riece-message-target message)
      (riece-current-nickname))))
 
 (defun riece-message-external-p (message)
   "Return t if MESSAGE is from outside the channel."
-  (not (riece-identity-member-no-server
+  (not (riece-identity-member
 	(riece-message-target message)
 	(mapcar #'riece-make-identity
 		(riece-user-get-channels (riece-message-speaker message))))))

@@ -36,27 +36,26 @@
   (let* ((old (riece-prefix-nickname prefix))
 	 (new (car (riece-split-parameters string)))
 	 (channels (riece-user-get-channels old))
-	 (visible (riece-identity-member-no-server
-		   riece-current-channel channels)))
+	 (visible (riece-identity-member riece-current-channel channels)))
     (riece-naming-assert-rename old new)
-    (let ((pointer (riece-identity-member-no-server
+    (let ((pointer (riece-identity-member
 		    (riece-make-identity old)
 		    riece-current-channels)))
       (when pointer
 	(setcar pointer (riece-make-identity new))
-	(setcar (riece-identity-assoc-no-server (riece-make-identity old)
-						riece-channel-buffer-alist)
+	(setcar (riece-identity-assoc (riece-make-identity old)
+				      riece-channel-buffer-alist)
 		(riece-make-identity new))
-	(setcar (riece-identity-assoc-no-server (riece-make-identity old)
-						riece-user-list-buffer-alist)
+	(setcar (riece-identity-assoc (riece-make-identity old)
+				      riece-user-list-buffer-alist)
 		(riece-make-identity new))
-	(if (riece-identity-equal-no-server (riece-make-identity old)
-					    riece-current-channel)
+	(if (riece-identity-equal (riece-make-identity old)
+				  riece-current-channel)
 	    (riece-switch-to-channel (riece-make-identity new)))
 	(setq channels (cons (riece-make-identity new) channels))))
     (riece-insert-change (mapcar
 			  (lambda (channel)
-			    (cdr (riece-identity-assoc-no-server
+			    (cdr (riece-identity-assoc
 				  (riece-make-identity channel)
 				  riece-channel-buffer-alist)))
 			  channels)
@@ -108,9 +107,9 @@
     (while channels
       (riece-naming-assert-join user (car channels))
       ;;XXX
-      (if (string-equal-ignore-case user riece-real-nickname)
+      (if (scandinavian-equal-ignore-case user riece-real-nickname)
 	  (riece-switch-to-channel (riece-make-identity (car channels))))
-      (let ((buffer (cdr (riece-identity-assoc-no-server
+      (let ((buffer (cdr (riece-identity-assoc
 			  (riece-make-identity (car channels))
 			  riece-channel-buffer-alist))))
 	(riece-insert-change
@@ -141,7 +140,7 @@
 	 (message (nth 1 parameters)))
     (while channels
       (riece-naming-assert-part user (car channels))
-      (let ((buffer (cdr (riece-identity-assoc-no-server
+      (let ((buffer (cdr (riece-identity-assoc
 			  (riece-make-identity (car channels))
 			  riece-channel-buffer-alist))))
 	(riece-insert-change
@@ -172,7 +171,7 @@
 	 (user (nth 1 parameters))
 	 (message (nth 2 parameters)))
     (riece-naming-assert-part user channel)
-    (let ((buffer (cdr (riece-identity-assoc-no-server
+    (let ((buffer (cdr (riece-identity-assoc
 			(riece-make-identity channel)
 			riece-channel-buffer-alist))))
       (riece-insert-change
@@ -201,10 +200,10 @@
 	 (pointer channels)
 	 (message (car (riece-split-parameters string))))
     ;; If you are quitting, no need to cleanup.
-    (unless (string-equal-ignore-case user riece-real-nickname)
+    (unless (scandinavian-equal-ignore-case user riece-real-nickname)
       ;; You were talking with the user.
-      (if (riece-identity-member-no-server (riece-make-identity user)
-					   riece-current-channels)
+      (if (riece-identity-member (riece-make-identity user)
+				 riece-current-channels)
 	  (riece-part-channel user)) ;XXX
       (setq pointer channels)
       (while pointer
@@ -213,7 +212,7 @@
       (let ((buffers
 	     (mapcar
 	      (lambda (channel)
-		(cdr (riece-identity-assoc-no-server
+		(cdr (riece-identity-assoc
 		      (riece-make-identity channel)
 		      riece-channel-buffer-alist)))
 	      channels)))
@@ -244,8 +243,8 @@
 	 (channels (copy-sequence (riece-user-get-channels user)))
 	 pointer)
     ;; You were talking with the user.
-    (if (riece-identity-member-no-server (riece-make-identity user)
-					 riece-current-channels)
+    (if (riece-identity-member (riece-make-identity user)
+			       riece-current-channels)
 	(riece-part-channel user)) ;XXX
     (setq pointer channels)
     (while pointer
@@ -254,7 +253,7 @@
     (let ((buffers
 	   (mapcar
 	    (lambda (channel)
-	      (cdr (riece-identity-assoc-no-server
+	      (cdr (riece-identity-assoc
 		    (riece-make-identity channel)
 		    riece-channel-buffer-alist)))
 	    channels)))
@@ -294,7 +293,7 @@
 	 (channel (car parameters))
 	 (topic (nth 1 parameters)))
     (riece-channel-set-topic (riece-get-channel channel) topic)
-    (let ((buffer (cdr (riece-identity-assoc-no-server
+    (let ((buffer (cdr (riece-identity-assoc
 			(riece-make-identity channel)
 			riece-channel-buffer-alist))))
       (riece-insert-change
@@ -348,7 +347,7 @@
       (setq channel (match-string 1 string)
 	    string (substring string (match-end 0)))
       (riece-parse-channel-modes string channel)
-      (let ((buffer (cdr (riece-identity-assoc-no-server
+      (let ((buffer (cdr (riece-identity-assoc
 			  (riece-make-identity channel)
 			  riece-channel-buffer-alist))))
 	(riece-insert-change

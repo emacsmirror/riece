@@ -70,37 +70,26 @@
 	(concat prefix " " server)
       prefix)))
 
-(defun riece-identity-equal-no-server (ident1 ident2)
-  "Return t, if IDENT1 and IDENT2 is equal.
-The only difference with `riece-identity-equal', this function doesn't
-append server name before comparison."
-  (and (string-equal-ignore-case
+(defun riece-identity-equal (ident1 ident2)
+  "Return t, if IDENT1 and IDENT2 is equal."
+  (and (scandinavian-equal-ignore-case
 	(riece-identity-prefix ident1)
 	(riece-identity-prefix ident2))
        (equal
 	(riece-identity-server ident1)
 	(riece-identity-server ident2))))
 
-(defun riece-identity-equal (ident1 ident2)
-  "Return t, if IDENT1 and IDENT2 is equal."
-  (riece-identity-equal-no-server
+(defun riece-identity-equal-safe (ident1 ident2)
+  "Return t, if IDENT1 and IDENT2 is equal.
+The only difference with `riece-identity-equal', this function appends
+server name before comparison."
+  (riece-identity-equal
    (if (riece-identity-server ident1)
        ident1
      (riece-make-identity ident1))
    (if (riece-identity-server  ident2)
        ident2
      (riece-make-identity ident2))))
-
-(defun riece-identity-member-no-server (elt list)
-  "Return non-nil if an identity ELT is an element of LIST.
-The only difference with `riece-identity-member', this function uses
-`riece-identity-equal-no-server' for comparison."
-  (catch 'found
-    (while list
-      (if (and (stringp (car list))
-	       (riece-identity-equal-no-server (car list) elt))
-	  (throw 'found list)
-	(setq list (cdr list))))))
 
 (defun riece-identity-member (elt list)
   "Return non-nil if an identity ELT is an element of LIST."
@@ -111,13 +100,16 @@ The only difference with `riece-identity-member', this function uses
 	  (throw 'found list)
 	(setq list (cdr list))))))
 
-(defun riece-identity-assoc-no-server (elt alist)
-  "Return non-nil if an identity ELT matches the car of an element of ALIST."
+(defun riece-identity-member-safe (elt list)
+  "Return non-nil if an identity ELT is an element of LIST.
+The only difference with `riece-identity-member', this function uses
+`riece-identity-equal-safe' for comparison."
   (catch 'found
-    (while alist
-      (if (riece-identity-equal-no-server (car (car alist)) elt)
-	  (throw 'found (car alist))
-	(setq alist (cdr alist))))))
+    (while list
+      (if (and (stringp (car list))
+	       (riece-identity-equal-safe (car list) elt))
+	  (throw 'found list)
+	(setq list (cdr list))))))
 
 (defun riece-identity-assoc (elt alist)
   "Return non-nil if an identity ELT matches the car of an element of ALIST."
@@ -127,8 +119,18 @@ The only difference with `riece-identity-member', this function uses
 	  (throw 'found (car alist))
 	(setq alist (cdr alist))))))
 
+(defun riece-identity-assoc-safe (elt alist)
+  "Return non-nil if an identity ELT matches the car of an element of ALIST.
+The only difference with `riece-identity-assoc', this function uses
+`riece-identity-equal-safe' for comparison."
+  (catch 'found
+    (while alist
+      (if (riece-identity-equal-safe (car (car alist)) elt)
+	  (throw 'found (car alist))
+	(setq alist (cdr alist))))))
+
 (defun riece-identity-assign-binding (item list binding)
-  (let ((slot (riece-identity-member item binding))
+  (let ((slot (riece-identity-member-safe item binding))
 	pointer)
     (unless list			;we need at least one room
       (setq list (list nil)))
