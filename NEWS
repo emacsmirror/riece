@@ -1,20 +1,31 @@
 * Major changes in 1.0.7
 
+** New add-on riece-toolbar. (ueno)
+
 ** New add-on riece-keepalive. (ueno)
+   riece-keepalive spontaneously sends a PING message to server to
+   keep an IRC connection.
 
 ** New add-on riece-google. (bg66)
 
 ** New add-on riece-eval. (bg66)
 
-** New add-on riece-toolbar. (ueno)
+** Some add-ons are enabled by default. (ueno)
+   riece-log, riece-alias and riece-ctlseq are enabled by default.
 
-** riece-log is enabled by default. (ueno)
+** New user option riece-part-message. (ueno)
 
-** Show backtrace when encountered an error in process-filter. (ueno)
+** Add-ons located in riece-addon-directory are automatically enabled. (ueno)
+
+** Default value of riece-buffer-dispose-function is now kill-buffer. (ueno)
+
+** Backtrace when encountered an error in process-filter. (ueno)
 
 ** Ask channel key to user when it is required. (ueno)
 
 ** Automatic buffer shrinking is now disabled by default. (ueno)
+
+** New directory structure for riece-log. (ueno)
 
 * Major changes in 1.0.6
 

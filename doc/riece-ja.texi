@@ -566,12 +566,15 @@ PING に応答する local proxy 経由で IRC サーバに接続
 入力された文字列を lisp オブジェクトとして評価
 @item riece-google
 キーワードを Google で検索
+@item riece-keepalive
+IRC サーバとの接続を保持
 @end table
 
 これらのうち、@samp{riece-highlight} と @samp{riece-ctcp}、
 @samp{riece-url}、 @samp{riece-unread}、 @samp{riece-guess}、
 @samp{riece-history}、 @samp{riece-button}、@samp{riece-menu}、
-@samp{riece-ignore} はデフォルトで組み込まれています。
+@samp{riece-ignore}、@samp{riece-log}、@samp{riece-alias}、
+@samp{riece-ctlseq} はデフォルトで組み込まれています。
 
 アドオンを組み込むには @code{riece-addons} を設定します。たとえば 
 @samp{riece-alias} を組み込む場合には、@file{~/.riece/init.el} に以下のよ
