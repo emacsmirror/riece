@@ -229,45 +229,16 @@
 		 (substring string (match-end 0))))
 	"\n"))))
 
-(defvar riece-353-users nil)
+(defvar riece-353-string nil)
 (defun riece-handle-353-message (prefix number name string)
   "RPL_NAMREPLY	\"[=\*@] <channel> :[[@|+]<nick> [[@|+]<nick> [...]]]\"."
   (if (string-match "^[=\*@] *\\([^ ]+\\) +:?" string)
       (let ((channel (match-string 1 string))
 	    (start 0)
 	    user)
-	(make-local-variable 'riece-353-users)
-	(setq string (substring string (match-end 0)))
-	(while (string-match
-		(concat "\\([@+]\\)?\\(" riece-user-regexp "\\) *")
-		string start)
-	  (put-text-property (match-beginning 2) (match-end 2)
-			     'riece-identity
-			     (riece-make-identity (match-string 2 string)
-						  riece-server-name)
-			     string)
-	  (setq start (match-end 0)
-		user (if (match-beginning 1)
-			 (if (eq (aref string (match-beginning 1)) ?@)
-			     (list (match-string 2 string) ?o)
-			   (if (eq (aref string (match-beginning 1)) ?+)
-			       (list (match-string 2 string) ?v)))
-		       (list (match-string 2 string)))
-		riece-353-users (cons user riece-353-users)))
-	(let* ((channel-identity (riece-make-identity channel
-						      riece-server-name))
-	       (buffer (riece-channel-buffer channel-identity)))
-	  (riece-insert-info buffer (concat "Users: " string "\n"))
-	  (riece-insert-info
-	   (if (and riece-channel-buffer-mode
-		    (not (eq buffer riece-channel-buffer)))
-	       (list riece-dialogue-buffer riece-others-buffer)
-	     riece-dialogue-buffer)
-	   (concat
-	    (riece-concat-server-name
-	     (format "Users on %s: %s"
-		     (riece-format-identity channel-identity t) string))
-	    "\n"))))))
+	(make-local-variable 'riece-353-string)
+	(setq riece-353-string (concat riece-353-string
+				       (substring string (match-end 0)))))))
 
 (defun riece-handle-322-message (prefix number name string)
   (if (string-match "^\\([^ ]+\\) \\([0-9]+\\) :?" string)
@@ -435,10 +406,47 @@
 (defun riece-handle-366-message (prefix number name string)
   "RPL_ENDOFNAMES \"<channel> :End of NAMES list\""
   (if (string-match "^\\([^ ]+\\) " string)
-      (let ((channel (match-string 1 string)))
-	(riece-naming-assert-channel-users (nreverse riece-353-users)
-					   channel)))
-  (setq riece-353-users nil))
+      (let* ((channel (match-string 1 string))
+	     (channel-identity (riece-make-identity channel
+						    riece-server-name))
+	     (buffer (riece-channel-buffer channel-identity))
+	     (string (copy-sequence riece-353-string))
+	     (start 0)
+	     users)
+	(setq riece-353-string nil)
+	(while (string-match
+		(concat "\\([@+]\\)?\\(" riece-user-regexp "\\) *")
+		string start)
+	  (put-text-property (match-beginning 2) (match-end 2)
+			     'riece-identity
+			     (riece-make-identity (match-string 2 string)
+						  riece-server-name)
+			     string)
+	  (setq start (match-end 0)
+		users (cons (if (match-beginning 1)
+				(if (eq (aref string (match-beginning 1)) ?@)
+				    (list (match-string 2 string) ?o)
+				  (if (eq (aref string (match-beginning 1)) ?+)
+				      (list (match-string 2 string) ?v)))
+			      (list (match-string 2 string)))
+			    users)))
+	(setq users (nreverse users))
+	(riece-naming-assert-channel-users users channel)
+	(riece-insert-info
+	 buffer
+	 (concat (format "%d users: " (length users)) string "\n"))
+	(riece-insert-info
+	 (if (and riece-channel-buffer-mode
+		  (not (eq buffer riece-channel-buffer)))
+	     (list riece-dialogue-buffer riece-others-buffer)
+	   riece-dialogue-buffer)
+	 (concat
+	  (riece-concat-server-name
+	   (concat (format "%d users on %s: "
+			   (length users)
+			   (riece-format-identity channel-identity t))
+		   string))
+	  "\n")))))
 
 (provide 'riece-300)
 

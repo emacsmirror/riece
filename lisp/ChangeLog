@@ -1,5 +1,9 @@
 2005-02-04  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-300.el (riece-353-string): Renamed from riece-353-users.
+	(riece-handle-353-message): Don't parse the reply.
+	(riece-handle-366-message): Parse 353 replies here; count users.
+
 	* riece-log.el (riece-log-enable): Add debug message.
 
 	* riece-keepalive.el: New add-on.
