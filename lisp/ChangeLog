@@ -1,3 +1,41 @@
+2004-03-06  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-xface.el (riece-xface-insinuate): Set
+	'riece-update-buffer-functions local to the user-list buffer.
+
+	* riece-unread.el: Require 'riece-signal instead of
+	'riece-display.
+	(riece-unread-after-display-message-function): Emit
+	'riece-update-buffer signal instead of
+	'riece-unread-channel-list-update signal.
+
+	* riece-ndcc.el: Don't require 'riece-display.
+
+	* riece-naming.el: Require 'riece-signal instead of
+	'riece-display.
+	(riece-naming-assert-rename): Don't rename buffer.
+
+	* riece-history.el (riece-history-format-channel-list-line): Don't
+	append "\n".
+
+	* riece-handle.el: Require 'riece-signal instead of
+	'riece-display.
+	(riece-parse-modes): Rename from riece-parse-channel-modes; don't
+	update channel modes.
+	(riece-handle-channel-modes): New function which processes the
+	result of riece-parse-modes.
+	(riece-handle-mode-message): Use it.
+
+	* riece-filter.el: Don't require 'riece-display.
+	* riece-display.el: Require 'riece-signal; connect
+	'riece-update-buffer signal.
+
+	* riece-ctcp.el: Don't require 'riece-display.
+
+	* riece-signal.el: New module splitted from riece-display.el.
+	* Makefile.am (EXTRA_DIST): Add riece-signal.
+	* COMPILE (riece-modules): Add riece-signal.
+
 2004-03-05  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-unread.el (riece-unread-after-display-message-function):
