@@ -1,5 +1,10 @@
 2004-05-19  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-commands.el (riece-command-complete-user): New command.
+	* riece.el: Bind riece-command-complete-user.
+
+2004-05-19  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-400.el (riece-handle-read-string): New function.
 	(riece-handle-432-message): Use it.
 	(riece-handle-433-message): Use it.

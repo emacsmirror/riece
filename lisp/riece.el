@@ -180,7 +180,8 @@ If optional argument SAFE is nil, overwrite previous definitions."
 
   (riece-define-keys riece-command-mode-map
     "\r" riece-command-enter-message
-    [(control return)] riece-command-enter-message-as-notice)
+    [(control return)] riece-command-enter-message-as-notice
+    [tab] riece-command-complete-user)
 
   (riece-define-keys (riece-command-map riece-command-prefix
 					riece-command-mode-map)

@@ -630,6 +630,27 @@ If prefix argument ARG is non-nil, toggle frozen status."
   (interactive "r")
   (kill-new (buffer-substring-no-properties start end)))
 
+(defun riece-command-complete-user ()
+  "Complete a user name in the current buffer."
+  (interactive)
+  (let* ((completion-ignore-case t)
+	 (table (mapcar (lambda (user)
+			  (list (riece-format-identity user t)))
+			(riece-get-users-on-server
+			 (riece-current-server-name))))
+	 (current (current-word))
+	 (completion (try-completion current table))
+	 (all (all-completions current table)))
+    (if (eq completion t)
+	nil
+      (if (null completion)
+	  (message "Can't find completion for \"%s\"" current)
+	(if (equal current completion)
+	    (with-output-to-temp-buffer "*Help*"
+	      (display-completion-list all))
+	  (delete-region (point) (- (point) (length current)))
+	  (insert completion))))))
+  
 (defun riece-command-open-server (server-name)
   (interactive
    (list (completing-read "Server: " riece-server-alist)))
