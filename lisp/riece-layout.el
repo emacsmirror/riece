@@ -87,23 +87,17 @@ happen unconditionally."
   (if (and riece-channel-buffer
 	   (get-buffer-window riece-channel-buffer))
       (with-current-buffer riece-channel-buffer
-	(unless (or (riece-frozen riece-channel-buffer)
-		    (pos-visible-in-window-p
-		     (point-max) (get-buffer-window riece-channel-buffer)))
+	(unless (riece-frozen riece-channel-buffer)
 	  (set-window-point (get-buffer-window riece-channel-buffer)
 			    (point-max)))))
   (if (get-buffer-window riece-others-buffer)
       (with-current-buffer riece-others-buffer
-	(unless (or (riece-frozen riece-others-buffer)
-		    (pos-visible-in-window-p
-		     (point-max) (get-buffer-window riece-others-buffer)))
+	(unless (riece-frozen riece-others-buffer)
 	  (set-window-point (get-buffer-window riece-others-buffer)
 			    (point-max)))))
   (if (get-buffer-window riece-dialogue-buffer)
       (with-current-buffer riece-dialogue-buffer
-	(unless (or (riece-frozen riece-dialogue-buffer)
-		    (pos-visible-in-window-p
-		     (point-max) (get-buffer-window riece-dialogue-buffer)))
+	(unless (riece-frozen riece-dialogue-buffer)
 	  (set-window-point (get-buffer-window riece-dialogue-buffer)
 			    (point-max))))))
 
