@@ -1,3 +1,11 @@
+2004-06-06  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-rdcc.el (riece-command-dcc-send): Replace whitespace with
+	"_".
+	(riece-command-dcc-receive): Convert default filename with
+	convert-standard-filename.
+	(riece-handle-dcc-request): Handle filenames enclosed with "...".
+
 2004-06-04  TAKAHASHI Kaoru  <kaoru@kaisei.org>
 
 	* riece-hangman.el (riece-hangman-word): Check killed-buffer or

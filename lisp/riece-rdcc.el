@@ -172,7 +172,10 @@ puts(\"#{" address " >> 24 & 0xFF}.#{" address " >> 16 & 0xFF}.#{"
 	(accept-process-output process))
       (if (eq (process-status process) 'run)
 	  (let ((address (match-string 1))
-		(port (match-string 2)))
+		(port (match-string 2))
+		(filename (file-name-nondirectory file)))
+	    (while (string-match "[ \t]+" filename)
+	      (setq filename (replace-match "_" nil nil filename)))
 	    (erase-buffer)
 	    (make-local-variable 'riece-rdcc-request-size)
 	    (setq riece-rdcc-request-file file
@@ -183,7 +186,7 @@ puts(\"#{" address " >> 24 & 0xFF}.#{" address " >> 16 & 0xFF}.#{"
 	    (riece-send-string
 	     (format "PRIVMSG %s :\1DCC SEND %s %s %s %d\1\r\n"
 		     (riece-identity-prefix user)
-		     (file-name-nondirectory file)
+		     filename
 		     address port
 		     riece-rdcc-request-size)))))))
 
@@ -258,8 +261,9 @@ puts(\"#{" address " >> 24 & 0xFF}.#{" address " >> 16 & 0xFF}.#{"
 		     (error "Invalid number"))
 		 (nth (1- number) riece-rdcc-requests))))
 	    (default-name (expand-file-name
-			   (nth 1 request) (or riece-rdcc-save-directory
-					       default-directory))))
+			   (convert-standard-filename (nth 1 request))
+			   (or riece-rdcc-save-directory
+			       default-directory))))
        (list request
 	     (expand-file-name
 	      (read-file-name
@@ -322,12 +326,13 @@ puts(\"#{" address " >> 24 & 0xFF}.#{" address " >> 16 & 0xFF}.#{"
   (let ((case-fold-search t))
     (when (and riece-rdcc-enabled
 	       (string-match
-		"SEND \\([^ ]+\\) \\([^ ]+\\) \\([^ ]+\\) \\([^ ]+\\)"
+		"SEND \\(\\([^ ]+\\)\\|\"\\(.+\\)\"\\) \\([^ ]+\\) \\([^ ]+\\) \\([^ ]+\\)"
 		message))
-      (let ((file (match-string 1 message))
-	    (address (match-string 2 message))
-	    (port (string-to-number (match-string 3 message)))
-	    (size (string-to-number (match-string 4 message)))
+      (let ((file (or (match-string 2 message)
+		      (match-string 3 message)))
+	    (address (match-string 4 message))
+	    (port (string-to-number (match-string 5 message)))
+	    (size (string-to-number (match-string 6 message)))
 	    (buffer (if (riece-channel-p target)
 			(riece-channel-buffer (riece-make-identity
 					       target riece-server-name))))
