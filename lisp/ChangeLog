@@ -1,9 +1,5 @@
 2003-05-31  Daiki Ueno  <ueno@unixuser.org>
 
-	* riece-commands.el (riece-command-next-channel): Circularly
-	follow the channel list.
-	(riece-command-previous-channel): Ditto.
-
 	* riece-url.el: Fix usage.
 
 	* riece-inlines.el (string-list-member-ignore-case): Remove docstring.
