@@ -125,7 +125,7 @@ away status, respectively."
   (let* ((user (riece-get-user (or name (riece-current-nickname))))
 	 (channels (riece-user-channels user)))
     (if flag
-	(unless (memq channel channels)
+	(unless (member channel channels)
 	  (riece-user-set-channels user (cons channel channels)))
       (if (setq channel (car (member channel channels)))
 	  (riece-user-set-channels user (delq channel channels))))))
