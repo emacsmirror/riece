@@ -125,7 +125,8 @@ puts(\"#{" address " >> 24 & 0xFF}.#{" address " >> 16 & 0xFF}.#{"
 	    (mapcar #'list (riece-get-users-on-server)))
 	   (expand-file-name (read-file-name "File: ")))))
   (let ((process
-	 (start-process "DCC send" " *DCC send*" "ruby" "-rsocket")))
+	 (start-process "DCC" (generate-new-buffer " *DCC*")
+			"ruby" "-rsocket")))
     (process-send-string process
 			 (apply #'concat
 				(riece-rdcc-substitute-variables
@@ -237,7 +238,7 @@ puts(\"#{" address " >> 24 & 0xFF}.#{" address " >> 16 & 0xFF}.#{"
 	 (coding-system-for-read 'binary)
 	 (coding-system-for-write 'binary)
 	 (process (open-network-stream
-		   "DCC receive" " *DCC receive*"
+		   "DCC" (generate-new-buffer " *DCC*")
 		   (riece-rdcc-decode-address (nth 2 request))
 		   (nth 3 request))))
     (setq riece-rdcc-requests (delq request riece-rdcc-requests))

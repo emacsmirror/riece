@@ -1,7 +1,8 @@
 2003-06-03  Daiki Ueno  <ueno@unixuser.org>
 
-	* riece-rdcc.el (riece-command-dcc-receive): Don't set
-	buffer-file-name.
+	* riece-rdcc.el (riece-command-dcc-send): Generate new buffer for
+	DCC process.
+	(riece-command-dcc-receive): Likewise; don't set buffer-file-name.
 
 	* riece-server.el (riece-server-keyword-map): `:coding-system' ->
 	`:coding'.
