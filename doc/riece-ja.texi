@@ -750,12 +750,12 @@ Riece は複数のサーバに同時に接続するため、サーバ毎に別々の名前空間を管理
 @end defun
  
 @defun riece-identity-equal a b
-二つの大域表記が同等か調べます。引数として与えられた文字列にサーバ名が付
-加されていなければ、付加してから検査を行います
+二つの大域表記が同等か調べます。
 @end defun
 
-@defun riece-identity-equal-no-server a b
-@code{riece-identity-equal} と一緒ですが、サーバ名の付加は行いません
+@defun riece-identity-equal-safe a b
+@code{riece-identity-equal} と一緒ですが、引数として与えられた文字列にサー
+バ名が付加されていなければ、付加してから検査を行います。
 @end defun
 
 @subsection Channel and user management
