@@ -1,5 +1,18 @@
 2004-05-20  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-hangman.el (riece-hangman-player-context-alist): Renamed
+	from riece-hangman-players.
+	(riece-hangman-make-context): Add doc.
+	(riece-hangman-context-word): Add doc.
+	(riece-hangman-context-guessed): Add doc.
+	(riece-hangman-context-missed-count): Add doc.
+	(riece-hangman-context-set-guessed): Add doc.
+	(riece-hangman-context-set-missed-count): Add doc.
+	(riece-hangman-word): Add doc.
+	(riece-hangman-reply-with-context): Prefix user name.
+
+2004-05-20  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-doctor.el (riece-doctor-after-privmsg-hook): Prefix user
 	name to reply.
 
