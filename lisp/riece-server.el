@@ -205,7 +205,7 @@ the `riece-server-keyword-map' variable."
 	      riece-server-process-alist)))
 
 (defun riece-server-process-opened (process)
-  (memq (process-status process) '(open run)))
+  (not (null (memq (process-status process) '(open run)))))
 
 (defun riece-server-opened (&optional server-name)
   (if server-name

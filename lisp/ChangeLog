@@ -1,5 +1,7 @@
 2003-10-19  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-server.el (riece-server-process-opened): Return t.
+
 	* riece.el (riece-dialogue-mode-map): Bind "p" to
 	riece-command-enter-message-to-user.
 
