@@ -1,11 +1,11 @@
-AC_DEFUN(AC_DEFINE_GNUS_PRODUCT_NAME,
+AC_DEFUN([AC_DEFINE_GNUS_PRODUCT_NAME],
  [echo $ac_n "defining gnus product name... $ac_c"
   AC_CACHE_VAL(EMACS_cv_GNUS_PRODUCT_NAME,[EMACS_cv_GNUS_PRODUCT_NAME=$1])
   GNUS_PRODUCT_NAME=${EMACS_cv_GNUS_PRODUCT_NAME}
   AC_MSG_RESULT(${GNUS_PRODUCT_NAME})
   AC_SUBST(GNUS_PRODUCT_NAME)])
 
-AC_DEFUN(AC_CHECK_EMACS,
+AC_DEFUN([AC_CHECK_EMACS],
  [dnl Check for Emacsen.
 
   dnl Apparently, if you run a shell window in Emacs, it sets the EMACS
@@ -35,7 +35,7 @@ AC_DEFUN(AC_CHECK_EMACS,
   AC_SUBST(EMACS)
   AC_SUBST(XEMACS)])
 
-AC_DEFUN(AC_EMACS_LISP, [
+AC_DEFUN([AC_EMACS_LISP], [
 elisp="$2"
 if test -z "$3"; then
 	AC_MSG_CHECKING(for $1)
@@ -55,7 +55,7 @@ if test -z "$3"; then
 fi
 ])
 
-AC_DEFUN(AC_CHECK_EMACS_FLAVOR,
+AC_DEFUN([AC_CHECK_EMACS_FLAVOR],
  [AC_MSG_CHECKING([what a flavor does $EMACS have])
 
   dnl Ignore cache.
@@ -76,7 +76,7 @@ AC_DEFUN(AC_CHECK_EMACS_FLAVOR,
   esac
   AC_MSG_RESULT($EMACS_cv_SYS_flavor)])
 
-AC_DEFUN(AC_PATH_LISPDIR, [
+AC_DEFUN([AC_PATH_LISPDIR], [
   AC_CHECK_EMACS_FLAVOR
   if test "$prefix" = NONE; then
 	AC_MSG_CHECKING([prefix for your Emacs])
@@ -113,7 +113,7 @@ AC_DEFUN(AC_PATH_LISPDIR, [
   AC_SUBST(lispdir)
 ])
 
-AC_DEFUN(AC_PATH_ETCDIR, [
+AC_DEFUN([AC_PATH_ETCDIR], [
   AC_ARG_WITH(etcdir,[  --with-etcdir=DIR       Where to install etc files], etcdir=${withval})
   AC_MSG_CHECKING([where etc files should go])
   if test -z "$etcdir"; then
@@ -128,7 +128,7 @@ dnl
 dnl Check whether a function exists in a library
 dnl All '_' characters in the first argument are converted to '-'
 dnl
-AC_DEFUN(AC_EMACS_CHECK_LIB, [
+AC_DEFUN([AC_EMACS_CHECK_LIB], [
 if test -z "$3"; then
 	AC_MSG_CHECKING(for $2 in $1)
 fi
@@ -150,7 +150,7 @@ fi
 dnl
 dnl Perform sanity checking and try to locate the W3 package
 dnl
-AC_DEFUN(AC_CHECK_W3, [
+AC_DEFUN([AC_CHECK_W3], [
 AC_MSG_CHECKING(for acceptable W3 version)
 
 dnl Ignore cache.
@@ -184,7 +184,7 @@ fi
 dnl
 dnl Perform sanity checking and try to locate the W3 package
 dnl
-AC_DEFUN(AC_CHECK_URL, [
+AC_DEFUN([AC_CHECK_URL], [
 AC_MSG_CHECKING(for acceptable URL version)
 
 dnl Ignore cache.
@@ -220,7 +220,7 @@ dnl Perform checking available fonts: Adobe Bembo, Adobe Futura and
 dnl Bitstream Courier.
 dnl
 
-AC_DEFUN(GNUS_CHECK_FONTS, [
+AC_DEFUN([GNUS_CHECK_FONTS], [
 test "$LATEX" = t && LATEX=
 test "$LATEX" || AC_PATH_PROGS(LATEX, latex, no)
 AC_MSG_CHECKING(for available fonts)
@@ -305,7 +305,7 @@ fi
 AC_SUBST(USE_FONTS)
 ])
 
-AC_DEFUN(AC_EXAMINE_PACKAGEDIR,
+AC_DEFUN([AC_EXAMINE_PACKAGEDIR],
  [dnl Examine PACKAGEDIR.
   AC_EMACS_LISP(PACKAGEDIR,
     (let (package-dir)\
@@ -323,7 +323,7 @@ AC_DEFUN(AC_EXAMINE_PACKAGEDIR,
       (or package-dir \"\")),
     "noecho")])
 
-AC_DEFUN(AC_PATH_PACKAGEDIR,
+AC_DEFUN([AC_PATH_PACKAGEDIR],
  [dnl Check for PACKAGEDIR.
   if test ${EMACS_FLAVOR} = xemacs; then
     AC_MSG_CHECKING([where the XEmacs package is])
@@ -345,7 +345,7 @@ AC_DEFUN(AC_PATH_PACKAGEDIR,
   fi
   AC_SUBST(PACKAGEDIR)])
 
-AC_DEFUN(AC_ADD_LOAD_PATH,
+AC_DEFUN([AC_ADD_LOAD_PATH],
  [dnl Check for additional load path.
   AC_ARG_WITH(addpath,
    [  --with-addpath=PATH     search Emacs-Lisp libraries with PATH
