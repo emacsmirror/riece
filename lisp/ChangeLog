@@ -1,5 +1,7 @@
 2005-02-05  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-toolbar.el (riece-toolbar-description): New constant.
+
 	* riece-keepalive.el: Require 'riece-options.
 	(riece-keepalive-ping-repeat): Define with defcustom.
 	(riece-keepalive-description): New constant.

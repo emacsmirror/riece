@@ -31,6 +31,9 @@
 
 (require 'riece-menu)
 
+(defconst riece-toolbar-description
+  "Show toolbar icons.")
+
 (defvar riece-toolbar-items
   '(riece-command-quit
     riece-command-join
