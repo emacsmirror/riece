@@ -1,3 +1,7 @@
+2004-11-20  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece.el: Bind reporter-prompt-for-summary-p.
+
 2004-11-19  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece.el (riece-submit-bug-report): Query VERSION.

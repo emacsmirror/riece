@@ -536,6 +536,7 @@ Instead, these commands are available:
 	  (funcall (nth 2 (car alist))))
 	(setq alist (cdr alist))))))
 
+(defvar reporter-prompt-for-summary-p)
 (defun riece-submit-bug-report (&optional recent-messages recent-keys)
   "Submit via mail a bug report on Riece."
   ;; This strange form ensures that (recent-keys) is the value before
