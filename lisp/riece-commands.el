@@ -354,6 +354,7 @@ the layout to the selected layout-name."
 
 (defun riece-command-send-message (message notice)
   "Send MESSAGE to the current channel."
+  (run-hooks 'riece-command-send-message-hook)
   (if (equal message "")
       (error "No text to send"))
   (riece-check-channel-commands-are-usable)

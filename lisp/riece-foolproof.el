@@ -44,38 +44,24 @@
    (cdr (riece-identity-assoc
 	 identity riece-channel-buffer-alist))))
 
-(eval-when-compile
-  (defvar *dmacro-key* nil))
-
-(defun riece-foolproof-dmacro-override (&optional arg)
-  (when (and (fboundp 'dmacro-exec) (boundp '*dmacro-key*))
-    (with-current-buffer riece-command-buffer
-      (if arg
-	  (when (eq (key-binding *dmacro-key*) 'dmacro-exec)
-	    (local-set-key *dmacro-key* #'ignore))
-	(when (eq (key-binding *dmacro-key*) 'ignore)
-	  (local-unset-key *dmacro-key*))))))
-
-(defun riece-foolproof-insinuate ()
-  (defadvice riece-command-send-message (before riece-foolproof)
+(defun riece-foolproof-command-send-message-function ()
+  (when riece-foolproof-enabled
     (unless (or (not riece-channel-buffer-mode)
 		(riece-foolproof-get-channel-window
 		 riece-current-channel))
-      (error "%s is not displayed. (maybe channel miss)"
+      (error "Channel %s is not displayed"
 	     (riece-identity-prefix riece-current-channel)))
-    (unless (null executing-macro)
-      (error "Don't use `riece-command-send-message' in keyboard macro"))))
+    (when executing-kbd-macro
+      (error "%s" "Forbidden to run keyboard macro"))))
+
+(defun riece-foolproof-insinuate ()
+  (add-hook 'riece-command-send-message-hook
+	    'riece-foolproof-command-send-message-function))
 
 (defun riece-foolproof-enable ()
-  (riece-foolproof-dmacro-override t)
-  (ad-enable-advice 'riece-command-send-message 'before 'riece-foolproof)
-  (ad-activate 'riece-command-send-message)
   (setq riece-foolproof-enabled t))
 
 (defun riece-foolproof-disable ()
-  (riece-foolproof-dmacro-override nil)
-  (ad-disable-advice 'riece-command-send-message 'before 'riece-foolproof)
-  (ad-activate 'riece-command-send-message)
   (setq riece-foolproof-enabled nil))
 
 (provide 'riece-foolproof)

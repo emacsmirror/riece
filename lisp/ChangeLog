@@ -1,3 +1,13 @@
+2004-06-12  TAKAHASHI Kaoru  <kaoru@kaisei.org>
+
+	* riece-commands.el (riece-command-send-message): Run
+	riece-command-send-message-hook.
+
+	* riece-foolproof.el (riece-foolproof-dmacro-override): Removed.
+	(riece-foolproof-command-send-message-function): New function.
+	(riece-foolproof-insinuate): Use hook instead of advice.
+	(riece-foolproof-enable, riece-foolproof-disable): Simplified.
+
 2004-06-11  TAKAHASHI Kaoru  <kaoru@kaisei.org>
 
 	* riece-foolproof.el (riece-foolproof-dmacro-override): New
