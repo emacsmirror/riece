@@ -124,8 +124,6 @@
 		(throw 'contiguous nil)))))
 	(forward-line)))))
 
-(eval-when-compile
-  (autoload 'riece-exit "riece"))
 (defun riece-sentinel (process status)
   (if riece-reconnect-with-password
       (let ((server-name

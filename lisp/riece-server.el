@@ -193,6 +193,8 @@ the `riece-server-keyword-map' variable."
     (buffer-disable-undo)
     (erase-buffer)))
 
+(eval-when-compile
+  (autoload 'riece-exit "riece"))
 (defun riece-close-server-process (process)
   (if riece-debug
       (delete-process process)
