@@ -29,7 +29,8 @@
 
 ;;; Code:
 
-(require 'riece-options)
+(require 'riece-message)
+(require 'riece-misc)
 
 (defgroup riece-ctlseq nil
   "Highlight control sequences in IRC buffer."

@@ -1,3 +1,10 @@
+2004-05-05  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-ctlseq.el: Require 'riece-message for riece-message-text;
+	require 'riece-misc for riece-scan-property-region.
+
+	* riece-ctcp.el: Require 'riece-display for riece-channel-buffer.
+
 2004-05-04  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-300.el (riece-handle-312-message): Use server name
