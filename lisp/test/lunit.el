@@ -119,7 +119,7 @@
      (lunit-test-result-set-failures-internal
       result
       (nconc (lunit-test-result-failures-internal result)
-	     (list (cons case (cdr failure)))))
+	     (list (cons case (cdr error)))))
      (lunit-test-result-notify
       result 'lunit-test-listener-failure case failure))
     (lunit-error
