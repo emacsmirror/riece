@@ -1,5 +1,13 @@
 2004-02-27  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-message.el (riece-display-message-1): Emit
+	'riece-buffer-toggle-freeze signal.
+
+	* riece-commands.el (riece-command-toggle-freeze): Emit
+	'riece-buffer-toggle-freeze signal; don't update status indicators
+	manually.
+	(riece-command-toggle-own-freeze): Ditto.
+	
 	* riece-naming.el (riece-naming-assert-join): Rename signal 'join
 	-> 'riece-naming-assert-join.
 	(riece-naming-assert-part): Rename signal 'part ->

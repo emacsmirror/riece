@@ -159,7 +159,8 @@ Normally they are *Dialogue* and/or *Others*."
 	       (riece-own-frozen buffer))
       (with-current-buffer buffer
 	(setq riece-freeze nil))
-      (riece-update-status-indicators))
+      (riece-emit-signal (riece-make-signal 'riece-buffer-toggle-freeze
+					    buffer nil)))
     (setq parent-buffers (riece-message-parent-buffers message buffer))
     (riece-insert buffer
 		  (concat open-bracket name close-bracket

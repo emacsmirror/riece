@@ -192,7 +192,7 @@ are the data of the signal."
      (riece-update-status-indicators)
      (force-mode-line-update t))
    (lambda (signal)
-     (riece-identity-equal (nth 1 (riece-signal-args signal))
+     (riece-identity-equal (car (riece-signal-args signal))
 			   (riece-current-nickname))))
   (riece-connect-signal
    'riece-user-toggle-operator
@@ -200,7 +200,7 @@ are the data of the signal."
      (riece-update-status-indicators)
      (force-mode-line-update t))
    (lambda (signal)
-     (riece-identity-equal (nth 1 (riece-signal-args signal))
+     (riece-identity-equal (car (riece-signal-args signal))
 			   (riece-current-nickname))))
   (riece-connect-signal
    'riece-channel-set-topic
