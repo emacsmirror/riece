@@ -46,7 +46,7 @@
   "riece on minibuffer"
   :group 'riece)
 
-(defcustom riece-mini-backlog-size 10
+(defcustom riece-mini-backlog-size 5
   "*Line numbers for logging back log."
   :type 'integer
   :group 'riece-mini)
