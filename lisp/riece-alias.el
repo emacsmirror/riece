@@ -105,16 +105,21 @@
 	length)
     (while (and (null prefix)
 		(string-match
-		 (concat (regexp-quote riece-alias-alternate-separator) "+")
+		 (concat "\\("
+			 (regexp-quote riece-alias-alternate-separator)
+			 "\\)+")
 		 string index))
-      (setq length (- (match-end 0) (match-beginning 0))
+      (setq length (/ (- (match-end 0) (match-beginning 0))
+		      (length riece-alias-alternate-separator))
 	    string (replace-match
 		    (mapconcat #'identity
 			       (make-list (/ length 2)
 					  riece-alias-alternate-separator)
 			       "")
 		    nil t string)
-	    index (+ (match-beginning 0) (/ length 2)))
+	    index (+ (match-beginning 0)
+		     (* (/ length 2)
+			(length riece-alias-alternate-separator))))
       (unless (zerop (% length 2))
 	(setq prefix (substring string 0 index))))
     (if (null prefix)
