@@ -185,16 +185,87 @@ Riece $B$O@_Dj%U%!%$%k$rJQ?t(B @code{riece-directory} $B$G;X<($5$l$k%G%#%l%/%
 $B$k$3$H$,$G$-$^$9!#B>$N?M$N2qOC$O2hLL1&>e$N%P%C%U%!$KI=<($5$l$^$9!#(B
 
 @menu
+* Windows::                     $B2hLL9=@.(B
+* Indicators::                  $B<+J,$N>uBV$NI=<((B
 * Commands::                    $B%3%^%s%I$N0lMw(B
 * Connecting to multiple servers::  $BJ#?t$N%5!<%P$K$D$J$0$K$O(B
 @end menu
 
-@node Commands, Connecting to multiple servers, Basic usage, Basic usage
+@node Windows, Commands, Basic usage, Basic usage
+@section Windows
+
+$B%G%U%)%k%H$N@_Dj$G$O!"%A%c%s%M%k$KF~$k$H!"2<$N?^$K<($9$h$&$J8^$D$N%&%#%s(B
+$B%I%&$+$i$J$k2hLL$K@Z$jBX$o$j$^$9!#(B
+
+@example
++-----+-----------------+
+|     |                 |
+|     |                 |
+| (1) |       (2)       |
+|     |                 |
+|     |                 |
++-----+-----------------+
+|     |       (4)       |
+|     +-----------------+
+| (3) |                 |
+|     |       (5)       |
+|     |                 |
++-----+-----------------+
+@end example
+
+$B$3$l$i$N3F%&%#%s%I%&$KI=<($5$l$k%P%C%U%!$NLr3d$O0J2<$NDL$j$G$9!#(B
+
+@enumerate
+@item
+$B%f!<%6%j%9%H%P%C%U%!(B (@samp{*Users XXX*})$B!#%A%c%s%M%k$K$$$k%f!<%6$N0lMw(B
+$B$,I=<($5$l$^$9!#(B
+
+@item
+$B%A%c%s%M%k%P%C%U%!(B (@samp{*Channel XXX*})$B!#%A%c%s%M%kFb$N2qOC$,I=<($5$l(B
+$B$^$9!#(B
+
+@item
+$B%A%c%s%M%k%j%9%H%P%C%U%!(B (@samp{*Channels*})$B!#;22C$7$F$$$k%A%c%s%M%k$N0l(B
+$BMw$,I=<($5$l$^$9!#(B
+
+@item
+$B%3%^%s%I%P%C%U%!(B (@samp{*Commands*})$B!#J8>O$d%3%^%s%I$rAw?.$9$k$?$a$K;H$$(B
+$B$^$9!#(B
+
+@item
+$B%"%6!<%:%P%C%U%!(B (@samp{*Others*})$B!#8=:_$N%A%c%s%M%k0J30$N2qOC$,N.$l$^$9!#(B
+@end enumerate
+
+@node Indicators
+@section Indicators
+
+$B%3%^%s%I%P%C%U%!$d%A%c%s%M%k%P%C%U%!$N%b!<%I%i%$%s$N:8C<$K$O!"(B
+$B<+J,$N8=:_$N>uBV$r<($90u$,I=<($5$l$^$9!#(B
+
+@example
+Riece: --%*-{---} ueno #Liece [n]
+@end example
+
+$B$3$3$G!"(B@samp{@{@}}$B$NCf$O:8$+$i=g$K0J2<$N0UL#$,$"$j$^$9!#(B
+
+@enumerate
+@item
+$BN%@J>uBV(B ($BN%@J$7$F$$$l$P(B @samp{A})
+
+@item
+$B%*%Z%l!<%?>uBV(B (IRC $B%*%Z%l!<%?$G$"$l$P(B @samp{O})
+
+@item
+$B%A%c%s%M%k%P%C%U%!!"$^$?$O%@%$%"%m%0%P%C%U%!$N%9%/%m!<%k6X;_>uBV(B
+($B40A4$K6X;_$7$F$$$l$P(B @samp{F}$B!"<+J,$N<!2s$NH/8@$^$G6X;_$7$F$$$k$N$G$"$l(B
+$B$P(B @samp{f})
+@end enumerate
+
+@node Commands, Connecting to multiple servers, Windows, Basic usage
 @section Commands
 
-$BJ8>O$rF~NO$7$?%P%C%U%!(B @samp{*Commands*} $B$O!"%3%^%s%I%P%C%U%!$H8F$P$l!"(B
-$B%3%^%s%I%P%C%U%!$+$i$OMM!9$J%3%^%s%I$rH/9T$9$k$3$H$,$G$-$^$9!#0J2<$K0lIt(B
-$B$r5s$2$^$9!#(B
+$BJ8>O$rF~NO$7$?%P%C%U%!$O!"%3%^%s%I%P%C%U%!$H8F$P$l!"%3%^%s%I%P%C%U%!$+$i(B
+$B$OMM!9$J%3%^%s%I$rH/9T$9$k$3$H$,$G$-$^$9!#0J2<$K0lIt$r5s$2$^$9!#(B
 
 @subsection IRC commands
 @table @kbd
@@ -386,7 +457,7 @@ IRC $B%5!<%P$O(B @code{riece-server} $BJ8;zNs$H$7$F;XDj$7$^$9!#(B
 @item :host
 $B%5!<%P$N%[%9%HL>$^$?$O(B IP $B%"%I%l%9(B
 @item :service
-$B%5!<%P$N%5!<%S%9L>$^$?$O%]!<%HHV9f(B
+$B%5!<%P$N%5!<%S%9L>$^$?$O%]!<%HHV9f(B ($B%G%U%)%k%H$O(B 6667)
 @item :nickname
 $B@\B3;~$N%K%C%/%M!<%`(B
 @item :username
@@ -395,8 +466,8 @@ IRC $B%5!<%P$O(B @code{riece-server} $BJ8;zNs$H$7$F;XDj$7$^$9!#(B
 $B@\B3;~$N%Q%9%o!<%I(B
 @item :function
 $B@\B3MQ4X?t(B
-@item :coding-system
-$B%3!<%G%#%s%0%7%9%F%`(B
+@item :coding
+$B%3!<%G%#%s%0%7%9%F%`(B ($B%G%U%)%k%H$O(B @code{riece-default-coding-system} $B$NCM(B)
 @end table
 
 @node Add-ons, Writing add-ons, Server settings, Advanced usage
