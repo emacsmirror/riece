@@ -1,9 +1,8 @@
 2003-10-08  Daiki Ueno  <ueno@unixuser.org>
 
-	* riece-filter.el (riece-sentinel): Don't call riece-exit here.
-	* riece-server.el (riece-close-server-process): Call riece-exit.
+	* riece-server.el (riece-close-server-process): 
 	(riece-quit-server-process): Call riece-close-server-process
-	instead of kill-process.
+	instead of kill-process; call riece-exit if no process is available.
 
 2003-10-07  Daiki Ueno  <ueno@unixuser.org>
 

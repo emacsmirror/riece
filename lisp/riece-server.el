@@ -193,16 +193,11 @@ the `riece-server-keyword-map' variable."
     (buffer-disable-undo)
     (erase-buffer)))
 
-(eval-when-compile
-  (autoload 'riece-exit "riece"))
 (defun riece-close-server-process (process)
   (if riece-debug
       (delete-process process)
     (kill-buffer (process-buffer process)))
-  (setq riece-process-list (delq process riece-process-list))
-  ;; If no server process is available, exit.
-  (unless riece-process-list
-    (riece-exit)))
+  (setq riece-process-list (delq process riece-process-list)))
 
 (defun riece-server-opened (&optional server-name)
   (let ((process-list riece-process-list))
@@ -212,11 +207,16 @@ the `riece-server-keyword-map' variable."
 	    (throw 'found t))
 	(setq process-list (cdr process-list))))))
 
+(eval-when-compile
+  (autoload 'riece-exit "riece"))
 (defun riece-quit-server-process (process &optional message)
   (run-at-time riece-quit-timeout nil
 	       (lambda (process)
-		 (if (memq process riece-process-list)
-		     (riece-close-server-process process)))
+		 (when (memq process riece-process-list)
+		   (riece-close-server-process process)
+		   ;; If no server process is available, exit.
+		   (unless riece-process-list
+		     (riece-exit))))
 	       process)
   (riece-process-send-string process
 			     (if message
