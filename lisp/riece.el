@@ -197,7 +197,6 @@ If optional argument SAFE is nil, overwrite previous definitions."
   (riece-define-keys riece-channel-list-mode-map
     ">" riece-command-next-channel
     "<" riece-command-previous-channel
-    "u" riece-command-unread-channel
     "o" other-window
     "c" riece-command-select-command-buffer)
 

@@ -1,3 +1,8 @@
+2003-06-06  OHASHI Akira  <bg66@koka-in.org>
+
+	* riece.el (riece-channel-list-mode-map): Don't bind
+	`riece-command-unread-channel'.
+
 2003-06-04  Yoichi NAKAYAMA  <yoichi@geiin.org>
 
 	* riece-000.el,riece-200.el,riece-300.el,riece-400.el,riece-500.el,
