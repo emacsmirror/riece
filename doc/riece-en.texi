@@ -94,8 +94,6 @@ For more details, please look at the following pages:
 
 @itemize @bullet
 @item http://www.nongnu.org/riece/
-@item http://wiliki.designflaw.org/index.cgi?Riece&l=jp
-@item http://www.unixuser.org/~ueno/liece/
 @end itemize
 
 @node Getting started, Basic usage, Overview, Top
