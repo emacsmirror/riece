@@ -157,6 +157,11 @@
       string
     (concat string " (from " riece-server-name ")")))
 
+(defun riece-concat-user-status (status string)
+  (if status
+      (concat string " [" (mapconcat #'identity status ", ") "]")
+    string))
+
 (defun riece-prefix-user-at-host (prefix)
   (if (string-match "!" prefix)
       (substring prefix (match-end 0))

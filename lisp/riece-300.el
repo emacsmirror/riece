@@ -43,26 +43,27 @@
 		   "\\)\\(\\*\\)?=\\([-+]\\)\\([^ ]+\\)")
 	   (car replies))
 	  (let ((user (match-string 1 (car replies)))
+		(operator (not (null (match-beginning 2))))
 		(away (eq (match-string 3 (car replies)) ?-))
 		(user-at-host (match-string 4 (car replies)))
-		(operator (not (null (match-beginning 2)))))
+		status)
+	    (if away
+		(setq status (cons "away" status)))
+	    (if operator
+		(setq status (cons "operator" status)))
 	    (riece-user-toggle-away user away)
 	    (riece-user-toggle-operator user operator)
 	    (riece-insert-info
 	     (list riece-dialogue-buffer riece-others-buffer)
 	     (concat
 	      (riece-concat-server-name
-	       (format "%s is (%s) [%s, %s]"
-		       (riece-format-identity
-			(riece-make-identity user riece-server-name)
-			t)
-		       (riece-strip-user-at-host user-at-host)
-		       (if operator
-			   "operator"
-			 "not operator")
-		       (if away
-			   "away"
-			 "not away")))
+	       (riece-concat-user-status
+		status
+		(format "%s is (%s)"
+			(riece-format-identity
+			 (riece-make-identity user riece-server-name)
+			 t)
+			(riece-strip-user-at-host user-at-host))))
 	      "\n"))))
       (setq replies (cdr replies)))
   (riece-update-status-indicators)
@@ -350,7 +351,7 @@
 	     (name (substring string (match-end 0)))
 	     (buffer (riece-channel-buffer (riece-make-identity
 					    channel riece-server-name)))
-	     (info (format "%10s = %s (%s) [%s, %s, %s hops, on %s]"
+	     (info (format "%10s = %s (%s)"
 			   (concat
 			    (if (memq flag '(?@ ?+))
 				(char-to-string flag)
@@ -360,19 +361,24 @@
 			     t))
 			   name
 			   (riece-strip-user-at-host
-			    (concat user "@" host))
-			   (if operator
-			       "operator"
-			     "not operator")
-			   (if away
-			       "away"
-			     "not away")
-			   hops
-			   server)))
+			    (concat user "@" host))))
+	     status)
+	(if operator
+	    (setq status (cons "operator" status)))
+	(if away
+	    (setq status (cons "away" status)))
+	(unless (equal hops "0")
+	  (setq status (cons (concat "on " server)
+			     (cons (concat hops " hops")
+				   status))))
+	(if status
+	    (setq status (nreverse status)))
 	(riece-naming-assert-join nick channel)
 	(riece-user-toggle-away user away)
 	(riece-user-toggle-operator user operator)
-	(riece-insert-info buffer (concat info "\n"))
+	(riece-insert-info buffer (concat (riece-concat-user-status
+					   status info)
+					  "\n"))
 	(riece-insert-info
 	 (if (and riece-channel-buffer-mode
 		  (not (eq buffer riece-channel-buffer)))
@@ -380,12 +386,14 @@
 	   riece-dialogue-buffer)
 	 (concat
 	  (riece-concat-server-name
-	   (concat
-	    (riece-format-identity
-	     (riece-make-identity channel riece-server-name)
-	     t)
-	    " "
-	    info))
+	   (riece-concat-user-status
+	    status
+	    (concat
+	     (riece-format-identity
+	      (riece-make-identity channel riece-server-name)
+	      t)
+	     " "
+	     info)))
 	  "\n"))
 	(riece-redisplay-buffers))))
 

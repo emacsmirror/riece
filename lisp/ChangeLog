@@ -1,3 +1,11 @@
+2004-01-18  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-misc.el (riece-concat-user-status): New function.
+
+	* riece-300.el (riece-handle-302-message): Simplify user status
+	display.  (i.e. don't display "not operator", "not away", ...)
+	(riece-handle-352-message): Ditto.
+
 2004-01-04  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-lsdb.el (riece-lsdb-add-user): Always pass canonical
