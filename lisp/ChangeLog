@@ -1,3 +1,8 @@
+2003-06-24  OHASHI Akira  <bg66@koka-in.org>
+
+	* riece-unread.el (riece-unread-display-message-function): Don't check
+	`selected-window'. It doesn't work as expected.
+
 2003-06-22  Yoichi NAKAYAMA  <yoichi@geiin.org>
 
 	* riece-log.el, riece-mini.el, riece-unread.el, riece-url.el:
