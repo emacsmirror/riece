@@ -92,9 +92,9 @@ Only used for sending files."
    (let ((completion-ignore-case t))
      (unless riece-ndcc-server-address
        (error "Set riece-ndcc-server-address to your host"))
-     (list (completing-read
+     (list (riece-completing-read-identity
 	    "User: "
-	    (mapcar #'list (riece-get-users-on-server)))
+	    (riece-get-users-on-server (riece-current-server-name)))
 	   (expand-file-name (read-file-name "File: ")))))
   (let* (selective-display
 	 (coding-system-for-read 'binary)
@@ -111,7 +111,8 @@ Only used for sending files."
 					:sentinel 'riece-ndcc-server-sentinel))
     (riece-send-string
      (format "PRIVMSG %s :\1DCC SEND %s %s %d %d\1\r\n"
-	     user (file-name-nondirectory file)
+	     (riece-identity-prefix user)
+	     (file-name-nondirectory file)
 	     (riece-ndcc-encode-address riece-ndcc-server-address)
 	     (nth 1 (process-contact process))
 	     (nth 7 (file-attributes file))))))

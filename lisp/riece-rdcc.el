@@ -55,6 +55,7 @@ unless address
 end
 server = TCPServer.new(address, 0)
 puts(\"#{server.addr[3].split(/\\./).collect{|c| c.to_i}.pack('CCCC').unpack('N')[0]} #{server.addr[1]}\")
+$stdout.flush
 session = server.accept
 if session
   total = 0
@@ -125,9 +126,9 @@ puts(\"#{" address " >> 24 & 0xFF}.#{" address " >> 16 & 0xFF}.#{"
 (defun riece-command-dcc-send (user file)
   (interactive
    (let ((completion-ignore-case t))
-     (list (completing-read
+     (list (riece-completing-read-identity
 	    "User: "
-	    (mapcar #'list (riece-get-users-on-server)))
+	    (riece-get-users-on-server (riece-current-server-name)))
 	   (expand-file-name (read-file-name "File: ")))))
   (let* ((process-connection-type nil)
 	 (process (start-process "DCC" (generate-new-buffer " *DCC*")
@@ -164,7 +165,8 @@ puts(\"#{" address " >> 24 & 0xFF}.#{" address " >> 16 & 0xFF}.#{"
 	    (set-process-sentinel process #'riece-rdcc-server-sentinel)
 	    (riece-send-string
 	     (format "PRIVMSG %s :\1DCC SEND %s %s %s %d\1\r\n"
-		     user (file-name-nondirectory file)
+		     (riece-identity-prefix user)
+		     (file-name-nondirectory file)
 		     address port
 		     riece-rdcc-request-size)))))))
 

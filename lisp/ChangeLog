@@ -1,5 +1,13 @@
 2003-10-22  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-rdcc.el (riece-rdcc-send-program): Flush $stdout before
+	accepting a connection.
+	(riece-command-dcc-send): Use riece-completing-read-identity; take
+	an identity object in the 1st argument.
+	* riece-ndcc.el (riece-command-dcc-send): Use
+	riece-completing-read-identity; take an identity object in the 1st
+	argument.
+
 	* riece-display.el (riece-update-buffers): Run
 	riece-update-buffer-hook.
 
