@@ -1,3 +1,7 @@
+2004-12-01  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-display.el (riece-update-channel-status-indicator): Fixed typo.
+
 2004-11-28  Daiki Ueno  <ueno@unixuser.org>
 
 	* test/lunit.el (lunit-report): Accept output filename as the 2nd arg.

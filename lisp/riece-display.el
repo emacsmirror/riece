@@ -378,8 +378,8 @@ Local to the buffer in `riece-buffer-list'.")
 		      (if (memq ?o user)
 			  "@"
 			(if (memq ?v user)
-			    "+")
-			"-"))
+			    "+"
+			  "-")))
 		  "-"))))))
 
 (defun riece-update-buffers (&optional buffers)
