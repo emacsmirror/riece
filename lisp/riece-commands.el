@@ -435,32 +435,25 @@ the layout to the selected layout-name."
       (riece-join-channel target)
       (riece-switch-to-channel target))))
 
-(defun riece-command-join (target &optional key)
+(defun riece-command-join (target)
   (interactive
-   (let* ((completion-ignore-case t)
-	  (target
-	   (if riece-join-channel-candidate
-	       (let ((default (riece-format-identity
-			       riece-join-channel-candidate)))
-		 (riece-completing-read-identity
-		  (format "Join channel/user (default %s): " default)
-		  (riece-get-identities-on-server (riece-current-server-name))
-		  nil nil nil nil default))
-	     (riece-completing-read-identity
-	      "Join channel/user: "
-	      (riece-get-identities-on-server (riece-current-server-name)))))
-	  key)
-     (if (and current-prefix-arg
-	      (riece-channel-p (riece-identity-prefix target)))
-	 (setq key
-	       (riece-read-passwd (format "Key for %s: "
-					  (riece-format-identity target)))))
-     (list target key)))
+   (let ((completion-ignore-case t))
+     (list
+      (if riece-join-channel-candidate
+	  (let ((default (riece-format-identity
+			  riece-join-channel-candidate)))
+	    (riece-completing-read-identity
+	     (format "Join channel/user (default %s): " default)
+	     (riece-get-identities-on-server (riece-current-server-name))
+	     nil nil nil nil default))
+	(riece-completing-read-identity
+	 "Join channel/user: "
+	 (riece-get-identities-on-server (riece-current-server-name)))))))
   (let ((pointer (riece-identity-member target riece-current-channels)))
     (if pointer
 	(riece-command-switch-to-channel (car pointer))
       (if (riece-channel-p (riece-identity-prefix target))
-	  (riece-command-join-channel target key)
+	  (riece-command-join-channel target nil)
 	(riece-command-join-partner target)))))
 
 (defun riece-command-part-channel (target message)

@@ -1,5 +1,8 @@
 2005-02-04  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-commands.el (riece-command-join): Abolished prefix-arg
+	(channel key).
+
 	* riece-options.el (riece-buffer-dispose-function): Changed the
 	default value from bury-buffer to kill-buffer.
 	* riece-log.el (riece-log-lock-directory): New user option.
