@@ -1,5 +1,26 @@
 2003-10-13  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-xemacs.el (riece-mouse-2): New variable.
+	(riece-popup-menu-popup): New function.
+
+	* riece-emacs.el (riece-mouse-2): New variable.
+	(riece-popup-menu-bogus-filter-constructor): New macro.
+	(riece-popup-menu-popup): New function.
+
+	* riece-commands.el (riece-command-list): Use identity prefix
+	instead of formatted identity.
+
+	* riece-button.el (riece-channel-button-popup-menu): New variable.
+	(riece-channel-button): Arrange help-echo.
+	(riece-channel-button-switch-to-channel): New function.
+	(riece-channel-button-part): New function.
+	(riece-channel-button-list): New function.
+	(riece-channel-button-map): New variable.
+	(riece-button-add-channel-buttons): Add 'local-map and 'keymap
+	properties on channel buttons.
+
+2003-10-13  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-button.el (riece-button-insinuate): Buttonize channel buffers.
 
 	* riece-history.el (riece-channel-list-history-face): New face.

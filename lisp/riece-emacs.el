@@ -27,6 +27,39 @@
 (defalias 'riece-set-case-syntax-pair
   'set-case-syntax-pair)
 
+;;; stolen (and renamed) from gnus-ems.el.
+
+;;; In GNU Emacs, user can intercept whole mouse tracking events by
+;;; assigning [mouse-X].  In XEmacs, however, which causes different
+;;; effect, that is, the command assigned to [mouse-X] only catches
+;;; button-release events.
+(defvar riece-mouse-2 [mouse-2])
+
+;;; popup-menu compatibility stuff, stolen (and renamed) from
+;;; semi-def.el.
+(defmacro riece-popup-menu-bogus-filter-constructor (menu)
+  ;; #### Kludge for FSF Emacs-style menu.
+  (let ((bogus-menu (make-symbol "bogus-menu")))
+    `(let (,bogus-menu selection function)
+       (easy-menu-define ,bogus-menu nil nil ,menu)
+       (setq selection (x-popup-menu t ,bogus-menu))
+       (when selection
+	 (setq function (lookup-key ,bogus-menu (apply #'vector selection)))
+	 ;; If a callback entry has no name, easy-menu wraps its value.
+	 ;; See `easy-menu-make-symbol'.
+	 (if (eq t (compare-strings "menu-function-" 0 nil
+				    (symbol-name function) 0 14))
+	     (car (last (symbol-function function)))
+	   function)))))
+
+(defun riece-popup-menu-popup (menu event)
+  (let ((function (riece-popup-menu-bogus-filter-constructor menu))
+	(pos (event-start event)))
+    (when (symbolp function)
+      (select-window (posn-window pos))
+      (goto-char (posn-point pos))
+      (funcall function))))
+
 (provide 'riece-emacs)
 
 ;;; riece-emacs.el ends here

@@ -34,6 +34,13 @@
 (require 'riece-misc)
 (require 'wid-edit)
 
+(defconst riece-channel-button-popup-menu
+  '("Channel"
+    ["Switch" riece-channel-button-switch-to-channel]
+    ["Part" riece-channel-button-part]
+    ["List" riece-channel-button-list])
+  "Menu for channel buttons")
+
 (defvar help-echo-owns-message)
 (define-widget 'riece-channel-button 'push-button
   "A channel button."
@@ -44,7 +51,8 @@
     ;; wid-edit (XEmacs only).
     (if (boundp 'help-echo-owns-message)
 	(setq help-echo-owns-message t))
-    (format "Switch to %s"
+    (format "%S: switch to %s; down-mouse-3: more options"
+	    (aref riece-mouse-2 0)
 	    ;; XEmacs will get a single widget arg; Emacs 21 will get
 	    ;; window, overlay, position.
 	    (riece-format-identity
@@ -54,11 +62,38 @@
 	       (widget-value widget/window))))))
 
 (defun riece-channel-button-action (widget &optional event)
+  "Callback for channel buttons."
   (let ((channel (widget-value widget)))
     (if (riece-identity-member channel riece-current-channels)
 	(riece-command-switch-to-channel channel)
       (message "%s" (substitute-command-keys
 		     "Type \\[riece-command-join] to join the channel")))))
+
+(defun riece-channel-button-popup-menu (event)
+  "Popup the menu for channel buttons."
+  (interactive "@e")
+  (riece-popup-menu-popup riece-channel-button-popup-menu event))
+
+(defun riece-channel-button-switch-to-channel ()
+  (interactive)
+  (riece-command-switch-to-channel
+   (get-text-property (point) 'riece-identity)))
+
+(defun riece-channel-button-part ()
+  (interactive)
+  (riece-command-part
+   (get-text-property (point) 'riece-identity)))
+
+(defun riece-channel-button-list ()
+  (interactive)
+  (riece-command-list
+   (riece-identity-prefix (get-text-property (point) 'riece-identity))))
+
+(defvar riece-channel-button-map
+  (let ((map (make-sparse-keymap)))
+    (set-keymap-parent map riece-channel-list-mode-map)
+    (define-key map [down-mouse-3] 'riece-channel-button-popup-menu)
+    map))
 
 (defun riece-button-add-channel-buttons (start end)
   (save-excursion
@@ -75,8 +110,13 @@
 	  (if (= button-end end)
 	      (throw 'done nil)
 	    (if (riece-channel-p (riece-identity-prefix identity))
-		(widget-convert-button
-		 'riece-channel-button start button-end identity))
+		(progn
+		  (widget-convert-button 'riece-channel-button start
+					 button-end identity)
+		  (add-text-properties
+		   start button-end
+		   (list 'local-map riece-channel-button-map
+			 'keymap riece-channel-button-map))))
 	    (setq start button-end)))))))
 
 (defun riece-button-update-channel-list-buffer ()

@@ -147,7 +147,6 @@ If optional argument SAFE is nil, overwrite previous definitions."
     "j" riece-command-join
     "\C-k" riece-command-kick
     "l" riece-command-list
-    "m" riece-dialogue-enter-message
     "M" riece-command-change-mode
     "n" riece-command-change-nickname
     "\C-n" riece-command-names
