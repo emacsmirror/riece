@@ -1,45 +1,7 @@
-2003-08-09  Daiki Ueno  <ueno@unixuser.org>
+2003-08-17  Daiki Ueno  <ueno@unixuser.org>
 
-	* riece-rdcc.el (riece-command-dcc-send): Accept output only from
-	the ruby process.
-
-	* riece-xemacs.el: Don't require 'riece-compat.
-
-2003-08-06  Daiki Ueno  <ueno@unixuser.org>
-
-	* riece-unread.el (riece-unread-update-channel-list-buffer): Call
-	riece-parse-identity.
-
-2003-08-04  Daiki Ueno  <ueno@unixuser.org>
-
-	* riece-server.el (riece-find-server-name): Abolish.
-
-	* riece-alias.el: Add usage.
-
-2003-08-04  Daiki Ueno  <ueno@unixuser.org>
-
-	* riece-mini.el (riece-mini-send-message): Use
-	riece-completing-read-identity; don't use riece-own-channel-message.
-
-	* riece-identity.el: Require 'riece-compat.
-	(riece-identity-prefix-case-table): New variable.
-	(riece-abbrev-identity-string-function): New variable.
-	(riece-expand-identity-string-function): New variable.
-	(riece-format-identity): Rename from riece-decode-identity.
-	(riece-parse-identity): Rename from riece-encode-identity.
-	(riece-with-identity-buffer): Abolish.
-	(riece-identity-canonicalize-prefix): Use case-table.	
-
-	* riece-filter.el (riece-handle-numeric-reply): Decode messages.
-	(riece-handle-message): Ditto.
-
-	* riece-alias.el: New add-on.
-	* COMPILE (riece-modules): Add riece-alias.
-	* Makefile.am (EXTRA_DIST): Add riece-alias.el.
-
-	* riece-emacs.el (riece-set-case-syntax-pair): New alias.
-	* riece-xemacs.el (riece-set-case-syntax-pair): New alias.
-	* riece-identity.el (riece-identity-canonicalize-prefix): Simplified.
+	* riece-commands.el (riece-command-previous-channel): Skip nil in
+	riece-current-channels.
 
 2003-08-03  Daiki Ueno  <ueno@unixuser.org>
 
@@ -51,76 +13,12 @@
 	* riece-unread.el (riece-unread-display-message-function): Don't check
 	`selected-window'. It doesn't work as expected.
 
-2003-06-23  Daiki Ueno  <ueno@unixuser.org>
-
-	* riece-misc.el (riece-channel-p): Moved from riece-channel.el.
-
-	* riece-300.el: Rewrite using riece-decode-identity.
-
-	* riece-identity.el (riece-completing-read-identity): Signal an
-	error when the encoded channel name is not matched with
-	riece-channel-regexp.
-
-	* riece-globals.el (riece-channel-regexp): Moved from
-	riece-channel.el.
-	(riece-user-regexp): Moved form riece-user.el.
-
-2003-06-23  Daiki Ueno  <ueno@unixuser.org>
-
-	* riece-handle.el (riece-handle-join-message): Don't call
-	riece-switch-to-channel.
-	(riece-handle-part-message): Don't decode message if it is empty.
-	(riece-handle-kick-message): Ditto.
-	(riece-handle-quit-message): Ditto.
-	(riece-handle-kill-message): Ditto.
-
-	* riece-commands.el (riece-command-part): Show the current channel
-	as default candidate.
-
-	* riece-identity.el (riece-completing-read-identity): Accept
-	optional 5th argument `initial'.
-
-	* riece-unread.el (riece-unread-update-channel-list-buffer):
-	Simplified.
-
-	* riece-filter.el (riece-sentinel): Don't bind
-	riece-inhibit-update-buffers.
-
-	* riece-display.el (riece-redisplay-buffer): New variable.
-	(riece-inhibit-update-buffers): Abolish.
-	(riece-update-channel-list-buffer): Memorize
-	encoded identity as text property on each line.	
-
-	* riece.el (riece-channel-list-mode): Make riece-redisplay-buffer
-	buffer local.
-	(riece-user-list-mode): Ditto.
-
 2003-06-22  Yoichi NAKAYAMA  <yoichi@geiin.org>
 
 	* riece-log.el, riece-mini.el, riece-unread.el, riece-url.el:
 	Fix example setting, don't use 3rd arg of add-to-list.
 
 	* riece-coding.el (riece-default-coding-system): Fix default value.
-
-2003-06-22  Daiki Ueno  <ueno@unixuser.org>
-
-	* riece-display.el (riece-inhibit-update-buffers): New variable.
-	* riece-filter.el (riece-sentinel): Bind
-	riece-inhibit-update-buffers while removing channels from
-	riece-current-channels.
-	* riece-unread.el (riece-unread-display-message-function): Don't
-	update channel list buffer when riece-inhibit-update-buffers is
-	non-nil.
-	(riece-unread-channel-switch-hook): Ditto.
-	(riece-unread-insinuate): Add
-	riece-unread-update-channel-list-buffer to
-	riece-update-buffer-functions.
-
-	* riece-commands.el (riece-command-switch-to-channel): Call
-	riece-redisplay-buffers instead of riece-command-configure-windows.
-
-	* riece-identity.el (riece-completing-read-identity): Remove nil
-	from riece-current-channels before converting it to an alist.
 
 2003-06-17  OHASHI Akira  <bg66@koka-in.org>
 
@@ -138,131 +36,6 @@
 
 	* riece-commands.el (riece-command-join): Use `let*' instead of `let'.
 	(riece-command-part): Ditto.
-
-2003-06-12  Daiki Ueno  <ueno@unixuser.org>
-
-	* riece-naming.el (riece-naming-assert-join): Call
-	riece-update-buffers.
-	(riece-naming-assert-part): Ditto.
-
-	* riece-filter.el (riece-sentinel): Don't bind
-	riece-overriding-server-name; use riece-part-channel.
-
-	* riece-display.el (riece-switch-to-channel): Don't set
-	riece-channel-buffer.
-	(riece-update-buffers): Set riece-channel-buffer here.
-
-	* riece-commands.el (riece-command-switch-to-channel-by-number): Fixed.
-	(riece-command-close-server): Fixed completion bug.
-	(riece-command-universal-server-name-argument): Ditto.
-
-2003-06-12  Daiki Ueno  <ueno@unixuser.org>
-
-	* riece-doctor.el: Don't require 'doctor; autoload doctor-mode and
-	doctor-read-print.
-
-	* riece-handle.el (riece-handle-nick-message): Use
-	riece-decode-identity to decode user.
-	(riece-handle-join-message): Ditto.
-	(riece-handle-part-message): Ditto.
-	(riece-handle-kick-message): Ditto.
-	(riece-handle-quit-message): Ditto.
-	(riece-handle-kill-message): Ditto.
-	(riece-handle-invite-message): Ditto.
-	(riece-handle-topic-message): Ditto.
-	(riece-handle-mode-message): Ditto.
-
-2003-06-12  Daiki Ueno  <ueno@unixuser.org>
-
-	* riece-message.el (riece-own-channel-message): Abolish.
-
-	* riece-commands.el (riece-command-send-message): Don't use
-	riece-own-channel-message.
-
-	* riece-doctor.el (riece-doctor-reply): Don't use
-	riece-own-channel-message.
-	(riece-doctor-hello-regexp): New user option.
-	(riece-doctor-bye-regexp): New user option.
-
-2003-06-11  Daiki Ueno  <ueno@unixuser.org>
-
-	* riece-identity.el (riece-identity-member-no-server): Abolish.
-
-	* riece-doctor.el (riece-doctor-patients): Make it global variable.
-	(riece-doctor-after-privmsg-hook): Use riece-identity-member
-	instead of riece-identity-member-no-server.
-
-2003-06-11  Daiki Ueno  <ueno@unixuser.org>
-
-	* riece-doctor.el: New add-on.
-	* COMPILE (riece-modules): Add riece-doctor.
-	* Makefile.am (EXTRA_DIST): Add riece-doctor.el
-
-2003-06-11  Daiki Ueno  <ueno@unixuser.org>
-
-	* riece-handle.el (riece-handle-nick-message): Follow the change
-	of riece-identity-member.
-
-	* riece-commands.el (riece-command-next-channel): Use
-	riece-identity-member instead of riece-identity-member-no-server.
-	(riece-command-previous-channel): Ditto.
-
-2003-06-11  Daiki Ueno  <ueno@unixuser.org>
-
-	* riece-identity.el (riece-completing-read-identity): Remove nil
-	from channels before completing-read.
-
-	* riece-message.el (riece-message-make-name): Fix condition for priv.
-	(riece-message-make-global-name): Ditto.
-	(riece-message-buffer): Ditto.
-
-	* riece-misc.el (riece-current-nickname): Use
-	riece-with-identity-buffer.
-
-2003-06-11  Daiki Ueno  <ueno@unixuser.org>
-
-	* riece-message.el (riece-message-parent-buffers): Regard message's
-	speaker as target when priv mode.
-
-	* riece-display.el (riece-update-channel-indicator): Decode
-	riece-current-channel even in priv mode.
-
-	* riece-identity.el (riece-decode-identity): Respect prefix-only.
-	(riece-completing-read-identity): Check if illegal characters in
-	channel name.
-
-2003-06-08  Daiki Ueno  <ueno@unixuser.org>
-
-	* riece.el (riece-buffer-mode-alist): Add riece-user-list-buffer.
-	* riece-globals.el (riece-user-buffer-format): Abolish.
-	(riece-user-list-buffer): Default to " *Users*".
-	* riece-display.el (riece-user-list-buffer-name): Abolish.
-	(riece-user-list-buffer-create): Abolish.
-
-2003-06-08  Daiki Ueno  <ueno@unixuser.org>
-
-	* riece-filter.el (riece-handle-numeric-reply): Don't decode messages.
-	(riece-handle-message): Ditto.
-	(riece-sentinel): Clear system here.
-
-	* riece-server.el (riece-server-process-name): New function.
-	(riece-server-process): New function.
-	(riece-close-server): Abolish.
-
-	* riece-identity.el: Adopt vector object representation for
-	identity objects.
-	(riece-with-identity-buffer): New macro.
-	(riece-decode-identity): New function.
-	(riece-encode-identity): New function.
-
-	* riece-globals.el (riece-process-list): New variable.
-	(riece-server-process-alist): Abolish.
-	(riece-channel-buffer-alist): Abolish.
-	(riece-user-list-buffer-alist): Abolish.
-	(riece-short-channel-indicator): New variable.
-
-	* riece-channel.el: Assume that we are already in the server buffer.
-	* riece-user.el: Likewise.
 
 2003-06-06  OHASHI Akira  <bg66@koka-in.org>
 
