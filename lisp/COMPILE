@@ -138,10 +138,11 @@
    (riece-install-just-print-p)))
 
 (defun riece-test ()
-  (require 'lunit)
   (let ((load-path (cons (expand-file-name "test") (cons nil load-path)))
 	(files (directory-files "test" t "^test-.*\\.el$"))
-        (suite (lunit-make-test-suite)))
+        suite)
+    (require 'lunit)
+    (setq suite (lunit-make-test-suite))
     (while files
       (when (file-regular-p (car files))
 	(load-file (car files))

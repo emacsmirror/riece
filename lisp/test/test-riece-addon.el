@@ -25,14 +25,16 @@
 (luna-define-class test-riece-addon (lunit-test-case))
 
 (luna-define-method test-riece-resolve-addons-1 ((case test-riece-addon))
-  (lunit-assert
+  (lunit-assert-2
+   case
    (equal
     (riece-resolve-addons '(test-riece-addon-1 test-riece-addon-2))
     '(test-riece-addon-3 test-riece-addon-4
 			 test-riece-addon-2 test-riece-addon-1))))
 
 (luna-define-method test-riece-resolve-addons-2 ((case test-riece-addon))
-  (lunit-assert
+  (lunit-assert-2
+   case
    (equal
     (condition-case error
 	(riece-resolve-addons '(test-riece-addon-5 test-riece-addon-6))

@@ -32,21 +32,17 @@
 ;; (luna-define-class silly-test-case (lunit-test-case))
 ;;
 ;; (luna-define-method test-1 ((case silly-test-case))
-;;   (lunit-assert (integerp "a")))
+;;   (lunit-assert-2 case (integerp "a")))
 ;;
 ;; (luna-define-method test-2 ((case silly-test-case))
-;;   (lunit-assert (stringp "b")))
+;;   (lunit-assert-2 case (stringp "b")))
 ;;
 ;; (with-output-to-temp-buffer "*Lunit Results*"
 ;;   (lunit (lunit-make-test-suite-from-class 'silly-test-case)))
 ;; ______________________________________________________________________
-;; Starting test `silly-test-case#test-1'
-;; failure: (integerp "a")
-;; ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-;; ______________________________________________________________________
-;; Starting test `silly-test-case#test-2'
-;; ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-;; 2 runs, 1 failures, 0 errors
+;; Running `silly-test-case#test-1'... failure: (integerp "a")
+;; Running `silly-test-case#test-2'...
+;; 2 runs, 2 assertions, 1 failures, 0 errors
 
 ;;; Code:
 
@@ -83,14 +79,12 @@
 (put 'lunit-error 'error-message "test error")
 (put 'lunit-error 'error-conditions '(lunit-error error))
 
-(put 'lunit-failure 'error-message "test failure")
-(put 'lunit-failure 'error-conditions '(lunit-failure lunit-error error))
-
 (eval-and-compile
   (luna-define-class lunit-test-result ()
 		     (errors
 		      failures
-		      listeners))
+		      listeners
+		      assert-count))
 
   (luna-define-internal-accessors 'lunit-test-result))
 
@@ -101,19 +95,14 @@
   "Report the current state of execution.")
 
 (luna-define-generic lunit-test-result-error (result case error)
-  "Add error to the list of errors.
-The passed in exception caused the error.")
-
-(luna-define-generic lunit-test-result-failure (result case failure)
-  "Add failure to the list of failures.
-The passed in exception caused the failure.")
+  "Add error to the list of errors.")
 
 (luna-define-generic lunit-test-result-add-listener (result listener)
   "Add listener to the list of listeners.")
 
 (defun lunit-make-test-result (&rest listeners)
   "Return a newly allocated `lunit-test-result' instance with LISTENERS."
-  (luna-make-entity 'lunit-test-result :listeners listeners))
+  (luna-make-entity 'lunit-test-result :listeners listeners :assert-count 0))
 
 (luna-define-method lunit-test-result-notify ((result lunit-test-result)
 					      message args)
@@ -126,10 +115,24 @@ The passed in exception caused the failure.")
   (lunit-test-result-notify result 'lunit-test-listener-start case)
   (condition-case error
       (lunit-test-case-run case)
-    (lunit-failure
-     (lunit-test-result-failure result case (nth 1 error)))
     (lunit-error
      (lunit-test-result-error result case (cdr error))))
+  (lunit-test-result-set-assert-count-internal
+   result
+   (+ (lunit-test-result-assert-count-internal result)
+      (lunit-test-case-assert-count-internal case)))
+  (let ((failures
+	 (lunit-test-case-failures-internal case)))
+    (when failures
+      (lunit-test-result-set-failures-internal
+       result
+       (nconc (lunit-test-result-failures-internal result)
+	      (mapcar (lambda (failure)
+			(prog1 (cons case failure)
+			  (lunit-test-result-notify
+			   result 'lunit-test-listener-failure
+			   case failure)))
+		      failures)))))
   (lunit-test-result-notify result 'lunit-test-listener-end case))
 
 (luna-define-method lunit-test-result-error ((result lunit-test-result)
@@ -139,14 +142,6 @@ The passed in exception caused the failure.")
     (setq errors (nconc errors (list (cons case error))))
     (lunit-test-result-set-errors-internal result errors))
   (lunit-test-result-notify result 'lunit-test-listener-error case error))
-
-(luna-define-method lunit-test-result-failure ((result lunit-test-result)
-					       case failure)
-  (let ((failures
-	 (lunit-test-result-failures-internal result)))
-    (setq failures (nconc failures (list (cons case failure))))
-    (lunit-test-result-set-failures-internal result failures))
-  (lunit-test-result-notify result 'lunit-test-listener-failure case failure))
 
 (luna-define-method lunit-test-result-add-listener ((result lunit-test-result)
 						    listener)
@@ -158,7 +153,12 @@ The passed in exception caused the failure.")
 ;;; @ test case
 ;;;
 
-(luna-define-class lunit-test-case (lunit-test))
+(eval-and-compile
+  (luna-define-class lunit-test-case (lunit-test)
+		     (failures
+		      assert-count))
+
+  (luna-define-internal-accessors 'lunit-test-case))
 
 (luna-define-generic lunit-test-case-run (case)
   "Run the test case.")
@@ -173,7 +173,7 @@ The passed in exception caused the failure.")
   "Return a newly allocated `lunit-test-case'.
 CLASS is a symbol for class derived from `lunit-test-case'.
 NAME is name of the method to be tested."
-  (luna-make-entity class :name name))
+  (luna-make-entity class :name name :assert-count 0))
 
 (luna-define-method lunit-test-number-of-tests ((case lunit-test-case))
   1)
@@ -195,8 +195,6 @@ NAME is name of the method to be tested."
 	  (error "Method \"%S\" not found" name))
 	(condition-case error
 	    (funcall (car functions) case)
-	  (lunit-failure
-	   (signal (car error)(cdr error)))
 	  (error
 	   (signal 'lunit-error error))))
     (lunit-test-case-teardown case)))
@@ -236,9 +234,20 @@ TESTS holds a number of instances of `lunit-test'."
 
 (defmacro lunit-assert (condition-expr)
   "Verify that CONDITION-EXPR returns non-nil; signal an error if not."
-  (let ((condition (eval condition-expr)))
-    `(when ,(not condition)
-       (signal 'lunit-failure (list ',condition-expr)))))
+  (princ "`lunit-assert' is obsolete; use `lunit-assert-2' instead.\n"))
+
+(defmacro lunit-assert-2 (case condition-expr)
+  "In regard to CASE, verify that CONDITION-EXPR returns non-nil;
+signal an error if not."
+  `(let ((case ,case))
+     (lunit-test-case-set-assert-count-internal
+      case
+      (1+ (lunit-test-case-assert-count-internal case)))
+     (unless ,condition-expr
+       (lunit-test-case-set-failures-internal
+	case
+	(cons ',condition-expr
+	      (lunit-test-case-failures-internal case))))))
 
 (luna-define-class lunit-test-printer (lunit-test-listener))
 
@@ -278,12 +287,15 @@ TESTS holds a number of instances of `lunit-test'."
 	 (result
 	  (lunit-make-test-result printer)))
     (lunit-test-run test result)
-    (let ((failures
+    (let ((assert-count
+	   (lunit-test-result-assert-count-internal result))
+	  (failures
 	   (lunit-test-result-failures-internal result))
 	  (errors
 	   (lunit-test-result-errors-internal result)))
-      (princ (format "%d runs, %d failures, %d errors\n"
+      (princ (format "%d runs, %d assertions, %d failures, %d errors\n"
 		     (lunit-test-number-of-tests test)
+		     assert-count
 		     (length failures)
 		     (length errors))))))
 

@@ -1,3 +1,43 @@
+2004-11-26  Daiki Ueno  <ueno@unixuser.org>
+
+	* COMPILE (riece-test): Require 'lunit after when ./test is added
+	to load-path.
+
+	* test/test-riece-yank.el (test-riece-yank-strip-space): Use
+	lunit-assert-2 instead of lunit-assert.
+
+	* test/test-riece-url.el (test-riece-url-replace-match): Use
+	lunit-assert-2 instead of lunit-assert.
+	(test-riece-url-regexp-alist): Ditto.
+
+	* test/test-riece-alias.el (test-riece-alias-percent-hack): Use
+	lunit-assert-2 instead of lunit-assert.
+	(test-riece-alias-alist-1): Ditto.
+	(test-riece-alias-alist-2): Ditto.
+	(test-riece-alias-altsep-1): Ditto.
+	(test-riece-alias-altsep-2): Ditto.
+	(test-riece-alias-altsep-3): Ditto.
+	(test-riece-alias-altsep-4): Ditto.
+
+	* test/test-riece-addon.el (test-riece-resolve-addons-1): Use
+	lunit-assert-2 instead of lunit-assert.
+	(test-riece-resolve-addons-2): Ditto.
+
+	* test/lunit.el: Don't treat a failure as an Emacs error signal;
+	count assertions in test-case methods.
+	(lunit-test-result): Add assert-count slot.
+	(lunit-make-test-result): Reset assert-count to 0.
+	(lunit-test-result-run): Count assertions; collect failures at a
+	time after test-case execution.
+	(lunit-test-result-failure): Abolished.
+	(lunit-test-case): Add failures and assert-count slots; define
+	internal accesssors for them.
+	(lunit-make-test-case): Reset assert-count to 0.
+	(lunit-test-case-run): Don't handle failure signals.
+	(lunit-assert): Define as a nop macro.
+	(lunit-assert-2): New macro.  Use this instead of lunit-assert.
+	(lunit): Display assertion count.
+
 2004-11-25  Daiki Ueno  <ueno@unixuser.org>
 
 	* Makefile.am (EXTRA_DIST): Add url-riece.el.

@@ -3,7 +3,8 @@
 (luna-define-class test-riece-yank (lunit-test-case))
 
 (luna-define-method test-riece-yank-strip-space ((case test-riece-yank))
-  (lunit-assert
+  (lunit-assert-2
+   case
    (equal
     (riece-yank-strip-space "\
   def a
