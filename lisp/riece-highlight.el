@@ -203,11 +203,8 @@
   "Highlight IRC buffers")
 
 (defun riece-highlight-server-match (limit)
-  (let ((match-data (match-data)))
-    (if (re-search-forward "(from [^)]+)$" limit t)
-	(if (get-text-property (match-beginning 0) 'riece-server-name)
-	    t
-	  (store-match-data match-data)))))
+  (and (re-search-forward "(from [^)]+)$" limit t)
+       (get-text-property (match-beginning 0) 'riece-server-name)))
 
 (defun riece-highlight-setup-dialogue ()
   (make-local-variable 'font-lock-defaults)
