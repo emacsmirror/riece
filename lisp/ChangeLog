@@ -9,14 +9,6 @@
 
 2004-12-13  Daiki Ueno  <ueno@unixuser.org>
 
-	* riece-irc.el (riece-irc-open-server): Send USER command with
-	riece-username if set.
-	* riece-server.el (riece-server-keyword-map): Bind :realname.
-	* riece-options.el (riece-realname): Rename from riece-username.
-	(riece-username): New user option.
-
-2004-12-13  Daiki Ueno  <ueno@unixuser.org>
-
 	* riece-display.el (riece-update-channel-list-indicator):
 	Normalize modeline indicator.
 

@@ -36,7 +36,6 @@
       (:service 6667)
       (:nickname riece-nickname)
       (:username riece-username)
-      (:realname riece-realname)
       (:password)
       (:function riece-default-open-connection-function)
       (:coding riece-default-coding-system))
