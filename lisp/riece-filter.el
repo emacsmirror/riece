@@ -41,9 +41,9 @@
 	     (format "riece-handle-default-%03d-message" base-number))))
     (if (and function
 	     (symbol-function function))
-	(riece-ignore-errors (symbol-name function)
-	  (funcall function prefix number name
-		   (riece-decode-coding-string string))))))
+	(riece-funcall-ignore-errors (symbol-name function)
+				     function prefix number name
+				     (riece-decode-coding-string string)))))
 
 (defun riece-handle-message (prefix message string)
   (if (and prefix
@@ -59,8 +59,8 @@
     (unless (riece-ignore-errors (symbol-name hook)
 	      (run-hook-with-args-until-success hook prefix string))
       (if function
-	  (riece-ignore-errors (symbol-name function)
-	    (funcall function prefix string)))
+	  (riece-funcall-ignore-errors (symbol-name function)
+				       function prefix string))
       (riece-ignore-errors (symbol-name after-hook)
 	(run-hook-with-args-until-success after-hook prefix string)))))
 

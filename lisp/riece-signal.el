@@ -104,14 +104,15 @@ This function is for internal use only."
       (setq signal (riece-make-signal signal-name args)
 	    slots (symbol-value symbol))
       (while slots
-	(riece-ignore-errors (format "slot function for \"%S\""
-				     signal-name)
-	  (if (or (null (riece-slot-filter (car slots)))
-		  (riece-ignore-errors (format "signal filter for \"%S\""
-					       signal-name)
-		    (funcall (riece-slot-filter (car slots)) signal)))
-	      (funcall (riece-slot-function (car slots))
-		       signal (riece-slot-handback (car slots)))))
+	(if (or (null (riece-slot-filter (car slots)))
+		(riece-ignore-errors (format "signal filter for \"%S\""
+					     signal-name)
+		  (funcall (riece-slot-filter (car slots)) signal)))
+	    (riece-funcall-ignore-errors (format "slot function for \"%S\""
+						 signal-name)
+					 (riece-slot-function (car slots))
+					 signal
+					 (riece-slot-handback (car slots))))
 	(setq slots (cdr slots))))))
 
 (provide 'riece-signal)

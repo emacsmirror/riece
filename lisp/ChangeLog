@@ -1,3 +1,13 @@
+2005-02-19  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-debug.el (riece-funcall-ignore-errors): New function.
+	* riece-signal.el (riece-emit-signal): Use riece-funcall-ignore-errors.
+	* riece-filter.el (riece-handle-numeric-reply): Use
+	riece-funcall-ignore-errors.
+	(riece-handle-message): Ditto.
+	* riece-ctcp.el (riece-handle-ctcp-request): Use
+	riece-funcall-ignore-errors.
+
 2005-02-18  Steve Youngs  <steve@sxemacs.org>
 
 	* riece-ctcp.el (riece-handle-ctcp-time-request): New.

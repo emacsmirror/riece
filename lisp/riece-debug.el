@@ -27,12 +27,14 @@
 (require 'riece-globals)
 
 (defun riece-debug-reset-standard-output ()
+  "Reset `riece-temp-buffer' to be used as `standard-output'."
   (save-excursion
     (set-buffer riece-temp-buffer)
     (buffer-disable-undo)
     (erase-buffer)))
 
 (defmacro riece-debug-with-backtrace (&rest body)
+  "Execute BODY and send a backtrace to `riece-temp-buffer'."
   `(unwind-protect
        (progn ,@body)
      (riece-debug-reset-standard-output)
@@ -43,6 +45,10 @@
 (put 'riece-debug-with-backtrace 'edebug-form-spec '(form body))
 
 (defmacro riece-ignore-errors (location &rest body)
+  "Execute BODY; if an error occurs, return nil.
+Otherwise, return result of last FORM.
+If `riece-debug' is non-nil and an error occurred, it sends a
+backtrace to standard-output."
   `(condition-case error
        (if riece-debug
 	   (riece-debug-with-backtrace ,@body)
@@ -59,6 +65,14 @@
 
 (put 'riece-ignore-errors 'lisp-indent-function 1)
 (put 'riece-ignore-errors 'edebug-form-spec '(form body))
+
+(defun riece-funcall-ignore-errors (location function &rest args)
+  "Call FUNCTION with ARGS; if an error occurs, return nil.
+Otherwise, return result of the function.
+If `riece-debug' is non-nil and an error occurred, it sends a
+backtrace to standard-output."
+  (riece-ignore-errors location
+    (apply function args)))
 
 (provide 'riece-debug)
 
