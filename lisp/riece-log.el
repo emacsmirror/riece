@@ -129,7 +129,7 @@ If integer, flash back only this line numbers. t means all lines."
 	(setq name (cdr map))
       (expand-file-name (riece-log-encode-file-name prefix)
 			(expand-file-name
-			 (riece-log-encode-file-name (concat "." server))
+			 (concat "." (riece-log-encode-file-name server))
 			 riece-log-directory)))))
 
 (defun riece-log-encode-file-name (file-name)
@@ -139,27 +139,26 @@ If integer, flash back only this line numbers. t means all lines."
 				  riece-log-file-name-coding-system)))
   (let ((index 0)
 	c)
-    (while (string-match "[^-0-9A-Za-z=_\x80-\xFF]" file-name index)
-      (setq c (aref file-name (match-beginning 0))
-	    file-name (replace-match
-		       (if (eq c ?=)
-			   "=="
-			 (format "=%02X" c))
-		       nil t file-name)
-	    index (+ 3 index)))
+    (while (string-match "[^-0-9A-Za-z_\x80-\xFF]" file-name index)
+      (setq c (aref file-name (match-beginning 0)))
+      (if (eq c ?=)
+	  (setq file-name (replace-match "==" nil t file-name)
+		index (1+ (match-end 0)))
+	(setq file-name (replace-match (format "=%02X" c) nil t file-name)
+	      index (+ 2 (match-end 0)))))
     file-name))
 
 (defun riece-log-decode-file-name (file-name)
   (let ((index 0))
     (while (string-match "==\\|=\\([0-7][0-9A-F]\\)" file-name index)
       (setq file-name (replace-match
-		       (if (eq (aref file-name (match-end 0)) ?=)
+		       (if (eq (aref file-name (1- (match-end 0))) ?=)
 			   "="
 			 (char-to-string
 			  (car (read-from-string
 				(concat "?\\x" (match-string 1 file-name))))))
 		       nil t file-name)
-	    index (1+ index)))
+	    index (1+ (match-beginning 0))))
     file-name)
   (if riece-log-file-name-coding-system
       (setq file-name

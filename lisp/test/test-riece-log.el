@@ -61,10 +61,16 @@
      case
      (equal "=23riece"
 	    (riece-log-encode-file-name "#riece")))
+    (message "!!! %S" (riece-log-encode-file-name "#riece:*.jp"))
     (lunit-assert-2
      case
      (equal "=23riece=3A=2A=2Ejp"
-	    (riece-log-encode-file-name "#riece:*.jp")))))
+	    (riece-log-encode-file-name "#riece:*.jp")))
+    (message "%S" (riece-log-encode-file-name "#riece="))
+    (lunit-assert-2
+     case
+     (equal "=23riece=="
+	    (riece-log-encode-file-name "#riece=")))))
 
 (luna-define-method test-riece-log-encode-file-name-mule
   ((case test-riece-log))
@@ -95,7 +101,11 @@
     (lunit-assert-2
      case
      (equal "#riece:*.jp"
-	    (riece-log-decode-file-name "=23riece=3A=2A=2Ejp")))))
+	    (riece-log-decode-file-name "=23riece=3A=2A=2Ejp")))
+    (lunit-assert-2
+     case
+     (equal "#riece="
+	    (riece-log-decode-file-name "=23riece==")))))
 
 (luna-define-method test-riece-log-decode-file-name-mule
   ((case test-riece-log))
