@@ -1,3 +1,8 @@
+2004-09-05  Daiki Ueno  <ueno@unixuser.org>
+
+	* Riece: Version 1.0.3 released.
+	* riece-version.el (riece-version-number): Bump up to 1.0.3.
+
 2004-09-01  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-naming.el (riece-naming-assert-channel-users): Remove
