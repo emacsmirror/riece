@@ -1,3 +1,12 @@
+2004-05-20  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-doctor.el (riece-doctor-after-privmsg-hook): Prefix user
+	name to reply.
+
+	* riece-hangman.el: New add-on.
+	* COMPILE (riece-modules): Add riece-hangman.
+	* Makefile.am (EXTRA_DIST): Add riece-hangman.el.
+
 2004-05-19  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-400.el (riece-handle-read-string): Append "Quit" to prompt

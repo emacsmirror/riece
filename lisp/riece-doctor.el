@@ -76,7 +76,8 @@
 	(if (riece-identity-member user riece-doctor-patients)
 	    (riece-doctor-reply
 	     (car targets)
-	     "You are already talking with me.")
+	     (format "%s: You are already talking with me."
+		     (riece-format-identity user t)))
 	  (save-excursion
 	    (set-buffer (get-buffer-create (riece-doctor-buffer-name user)))
 	    (erase-buffer)
@@ -84,14 +85,18 @@
 	  (setq riece-doctor-patients (cons user riece-doctor-patients))
 	  (riece-doctor-reply
 	   (car targets)	   
-	   "I am the psychotherapist.  Please, describe your problems."))
+	   (format
+	    "%s: I am the psychotherapist.  Please, describe your problems."
+	    (riece-format-identity user t))))
       (if (string-match riece-doctor-bye-regexp message)
 	  (let ((pointer (riece-identity-member user riece-doctor-patients)))
 	    (when pointer
 	      (kill-buffer (riece-doctor-buffer-name user))
 	      (setq riece-doctor-patients (delq (car pointer)
 						riece-doctor-patients))
-	      (riece-doctor-reply (car targets) "Good bye.")))
+	      (riece-doctor-reply
+	       (car targets)
+	       (format "%s: Good bye." (riece-format-identity user t)))))
 	(if (riece-identity-member user riece-doctor-patients)
 	    (let (string)
 	      (save-excursion
@@ -105,7 +110,9 @@
 		  (insert string)
 		  (subst-char-in-region (point-min) (point-max) ?\n ? )
 		  (setq string (buffer-string))))
-	      (riece-doctor-reply (car targets) string)))))))
+	      (riece-doctor-reply
+	       (car targets)
+	       (format "%s: %s" (riece-format-identity user t) string))))))))
 
 (defun riece-doctor-insinuate ()
   (add-hook 'riece-after-privmsg-hook 'riece-doctor-after-privmsg-hook))
