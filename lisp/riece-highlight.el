@@ -150,7 +150,7 @@
 	".*\\)$")
        (list 1 (intern (format "riece-dialogue-%s-face" line)) t t)))
     '(change notice wallops error info))
-   (list (list "(from [^)]+)$" 0 riece-dialogue-server-face t)))
+   '((riece-highlight-server-match 0 riece-dialogue-server-face t)))
   "Default expressions to highlight in riece-dialogue-mode."
   :type '(repeat (list string))
   :group 'riece-highlight)
@@ -201,6 +201,13 @@
 
 (defconst riece-highlight-description
   "Highlight IRC buffers")
+
+(defun riece-highlight-server-match (limit)
+  (let ((match-data (match-data)))
+    (if (re-search-forward "(from [^)]+)$" limit t)
+	(if (get-text-property (match-beginning 0) 'riece-server-name)
+	    t
+	  (store-match-data match-data)))))
 
 (defun riece-highlight-setup-dialogue ()
   (make-local-variable 'font-lock-defaults)

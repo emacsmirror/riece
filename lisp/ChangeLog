@@ -1,3 +1,10 @@
+2004-08-16  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-highlight.el (riece-highlight-server-match): New match
+	function for font-lock-keywords to highlight "(from XXX)" only if
+	'riece-server-name property is set.
+	(riece-dialogue-font-lock-keywords): Use it.
+
 2004-08-15  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-handle.el (riece-handle-nick-message): Remove nil from
