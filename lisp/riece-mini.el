@@ -80,9 +80,11 @@
       (setq riece-mini-last-channel (riece-message-target message)))
     (let ((string (concat (format-time-string "%H:%M") " "
 			  (riece-format-message message t))))
+      (when (string-match "\\(.*\\)$" string)
+	(setq string (riece-match-string-no-properties 1 string)))
       (riece-mini-message-no-log "%s" string)
       (while (>= (length riece-mini-backlog-history)
-		riece-mini-backlog-size)
+		 riece-mini-backlog-size)
 	(setq riece-mini-backlog-history
 	      (cdr riece-mini-backlog-history)))
       (setq riece-mini-backlog-history
@@ -120,7 +122,7 @@ If twice (C-u C-u), then ask the channel."
     (when riece-mini-backlog-history
       (setq riece-mini-backlog-shown t)
       (riece-mini-message-no-log
-       (mapconcat 'identity riece-mini-backlog-history "")))))
+       (mapconcat 'identity riece-mini-backlog-history "\n")))))
 
 (defun riece-mini-pre-command ()
   (when riece-mini-backlog-shown
