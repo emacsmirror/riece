@@ -111,7 +111,7 @@ exit
 	  (while (and (eq (process-status process) 'run)
 		      (progn
 			(goto-char (point-min))
-			(not (looking-at "NOTICE CONNECTED\r\n"))))
+			(not (looking-at "NOTICE CONNECTED"))))
 	    (accept-process-output process))))
     process))
 
