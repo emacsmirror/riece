@@ -625,8 +625,23 @@ If prefix argument ARG is non-nil, toggle frozen status."
   (interactive "sIRC command: ")
   (riece-send-string (concat command "\r\n")))
 
+(defun riece-command-beginning-of-buffer ()
+  "Scroll channel buffer to the beginning."
+  (interactive)
+  (let (buffer window)
+    (setq buffer (if riece-channel-buffer-mode
+		     riece-channel-buffer
+		   riece-dialogue-buffer))
+    (or (setq window (get-buffer-window buffer))
+	(setq window (get-buffer-window riece-dialogue-buffer)
+	      buffer riece-dialogue-buffer))
+    (when window
+      (save-selected-window
+	(select-window window)
+	(goto-char (point-min))))))
+
 (defun riece-command-end-of-buffer ()
-  "Get end of the dialogue buffer."
+  "Scroll channel buffer to the end."
   (interactive)
   (let (buffer window)
     (setq buffer (if riece-channel-buffer-mode

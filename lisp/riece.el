@@ -151,6 +151,7 @@ If optional argument SAFE is nil, overwrite previous definitions."
     [backspace] scroll-down
     [return] scroll-up
     " " scroll-up
+    [home] beginning-of-buffer
     "$" end-of-buffer
     [end] end-of-buffer
     "/" riece-command-raw
@@ -195,6 +196,7 @@ If optional argument SAFE is nil, overwrite previous definitions."
     [delete] riece-command-scroll-down
     [backspace] riece-command-scroll-down
     " " riece-command-scroll-up
+    [home] riece-command-beginning-of-buffer
     "$" riece-command-end-of-buffer
     [end] riece-command-end-of-buffer
     ">" riece-command-next-channel

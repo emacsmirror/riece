@@ -1,3 +1,9 @@
+2004-06-16  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-commands.el (riece-command-end-of-buffer): New command.
+	* riece.el (riece-dialogue-mode-map): Bind end-of-buffer to Home.
+	(riece-command-map): Bind riece-command-end-of-buffer to Home.
+
 2004-06-15  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece.el (riece-dialogue-mode-map): Bind end-of-buffer to End.
