@@ -181,11 +181,13 @@
 
 (defun riece-resolve-addons (addons)
   (riece-resolve-addon-dependencies
-   (append addons
-	   (mapcar
-	    (lambda (name)
-	      (intern (file-name-sans-extension name)))
-	    (directory-files riece-addon-directory nil "\\`[^.]" t)))))
+   (if (file-directory-p riece-addon-directory)
+       (append addons
+	       (mapcar
+		(lambda (name)
+		  (intern (file-name-sans-extension name)))
+		(directory-files riece-addon-directory nil "\\`[^.]" t)))
+     addons)))
 
 (defun riece-insinuate-addon (addon &optional verbose)
   (require addon)		;implicit dependency

@@ -1,3 +1,8 @@
+2005-02-07  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-addon.el (riece-resolve-addons): Check the existence of
+	riece-addon-directory.
+
 2005-02-06  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-filter.el (riece-filter): Modified regexp.
