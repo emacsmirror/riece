@@ -29,8 +29,8 @@
 (require 'riece-misc)
 
 (defvar riece-update-buffer-functions
-  '(riece-user-list-update-buffer
-    riece-channel-list-update-buffer
+  '(riece-update-user-list-buffer
+    riece-update-channel-list-buffer
     riece-update-status-indicators
     riece-update-channel-indicator
     riece-update-channel-list-indicator))
@@ -109,7 +109,7 @@
 	  (set-window-start (get-buffer-window riece-channel-list-buffer)
 			    (point-min))))))
 
-(defun riece-user-list-update-buffer ()
+(defun riece-update-user-list-buffer ()
   (if (and riece-user-list-buffer
 	   (get-buffer riece-user-list-buffer))
       (save-excursion
@@ -130,7 +130,7 @@
 		  (insert " " (car users) "\n")))
 	      (setq users (cdr users))))))))
 
-(defun riece-channel-list-update-buffer ()
+(defun riece-update-channel-list-buffer ()
   (if (and riece-channel-list-buffer
 	   (get-buffer riece-channel-list-buffer))
       (save-excursion

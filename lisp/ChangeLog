@@ -1,5 +1,12 @@
 2003-06-03  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-display.el (riece-update-user-list-buffer): Rename from
+	riece-user-list-update-buffer.
+	(riece-update-channel-list-buffer): Rename from
+	riece-channel-list-update-buffer.
+
+2003-06-03  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-identity.el (riece-identity-canonicalize-prefix): Moved
 	from riece-inlines.el; renamed from scandinavian-downcase.
 	(riece-identity-equal-no-server): Moved from riece-inlines.el;
