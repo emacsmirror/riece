@@ -67,16 +67,15 @@
   (let* ((user (riece-prefix-nickname prefix))
 	 (parameters (riece-split-parameters string))
 	 (targets (split-string (car parameters) ","))
-	 (message (nth 1 parameters))
-	 (speaker (riece-make-identity user riece-server-name)))
+	 (message (nth 1 parameters)))
     (riece-display-message
-     (riece-make-message speaker
+     (riece-make-message (riece-make-identity user
+					      riece-server-name)
 			 (riece-make-identity (car targets)
 					      riece-server-name)
-			 message
-			 nil
-			 (riece-identity-equal
-			  speaker (riece-current-nickname))))))
+			 message nil
+			 (riece-identity-equal-no-server
+			  user riece-real-nickname)))))
 
 (defun riece-handle-notice-message (prefix string)
   (let* ((user (if prefix
@@ -90,7 +89,9 @@
 						  riece-server-name)
 			     (riece-make-identity (car targets)
 						  riece-server-name)
-			     message 'notice))
+			     message 'notice
+			     (riece-identity-equal-no-server
+			      user riece-real-nickname)))
       ;; message from server
       (riece-insert-notice
        (list riece-dialogue-buffer riece-others-buffer)

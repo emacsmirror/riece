@@ -3,6 +3,7 @@
 	* riece-handle.el (riece-handle-privmsg-message): Check own
 	message from server. For deal with another client that connected
 	same irc proxy (e.g. plum, pirc).
+	(riece-handle-notice-message): Ditto.
 
 2004-01-21  Daiki Ueno  <ueno@unixuser.org>
 
