@@ -61,14 +61,14 @@ trap('TSTP', 'IGNORE')
 wfds_in = []
 buf = ''
 loop do
-  rfds, wfds = select([socket, $stdin], wfds_in)
-  if wfds.delete($stdout)
+  rfds, wfds, = select([socket, $stdin], wfds_in)
+  unless wfds.empty?
     begin
       until buf.empty?
         len = $stdout.syswrite(buf)
         buf.slice!(0 .. len)
       end
-      wfds_in.delete($stdout)
+      wfds_in = []
     rescue Errno::EAGAIN
     end
   end
