@@ -419,7 +419,8 @@
 	     (start 0)
 	     users)
 	(if entry
-	    (setcdr entry nil))
+	    (setq riece-353-message-alist
+		  (delq entry riece-353-message-alist)))
 	(while (string-match
 		(concat "\\([@+]\\)?\\(" riece-user-regexp "\\) *")
 		string start)
