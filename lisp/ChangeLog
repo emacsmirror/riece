@@ -1,8 +1,7 @@
 2004-12-05  Daiki Ueno  <ueno@unixuser.org>
 
-	* riece-log.el (riece-log-display-message-function): Switch to
-	riece-dialogue-buffer when writing messages from other people to a
-	file.
+	* riece-message.el (riece-display-message-1): Call
+	riece-after-display-message-functions in riece-message-buffer.
 	[cf. <Liece:00391>]
 
 2004-12-05  Daiki Ueno  <ueno@unixuser.org>

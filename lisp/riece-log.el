@@ -73,14 +73,13 @@ If integer, flash back only this line numbers. t means all lines."
 
 (defun riece-log-display-message-function (message)
   (if riece-log-enabled
-      (with-current-buffer riece-dialogue-buffer
-	(let ((file (riece-log-get-file (riece-message-target message)))
-	      (coding-system-for-write riece-log-coding-system))
-	  (unless (file-directory-p (file-name-directory file))
-	    (make-directory (file-name-directory file) t))
-	  (write-region (concat (format-time-string "%H:%M") " "
-				(riece-format-message message))
-			nil file t 0)))))
+      (let ((file (riece-log-get-file (riece-message-target message)))
+	    (coding-system-for-write riece-log-coding-system))
+	(unless (file-directory-p (file-name-directory file))
+	  (make-directory (file-name-directory file) t))
+	(write-region (concat (format-time-string "%H:%M") " "
+			      (riece-format-message message))
+		      nil file t 0))))
 
 (defun riece-log-get-file (identity)
   (expand-file-name

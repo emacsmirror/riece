@@ -174,7 +174,8 @@ Normally they are *Dialogue* and/or *Others*."
     (setq parent-buffers (riece-message-parent-buffers message buffer))
     (riece-insert buffer (riece-format-message message))
     (riece-insert parent-buffers (riece-format-message message t))
-    (run-hook-with-args 'riece-after-display-message-functions message)))
+    (with-current-buffer buffer
+      (run-hook-with-args 'riece-after-display-message-functions message))))
 
 (defun riece-display-message (message)
   "Display MESSAGE object."
