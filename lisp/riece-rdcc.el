@@ -60,7 +60,7 @@ session = server.accept
 if session
   total = 0
   File.open(" file ") {|file|
-    while (bytes = file.read(4096))
+    while (bytes = file.read(" block-size "))
       total += bytes.length
       puts(\"#{total}\")
       session.write(bytes)
@@ -86,12 +86,21 @@ puts(\"#{" address " >> 24 & 0xFF}.#{" address " >> 16 & 0xFF}.#{"
   :type 'directory
   :group 'riece-rdcc)
 
+(defcustom riece-rdcc-block-size 4096
+  "Number of bytes sent as a block."
+  :type 'integer
+  :group 'riece-rdcc)
+
 (defvar riece-rdcc-requests nil)
 
 (defvar riece-rdcc-request-user nil)
 (defvar riece-rdcc-request-file nil)
 (defvar riece-rdcc-request-size nil)
 
+(defvar riece-rdcc-temp-file nil)
+(defvar riece-rdcc-received-size nil)
+
+(defvar temporary-file-directory)
 (defvar jka-compr-compression-info-list)
 (defvar jam-zcat-filename-list)
 (defun riece-rdcc-substitute-variables (program variable value)
@@ -137,14 +146,17 @@ puts(\"#{" address " >> 24 & 0xFF}.#{" address " >> 16 & 0xFF}.#{"
 			 (apply #'concat
 				(riece-rdcc-substitute-variables
 				 (riece-rdcc-substitute-variables
-				  riece-rdcc-send-program
-				  'address
-				  (if riece-rdcc-server-address
-				      (concat "'" riece-rdcc-server-address
-					      "'")
-				    "nil"))
-				 'file
-				 (concat "'" file "'"))))
+				  (riece-rdcc-substitute-variables
+				   riece-rdcc-send-program
+				   'address
+				   (if riece-rdcc-server-address
+				       (concat "'" riece-rdcc-server-address
+					       "'")
+				     "nil"))
+				  'file
+				  (concat "'" file "'"))
+				 'block-size
+				 (number-of-string riece-rdcc-block-size))))
     (process-send-eof process)
     (save-excursion
       (set-buffer (process-buffer process))
@@ -173,25 +185,34 @@ puts(\"#{" address " >> 24 & 0xFF}.#{" address " >> 16 & 0xFF}.#{"
 (defun riece-rdcc-filter (process input)
   (save-excursion
     (set-buffer (process-buffer process))
-    (goto-char (point-max))
+    (erase-buffer)
     (insert input)
-    (message "Receiving %s from %s...(%d/%d)"
+    (let ((coding-system-for-write 'binary)
+	  jka-compr-compression-info-list jam-zcat-filename-list)
+      (append-to-file (point-min) (point-max) riece-rdcc-temp-file))
+    (message "Receiving %s from %s...(%s/%s)"
 	     (file-name-nondirectory riece-rdcc-request-file)
 	     riece-rdcc-request-user
-	     (1- (point))
-	     riece-rdcc-request-size)))
+	     (riece-rdcc-format-size
+	      (setq riece-rdcc-received-size (+ (buffer-size)
+						riece-rdcc-received-size)))
+	     (riece-rdcc-format-size riece-rdcc-request-size))))
 
 (defun riece-rdcc-sentinel (process status)
   (save-excursion
     (set-buffer (process-buffer process))
-    (unless (= (buffer-size) riece-rdcc-request-size)
+    (unless (= riece-rdcc-received-size riece-rdcc-request-size)
       (error "Premature end of file"))
     (message "Receiving %s from %s...done"
 	     (file-name-nondirectory riece-rdcc-request-file)
 	     riece-rdcc-request-user)
-    (let ((coding-system-for-write 'binary)
-	  jka-compr-compression-info-list jam-zcat-filename-list)
-      (write-region (point-min) (point-max) riece-rdcc-request-file)))
+    (condition-case nil
+	(progn
+	  (rename-file riece-rdcc-temp-file riece-rdcc-request-file)
+	  (delete-directory (file-name-directory riece-rdcc-temp-file)))
+      (file-already-exists
+       (error "Can't save %s.  Temporarily saved in %s"
+	      riece-rdcc-request-file riece-rdcc-temp-file))))
   (kill-buffer (process-buffer process)))
 
 (defun riece-rdcc-decode-address (address)
@@ -241,13 +262,27 @@ puts(\"#{" address " >> 24 & 0xFF}.#{" address " >> 16 & 0xFF}.#{"
 		       (file-name-nondirectory default-name) ") ")
 	       (file-name-directory default-name)
 	       default-name))))))
-  (let* (selective-display
+  (let* ((temp-file (expand-file-name
+		     (file-name-nondirectory file)
+		     (expand-file-name (make-temp-name "riece-rdcc")
+				       (if (featurep 'xemacs)
+					   (temp-directory)
+					 temporary-file-directory))))
+	 (orig-mode (default-file-modes))
+	 selective-display
 	 (coding-system-for-read 'binary)
 	 (coding-system-for-write 'binary)
-	 (process (open-network-stream
+	 process)
+    (unwind-protect
+	(progn
+	  (set-default-file-modes 448)
+	  ;; This may throw an error.
+	  (make-directory (file-name-directory temp-file)))
+      (set-default-file-modes orig-mode))
+    (setq process (open-network-stream
 		   "DCC" (generate-new-buffer " *DCC*")
 		   (riece-rdcc-decode-address (nth 2 request))
-		   (nth 3 request))))
+		   (nth 3 request)))
     (setq riece-rdcc-requests (delq request riece-rdcc-requests))
     (with-current-buffer (process-buffer process)
       (if (fboundp 'set-buffer-multibyte)
@@ -259,7 +294,11 @@ puts(\"#{" address " >> 24 & 0xFF}.#{" address " >> 16 & 0xFF}.#{"
       (make-local-variable 'riece-rdcc-request-file)
       (setq riece-rdcc-request-file file)
       (make-local-variable 'riece-rdcc-request-size)
-      (setq riece-rdcc-request-size (nth 4 request)))
+      (setq riece-rdcc-request-size (nth 4 request))
+      (make-local-variable 'riece-rdcc-temp-file)
+      (setq riece-rdcc-temp-file temp-file)
+      (make-local-variable 'riece-rdcc-received-size)
+      (setq riece-rdcc-received-size 0))
     (set-process-filter process #'riece-rdcc-filter)
     (set-process-sentinel process #'riece-rdcc-sentinel)))
 

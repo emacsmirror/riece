@@ -1,3 +1,16 @@
+2003-10-25  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-rdcc.el: Bind temporary-file-directory.
+	(riece-rdcc-send-program): Allow block-size to be controlled from
+	elisp.
+	(riece-rdcc-block-size): New user option.
+	(riece-rdcc-temp-file): New variable.
+	(riece-rdcc-received-size): New variable.
+	(riece-rdcc-filter): Don't keep received bytes in the process
+	buffer; use riece-rdcc-format-size to display progress.
+	(riece-command-dcc-receive): Create a temporary directory which
+	holds a received file.
+
 2003-10-24  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-options.el (riece-gather-channel-modes): Default to nil.
