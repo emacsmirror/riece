@@ -1,5 +1,7 @@
 2003-05-29  Daiki Ueno  <ueno@unixuser.org>
 
+	* Riece: Version 0.0.1 released.
+
 	* riece-commands.el (riece-command-names): New command.
 	(riece-command-who): New command.
 
