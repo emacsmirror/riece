@@ -78,12 +78,14 @@
 	(if (car channels)
 	    (let ((point (point)))
 	      (insert (format "%2d:%c%s\n" index
-				(if (riece-identity-equal
-				     (car channels)
-				     riece-current-channel)
-				    ?*
-				  ?\ )
-				(riece-format-identity (car channels))))))
+			      (if (riece-identity-equal
+				   (car channels)
+				   riece-current-channel)
+				  ?*
+				?\ )
+			      (riece-format-identity (car channels))))
+	      (put-text-property point (point) 'riece-identity
+				 (car channels))))
 	(setq index (1+ index)
 	      channels (cdr channels))))))
 
