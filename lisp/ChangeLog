@@ -1,5 +1,7 @@
 2004-12-07  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-options.el (riece-addons): Add 'riece-log.
+
 	* test/test-riece-log.el (lunit-test-case-setup): #riece -> =23riece.
 
 	* riece-log.el (riece-log-insert): Renamed from

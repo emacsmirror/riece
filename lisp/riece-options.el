@@ -114,7 +114,8 @@ way is to put Riece variables on .emacs or file loaded from there."
 			  riece-button
 			  riece-menu
 			  riece-icon
-			  riece-ignore)
+			  riece-ignore
+			  riece-log)
   "Add-ons insinuated into Riece."
   :type '(repeat symbol)
   :group 'riece-options)
