@@ -67,8 +67,7 @@
 	      (riece-identity-member (riece-message-target message)
 				     riece-unread-channels))
     (setq riece-unread-channels
-	  (cons (riece-message-target message) riece-unread-channels))
-    (riece-redisplay-buffers)))
+	  (cons (riece-message-target message) riece-unread-channels))))
 
 (defun riece-unread-after-switch-to-channel-function (last)
   (setq riece-unread-channels

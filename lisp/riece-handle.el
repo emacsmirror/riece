@@ -60,8 +60,7 @@
 			   (format "%s -> %s"
 				 (riece-format-identity old-identity t)
 				 (riece-format-identity new-identity t)))
-			  "\n"))
-    (riece-redisplay-buffers)))
+			  "\n"))))
 
 (defun riece-handle-privmsg-message (prefix string)
   (let* ((user (riece-prefix-nickname prefix))
@@ -135,8 +134,7 @@
 		   (riece-user-get-user-at-host user)
 		   (riece-format-identity channel-identity t)))
 	  "\n")))
-      (setq channels (cdr channels)))
-    (riece-redisplay-buffers)))
+      (setq channels (cdr channels)))))
 
 (defun riece-handle-part-message (prefix string)
   (let* ((user (riece-prefix-nickname prefix))
@@ -173,8 +171,7 @@
 		    (riece-format-identity channel-identity t))
 	    message))
 	  "\n")))
-      (setq channels (cdr channels)))
-    (riece-redisplay-buffers)))
+      (setq channels (cdr channels)))))
 
 (defun riece-handle-kick-message (prefix string)
   (let* ((kicker (riece-prefix-nickname prefix))
@@ -210,8 +207,7 @@
 		 (riece-format-identity user-identity t)
 		 (riece-format-identity channel-identity t))
 	  message))
-	"\n")))
-    (riece-redisplay-buffers)))
+	"\n")))))
 
 (defun riece-handle-quit-message (prefix string)
   (let* ((user (riece-prefix-nickname prefix))
@@ -252,8 +248,7 @@
 	  (format "%s has left IRC"
 		  (riece-format-identity user-identity t))
 	  message))
-	"\n"))))
-  (riece-redisplay-buffers))
+	"\n")))))
 
 (defun riece-handle-kill-message (prefix string)
   (let* ((killer (riece-prefix-nickname prefix))
@@ -298,8 +293,7 @@
 		 (riece-format-identity killer-identity t)
 		 (riece-format-identity user-identity t))
 	  message))
-	"\n")))
-    (riece-redisplay-buffers)))
+	"\n")))))
 
 (defun riece-handle-invite-message (prefix string)
   (let* ((user (riece-prefix-nickname prefix))
@@ -346,8 +340,7 @@
 		 (riece-format-identity channel-identity t)
 		 (riece-format-identity user-identity t)
 		 topic))
-	"\n"))
-      (riece-redisplay-buffers))))
+	"\n")))))
 
 (defsubst riece-parse-channel-modes (string channel)
   (while (string-match "^[-+]\\([^ ]*\\) *" string)
@@ -405,8 +398,7 @@
 		   (riece-format-identity channel-identity t)
 		   (riece-format-identity user-identity t)
 		   string))
-	  "\n"))
-	(riece-redisplay-buffers)))))
+	  "\n"))))))
 
 (provide 'riece-handle)
 

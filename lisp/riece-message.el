@@ -117,8 +117,7 @@
       ;; If you are not joined any channel,
       ;; switch to the target immediately.
       (unless riece-current-channel
-	(riece-switch-to-channel target))
-      (riece-redisplay-buffers))
+	(riece-switch-to-channel target)))
     (riece-channel-buffer target)))
 
 (defun riece-message-parent-buffers (message buffer)

@@ -220,7 +220,8 @@
   "RPL_NAMREPLY	\"<channel> :[[@|+]<nick> [[@|+]<nick> [...]]]\"."
   (if (string-match "^[=\*@] *\\([^ ]+\\) +:" string)
       (let ((channel (match-string 1 string))
-	    (start 0))
+	    (start 0)
+	    user users)
 	(setq string (substring string (match-end 0)))
 	(while (string-match
 		(concat "\\([@+]\\)?\\(" riece-user-regexp "\\) *")
@@ -230,21 +231,15 @@
 			     (riece-make-identity (match-string 2 string)
 						  riece-server-name)
 			     string)
-	  (setq start (match-end 0))
-	  (if (match-beginning 1)
-	      (if (eq (aref string (match-beginning 1)) ?@)
-		  (progn
-		    (riece-naming-assert-join
-		     (match-string 2 string) channel)
-		    (riece-channel-toggle-operator
-		     channel (match-string 2 string) t))
-		(if (eq (aref string (match-beginning 1)) ?+)
-		    (progn
-		      (riece-naming-assert-join
-		       (match-string 2 string) channel)
-		      (riece-channel-toggle-speaker
-		       channel (match-string 2 string) t))))
-	    (riece-naming-assert-join (match-string 2 string) channel)))
+	  (setq start (match-end 0)
+		user (if (match-beginning 1)
+			 (if (eq (aref string (match-beginning 1)) ?@)
+			     (list (match-string 2 string) ?o)
+			   (if (eq (aref string (match-beginning 1)) ?+)
+			       (list (match-string 2 string) ?v)))
+		       (list (match-string 2 string)))
+		users (cons user users)))
+	(riece-naming-assert-names (nreverse users) channel)
 	(let* ((channel-identity (riece-make-identity channel
 						      riece-server-name))
 	       (buffer (riece-channel-buffer channel-identity)))
@@ -258,8 +253,7 @@
 	    (riece-concat-server-name
 	     (format "Users on %s: %s"
 		     (riece-format-identity channel-identity t) string))
-	    "\n")))
-	(riece-redisplay-buffers))))
+	    "\n"))))))
 
 (defun riece-handle-322-message (prefix number name string)
   (if (string-match "^\\([^ ]+\\) \\([0-9]+\\) :" string)
@@ -415,8 +409,7 @@
 	      t)
 	     " "
 	     info)))
-	  "\n"))
-	(riece-redisplay-buffers))))
+	  "\n")))))
 
 (defun riece-handle-315-message (prefix number name string))
 (defun riece-handle-318-message (prefix number name string))

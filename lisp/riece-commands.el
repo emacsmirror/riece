@@ -38,8 +38,7 @@
   (interactive (list (riece-completing-read-identity
 		      "Channel/User: " riece-current-channels nil t)))
   (unless (equal channel riece-current-channel)
-    (riece-switch-to-channel channel)
-    (riece-redisplay-buffers)))
+    (riece-switch-to-channel channel)))
 
 (defun riece-command-switch-to-channel-by-number (number)
   (interactive
@@ -416,8 +415,7 @@ the layout to the selected layout-name."
     (if pointer
 	(riece-command-switch-to-channel (car pointer))
       (riece-join-channel target)
-      (riece-switch-to-channel target)
-      (riece-redisplay-buffers))))
+      (riece-switch-to-channel target))))
 
 (defun riece-command-join (target &optional key)
   (interactive
@@ -476,8 +474,7 @@ the layout to the selected layout-name."
   (if (riece-identity-member target riece-current-channels)
       (if (riece-channel-p (riece-identity-prefix target))
 	  (riece-command-part-channel target message)
-	(riece-part-channel target)
-	(riece-redisplay-buffers))
+	(riece-part-channel target))
     (error "You are not talking with %s" target)))
 
 (defun riece-command-change-nickname (nickname)

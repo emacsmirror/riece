@@ -1,3 +1,46 @@
+2004-02-27  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece.el (riece): Setup signal slots.
+
+	* riece-unread.el (riece-unread-after-display-message-function):
+	Don't call riece-redisplay-buffers.
+
+	* riece-naming.el (riece-naming-assert-names): New function.
+	(riece-naming-assert-join): Emit 'join signal.
+	(riece-naming-assert-part): Emit 'part signal.
+	(riece-naming-assert-rename): Emit 'rename signal.
+
+	* riece-message.el (riece-message-buffer): Don't call
+	riece-redisplay-buffers.
+
+	* riece-handle.el (riece-handle-nick-message): Don't call
+	riece-redisplay-buffers.
+	(riece-handle-join-message): Ditto.
+	(riece-handle-part-message): Ditto.
+	(riece-handle-kick-message): Ditto.
+	(riece-handle-kill-message): Ditto.
+	(riece-handle-topic-message): Ditto.
+	(riece-parse-channel-modes): Ditto.
+
+	* riece-display.el (riece-update-user-list-buffer): Use
+	riece-with-server-buffer.
+	(riece-emit-signal): Notify if signal filter fails.
+	(riece-display-connect-signals): New function.
+	(riece-update-user-list-buffer): Don't switch to user-list buffer.
+	(riece-update-channel-list-buffer): Don't switch to channel-list
+	buffer.
+	(riece-switch-to-channel): Emit 'switch-to-channel signal.
+	(riece-switch-to-nearest-channel): Ditto.
+
+	* riece-commands.el (riece-command-switch-to-channel): Don't call
+	riece-redisplay-buffers.
+	(riece-command-join-partner): Ditto.
+	(riece-command-part): Ditto.
+
+	* riece-300.el (riece-handle-353-message): Save match data before
+	calling riece-naming-assert-names; don't call riece-redisplay-buffers.
+	(riece-handle-322-message): Don't call riece-redisplay-buffers.
+
 2004-02-26  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-display.el: Introduce Qt like "signal-slot" abstraction

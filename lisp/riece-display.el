@@ -97,24 +97,102 @@ are the data of the signal."
       (while slots
 	(condition-case error
 	    (if (or (null (riece-slot-filter (car slots)))
-		    (funcall (riece-slot-filter (car slots)) signal))
+		    (condition-case error
+			(funcall (riece-slot-filter (car slots)) signal)
+		      (if riece-debug
+			  (message
+			   "Error occurred in signal filter for \"%S\": %S"
+			   (riece-signal-name signal) error))
+		      nil))
 		(funcall (riece-slot-function (car slots))
 			 signal (riece-slot-handback (car slots))))
 	  (error
 	   (if riece-debug
-	       (message "Error occurred in slot function for signal \"%S\": %S"
+	       (message "Error occurred in slot function for \"%S\": %S"
 			(riece-signal-name signal) error))))
 	(setq slots (cdr slots))))))
 
+(defun riece-display-connect-signals ()
+  (riece-connect-signal
+   'switch-to-channel
+   (riece-make-slot
+    (lambda (signal handback)
+      (riece-update-status-indicators)
+      (riece-update-channel-indicator)
+      (riece-update-long-channel-indicator)
+      (save-excursion
+	(set-buffer riece-user-list-buffer)
+	(run-hooks 'riece-update-buffer-functions))
+      (save-excursion
+	(set-buffer riece-channel-list-buffer)
+	(run-hooks 'riece-update-buffer-functions))
+      (save-excursion
+	(riece-redraw-layout)))))
+  (riece-connect-signal
+   'names
+   (riece-make-slot
+    (lambda (signal handback)
+      (save-excursion
+	(set-buffer riece-user-list-buffer)
+	(run-hooks 'riece-update-buffer-functions)))))
+  (riece-connect-signal
+   'join
+   (riece-make-slot
+    (lambda (signal handback)
+      (save-excursion
+	(set-buffer riece-user-list-buffer)
+	(run-hooks 'riece-update-buffer-functions)))
+    (lambda (signal)
+      (and (riece-identity-equal (nth 1 (riece-signal-args signal))
+				 riece-current-channel)
+	   (not (riece-identity-equal (car (riece-signal-args signal))
+				      (riece-current-nickname)))))))
+  (riece-connect-signal
+   'part
+   (riece-make-slot
+    (lambda (signal handback)
+      (save-excursion
+	(set-buffer riece-user-list-buffer)
+	(run-hooks 'riece-update-buffer-functions)))
+    (lambda (signal)
+      (and (riece-identity-equal (nth 1 (riece-signal-args signal))
+				 riece-current-channel)
+	   (not (riece-identity-equal (car (riece-signal-args signal))
+				      (riece-current-nickname)))))))
+  (riece-connect-signal
+   'rename
+   (riece-make-slot
+    (lambda (signal handback)
+      (save-excursion
+	(set-buffer riece-user-list-buffer)
+	(run-hooks 'riece-update-buffer-functions)))
+    (lambda (signal)
+      (and (equal (riece-identity-server (nth 1 (riece-signal-args signal)))
+		  (riece-identity-server riece-current-channel))
+	   (riece-with-server-buffer (riece-identity-server
+				      riece-current-channel)
+	     (riece-identity-assoc
+	      (riece-identity-prefix (nth 1 (riece-signal-args signal)))
+	      (riece-channel-get-users (riece-identity-prefix
+					riece-current-channel))
+	      t))))))
+  (riece-connect-signal
+   'rename
+   (riece-make-slot
+    (lambda (signal handback)
+      (riece-update-status-indicators)
+      (riece-update-channel-indicator))
+    (lambda (signal)
+      (riece-identity-equal (nth 1 (riece-signal-args signal))
+			    (riece-current-nickname))))))
+
 (defun riece-update-user-list-buffer ()
   (save-excursion
-    (set-buffer riece-user-list-buffer)
     (if (and riece-current-channel
 	     (riece-channel-p (riece-identity-prefix riece-current-channel)))
 	(let* ((users
-		(with-current-buffer (process-buffer (riece-server-process
-						      (riece-identity-server
-						       riece-current-channel)))
+		(riece-with-server-buffer (riece-identity-server
+					   riece-current-channel)
 		  (riece-channel-get-users (riece-identity-prefix
 					    riece-current-channel))))
 	       (inhibit-read-only t)
@@ -137,7 +215,6 @@ are the data of the signal."
 
 (defun riece-update-channel-list-buffer ()
   (save-excursion
-    (set-buffer riece-channel-list-buffer)
     (let ((inhibit-read-only t)
 	  buffer-read-only
 	  (index 1)
@@ -272,7 +349,8 @@ are the data of the signal."
   (let ((last riece-current-channel))
     (setq riece-current-channel identity
 	  riece-channel-buffer (riece-channel-buffer riece-current-channel))
-    (run-hook-with-args 'riece-after-switch-to-channel-functions last)))
+    (run-hook-with-args 'riece-after-switch-to-channel-functions last)
+    (riece-emit-signal (riece-make-signal 'switch-to-channel))))
 
 (defun riece-join-channel (identity)
   (unless (riece-identity-member identity riece-current-channels)
@@ -302,7 +380,8 @@ are the data of the signal."
 	(riece-switch-to-channel identity)
       (let ((last riece-current-channel))
 	(run-hook-with-args 'riece-after-switch-to-channel-functions last)
-	(setq riece-current-channel nil)))))
+	(setq riece-current-channel nil)
+	(riece-emit-signal (riece-make-signal 'switch-to-channel))))))
 
 (defun riece-part-channel (identity)
   (let ((pointer (riece-identity-member identity riece-current-channels)))
