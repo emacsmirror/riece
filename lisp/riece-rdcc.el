@@ -156,7 +156,7 @@ puts(\"#{" address " >> 24 & 0xFF}.#{" address " >> 16 & 0xFF}.#{"
 				  'file
 				  (concat "'" file "'"))
 				 'block-size
-				 (number-of-string riece-rdcc-block-size))))
+				 (number-to-string riece-rdcc-block-size))))
     (process-send-eof process)
     (save-excursion
       (set-buffer (process-buffer process))
