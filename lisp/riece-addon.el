@@ -175,7 +175,13 @@ Symbols in the leftmost column:
   -     The add-on is disabled.
   =	The add-on doesn't support enable/disable operation.
   ?	The add-on status is not known.
-"))
+")
+      (insert (substitute-command-keys "
+Useful keys:
+
+  `\\[riece-command-enable-addon]' to enable the current add-on.
+  `\\[riece-command-disable-addon]' to disable the current add-on.
+")))
     (pop-to-buffer (current-buffer))))
 
 (defun riece-command-enable-addon (addon)
