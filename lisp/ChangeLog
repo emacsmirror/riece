@@ -1,3 +1,8 @@
+2004-12-08  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-log.el (riece-log-display-message-function): Suppress
+	further file-name encoding.
+
 2004-12-07  Daiki Ueno  <ueno@unixuser.org>
 
 	* test/lunit-report.el: New file split from lunit.el.
