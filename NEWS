@@ -1,14 +1,18 @@
 * Major changes in 1.0.7
 
 ** New add-on riece-toolbar. (ueno)
+   riece-toolbar displays icons on toolbar.  Currently not all the
+   icons are included.
 
 ** New add-on riece-keepalive. (ueno)
    riece-keepalive spontaneously sends a PING message to server to
    keep an IRC connection.
 
 ** New add-on riece-google. (bg66)
+   riece-google searches on Google and sends the result to the channel.
 
 ** New add-on riece-eval. (bg66)
+   riece-eval evaluates elisp expression and sends the result to the channel.
 
 ** Some add-ons are enabled by default. (ueno)
    riece-log, riece-alias, riece-ctlseq, and riece-keyword are now
