@@ -26,7 +26,6 @@
 
 (require 'riece-version)
 (require 'riece-misc)
-(require 'riece-display)
 (require 'riece-highlight)
 
 (defface riece-ctcp-action-face

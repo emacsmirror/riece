@@ -18,6 +18,8 @@
 		riece-user
 
 		riece-misc
+		riece-signal
+
 		;; riece-layout ---> riece-display
 		riece-layout
 		riece-display

@@ -35,6 +35,7 @@
 
 (require 'riece-message)
 (require 'riece-commands)
+(require 'riece-signal)
 
 (eval-when-compile (require 'riece-highlight))
 
@@ -68,7 +69,7 @@
 				     riece-unread-channels))
     (setq riece-unread-channels
 	  (cons (riece-message-target message) riece-unread-channels))
-    (riece-emit-signal 'riece-unread-channel-list-update)))
+    (riece-emit-signal 'riece-update-buffer riece-channel-list-buffer)))
 
 (defun riece-unread-after-switch-to-channel-function (last)
   (setq riece-unread-channels
@@ -78,8 +79,7 @@
 (defun riece-unread-format-channel-list-line (index channel)
   (if (riece-identity-member channel riece-unread-channels)
       (concat (format "%2d:!" index)
-	      (riece-format-identity channel)
-	      "\n")))
+	      (riece-format-identity channel))))
 
 (defun riece-unread-switch-to-channel ()
   (interactive)
@@ -127,12 +127,7 @@
 ;;;  (if (memq 'riece-guess riece-addons)
 ;;;      (add-hook 'riece-guess-channel-try-functions
 ;;;		'riece-guess-channel-from-unread))
-  (riece-connect-signal
-   'riece-unread-channel-list-update
-   (lambda (signal handback)
-     (save-excursion
-       (set-buffer riece-channel-list-buffer)
-       (run-hooks 'riece-update-buffer-functions)))))
+  )
 
 (provide 'riece-unread)
 

@@ -28,6 +28,7 @@
 (require 'riece-channel)
 (require 'riece-misc)
 (require 'riece-layout)
+(require 'riece-signal)
 
 (defvar riece-channel-buffer-format "*Channel:%s*"
   "Format of channel message buffer.")
@@ -45,110 +46,33 @@ Local to the buffer in `riece-buffer-list'.")
     riece-update-channel-list-indicator)
   "Functions to update modeline indicators.")
 
-;;; Qt like "signal-slot" abstraction for routing display events.
-(defvar riece-signal-slot-obarray
-  (make-vector 31 0))
-
-(defun riece-make-slot (function &optional filter handback)
-  "Make an instance of slot object.
-Arguments are corresponding to callback function, filter function, and
-a handback object, respectively.
-This function is for internal use only."
-  (vector function filter handback))
-
-(defun riece-slot-function (slot)
-  "Return the callback function of SLOT.
-This function is for internal use only."
-  (aref slot 0))
-
-(defun riece-slot-filter (slot)
-  "Return the filter function of SLOT.
-This function is for internal use only."
-  (aref slot 1))
-
-(defun riece-slot-handback (slot)
-  "Return the handback object of SLOT.
-This function is for internal use only."
-  (aref slot 2))
-
-(defun riece-make-signal (name args)
-  "Make an instance of signal object.
-The 1st arguments is the name of the signal and the rest of arguments
-are the data of the signal.
-This function is for internal use only."
-  (vector name args))
-
-(defun riece-signal-name (signal)
-  "Return the name of SIGNAL."
-  (aref signal 0))
-
-(defun riece-signal-args (signal)
-  "Return the data of SIGNAL."
-  (aref signal 1))
-
-(defun riece-connect-signal (signal-name function &optional filter handback)
-  "Add SLOT as a listener of a signal identified by SIGNAL-NAME."
-  (let ((symbol (intern (symbol-name signal-name) riece-signal-slot-obarray)))
-    (set symbol (cons (riece-make-slot function filter handback)
-		      (if (boundp symbol)
-			  (symbol-value symbol))))))
-
-(defun riece-emit-signal (signal-name &rest args)
-  "Emit SIGNAL."
-  (let ((symbol (intern-soft (symbol-name signal-name)
-			     riece-signal-slot-obarray))
-	signal
-	slots)
-    (when symbol
-      (setq signal (riece-make-signal signal-name args)
-	    slots (symbol-value symbol))
-      (while slots
-	(condition-case error
-	    (if (or (null (riece-slot-filter (car slots)))
-		    (condition-case error
-			(funcall (riece-slot-filter (car slots)) signal)
-		      (error
-		       (if riece-debug
-			   (message
-			    "Error occurred in signal filter for \"%S\": %S"
-			    signal-name error)))
-		      nil))
-		(funcall (riece-slot-function (car slots))
-			 signal (riece-slot-handback (car slots))))
-	  (error
-	   (if riece-debug
-	       (message "Error occurred in slot function for \"%S\": %S"
-			signal-name error))))
-	(setq slots (cdr slots))))))
-
 (defun riece-display-connect-signals ()
+  (riece-connect-signal
+   'riece-update-buffer
+   (lambda (signal handback)
+     (save-excursion
+       (set-buffer (car (riece-signal-args signal)))
+       (run-hooks 'riece-update-buffer-functions))))
   (riece-connect-signal
    'riece-switch-to-channel
    (lambda (signal handback)
      (riece-update-status-indicators)
      (riece-update-channel-indicator)
      (riece-update-long-channel-indicator)
+     (riece-update-channel-list-indicator)
      (force-mode-line-update t)
-     (save-excursion
-       (set-buffer riece-user-list-buffer)
-       (run-hooks 'riece-update-buffer-functions))
-     (save-excursion
-       (set-buffer riece-channel-list-buffer)
-       (run-hooks 'riece-update-buffer-functions))
+     (riece-emit-signal 'riece-update-buffer riece-user-list-buffer)
+     (riece-emit-signal 'riece-update-buffer riece-channel-list-buffer)
      (save-excursion
        (riece-redraw-layout))))
   (riece-connect-signal
    'riece-naming-assert-channel-users
    (lambda (signal handback)
-     (save-excursion
-       (set-buffer riece-user-list-buffer)
-       (run-hooks 'riece-update-buffer-functions))))
+     (riece-emit-signal 'riece-update-buffer riece-user-list-buffer)))
   (riece-connect-signal
    'riece-naming-assert-join
    (lambda (signal handback)
-     (save-excursion
-       (set-buffer riece-user-list-buffer)
-       (run-hooks 'riece-update-buffer-functions)))
+     (riece-emit-signal 'riece-update-buffer riece-user-list-buffer))
    (lambda (signal)
      (and riece-current-channel
 	  (riece-identity-equal (nth 1 (riece-signal-args signal))
@@ -167,9 +91,7 @@ This function is for internal use only."
   (riece-connect-signal
    'riece-naming-assert-part
    (lambda (signal handback)
-     (save-excursion
-       (set-buffer riece-user-list-buffer)
-       (run-hooks 'riece-update-buffer-functions)))
+     (riece-emit-signal 'riece-update-buffer riece-user-list-buffer))
    (lambda (signal)
      (and riece-current-channel
 	  (riece-identity-equal (nth 1 (riece-signal-args signal))
@@ -186,9 +108,7 @@ This function is for internal use only."
   (riece-connect-signal
    'riece-naming-assert-rename
    (lambda (signal handback)
-     (save-excursion
-       (set-buffer riece-user-list-buffer)
-       (run-hooks 'riece-update-buffer-functions)))
+     (riece-emit-signal 'riece-update-buffer riece-user-list-buffer))
    (lambda (signal)
      (and riece-current-channel
 	  (equal (riece-identity-server (nth 1 (riece-signal-args signal)))
@@ -218,6 +138,23 @@ This function is for internal use only."
 	  (riece-identity-equal (car (riece-signal-args signal))
 				riece-current-channel))))
   (riece-connect-signal
+   'riece-naming-assert-rename
+   (lambda (signal handback)
+     (let* ((old-identity (car (riece-signal-args signal)))
+	    (new-identity (nth 1 (riece-signal-args signal)))
+	    (pointer (riece-identity-member old-identity
+					    riece-current-channels)))
+       ;; Rename the channel buffer.
+       (when pointer
+	 (setcar pointer new-identity)
+	 (with-current-buffer (riece-channel-buffer old-identity)
+	   (rename-buffer (riece-channel-buffer-name new-identity) t)
+	   (setq riece-channel-buffer-alist
+		 (cons (cons new-identity (current-buffer))
+		       (delq (riece-identity-assoc old-identity
+						   riece-channel-buffer-alist)
+			     riece-channel-buffer-alist))))))))
+  (riece-connect-signal
    'riece-user-toggle-away
    (lambda (signal handback)
      (riece-update-status-indicators)
@@ -243,7 +180,7 @@ This function is for internal use only."
 	  (riece-identity-equal (car (riece-signal-args signal))
 				riece-current-channel))))
   (riece-connect-signal
-   'riece-channel-toggle-modes
+   'riece-channel-set-modes
    (lambda (signal handback)
      (riece-update-status-indicators)
      (force-mode-line-update t))
@@ -254,9 +191,7 @@ This function is for internal use only."
   (riece-connect-signal
    'riece-channel-toggle-operator
    (lambda (signal handback)
-     (save-excursion
-       (set-buffer riece-user-list-buffer)
-       (run-hooks 'riece-update-buffer-functions)))
+     (riece-emit-signal 'riece-update-buffer riece-user-list-buffer))
    (lambda (signal)
      (and riece-current-channel
 	  (riece-identity-equal (car (riece-signal-args signal))
@@ -264,9 +199,7 @@ This function is for internal use only."
   (riece-connect-signal
    'riece-channel-toggle-speaker
    (lambda (signal handback)
-     (save-excursion
-       (set-buffer riece-user-list-buffer)
-       (run-hooks 'riece-update-buffer-functions)))
+     (riece-emit-signal 'riece-update-buffer riece-user-list-buffer))
    (lambda (signal)
      (and riece-current-channel
 	  (riece-identity-equal (car (riece-signal-args signal))
@@ -314,8 +247,8 @@ This function is for internal use only."
       (riece-kill-all-overlays)
       (while channels
 	(if (car channels)
-	    (insert (riece-format-channel-list-line
-		     index (car channels))))
+	    (insert (riece-format-channel-list-line index (car channels))
+		    "\n"))
 	(setq index (1+ index)
 	      channels (cdr channels))))))
 
@@ -326,8 +259,7 @@ This function is for internal use only."
 		      (if (riece-identity-equal channel riece-current-channel)
 			  ?*
 			? ))
-	      (riece-format-identity channel)
-	      "\n")))
+	      (riece-format-identity channel))))
 
 (defun riece-update-channel-indicator ()
   (setq riece-channel-indicator
@@ -360,8 +292,7 @@ This function is for internal use only."
 		      (lambda (channel)
 			(prog1
 			    (if channel
-				(format "%d:%s" index
-					(riece-format-identity channel)))
+				(riece-format-channel-list-line index channel))
 			  (setq index (1+ index))))
 		      riece-current-channels))
 	       ",")))

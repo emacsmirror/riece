@@ -25,7 +25,6 @@
 
 (require 'riece-globals)
 (require 'riece-options)
-(require 'riece-display)
 
 (require 'calc)
 

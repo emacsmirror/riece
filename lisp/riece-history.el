@@ -76,8 +76,7 @@
   (if (and (not (ring-empty-p riece-channel-history))
 	   (riece-identity-equal channel (ring-ref riece-channel-history 0)))
       (concat (format "%2d:+" index)
-		(riece-format-identity channel)
-		"\n")))
+	      (riece-format-identity channel))))
 
 ;;; (defun riece-history-requires ()
 ;;;   (if (memq 'riece-guess riece-addons)

@@ -27,7 +27,7 @@
 (require 'riece-globals)
 (require 'riece-channel)
 (require 'riece-user)
-(require 'riece-display)
+(require 'riece-signal)
 
 (defun riece-naming-assert-join (user-name channel-name)
   (riece-user-toggle-channel user-name channel-name t)
@@ -63,21 +63,9 @@
 	  (setcar user new-name))
       (setq channels (cdr channels)))
     (riece-rename-user old-name new-name))
-  ;; Rename the channel buffer.
-  (let* ((old-identity (riece-make-identity old-name riece-server-name))
-	 (new-identity (riece-make-identity new-name riece-server-name))
-	 (pointer (riece-identity-member old-identity riece-current-channels)))
-    (when pointer
-      (setcar pointer new-identity)
-      (with-current-buffer (riece-channel-buffer old-identity)
-	(rename-buffer (riece-channel-buffer-name new-identity) t)
-	(setq riece-channel-buffer-alist
-	      (cons (cons new-identity (current-buffer))
-		    (delq (riece-identity-assoc old-identity
-						riece-channel-buffer-alist)
-			  riece-channel-buffer-alist)))))
-    (riece-emit-signal 'riece-naming-assert-rename
-		       old-identity new-identity)))
+  (riece-emit-signal 'riece-naming-assert-rename
+		     (riece-make-identity old-name riece-server-name)
+		     (riece-make-identity new-name riece-server-name)))
 
 (defun riece-naming-assert-channel-users (users channel-name)
   (let ((channel-identity (riece-make-identity channel-name
