@@ -547,16 +547,14 @@ Instead, these commands are available:
   (let ((pointer riece-server-process-alist)
 	nickname)
     (while pointer
-      (if (and (riece-server-process-opened (cdr (car pointer)))
-	       (setq nickname
-		     (with-current-buffer (process-buffer (cdr (car pointer)))
-		     riece-real-nickname)))
-	  (process-send-string
-	   (cdr (car pointer))
-	   "VERSION\r\n")
-	  (process-send-string
-	   (cdr (car pointer))
-	   (format "PRIVMSG %s :\1VERSION\1\r\n" nickname)))
+      (when (riece-server-process-opened (cdr (car pointer)))
+	(process-send-string (cdr (car pointer)) "VERSION\r\n")
+	(if (setq nickname
+		  (with-current-buffer (process-buffer (cdr (car pointer)))
+		    riece-real-nickname))
+	    (process-send-string
+	     (cdr (car pointer))
+	     (format "PRIVMSG %s :\1VERSION\1\r\n" nickname))))
       (setq pointer (cdr pointer))))
   (sit-for 3)
   (message "Querying server version...done")
@@ -585,38 +583,39 @@ Also include a reliable recipe for triggering the bug, as well as
 any lisp back-traces that you may have.
 \(setq stack-trace-on-error t\), or \(setq debug-on-error t\) if you
 are familiar with the debugger, to get a lisp back-trace.")
-      (save-excursion
-	(goto-char (point-max))
-	(insert
-	 "\nAdd-on state:\n"
-	 "------------\n"
-	 (save-window-excursion
-	   (save-excursion
-	     (riece-command-list-addons)
-	     (search-forward "\n\n")
-	     (buffer-substring (point-min) (point)))))
-	(insert "Recent messages from servers:\n"
-		"--------------------------")
-	(let ((pointer riece-server-process-alist))
-	  (while pointer
-	    (insert "\n- \"" (car (car pointer)) "\", \n"
-		    (format "%S" (if (equal (car (car pointer)) "")
-				     riece-server
-				   (cdr (assoc (car (car pointer))
-					       riece-server-alist))))
-		    "\n"
-		    (if (riece-server-process-opened (cdr (car pointer)))
-			(save-excursion
-			  (set-buffer (process-buffer (cdr (car pointer))))
-			  (goto-char (point-max))
-			  (beginning-of-line -60)
-			  (buffer-substring (point) (point-max)))
-		      "(closed server)"))
-	    (setq pointer (cdr pointer))))
-	;; Insert recent keystrokes.
-	(insert "\n\nRecent keystrokes:\n"
-		"-----------------\n\n")
-	(let ((before-keys (point)))
+    (delete-other-windows)
+    (save-excursion
+      (goto-char (point-max))
+      (insert
+       "\nAdd-on state:\n"
+       "------------\n"
+       (save-window-excursion
+	 (save-excursion
+	   (riece-command-list-addons)
+	   (search-forward "\n\n")
+	   (buffer-substring (point-min) (point)))))
+      (insert "Recent messages from servers:\n"
+	      "--------------------------")
+      (let ((pointer riece-server-process-alist))
+	(while pointer
+	  (insert "\n- \"" (car (car pointer)) "\", \n"
+		  (format "%S" (if (equal (car (car pointer)) "")
+				   riece-server
+				 (cdr (assoc (car (car pointer))
+					     riece-server-alist))))
+		  "\n"
+		  (if (riece-server-process-opened (cdr (car pointer)))
+		      (save-excursion
+			(set-buffer (process-buffer (cdr (car pointer))))
+			(goto-char (point-max))
+			(beginning-of-line -60)
+			(buffer-substring (point) (point-max)))
+		    "(closed server)"))
+	  (setq pointer (cdr pointer))))
+      ;; Insert recent keystrokes.
+      (insert "\n\nRecent keystrokes:\n"
+	      "-----------------\n\n")
+      (let ((before-keys (point)))
 	(insert (key-description recent-keys))
 	(save-restriction
 	  (narrow-to-region before-keys (point))
@@ -624,10 +623,10 @@ are familiar with the debugger, to get a lisp back-trace.")
 	  (while (progn (move-to-column 50) (not (eobp)))
 	    (search-forward " " nil t)
 	    (insert "\n"))))
-	;; Insert recent minibuffer messages.
-	(insert "\n\nRecent messages (most recent first):\n"
-		"-----------------------------------\n"
-		recent-messages))))
+      ;; Insert recent minibuffer messages.
+      (insert "\n\nRecent messages (most recent first):\n"
+	      "-----------------------------------\n"
+	      recent-messages))))
 
 (provide 'riece)
 
