@@ -1,5 +1,10 @@
 2003-06-06  OHASHI Akira  <bg66@koka-in.org>
 
+	* riece-unread.el (riece-unread-display-message-function): Delete the
+	target before adding to list.
+	(riece-unread-switch-to-channel): New function.
+	(riece-unread-insinuate): Follow change above.
+
 	* riece.el (riece-channel-list-mode-map): Don't bind
 	`riece-command-unread-channel'.
 
