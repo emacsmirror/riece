@@ -1,5 +1,14 @@
 2004-08-31  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece.el (riece-command-mode): Set truncate-lines to nil.
+	(riece-dialogue-mode): Ditto.
+	(riece-channel-list-mode): Make
+	truncate-partial-width-windows local to channel buffers and set it
+	to nil.
+	(riece-user-list-mode): Ditto.
+
+2004-08-31  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece.el (riece-dialogue-mode): Make
 	truncate-partial-width-windows local to channel buffers and set it
 	to nil.

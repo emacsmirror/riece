@@ -368,7 +368,12 @@ For a list of the generic commands type \\[riece-command-generic] ? RET.
   (interactive)
   (kill-all-local-variables)
 
+  ;; Make `truncate-partial-width-windows' buffer local and set it to
+  ;; nil.  This causes `truncate-lines' to directly control line
+  ;; truncation.
   (make-local-variable 'truncate-partial-width-windows)
+  (setq truncate-partial-width-windows nil)
+
   (setq riece-away-indicator "-"
 	riece-operator-indicator "-"
 	major-mode 'riece-command-mode
@@ -382,7 +387,7 @@ For a list of the generic commands type \\[riece-command-generic] ? RET.
 	   riece-user-indicator
 	   " "
 	   riece-channel-indicator))
-	truncate-partial-width-windows nil)
+	truncate-lines nil)
   (riece-simplify-mode-line-format)
   (use-local-map riece-command-mode-map)
 
@@ -404,7 +409,12 @@ Instead, these commands are available:
   (kill-all-local-variables)
   (make-local-variable 'riece-freeze)
   (make-local-variable 'riece-freeze-indicator)
+
+  ;; Make `truncate-partial-width-windows' buffer local and set it to
+  ;; nil.  This causes `truncate-lines' to directly control line truncation.
   (make-local-variable 'truncate-partial-width-windows)
+  (setq truncate-partial-width-windows nil)
+
   (setq riece-freeze riece-default-freeze
 	riece-away-indicator "-"
 	riece-operator-indicator "-"
@@ -418,8 +428,8 @@ Instead, these commands are available:
 	   riece-freeze-indicator
 	   " "
 	   riece-channel-list-indicator " "))
-	buffer-read-only t
-	truncate-partial-width-windows nil)
+	truncate-lines nil
+	buffer-read-only t)
   (riece-simplify-mode-line-format)
   (use-local-map riece-dialogue-mode-map)
   (buffer-disable-undo)
@@ -453,6 +463,12 @@ Instead, these commands are available:
 All normal editing commands are turned off."
   (kill-all-local-variables)
   (buffer-disable-undo)
+
+  ;; Make `truncate-partial-width-windows' buffer local and set it to
+  ;; nil.  This causes `truncate-lines' to directly control line truncation.
+  (make-local-variable 'truncate-partial-width-windows)
+  (setq truncate-partial-width-windows nil)
+
   (setq major-mode 'riece-channel-list-mode
 	mode-name "Channels"
 	mode-line-buffer-identification
@@ -472,6 +488,12 @@ Instead, these commands are available:
 \\{riece-user-list-mode-map}"
   (kill-all-local-variables)
   (buffer-disable-undo)
+
+  ;; Make `truncate-partial-width-windows' buffer local and set it to
+  ;; nil.  This causes `truncate-lines' to directly control line truncation.
+  (make-local-variable 'truncate-partial-width-windows)
+  (setq truncate-partial-width-windows nil)
+
   (setq major-mode 'riece-user-list-mode
 	mode-name "Users"
 	mode-line-buffer-identification
