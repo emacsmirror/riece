@@ -1,7 +1,9 @@
 ;;; riece-log.el --- saving irc logs add-on
 ;; Copyright (C) 2003 OHASHI Akira
+;; Copyright (C) 2004 Daiki Ueno
 
 ;; Author: OHASHI Akira <bg66@koka-in.org>
+;;	Daiki Ueno <ueno@unixuser.org>
 ;; Keywords: IRC, riece
 
 ;; This file is part of Riece.
