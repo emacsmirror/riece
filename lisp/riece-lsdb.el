@@ -71,8 +71,8 @@
       (message "No entry for `%s'" (riece-format-identity user t)))))
 
 (defun riece-lsdb-insinuate ()
-  (add-to-list 'riece-startup-hook
-	       'lsdb-maybe-load-hash-tables)
+  (add-hook 'riece-startup-hook
+	    'lsdb-maybe-load-hash-tables t)
   (add-to-list 'lsdb-secondary-hash-tables
 	       'riece-lsdb-cache)
   (add-to-list 'lsdb-after-update-record-functions
