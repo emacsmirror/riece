@@ -1,3 +1,9 @@
+2005-02-01  OHASHI Akira  <bg66@koka-in.org>
+
+	* riece-eval.el: New add-on.
+	* COMPILE (riece-modules): Add riece-eval.
+	* Makefile.am (EXTRA_DIST): Add riece-eval.el.
+
 2005-01-30  TAKAHASHI Kaoru  <kaoru@kaisei.org>
 
 	* riece-display.el (riece-display-connect-signals): Check nick or

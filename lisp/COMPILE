@@ -72,9 +72,10 @@
 		riece-biff
 		riece-kakasi
 		riece-yank
-		riece-toolbar))))
+		riece-toolbar
+		riece-eval))))
 
-(defun riece-icons
+(defvar riece-icons
   '(riece-command-previous-channel
     riece-command-next-channel))
 

@@ -560,6 +560,10 @@ PING に応答する local proxy 経由で IRC サーバに接続
 日本語の通らない端末で、日本語をローマ字で表示
 @item riece-yank
 @kbd{C-c y} で kill-ring から文字列を送信
+@item riece-toolbar
+ツールバーを表示
+@item riece-eval
+入力された文字列を lisp オブジェクトとして評価
 @end table
 
 これらのうち、@samp{riece-highlight} と @samp{riece-ctcp}、
