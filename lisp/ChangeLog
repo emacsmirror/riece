@@ -1,6 +1,6 @@
 2004-11-20  Daiki Ueno  <ueno@unixuser.org>
 
-	* riece-display.el (riece-update-buffers): Check existence each
+	* riece-display.el (riece-update-buffers): Check existence of each
 	buffer in riece-buffer-list.
 	* riece.el (riece): Ditto.
 
