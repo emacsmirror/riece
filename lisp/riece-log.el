@@ -82,16 +82,18 @@ If integer, flash back only this line numbers. t means all lines."
     (let ((map (assoc channel riece-log-directory-map)))
       (if map
 	  (expand-file-name (cdr map) riece-log-directory)
-	(if (string-match (concat riece-channel-regexp
-				  "\\([^:]+\\)\\(:\\*\\.\\(.*\\)\\)?") channel)
-	    (let ((name (match-string 1 channel))
-		  (suffix (match-string 3 channel)))
-	      (let ((name (if suffix (concat name "-" suffix) name)))
-		(if server
-		    (expand-file-name
-		     name
-		     (expand-file-name server riece-log-directory))
-		  (expand-file-name name riece-log-directory))))
+	(if (string-match riece-channel-regexp channel)
+	    (let ((name (substring channel
+				   (match-end 1) (match-beginning 2)))
+		  (suffix (match-string 2 channel)))
+	      (when (and (stringp suffix)
+			 (string-match "^:\\*\\.\\(.*\\)" suffix))
+		(setq name (concat name "-" (match-string 1 suffix))))
+	      (if server
+		  (expand-file-name
+		   name
+		   (expand-file-name server riece-log-directory))
+		(expand-file-name name riece-log-directory)))
 	  riece-log-directory)))))
 
 (defun riece-log-flashback (identity)

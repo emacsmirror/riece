@@ -1,3 +1,8 @@
+2003-10-23  OHASHI Akira  <bg66@koka-in.org>
+
+	* riece-log.el (riece-log-get-directory): Follow the change of
+	`riece-channel-regexp'.
+
 2003-10-22  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-identity.el (riece-format-identity): Return copied strings.
