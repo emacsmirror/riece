@@ -1,5 +1,11 @@
 2004-11-21  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-options.el (riece-shrink-buffer-remove-lines): New user option.
+	* riece.el (riece-shrink-buffer): Remove lines specified by
+	riece-shrink-buffer-remove-lines at a time.
+
+2004-11-21  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece.el (riece): Remove nonexistent buffer from
 	riece-buffer-list when running riece-shrink-buffer.
 

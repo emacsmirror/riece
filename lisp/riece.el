@@ -338,7 +338,9 @@ If optional argument CONFIRM is non-nil, ask which IRC server to connect."
       (let* ((inhibit-read-only t)
 	     buffer-read-only
 	     (start (point))
-	     (end (progn (beginning-of-line 2) (point)))
+	     (end (progn (beginning-of-line
+			  (1+ riece-buffer-shrink-buffer-remove-lines))
+			 (point)))
 	     (overlays (riece-overlays-in start end)))
 	(while overlays
 	  (riece-delete-overlay (car overlays))
