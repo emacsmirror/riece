@@ -1,5 +1,11 @@
 2003-06-11  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-doctor.el: New add-on.
+	* COMPILE (riece-modules): Add riece-doctor.
+	* Makefile.am (EXTRA_DIST): Add riece-doctor.el
+
+2003-06-11  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-identity.el (riece-identity-member): Assume that each
 	element of list is identity object.
 	(riece-identity-member-no-server): Ditto.

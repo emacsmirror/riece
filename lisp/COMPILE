@@ -43,7 +43,8 @@
 		riece-highlight
 		riece-rdcc
 		riece-url
-		riece-unread))))
+		riece-unread
+		riece-doctor))))
 
 (defun riece-compile-modules (modules)
   (let ((load-path (cons nil load-path)))

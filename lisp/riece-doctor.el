@@ -1,0 +1,94 @@
+;;; riece-doctor.el --- "become a psychotherapist" add-on
+;; Copyright (C) 1998-2003 Daiki Ueno
+
+;; Author: Daiki Ueno <ueno@unixuser.org>
+;; Keywords: IRC, riece
+
+;; This file is part of Riece.
+
+;; This program is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation; either version 2, or (at your option)
+;; any later version.
+
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the
+;; GNU General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with GNU Emacs; see the file COPYING.  If not, write to the
+;; Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+;; Boston, MA 02111-1307, USA.
+
+;;; Commentary:
+
+;; This add-on allows you to become a psychotherapist.
+
+;; To use, add the following line to your ~/.riece/init.el:
+;; (add-to-list 'riece-addons 'riece-doctor t)
+
+;;; Code:
+
+(require 'doctor)
+
+(defvar riece-doctor-patients nil)
+
+(defun riece-doctor-buffer-name (user)
+  (concat " *riece-doctor*" (riece-identity-canonicalize-prefix user)))
+
+(defun riece-doctor-reply (target string)
+  (riece-send-string (format "NOTICE %s :%s\r\n" target string))
+  (riece-own-channel-message string
+			     (riece-make-identity target riece-server-name)
+			     'notice))
+
+(defun riece-doctor-after-privmsg-hook (prefix string)
+  (let* ((user (riece-prefix-nickname prefix))
+	 (parameters (riece-split-parameters string))
+	 (targets (split-string (car parameters) ","))
+	 (message (nth 1 parameters)))
+    (if (string-match "^, doctor" message)
+	(if (riece-identity-member-no-server user riece-doctor-patients)
+	    (riece-doctor-reply
+	     (car targets)
+	     "You are already talking with me.")
+	  (save-excursion
+	    (set-buffer (get-buffer-create (riece-doctor-buffer-name user)))
+	    (erase-buffer)
+	    (doctor-mode))
+	  (setq riece-doctor-patients (cons user riece-doctor-patients))
+	  (riece-doctor-reply
+	   (car targets)	   
+	   "I am the psychotherapist.  Please, describe your problems."))
+      (if (string-match "^, bye doctor" message)
+	  (let ((pointer (riece-identity-member-no-server
+			  user riece-doctor-patients)))
+	    (when pointer
+	      (kill-buffer (riece-doctor-buffer-name user))
+	      (setq riece-doctor-patients (delq (car pointer)
+						riece-doctor-patients))
+	      (riece-doctor-reply (car targets) "Good bye.")))
+	(when (riece-identity-member-no-server user riece-doctor-patients)
+	  (riece-doctor-reply
+	   (car targets)
+	   (save-excursion
+	     (set-buffer (get-buffer (riece-doctor-buffer-name user)))
+	     (goto-char (point-max))
+	     (insert message "\n")
+	     (let ((point (point))
+		   string)
+	       (doctor-read-print)
+	       (setq string (buffer-substring (1+ point)(- (point) 2)))
+	       (with-temp-buffer
+		 (insert string)
+		 (subst-char-in-region (point-min) (point-max) ?\n ? )
+		 (buffer-string))))))))))
+
+(defun riece-doctor-insinuate ()
+  (make-variable-buffer-local 'riece-doctor-patients)
+  (add-hook 'riece-after-privmsg-hook 'riece-doctor-after-privmsg-hook))
+
+(provide 'riece-doctor)
+
+;;; riece-doctor.el ends here
