@@ -171,12 +171,16 @@ If integer, flash back only this line numbers. t means all lines."
   "Insert logs for IDENTITY at most LINES.
 If LINES is t, insert today's logs entirely."
   (if (eq lines t)
-      (let ((file (riece-log-get-file identity)))
+      (let* (file-name-coding-system
+	     default-file-name-coding-system
+	     (file (riece-log-get-file identity)))
 	(if (file-exists-p file)
 	    (insert-file-contents file)))
-    (let ((files (riece-log-get-files identity))
-	  (lines (- lines))
-	  name date point)
+    (let* (file-name-coding-system
+	   default-file-name-coding-system
+	   (files (riece-log-get-files identity))
+	   (lines (- lines))
+	   name date point)
       (while (and (< lines 0) files)
 	(if (and (file-exists-p (car files))
 		 (string-match (concat (riece-make-interval-regexp "[0-9]" 8)

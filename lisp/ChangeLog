@@ -1,3 +1,11 @@
+2005-02-02  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-server.el (riece-close-server-process): Run
+	riece-after-close-hook.
+
+	* riece-log.el (riece-log-insert): Bind file-name-coding-system
+	and default-file-name-coding-system to nil.
+
 2005-02-01  OHASHI Akira  <bg66@koka-in.org>
 
 	* riece-eval.el: New add-on.
