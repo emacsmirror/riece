@@ -33,16 +33,16 @@
 (defun riece-find-channel (name)
   "Get a channel object named NAME from the server buffer."
   (let ((symbol (intern-soft (riece-identity-canonicalize-prefix name)
-			     riece-obarray)))
+			     riece-channel-obarray)))
     (if symbol
 	(symbol-value symbol))))
 
 (defun riece-forget-channel (name)
   (let ((symbol (intern-soft (riece-identity-canonicalize-prefix name)
-			     riece-obarray)))
+			     riece-channel-obarray)))
     (when symbol
       (makunbound symbol)
-      (unintern (symbol-name symbol) riece-obarray))))
+      (unintern (symbol-name symbol) riece-channel-obarray))))
 
 (defun riece-make-channel (users topic modes banned invited uninvited key)
   "Make an instance of channel object.
@@ -53,11 +53,11 @@ respectively."
 
 (defun riece-get-channel (name)
   (let ((symbol (intern-soft (riece-identity-canonicalize-prefix name)
-			     riece-obarray)))
+			     riece-channel-obarray)))
     (if symbol
 	(symbol-value symbol)
       (set (intern (riece-identity-canonicalize-prefix name)
-		   riece-obarray)
+		   riece-channel-obarray)
 	   (riece-make-channel nil nil nil nil nil nil nil)))))
 
 (defun riece-channel-users (channel)

@@ -65,8 +65,11 @@
 (defvar riece-reconnect-with-password nil
   "If non-nil, attempt to reconnect with password.")
 
-(defvar riece-obarray-size 1327
-  "The size of obarray used by riece on channelname and username space.")
+(defvar riece-user-obarray-size 1327
+  "The size of obarray used by riece on username space.")
+
+(defvar riece-channel-obarray-size 103
+  "The size of obarray used by riece on channelname space.")
 
 ;;; Variables local to the server buffers:
 (defvar riece-server-name nil
@@ -117,8 +120,11 @@ Local to the server buffers.")
 (defvar riece-last-send-time nil
   "Timestamp of the last send.
 Local to the server buffers.")
-(defvar riece-obarray nil
-  "Namespace of the IRC world.
+(defvar riece-user-obarray nil
+  "USER namespace of the IRC world.
+Local to the server buffers.")
+(defvar riece-channel-obarray nil
+  "Channel namespace of the IRC world.
 Local to the server buffers.")
 (defvar riece-coding-system nil
   "Coding system for process I/O.

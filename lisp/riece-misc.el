@@ -223,11 +223,17 @@
   (riece-with-server-buffer server-name
     (let (identities)
       (mapatoms
-       (lambda (atom)
+       (lambda (channel)
 	 (setq identities
-	       (cons (riece-make-identity (symbol-name atom) server-name)
+	       (cons (riece-make-identity (symbol-name channel) server-name)
 		     identities)))
-       riece-obarray)
+       riece-channel-obarray)
+      (mapatoms
+       (lambda (user)
+	 (setq identities
+	       (cons (riece-make-identity (symbol-name user) server-name)
+		     identities)))
+       riece-user-obarray)
       identities)))
 
 (defun riece-check-channel-commands-are-usable (&optional channel)

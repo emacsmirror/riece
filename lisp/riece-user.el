@@ -30,7 +30,7 @@
 (defun riece-find-user (name)
   "Get a user object named NAME from the server buffer."
   (let ((symbol (intern-soft (riece-identity-canonicalize-prefix name)
-			     riece-obarray)))
+			     riece-user-obarray)))
      (if symbol
 	 (symbol-value symbol))))
 
@@ -38,19 +38,19 @@
   (let ((symbol (intern-soft (riece-identity-canonicalize-prefix name))))
     (when symbol
       (makunbound symbol)
-      (unintern (symbol-name symbol) riece-obarray))))
+      (unintern (symbol-name symbol) riece-user-obarray))))
 
 (defun riece-rename-user (old-name new-name)
   (unless (equal (riece-identity-canonicalize-prefix old-name)
 		 (riece-identity-canonicalize-prefix new-name))
     (let ((symbol (intern-soft (riece-identity-canonicalize-prefix old-name)
-			       riece-obarray)))
+			       riece-user-obarray)))
       (when symbol
 	(set (intern (riece-identity-canonicalize-prefix new-name)
-		     riece-obarray)
+		     riece-user-obarray)
 	     (symbol-value symbol))
 	(makunbound symbol)
-	(unintern (symbol-name symbol) riece-obarray)))))
+	(unintern (symbol-name symbol) riece-user-obarray)))))
 
 (defun riece-make-user (channels user-at-host modes away operator)
   "Make an instance of user object.
@@ -60,11 +60,11 @@ away status, respectively."
 
 (defun riece-get-user (name)
   (let ((symbol (intern-soft (riece-identity-canonicalize-prefix name)
-			     riece-obarray)))
+			     riece-user-obarray)))
      (if symbol
 	 (symbol-value symbol)
        (set (intern (riece-identity-canonicalize-prefix name)
-		    riece-obarray)
+		    riece-user-obarray)
 	    (riece-make-user nil nil nil nil nil)))))
 
 (defun riece-user-channels (user)
