@@ -1,5 +1,10 @@
 2004-11-07  Daiki Ueno  <ueno@unixuser.org>
 
+	* Riece: Version 1.0.5 released.
+	* riece-version.el (riece-version-number): Bump up to 1.0.5.
+
+2004-11-07  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-yank.el (riece-yank-strip-space): New function split from
 	riece-command-yank.
 	* test/test-riece-addon.el: New test cases.
