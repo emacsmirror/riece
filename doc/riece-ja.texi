@@ -564,6 +564,8 @@ PING に応答する local proxy 経由で IRC サーバに接続
 ツールバーを表示
 @item riece-eval
 入力された文字列を lisp オブジェクトとして評価
+@item riece-google
+キーワードを Google で検索
 @end table
 
 これらのうち、@samp{riece-highlight} と @samp{riece-ctcp}、

@@ -1,3 +1,9 @@
+2005-02-03  OHASHI Akira  <bg66@koka-in.org>
+
+	* riece-google.el: New add-on.
+	* COMPILE (riece-modules): Add riece-google.
+	* Makefile.am (EXTRA_DIST): Add riece-google.el.
+
 2005-02-03  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-400.el (riece-handle-475-message): New handler; query

@@ -74,7 +74,8 @@
 		riece-kakasi
 		riece-yank
 		riece-toolbar
-		riece-eval))))
+		riece-eval
+		riece-google))))
 
 (defvar riece-icons
   '(riece-command-previous-channel
