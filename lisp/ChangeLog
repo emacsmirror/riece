@@ -1,5 +1,13 @@
 2004-05-23  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-menu.el: Don't put 'riece-addon-default-disabled property.
+
+	* riece-log.el (riece-log-flashback): Don't check riece-log-enabled.
+
+	* riece.el (riece): Enable add-ons after startup.
+
+2004-05-23  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-unread.el (riece-unread-disable): Reset riece-unread-channels.
 
 2004-05-22  Daiki Ueno  <ueno@unixuser.org>

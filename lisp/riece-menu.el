@@ -70,8 +70,6 @@
 (defconst riece-menu-description
   "Setup command menus on menubar")
 
-(put 'riece-menu 'riece-addon-default-disabled t)
-
 (defun riece-menu-create-layouts-menu (menu)
   (mapcar (lambda (entry)
 	    (vector (car entry) (list 'riece-command-change-layout (car entry))
@@ -109,8 +107,7 @@
 	      (easy-menu-define riece-menu
 				riece-command-mode-map
 				"Riece Menu"
-				riece-menu-items)
-	      (riece-enable-addon 'riece-menu))))
+				riece-menu-items))))
 
 (defvar riece-menu)
 (defun riece-menu-enable ()

@@ -105,7 +105,7 @@ If integer, flash back only this line numbers. t means all lines."
       (expand-file-name name riece-log-directory))))
 
 (defun riece-log-flashback (identity)
-  (when (and riece-log-enabled riece-log-flashback)
+  (when riece-log-flashback
     (let ((file (riece-log-get-file identity)))
       (when (file-exists-p file)
 	(let (string)
