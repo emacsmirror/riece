@@ -1,5 +1,20 @@
 2003-10-27  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-identity.el (riece-identity-prefix-case-table): Use
+	riece-copy-case-table to define.
+
+	* riece-xemacs.el (riece-set-case-syntax-pair): Workaround for
+	XEmacs 21.1.
+	(riece-copy-case-table): Ditto.
+
+	* riece-emacs.el (riece-copy-case-table): New alias.
+
+	* riece-globals.el (riece-channel-regexp): Use
+	riece-make-interval-regexp to define.
+	(riece-user-regexp): Ditto.
+
+	* riece-compat.el (riece-make-interval-regexp): New function.
+
 	* riece-icon.el (riece-icon-available-p): Check
 	the existence of image-type-available-p.
 
