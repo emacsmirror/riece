@@ -1,3 +1,9 @@
+2004-06-11  TAKAHASHI Kaoru  <kaoru@kaisei.org>
+
+	* riece-foolproof.el (riece-foolproof-dmacro-override): New
+	function.
+	(riece-foolproof-insinuate): Check keyboard macro.
+
 2004-06-10  TAKAHASHI Kaoru  <kaoru@kaisei.org>
 
 	* riece-foolproof.el: New add-on.
