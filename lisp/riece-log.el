@@ -125,7 +125,7 @@ If integer, flash back only this line numbers. t means all lines."
 	    (encode-coding-string file-name
 				  riece-log-file-name-coding-system)))
   (let ((index 0))
-    (while (string-match "[^-0-9A-Za-z=_\x80-\xFF]" file-name index)
+    (while (string-match "[^-0-9A-Za-z=_.\x80-\xFF]" file-name index)
       (setq file-name (replace-match
 		       (format "=%02X"
 			       (aref file-name (match-beginning 0)))
