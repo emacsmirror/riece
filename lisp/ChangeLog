@@ -1,5 +1,16 @@
 2003-10-22  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-ctcp.el: Require 'riece-highlight.
+	(riece-ctcp-action-face): New face.
+	(riece-ctcp-action-face): New variable.
+	(riece-ctcp-action-prefix): New variable.
+	(riece-ctcp-requires): Require 'riece-highlight if it is enabled.
+	(riece-ctcp-insinuate): Modify riece-dialogue-font-lock-keywords
+	if 'riece-highlight is enabled.
+	(riece-handle-ctcp-action-request): Prepend
+	riece-ctcp-action-prefix instead of riece-change-prefix.
+	(riece-command-ctcp-action): Ditto.
+
 	* riece-server.el (riece-quit-server-process): Use riece-run-at-time.
 	* riece-xemacs.el (riece-run-at-time): New function.
 	* riece-emacs.el (riece-run-at-time): New alias.

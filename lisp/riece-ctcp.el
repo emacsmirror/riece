@@ -27,15 +27,42 @@
 (require 'riece-version)
 (require 'riece-misc)
 (require 'riece-display)
+(require 'riece-highlight)
+
+(defface riece-ctcp-action-face
+  '((((class color)
+      (background dark))
+     (:foreground "PaleGreen" :italic t))
+    (((class color)
+      (background light))
+     (:foreground "ForestGreen" :italic t))
+    (t
+     (:bold t)))
+  "Face used for displaying \"*** Action:\" line"
+  :group 'riece-highlight-faces)
+(defvar riece-ctcp-action-face 'riece-ctcp-action-face)
+
+(defconst riece-ctcp-action-prefix "*** Action: ")
 
 (defvar riece-ctcp-ping-time nil)
 (defvar riece-ctcp-additional-clientinfo nil)
 
 (defvar riece-dialogue-mode-map)
 
+(defun riece-ctcp-requires ()
+  (if (memq 'riece-highlight riece-addons)
+      '(riece-highlight)))
+
 (defun riece-ctcp-insinuate ()
   (add-hook 'riece-privmsg-hook 'riece-handle-ctcp-request)
   (add-hook 'riece-notice-hook 'riece-handle-ctcp-response)
+  (if (memq 'riece-highlight riece-addons)
+      (setq riece-dialogue-font-lock-keywords
+	    (cons (list (concat "^" riece-time-prefix-regexp "\\("
+				(regexp-quote riece-ctcp-action-prefix)
+				".*\\)$")
+			1 riece-ctcp-action-face t t)
+		  riece-dialogue-font-lock-keywords)))
   (define-key riece-dialogue-mode-map "\C-cv" 'riece-command-ctcp-version)
   (define-key riece-dialogue-mode-map "\C-cp" 'riece-command-ctcp-ping)
   (define-key riece-dialogue-mode-map "\C-ca" 'riece-command-ctcp-action)
@@ -167,13 +194,15 @@
 		    (riece-channel-buffer (riece-make-identity
 					   target riece-server-name))))
 	(user (riece-prefix-nickname prefix)))
-    (riece-insert-change buffer (concat user " " string "\n"))
-    (riece-insert-change
+    (riece-insert buffer (concat riece-ctcp-action-prefix user " " string
+				 "\n"))
+    (riece-insert
      (if (and riece-channel-buffer-mode
 	      (not (eq buffer riece-channel-buffer)))
 	 (list riece-dialogue-buffer riece-others-buffer)
        riece-dialogue-buffer)
-     (concat (riece-concat-server-name (concat user " " string)) "\n"))))
+     (concat (riece-concat-server-name (concat riece-ctcp-action-prefix user
+					       " " string)) "\n"))))
 
 (defun riece-handle-ctcp-response (prefix string)
   (when (and prefix string
@@ -302,17 +331,19 @@
 			     (riece-identity-prefix target)
 			     action))
   (let ((buffer (riece-channel-buffer target)))
-    (riece-insert-change
+    (riece-insert
      buffer
-     (concat (riece-identity-prefix (riece-current-nickname)) " " action "\n"))
-    (riece-insert-change
+     (concat riece-ctcp-action-prefix
+	     (riece-identity-prefix (riece-current-nickname)) " " action "\n"))
+    (riece-insert
      (if (and riece-channel-buffer-mode
 	      (not (eq buffer riece-channel-buffer)))
 	 (list riece-dialogue-buffer riece-others-buffer)
        riece-dialogue-buffer)
      (concat
       (riece-concat-server-name
-       (concat (riece-identity-prefix (riece-current-nickname)) " " action))
+       (concat riece-ctcp-action-prefix
+	       (riece-identity-prefix (riece-current-nickname)) " " action))
       "\n"))))
 
 (provide 'riece-ctcp)
