@@ -101,27 +101,22 @@
 (defun riece-alias-expand-alternate-separator (string)
   (let ((index 0)
 	prefix
-	server
-	length)
+	server)
     (while (and (null prefix)
 		(string-match
-		 (concat "\\("
+		 (concat (regexp-quote riece-alias-alternate-separator)
 			 (regexp-quote riece-alias-alternate-separator)
-			 "\\)+")
+			 "\\|\\("
+			 (regexp-quote riece-alias-alternate-separator)
+			 "\\)")
 		 string index))
-      (setq length (/ (- (match-end 0) (match-beginning 0))
-		      (length riece-alias-alternate-separator))
-	    string (replace-match
-		    (mapconcat #'identity
-			       (make-list (/ length 2)
-					  riece-alias-alternate-separator)
-			       "")
-		    nil t string)
-	    index (+ (match-beginning 0)
-		     (* (/ length 2)
-			(length riece-alias-alternate-separator))))
-      (unless (zerop (% length 2))
-	(setq prefix (substring string 0 index))))
+      (if (match-beginning 1)		;found a separator
+	  (setq prefix (substring string 0 (match-beginning 1))
+		index (match-end 1))
+	(setq string (replace-match riece-alias-alternate-separator
+				    nil t string)
+	      index (- (match-end 0)
+		       (length riece-alias-alternate-separator)))))
     (if (null prefix)
 	string
       (setq server (substring string index)
@@ -131,10 +126,10 @@
 				(concat riece-alias-alternate-separator
 					riece-alias-alternate-separator))
 			       server index)
-	    (setq server (replace-match
-			  riece-alias-alternate-separator
-			  nil t server)
-		  index (1- (match-end 0))))
+	    (setq server (replace-match riece-alias-alternate-separator
+					nil t server)
+		  index (- (match-end 0)
+			   (length riece-alias-alternate-separator))))
 	(concat prefix " " server)))))
 
 (defun riece-alias-abbrev-identity-string (string)
