@@ -21,11 +21,6 @@
 ;; Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 ;; Boston, MA 02111-1307, USA.
 
-;;; Commentary:
-
-;; To use, add the following line to your ~/.riece/init.el:
-;; (add-to-list 'riece-addons 'riece-guess)
-
 ;;; Code:
 
 (require 'riece-identity)
@@ -48,6 +43,7 @@
   (delq nil (copy-sequence riece-current-channels)))
 
 (defun riece-guess-candidates ()
+  "Call \\[riece-guess-channel-try-functions] in turn and merge the results."
   (let ((functions riece-guess-channel-try-functions)
 	candidates)
     (while functions

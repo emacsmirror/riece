@@ -23,11 +23,13 @@
 
 ;;; Commentary:
 
-;; This add-on displays unread mark ("!") for channels which have
-;; "unread messages".
+;; This add-on marks channels where new messages are arrived.
 
-;; To use, add the following line to your ~/.riece/init.el:
-;; (add-to-list 'riece-addons 'riece-unread)
+;; You can check the unread channels via `C-c g' in the commands
+;; buffer, by adding the following lines to ~/.riece/init.el:
+
+;;   (add-hook 'riece-guess-channel-try-functions
+;;             'riece-guess-channel-from-unread)
 
 ;;; Code:
 
@@ -112,12 +114,8 @@
   (let (requires)
     (if (memq 'riece-highlight riece-addons)
 	(setq requires (cons 'riece-highlight requires)))
-    (if (memq 'riece-guess riece-addons)
-	(setq requires (cons 'riece-guess requires)))
-    ;; riece-guess-channel-from-unread should be prior to
-    ;; riece-guess-channel-from-history.
-    (if (memq 'riece-history riece-addons)
-	(setq requires (cons 'riece-history requires)))
+;;;    (if (memq 'riece-guess riece-addons)
+;;;	(setq requires (cons 'riece-guess requires)))
     requires))
 
 (defun riece-unread-insinuate ()
@@ -137,9 +135,10 @@
       (setq riece-channel-list-mark-face-alist
 	    (cons '(?! . riece-channel-list-unread-face)
 		  riece-channel-list-mark-face-alist)))
-  (if (memq 'riece-guess riece-addons)
-      (add-hook 'riece-guess-channel-try-functions
-		'riece-guess-channel-from-unread)))
+;;;  (if (memq 'riece-guess riece-addons)
+;;;      (add-hook 'riece-guess-channel-try-functions
+;;;		'riece-guess-channel-from-unread))
+  )
 
 (provide 'riece-unread)
 

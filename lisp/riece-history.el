@@ -23,8 +23,11 @@
 
 ;;; Commentary:
 
-;; To use, add the following line to your ~/.riece/init.el:
-;; (add-to-list 'riece-addons 'riece-history)
+;; You can check recently visited channels via `C-c g' in the commands
+;; buffer, by adding the following lines to ~/.riece/init.el:
+
+;;   (add-hook 'riece-guess-channel-try-functions
+;;             'riece-guess-channel-from-history)
 
 ;;; Code:
 
@@ -52,9 +55,9 @@
 	    index (1+ index)))
     (nreverse result)))
 
-(defun riece-history-requires ()
-  (if (memq 'riece-guess riece-addons)
-      '(riece-guess)))
+;;; (defun riece-history-requires ()
+;;;   (if (memq 'riece-guess riece-addons)
+;;;       '(riece-guess)))
 
 (defun riece-history-insinuate ()
   (add-hook 'riece-startup-hook
@@ -67,9 +70,10 @@
   (add-hook 'riece-after-switch-to-channel-functions
 	    (lambda (last)
 	      (ring-insert riece-channel-history last)))
-  (if (memq 'riece-guess riece-addons)
-      (add-hook 'riece-guess-channel-try-functions
-		'riece-guess-channel-from-history)))
+;;;  (if (memq 'riece-guess riece-addons)
+;;;      (add-hook 'riece-guess-channel-try-functions
+;;;		'riece-guess-channel-from-history))
+  )
 
 (provide 'riece-history)
 

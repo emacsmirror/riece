@@ -1,5 +1,16 @@
 2003-08-27  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-history.el (riece-history-insinuate): Don't set
+	riece-guess-channel-try-functions here.
+	(riece-history-requires): Don't require riece-guess.
+
+	* riece-unread.el (riece-unread-requires): Don't require
+	riece-guess.
+	(riece-unread-insinuate): Don't set
+	riece-guess-channel-try-functions here.
+
+2003-08-27  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-unread.el (riece-unread-after-display-message-function):
 	Rename from riece-unread-display-message-function.
 	(riece-unread-after-switch-to-channel-function): Rename from
