@@ -1,3 +1,8 @@
+2004-01-04  TAKAHASHI Kaoru  <kaoru@kaisei.org>
+
+	* riece-300.el (riece-handle-317-message): Fix regexp for signon
+	time extenstion.
+
 2004-01-03  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-lsdb.el: Add autoload setting for lsdb-maphash.

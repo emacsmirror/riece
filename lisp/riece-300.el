@@ -160,7 +160,7 @@
 
 (defun riece-handle-317-message (prefix number name string)
   (if (string-match
-       (concat "^\\(" riece-user-regexp "\\) \\([0-9]+\\) :")
+       (concat "^\\(" riece-user-regexp "\\) \\([0-9]+\\) [^:]*:seconds")
        string)
       (let ((user (match-string 1 string))
 	    (idle (match-string 2 string)))
