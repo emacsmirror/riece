@@ -1,3 +1,21 @@
+* Major changes in 1.0.7
+
+** New add-on riece-google.
+
+** New add-on riece-eval.
+
+** New add-on riece-keepalive.
+
+** New add-on riece-toolbar.
+
+** riece-log is enabled by default.
+
+** Show backtrace when encountered an error in process-filter.
+
+** Ask channel key to user when required.
+
+** Automatic buffer shrinking is now disabled by default.
+
 * Major changes in 1.0.6
 
 ** Bundle url-riece, a backend of url-irc which comes with the recent
