@@ -153,31 +153,42 @@ the `riece-server-keyword-map' variable."
 	(message "Logging in to %s..." server-name))
       (if riece-reconnect-with-password	;password incorrect or not set.
 	  (unwind-protect
-	      ;; XEmacs signals an error when the keyboard cannot be grabbed.
-	      (condition-case nil
-		  (setq password
-			(if (equal server-name "")
-			    (riece-read-passwd "Password: ")
-			  (riece-read-passwd (format "Password for %s: "
-						     server-name))))
-		(error))
+	      (setq password
+		    (condition-case nil
+			(let (inhibit-quit)
+			  (if (equal server-name "")
+			      (riece-read-passwd "Password: ")
+			    (riece-read-passwd (format "Password for %s: "
+						       server-name))))
+		      (quit
+		       (if (equal server-name "")
+			   (message "Password: Quit")
+			 (message (format "Password for %s: Quit"
+					  server-name)))
+		       'quit)))
 	    (setq riece-reconnect-with-password nil)))
-      (if password
-	  (riece-process-send-string process
-				     (format "PASS %s\r\n" password)))
-      (riece-process-send-string process
-				 (format "USER %s * * :%s\r\n"
-					 (user-real-login-name)
-					 (or username
-					     "No information given")))
-      (riece-process-send-string process (format "NICK %s\r\n" nickname))
-      (with-current-buffer (process-buffer process)
-	(setq riece-last-nickname riece-real-nickname
-	      riece-nick-accepted 'sent
-	      riece-coding-system coding))
-      (setq riece-server-process-alist
-	    (cons (cons server-name process)
-		  riece-server-process-alist)))))
+      (if (eq password 'quit)
+	  (progn
+	    (riece-close-server-process process)
+	    ;; If no server process is available, exit.
+	    (unless riece-server-process-alist
+	      (riece-exit)))
+	(if password
+	    (riece-process-send-string process
+				       (format "PASS %s\r\n" password)))
+	(riece-process-send-string process
+				   (format "USER %s * * :%s\r\n"
+					   (user-real-login-name)
+					   (or username
+					       "No information given")))
+	(riece-process-send-string process (format "NICK %s\r\n" nickname))
+	(with-current-buffer (process-buffer process)
+	  (setq riece-last-nickname riece-real-nickname
+		riece-nick-accepted 'sent
+		riece-coding-system coding))
+	(setq riece-server-process-alist
+	      (cons (cons server-name process)
+		    riece-server-process-alist))))))
 
 (defun riece-reset-process-buffer (process)
   (save-excursion

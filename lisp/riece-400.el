@@ -33,21 +33,29 @@
   (riece-default-handle-numeric-reply
    riece-error-prefix prefix number name string))
 
+(defun riece-handle-read-string (prompt)
+  (condition-case nil
+      (let (inhibit-quit)
+	(read-string prompt))
+    (quit)))
+  
 (defun riece-handle-432-message (prefix number name string)
   "ERR_ERRONEUSNICKNAME	\"<nick> :Erroneous nickname\"."
-  (riece-send-string
-   (format "NICK %s\r\n"
-	   (read-string
-	    (format "Erroneous nickname \"%s\".  Choose a new one: "
-		    (car (riece-split-parameters string)))))))
+  (let ((nickname
+	 (riece-handle-read-string
+	  (format "Erroneous nickname \"%s\".  Choose a new one: "
+		  (car (riece-split-parameters string))))))
+    (if nickname
+	(riece-send-string (format "NICK %s\r\n" nickname)))))
 
 (defun riece-handle-433-message (prefix number name string)
   "ERR_NICKNAMEINUSE \"<nick> :Nickname is already in use\"."
-  (riece-send-string
-   (format "NICK %s\r\n"
-	   (read-string
-	    (format "Nickname \"%s\" already in use.  Choose a new one: "
-		    (car (riece-split-parameters string)))))))
+  (let ((nickname
+	 (riece-handle-read-string
+	  (format "Nickname \"%s\" already in use.  Choose a new one: "
+		  (car (riece-split-parameters string))))))
+    (if nickname
+	(riece-send-string (format "NICK %s\r\n" nickname)))))
 
 (defun riece-handle-464-message (prefix number name string)
   "ERR_PASSWDMISMATCH \":Password incorrect\"."
