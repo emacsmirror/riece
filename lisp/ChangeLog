@@ -1,3 +1,9 @@
+2003-06-02  Yoichi NAKAYAMA  <yoichi@geiin.org>
+
+	* riece-commands.el (riece-command-next-channel): Circularly
+	follow the channel list.
+	(riece-command-previous-channel): Ditto.
+
 2003-06-02  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece.el (riece-command-mode): Set default value of riece-freeze

@@ -79,6 +79,11 @@
       (while (and pointer
 		  (null (car pointer)))
 	(setq pointer (cdr pointer)))
+      (when (null pointer)
+	(setq pointer riece-current-channels)
+	(while (and pointer
+		    (null (car pointer)))
+	  (setq pointer (cdr pointer))))
       (if (car pointer)
 	  (riece-command-switch-to-channel (car pointer))
 	(error "No such channel!")))))
@@ -93,9 +98,13 @@
 	  (start riece-current-channels)
 	  channel)
       (while (and start (not (eq start pointer)))
-	(if (car start)
-	    (setq channel (car start)))
+	(setq channel (car start))
 	(setq start (cdr start)))
+      (when (null channel)
+	(setq start (copy-sequence riece-current-channels))
+	(setq start (delq nil start))
+	(and (> (length start) 1)
+	     (setq channel (nth (1- (length start)) start))))
       (if channel
 	  (riece-command-switch-to-channel channel)
 	(error "No such channel!")))))
