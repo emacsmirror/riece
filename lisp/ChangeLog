@@ -1,3 +1,8 @@
+2004-08-27  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-commands.el (riece-command-complete-user): Move point to
+	the end of the current word.
+
 2004-08-23  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-irc.el (riece-irc-open-server): Display error message if

@@ -680,6 +680,7 @@ If prefix argument ARG is non-nil, toggle frozen status."
 	(if (equal current completion)
 	    (with-output-to-temp-buffer "*Help*"
 	      (display-completion-list all))
+	  (re-search-forward "\\>" nil t)
 	  (delete-region (point) (- (point) (length current)))
 	  (insert completion))))))
 
