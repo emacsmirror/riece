@@ -301,7 +301,7 @@ For a list of the generic commands type \\[riece-command-generic] ? RET.
 	   " "
 	   riece-user-indicator
 	   " "
-	   riece-channel-indicator)))
+	   riece-current-channel)))
   (riece-simplify-mode-line-format)
   (use-local-map riece-command-mode-map)
 
