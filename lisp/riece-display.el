@@ -161,7 +161,7 @@ This function is for internal use only."
      (setq riece-join-channel-candidate nil))
    (lambda (signal)
      (riece-identity-equal (car (riece-signal-args signal))
-			   riece-current-nickname)))
+			   (riece-current-nickname))))
   (riece-connect-signal
    'riece-naming-assert-part
    (lambda (signal handback)
@@ -179,7 +179,7 @@ This function is for internal use only."
      (riece-part-channel (nth 1 (riece-signal-args signal)))
    (lambda (signal)
      (riece-identity-equal (car (riece-signal-args signal))
-			   riece-current-nickname))))
+			   (riece-current-nickname)))))
   (riece-connect-signal
    'riece-naming-assert-rename
    (lambda (signal handback)

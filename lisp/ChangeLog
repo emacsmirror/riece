@@ -1,3 +1,12 @@
+2004-03-01  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-display.el (riece-display-connect-signals): Fixed bug in
+	signal filters.
+
+	* riece-handle.el (riece-handle-mode-message): Don't call
+	riece-parse-channel-modes if channel doesn't match with
+	riece-channel-regexp.
+
 2004-02-28  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-display.el (riece-display-connect-signals): Connect some

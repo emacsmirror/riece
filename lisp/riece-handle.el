@@ -397,7 +397,8 @@
     (when (string-match "\\([^ ]+\\) *:?" string)
       (setq channel (match-string 1 string)
 	    string (substring string (match-end 0)))
-      (riece-parse-channel-modes string channel)
+      (if (string-match (concat "^" riece-channel-regexp "$") channel)
+        (riece-parse-channel-modes string channel))
       (let* ((channel-identity (riece-make-identity channel riece-server-name))
 	     (buffer (riece-channel-buffer channel-identity)))
 	(riece-insert-change
