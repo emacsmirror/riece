@@ -40,8 +40,7 @@
 			       " ")))
     (while replies
       (if (string-match
-	   (concat "^\\(" riece-user-regexp
-		   "\\)\\(\\*\\)?=\\([-+]\\)\\([^ ]+\\)")
+	   (concat "^\\([^ ]+\\)\\(\\*\\)?=\\([-+]\\)\\([^ ]+\\)")
 	   (car replies))
 	  (let ((user (match-string 1 (car replies)))
 		(operator (not (null (match-beginning 2))))
@@ -159,7 +158,7 @@
 	"\n"))))
 
 (defun riece-handle-313-message (prefix number name string)
-  (if (string-match (concat "^" riece-user-regexp) string)
+  (if (string-match "^[^ ]+" string)
       (let ((user (match-string 0 string)))
 	(riece-insert-info
 	 (list riece-dialogue-buffer riece-others-buffer)
