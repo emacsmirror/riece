@@ -1,5 +1,11 @@
 2004-05-04  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-300.el (riece-handle-312-message): Use server name
+	returned by WHOIS instead of riece-real-server-name.
+	[cf. <Liece:00170>]
+
+2004-05-04  Daiki Ueno  <ueno@unixuser.org>
+
 	* Riece: Version 0.2.2 released.
 	* riece-version.el (riece-version-number): Bump up to 0.2.2.
 

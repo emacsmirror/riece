@@ -151,7 +151,7 @@
        (concat
 	(riece-concat-server-name
 	 (format "on via server %s: %s"
-		 riece-real-server-name
+		 (match-string 2 string)
 		 (substring string (match-end 0))))
 	"\n"))))
 
