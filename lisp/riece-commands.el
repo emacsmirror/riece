@@ -425,7 +425,7 @@ the layout to the selected layout-name."
 	    "Channel/User: " riece-current-channels))
 	  key)
      (if (and current-prefix-arg
-	      (riece-channel-p target))
+	      (riece-channel-p (riece-identity-prefix target)))
 	 (setq key
 	       (riece-read-passwd (format "Key for %s: " target))))
      (list target key)))
