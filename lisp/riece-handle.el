@@ -67,13 +67,16 @@
   (let* ((user (riece-prefix-nickname prefix))
 	 (parameters (riece-split-parameters string))
 	 (targets (split-string (car parameters) ","))
-	 (message (nth 1 parameters)))
+	 (message (nth 1 parameters))
+	 (speaker (riece-make-identity user riece-server-name)))
     (riece-display-message
-     (riece-make-message (riece-make-identity user
-					      riece-server-name)
+     (riece-make-message speaker
 			 (riece-make-identity (car targets)
 					      riece-server-name)
-			 message))))
+			 message
+			 nil
+			 (riece-identity-equal
+			  speaker (riece-current-nickname))))))
 
 (defun riece-handle-notice-message (prefix string)
   (let* ((user (if prefix
