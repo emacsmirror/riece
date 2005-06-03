@@ -1,3 +1,7 @@
+2005-06-03  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-ruby.el: New file.
+
 2005-04-04  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-misc.el (riece-get-channels-on-server): New function.
