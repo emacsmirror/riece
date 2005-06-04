@@ -129,6 +129,9 @@ Local to the server buffers.")
 (defvar riece-coding-system nil
   "Coding system for process I/O.
 Local to the server buffers.")
+(defvar riece-coding-system-alist nil
+  "An alist mapping prefixes to coding-systems.
+Local to the server buffers.")
 
 ;;; Variables local to the channel buffers:
 (defvar riece-freeze nil

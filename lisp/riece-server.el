@@ -38,7 +38,8 @@
       (:username riece-username)
       (:password)
       (:function riece-default-open-connection-function)
-      (:coding riece-default-coding-system))
+      (:coding riece-default-coding-system)
+      (:coding-system-alist))
     "Mapping from keywords to default values.
 All keywords that can be used must be listed here."))
 
@@ -162,8 +163,7 @@ the `riece-server-keyword-map' variable."
 	  (setq riece-send-size 0))
       (while (and (not (riece-queue-empty riece-send-queue))
 		  (<= riece-send-size riece-max-send-size))
-	(setq string (riece-encode-coding-string
-		      (riece-queue-dequeue riece-send-queue))
+	(setq string (riece-queue-dequeue riece-send-queue)
 	      length (length string))
 	(if (> length riece-max-send-size)
 	    (message "Long message (%d > %d)" length riece-max-send-size)
@@ -193,13 +193,23 @@ the `riece-server-keyword-map' variable."
 	  (if (riece-server-opened "")
 	      "")))))
 
-(defun riece-send-string (string)
+(defun riece-send-string (string &optional prefix)
   (let* ((server-name (riece-current-server-name))
-	 (process (riece-server-process server-name)))
+	 (process (riece-server-process server-name))
+	 coding-system)
     (unless process
       (error "%s" (substitute-command-keys
 		   "Type \\[riece-command-open-server] to open server.")))
-    (riece-process-send-string process string)))
+    (riece-process-send-string
+     process
+     (if (and prefix
+	      (setq coding-system
+		    (cdr (assoc prefix
+				(plist-get (riece-server-properties
+					    server-name)
+					   :coding-system-alist)))))
+	 (encode-coding-string string coding-system)
+       (riece-encode-coding-string string)))))
 
 (defun riece-open-server (server server-name)
   (let ((protocol (or (plist-get server :protocol)
@@ -264,6 +274,7 @@ the `riece-server-keyword-map' variable."
     (make-local-variable 'riece-channel-obarray)
     (setq riece-channel-obarray (make-vector riece-channel-obarray-size 0))
     (make-local-variable 'riece-coding-system)
+    (make-local-variable 'riece-coding-system-alist)
     (buffer-disable-undo)
     (erase-buffer)))
 

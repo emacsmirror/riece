@@ -86,7 +86,8 @@
 	(with-current-buffer (process-buffer process)
 	  (setq riece-last-nickname riece-real-nickname
 		riece-nick-accepted 'sent
-		riece-coding-system coding))
+		riece-coding-system coding
+		riece-coding-system-alist coding-system-alist))
 	process))))
 
 (defun riece-irc-quit-server-process (process &optional message)

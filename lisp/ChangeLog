@@ -1,3 +1,24 @@
+2005-06-04  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-server.el (riece-server-keyword-map): Add :coding-system-alist.
+
+	* riece-irc.el (riece-irc-open-server): Init riece-coding-system-alist.
+
+	* riece-handle.el (riece-handle-privmsg-message): Retry with the
+	channel's coding-system if it differs from the server's
+	coding-system.
+
+	* riece-commands.el (riece-command-send-message): Pass prefix to
+	riece-send-string.
+
+	* riece-globals.el (riece-coding-system-alist): New variable.
+
+	* riece-coding.el (riece-decode-coding-string-1): Split from
+	riece-decode-coding-string; set riece-coding-encoded-string and
+	riece-coding-decoded-coding-system properties on decoded string.
+	(riece-retry-decode-coding-string): New function.
+	(riece-decoded-coding-system): Use it.
+
 2005-06-03  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-ruby.el: New file.

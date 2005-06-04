@@ -378,14 +378,16 @@ the layout to the selected layout-name."
 	(riece-send-string
 	 (format "NOTICE %s :%s\r\n"
 		 (riece-identity-prefix riece-current-channel)
-		 message))
+		 message)
+	 (riece-identity-prefix riece-current-channel))
 	(riece-display-message
 	 (riece-make-message (riece-current-nickname) riece-current-channel
 			     message 'notice t)))
     (riece-send-string
      (format "PRIVMSG %s :%s\r\n"
 	     (riece-identity-prefix riece-current-channel)
-	     message))
+	     message)
+     (riece-identity-prefix riece-current-channel))
     (riece-display-message
      (riece-make-message (riece-current-nickname) riece-current-channel
 			 message nil t))))

@@ -55,10 +55,31 @@ specifying the coding systems for decoding and encoding respectively."
 (defun riece-decode-coding-string (string)
   (if (and (local-variable-p 'riece-coding-system (current-buffer))
 	   riece-coding-system)		;should be nil on non-Mule environment
-      (if (consp riece-coding-system)
-	  (decode-coding-string string (car riece-coding-system))
-	(decode-coding-string string riece-coding-system))
+      (riece-decode-coding-string-1 string
+				    (if (consp riece-coding-system)
+					(car riece-coding-system)
+				      riece-coding-system))
     string))
+
+(defun riece-retry-decode-coding-string (string coding-system)
+  (if (eq (get-text-property 0 'riece-coding-decoded-coding-system string)
+	  coding-system)
+      string
+    (riece-decode-coding-string-1
+     (get-text-property 0 'riece-coding-encoded-string string)
+     coding-system)))
+
+(defun riece-decoded-coding-system (string)
+  (get-text-property 0 'riece-coding-decoded-coding-system string))
+
+(defun riece-decode-coding-string-1 (string coding-system)
+  (let* ((decoded (decode-coding-string string coding-system))
+	 (length (length decoded)))
+    (put-text-property 0 length 'riece-coding-encoded-string
+		       string decoded)
+    (put-text-property 0 length 'riece-coding-decoded-coding-system
+		       coding-system decoded)
+    decoded))
 
 (provide 'riece-coding)
 
