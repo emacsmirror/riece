@@ -1,3 +1,11 @@
+2005-07-07  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-display.el (riece-channel-buffer): Return nil when
+	channel-buffer is killed.
+
+	* riece-debug.el (riece-debug-1): New function.
+	(riece-debug): Always return nil.
+
 2005-06-03  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-ruby.el: New file.
