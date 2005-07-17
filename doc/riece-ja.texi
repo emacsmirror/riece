@@ -763,6 +763,12 @@ US-ASCII 以外のディレクトリ名が文字化けするという人は、
 (setq riece-log-directory-map '(("#りーす" . "riece")))
 @end example
 
+@section ウィンドウ間を自由に移動したい
+
+GNU Emacs に附属の windmove.el を使うと便利です。詳細は windmove.el の
+コメントを参照ください。windmove.el は @uref{http://hovav.net/elisp/} 
+からも取得できます。
+
 @node Development, Index, Tips, Top
 @chapter Development
 
