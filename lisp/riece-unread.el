@@ -123,7 +123,7 @@
     (error "No unread channel!")))
 
 (defun riece-guess-channel-from-unread ()
-  riece-unread-channels)
+  (reverse riece-unread-channels))
 
 (defun riece-unread-requires ()
   (let (requires)

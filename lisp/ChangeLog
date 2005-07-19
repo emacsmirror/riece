@@ -1,3 +1,11 @@
+2005-07-19  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-unread.el (riece-guess-channel-from-unread): Return
+	reversed copy of riece-unread-channels.
+
+	* riece-server.el (riece-server-parse-string): Use
+	string-to-number instead of string-to-int.
+
 2005-07-07  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-display.el (riece-channel-buffer): Return nil when
