@@ -49,11 +49,13 @@ Free Documentation License".
 @node Top, Overview, (dir), (dir)
 @top Riece user's manual
 
-Riece $B$O(B Emacs $B$G(B IRC (Internet Relay Chat) $B$K;22C$9$k$?$a$N%W%m%0%i%`$G$9!#(B
+$B$3$N%^%K%e%"%k$G$O!"(BRiece $B%P!<%8%g%s(B @value{VERSION} $B$K$D$$$F2r@b$7$^$9!#(B
+$B$3$N%^%K%e%"%k$NB>$K!"(BRiece $B$K4X$9$kM-1W$J>pJs$O(B Riece $B$N8x<0%[!<%`%Z!<(B
+$B%8(B @uref{http://www.nongnu.org/riece/} $B$+$iF@$i$l$k$+$b$7$l$^$;$s!#(B
 
 @menu
-* Overview::                    Riece $B$H$O2?$+(B
-* Getting started::             
+* Overview::                    $B$O$8$a$KFI$s$G$M(B
+* Getting started::             IRC $B%5!<%P$K7R$$$G$_$h$&(B
 * Basic usage::                 $B4pK\E*$J;H$$J}(B
 * Advanced usage::              $B?J$s$@;H$$J}(B
 * Tips::                        $BJXMx$J@_Dj(B
@@ -66,127 +68,64 @@ Riece $B$O(B Emacs $B$G(B IRC (Internet Relay Chat) $B$K;22C$9$k$?$a$N%W%m%
 @node Overview, Getting started, Top, Top
 @chapter Overview
 
-Riece $B$O!"D9$$4V%a%s%F%J%s%9IT2DG=$J>uBV$K$"$C$?(B Liece $B$N%3!<%I$r40A4$K(B
-$B=q$-D>$7$?$b$N$G$9!#%f!<%6%$%s%?!<%U%'!<%9$NBgItJ,$O(B Liece $B$N$b$N$rF'=1(B
-$B$7$F$$$^$9!#(B
+Riece $B$O(B IRC (Internet Relay Chat) $B$G%A%c%C%H$r3Z$7$`$?$a$N%f!<%6%$%s(B
+$B%?!<%U%'!<%9$G$9!#(BRiece $B$O!V$j!<$9!W$HFI$_$^$9!#(B
 
-Riece $B$K$O(B Liece $B$K$O$J$$FCD9$,$$$/$D$+$"$j$^$9!#(B
-$B0J2<$K$=$l$i$N0lIt$r5s$2$^$9!#(B
+Riece $B$N<g$JFCD9$O0J2<$NDL$j$G$9!#(B
 
 @itemize @bullet
 @item $BJ#?t$N(B IRC $B%5!<%P$KF1;~$K@\B32DG=(B
-@item $B%"%I%*%s$K$h$j5!G=$NDI2C$d<h$j30$7$,2DG=(B
+@item $B%"%I%*%s$K$h$j5!G=$NDI2C$d<h$j30$7$,MF0W(B
 @item $BB>$N(B elisp $B%Q%C%1!<%8$K0MB8$7$J$$$?$a!"%$%s%9%H!<%k$,4JC1(B
 @item $B@_Dj$,4JC1$G!"A02s5/F0;~$N@_Dj$r5-O?!&I|85$9$k;EAH$_$rDs6!(B
 @item $BCJ3,E*$JA`:n@bL@=q$,ImB0(B
 @item $B:G?7$N(B IRC $B$N%/%i%$%"%s%H%W%m%H%3%k(B (RFC2812) $B$K=`5r(B
 @end itemize
 
-$B$h$j>\$7$$>pJs$O!"0J2<$N%Z!<%8$r8fMw$/$@$5$$!#(B
-
-@itemize @bullet
-@item http://www.nongnu.org/riece/
-@end itemize
-
 @node Getting started, Basic usage, Overview, Top
 @chapter Getting started
 
-@menu
-* Required Environments::       $BF0:n4D6-(B
-* Installation::                $B%$%s%9%H!<%kJ}K!(B
-* Startup File::                $B@_Dj%U%!%$%k(B
-@end menu
+Riece $B$r5/F0$9$k$K$O!"(B@kbd{M-x riece} $B$H$7$^$9!#(B
 
-@node Required Environments, Installation, Getting started, Getting started
-@section Required Environments
+$B$b$7(B @samp{M-x riece[No match]} $B$H$$$&%a%C%;!<%8$,I=<($5$l$F5/F0$G$-$J(B
+$B$$>l9g$K$O!"$?$V$s%$%s%9%H!<%k$K<:GT$7$F$$$^$9!#<+J,$G%=!<%9$+$i%$%s%9(B
+$B%H!<%k$7$?>l9g$K$O(B README $B$r$b$&0lEYFI$_D>$7$F$/$@$5$$!#(BOS$B!&%G%#%9%H%j(B
+$B%S%e!<%7%g%s$N%Q%C%1!<%8$+$i%$%s%9%H!<%k$7$?>l9g$K$O!"%Q%C%1!<%8$K4^$^(B
+$B$l$k%I%-%e%a%s%H$r$43NG'$/$@$5$$!#$^$?!"Bg3X$N8&5f<<$J$I$N6&M-$N4D6-$K(B
+$B%$%s%9%H!<%k$5$l$F$$$?>l9g$K$O4IM}<T$KAjCL$7$F$_$F$/$@$5$$!#(B
 
-$B<!$K5s$2$k4D6-$GF0:n$r3NG'$7$F$$$^$9!#(B
-
-@itemize @bullet
-@item Emacs 20.7 $B0J>e(B
-@item XEmacs 21.4 $B0J>e(B
-@end itemize
-
-@node Installation, Startup File, Required Environments, Getting started
-@section Installation
-
-Riece $B$N:G?7HG$O!"(B
-@uref{http://wiliki.designflaw.org/riece.cgi} $B$GG[I[$7$F$$$^(B
-$B$9!#E83+$7$?$i!"0J2<$N%3%^%s%I$r<B9T$9$k$3$H$G<j85$N4D6-$K%$%s%9%H!<%k$G(B
-$B$-$^$9(B
-
-@example
-./configure
-make
-make install
-@end example
-
-XEmacs $B$N%Q%C%1!<%8$H$7$F%$%s%9%H!<%k$9$k>l9g$K$O0J2<$N$h$&$K$7$^$9!#(B
-
-@example
-./configure --with-xemacs[=xemacs-21.4.17]
-make package
-make install-package
-@end example
-
-XEmacs $B$N%Q%C%1!<%8$H$7$F%$%s%9%H!<%k$7$?>l9g$K$OI,MW$"$j$^$;$s$,!"(B
-@kbd{M-x riece} $B$G5/F0$9$k$?$a$K$O!"(Bautoload $B$N@_Dj$r8f<+J,$N(B Emacs $B$N@_(B
-$BDj%U%!%$%k$K2C$($kI,MW$,$"$j$^$9!#(B
-
-@lisp
-(autoload 'riece "riece" "Start Riece" t)
-@end lisp
-
-@node Startup File,  , Installation, Getting started
-@section Startup file
-
-$B$3$N>O$G$O!"@_Dj%U%!%$%k$K$D$$$F2r@b$7$^$9!#(B
-
-$B;n$7$K;H$C$F$_$k>l9g$K$O!"FC$K2?$b@_Dj$9$kI,MW$O$"$j$^$;$s!#(B
-$B$3$N>O$OFI$_Ht$P$7$F$b9=$$$^$;$s!#(B
-
-Riece $B$O@_Dj%U%!%$%k$rJQ?t(B @code{riece-directory} $B$G;X<($5$l$k%G%#%l%/%H(B
-$B%j(B ($B%G%U%)%k%H$O(B @file{~/.riece/}) $B$+$iFI$_9~$_$^$9!#$3$N%G%#%l%/%H%j$K(B
-$B$O0J2<$N(B 2 $B$D$N@_Dj%U%!%$%k$,G[CV$5$l$^$9!#(B
-
-@table @code
-@item riece-saved-variables-file
-@vindex riece-saved-variables-file
-$BA02s$N%;%C%7%g%s$G99?7$5$l$?@_Dj$,<+F0E*$KJ]B8$5$l$^$9(B($B%G%U%)%k%H$O(B @file{~/.riece/save})
-@item riece-variables-file
-@vindex riece-variables-file
-$B%f!<%6$K8GM-$N@_Dj$r5-=R$7$^$9(B($B%G%U%)%k%H$O(B @file{~/.riece/init})
-@end table
-
-$B5/F0;~$K$O!":G=i$K(B @code{riece-saved-variables-file} $B$r!"<!$K(B 
-@code{riece-variables-file} $B$rFI$_9~$_$^$9!#$D$^$j!"(B
-@file{~/.riece/save} $B$K<+F0E*$KJ]B8$5$l$?FbMF$O!"(B@file{~/.riece/init} $B$K(B
-$B5-=R$5$l$?FbMF$G>e=q$-$5$l$^$9!#(B
-
-@node Basic usage, Advanced usage, Getting started, Top
-@chapter Basic usage
-
-@kbd{M-x riece} $B$H$9$k$3$H$G5/F0$7$^$9!#%5!<%PL>$rJ9$+$l$k$N$GEz$($^$9!#(B
-$B@\B32DG=$J(B IRC $B%5!<%P$O3F(B IRC $B%M%C%H%o!<%/Kh$K0[$J$j$^$9$,!"BgDq$O(B Web 
-$B%Z!<%8$K0lMw$,$^$H$a$F$"$k$3$H$,B?$$$G$7$g$&!#(B
+Riece $B$,5/F0$9$k$H!"(BIRC $B%5!<%P$NL>A0$rJ9$+$l$^$9!#8x6&$KMxMQ2DG=$J(B IRC 
+$B%5!<%P$N0lMw$O(B Web $B%Z!<%8$J$I$+$iF@$k$3$H$,$G$-$^$9!#(B
 
 @itemize @bullet
 @item http://irc.kyoto-u.ac.jp
 @item http://freenode.net
 @end itemize
 
-$B$b$7%K%C%/%M!<%`$,4{$K;HMQ$5$l$F$$$k>l9g!"JL$N%K%C%/%M!<%`$NF~NO$rB%$5$l$^$9!#(B
-$B%K%C%/%M!<%`$N=i4|CM$O(B @code{riece-nickname} $B$G@_Dj$7$^$9!#%G%U%)%k%H$G$O!"(B
-$B%f!<%6$N%m%0%$%sL>$,$=$N$^$^;H$o$l$^$9!#(B
-@vindex riece-nickname
+$B<!$K!"0J2<$N$h$&$J%a%C%;!<%8$,I=<($5$l$k$+$b$7$l$^$;$s!#(B
 
-$BL5;v$K@\B3$G$-$?$i!"<!$O%A%c%s%M%k$K;22C$7$F2qOC$r$7$F$_$^$7$g$&!#(B
+@example
+Nickname "ueno" already in use.  Choose a new one: 
+@end example
+
+IRC $B$G$O!";22C<T$rI=$9$N$K%K%C%/%M!<%`$H8F$P$l$kC;$$8F>N$,;H$o$l$^$9!#(B
+$B$b$7%K%C%/%M!<%`$,B>$NC/$+$K;HMQ$5$l$F$$$k>l9g!"JL$N%K%C%/%M!<%`$rA*$V(B
+$BI,MW$,$"$j$^$9!#%G%U%)%k%H$G$O!"%f!<%6$N%m%0%$%sL>$,$=$N$^$^;H$o$l$^$9!#(B
+
+$BL5;v$K@\B3$G$-$?$i!"<!$O2qOC$r$7$F$_$^$7$g$&!#(BIRC $B$G$O0lBP0l$N2qOC$r$9(B
+$B$k$3$H$b$G$-$^$9$,!"F1$8OCBj$K6=L#$r;}$DJ#?t?M$G$N2qOC$,$h$jB?$/MQ$$$i(B
+$B$l$^$9!#J#?t?M$G$N2qOC$r;O$a$k$K$O!"$^$:%A%c%s%M%k$H8F$P$l$k>l=j$KF~$k(B
+$BI,MW$,$"$j$^$9!#(B
+
 @kbd{C-c j} $B$H%?%$%W$9$k$H;22C$9$k%A%c%s%M%kL>$r?R$M$i$l$k$N$G!"E,Ev$J%A%c(B
 $B%s%M%kL>$rF~NO$7$^$7$g$&!#(BIRCnet $B$K$O(B @samp{#Riece} $B$H$$$&%A%c%s%M%k$,$"(B
 $B$k$N$G!"%F%9%H$K$*;H$$$/$@$5$$!#(B
 
-$B%A%c%s%M%k$KF~$k$3$H$,$G$-$?$i!"J8>O$rF~NO$7$F%j%?!<%s%-!<$r2!$9$HH/8@$9(B
-$B$k$3$H$,$G$-$^$9!#B>$N?M$N2qOC$O2hLL1&>e$N%P%C%U%!$KI=<($5$l$^$9!#(B
+$B%A%c%s%M%k$KF~$k$3$H$,$G$-$?$i!"9T$rF~NO$7$F%j%?!<%s%-!<$r2!$9$HH/8@$9(B
+$B$k$3$H$,$G$-$^$9!#B>$N;22C<T$NH/8@$O2hLL1&>e$N%P%C%U%!$KI=<($5$l$^$9!#(B
+
+@node Basic usage, Advanced usage, Getting started, Top
+@chapter Basic usage
 
 @menu
 * Windows::                     $B2hLL9=@.(B
@@ -434,11 +373,38 @@ Riece $B$NBg$-$JFCD9$K!"J#?t$N%5!<%P$KF1;~$K@\B3$9$k5!G=$,$"$j$^$9!#(B
 $B$3$N>O$G$O!"$b$C$H?J$s$@;H$$J}$r2r@b$7$^$9!#(B
 
 @menu
+* Startup File::                $B@_Dj%U%!%$%k(B
 * Server settings::             $B%5!<%P$N>\:Y@_Dj(B
 * Add-ons::                     $B%"%I%*%s$H$O(B
 @end menu
 
-@node Server settings, Add-ons, Advanced usage, Advanced usage
+@node Startup File, Server settings, Advanced usage, Advanced usage
+@section Startup file
+
+$B$3$N>O$G$O!"@_Dj%U%!%$%k$K$D$$$F2r@b$7$^$9!#(B
+
+$B;n$7$K;H$C$F$_$k>l9g$K$O!"FC$K2?$b@_Dj$9$kI,MW$O$"$j$^$;$s!#(B
+$B$3$N>O$OFI$_Ht$P$7$F$b9=$$$^$;$s!#(B
+
+Riece $B$O@_Dj%U%!%$%k$rJQ?t(B @code{riece-directory} $B$G;X<($5$l$k%G%#%l%/%H(B
+$B%j(B ($B%G%U%)%k%H$O(B @file{~/.riece/}) $B$+$iFI$_9~$_$^$9!#$3$N%G%#%l%/%H%j$K(B
+$B$O0J2<$N(B 2 $B$D$N@_Dj%U%!%$%k$,G[CV$5$l$^$9!#(B
+
+@table @code
+@item riece-saved-variables-file
+@vindex riece-saved-variables-file
+$BA02s$N%;%C%7%g%s$G99?7$5$l$?@_Dj$,<+F0E*$KJ]B8$5$l$^$9(B($B%G%U%)%k%H$O(B @file{~/.riece/save})
+@item riece-variables-file
+@vindex riece-variables-file
+$B%f!<%6$K8GM-$N@_Dj$r5-=R$7$^$9(B($B%G%U%)%k%H$O(B @file{~/.riece/init})
+@end table
+
+$B5/F0;~$K$O!":G=i$K(B @code{riece-saved-variables-file} $B$r!"<!$K(B 
+@code{riece-variables-file} $B$rFI$_9~$_$^$9!#$D$^$j!"A02s$N%;%C%7%g%s$G(B
+@file{~/.riece/save} $B$KJ]B8$5$l$?FbMF$O!"(B@file{~/.riece/init} $B$K(B
+$B5-=R$5$l$?FbMF$G>e=q$-$5$l$^$9!#(B
+
+@node Server settings, Add-ons, Startup File, Advanced usage
 @section Server settings
 
 $B5/F0;~$K%G%U%)%k%H$G@\B3$9$k(B IRC $B%5!<%P$O(B @code{riece-server} $B$G;XDj$7$^$9!#(B
