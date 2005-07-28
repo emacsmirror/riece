@@ -28,14 +28,14 @@
 (require 'riece-options)
 
 (defun riece-debug-1 (message detail)
-  (let ((time (format-time-string "%Y-%m-%d:%H:%M:%S")))
-  (message "riece-debug:%s: %s" time message)
+  (message "riece-debug: %s" message)
   (save-excursion
     (set-buffer riece-debug-buffer)
     (goto-char (point-max))
-    (if detail
-	(insert "*** " time ": " message "\n" detail "\n")
-      (insert "*** " time ": " message "\n"))))
+    (let ((time (format-time-string "%Y-%m-%d:%H:%M:%S")))
+      (if detail
+	  (insert "*** " time ": " message "\n" detail "\n")
+	(insert "*** " time ": " message "\n")))))
 
 (defun riece-debug (message &optional detail)
   "Print a one-line debug MESSAGE at the bottom of the frame.
