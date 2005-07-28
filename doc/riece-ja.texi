@@ -55,7 +55,7 @@ Free Documentation License".
 
 @menu
 * Overview::                    はじめに読んでね
-* Getting started::             IRC サーバに繋いでみよう
+* Getting started::             IRC サーバに接続して会話してみよう
 * Basic usage::                 基本的な使い方
 * Advanced usage::              進んだ使い方
 * Tips::                        便利な設定
