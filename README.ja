@@ -20,8 +20,8 @@ doc/  - 文書ファイル
 
 * 必要なもの
 
-- Emacs 20.7 以上、または XEmacs 21.4 以上
-- Ruby 1.6 以上 (任意)
+- Emacs 20.7 以降、または XEmacs 21.4 以降
+- Ruby 1.6 以降 (任意)
 
 * インストール
 
@@ -31,6 +31,11 @@ $ sudo make install
 XEmacs を使っていて、パッケージとしてインストールしたい場合には、
 "--with-xemacs" オプションを configure スクリプトに与えてください。
 また、"install" ターゲットの代わりに "install-package" を使ってください。
+
+* マニュアル
+
+Riece のマニュアルは info 形式で読むことができます。
+Emacs を起動し、M-x info で "Riece-ja" を選んでお読みください。
 
 * バグ報告
 
