@@ -21,12 +21,16 @@ doc/  - 文書ファイル
 * 必要なもの
 
 - Emacs 20.7 以降、または XEmacs 21.4 以降
-- Ruby 1.6 以降 (任意)
+- Ruby 1.8 以降 (任意)
 
 * インストール
 
 $ ./configure
 $ sudo make install
+
+~/.emacs 等に以下の一行を追加してください。
+
+  (autoload 'riece "riece" "Start Riece" t)
 
 XEmacs を使っていて、パッケージとしてインストールしたい場合には、
 "--with-xemacs" オプションを configure スクリプトに与えてください。

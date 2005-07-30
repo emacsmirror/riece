@@ -24,12 +24,16 @@ doc/  - Documentation files.
 * Requirements
 
 - Emacs 20.7 or later / XEmacs 21.4 or later
-- Ruby 1.6 or later (optional)
+- Ruby 1.8 or later (optional)
 
 * Installation
 
 $ ./configure
 $ sudo make install
+
+Add the following line to your Emacs startup file such as ~/.emacs.
+
+  (autoload 'riece "riece" "Start Riece" t)
 
 If you are using XEmacs and want to install as a package, supply
 "--with-xemacs" option to the configure script and use
