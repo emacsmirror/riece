@@ -50,8 +50,8 @@ Free Documentation License".
 @top Riece user's manual
 
 このマニュアルでは、Riece バージョン @value{VERSION} について解説します。
-このマニュアルの他にも、Riece に関する情報は Riece の公式ホームペー
-ジ @uref{http://www.nongnu.org/riece/} から得られるかもしれません。
+このマニュアルの以外に、Riece に関する情報は Riece の公式ホームページ 
+@uref{http://www.nongnu.org/riece/} から得られるかもしれません。
 
 @menu
 * Overview::                    はじめに読んでね
