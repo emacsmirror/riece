@@ -1,3 +1,7 @@
+2005-08-06  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-alias.el (riece-alias-alternate-separator): Set to "@".
+
 2005-07-28  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-debug.el: Don't bind unused variable; prepend time to
