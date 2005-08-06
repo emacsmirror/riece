@@ -378,8 +378,8 @@ IRC コマンドを直接送ります(@code{riece-command-raw})
 保存されます。
 
 起動時には、最初に @file{~/.riece/save} を、次に @file{~/.riece/init}を
-読み込みます。つまり、前回のセッションで @file{~/.riece/save} に保存され
-た内容は、@file{~/.riece/init} の内容で上書きされます。
+読み込みます。つまり、前回起動時に @file{~/.riece/save} に保存された内容
+は、@file{~/.riece/init} の内容で上書きされます。
 
 @node Server settings, Connecting to multiple servers, Startup File, Advanced usage
 @section Server settings
@@ -421,7 +421,7 @@ IRC コマンドを直接送ります(@code{riece-command-raw})
 @item :host
 サーバのホスト名または IP アドレス
 @item :service
-サーバのサービス名またはポート番号 (デフォルトは 6667)
+サーバのサービス名またはポート番号
 @item :nickname
 接続時のニックネーム
 @item :username
@@ -431,7 +431,7 @@ IRC コマンドを直接送ります(@code{riece-command-raw})
 @item :function
 接続用関数
 @item :coding
-コーディングシステム (デフォルトは @code{riece-default-coding-system} の値)
+文字コード
 @end table
 
 @node Connecting to multiple servers, Add-ons, Server settings, Advanced usage
@@ -544,7 +544,7 @@ IRC サーバとの接続を保持
 @samp{riece-url}、 @samp{riece-unread}、 @samp{riece-guess}、
 @samp{riece-history}、 @samp{riece-button}、@samp{riece-menu}、
 @samp{riece-ignore}、@samp{riece-log}、@samp{riece-alias}、
-@samp{riece-ctlseq}、@samp{riece-keyword} はデフォルトで組み込まれています。
+@samp{riece-ctlseq}、@samp{riece-keyword} は標準で組み込まれています。
 
 アドオンを組み込むには @code{riece-addons} を設定します。たとえば 
 @samp{riece-alias} を組み込む場合には、@file{~/.riece/init} に以下のよ
