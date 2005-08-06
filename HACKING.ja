@@ -393,4 +393,4 @@ message の処理が終わった後に呼ばれるフック
 があれば、その後の処理をおこないません。また、その場合には 
 riece-after-<message>-hook も呼び出されません。
 
-フックの引数は RFC2812 の prefix と parameters に相当します。
+フックの引数には RFC2812 の prefix と parameters が渡ります。
