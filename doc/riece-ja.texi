@@ -101,7 +101,7 @@ Riece を起動すると、IRC サーバの名前を聞かれます。公共に利用可能な I
 @item http://freenode.net
 @end itemize
 
-次に、以下のようなメッセージが表示されるかもしれません。
+また、以下のようなメッセージが表示されるかもしれません。
 
 @example
 Nickname "ueno" already in use.  Choose a new one: 
