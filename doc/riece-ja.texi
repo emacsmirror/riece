@@ -199,7 +199,7 @@ Riece: --- ueno #Riece [n]
 $B$P(B @samp{f})
 @end enumerate
 
-@node Commands, Connecting to multiple servers, Indicators, Basic usage
+@node Commands,  , Indicators, Basic usage
 @section Commands
 
 $BJ8>O$rF~NO$7$?%P%C%U%!$O!"%3%^%s%I%P%C%U%!$H8F$P$l!"%3%^%s%I%P%C%U%!$+$i(B
@@ -354,7 +354,7 @@ Riece $B$K8GM-$N@_Dj$O$J$k$Y$/(B @file{~/.riece/init} $B$K=q$/$3$H$r4+$a$^$9!
 $BFI$_9~$_$^$9!#$D$^$j!"A02s$N%;%C%7%g%s$G(B @file{~/.riece/save} $B$KJ]B8$5$l(B
 $B$?FbMF$O!"(B@file{~/.riece/init} $B$NFbMF$G>e=q$-$5$l$^$9!#(B
 
-@node Server settings, Add-ons, Startup File, Advanced usage
+@node Server settings, Connecting to multiple servers, Startup File, Advanced usage
 @section Server settings
 
 $B5/F0;~$K@\B3$9$k(B IRC $B%5!<%P$NL>A0$OJQ?t(B @code{riece-server} $B$G;XDj$7$^$9!#(B
@@ -407,7 +407,7 @@ Riece $B$K8GM-$N@_Dj$O$J$k$Y$/(B @file{~/.riece/init} $B$K=q$/$3$H$r4+$a$^$9!
 $B%3!<%G%#%s%0%7%9%F%`(B ($B%G%U%)%k%H$O(B @code{riece-default-coding-system} $B$NCM(B)
 @end table
 
-@node Connecting to multiple servers,  , Commands, Basic usage
+@node Connecting to multiple servers, Add-ons, Server settings, Advanced usage
 @section Connecting to multiple servers
 
 $BF1;~$KJ#?t$N%5!<%P$K@\B3$9$k<j=g$r0J2<$K<($7$^$9!#(B
@@ -436,7 +436,7 @@ Riece $B$K8GM-$N@_Dj$O$J$k$Y$/(B @file{~/.riece/init} $B$K=q$/$3$H$r4+$a$^$9!
 $BFCDj$N%5!<%P$KBP$7$F!"B3$/%3%^%s%I$rH/9T$7$^$9(B(@code{riece-command-universal-server-name-argument})
 @end table
 
-@node Add-ons,  , Server settings, Advanced usage
+@node Add-ons,  , Connecting to multiple servers, Advanced usage
 @section Add-ons
 
 Riece $B$G$O!"%f!<%6$,?7$?$J5!G=$rDI2C$7!"<+M3$K<h$j30$7$G$-$k$h$&!"%"%I%*(B
