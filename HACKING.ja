@@ -3,128 +3,141 @@
 この文書では、Riece の開発プロセスや内部構造など、開発に必要な情報をま
 とめています。開発に参加していただける方は参考にしてください。
 
-* CVS
+* Development process
+
+** CVS
 
 Riece の開発には CVS を利用しています。公開 CVS サーバから最新版のソー
 スコードを取得するには以下のようにします。
 
+CVS 版のソースコードは、あくまで開発途上のものであり、利用は個人の責任
+でお願いします。CVS 版に関するバグ報告は一切受け付けません。
+
 (1) CVS サーバへのログイン
 
-cvs -d :pserver:anonymous@cvs.m17n.org:/cvs/root login
-CVS password: [CR] # NULL string
+    cvs -d :pserver:anonymous@cvs.m17n.org:/cvs/root login
+    CVS password: [CR] # NULL string
 
 (2) モジュールのチェックアウト
 
-cvs -d :pserver:anonymous@cvs.m17n.org:/cvs/root checkout riece
+    cvs -d :pserver:anonymous@cvs.m17n.org:/cvs/root checkout riece
 
 (3) configure スクリプトの生成
 
-autoreconf -f -i -v
+    autoreconf -f -i -v
 
 この作業には最新の GNU Automake が必要かもしれません。
 
-* Debugging
+** Debug output
 
 変数 riece-debug を t に設定すると、Riece の実行中にデバッグ情報が出力
 されるようになります。デバッグ情報は *Debug* バッファに蓄積されます。
 
-また、IRC サーバとのやりとりが " *IRC*[<サーバ名>]" バッファに蓄積されま
-す。
+また、IRC サーバとのやりとりが " *IRC*<IRC サーバの名前>" バッファに蓄
+積されます。バッファの名前が空白 " " で始まることにご注意ください。
 
-* Modules
+** Bug report
+
+バグ報告は、ツールバーの虫ボタンを押すか、M-x riece-submit-bug-report 
+で作成してください。また、バグ報告の作成の前に riece-debug を t に設定
+する必要があります。
+
+* Internals
+
+** Modules
 
 Riece を構成する elisp モジュールを以下に列挙します。依存関係の上位に
 あるものを先に挙げます。
 
 - riece-globals
-大域変数の定義 
+  大域変数の定義 
 
 - riece-options
-ユーザオプションの定義 
+  ユーザオプションの定義 
 
 - riece-version
-バージョンの定義 
+  バージョンの定義 
 
 - riece-coding
-コーディングシステム関連の関数の定義 
+  コーディングシステム関連の関数の定義 
 
 - riece-complete
-ミニバッファでの補完を助ける関数の定義 
+  ミニバッファでの補完を助ける関数の定義 
 
 - riece-addon
-アドオン管理
+  アドオン管理
 
 - riece-mode
-channel/user のモード管理
+  riece-channel/riece-user オブジェクトのモード管理
 
 - riece-identity
-channel/user object の大域表記を操作する関数の定義 
+  riece-channel/riece-user オブジェクト の大域表記を操作する関数の定義 
 
 - riece-channel
-channel object 関連の定義 
+  riece-channel オブジェクト 関連の定義 
 
 - riece-user
-user object 関連の定義 
+  riece-user オブジェクト 関連の定義 
 
 - riece-misc
-雑多な関数の定義
+  雑多な関数の定義
 
 - riece-signal
-シグナル管理
+  シグナル管理
 
 - riece-layout
-ウィンドウレイアウト管理
+  ウィンドウレイアウト管理
 
 - riece-display
-表示用バッファの管理 
+  表示用バッファの管理 
 
 - riece-server
-IRC サーバとの接続管理 
+  IRC サーバとの接続管理 
 
 - riece-naming
-名前管理
+  チャンネルへのユーザの参加・離脱を管理する mediator
 
 - riece-message
-message object 関連の定義 
+  riece-message オブジェクト 関連の定義 
 
 - riece-filter
-プロセスフィルタのエントリポイント 
+  プロセスフィルタのエントリポイント 
 
 - riece-handle
-通常のメッセージのハンドラ。riece-filter から呼ばれる 
+  通常のメッセージのハンドラ。riece-filter から呼ばれる 
 
 - riece-000
-000番台の numeric reply のハンドラ。riece-filter から呼ばれる 
+  000番台の numeric reply のハンドラ。riece-filter から呼ばれる 
 
 - riece-200
-200番台の numeric reply のハンドラ。riece-filter から呼ばれる 
+  200番台の numeric reply のハンドラ。riece-filter から呼ばれる 
 
 - riece-300
-300番台の numeric reply のハンドラ。riece-filter から呼ばれる 
+  300番台の numeric reply のハンドラ。riece-filter から呼ばれる 
 
 - riece-400
-400番台の numeric reply のハンドラ。riece-filter から呼ばれる 
+  400番台の numeric reply のハンドラ。riece-filter から呼ばれる 
 
 - riece-500
-500番台の numeric reply のハンドラ。riece-filter から呼ばれる 
+  500番台の numeric reply のハンドラ。riece-filter から呼ばれる 
 
 - riece-commands
-コマンドの定義 
+  コマンドの定義 
 
 - riece-irc
-IRC プロトコルインターフェース
+  IRC プロトコルに対応した process-filter などの設定
 
 - riece
-エントリポイント。各バッファのモード定義など 
+  起動時のエントリポイント。各バッファのメジャーモードの設定など
 
-* Namespace management
+** Namespace management
 
 Riece は同時に複数の IRC サーバに接続できるので、IRC サーバ毎に別々の
 名前空間を管理する必要があります。このような名前空間には、IRC サーバと
 の接続プロセスに結び付けられたバッファのローカル変数を介してアクセスし
 ます。
 
-** Obtaining server buffer
+*** Obtaining server buffer
 
 IRC サーバとの接続プロセスを取得するには IRC サーバの名前を知る必要が
 あります。IRC サーバの名前は以下に挙げるいくつかの方法で取得できます。
@@ -141,7 +154,7 @@ riece-server-name がカレントバッファのローカル変数であるならば、既にプ
 こうして取得した IRC サーバの名前を引数に関数 riece-server-process を
 呼出し、サーバのプロセスを取得します。
 
-** Identity
+*** Identity
 
 複数の IRC サーバに接続している場合、チャンネル名やニックネームを大域
 的に区別する必要が生じます。このような名前を表現するのが 
@@ -150,82 +163,82 @@ riece-identity オブジェクトです。
 riece-identity オブジェクトは以下の 2 つの要素をもつベクターです。
 
 - prefix
-チャンネル名やニックネームなど、IRC サーバに固有の名前
+  チャンネル名やニックネームなど、IRC サーバに固有の名前
 - server
-IRC サーバの名前
+  IRC サーバの名前
 
 riece-identity オブジェクトに適用可能な操作には以下のようなものがあります。
 
 - riece-make-identity prefix &optional server
-riece-identity オブジェクトを新規に作成します。server 引数が省略された
-場合には、関数 riece-find-server-name で取得したサーバ名を使います
+  riece-identity オブジェクトを新規に作成します。server 引数が省略された
+  場合には、関数 riece-find-server-name で取得したサーバ名を使います
 
 - riece-identity-prefix identity
-riece-identity オブジェクトから IRC サーバに固有の名前を切り出します。
+  riece-identity オブジェクトから IRC サーバに固有の名前を切り出します。
 
 - riece-identity-server identity
-riece-identity オブジェクトからサーバの名前を切り出します。
+  riece-identity オブジェクトからサーバの名前を切り出します。
 
 - riece-identity-equal ident1 ident2
-2 つの riece-identity オブジェクトが同等であるか調べます。
+  2 つの riece-identity オブジェクトが同等であるか調べます。
 
 - riece-identity-equal-no-server ident1 ident2
-2 つの riece-identity オブジェクトの、IRC サーバに固有の名前が同等であ
-るか調べます。
+  2 つの riece-identity オブジェクトの、IRC サーバに固有の名前が同等であ
+  るか調べます。
 
 - riece-identity-member elt list
-riece-identity オブジェクト elt が list に含まれるか調べます。
+  riece-identity オブジェクト elt が list に含まれるか調べます。
 
-** Channel and user management
+*** Channel and user management
 
 riece-identity オブジェクトから切り出された IRC サーバに固有の名前、す
 なわちチャンネル名ととニックネームにより表わされるチャンネルとユーザの
 実体はそれぞれ riece-channel オブジェクトと riece-user オブジェクトで
 表現されます。
 
-*** Channels
+**** Channels
 
 riece-channel はチャンネルを表すオブジェクトで、以下の要素を持ちます。
 
 - users
-参加しているユーザのニックネームのリスト
+  参加しているユーザのニックネームのリスト
 
 - operators
-オペレータ権限をもつユーザのニックネームのリスト
+  オペレータ権限をもつユーザのニックネームのリスト
 
 - speakers
-発言権をもつユーザのニックネームのリスト
+  発言権をもつユーザのニックネームのリスト
 
 - modes
 チャンネルのモード
 
 - banned
-MODE +b で指定されたパターンの一覧
+  MODE +b で指定されたパターンの一覧
 
 - invited
-MODE +I で指定されたパターンの一覧 
+  MODE +I で指定されたパターンの一覧 
 
 - uninvited
-MODE +e で指定されたパターンの一覧
+  MODE +e で指定されたパターンの一覧
 
-*** Users
+**** Users
 
 riece-user は、IRC に参加しているユーザを表すオブジェクトで、以下の要
 素を持ちます。
 
 - channels
-参加しているチャンネル名のリスト
+  参加しているチャンネル名のリスト
 
 - user-at-host
-"<user>@<host>" の形で与えられるユーザの接続情報
+  "<user>@<host>" の形で与えられるユーザの接続情報
 
 - modes
-ユーザのモード
+  ユーザのモード
 
 - away
-離席中かどうか 
+  離席中かどうか 
 
-*** Naming management
+**** Mediator pattern
 
 チャンネルへのユーザの参加・離脱を管理するために、 riece-naming モジュー
 ルを使います。riece-naming は、デザインパターンでいうところの Mediator 
@@ -237,15 +250,15 @@ riece-naming を介することで、前述の riece-channel, riece-user オブジェ
 riece-naming $Bが提供する主な関数は以下の 3 つです。
 
 - riece-naming-assert-join user-name channel-name
-ユーザがチャンネルに参加したことを表明します
+  ユーザがチャンネルに参加したことを表明します
 
 - riece-naming-assert-part user-name channel-name
-ユーザがチャンネルから離脱したことを表明します 
+  ユーザがチャンネルから離脱したことを表明します 
 
 - riece-naming-assert-rename old-name new-name
-ユーザの名前が変更されたことを表明します 
+  ユーザの名前が変更されたことを表明します 
 
-* Signals
+** Signals
 
 シグナルとは、画面の再描画を効率良く行うために、イベントと描画対象のオ
 ブジェクト(バッファや、モードラインの印)を結び付ける機構です。
@@ -261,91 +274,92 @@ riece-naming が提供する主な関数は以下の 3 つです。
 
 シグナルに応答する処理は、riece-connect-signal を使って定義します。
 
-- riece-connect-signal signal-name slot-function &optional filter-function handback
+- riece-connect-signal signal-name slot-function &optional
+                       filter-function handback
 
-引数 signal-name で指定されたシグナルに応答する関数 slot-function を設
-定します。slot-function に指定された関数は 2 つの引数を取ります。ひと
-つはシグナルで、もう一つは、引数 handback で与えられたオブジェクトがそ
-のまま渡されます。
+  引数 signal-name で指定されたシグナルに応答する関数 slot-function を
+  設定します。slot-function に指定された関数は 2 つの引数を取ります。
+  ひとつはシグナルで、もう一つは、引数 handback で与えられたオブジェク
+  トがそのまま渡されます。
 
-引数 filter-function は、受信したシグナルに応答すべきかどうかを判定す
-る関数です。この関数は引数としてシグナルオブジェクトを受け取り、nil ま
-たは t を返します。返り値が nil の場合には、slot-function は実行されま
-せん。
+  引数 filter-function は、受信したシグナルに応答すべきかどうかを判定
+  する関数です。この関数は引数としてシグナルオブジェクトを受け取り、
+  nil または t を返します。返り値が nil の場合には、slot-function は実
+  行されません。
 
 シグナルオブジェクトにアクセスするには、以下の関数を使います。
 
 - riece-signal-name signal
-シグナルの名前を返します。
+  シグナルの名前を返します。
 
 - riece-signal-args
-シグナルの送信時に与えられた引数を返します。
+  シグナルの送信時に与えられた引数を返します。
 
 現在、以下のシグナルが使用されています。
 
 - channel-list-changed
-参加しているチャンネルの一覧の変化
+  参加しているチャンネルの一覧の変化
 
 - user-list-changed
-チャンネルの参加者一覧の変化
-(引数はチャンネルに相当する riece-identity オブジェクト)
+  チャンネルの参加者一覧の変化
+  (引数はチャンネルに相当する riece-identity オブジェクト)
 
 - channel-switched
-現在のチャンネルを移動
+  現在のチャンネルを移動
 
 - user-joined-channel
-ユーザがチャンネルに参加
-(引数は、ユーザおよびチャンネルに相当する riece-identity オブジェクト)
+  ユーザがチャンネルに参加
+  (引数は、ユーザおよびチャンネルに相当する riece-identity オブジェクト)
 
 - user-left-channel
-ユーザがチャンネルから離脱
-(引数は、ユーザおよびチャンネルに相当する riece-identity オブジェクト)
+  ユーザがチャンネルから離脱
+  (引数は、ユーザおよびチャンネルに相当する riece-identity オブジェクト)
 
 - user-renamed
-ユーザが名前を変更
-(引数は、以前と現在の名前に相当する riece-identity オブジェクト)
+  ユーザが名前を変更
+  (引数は、以前と現在の名前に相当する riece-identity オブジェクト)
 
 - user-away-changed
-ユーザの離席状態の変化
-(引数は、ユーザに相当する riece-identity オブジェクト)
+  ユーザの離席状態の変化
+  (引数は、ユーザに相当する riece-identity オブジェクト)
 
 - user-operator-changed
-ユーザのオペレータ状態の変化
-(引数は、ユーザに相当する riece-identity オブジェクト)
+  ユーザのオペレータ状態の変化
+  (引数は、ユーザに相当する riece-identity オブジェクト)
 
 - channel-topic-changed
-チャンネルのトピックの変化
-(引数は、チャンネルに相当する riece-identity オブジェクト)
+  チャンネルのトピックの変化
+  (引数は、チャンネルに相当する riece-identity オブジェクト)
 
 - channel-modes-changed
-チャンネルのモードの変化
-(引数は、チャンネルに相当する riece-identity オブジェクト)
+  チャンネルのモードの変化
+  (引数は、チャンネルに相当する riece-identity オブジェクト)
 
 - channel-operators-changed
-チャンネルでオペレータ権限を持つユーザの一覧の変化
-(引数は、チャンネルに相当する riece-identity オブジェクト)
+  チャンネルでオペレータ権限を持つユーザの一覧の変化
+  (引数は、チャンネルに相当する riece-identity オブジェクト)
 
 - channel-speakers-changed
-チャンネルで発言権を持つユーザの一覧の変化
-(引数は、チャンネルに相当する riece-identity オブジェクト)
+  チャンネルで発言権を持つユーザの一覧の変化
+  (引数は、チャンネルに相当する riece-identity オブジェクト)
 
 - buffer-freeze-changed
-バッファの凍結状態の変化
-(引数はバッファ)
+  バッファの凍結状態の変化
+  (引数はバッファ)
 
-* Writing add-ons
+** Writing add-ons
 
 アドオンの条件を満たすモジュールは以下の関数を提供します。
 
 - <モジュール名>-requires
-依存する他のアドオン(シンボルのリスト)を返します(オプション)
+  依存する他のアドオン(シンボルのリスト)を返します(オプション)
 
 - <モジュール名>-insinuate
-初期化処理を行います
+  初期化処理を行います
 
-また、アドオンの説明を、変数 <モジュール名>-description に設定すること
-もできます。この文字列は M-x riece-command-list-addons によるアドオン
-の一覧表示に使われます。
+また、アドオンの簡単な説明を、変数 <モジュール名>-description に設定す
+ると良いでしょう。この文字列は C-c ^ (M-x riece-command-list-addons) 
+によるアドオンの一覧で表示されます。
 
 有効化・無効化に対応したアドオンは、変数 <モジュール名>-enabled に現在
 の状態を保持します。この変数の値が nil であれば無効、t であれば有効で
@@ -362,19 +376,19 @@ Riece は起動時に以下の処理を行います。
 (1) 変数 riece-addons に列挙されたモジュールを読み込む
 
 (2) それぞれのモジュールに対し、<モジュール名>-requires が用意
-されていれば呼び出して依存グラフを作る
+    されていれば呼び出し、依存グラフを作る
 
-(3) 依存グラフに対してトポロジカルソート (cf. tsort(1)) を行う
+(3) 依存グラフに対してトポロジカルソートを行う
 
 (4) 得られた依存順序に従って <モジュール名>-insinuate 呼び出す
 
 (5) もし、アドオンが有効化・無効化に対応しており、明示的に無効化されて
-いなければ、<モジュール名>-enable を呼び出す。
+    いなければ、<モジュール名>-enable を呼び出す。
 
 作成したアドオンは、load-path の通ったディレクトリか、
 ~/.riece/addons/ 以下に配置すると組み込み可能な状態になります。
 
-* Handler hooks
+** Handler hooks
 
 Riece には、ハンドラフックと呼ばれる特別な意味を持つフックがあります。
 ハンドラフックは IRC のメッセージを受け取った前後で実行されます。
@@ -383,13 +397,13 @@ Riece には、ハンドラフックと呼ばれる特別な意味を持つフックがあります。
 したものとします。
 
 - riece-<message>-hook
-message が届いたときに最初に呼ばれるフック
+  message が届いたときに最初に呼ばれるフック
 
 - riece-after-<message>-hook
-message の処理が終わった後に呼ばれるフック
+  message の処理が終わった後に呼ばれるフック
 
-ここで riece-<message>-hook の返り値には意味があり、非 nil を返すもの
-があれば、その後の処理をおこないません。また、その場合には 
+ここで riece-<message>-hook の返り値には意味があり、t を返すものがあれ
+ば、その後の処理をおこないません。また、その場合には 
 riece-after-<message>-hook も呼び出されません。
 
 フックの引数には RFC2812 の prefix と parameters が渡ります。
