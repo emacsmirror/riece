@@ -321,10 +321,10 @@ IRC コマンドを直接送ります(@code{riece-command-raw})
 @var{n} + 10番目のチャンネルに移動します(@code{riece-command-switch-to-channel-by-number})
 @item C-c Home
 @findex riece-command-beginning-of-buffer
-チャンネルバッファ、またはダイアログバッファのビューを上端まで移動します(@code{riece-command-beginning-of-buffer})
+チャンネルバッファ、またはダイアログバッファを上端までスクロールします(@code{riece-command-beginning-of-buffer})
 @item C-c $
 @findex riece-command-end-of-buffer
-チャンネルバッファ、またはダイアログバッファのビューを下端まで移動します(@code{riece-command-end-of-buffer})
+チャンネルバッファ、またはダイアログバッファを下端までスクロールします(@code{riece-command-end-of-buffer})
 @item C-c SPC
 @findex riece-command-scroll-up
 チャンネルバッファ、またはダイアログバッファを上方向にスクロールします(@code{riece-command-scroll-up})
