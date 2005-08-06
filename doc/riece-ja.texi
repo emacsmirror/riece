@@ -127,7 +127,6 @@ IRC $B$G$O!";22C<T$rI=$9$N$K(B@emph{$B%K%C%/%M!<%`(B}$B$H8F$P$l$kC;$$8F>N$,
 * Windows::                     $B2hLL9=@.(B
 * Indicators::                  $B<+J,$N>uBV$NI=<((B
 * Commands::                    $B%3%^%s%I$N0lMw(B
-* Connecting to multiple servers::  $BJ#?t$N%5!<%P$K$D$J$0$K$O(B
 @end menu
 
 @node Windows, Indicators, Basic usage, Basic usage
@@ -336,6 +335,7 @@ Riece $B$N%P!<%8%g%s$rI=<($7$^$9!#A0CV0z?t(B (@kbd{C-u}) $B$rM?$($k$H!"$h$j>\
 @menu
 * Startup File::                $B@_Dj%U%!%$%k(B
 * Server settings::             $B%5!<%P$N>\:Y@_Dj(B
+* Connecting to multiple servers::  
 * Add-ons::                     $B%"%I%*%s$H$O(B
 @end menu
 
