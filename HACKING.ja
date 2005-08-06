@@ -10,12 +10,12 @@ Riece $B$N3+H/$K$O(B CVS $B$rMxMQ$7$F$$$^$9!#8x3+(B CVS $B%5!<%P$+$i:G?7HG$
 
 (1) CVS $B%5!<%P$X$N%m%0%$%s(B
 
-cvs -d :pserver:anonymous@@cvs.m17n.org:/cvs/root login
+cvs -d :pserver:anonymous@cvs.m17n.org:/cvs/root login
 CVS password: [CR] # NULL string
 
 (2) $B%b%8%e!<%k$N%A%'%C%/%"%&%H(B
 
-cvs -d :pserver:anonymous@@cvs.m17n.org:/cvs/root checkout riece
+cvs -d :pserver:anonymous@cvs.m17n.org:/cvs/root checkout riece
 
 (3) configure $B%9%/%j%W%H$N@8@.(B
 
@@ -26,8 +26,7 @@ autoreconf -f -i -v
 * Debugging
 
 $BJQ?t(B riece-debug $B$r(B t $B$K@_Dj$9$k$H!"(BRiece $B$N<B9TCf$K%G%P%C%0>pJs$,=PNO(B
-$B$5$l$k$h$&$K$J$j$^$9!#%G%P%C%0>pJs$O(B @samp{*Debug*} $B%P%C%U%!$KC_@Q$5$l(B
-$B$^$9!#(B
+$B$5$l$k$h$&$K$J$j$^$9!#%G%P%C%0>pJs$O(B *Debug* $B%P%C%U%!$KC_@Q$5$l$^$9!#(B
 
 $B$^$?!"(BIRC $B%5!<%P$H$N$d$j$H$j$,(B " *IRC*[<$B%5!<%PL>(B>]" $B%P%C%U%!$KC_@Q$5$l$^(B
 $B$9!#(B
