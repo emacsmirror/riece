@@ -370,8 +370,8 @@ IRC コマンドを直接送ります(@code{riece-command-raw})
 @section Startup file
 
 この章では、設定ファイルについて解説します。Riece の設定は Emacs の設定
-支援機能を用いて @kbd{M-x customize-group riece} で行なえますが、
-Riece に固有の設定はなるべく @file{~/.riece/init} に書くことを勧めます。
+ファイルに書いても良いですが、Riece に固有の設定はなるべく 
+@file{~/.riece/init} に書くことを勧めます。
 
 また、Riece を使い始めると @file{~/.riece/save} というファイルが作成され
 ます。このファイルには前回起動時の設定の一部(ウィンドウ構成等)が自動的に
