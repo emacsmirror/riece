@@ -284,10 +284,10 @@ IRC をやめます(@code{riece-command-quit})
 チャンネルのモードを設定します(@code{riece-command-change-mode})
 @item C-c o
 @findex riece-command-set-operators
-ユーザにオペレータ権限を与えます。前置引数 (@kbd{C-u}) を与えると、ユーザからオペレータ権限を奪います(@code{riece-command-set-operators})
+ユーザにチャンネルの管理者権限を与えます。@kbd{C-u C-c o} では逆に、ユーザからチャンネルの管理者権限を奪います(@code{riece-command-set-operators})
 @item C-c v
 @findex riece-command-set-speakers
-ユーザに発言権を与えます。前置引数 (@kbd{C-u}) を与えると、ユーザから発言権を奪います(@code{riece-command-set-speakers})
+ユーザにチャンネルでの発言権を与えます。@kbd{C-u C-c v} では逆に、ユーザからチャンネルでの発言権を奪います(@code{riece-command-set-speakers})
 @item C-c V
 @findex riece-version
 Riece のバージョンを表示します。(@kbd{C-u C-c V}) で、より詳細な情報を表示します。
@@ -300,25 +300,22 @@ IRC コマンドを直接送ります(@code{riece-command-raw})
 @table @kbd
 @item C-c r
 @findex riece-command-configure-windows
-ウィンドウを再描画します(@code{riece-command-configure-windows})
-@item C-c C-j
+フレーム全体を再描画します(@code{riece-command-configure-windows})
+@item C-c C-j または C-c >
 @findex riece-command-next-channel
-次のチャンネルに移ります(@code{riece-command-next-channel})
+チャンネル一覧で次のチャンネルを選択します(@code{riece-command-next-channel})
 @item C-c <
 @findex riece-command-previous-channel
-前のチャンネルに移ります(@code{riece-command-previous-channel})
-@item C-c >
-@findex riece-command-next-channel
-次のチャンネルに移ります(@code{riece-command-next-channel})
+チャンネル一覧で前のチャンネルを選択します(@code{riece-command-previous-channel})
 @item C-c ^
 @findex riece-command-list-addons
 アドオンの一覧を表示します(@code{riece-command-list-addons})
 @item C-c 数字
 @findex riece-command-switch-to-channel-by-number
-@var{n}番目のチャンネルに移動します(@code{riece-command-switch-to-channel-by-number})
+チャンネル一覧で @var{n}番目のチャンネルを選択します(@code{riece-command-switch-to-channel-by-number})
 @item C-c C-c 数字
 @findex riece-command-switch-to-channel-by-number
-@var{n} + 10番目のチャンネルに移動します(@code{riece-command-switch-to-channel-by-number})
+チャンネル一覧で @var{n} + 10番目のチャンネルを選択します(@code{riece-command-switch-to-channel-by-number})
 @item C-c Home
 @findex riece-command-beginning-of-buffer
 チャンネルバッファ、またはダイアログバッファを上端までスクロールします(@code{riece-command-beginning-of-buffer})
@@ -346,12 +343,12 @@ IRC コマンドを直接送ります(@code{riece-command-raw})
 ユーザリストバッファの表示・非表示を切り替えます(@code{riece-command-toggle-user-list-buffer-mode})
 @item C-c C-t f
 @findex riece-command-toggle-freeze
-チャンネルバッファ、またはダイアログバッファを凍結(スクロールを禁止)しま
+チャンネルバッファ、またはダイアログバッファの自動スクロールを禁止しま
 す(@code{riece-command-toggle-freeze})
 @item C-c C-t o
 @findex riece-command-toggle-own-freeze
-チャンネルバッファ、またはダイアログバッファを、自分が発言するまで凍結し
-ます(@code{riece-command-toggle-own-freeze})
+チャンネルバッファ、またはダイアログバッファを、自分が発言するまで、自動
+スクロールを禁止します(@code{riece-command-toggle-own-freeze})
 @item C-c C-t a
 @findex riece-command-toggle-away
 自分の離席状態を切り替えます(@code{riece-command-toggle-away})
