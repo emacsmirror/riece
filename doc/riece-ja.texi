@@ -67,8 +67,8 @@ Free Documentation License".
 @node Overview, Getting started, Top, Top
 @chapter Overview
 
-Riece は IRC (Internet Relay Chat) でチャットを楽しむためのユーザイン
-ターフェースです。Riece は「りーす」と読みます。
+Riece は IRC (Internet Relay Chat) の世界でチャットを楽しむためのユーザ
+インターフェースです。Riece は「りーす」と読みます。
 
 Riece の主な特長は以下の通りです。
 
@@ -111,8 +111,8 @@ Nickname "ueno" already in use.  Choose a new one:
 @end example
 
 IRC では、参加者を表すのに@emph{ニックネーム}と呼ばれる短い呼称が使われ
-ます。もしニックネームが他の誰かに使用されている場合、別のニックネームを
-選ぶ必要があります。
+ます。もし希望のニックネームが他の誰かに使用されている場合、別のニックネー
+ムを選ぶ必要があります。
 
 無事に接続できたら、次は会話をしてみましょう。IRC では@emph{チャンネル}
 と呼ばれる仮想的な会議室に参加して会話を行ないます。チャンネルに入るには 
