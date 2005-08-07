@@ -38,7 +38,7 @@ CVS $BHG$N%=!<%9%3!<%I$O!"$"$/$^$G3+H/ES>e$N$b$N$G$"$j!"MxMQ$O8D?M$N@UG$(B
 
 ** Bug report
 
-$B%P%0Js9p$O!"%D!<%k%P!<$NCn%\%?%s$r2!$9$+!"(BM-x riece-submit-bug-report 
+$B%P%0Js9p$O!"%D!<%k%P!<$NCn%\%?%s$r2!$9$+!"(BM-x riece-submit-bug-report
 $B$G:n@.$7$F$/$@$5$$!#$^$?!"%P%0Js9p$N:n@.$NA0$K(B riece-debug $B$r(B t $B$K@_Dj(B
 $B$9$kI,MW$,$"$j$^$9!#(B
 
@@ -50,19 +50,19 @@ Riece $B$r9=@.$9$k(B elisp $B%b%8%e!<%k$r0J2<$KNs5s$7$^$9!#0MB84X78$N>e0L$K(
 $B$"$k$b$N$r@h$K5s$2$^$9!#(B
 
 - riece-globals
-  $BBg0hJQ?t$NDj5A(B 
+  $BBg0hJQ?t$NDj5A(B
 
 - riece-options
-  $B%f!<%6%*%W%7%g%s$NDj5A(B 
+  $B%f!<%6%*%W%7%g%s$NDj5A(B
 
 - riece-version
-  $B%P!<%8%g%s$NDj5A(B 
+  $B%P!<%8%g%s$NDj5A(B
 
 - riece-coding
-  $B%3!<%G%#%s%0%7%9%F%`4XO"$N4X?t$NDj5A(B 
+  $B%3!<%G%#%s%0%7%9%F%`4XO"$N4X?t$NDj5A(B
 
 - riece-complete
-  $B%_%K%P%C%U%!$G$NJd40$r=u$1$k4X?t$NDj5A(B 
+  $B%_%K%P%C%U%!$G$NJd40$r=u$1$k4X?t$NDj5A(B
 
 - riece-addon
   $B%"%I%*%s4IM}(B
@@ -71,13 +71,13 @@ Riece $B$r9=@.$9$k(B elisp $B%b%8%e!<%k$r0J2<$KNs5s$7$^$9!#0MB84X78$N>e0L$K(
   riece-channel/riece-user $B%*%V%8%'%/%H$N%b!<%I4IM}(B
 
 - riece-identity
-  riece-channel/riece-user $B%*%V%8%'%/%H(B $B$NBg0hI=5-$rA`:n$9$k4X?t$NDj5A(B 
+  riece-channel/riece-user $B%*%V%8%'%/%H(B $B$NBg0hI=5-$rA`:n$9$k4X?t$NDj5A(B
 
 - riece-channel
-  riece-channel $B%*%V%8%'%/%H(B $B4XO"$NDj5A(B 
+  riece-channel $B%*%V%8%'%/%H(B $B4XO"$NDj5A(B
 
 - riece-user
-  riece-user $B%*%V%8%'%/%H(B $B4XO"$NDj5A(B 
+  riece-user $B%*%V%8%'%/%H(B $B4XO"$NDj5A(B
 
 - riece-misc
   $B;(B?$J4X?t$NDj5A(B
@@ -89,40 +89,40 @@ Riece $B$r9=@.$9$k(B elisp $B%b%8%e!<%k$r0J2<$KNs5s$7$^$9!#0MB84X78$N>e0L$K(
   $B%&%#%s%I%&%l%$%"%&%H4IM}(B
 
 - riece-display
-  $BI=<(MQ%P%C%U%!$N4IM}(B 
+  $BI=<(MQ%P%C%U%!$N4IM}(B
 
 - riece-server
-  IRC $B%5!<%P$H$N@\B34IM}(B 
+  IRC $B%5!<%P$H$N@\B34IM}(B
 
 - riece-naming
   $B%A%c%s%M%k$X$N%f!<%6$N;22C!&N%C&$r4IM}$9$k(B mediator
 
 - riece-message
-  riece-message $B%*%V%8%'%/%H(B $B4XO"$NDj5A(B 
+  riece-message $B%*%V%8%'%/%H(B $B4XO"$NDj5A(B
 
 - riece-filter
-  $B%W%m%;%9%U%#%k%?$N%(%s%H%j%]%$%s%H(B 
+  $B%W%m%;%9%U%#%k%?$N%(%s%H%j%]%$%s%H(B
 
 - riece-handle
-  $BDL>o$N%a%C%;!<%8$N%O%s%I%i!#(Briece-filter $B$+$i8F$P$l$k(B 
+  $BDL>o$N%a%C%;!<%8$N%O%s%I%i!#(Briece-filter $B$+$i8F$P$l$k(B
 
 - riece-000
-  000$BHVBf$N(B numeric reply $B$N%O%s%I%i!#(Briece-filter $B$+$i8F$P$l$k(B 
+  000$BHVBf$N(B numeric reply $B$N%O%s%I%i!#(Briece-filter $B$+$i8F$P$l$k(B
 
 - riece-200
-  200$BHVBf$N(B numeric reply $B$N%O%s%I%i!#(Briece-filter $B$+$i8F$P$l$k(B 
+  200$BHVBf$N(B numeric reply $B$N%O%s%I%i!#(Briece-filter $B$+$i8F$P$l$k(B
 
 - riece-300
-  300$BHVBf$N(B numeric reply $B$N%O%s%I%i!#(Briece-filter $B$+$i8F$P$l$k(B 
+  300$BHVBf$N(B numeric reply $B$N%O%s%I%i!#(Briece-filter $B$+$i8F$P$l$k(B
 
 - riece-400
-  400$BHVBf$N(B numeric reply $B$N%O%s%I%i!#(Briece-filter $B$+$i8F$P$l$k(B 
+  400$BHVBf$N(B numeric reply $B$N%O%s%I%i!#(Briece-filter $B$+$i8F$P$l$k(B
 
 - riece-500
-  500$BHVBf$N(B numeric reply $B$N%O%s%I%i!#(Briece-filter $B$+$i8F$P$l$k(B 
+  500$BHVBf$N(B numeric reply $B$N%O%s%I%i!#(Briece-filter $B$+$i8F$P$l$k(B
 
 - riece-commands
-  $B%3%^%s%I$NDj5A(B 
+  $B%3%^%s%I$NDj5A(B
 
 - riece-irc
   IRC $B%W%m%H%3%k$KBP1~$7$?(B process-filter $B$J$I$N@_Dj(B
@@ -157,7 +157,7 @@ riece-server-name $B$,%+%l%s%H%P%C%U%!$N%m!<%+%kJQ?t$G$"$k$J$i$P!"4{$K%W(B
 *** Identity
 
 $BJ#?t$N(B IRC $B%5!<%P$K@\B3$7$F$$$k>l9g!"%A%c%s%M%kL>$d%K%C%/%M!<%`$rBg0h(B
-$BE*$K6hJL$9$kI,MW$,@8$8$^$9!#$3$N$h$&$JL>A0$rI=8=$9$k$N$,(B 
+$BE*$K6hJL$9$kI,MW$,@8$8$^$9!#$3$N$h$&$JL>A0$rI=8=$9$k$N$,(B
 riece-identity $B%*%V%8%'%/%H$G$9!#(B
 
 riece-identity $B%*%V%8%'%/%H$O0J2<$N(B 2 $B$D$NMWAG$r$b$D%Y%/%?!<$G$9!#(B
@@ -216,7 +216,7 @@ riece-channel $B$O%A%c%s%M%k$rI=$9%*%V%8%'%/%H$G!"0J2<$NMWAG$r;}$A$^$9!#(B
   MODE +b $B$G;XDj$5$l$?%Q%?!<%s$N0lMw(B
 
 - invited
-  MODE +I $B$G;XDj$5$l$?%Q%?!<%s$N0lMw(B 
+  MODE +I $B$G;XDj$5$l$?%Q%?!<%s$N0lMw(B
 
 - uninvited
   MODE +e $B$G;XDj$5$l$?%Q%?!<%s$N0lMw(B
@@ -236,12 +236,12 @@ riece-user $B$O!"(BIRC $B$K;22C$7$F$$$k%f!<%6$rI=$9%*%V%8%'%/%H$G!"0J2<$NMW(
   $B%f!<%6$N%b!<%I(B
 
 - away
-  $BN%@JCf$+$I$&$+(B 
+  $BN%@JCf$+$I$&$+(B
 
 **** Mediator pattern
 
 $B%A%c%s%M%k$X$N%f!<%6$N;22C!&N%C&$r4IM}$9$k$?$a$K!"(B riece-naming $B%b%8%e!<(B
-$B%k$r;H$$$^$9!#(Briece-naming $B$O!"%G%6%$%s%Q%?!<%s$G$$$&$H$3$m$N(B Mediator 
+$B%k$r;H$$$^$9!#(Briece-naming $B$O!"%G%6%$%s%Q%?!<%s$G$$$&$H$3$m$N(B Mediator
 $B%Q%?!<%s$KAjEv$9$k$b$N$G$9!#(B
 
 riece-naming $B$r2p$9$k$3$H$G!"A0=R$N(B riece-channel, riece-user $B%*%V%8%'(B
@@ -253,10 +253,10 @@ riece-naming $B$,Ds6!$9$k<g$J4X?t$O0J2<$N(B 3 $B$D$G$9!#(B
   $B%f!<%6$,%A%c%s%M%k$K;22C$7$?$3$H$rI=L@$7$^$9(B
 
 - riece-naming-assert-part user-name channel-name
-  $B%f!<%6$,%A%c%s%M%k$+$iN%C&$7$?$3$H$rI=L@$7$^$9(B 
+  $B%f!<%6$,%A%c%s%M%k$+$iN%C&$7$?$3$H$rI=L@$7$^$9(B
 
 - riece-naming-assert-rename old-name new-name
-  $B%f!<%6$NL>A0$,JQ99$5$l$?$3$H$rI=L@$7$^$9(B 
+  $B%f!<%6$NL>A0$,JQ99$5$l$?$3$H$rI=L@$7$^$9(B
 
 ** Signals
 
@@ -358,7 +358,7 @@ riece-naming $B$,Ds6!$9$k<g$J4X?t$O0J2<$N(B 3 $B$D$G$9!#(B
   $B=i4|2==hM}$r9T$$$^$9(B
 
 $B$^$?!"%"%I%*%s$N4JC1$J@bL@$r!"JQ?t(B <$B%b%8%e!<%kL>(B>-description $B$K@_Dj$9(B
-$B$k$HNI$$$G$7$g$&!#$3$NJ8;zNs$O(B C-c ^ (M-x riece-command-list-addons) 
+$B$k$HNI$$$G$7$g$&!#$3$NJ8;zNs$O(B C-c ^ (M-x riece-command-list-addons)
 $B$K$h$k%"%I%*%s$N0lMw$GI=<($5$l$^$9!#(B
 
 $BM-8z2=!&L58z2=$KBP1~$7$?%"%I%*%s$O!"JQ?t(B <$B%b%8%e!<%kL>(B>-enabled $B$K8=:_(B
@@ -403,7 +403,7 @@ Riece $B$K$O!"%O%s%I%i%U%C%/$H8F$P$l$kFCJL$J0UL#$r;}$D%U%C%/$,$"$j$^$9!#(B
   message $B$N=hM}$,=*$o$C$?8e$K8F$P$l$k%U%C%/(B
 
 $B$3$3$G(B riece-<message>-hook $B$NJV$jCM$K$O0UL#$,$"$j!"(Bt $B$rJV$9$b$N$,$"$l(B
-$B$P!"$=$N8e$N=hM}$r$*$3$J$$$^$;$s!#$^$?!"$=$N>l9g$K$O(B 
+$B$P!"$=$N8e$N=hM}$r$*$3$J$$$^$;$s!#$^$?!"$=$N>l9g$K$O(B
 riece-after-<message>-hook $B$b8F$S=P$5$l$^$;$s!#(B
 
 $B%U%C%/$N0z?t$K$O(B RFC2812 $B$N(B prefix $B$H(B parameters $B$,EO$j$^$9!#(B
