@@ -166,6 +166,7 @@ If optional argument SAFE is nil, overwrite previous definitions."
     "f" riece-command-finger
     "\C-tf" riece-command-toggle-freeze
     "\C-to" riece-command-toggle-own-freeze
+    "\C-tO" riece-command-toggle-others-buffer-mode
     "\C-tu" riece-command-toggle-user-list-buffer-mode
     "\C-tc" riece-command-toggle-channel-buffer-mode
     "\C-tC" riece-command-toggle-channel-list-buffer-mode

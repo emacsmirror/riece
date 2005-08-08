@@ -154,11 +154,13 @@ This function is used by \"default\" layout."
 		(set-window-buffer (selected-window)
 				   riece-command-buffer)
 		(select-window rest-window)
-		(set-window-buffer (split-window rest-window)
-				   riece-others-buffer)
+		(if riece-others-buffer-mode
+		    (set-window-buffer (split-window rest-window)
+				       riece-others-buffer))
 		(set-window-buffer (selected-window)
 				   riece-channel-buffer))
-	    (if (eq vpos 'middle)
+	    (if (and (eq vpos 'middle)
+		     riece-others-buffer-mode)
 		(let ((rest-window (split-window)))
 		  (set-window-buffer (selected-window)
 				     riece-channel-buffer)
@@ -167,10 +169,14 @@ This function is used by \"default\" layout."
 		  (set-window-buffer rest-window
 				     riece-command-buffer))
 	      (let ((rest-window (split-window nil (- (window-height) 4))))
-		(set-window-buffer (selected-window)
-				   riece-others-buffer)
-		(set-window-buffer (split-window)
-				   riece-channel-buffer)
+		(if riece-others-buffer-mode
+		    (progn
+		      (set-window-buffer (selected-window)
+					 riece-others-buffer)
+		      (set-window-buffer (split-window)
+					 riece-channel-buffer))
+		  (set-window-buffer (selected-window)
+				     riece-channel-buffer))
 		(set-window-buffer rest-window
 				   riece-command-buffer)))))
       (if (eq vpos 'bottom)

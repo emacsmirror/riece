@@ -39,7 +39,9 @@
 (defcustom riece-saved-forms
   '(riece-server-alist
     riece-channel-buffer-mode
+    riece-others-buffer-mode
     riece-user-list-buffer-mode
+    riece-channel-list-buffer-mode
     riece-layout)
   "Variables saved after each session is completed."
   :type 'string
@@ -239,6 +241,11 @@ way is to put Riece variables on .emacs or file loaded from there."
 
 (defcustom riece-channel-buffer-mode t
   "When non-nil, Riece will display a channel buffer."
+  :type 'boolean
+  :group 'riece-looks)
+
+(defcustom riece-others-buffer-mode t
+  "When non-nil, Riece will display an \"*Others*\" buffer."
   :type 'boolean
   :group 'riece-looks)
 
