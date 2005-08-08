@@ -87,8 +87,11 @@ Riece の主な特長は以下の通りです。
 Riece を起動する手順は次の通りです。
 
 @enumerate
-@item @kbd{M-x load-library riece}
-@item @kbd{M-x riece}
+@item
+@kbd{M-x load-library riece}
+
+@item
+@kbd{M-x riece}
 @end enumerate
 
 もし (1) で @samp{Cannot open load file: riece} のエラーが発生する場合に
@@ -633,10 +636,14 @@ IRC サーバとの接続を保持
 この設定例では、チャンネル一覧の並び順は次のようになります。
 
 @enumerate
-@item #Riece
-@item #emacsen
-@item なし
-@item #debianjp
+@item
+#Riece
+@item
+#emacsen
+@item
+なし
+@item
+#debianjp
 @end enumerate
 
 3 番目のチャンネルが空席となっていることにご注意ください。新たなチャンネ
