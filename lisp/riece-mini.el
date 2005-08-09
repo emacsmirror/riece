@@ -61,14 +61,14 @@
 (defconst riece-mini-description
   "Send arrival messages to minibuffer")
 
-(defmacro riece-mini-message-no-log (string &rest args)
+(defun riece-mini-message-no-log (string &rest args)
   "Like `message', except that message logging is disabled."
   (if (featurep 'xemacs)
       (if args
-	  `(display-message 'no-log (format ,string ,@args))
-	`(display-message 'no-log ,string))
-    `(let (message-log-max)
-       (message ,string ,@args))))
+	  (display-message 'no-log (apply #'format string args))
+	(display-message 'no-log string))
+    (let (message-log-max)
+      (apply #'message string args))))
 
 (defun riece-mini-display-message-function (message)
   "Show arrival messages to minibuffer."
@@ -141,7 +141,7 @@ If twice (C-u C-u), then ask the channel."
 
 (defun riece-mini-requires ()
   (if (memq 'riece-biff riece-addons)
- '(riece-biff)))
+      '(riece-biff)))
 
 (defun riece-mini-insinuate ()
   (add-hook 'riece-after-display-message-functions

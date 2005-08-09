@@ -1,3 +1,9 @@
+2005-08-09  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-mini.el (riece-mini-message-no-log): Defined as a
+	function.
+	(riece-mini-requires): Fixed indent.
+
 2005-08-08  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece.el (riece-dialogue-mode-map): Bind
