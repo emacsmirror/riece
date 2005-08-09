@@ -394,14 +394,13 @@ Riece は起動時に以下の処理を行います。
 Riece には、ハンドラフックと呼ばれる特別な意味を持つフックがあります。
 ハンドラフックは IRC のメッセージを受け取った前後で実行されます。
 
-説明のために message を IRC プロトコルのメッセージの種類を全て小文字に
-したものとします。
+例えば、PRIVMSG に関しては以下の二つのフックが呼ばれます。
 
-- riece-<message>-hook
-  message が届いたときに最初に呼ばれるフック
+- riece-privmsg-hook
+  PRIVMSG メッセージが届いたときに最初に呼ばれるフック
 
-- riece-after-<message>-hook
-  message の処理が終わった後に呼ばれるフック
+- riece-after-privmsg-hook
+  PRIVMSG メッセージの処理が終わった後に呼ばれるフック
 
 ここで riece-<message>-hook の返り値には意味があり、t を返すものがあれ
 ば、その後の処理をおこないません。また、その場合には
