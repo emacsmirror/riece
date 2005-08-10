@@ -1,5 +1,6 @@
 2005-08-10  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-ruby.el: New file.
 	* rubyserv.rb: Rewrite.
 
 2005-08-09  Daiki Ueno  <ueno@unixuser.org>

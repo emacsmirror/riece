@@ -1,11 +1,10 @@
 # A simple IPC server executing Ruby programs.
 
 require 'thread'
-require 'stringio'
 
 class RubyServ
   def initialize
-    @buf = StringIO.new
+    @buf = ''
     @que = Queue.new
     @thr = Hash.new
   end
@@ -13,7 +12,7 @@ class RubyServ
   def dispatch(line)
     case line.chomp
     when /\AD /
-      @buf << unescape($')
+      @buf << $'
     when /\A(\S+)\s*/
       c = $1
       r = $'
@@ -63,6 +62,7 @@ class RubyServ
       return
     end
     code = deq_data unless code
+    p code
     puts("OK\r\n")
     @thr[name] = Thread.current
     Thread.current[:rubyserv_name] = name
@@ -73,7 +73,7 @@ class RubyServ
       Thread.current[:rubyserv_error] = true
       Thread.current[:rubyserv_response] = e
     end
-    puts("# exited #{name}\r\n")
+    puts("# exit #{name}\r\n")
   end
 
   def dispatch_poll(c, r)
@@ -81,14 +81,14 @@ class RubyServ
     if !thr
       puts("ERR 105 Parameter error: no such name \"#{r}\"\r\n")
     elsif thr.alive?
-      puts("S running\r\n")
+      puts("S program running\r\n")
       puts("OK\r\n")
     else
       @thr.delete(r)
       if thr[:rubyserv_error]
-        puts("S exited\r\n")
+        puts("S program exited\r\n")
       else
-        puts("S finished\r\n")
+        puts("S program finished\r\n")
       end
       if d = thr[:rubyserv_response]
         send_data(d.to_s)
@@ -119,7 +119,9 @@ class RubyServ
   end
 
   def enq_data
-    @que.enq(@buf.string)
+    d = unescape(@buf)
+    @buf = ''
+    @que.enq(d)
   end
 
   def deq_data
