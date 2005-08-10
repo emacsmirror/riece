@@ -1,7 +1,4 @@
-# A simple IPC server executing arbitrary Ruby program.
-
-# The protocol is based on Assuan protocol of GnuPG.
-# http://www.gnupg.org/(en)/related_software/libassuan/index.html
+# A simple IPC server executing Ruby programs.
 
 require 'thread'
 require 'stringio'
@@ -10,6 +7,7 @@ class RubyServ
   def initialize
     @buf = StringIO.new
     @que = Queue.new
+    @thr = Hash.new
   end
 
   def dispatch(line)
@@ -59,21 +57,43 @@ class RubyServ
   end
 
   def dispatch_eval(c, r)
-    r = deq_data if r.empty?
-    open('|-') do |f|
-      if f
-        d = f.read
-        Process.wait
-        send_data(d) if d
-        if $?.success?
-          puts("OK\r\n")
-        else
-          puts("ERR #{$?.exitstatus}\r\n")
-        end
+    name, code = r.split(/\s+/, 2)
+    if @thr.include?(name) && @thr[name].alive?
+      puts("ERR 105 Parameter error: \"#{name}\" is already in use\r\n")
+      return
+    end
+    code = deq_data unless code
+    puts("OK\r\n")
+    @thr[name] = Thread.current
+    Thread.current[:rubyserv_name] = name
+    begin
+      Thread.current[:rubyserv_error] = false
+      Thread.current[:rubyserv_response] = eval(code)
+    rescue Exception => e
+      Thread.current[:rubyserv_error] = true
+      Thread.current[:rubyserv_response] = e
+    end
+    puts("# exited #{name}\r\n")
+  end
+
+  def dispatch_poll(c, r)
+    thr = @thr[r]
+    if !thr
+      puts("ERR 105 Parameter error: no such name \"#{r}\"\r\n")
+    elsif thr.alive?
+      puts("S running\r\n")
+      puts("OK\r\n")
+    else
+      @thr.delete(r)
+      if thr[:rubyserv_error]
+        puts("S exited\r\n")
       else
-        eval(r)
-        exit
+        puts("S finished\r\n")
       end
+      if d = thr[:rubyserv_response]
+        send_data(d.to_s)
+      end
+      puts("OK\r\n")
     end
   end
 
@@ -83,6 +103,10 @@ class RubyServ
 
   def unescape(s)
     s.gsub(/%([0-9A-Z][0-9A-Z])/, ['\1'].pack('H*'))
+  end
+
+  def output(s)
+    puts("# output #{Thread.current[:rubyserv_name]} #{s}\r\n")
   end
 
   def send_data(d)

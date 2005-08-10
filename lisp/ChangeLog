@@ -1,3 +1,7 @@
+2005-08-10  Daiki Ueno  <ueno@unixuser.org>
+
+	* rubyserv.rb: Rewrite.
+
 2005-08-09  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-mini.el (riece-mini-message-no-log): Defined as a
