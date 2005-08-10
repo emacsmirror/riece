@@ -62,7 +62,6 @@ class RubyServ
       return
     end
     code = deq_data unless code
-    p code
     puts("OK\r\n")
     @thr[name] = Thread.current
     Thread.current[:rubyserv_name] = name
@@ -71,7 +70,7 @@ class RubyServ
       Thread.current[:rubyserv_response] = eval(code)
     rescue Exception => e
       Thread.current[:rubyserv_error] = true
-      Thread.current[:rubyserv_response] = e
+      Thread.current[:rubyserv_response] = e.to_s.sub(/\A.*?\n/m, '')
     end
     puts("# exit #{name}\r\n")
   end
