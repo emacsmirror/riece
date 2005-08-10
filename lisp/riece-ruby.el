@@ -22,6 +22,18 @@
 ;; Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 ;; Boston, MA 02111-1307, USA.
 
+;;; Commentary:
+
+;; (riece-ruby-execute "t1" "sleep 30")
+;;
+;; (riece-ruby-execute "t2" "1 + 1")
+;;
+;; (riece-ruby-inspect "t1")
+;; => ((OK nil) nil "running")
+;;
+;; (riece-ruby-inspect "t2")
+;; => ((OK nil) "2" "finished")
+
 ;;; Code:
 
 (defvar riece-ruby-command "ruby"
