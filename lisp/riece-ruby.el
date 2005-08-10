@@ -1,4 +1,4 @@
-;;; riece-ruby.el --- interact with ruby interpreter
+;;; riece-ruby.el --- interact with Ruby interpreter
 ;; Copyright (C) 1998-2005 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>
@@ -24,12 +24,16 @@
 
 ;;; Commentary:
 
-;; (riece-ruby-execute "t1" "sleep 30")
-;;
+;; riece-ruby.el is a library to interact with the Ruby interpreter.
+;; It supports concurrent execution of Ruby programs in a single
+;; session.  For example:
+;; 
+;; (riece-ruby-execute "t1" "sleep 30"); returns immediately
+;; => nil
 ;; (riece-ruby-execute "t2" "1 + 1")
-;;
+;; => nil
 ;; (riece-ruby-execute "t3" "\"")
-;;
+;; => nil
 ;; (riece-ruby-inspect "t1")
 ;; => ((OK nil) nil "running")
 ;;
@@ -39,7 +43,6 @@
 ;; (riece-ruby-inspect "t3")
 ;; => ((OK nil) "(eval):1:in `dispatch_eval': compile error
 ;; (eval):1: unterminated string meets end of file" "exited")
-
 
 ;;; Code:
 
