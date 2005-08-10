@@ -30,15 +30,19 @@
 ;; 
 ;; (riece-ruby-execute "t1" "sleep 30"); returns immediately
 ;; => nil
+;;
 ;; (riece-ruby-execute "t2" "1 + 1")
 ;; => nil
+;;
 ;; (riece-ruby-execute "t3" "\"")
 ;; => nil
 ;;
 ;; (riece-ruby-inspect "t1")
 ;; => ((OK nil) nil "running")
+;;
 ;; (riece-ruby-inspect "t2")
 ;; => ((OK nil) "2" "finished")
+;;
 ;; (riece-ruby-inspect "t3")
 ;; => ((OK nil) "(eval):1:in `dispatch_eval': compile error
 ;; (eval):1: unterminated string meets end of file" "exited")
