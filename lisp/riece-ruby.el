@@ -3,7 +3,7 @@
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>
 ;; Created: 1998-09-28
-;; Keywords: IRC, riece
+;; Keywords: IRC, riece, Ruby
 
 ;; This file is part of Riece.
 
