@@ -24,7 +24,7 @@
 
 ;;; Commentary:
 
-;; riece-ruby.el is a library to interact with the Ruby interpreter.
+;; riece-ruby.el is a library to interact with Ruby interpreter.
 ;; It supports concurrent execution of Ruby programs in a single
 ;; session.  For example:
 ;; 
@@ -49,7 +49,7 @@
 ;;; Code:
 
 (defgroup riece-ruby nil
-  "Interact with the Ruby interpreter."
+  "Interact with Ruby interpreter."
   :group 'riece)
 
 (defcustom riece-ruby-command "ruby"
@@ -62,7 +62,7 @@
 assumed that the file is in the same directory of this file.")
 
 (defvar riece-ruby-process nil
-  "Process object of the Ruby interpreter.")
+  "Process object of Ruby interpreter.")
 
 (defvar riece-ruby-lock nil
   "Lock for waiting server response.
