@@ -28,6 +28,7 @@
 (require 'riece-channel)
 (require 'riece-identity)
 (require 'riece-ctcp)			;for riece-ctcp-additional-clientinfo
+(require 'riece-ruby)
 
 (defgroup riece-rdcc nil
   "DCC implementation using ruby"
@@ -40,13 +41,9 @@ Only used for sending files."
   :type 'string
   :group 'riece-rdcc)
 
-(defcustom riece-rdcc-ruby-command "ruby"
-  "Command name for Ruby interpreter."
-  :type 'string
-  :group 'riece-rdcc)
-
 (defcustom riece-rdcc-send-program
   '("\
+require 'socket'
 address = " address "
 unless address
   sock = UDPSocket.new
@@ -54,15 +51,14 @@ unless address
   address = sock.getsockname[4 .. 7].unpack('CCCC').join('.')
 end
 server = TCPServer.new(address, 0)
-puts(\"#{server.addr[3].split(/\\./).collect{|c| c.to_i}.pack('CCCC').unpack('N')[0]} #{server.addr[1]}\")
-$stdout.flush
+output(\"#{server.addr[3].split(/\\./).collect{|c| c.to_i}.pack('CCCC').unpack('N')[0]} #{server.addr[1]}\")
 session = server.accept
 if session
   total = 0
   File.open(" file ") {|file|
     while (bytes = file.read(" block-size "))
       total += bytes.length
-      puts(total)
+      output(total)
       session.write(bytes)
       begin
         buf = session.read(4)
@@ -77,9 +73,8 @@ end
   :group 'riece-rdcc)
 
 (defcustom riece-rdcc-decode-address-program
-  '("\
-puts(\"#{" address " >> 24 & 0xFF}.#{" address " >> 16 & 0xFF}.#{"
-    address " >> 8 & 0xFF}.#{" address " & 0xFF}\")")
+  '("\"#{" address " >> 24 & 0xFF}.#{" address " >> 16 & 0xFF}.#{"
+    address " >> 8 & 0xFF}.#{" address " & 0xFF}\"")
   "Ruby program to numeric IP address."
   :type 'list
   :group 'riece-rdcc)
@@ -111,34 +106,31 @@ puts(\"#{" address " >> 24 & 0xFF}.#{" address " >> 16 & 0xFF}.#{"
 (defvar temporary-file-directory)
 (defvar jka-compr-compression-info-list)
 (defvar jam-zcat-filename-list)
-(defun riece-rdcc-substitute-variables (program variable value)
-  (setq program (copy-sequence program))
-  (let ((pointer program))
-    (while pointer
-      (setq pointer (memq variable program))
-      (if pointer
-	  (setcar pointer value)))
-    program))
 
-(defun riece-rdcc-server-filter (process input)
-  (save-excursion
-    (set-buffer (process-buffer process))
-    (goto-char (point-max))
-    (insert input)
-    (goto-char (point-min))
-    (while (and (not (eobp))
-		(looking-at "\\([0-9]+\\)\n"))
-      (message "Sending %s...(%s/%d)"
-	       riece-rdcc-request-file
-	       (match-string 1) riece-rdcc-request-size)
-      (forward-line))
-    (unless (eobp)
-      (delete-region (point-min) (point)))))
+(defun riece-rdcc-output-handler (name output)
+  (if (string-match "\\([0-9]+\\) \\([0-9]+\\)" output)
+      (let ((address (match-string 1 output))
+	    (port (match-string 2 output)))
+	(riece-send-string
+	 (format "PRIVMSG %s :\1DCC SEND %s %s %s %d\1\r\n"
+		 (riece-identity-prefix
+		  (riece-ruby-property name 'riece-rdcc-request-user))
+		 (file-name-nondirectory
+		  (riece-ruby-property name 'riece-rdcc-request-file))
+		 address port
+		 (riece-ruby-property name 'riece-rdcc-request-size)))))
+  (riece-ruby-set-output-handler name #'riece-rdcc-output-handler-2))
 
-(defun riece-rdcc-server-sentinel (process status)
-  (with-current-buffer (process-buffer process)
-    (message "Sending %s...done" riece-rdcc-request-file))
-  (kill-buffer (process-buffer process)))
+(defun riece-rdcc-output-handler-2 (name output)
+  (message "Sending %s...(%s/%d)"
+	   (riece-ruby-property name 'riece-rdcc-request-file)
+	   (string-to-number output)
+	   (riece-ruby-property name 'riece-rdcc-request-size)))
+
+(defun riece-rdcc-exit-handler (name)
+  (message "Sending %s...done"
+	   (riece-ruby-property name 'riece-rdcc-request-file))
+  (riece-ruby-clear name))
 
 (defun riece-command-dcc-send (user file)
   (interactive
@@ -147,51 +139,25 @@ puts(\"#{" address " >> 24 & 0xFF}.#{" address " >> 16 & 0xFF}.#{"
 	    "User: "
 	    (riece-get-users-on-server (riece-current-server-name)))
 	   (expand-file-name (read-file-name "File: ")))))
-  (let* ((process-connection-type nil)
-	 (process (start-process "DCC" (generate-new-buffer " *DCC*")
-				 "ruby" "-rsocket")))
-    (process-send-string process
-			 (apply #'concat
-				(riece-rdcc-substitute-variables
-				 (riece-rdcc-substitute-variables
-				  (riece-rdcc-substitute-variables
-				   riece-rdcc-send-program
-				   'address
-				   (if riece-rdcc-server-address
-				       (concat "'" riece-rdcc-server-address
-					       "'")
-				     "nil"))
-				  'file
-				  (concat "'" file "'"))
-				 'block-size
-				 (number-to-string riece-rdcc-block-size))))
-    (process-send-eof process)
-    (save-excursion
-      (set-buffer (process-buffer process))
-      (while (and (eq (process-status process) 'run)
-		  (progn
-		    (goto-char (point-min))
-		    (not (looking-at "\\([0-9]+\\) \\([0-9]+\\)"))))
-	(accept-process-output process))
-      (if (eq (process-status process) 'run)
-	  (let ((address (match-string 1))
-		(port (match-string 2))
-		(filename (file-name-nondirectory file)))
-	    (while (string-match "[ \t]+" filename)
-	      (setq filename (replace-match "_" nil nil filename)))
-	    (erase-buffer)
-	    (make-local-variable 'riece-rdcc-request-size)
-	    (setq riece-rdcc-request-file file
-		  riece-rdcc-request-size (nth 7 (file-attributes file)))
-	    (set-buffer-modified-p nil)
-	    (set-process-filter process #'riece-rdcc-server-filter)
-	    (set-process-sentinel process #'riece-rdcc-server-sentinel)
-	    (riece-send-string
-	     (format "PRIVMSG %s :\1DCC SEND %s %s %s %d\1\r\n"
-		     (riece-identity-prefix user)
-		     filename
-		     address port
-		     riece-rdcc-request-size)))))))
+  (let ((name (riece-ruby-execute
+	       (riece-ruby-substitute-variables
+		riece-rdcc-send-program
+		(list (cons 'address
+			    (if riece-rdcc-server-address
+				(concat "'" riece-rdcc-server-address
+					"'")
+			      "nil"))
+		      (cons 'file
+			    (concat "'" file "'"))
+		      (cons 'block-size
+			    (number-to-string
+			     riece-rdcc-block-size)))))))
+    (riece-ruby-set-property name 'riece-rdcc-request-user user)
+    (riece-ruby-set-property name 'riece-rdcc-request-file file)
+    (riece-ruby-set-property name 'riece-rdcc-request-size
+			     (nth 7 (file-attributes file)))
+    (riece-ruby-set-output-handler name #'riece-rdcc-output-handler)
+    (riece-ruby-set-exit-handler name #'riece-rdcc-exit-handler)))
 
 (defun riece-rdcc-filter (process input)
   (save-excursion
@@ -235,14 +201,15 @@ puts(\"#{" address " >> 24 & 0xFF}.#{" address " >> 16 & 0xFF}.#{"
   (kill-buffer (process-buffer process)))
 
 (defun riece-rdcc-decode-address (address)
-  (with-temp-buffer
-    (call-process riece-rdcc-ruby-command nil t nil "-e"
-		  (apply #'concat
-			 (riece-rdcc-substitute-variables
-			  riece-rdcc-decode-address-program
-			  'address
-			  address)))
-    (buffer-substring (point-min) (1- (point-max)))))
+  (let ((name (riece-ruby-execute
+	       (riece-ruby-substitute-variables
+		riece-rdcc-decode-address-program
+		(list (cons 'address address)))))
+	response)
+    (while (equal (nth 2 (setq response (riece-ruby-inspect name))) "running")
+      (accept-process-output riece-ruby-process))
+    (riece-ruby-clear name)
+    (nth 1 response)))
 
 (defun riece-command-dcc-receive (request file)
   (interactive

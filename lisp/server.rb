@@ -121,7 +121,7 @@ class Server
   end
 
   def unescape(s)
-    s.gsub(/%([0-9A-Z][0-9A-Z])/, ['\1'].pack('H*'))
+    s.gsub(/%([0-9A-Z][0-9A-Z])/) {[$1].pack('H*')}
   end
 
   def send_data(d)

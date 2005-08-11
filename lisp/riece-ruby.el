@@ -188,7 +188,7 @@ Use `riece-ruby-set-property' to set this variable.")
 	  (if (looking-at "D \\(.*\\)\r")
 	      (setq riece-ruby-escaped-data (cons (match-string 1)
 						  riece-ruby-escaped-data))
-	    (if (looking-at "S \\(.*\\) \\(.*\\)\r")
+	    (if (looking-at "S \\([^ ]*\\) \\(.*\\)\r")
 		(progn
 		  (setq riece-ruby-status-alist (cons (cons (match-string 1)
 							    (match-string 2))
@@ -197,11 +197,11 @@ Use `riece-ruby-set-property' to set this variable.")
 			      '("finished" "exited"))
 		      (riece-ruby-run-exit-handler
 		       (cdr (car riece-ruby-status-alist)))))
-	      (if (looking-at "# output \\(.*\\) \\(.*\\)\r")
+	      (if (looking-at "# output \\([^ ]*\\) \\(.*\\)\r")
 		  (let ((entry (assoc (match-string 1)
 				      riece-ruby-output-handler-alist)))
 		    (if entry
-			(funcall (car entry) (cdr entry) (match-string 2))))
+			(funcall (cdr entry) (car entry) (match-string 2))))
 		(if (looking-at "# exit \\(.*\\)\r")
 		    (riece-ruby-run-exit-handler (match-string 1))))))))
       (forward-line))
@@ -212,7 +212,8 @@ Use `riece-ruby-set-property' to set this variable.")
     (if entry
 	(progn
 	  (funcall (cdr entry) (car entry))
-	  (setq riece-ruby-exit-handler-alist (delq entry))))))
+	  (setq riece-ruby-exit-handler-alist
+		(delq entry riece-ruby-exit-handler-alist))))))
 
 (defun riece-ruby-sentinel (process status)
   (kill-buffer (process-buffer process)))
@@ -254,7 +255,7 @@ Use `riece-ruby-set-property' to set this variable.")
     (make-local-variable 'riece-ruby-lock)
     (setq riece-ruby-lock t)
     (riece-ruby-send-poll name)
-    (while (null riece-ruby-response)
+    (while riece-ruby-lock
       (accept-process-output riece-ruby-process))
     (list riece-ruby-response
 	  riece-ruby-data
@@ -264,11 +265,7 @@ Use `riece-ruby-set-property' to set this variable.")
   (save-excursion
     (set-buffer (process-buffer riece-ruby-process))
     (riece-ruby-reset-process-buffer)
-    (make-local-variable 'riece-ruby-lock)
-    (setq riece-ruby-lock t)
-    (riece-ruby-send-exit name)
-    (while (null riece-ruby-response)
-      (accept-process-output riece-ruby-process)))
+    (riece-ruby-send-exit name))
   (let ((entry (assoc name riece-ruby-property-alist)))
     (if entry
 	(delq entry riece-ruby-property-alist))))
