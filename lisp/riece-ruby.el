@@ -93,11 +93,6 @@ Use `riece-ruby-set-exit-handler' to set this variable.")
   "An alist mapping from program name to the property list.
 Use `riece-ruby-set-property' to set this variable.")
 
-(defvar riece-ruby-enabled nil)
-
-(defconst riece-ruby-description
-  "Evaluate an input string as Ruby program.")
-
 (defun riece-ruby-substitute-variables (program alist)
   (setq program (copy-sequence program))
   (while alist
@@ -320,49 +315,6 @@ Use `riece-ruby-set-property' to set this variable.")
 
 (defun riece-ruby-property (name property)
   (cdr (assoc property (cdr (assoc name riece-ruby-property-alist)))))
-
-(defun riece-ruby-exit-handler (name)
-  (riece-ruby-inspect name)
-  (let* ((data (copy-sequence riece-ruby-data))
-	 (length (length data))
-	 (index 0))
-    (while (< index length)
-      (if (eq (aref data index) ?\n)
-	  (aset data index ? ))
-      (setq index (1+ index)))
-    (riece-send-string
-     (format "NOTICE %s :%s\r\n"
-	     (riece-identity-prefix
-	      (riece-ruby-property name 'riece-ruby-target))
-	     data))
-    (riece-display-message
-     (riece-make-message (riece-current-nickname)
-			 (riece-ruby-property name 'riece-ruby-target)
-			 data
-			 'notice))))
-
-(defun riece-ruby-display-message-function (message)
-  (if (and riece-ruby-enabled
-	   (riece-message-own-p message)
-	   (string-match "^,ruby\\s-+" (riece-message-text message)))
-      (let ((name (riece-ruby-execute
-		   (substring (riece-message-text message)
-			      (match-end 0)))))
-	(riece-ruby-set-property name
-				 'riece-ruby-target
-				 (riece-message-target message))
-	(riece-ruby-set-exit-handler name
-				     #'riece-ruby-exit-handler))))
-
-(defun riece-ruby-insinuate ()
-  (add-hook 'riece-after-display-message-functions
-	    'riece-ruby-display-message-function))
-
-(defun riece-ruby-enable ()
-  (setq riece-ruby-enabled t))
-
-(defun riece-ruby-disable ()
-  (setq riece-ruby-enabled nil))
 
 (provide 'riece-ruby)
 

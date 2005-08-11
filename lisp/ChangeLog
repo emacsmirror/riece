@@ -1,5 +1,13 @@
 2005-08-11  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-ruby.el: Moved add-on stuff to riece-eval-ruby.el.
+
+	* riece-eval-ruby.el: New add-on.
+	* COMPILE (riece-modules): Add riece-eval-ruby.
+	* Makefile.am (EXTRA_DIST): Add riece-eval-ruby.el.
+
+2005-08-11  Daiki Ueno  <ueno@unixuser.org>
+
 	* server.rb (Server::unescape): Fixed.
 
 	* riece-ruby.el: Implement add-on API.

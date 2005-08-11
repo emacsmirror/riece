@@ -77,7 +77,8 @@
 		riece-toolbar
 		riece-eval
 		riece-google
-		riece-keepalive))))
+		riece-keepalive
+		riece-eval-ruby))))
 
 (defvar riece-icons
   '("riece-command-quit.xpm"
