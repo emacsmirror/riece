@@ -5,6 +5,7 @@
 	* riece-async.el: User riece-ruby (partially).
 
 	* riece-eval-ruby.el (riece-eval-ruby-prefix-regexp): New user option.
+	(riece-eval-ruby-exit-handler): Print "nil".
 
 2005-08-11  Daiki Ueno  <ueno@unixuser.org>
 

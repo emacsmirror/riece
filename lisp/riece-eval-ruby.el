@@ -48,7 +48,7 @@
 
 (defun riece-eval-ruby-exit-handler (name)
   (riece-ruby-inspect name)
-  (let* ((data (copy-sequence riece-ruby-data))
+  (let* ((data (copy-sequence (or riece-ruby-data "nil")))
 	 (length (length data))
 	 (index 0))
     (while (< index length)
