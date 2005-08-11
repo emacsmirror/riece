@@ -3,6 +3,7 @@
 	* server.rb: Renamed from rubyserv.rb; s/RubyServ/Server/.
 	* riece-ruby.el (riece-ruby-server-program): Follow the filename
 	change.
+	(riece-ruby-set-output-handler): New function.
 
 2005-08-11  Daiki Ueno  <ueno@unixuser.org>
 

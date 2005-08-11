@@ -248,6 +248,14 @@
     ;;check if the program already exited
     (riece-ruby-inspect)))
 
+(defun riece-ruby-set-output-handler (name handler)
+  (let ((entry (assoc name riece-ruby-output-handler-alist)))
+    (if entry
+	(setcdr entry handler)
+      (setq riece-ruby-output-handler-alist
+	    (cons (cons name handler)
+		  riece-ruby-output-handler-alist)))))
+
 (provide 'riece-ruby)
 
 ;;; riece-ruby.el ends here
