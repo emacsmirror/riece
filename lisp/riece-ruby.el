@@ -48,30 +48,58 @@
 
 ;;; Code:
 
-(defvar riece-ruby-command "ruby"
-  "Command name for Ruby interpreter.")
+(defgroup riece-ruby nil
+  "Interact with the Ruby interpreter."
+  :group 'riece)
 
-(defvar riece-ruby-server-program "server.rb")
+(defcustom riece-ruby-command "ruby"
+  "Command name for Ruby interpreter."
+  :type 'string
+  :group 'riece-ruby)
 
-(defvar riece-ruby-process nil)
+(defvar riece-ruby-server-program "server.rb"
+  "The server program file.  If the filename is not absolute, it is
+assumed that the file is in the same directory of this file.")
 
-(defvar riece-ruby-lock nil)
-(defvar riece-ruby-response nil)
-(defvar riece-ruby-data nil)
-(defvar riece-ruby-escaped-data nil)
-(defvar riece-ruby-status-alist nil)
+(defvar riece-ruby-process nil
+  "Process object of the Ruby interpreter.")
 
-(defvar riece-ruby-output-handler-alist nil)
-(defvar riece-ruby-exit-handler-alist nil)
+(defvar riece-ruby-lock nil
+  "Lock for waiting server response.
+Local to the process buffer.")
+(defvar riece-ruby-response nil
+  "The server response.
+Local to the process buffer.")
+(defvar riece-ruby-data nil
+  "Data from server.
+Local to the process buffer.")
+(defvar riece-ruby-escaped-data nil
+  "Escaped data from server.  This variable is cleared every time
+server response arrives.
+Local to the process buffer.")
+(defvar riece-ruby-status-alist nil
+  "Status from server.
+Local to the process buffer.")
 
-(defun riece-ruby-substitute-variables (program variable value)
+(defvar riece-ruby-output-handler-alist nil
+  "An alist mapping from program name to output handler.
+Output handlers are called every time \"# output\" line arrives.
+Use `riece-ruby-set-output-handler' to set this variable.")
+(defvar riece-ruby-exit-handler-alist nil
+  "An alist mapping from program name to exit handler.
+Exit handlers are called once when \"# exit\" line arrives.
+Use `riece-ruby-set-exit-handler' to set this variable.")
+
+(defun riece-ruby-substitute-variables (program alist)
   (setq program (copy-sequence program))
-  (let ((pointer program))
-    (while pointer
-      (setq pointer (memq variable program))
-      (if pointer
-	  (setcar pointer value)))
-    program))
+  (while alist
+    (let ((pointer program))
+      (while pointer
+	(setq pointer (memq (car (car alist)) program))
+	(if pointer
+	    (setcar pointer (cdr (car alist))))))
+    (setq alist (cdr alist)))
+  (apply #'concat program))
 
 (defun riece-ruby-escape-data (data)
   (let ((index 0))
