@@ -60,7 +60,7 @@ class RubyServ
   end
 
   def dispatch_eval(c, r)
-    r = deq_data unless r
+    r = deq_data if r.empty?
     name = nil
     Thread.exclusive do
       while @thr.include?(name = @cnt.to_s)
