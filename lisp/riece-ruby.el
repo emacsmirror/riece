@@ -235,6 +235,7 @@ Use `riece-ruby-set-property' to set this variable.")
 			      (file-name-directory
 			       (locate-library
 				(symbol-file 'riece-ruby-execute)))))))
+      (process-kill-without-query riece-ruby-process)
       (set-process-filter riece-ruby-process #'riece-ruby-filter)
       (set-process-sentinel riece-ruby-process #'riece-ruby-sentinel)))
   (save-excursion
