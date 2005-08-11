@@ -1,5 +1,7 @@
 2005-08-11  Daiki Ueno  <ueno@unixuser.org>
 
+	* server.rb: Connect $stdout and $stderr to StringIO objects.
+
 	* riece-async.el: User riece-ruby (partially).
 
 	* riece-eval-ruby.el (riece-eval-ruby-prefix-regexp): New user option.

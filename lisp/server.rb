@@ -1,16 +1,26 @@
 # A simple IPC server executing Ruby programs.
 
 require 'thread'
+require 'stringio'
 
 class Server
   module B
     def output(s)
-      puts("# output #{Thread.current[:rubyserv_name]} #{s}\r\n")
+      @out.puts("# output #{Thread.current[:rubyserv_name]} #{s}\r\n")
     end
     module_function :output
   end
 
   def initialize
+    @out = $stdout
+    @err = $stderr
+    $stdout = StringIO.new
+    $stderr = StringIO.new
+    out, err = @out, @err
+    B.module_eval do
+      @out, @err = out, err
+    end
+
     @buf = ''
     @que = Queue.new
     @thr = Hash.new
@@ -30,25 +40,25 @@ class Server
           self.send(d, c, r)
         end
       else
-        puts("ERR 103 Unknown command\r\n")
+        @out.puts("ERR 103 Unknown command\r\n")
       end
     end
   end
 
   def dispatch_cancel(c, r)
-    puts("ERR 100 Not implemented\r\n")
+    @out.puts("ERR 100 Not implemented\r\n")
   end
 
   def dispatch_bye(c, r)
-    puts("ERR 100 Not implemented\r\n")
+    @out.puts("ERR 100 Not implemented\r\n")
   end
 
   def dispatch_auth(c, r)
-    puts("ERR 100 Not implemented\r\n")
+    @out.puts("ERR 100 Not implemented\r\n")
   end
 
   def dispatch_reset(c, r)
-    puts("ERR 100 Not implemented\r\n")
+    @out.puts("ERR 100 Not implemented\r\n")
   end
 
   def dispatch_end(c, r)
@@ -56,11 +66,11 @@ class Server
   end
 
   def dispatch_help(c, r)
-    puts("ERR 100 Not implemented\r\n")
+    @out.puts("ERR 100 Not implemented\r\n")
   end
 
   def dispatch_quit(c, r)
-    puts("ERR 100 Not implemented\r\n")
+    @out.puts("ERR 100 Not implemented\r\n")
   end
 
   def dispatch_eval(c, r)
@@ -72,8 +82,8 @@ class Server
       end
       @thr[name] = Thread.current
     end
-    puts("S name #{name}\r\n")
-    puts("OK\r\n")
+    @out.puts("S name #{name}\r\n")
+    @out.puts("OK\r\n")
     Thread.current[:rubyserv_name] = name
     begin
       Thread.current[:rubyserv_error] = false
@@ -82,38 +92,38 @@ class Server
       Thread.current[:rubyserv_error] = true
       Thread.current[:rubyserv_response] = e.to_s.sub(/\A.*?\n/, '')
     end
-    puts("# exit #{name}\r\n")
+    @out.puts("# exit #{name}\r\n")
   end
 
   def dispatch_poll(c, r)
     thr = @thr[r]
     if !thr
-      puts("ERR 105 Parameter error: no such name \"#{r}\"\r\n")
+      @out.puts("ERR 105 Parameter error: no such name \"#{r}\"\r\n")
     elsif thr.alive?
-      puts("S running #{r}\r\n")
-      puts("OK\r\n")
+      @out.puts("S running #{r}\r\n")
+      @out.puts("OK\r\n")
     else
       if thr[:rubyserv_error]
-        puts("S exited #{r}\r\n")
+        @out.puts("S exited #{r}\r\n")
       else
-        puts("S finished #{r}\r\n")
+        @out.puts("S finished #{r}\r\n")
       end
       if d = thr[:rubyserv_response]
         send_data(d.to_s)
       end
-      puts("OK\r\n")
+      @out.puts("OK\r\n")
     end
   end
 
   def dispatch_exit(c, r)
     thr = @thr[r]
     if !thr
-      puts("ERR 105 Parameter error: no such name \"#{r}\"\r\n")
+      @out.puts("ERR 105 Parameter error: no such name \"#{r}\"\r\n")
       return
     end
     thr.kill if thr.alive?
     @thr.delete(r)
-    puts("OK\r\n")
+    @out.puts("OK\r\n")
   end
 
   def escape(s)
@@ -128,7 +138,7 @@ class Server
     d = escape(d)
     begin
       len = [d.length, 998].min   # 998 = 1000 - "D "
-      puts("D #{d[0 ... len]}\r\n")
+      @out.puts("D #{d[0 ... len]}\r\n")
       d = d[len .. -1]
     end until d.empty?
   end
