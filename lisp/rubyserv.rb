@@ -3,10 +3,14 @@
 require 'thread'
 
 class RubyServ
+  module C
+  end
+
   def initialize
     @buf = ''
     @que = Queue.new
     @thr = Hash.new
+    @cnt = 0
   end
 
   def dispatch(line)
@@ -56,21 +60,23 @@ class RubyServ
   end
 
   def dispatch_eval(c, r)
-    name, code = r.split(/\s+/, 2)
-    if @thr.include?(name) && @thr[name].alive?
-      puts("ERR 105 Parameter error: \"#{name}\" is already in use\r\n")
-      return
+    r = deq_data unless r
+    name = nil
+    Thread.exclusive do
+      while @thr.include?(name = @cnt.to_s)
+	@cnt += 1
+      end
+      @thr[name] = Thread.current
     end
-    code = deq_data unless code
+    puts("S name #{name}\r\n")
     puts("OK\r\n")
-    @thr[name] = Thread.current
     Thread.current[:rubyserv_name] = name
     begin
       Thread.current[:rubyserv_error] = false
-      Thread.current[:rubyserv_response] = eval(code)
+      Thread.current[:rubyserv_response] = eval(r, C.module_eval('binding()'))
     rescue Exception => e
       Thread.current[:rubyserv_error] = true
-      Thread.current[:rubyserv_response] = e.to_s.sub(/\A.*?\n/m, '')
+      Thread.current[:rubyserv_response] = e
     end
     puts("# exit #{name}\r\n")
   end
@@ -80,20 +86,30 @@ class RubyServ
     if !thr
       puts("ERR 105 Parameter error: no such name \"#{r}\"\r\n")
     elsif thr.alive?
-      puts("S program running\r\n")
+      puts("S running #{r}\r\n")
       puts("OK\r\n")
     else
-      @thr.delete(r)
       if thr[:rubyserv_error]
-        puts("S program exited\r\n")
+        puts("S exited #{r}\r\n")
       else
-        puts("S program finished\r\n")
+        puts("S finished #{r}\r\n")
       end
       if d = thr[:rubyserv_response]
         send_data(d.to_s)
       end
       puts("OK\r\n")
     end
+  end
+
+  def dispatch_exit(c, r)
+    thr = @thr[r]
+    if !thr
+      puts("ERR 105 Parameter error: no such name \"#{r}\"\r\n")
+      return
+    end
+    thr.kill if thr.alive?
+    @thr.delete(r)
+    puts("OK\r\n")
   end
 
   def escape(s)

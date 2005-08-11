@@ -1,3 +1,24 @@
+2005-08-11  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-ruby.el: Fixed example.
+	(riece-ruby-server-program): New variable.
+	(riece-ruby-status-alist): New variable.
+	(riece-ruby-status): Abolished.
+	(riece-ruby-escaped-data): Renamed from riece-ruby-input.
+	(riece-ruby-reset-process-buffer): New function.
+	(riece-ruby-send-exit): New function.
+	(riece-ruby-filter): Call riece-ruby-run-exit-handler if the
+	program is exited.
+	(riece-ruby-run-exit-handler): New function.
+	(riece-ruby-execute): Don't expect program name.
+	(riece-ruby-clear): New function.
+	(riece-ruby-set-exit-handler): New function.
+
+	* rubyserv.rb (RubyServ::dispatch_eval): Don't expect program
+	name; eval under the binding of RubyServ::C.
+	(RubyServ::dispatch_poll): Don't clear @thr.
+	(RubyServ::dispatch_exit): New method.
+
 2005-08-10  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-ruby.el: New file.
