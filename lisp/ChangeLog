@@ -2,8 +2,11 @@
 
 	* server.rb (Server::unescape): Fixed.
 
-	* riece-ruby.el (riece-ruby-filter): Fixed regexp; fixed argument
-	order of output-handler.
+	* riece-ruby.el: Implement add-on API.
+	(riece-ruby-filter): Fixed regexp; fixed argument order of
+	output-handler.
+	(riece-ruby-run-exit-handler): Remove exit-handler entry before
+	running it to avoid recursion.
 
 	* riece-rdcc.el: Use riece-ruby.
 
