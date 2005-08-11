@@ -6,19 +6,20 @@ EXTRA_DIST = COMPILE ChangeLog ChangeLog.Liece \
 	riece-compat.el riece-complete.el riece-debug.el riece-display.el \
 	riece-emacs.el riece-filter.el riece-globals.el riece-handle.el \
 	riece-highlight.el riece-identity.el riece-message.el riece-misc.el \
-	riece-mode.el riece-naming.el riece-options.el riece-server.el \
-	riece-signal.el riece-user.el riece-version.el riece-xemacs.el \
-	riece-irc.el riece.el riece-ctcp.el riece-url.el riece-unread.el \
-	riece-ndcc.el riece-rdcc.el riece-log.el riece-mini.el \
-	riece-doctor.el riece-alias.el riece-layout.el riece-skk-kakutei.el \
-	riece-guess.el riece-history.el riece-button.el riece-keyword.el \
-	riece-menu.el riece-icon.el riece-async.el riece-lsdb.el \
-	riece-xface.el riece-ctlseq.el riece-ignore.el riece-hangman.el \
-	riece-biff.el riece-kakasi.el riece-foolproof.el riece-yank.el \
-	riece-toolbar.el riece-eval.el riece-google.el riece-keepalive.el \
-	url-riece.el \
+	riece-mode.el riece-naming.el riece-options.el riece-ruby.el \
+	riece-server.el riece-signal.el riece-user.el riece-version.el \
+	riece-xemacs.el riece-irc.el riece.el riece-ctcp.el riece-url.el \
+	riece-unread.el riece-ndcc.el riece-rdcc.el riece-log.el \
+	riece-mini.el riece-doctor.el riece-alias.el riece-layout.el \
+	riece-skk-kakutei.el riece-guess.el riece-history.el riece-button.el \
+	riece-keyword.el riece-menu.el riece-icon.el riece-async.el \
+	riece-lsdb.el riece-xface.el riece-ctlseq.el riece-ignore.el \
+	riece-hangman.el riece-biff.el riece-kakasi.el riece-foolproof.el \
+	riece-yank.el riece-toolbar.el riece-eval.el riece-google.el \
+	riece-keepalive.el url-riece.el \
 	riece-command-previous-channel.xpm riece-command-next-channel.xpm \
-	riece-submit-bug-report.xpm
+	riece-submit-bug-report.xpm \
+	server.rb
 
 CLEANFILES = auto-autoloads.el custom-load.el *.elc
 FLAGS ?= -batch -q -no-site-file

@@ -89,6 +89,9 @@ Use `riece-ruby-set-output-handler' to set this variable.")
   "An alist mapping from program name to exit handler.
 Exit handlers are called once when \"# exit\" line arrives.
 Use `riece-ruby-set-exit-handler' to set this variable.")
+(defvar riece-ruby-property-alist nil
+  "An alist mapping from program name to the property list.
+Use `riece-ruby-set-property' to set this variable.")
 
 (defun riece-ruby-substitute-variables (program alist)
   (setq program (copy-sequence program))
@@ -228,7 +231,8 @@ Use `riece-ruby-set-exit-handler' to set this variable.")
 			     (expand-file-name
 			      riece-ruby-server-program
 			      (file-name-directory
-			       (symbol-file 'riece-ruby-execute))))))
+			       (locate-library
+				(symbol-file 'riece-ruby-execute)))))))
       (set-process-filter riece-ruby-process #'riece-ruby-filter)
       (set-process-sentinel riece-ruby-process #'riece-ruby-sentinel)))
   (save-excursion
@@ -264,7 +268,10 @@ Use `riece-ruby-set-exit-handler' to set this variable.")
     (setq riece-ruby-lock t)
     (riece-ruby-send-exit name)
     (while (null riece-ruby-response)
-      (accept-process-output riece-ruby-process))))
+      (accept-process-output riece-ruby-process)))
+  (let ((entry (assoc name riece-ruby-property-alist)))
+    (if entry
+	(delq entry riece-ruby-property-alist))))
 
 (defun riece-ruby-set-exit-handler (name handler)
   (let ((entry (assoc name riece-ruby-exit-handler-alist)))
@@ -274,7 +281,7 @@ Use `riece-ruby-set-exit-handler' to set this variable.")
 	    (cons (cons name handler)
 		  riece-ruby-exit-handler-alist)))
     ;;check if the program already exited
-    (riece-ruby-inspect)))
+    (riece-ruby-inspect name)))
 
 (defun riece-ruby-set-output-handler (name handler)
   (let ((entry (assoc name riece-ruby-output-handler-alist)))
@@ -283,6 +290,19 @@ Use `riece-ruby-set-exit-handler' to set this variable.")
       (setq riece-ruby-output-handler-alist
 	    (cons (cons name handler)
 		  riece-ruby-output-handler-alist)))))
+
+(defun riece-ruby-set-property (name property value)
+  (let ((entry (assoc name riece-ruby-property-alist))
+	property-entry)
+    (unless entry
+      (setq entry (list name)
+	    riece-ruby-property-alist (cons entry riece-ruby-property-alist)))
+    (if (setq property-entry (assoc property (cdr entry)))
+	(setcdr property-entry value)
+      (setcdr entry (cons (cons property value) (cdr entry))))))
+
+(defun riece-ruby-property (name property)
+  (cdr (assoc property (cdr (assoc name riece-ruby-property-alist)))))
 
 (provide 'riece-ruby)
 

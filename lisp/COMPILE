@@ -12,6 +12,7 @@
 		riece-coding
 		riece-complete
 		riece-addon
+		riece-ruby
 
 		riece-mode
 		;; riece-identity -+-> riece-channel
@@ -79,13 +80,16 @@
 		riece-keepalive))))
 
 (defvar riece-icons
-  '(riece-command-quit
-    riece-command-join
-    riece-command-part
-    riece-command-previous-channel
-    riece-command-next-channel
-    riece-command-change-layout
-    riece-submit-bug-report))
+  '("riece-command-quit.xpm"
+    "riece-command-join.xpm"
+    "riece-command-part.xpm"
+    "riece-command-previous-channel.xpm"
+    "riece-command-next-channel.xpm"
+    "riece-command-change-layout.xpm"
+    "riece-submit-bug-report.xpm"))
+
+(defvar riece-scripts
+  '("server.rb"))
 
 (defun riece-compile-modules (modules)
   (let ((load-path (cons nil load-path))
@@ -134,14 +138,25 @@
   (unless (or just-print (file-exists-p dest))
     (make-directory dest t))
   (while icons
-    (let ((name (symbol-name (car icons))))
-      (when (file-exists-p (expand-file-name (concat name ".xpm")))
-	(princ (format "%s.xpm -> %s\n" name dest))
-	(unless just-print
-	  (copy-file (expand-file-name (concat name ".xpm"))
-		     (expand-file-name (concat name ".xpm") dest)
-		     t t))))
+    (when (file-exists-p (expand-file-name (car icons)))
+      (princ (format "%s -> %s\n" (car icons) dest))
+      (unless just-print
+	(copy-file (expand-file-name (car icons))
+		   (expand-file-name (car icons) dest)
+		   t t)))
     (setq icons (cdr icons))))
+
+(defun riece-install-scripts (scripts dest just-print)
+  (unless (or just-print (file-exists-p dest))
+    (make-directory dest t))
+  (while scripts
+    (when (file-exists-p (expand-file-name (car scripts)))
+      (princ (format "%s -> %s\n" (car scripts) dest))
+      (unless just-print
+	(copy-file (expand-file-name (car scripts))
+		   (expand-file-name (car scripts) dest)
+		   t t)))
+    (setq scripts (cdr scripts))))
 
 (defun riece-install-just-print-p ()
   (let ((flag (getenv "MAKEFLAGS"))
@@ -159,6 +174,10 @@
    (riece-install-just-print-p))
   (riece-install-icons
    riece-icons
+   (expand-file-name "riece" (car command-line-args-left))
+   (riece-install-just-print-p))
+  (riece-install-scripts
+   riece-scripts
    (expand-file-name "riece" (car command-line-args-left))
    (riece-install-just-print-p)))
 
@@ -181,6 +200,11 @@
    (riece-install-just-print-p))
   (riece-install-icons
    riece-icons
+   (expand-file-name "riece"
+		     (expand-file-name "lisp" (car command-line-args-left)))
+   (riece-install-just-print-p))
+  (riece-install-scripts
+   riece-scripts
    (expand-file-name "riece"
 		     (expand-file-name "lisp" (car command-line-args-left)))
    (riece-install-just-print-p)))

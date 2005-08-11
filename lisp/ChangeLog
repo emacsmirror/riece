@@ -1,5 +1,22 @@
 2005-08-11  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-ruby.el (riece-ruby-property-alist): New variable
+	(riece-ruby-set-property): New function.
+	(riece-ruby-property): New function.
+	(riece-ruby-execute): Locate server.rb from load-path.
+
+	* Makefile.am (EXTRA_DIST): Added riece-ruby.el and server.rb.
+
+	* COMPILE (riece-modules): Added riece-ruby.
+	(riece-icons): Use filename instead of symbol.
+	(riece-scripts): New variable.
+	(riece-install-icons): Use filename instead of symbol.
+	(riece-install-scripts): New function.
+	(riece-install): Call riece-install-scripts.
+	(riece-install-package): Ditto.
+
+2005-08-11  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-ruby.el: Add docs for variables.
 	(riece-ruby-substitute-variables): Substitute multiple variables.
 	(riece-ruby-filter): Call output-handler/exit-handler with program
