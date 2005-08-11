@@ -2,6 +2,8 @@
 
 	* riece-ruby.el: Add docs for variables.
 	(riece-ruby-substitute-variables): Substitute multiple variables.
+	(riece-ruby-filter): Call output-handler/exit-handler with program
+	name.
 
 2005-08-11  Daiki Ueno  <ueno@unixuser.org>
 

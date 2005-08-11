@@ -198,7 +198,7 @@ Use `riece-ruby-set-exit-handler' to set this variable.")
 		  (let ((entry (assoc (match-string 1)
 				      riece-ruby-output-handler-alist)))
 		    (if entry
-			(funcall (cdr entry) (match-string 2))))
+			(funcall (car entry) (cdr entry) (match-string 2))))
 		(if (looking-at "# exit \\(.*\\)\r")
 		    (riece-ruby-run-exit-handler (match-string 1))))))))
       (forward-line))
@@ -208,7 +208,7 @@ Use `riece-ruby-set-exit-handler' to set this variable.")
   (let ((entry (assoc name riece-ruby-exit-handler-alist)))
     (if entry
 	(progn
-	  (funcall (cdr entry))
+	  (funcall (cdr entry) (car entry))
 	  (setq riece-ruby-exit-handler-alist (delq entry))))))
 
 (defun riece-ruby-sentinel (process status)
