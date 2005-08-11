@@ -51,7 +51,7 @@
 (defvar riece-ruby-command "ruby"
   "Command name for Ruby interpreter.")
 
-(defvar riece-ruby-server-program "rubyserv.rb")
+(defvar riece-ruby-server-program "server.rb")
 
 (defvar riece-ruby-process nil)
 
