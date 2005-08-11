@@ -1,4 +1,4 @@
-;;; riece-eval-ruby.el --- evaluate ruby expression
+;;; riece-eval-ruby.el --- evaluate Ruby programs in channels
 ;; Copyright (C) 1998-2005 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>
@@ -32,6 +32,15 @@
 (require 'riece-ruby)
 (require 'riece-message)
 
+(defgroup riece-eval-ruby nil
+  "Evaluate Ruby programs in channels."
+  :group 'riece)
+
+(defcustom riece-eval-ruby-prefix-regexp "^,ruby\\s-+"
+  "Pattern of of the prefix for sending Ruby programs."
+  :type 'string
+  :group 'riece-eval-ruby)
+
 (defvar riece-eval-ruby-enabled nil)
 
 (defconst riece-eval-ruby-description
@@ -60,7 +69,8 @@
 (defun riece-eval-ruby-display-message-function (message)
   (if (and riece-eval-ruby-enabled
 	   (riece-message-own-p message)
-	   (string-match "^,ruby\\s-+" (riece-message-text message)))
+	   (string-match riece-eval-ruby-prefix-regexp
+			 (riece-message-text message)))
       (let ((name (riece-ruby-execute
 		   (substring (riece-message-text message)
 			      (match-end 0)))))
