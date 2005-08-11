@@ -80,7 +80,7 @@ class Server
       Thread.current[:rubyserv_response] = eval(r, B.module_eval('binding()'))
     rescue Exception => e
       Thread.current[:rubyserv_error] = true
-      Thread.current[:rubyserv_response] = e
+      Thread.current[:rubyserv_response] = e.to_s.sub(/\A.*?\n/, '')
     end
     puts("# exit #{name}\r\n")
   end
