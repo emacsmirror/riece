@@ -327,7 +327,7 @@ Use `riece-ruby-set-property' to set this variable.")
 	 (index 0))
     (while (< index length)
       (if (eq (aref data index) ?\n)
-	  (aset data index " "))
+	  (aset data index ? ))
       (setq index (1+ index)))
     (riece-send-string
      (format "NOTICE %s :%s\r\n"
