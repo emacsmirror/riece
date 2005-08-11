@@ -1,6 +1,6 @@
 2005-08-11  Daiki Ueno  <ueno@unixuser.org>
 
-	* server.rb: Renamed from rubyserv.rb.
+	* server.rb: Renamed from rubyserv.rb; s/RubyServ/Server/.
 	* riece-ruby.el (riece-ruby-server-program): Follow the filename
 	change.
 

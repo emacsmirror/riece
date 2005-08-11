@@ -2,8 +2,8 @@
 
 require 'thread'
 
-class RubyServ
-  module C
+class Server
+  module B
   end
 
   def initialize
@@ -73,7 +73,7 @@ class RubyServ
     Thread.current[:rubyserv_name] = name
     begin
       Thread.current[:rubyserv_error] = false
-      Thread.current[:rubyserv_response] = eval(r, C.module_eval('binding()'))
+      Thread.current[:rubyserv_response] = eval(r, B.module_eval('binding()'))
     rescue Exception => e
       Thread.current[:rubyserv_error] = true
       Thread.current[:rubyserv_response] = e
@@ -145,8 +145,8 @@ class RubyServ
 end
 
 if $0 == __FILE__
-  serv = RubyServ.new
+  server = Server.new
   while gets
-    serv.dispatch($_)
+    server.dispatch($_)
   end
 end
