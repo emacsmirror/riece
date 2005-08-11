@@ -93,17 +93,6 @@ Use `riece-ruby-set-exit-handler' to set this variable.")
   "An alist mapping from program name to the property list.
 Use `riece-ruby-set-property' to set this variable.")
 
-(defun riece-ruby-substitute-variables (program alist)
-  (setq program (copy-sequence program))
-  (while alist
-    (let ((pointer program))
-      (while pointer
-	(setq pointer (memq (car (car alist)) program))
-	(if pointer
-	    (setcar pointer (cdr (car alist))))))
-    (setq alist (cdr alist)))
-  (apply #'concat program))
-
 (defun riece-ruby-escape-data (data)
   (let ((index 0))
     (while (string-match "[%\r\n]+" data index)
@@ -220,6 +209,8 @@ Use `riece-ruby-set-property' to set this variable.")
   (kill-buffer (process-buffer process)))
 
 (defun riece-ruby-execute (program)
+  "Schedule an execution of a Ruby PROGRAM.
+Return a string name assigned by the server."
   (unless (and riece-ruby-process
 	       (eq (process-status riece-ruby-process) 'run))
     (let (selective-display
@@ -251,6 +242,12 @@ Use `riece-ruby-set-property' to set this variable.")
     (cdr (assoc "name" riece-ruby-status-alist))))
 
 (defun riece-ruby-inspect (name)
+  "Inspect a result of program execution distinguished by NAME.
+Return a three element list.
+The car is protocol response line which looks like:
+  \(ERR 103 \"Not implemented\").
+The cadr is data from the server, that is, the result of the program.
+The caddr is status from the server."
   (save-excursion
     (set-buffer (process-buffer riece-ruby-process))
     (riece-ruby-reset-process-buffer)
@@ -264,6 +261,9 @@ Use `riece-ruby-set-property' to set this variable.")
 	  riece-ruby-status-alist)))
 
 (defun riece-ruby-clear (name)
+  "Clear a result of program execution distinguished by NAME.
+Note that riece-ruby-clear is automatically called iff an exit-handler
+is specified.  Otherwise, it should be called explicitly."
   (save-excursion
     (set-buffer (process-buffer riece-ruby-process))
     (riece-ruby-reset-process-buffer)
@@ -277,6 +277,11 @@ Use `riece-ruby-set-property' to set this variable.")
 	(delq entry riece-ruby-property-alist))))
 
 (defun riece-ruby-set-exit-handler (name handler)
+  "Set an exit-handler HANDLER for the program distinguished by NAME.
+An exit-handler is called when the program is finished or exited abnormally.
+An exit-handler is called with an argument same as NAME.
+Note that riece-ruby-clear is automatically called iff an exit-handler
+is specified.  Otherwise, it should be called explicitly."
   (let ((entry (assoc name riece-ruby-exit-handler-alist)))
     (if handler
 	(progn
@@ -292,6 +297,11 @@ Use `riece-ruby-set-property' to set this variable.")
 		(delq entry riece-ruby-exit-handler-alist))))))
 
 (defun riece-ruby-set-output-handler (name handler)
+  "Set an output-handler HANDLER for the program distinguished by NAME.
+An output-handler is called when the program sends any output by using
+`output' method in the Ruby program.
+An output-handler is called with two argument.  The first argument is
+the same as NAME.  The second argument is output string."
   (let ((entry (assoc name riece-ruby-output-handler-alist)))
     (if handler
 	(progn
@@ -305,6 +315,7 @@ Use `riece-ruby-set-property' to set this variable.")
 		(delq entry riece-ruby-output-handler-alist))))))
 
 (defun riece-ruby-set-property (name property value)
+  "Set given PROPERTY/VALUE pair to the program distinguished by NAME."
   (let ((entry (assoc name riece-ruby-property-alist))
 	property-entry)
     (unless entry
@@ -315,7 +326,21 @@ Use `riece-ruby-set-property' to set this variable.")
       (setcdr entry (cons (cons property value) (cdr entry))))))
 
 (defun riece-ruby-property (name property)
+  "Return the value of PROPERTY set to the program distinguished by NAME."
   (cdr (assoc property (cdr (assoc name riece-ruby-property-alist)))))
+
+(defun riece-ruby-substitute-variables (program alist)
+  "Substitute symbols in PROGRAM by looking up ALIST.
+Return a string concatenating elements in PROGRAM."
+  (setq program (copy-sequence program))
+  (while alist
+    (let ((pointer program))
+      (while pointer
+	(setq pointer (memq (car (car alist)) program))
+	(if pointer
+	    (setcar pointer (cdr (car alist))))))
+    (setq alist (cdr alist)))
+  (apply #'concat program))
 
 (provide 'riece-ruby)
 
