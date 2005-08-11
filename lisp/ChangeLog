@@ -2,6 +2,8 @@
 
 	* riece-eval-ruby.el (riece-eval-ruby-prefix-regexp): New user option.
 
+2005-08-11  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-hangman.el (riece-hangman-hello-regexp): Changed regexp.
 	(riece-hangman-bye-regexp): Changed regexp.
 
