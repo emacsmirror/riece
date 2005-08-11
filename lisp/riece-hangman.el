@@ -38,12 +38,12 @@
   :prefix "riece-"
   :group 'riece)
 
-(defcustom riece-hangman-hello-regexp "^, hangman"
+(defcustom riece-hangman-hello-regexp "^,hangman$"
   "Pattern of string to start the game."
   :type 'string
   :group 'riece-hangman)
 
-(defcustom riece-hangman-bye-regexp "^, bye hangman"
+(defcustom riece-hangman-bye-regexp "^,hangman bye$"
   "Pattern of string to end the game."
   :type 'string
   :group 'riece-hangman)
