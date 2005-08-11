@@ -38,20 +38,17 @@
 ;;; Code:
 
 (require 'riece-options)
+(require 'riece-ruby)			;riece-ruby-command,
+					;riece-ruby-substitute-variables
 
 (defgroup riece-async nil
   "Connect to IRC server via asynchronous proxy"
   :prefix "riece-"
   :group 'riece)
 
-(defcustom riece-async-ruby-command "ruby"
-  "Command name for Ruby interpreter."
-  :type 'string
-  :group 'riece-async)
-
 (defcustom riece-async-server-program
   '("\
-require 'io/nonblock'
+orequire 'io/nonblock'
 socket = TCPSocket.new(" host ", " service ")
 $stdout.write(\"NOTICE CONNECTED #{$$}\\r\\n\")
 $stdout.flush
@@ -109,35 +106,22 @@ socket.close
 (defconst riece-async-description
   "Keep IRC connection with external process")
 
-(defun riece-async-substitute-variables (program variable value)
-  (setq program (copy-sequence program))
-  (let ((pointer program))
-    (while pointer
-      (setq pointer (memq variable program))
-      (if pointer
-	  (setcar pointer value)))
-    program))
-
 ;;;###autoload
 (defun riece-async-open-network-stream (name buffer host service)
   (let* ((process-connection-type nil)
-	 (process (start-process name buffer "ruby" "-rsocket")))
+	 (process (start-process name buffer riece-ruby-command "-rsocket")))
     (process-kill-without-query process)
     (process-send-string process
-			 (apply #'concat
-				(riece-async-substitute-variables
-				 (riece-async-substitute-variables
-				  (riece-async-substitute-variables
-				   riece-async-server-program
-				   'host
-				   (concat "'" host "'"))
-				  'service
-				  (if (numberp service)
-				      (number-to-string service)
-				    (concat "'" service "'")))
-				 'max-buffer-size
-				 (number-to-string
-				  riece-async-max-buffer-size))))
+			 (riece-ruby-substitute-variables
+			  (list (cons 'host
+				      (concat "'" host "'"))
+				(cons 'service
+				      (if (numberp service)
+					  (number-to-string service)
+					(concat "'" service "'")))
+				(cons 'max-buffer-size
+				      (number-to-string
+				       riece-async-max-buffer-size)))))
     (process-send-string process "\0\n") ;input to process is needed
     (if buffer
 	(save-excursion
