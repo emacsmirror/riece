@@ -6,7 +6,9 @@
 	(riece-ruby-filter): Fixed regexp; fixed argument order of
 	output-handler.
 	(riece-ruby-run-exit-handler): Remove exit-handler entry before
-	running it to avoid recursion.
+	running it to avoid recursion; call riece-ruby-clear if
+	exit-handler is specified.
+	(riece-ruby-exit-handler): Don't call riece-ruby-clear.
 
 	* riece-rdcc.el: Use riece-ruby.
 

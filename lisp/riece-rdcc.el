@@ -129,8 +129,7 @@ end
 
 (defun riece-rdcc-exit-handler (name)
   (message "Sending %s...done"
-	   (riece-ruby-property name 'riece-rdcc-request-file))
-  (riece-ruby-clear name))
+	   (riece-ruby-property name 'riece-rdcc-request-file)))
 
 (defun riece-command-dcc-send (user file)
   (interactive

@@ -218,7 +218,8 @@ Use `riece-ruby-set-property' to set this variable.")
 	(progn
 	  (setq riece-ruby-exit-handler-alist
 		(delq entry riece-ruby-exit-handler-alist))
-	  (funcall (cdr entry) (car entry))))))
+	  (funcall (cdr entry) (car entry))
+	  (riece-ruby-clear name)))))
 
 (defun riece-ruby-sentinel (process status)
   (kill-buffer (process-buffer process)))
@@ -338,8 +339,7 @@ Use `riece-ruby-set-property' to set this variable.")
      (riece-make-message (riece-current-nickname)
 			 (riece-ruby-property name 'riece-ruby-target)
 			 data
-			 'notice))
-    (riece-ruby-clear name)))
+			 'notice))))
 
 (defun riece-ruby-display-message-function (message)
   (if (and riece-ruby-enabled
