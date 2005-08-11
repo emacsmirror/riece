@@ -4,6 +4,10 @@ require 'thread'
 
 class Server
   module B
+    def output(s)
+      puts("# output #{Thread.current[:rubyserv_name]} #{s}\r\n")
+    end
+    module_function :output
   end
 
   def initialize
@@ -118,10 +122,6 @@ class Server
 
   def unescape(s)
     s.gsub(/%([0-9A-Z][0-9A-Z])/, ['\1'].pack('H*'))
-  end
-
-  def output(s)
-    puts("# output #{Thread.current[:rubyserv_name]} #{s}\r\n")
   end
 
   def send_data(d)
