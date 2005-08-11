@@ -1,5 +1,8 @@
 2005-08-11  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-doctor.el (riece-doctor-hello-regexp): Changed regexp.
+	(riece-doctor-bye-regexp): Ditto.
+
 	* riece-ruby.el: Moved add-on stuff to riece-eval-ruby.el.
 
 	* riece-eval-ruby.el: New add-on.

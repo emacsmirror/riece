@@ -40,12 +40,12 @@
   :prefix "riece-"
   :group 'riece)
 
-(defcustom riece-doctor-hello-regexp "^, doctor"
+(defcustom riece-doctor-hello-regexp "^,doctor$"
   "Pattern of string patients start consultation."
   :type 'string
   :group 'riece-doctor)
 
-(defcustom riece-doctor-bye-regexp "^, bye doctor"
+(defcustom riece-doctor-bye-regexp "^,doctor bye$"
   "Pattern of string patients end consultation."
   :type 'string
   :group 'riece-doctor)
