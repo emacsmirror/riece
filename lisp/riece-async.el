@@ -98,4 +98,4 @@ assumed that the file is in the same directory of this file.")
 
 (provide 'riece-async)
 
-;;; riece-rdcc.el ends here
+;;; riece-async.el ends here
