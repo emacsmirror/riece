@@ -75,8 +75,8 @@ class Server
     @out.puts("OK\r\n")
     Thread.current[:rubyserv_name] = name
     out = @out
-    e = Module.new
-    e.module_eval do
+    env = Module.new
+    env.module_eval do
       @out = out
 
       def output(s)
@@ -86,7 +86,7 @@ class Server
     end
     begin
       Thread.current[:rubyserv_error] = false
-      Thread.current[:rubyserv_response] = eval(r, e.module_eval('binding()'))
+      Thread.current[:rubyserv_response] = eval(r, env.module_eval{binding()})
     rescue Exception => e
       Thread.current[:rubyserv_error] = true
       Thread.current[:rubyserv_response] = e.to_s.sub(/\A.*?\n/, '')
