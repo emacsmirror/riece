@@ -25,10 +25,10 @@
   (make-directory riece-log-directory)
   (make-directory test-riece-log-directory)
   (write-region "03:14 <test> a b c\n03:15 <test> a b c\n" nil
-		(expand-file-name "20380119.txt" test-riece-log-directory)
+		(expand-file-name "19700102.txt" test-riece-log-directory)
 		t 0)
   (write-region "03:14 <test> 1 2 3\n" nil
-		(expand-file-name "20380118.txt" test-riece-log-directory)
+		(expand-file-name "19700101.txt" test-riece-log-directory)
 		t 0))
 
 (luna-define-method lunit-test-case-teardown ((case test-riece-log))
@@ -39,9 +39,9 @@
     (lunit-assert-2
      case
      (equal
-      (concat "03:14 <test> 1 2 3 (2038/01/18)\n"
-	      "03:14 <test> a b c (2038/01/19)\n"
-	      "03:15 <test> a b c (2038/01/19)\n")
+      (concat "03:14 <test> 1 2 3 (1970/01/01)\n"
+	      "03:14 <test> a b c (1970/01/02)\n"
+	      "03:15 <test> a b c (1970/01/02)\n")
       (with-temp-buffer
 	(riece-log-insert (riece-make-identity "#riece" "") 3)
 	(buffer-string))))))
