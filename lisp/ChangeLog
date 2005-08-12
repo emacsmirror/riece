@@ -1,5 +1,18 @@
 2005-08-12  Daiki Ueno  <ueno@unixuser.org>
 
+	* Makefile.am (EXTRA_DIST): Added aproxy.rb.
+
+	* COMPILE (riece-scripts): Added "aproxy.rb".
+
+	* riece-async.el (riece-async-buffer-size): Renamed from
+	riece-async-max-buffer-size.
+	(riece-async-backup-file): New user option.
+	(riece-async-server-program): New variable.
+	(riece-async-server-program-arguments): New variable.
+	(riece-async-open-network-stream): Use aproxy.rb.
+
+	* aproxy.rb: New file.
+
 	* riece-ruby.el (riece-ruby-out-file): New user option.
 	(riece-ruby-err-file): New user option.
 	(riece-ruby-log-file): New user option..

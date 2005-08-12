@@ -19,7 +19,7 @@ EXTRA_DIST = COMPILE ChangeLog ChangeLog.Liece \
 	riece-keepalive.el riece-eval-ruby.el url-riece.el \
 	riece-command-previous-channel.xpm riece-command-next-channel.xpm \
 	riece-submit-bug-report.xpm \
-	server.rb
+	server.rb aproxy.rb
 
 CLEANFILES = auto-autoloads.el custom-load.el *.elc
 FLAGS ?= -batch -q -no-site-file
