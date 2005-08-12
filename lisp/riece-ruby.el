@@ -48,6 +48,8 @@
 
 ;;; Code:
 
+(require 'riece-debug)
+
 (defgroup riece-ruby nil
   "Interact with Ruby interpreter."
   :group 'riece)
@@ -57,9 +59,32 @@
   :type 'string
   :group 'riece-ruby)
 
+(defcustom riece-ruby-out-file (expand-file-name "riece-ruby.out"
+						 riece-directory)
+  "A file which records stdout of Ruby programs."
+  :type 'string
+  :group 'riece-ruby)
+
+(defcustom riece-ruby-err-file (expand-file-name "riece-ruby.err"
+						 riece-directory)
+  "A file which records stderr of Ruby programs."
+  :type 'string
+  :group 'riece-ruby)
+
+(defcustom riece-ruby-log-file (expand-file-name "riece-ruby.log"
+						 riece-directory)
+  "A file used to logging."
+  :type 'string
+  :group 'riece-ruby)
+
 (defvar riece-ruby-server-program "server.rb"
   "The server program file.  If the filename is not absolute, it is
 assumed that the file is in the same directory of this file.")
+
+(defvar riece-ruby-server-program-arguments (list "-o" riece-ruby-out-file
+						  "-e" riece-ruby-err-file
+						  "-l" riece-ruby-log-file)
+  "Command line arguments passed to `riece-ruby-server-program'.")
 
 (defvar riece-ruby-process nil
   "Process object of Ruby interpreter.")
@@ -156,7 +181,7 @@ Use `riece-ruby-set-property' to set this variable.")
     (set-buffer (process-buffer process))
     (goto-char (point-max))
     (insert input)
-    (goto-char (process-mark process))
+    (goto-char (point-min))
     (beginning-of-line)
     (while (looking-at ".*\r\n")
       (if (looking-at "OK\\( \\(.*\\)\\)?\r")
@@ -190,11 +215,12 @@ Use `riece-ruby-set-property' to set this variable.")
 		  (let ((entry (assoc (match-string 1)
 				      riece-ruby-output-handler-alist)))
 		    (if entry
-			(funcall (cdr entry) (car entry) (match-string 2))))
+			(riece-debug-with-backtrace
+			  (funcall (cdr entry) (car entry) (match-string 2)))))
 		(if (looking-at "# exit \\(.*\\)\r")
 		    (riece-ruby-run-exit-handler (match-string 1))))))))
       (forward-line))
-    (set-marker (process-mark process) (point-marker))))
+    (delete-region (point-min) (point))))
 
 (defun riece-ruby-run-exit-handler (name)
   (let ((entry (assoc name riece-ruby-exit-handler-alist)))
@@ -202,7 +228,8 @@ Use `riece-ruby-set-property' to set this variable.")
 	(progn
 	  (setq riece-ruby-exit-handler-alist
 		(delq entry riece-ruby-exit-handler-alist))
-	  (funcall (cdr entry) (car entry))
+	  (riece-debug-with-backtrace
+	    (funcall (cdr entry) (car entry)))
 	  (riece-ruby-clear name)))))
 
 (defun riece-ruby-sentinel (process status)
@@ -217,7 +244,7 @@ Return a string name assigned by the server."
 	  (coding-system-for-write 'binary)
 	  (coding-system-for-read 'binary))
       (setq riece-ruby-process
-	    (start-process "riece-ruby" (generate-new-buffer " *Ruby*")
+	    (apply #'start-process "riece-ruby" (generate-new-buffer " *Ruby*")
 			   riece-ruby-command
 			   (if (file-name-absolute-p riece-ruby-server-program)
 			       riece-ruby-server-program
@@ -225,7 +252,8 @@ Return a string name assigned by the server."
 			      riece-ruby-server-program
 			      (file-name-directory
 			       (locate-library
-				(symbol-file 'riece-ruby-execute)))))))
+				(symbol-file 'riece-ruby-execute)))))
+			   riece-ruby-server-program-arguments))
       (process-kill-without-query riece-ruby-process)
       (set-process-filter riece-ruby-process #'riece-ruby-filter)
       (set-process-sentinel riece-ruby-process #'riece-ruby-sentinel)))

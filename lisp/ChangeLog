@@ -1,5 +1,14 @@
 2005-08-12  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-ruby.el (riece-ruby-out-file): New user option.
+	(riece-ruby-err-file): New user option.
+	(riece-ruby-log-file): New user option..
+	(riece-ruby-server-program-arguments): New variable.
+	(riece-ruby-filter): Call output-handler within
+	riece-debug-with-backtrace; erase process output.
+	(riece-ruby-run-exit-handler): Call exit-handler within
+	riece-debug-with-backtrace.
+
 	* server.rb: Don't bind @err in execution environment;
 	added logging feature.
 
