@@ -5,6 +5,11 @@
 	(riece-log-get-files): Add 2nd argument time.
 	(riece-log-insert): Simplified; determine coding-system from
 	suffix of each log file.
+	(riece-log-dired): Renamed from riece-log-open-directory.
+	(riece-log-open-directory-function): Abolished.
+	(riece-log-make-file-name): Renamed from riece-log-get-file.
+	(riece-log-list-files): Renamed from riece-log-get-files.
+	(riece-log-directory): Renamed from riece-log-get-directory.
 
 	* Makefile.am (EXTRA_DIST): Added aproxy.rb.
 

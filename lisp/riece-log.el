@@ -71,11 +71,6 @@ If integer, flash back only this line numbers. t means all lines."
   :type 'symbol
   :group 'riece-log)
 
-(defcustom riece-log-open-directory-function 'find-file
-  "*Function for opening a directory."
-  :type 'function
-  :group 'riece-log)
-
 (defface riece-log-date-face
   '((((class color)
       (background dark))
@@ -105,8 +100,8 @@ It is created if there is at least one instance of Emacs running riece-log.")
   (if riece-log-enabled
       (let ((coding-system-for-write (or riece-log-coding-system
 					 buffer-file-coding-system))
-	    (file (riece-log-get-file (riece-message-target message)
-				      coding-system-for-write))
+	    (file (riece-log-make-file-name (riece-message-target message)
+					    coding-system-for-write))
 	    file-name-coding-system
 	    default-file-name-coding-system)
 	(unless (file-directory-p (file-name-directory file))
@@ -116,13 +111,14 @@ It is created if there is at least one instance of Emacs running riece-log.")
 		      nil file t 0
 		      riece-log-lock-file))))
 
-(defun riece-log-get-file (identity coding-system)
-  (expand-file-name
-   (format "%s.txt.%s" (format-time-string "%Y%m%d") coding-system)
-   (riece-log-get-directory identity)))
+(defun riece-log-make-file-name (identity coding-system)
+  (expand-file-name (format "%s.txt.%s"
+			    (format-time-string "%Y%m%d")
+			    coding-system)
+		    (riece-log-directory identity)))
 
-(defun riece-log-get-files (identity time)
-  (let ((directory (riece-log-get-directory identity))
+(defun riece-log-list-files (identity time)
+  (let ((directory (riece-log-directory identity))
 	(time-prefix (format-time-string "%Y%m%d" (or time '(0 0))))
 	files)
     (when (file-directory-p directory)
@@ -137,7 +133,7 @@ It is created if there is at least one instance of Emacs running riece-log.")
 	(setq files (cdr files)))
       files)))
 
-(defun riece-log-get-directory (identity)
+(defun riece-log-directory (identity)
   (let ((prefix (riece-identity-canonicalize-prefix
 		 (riece-identity-prefix identity)))
 	(server (riece-identity-server identity))
@@ -188,8 +184,8 @@ It is created if there is at least one instance of Emacs running riece-log.")
 If LINES is t, insert today's logs entirely."
   (let* (file-name-coding-system
 	 default-file-name-coding-system
-	 (files (riece-log-get-files identity
-				     (if (eq lines t) (current-time))))
+	 (files (riece-log-list-files identity
+				      (if (eq lines t) (current-time))))
 	 name coding-system date point)
     (while (and (or (eq lines t) (> lines 0)) files)
       (save-restriction
@@ -263,12 +259,11 @@ If LINES is t, insert today's logs entirely."
       (set-window-point (get-buffer-window (current-buffer))
 			(point)))))
 
-(defun riece-log-open-directory (&optional channel)
+(defun riece-log-dired (&optional channel)
   (interactive)
-  (let ((directory (riece-log-get-directory
-		    (or channel riece-current-channel))))
+  (let ((directory (riece-log-directory (or channel riece-current-channel))))
     (if (file-directory-p directory)
-	(funcall riece-log-open-directory-function directory)
+	(dired directory)
       (error "No log directory"))))
 
 (defun riece-log-requires ()
@@ -292,7 +287,7 @@ If LINES is t, insert today's logs entirely."
 
 (defvar riece-command-mode-map)
 (defun riece-log-enable ()
-  (define-key riece-command-mode-map "\C-cd" 'riece-log-open-directory)
+  (define-key riece-command-mode-map "\C-cd" 'riece-log-dired)
   (setq riece-log-enabled t))
 
 (defun riece-log-disable ()
