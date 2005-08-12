@@ -106,6 +106,8 @@ Local to the process buffer.")
   "Status from server.
 Local to the process buffer.")
 
+(defvar riece-ruby-output-queue-alist nil
+  "An alist mapping from program name to output data.")
 (defvar riece-ruby-output-handler-alist nil
   "An alist mapping from program name to output handler.
 Output handlers are called every time \"# output\" line arrives.
@@ -196,7 +198,7 @@ Use `riece-ruby-set-property' to set this variable.")
 	    (progn
 	      (setq riece-ruby-escaped-data nil
 		    riece-ruby-response
-		    (list 'ERR (string-to-number (match-string 2))
+		    (list 'ERR (string-to-number (match-string 1))
 			  (match-string 3))
 		    riece-ruby-lock nil))
 	  (if (looking-at "D \\(.*\\)\r")
@@ -212,11 +214,8 @@ Use `riece-ruby-set-property' to set this variable.")
 		      (riece-ruby-run-exit-handler
 		       (cdr (car riece-ruby-status-alist)))))
 	      (if (looking-at "# output \\([^ ]*\\) \\(.*\\)\r")
-		  (let ((entry (assoc (match-string 1)
-				      riece-ruby-output-handler-alist)))
-		    (if entry
-			(riece-debug-with-backtrace
-			  (funcall (cdr entry) (car entry) (match-string 2)))))
+		  (riece-ruby-run-output-handler (match-string 1)
+						 (match-string 2))
 		(if (looking-at "# exit \\(.*\\)\r")
 		    (riece-ruby-run-exit-handler (match-string 1))))))))
       (forward-line))
@@ -224,13 +223,22 @@ Use `riece-ruby-set-property' to set this variable.")
 
 (defun riece-ruby-run-exit-handler (name)
   (let ((entry (assoc name riece-ruby-exit-handler-alist)))
-    (if entry
-	(progn
-	  (setq riece-ruby-exit-handler-alist
-		(delq entry riece-ruby-exit-handler-alist))
-	  (riece-debug-with-backtrace
-	    (funcall (cdr entry) (car entry)))
-	  (riece-ruby-clear name)))))
+    (when entry
+      (setq riece-ruby-exit-handler-alist
+	    (delq entry riece-ruby-exit-handler-alist))
+      (riece-funcall-ignore-errors name (cdr entry) (car entry))
+      (riece-ruby-clear name))))
+
+(defun riece-ruby-run-output-handler (name output)
+  (let ((handler-entry (assoc name riece-ruby-output-handler-alist))
+	(entry (assoc name riece-ruby-output-queue-alist)))
+    (if handler-entry
+	(riece-funcall-ignore-errors name (cdr handler-entry) name output)
+      (if entry
+	  (setcdr entry (cons output (cdr entry)))
+	(setq riece-ruby-output-queue-alist
+	      (cons (list name output)
+		    riece-ruby-output-queue-alist))))))
 
 (defun riece-ruby-sentinel (process status)
   (kill-buffer (process-buffer process)))
@@ -330,9 +338,17 @@ An output-handler is called when the program sends any output by using
 `output' method in the Ruby program.
 An output-handler is called with two argument.  The first argument is
 the same as NAME.  The second argument is output string."
-  (let ((entry (assoc name riece-ruby-output-handler-alist)))
+  (let ((entry (assoc name riece-ruby-output-handler-alist))
+	queue-entry pointer)
     (if handler
 	(progn
+	  (when (setq queue-entry (assoc name riece-ruby-output-queue-alist))
+	    (setq pointer (nreverse (cdr queue-entry))
+		  riece-ruby-output-queue-alist
+		  (delq queue-entry riece-ruby-output-queue-alist))
+	    (while pointer
+	      (riece-funcall-ignore-errors name handler name (car pointer))
+	      (setq pointer (cdr pointer))))
 	  (if entry
 	      (setcdr entry handler)
 	    (setq riece-ruby-output-handler-alist
