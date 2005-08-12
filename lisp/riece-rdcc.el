@@ -107,7 +107,7 @@ end
 (defvar jka-compr-compression-info-list)
 (defvar jam-zcat-filename-list)
 
-(defun riece-rdcc-output-handler (name output)
+(defun riece-rdcc-output-handler (name output time)
   (if (string-match "\\([0-9]+\\) \\([0-9]+\\)" output)
       (let ((address (match-string 1 output))
 	    (port (match-string 2 output)))
@@ -121,7 +121,7 @@ end
 		 (riece-ruby-property name 'riece-rdcc-request-size)))))
   (riece-ruby-set-output-handler name #'riece-rdcc-output-handler-2))
 
-(defun riece-rdcc-output-handler-2 (name output)
+(defun riece-rdcc-output-handler-2 (name output time)
   (message "Sending %s...(%s/%d)"
 	   (riece-ruby-property name 'riece-rdcc-request-file)
 	   (string-to-number output)

@@ -215,7 +215,8 @@ Use `riece-ruby-set-property' to set this variable.")
 		       (cdr (car riece-ruby-status-alist)))))
 	      (if (looking-at "# output \\([^ ]*\\) \\(.*\\)\r")
 		  (riece-ruby-run-output-handler (match-string 1)
-						 (match-string 2))
+						 (match-string 2)
+						 (current-time))
 		(if (looking-at "# exit \\(.*\\)\r")
 		    (riece-ruby-run-exit-handler (match-string 1))))))))
       (forward-line))
@@ -226,18 +227,24 @@ Use `riece-ruby-set-property' to set this variable.")
     (when entry
       (setq riece-ruby-exit-handler-alist
 	    (delq entry riece-ruby-exit-handler-alist))
-      (riece-funcall-ignore-errors name (cdr entry) (car entry))
+      (riece-funcall-ignore-errors (if (symbolp (cdr entry))
+				       (symbol-name (cdr entry))
+				     (format "%s-exit-handler" name))
+				   (cdr entry) (car entry))
       (riece-ruby-clear name))))
 
-(defun riece-ruby-run-output-handler (name output)
+(defun riece-ruby-run-output-handler (name output time)
   (let ((handler-entry (assoc name riece-ruby-output-handler-alist))
 	(entry (assoc name riece-ruby-output-queue-alist)))
     (if handler-entry
-	(riece-funcall-ignore-errors name (cdr handler-entry) name output)
+	(riece-funcall-ignore-errors (if (symbolp (cdr handler-entry))
+					 (symbol-name (cdr handler-entry))
+				       (format "%s-output-handler" name))
+				     (cdr handler-entry) name output time)
       (if entry
 	  (setcdr entry (cons output (cdr entry)))
 	(setq riece-ruby-output-queue-alist
-	      (cons (list name output)
+	      (cons (list name (cons output time))
 		    riece-ruby-output-queue-alist))))))
 
 (defun riece-ruby-sentinel (process status)
@@ -336,8 +343,9 @@ is specified.  Otherwise, it should be called explicitly."
   "Set an output-handler HANDLER for the program distinguished by NAME.
 An output-handler is called when the program sends any output by using
 `output' method in the Ruby program.
-An output-handler is called with two argument.  The first argument is
-the same as NAME.  The second argument is output string."
+An output-handler is called with three argument.  The first argument
+is the same as NAME.  The second argument is the output string.  The
+third argument is the timestamp of the output event."
   (let ((entry (assoc name riece-ruby-output-handler-alist))
 	queue-entry pointer)
     (if handler
@@ -347,7 +355,11 @@ the same as NAME.  The second argument is output string."
 		  riece-ruby-output-queue-alist
 		  (delq queue-entry riece-ruby-output-queue-alist))
 	    (while pointer
-	      (riece-funcall-ignore-errors name handler name (car pointer))
+	      (riece-funcall-ignore-errors (if (symbolp handler)
+					       (symbol-name handler)
+					     (format "%s-output-handler" name))
+					   handler name (car (car pointer))
+					   (cdr (car pointer)))
 	      (setq pointer (cdr pointer))))
 	  (if entry
 	      (setcdr entry handler)

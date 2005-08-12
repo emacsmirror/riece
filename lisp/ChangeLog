@@ -1,5 +1,10 @@
 2005-08-12  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-ruby.el (riece-ruby-filter): Pass timestamp of output
+	event to output-handler.
+
+2005-08-12  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-button.el (riece-user-button-popup-menu): Simplified
 	menu item titles.
 

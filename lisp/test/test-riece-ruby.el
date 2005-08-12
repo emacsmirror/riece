@@ -78,7 +78,7 @@
   (let ((name (riece-ruby-execute "output(1 << 32)")))
     (riece-ruby-set-output-handler
      name
-     (lambda (name output)
+     (lambda (name output time)
        (setq test-riece-ruby-output-handler-1 output)))
     (sleep-for 1)
     (lunit-assert-2
@@ -91,7 +91,7 @@
     (sleep-for 1)
     (riece-ruby-set-output-handler
      name
-     (lambda (name output)
+     (lambda (name output time)
        (setq test-riece-ruby-output-handler-2 output)))
     (lunit-assert-2
      case
