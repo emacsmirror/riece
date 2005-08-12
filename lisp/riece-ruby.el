@@ -245,15 +245,15 @@ Return a string name assigned by the server."
 	  (coding-system-for-read 'binary))
       (setq riece-ruby-process
 	    (apply #'start-process "riece-ruby" (generate-new-buffer " *Ruby*")
-			   riece-ruby-command
-			   (if (file-name-absolute-p riece-ruby-server-program)
-			       riece-ruby-server-program
-			     (expand-file-name
-			      riece-ruby-server-program
-			      (file-name-directory
-			       (locate-library
-				(symbol-file 'riece-ruby-execute)))))
-			   riece-ruby-server-program-arguments))
+		   riece-ruby-command
+		   (if (file-name-absolute-p riece-ruby-server-program)
+		       riece-ruby-server-program
+		     (expand-file-name
+		      riece-ruby-server-program
+		      (file-name-directory
+		       (locate-library
+			(symbol-file 'riece-ruby-execute)))))
+		   riece-ruby-server-program-arguments))
       (process-kill-without-query riece-ruby-process)
       (set-process-filter riece-ruby-process #'riece-ruby-filter)
       (set-process-sentinel riece-ruby-process #'riece-ruby-sentinel)))
