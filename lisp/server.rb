@@ -98,25 +98,9 @@ class Server
     send_line("S name #{name}\r\n")
     send_line("OK\r\n")
     Thread.current[:rubyserv_name] = name
-    out, log = @out, @log
-    env = Module.new
-    env.module_eval do
-      @out, @log = out, log
-
-      def send_line(line)
-	@out.puts(line)
-	@log.puts(line) if @log
-      end
-      module_function :send_line
-
-      def output(s)
-	send_line("# output #{Thread.current[:rubyserv_name]} #{s}\r\n")
-      end
-      module_function :output
-    end
     begin
       Thread.current[:rubyserv_error] = false
-      Thread.current[:rubyserv_response] = eval(r, env.module_eval {binding()})
+      Thread.current[:rubyserv_response] = eval(r, exec_env.empty_binding)
     rescue Exception => e
       Thread.current[:rubyserv_error] = true
       Thread.current[:rubyserv_response] = e.to_s.sub(/\A.*?\n/, '')
@@ -185,6 +169,23 @@ class Server
   def send_line(line)
     @out.puts(line)
     @log.puts(line) if @log
+  end
+
+  def exec_env
+    env = Object.new
+    def env.empty_binding
+      binding
+    end
+    out, log = @out, @log
+    env.instance_eval {@out, @log = out, log}
+    def env.send_line(line)
+      @out.puts(line)
+      @log.puts(line) if @log
+    end
+    def env.output(s)
+      send_line("# output #{Thread.current[:rubyserv_name]} #{s}\r\n")
+    end
+    env
   end
 end
 
