@@ -202,7 +202,7 @@ End
     opts.on('-e', '--err ERRFILE', 'Send stderr to ERRFILE.') do |errfile|
       opt_errfile = errfile
     end
-    opts.on('-e', '--log LOGFILE', 'Send stdlog to LOGFILE.') do |logfile|
+    opts.on('-l', '--log LOGFILE', 'Send stdlog to LOGFILE.') do |logfile|
       opt_logfile = logfile
     end
     opts.on_tail('--help', '-h', 'Show this message.') do
