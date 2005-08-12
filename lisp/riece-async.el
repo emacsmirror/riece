@@ -70,9 +70,16 @@ assumed that the file is in the same directory of this file.")
 ;;;###autoload
 (defun riece-async-open-network-stream (name buffer host service)
   (let* ((process-connection-type nil)
-	 (process (apply #'start-process name buffer riece-ruby-command
-			 riece-async-server-program
-			 riece-async-server-program-arguments)))
+	 (process
+	  (apply #'start-process name buffer riece-ruby-command
+		 (if (file-name-absolute-p riece-ruby-server-program)
+		     riece-async-server-program
+		   (expand-file-name
+		    riece-async-server-program
+		    (file-name-directory
+		     (locate-library
+		      (symbol-file 'riece-async-open-network-stream)))))
+		 riece-async-server-program-arguments)))
     (if buffer
 	(save-excursion
 	  (set-buffer (process-buffer process))
