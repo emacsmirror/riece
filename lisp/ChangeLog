@@ -1,5 +1,11 @@
 2005-08-12  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-log.el (riece-log-file-name-regexp): New constant.
+	(riece-log-get-file): Add 2nd argument coding-system.
+	(riece-log-get-files): Add 2nd argument time.
+	(riece-log-insert): Simplified; determine coding-system from
+	suffix of each log file.
+
 	* Makefile.am (EXTRA_DIST): Added aproxy.rb.
 
 	* COMPILE (riece-scripts): Added "aproxy.rb".
