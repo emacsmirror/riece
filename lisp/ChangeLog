@@ -1,3 +1,7 @@
+2005-08-12  Daiki Ueno  <ueno@unixuser.org>
+
+	* server.rb: Don't bind @err in execution environment.
+
 2005-08-11  Daiki Ueno  <ueno@unixuser.org>
 
 	* server.rb: Connect $stdout and $stderr to StringIO objects.

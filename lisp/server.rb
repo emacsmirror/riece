@@ -4,22 +4,11 @@ require 'thread'
 require 'stringio'
 
 class Server
-  module B
-    def output(s)
-      @out.puts("# output #{Thread.current[:rubyserv_name]} #{s}\r\n")
-    end
-    module_function :output
-  end
-
   def initialize
     @out = $stdout
     @err = $stderr
     $stdout = StringIO.new
     $stderr = StringIO.new
-    out, err = @out, @err
-    B.module_eval do
-      @out, @err = out, err
-    end
 
     @buf = ''
     @que = Queue.new
@@ -85,9 +74,19 @@ class Server
     @out.puts("S name #{name}\r\n")
     @out.puts("OK\r\n")
     Thread.current[:rubyserv_name] = name
+    out = @out
+    e = Module.new
+    e.module_eval do
+      @out = out
+
+      def output(s)
+	@out.puts("# output #{Thread.current[:rubyserv_name]} #{s}\r\n")
+      end
+      module_function :output
+    end
     begin
       Thread.current[:rubyserv_error] = false
-      Thread.current[:rubyserv_response] = eval(r, B.module_eval('binding()'))
+      Thread.current[:rubyserv_response] = eval(r, e.module_eval('binding()'))
     rescue Exception => e
       Thread.current[:rubyserv_error] = true
       Thread.current[:rubyserv_response] = e.to_s.sub(/\A.*?\n/, '')
