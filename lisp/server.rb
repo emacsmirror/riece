@@ -103,7 +103,8 @@ class Server
       Thread.current[:rubyserv_response] = eval(r, exec_env.empty_binding)
     rescue Exception => e
       Thread.current[:rubyserv_error] = true
-      Thread.current[:rubyserv_response] = e.to_s.sub(/\A.*?\n/, '')
+      Thread.current[:rubyserv_response] =
+        e.to_s.sub(/\A.*?\n#{Regexp.quote(__FILE__)}:\d+: /o, '')
     end
     send_line("# exit #{name}\r\n")
   end
