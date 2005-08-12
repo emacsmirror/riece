@@ -45,8 +45,8 @@
   '("User"
     ["Finger (WHOIS)" riece-user-button-finger]
     ["Start Private Conversation" riece-user-button-join-partner]
-    ["Give Channel Operator Privileges" riece-user-button-set-operators]
-    ["Allow To Speak" riece-user-button-set-speakers])
+    ["Set +o" riece-user-button-set-operators]
+    ["Set +v" riece-user-button-set-speakers])
   "Menu for user buttons.")
 
 (defvar riece-button-enabled nil)
