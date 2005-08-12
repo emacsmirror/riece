@@ -4,11 +4,12 @@ require 'thread'
 require 'stringio'
 
 class Server
-  def initialize
+  def initialize(outfile, errfile, logfile)
     @out = $stdout
     @err = $stderr
-    $stdout = StringIO.new
-    $stderr = StringIO.new
+    $stdout = outfile ? File.new(outfile, 'a') : StringIO.new
+    $stderr = errfile ? File.new(errfile, 'a') : StringIO.new
+    @log = File.new(logfile, 'a') if logfile
 
     @buf = ''
     @que = Queue.new
@@ -17,6 +18,7 @@ class Server
   end
 
   def dispatch(line)
+    @log.puts(line) if @log
     case line.chomp
     when /\AD /
       @buf << $'
@@ -29,25 +31,25 @@ class Server
           self.send(d, c, r)
         end
       else
-        @out.puts("ERR 103 Unknown command\r\n")
+        send_line("ERR 103 Unknown command\r\n")
       end
     end
   end
 
   def dispatch_cancel(c, r)
-    @out.puts("ERR 100 Not implemented\r\n")
+    send_line("ERR 100 Not implemented\r\n")
   end
 
   def dispatch_bye(c, r)
-    @out.puts("ERR 100 Not implemented\r\n")
+    send_line("ERR 100 Not implemented\r\n")
   end
 
   def dispatch_auth(c, r)
-    @out.puts("ERR 100 Not implemented\r\n")
+    send_line("ERR 100 Not implemented\r\n")
   end
 
   def dispatch_reset(c, r)
-    @out.puts("ERR 100 Not implemented\r\n")
+    send_line("ERR 100 Not implemented\r\n")
   end
 
   def dispatch_end(c, r)
@@ -55,11 +57,11 @@ class Server
   end
 
   def dispatch_help(c, r)
-    @out.puts("ERR 100 Not implemented\r\n")
+    send_line("ERR 100 Not implemented\r\n")
   end
 
   def dispatch_quit(c, r)
-    @out.puts("ERR 100 Not implemented\r\n")
+    send_line("ERR 100 Not implemented\r\n")
   end
 
   def dispatch_eval(c, r)
@@ -71,58 +73,64 @@ class Server
       end
       @thr[name] = Thread.current
     end
-    @out.puts("S name #{name}\r\n")
-    @out.puts("OK\r\n")
+    send_line("S name #{name}\r\n")
+    send_line("OK\r\n")
     Thread.current[:rubyserv_name] = name
-    out = @out
+    out, log = @out, @log
     env = Module.new
     env.module_eval do
-      @out = out
+      @out, @log = out, log
+
+      def send_line(line)
+	@out.puts(line)
+	@log.puts(line) if @log
+      end
+      module_function :send_line
 
       def output(s)
-	@out.puts("# output #{Thread.current[:rubyserv_name]} #{s}\r\n")
+	send_line("# output #{Thread.current[:rubyserv_name]} #{s}\r\n")
       end
       module_function :output
     end
     begin
       Thread.current[:rubyserv_error] = false
-      Thread.current[:rubyserv_response] = eval(r, env.module_eval{binding()})
+      Thread.current[:rubyserv_response] = eval(r, env.module_eval {binding()})
     rescue Exception => e
       Thread.current[:rubyserv_error] = true
       Thread.current[:rubyserv_response] = e.to_s.sub(/\A.*?\n/, '')
     end
-    @out.puts("# exit #{name}\r\n")
+    send_line("# exit #{name}\r\n")
   end
 
   def dispatch_poll(c, r)
     thr = @thr[r]
     if !thr
-      @out.puts("ERR 105 Parameter error: no such name \"#{r}\"\r\n")
+      send_line("ERR 105 Parameter error: no such name \"#{r}\"\r\n")
     elsif thr.alive?
-      @out.puts("S running #{r}\r\n")
-      @out.puts("OK\r\n")
+      send_line("S running #{r}\r\n")
+      send_line("OK\r\n")
     else
       if thr[:rubyserv_error]
-        @out.puts("S exited #{r}\r\n")
+        send_line("S exited #{r}\r\n")
       else
-        @out.puts("S finished #{r}\r\n")
+        send_line("S finished #{r}\r\n")
       end
       if d = thr[:rubyserv_response]
         send_data(d.to_s)
       end
-      @out.puts("OK\r\n")
+      send_line("OK\r\n")
     end
   end
 
   def dispatch_exit(c, r)
     thr = @thr[r]
     if !thr
-      @out.puts("ERR 105 Parameter error: no such name \"#{r}\"\r\n")
+      send_line("ERR 105 Parameter error: no such name \"#{r}\"\r\n")
       return
     end
     thr.kill if thr.alive?
     @thr.delete(r)
-    @out.puts("OK\r\n")
+    send_line("OK\r\n")
   end
 
   def escape(s)
@@ -137,7 +145,7 @@ class Server
     d = escape(d)
     begin
       len = [d.length, 998].min   # 998 = 1000 - "D "
-      @out.puts("D #{d[0 ... len]}\r\n")
+      send_line("D #{d[0 ... len]}\r\n")
       d = d[len .. -1]
     end until d.empty?
   end
@@ -151,10 +159,43 @@ class Server
   def deq_data
     @que.deq
   end
+
+  def send_line(line)
+    @out.puts(line)
+    @log.puts(line) if @log
+  end
 end
 
 if $0 == __FILE__
-  server = Server.new
+  require 'optparse'
+
+  opt_outfile, opt_errfile, opt_logfile = nil, nil, nil
+  opts = OptionParser.new do |opts|
+    opts.banner = <<"End"
+Usage: #{$0} [OPTIONS]
+End
+    opts.on('-o', '--out OUTFILE', 'Send stdout to OUTFILE.') do |outfile|
+      opt_outfile = outfile
+    end
+    opts.on('-e', '--err ERRFILE', 'Send stderr to ERRFILE.') do |errfile|
+      opt_errfile = errfile
+    end
+    opts.on('-e', '--log LOGFILE', 'Send stdlog to LOGFILE.') do |logfile|
+      opt_logfile = logfile
+    end
+    opts.on_tail('--help', '-h', 'Show this message.') do
+      $stdout.print(opts.to_s)
+      exit(0)
+    end
+  end
+  begin
+    opts.parse!(ARGV)
+  rescue OptionParser::ParseError
+    $stderr.print(opts.to_s)
+    exit(1)
+  end
+
+  server = Server.new(opt_outfile, opt_errfile, opt_logfile)
   while gets
     server.dispatch($_)
   end

@@ -1,6 +1,7 @@
 2005-08-12  Daiki Ueno  <ueno@unixuser.org>
 
-	* server.rb: Don't bind @err in execution environment.
+	* server.rb: Don't bind @err in execution environment;
+	added logging feature.
 
 2005-08-11  Daiki Ueno  <ueno@unixuser.org>
 
