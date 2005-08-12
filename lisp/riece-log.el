@@ -98,8 +98,11 @@ It is created if there is at least one instance of Emacs running riece-log.")
 
 (defun riece-log-display-message-function (message)
   (if riece-log-enabled
-      (let ((coding-system-for-write (or riece-log-coding-system
-					 default-buffer-file-coding-system))
+      (let ((coding-system-for-write
+	     (if (featurep 'mule)
+		 (or riece-log-coding-system
+		     (car (get-language-info current-language-environment
+					     'coding-system)))))
 	    (file (riece-log-make-file-name (riece-message-target message)
 					    coding-system-for-write))
 	    file-name-coding-system
@@ -112,9 +115,12 @@ It is created if there is at least one instance of Emacs running riece-log.")
 		      riece-log-lock-file))))
 
 (defun riece-log-make-file-name (identity coding-system)
-  (expand-file-name (format "%s.txt.%s"
-			    (format-time-string "%Y%m%d")
-			    coding-system)
+  (expand-file-name (if (featurep 'mule)
+			(format "%s.txt.%s"
+				(format-time-string "%Y%m%d")
+				coding-system)
+		      (format "%s.txt"
+				(format-time-string "%Y%m%d")))
 		    (riece-log-directory identity)))
 
 (defun riece-log-list-files (identity time)
