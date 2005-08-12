@@ -38,13 +38,13 @@
 ;; => "rubyserv2"
 ;;
 ;; (riece-ruby-inspect "rubyserv0")
-;; => ((OK nil) nil "running")
+;; => ((OK nil) nil (("running")))
 ;;
 ;; (riece-ruby-inspect "rubyserv1")
-;; => ((OK nil) "2" "finished")
+;; => ((OK nil) "2" (("finished")))
 ;;
 ;; (riece-ruby-inspect "rubyserv2")
-;; => ((OK nil) "(eval):1: unterminated string meets end of file" "exited")
+;; => ((OK nil) "(eval):1: unterminated string meets end of file" (("exited")))
 
 ;;; Code:
 
