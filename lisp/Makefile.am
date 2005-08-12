@@ -41,3 +41,11 @@ install-package: package
 
 check-local:
 	$(EMACS) $(FLAGS) -l COMPILE -f riece-test lunit-report.xml
+
+compile-individually:
+	@for i in `$(EMACS) $(FLAGS) -l COMPILE -f riece-examine`; do \
+		echo $(EMACS) $(FLAGS) -l COMPILE \
+			-f riece-compile-module $$i; \
+		$(EMACS) $(FLAGS) -l COMPILE \
+			-f riece-compile-module $$i; \
+	done

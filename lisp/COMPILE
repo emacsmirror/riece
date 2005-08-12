@@ -116,6 +116,13 @@
   WARNING: the last build, and then reconfigure.
   WARNING: ---------------------------------------------------------\n\n")))))
 
+(defun riece-compile-module ()
+  (let ((load-path (cons nil load-path)))
+    (let ((source (expand-file-name
+		   (concat (car command-line-args-left) ".el"))))
+      (if (file-newer-than-file-p source (concat source "c"))
+	  (byte-compile-file source)))))
+
 (defun riece-install-modules (modules dest just-print)
   (unless (or just-print (file-exists-p dest))
     (make-directory dest t))
@@ -165,6 +172,9 @@
 	case-fold-search)
     (if flag
 	(string-match "^\\(\\(--[^ ]+ \\)+-\\|[^ =-]\\)*n" flag))))
+
+(defun riece-examine ()
+  (princ (mapconcat #'symbol-name riece-modules " ")))
 
 (defun riece-compile ()
   (riece-compile-modules riece-modules))

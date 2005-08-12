@@ -1,5 +1,10 @@
 2005-08-12  Daiki Ueno  <ueno@unixuser.org>
 
+	* COMPILE (riece-compile-module): New function.
+	(riece-examine): New function.
+
+	* Makefile.am (compile-individually): New rule.
+
 	* riece-log.el (riece-log-file-name-regexp): New constant.
 	(riece-log-get-file): Add 2nd argument coding-system.
 	(riece-log-get-files): Add 2nd argument time.
