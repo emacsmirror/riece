@@ -99,7 +99,7 @@ It is created if there is at least one instance of Emacs running riece-log.")
 (defun riece-log-display-message-function (message)
   (if riece-log-enabled
       (let ((coding-system-for-write (or riece-log-coding-system
-					 buffer-file-coding-system))
+					 default-buffer-file-coding-system))
 	    (file (riece-log-make-file-name (riece-message-target message)
 					    coding-system-for-write))
 	    file-name-coding-system
