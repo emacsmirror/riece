@@ -102,3 +102,5 @@
 			       "QUIT\r\n")))
 
 (provide 'riece-irc)
+
+;;; riece-irc.el ends here
