@@ -257,7 +257,8 @@ Return a string name assigned by the server."
 	       (eq (process-status riece-ruby-process) 'run))
     (let (selective-display
 	  (coding-system-for-write 'binary)
-	  (coding-system-for-read 'binary))
+	  (coding-system-for-read 'binary)
+	  process-connection-type)
       (setq riece-ruby-process
 	    (apply #'start-process "riece-ruby" (generate-new-buffer " *Ruby*")
 		   riece-ruby-command
