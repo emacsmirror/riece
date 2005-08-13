@@ -18,7 +18,7 @@
 ** *Others* バッファを隠せるようにした (ueno)
 
 ** 単一のプロセスで Ruby のプログラムを評価する枠組みの導入。
-   riece-ruby.el 冒頭のコメントを参照 (ueno)
+   利用方法は riece-ruby.el 冒頭のコメントを参照 (ueno)
 
 ** 新規アドオン riece-eval-ruby.el を導入。",ruby " に続いて任意の 
    Ruby のプログラムを発言すると、評価結果をチャンネルに送信する (ueno)
