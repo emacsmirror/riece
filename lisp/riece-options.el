@@ -76,13 +76,21 @@ See the document of the function `recenter'."
   :group 'riece-looks)
 
 (defcustom riece-directory (expand-file-name "~/.riece")
-  "Where to look for data files."
+  "Where to look for startup files."
   :type 'directory
   :group 'riece-options)
 
 (defcustom riece-addon-directory
   (expand-file-name "addons" riece-directory)
   "Where to look for add-on files."
+  :type 'directory
+  :group 'riece-options)
+
+(defcustom riece-data-directory
+  (if (fboundp 'locate-data-directory)
+      (locate-data-directory "riece")
+    (file-name-directory (locate-library (symbol-file 'riece-data-directory))))
+  "Where to look for data files."
   :type 'directory
   :group 'riece-options)
 

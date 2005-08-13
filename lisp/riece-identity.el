@@ -43,11 +43,11 @@ RFC2812, 2.2 \"Character codes\" says:
    equivalence of two nicknames or channel names.")
 
 (defun riece-identity-prefix (identity)
-  "Return the component sans its server from IDENTITY."
+  "Return the component sans its server name from IDENTITY."
   (aref identity 0))
 
 (defun riece-identity-server (identity)
-  "Return the server component in IDENTITY."
+  "Return the server name component in IDENTITY."
   (aref identity 1))
 
 (defun riece-make-identity (prefix server)
@@ -55,7 +55,7 @@ RFC2812, 2.2 \"Character codes\" says:
   (vector prefix server))
 
 (defun riece-identity-equal (ident1 ident2)
-  "Return t, if IDENT1 and IDENT2 is equal."
+  "Return t, if IDENT1 and IDENT2 are equal."
   (and (riece-identity-equal-no-server
 	(riece-identity-prefix ident1)
 	(riece-identity-prefix ident2))
@@ -76,7 +76,7 @@ RFC2812, 2.2 \"Character codes\" says:
     prefix))
 
 (defun riece-identity-equal-no-server (prefix1 prefix2)
-  "Return t, if IDENT1 and IDENT2 is equal without server part."
+  "Return t, if IDENT1 and IDENT2 are equal without server part."
   (equal (riece-identity-canonicalize-prefix prefix1)
 	 (riece-identity-canonicalize-prefix prefix2)))
 

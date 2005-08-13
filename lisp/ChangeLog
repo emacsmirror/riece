@@ -1,5 +1,13 @@
 2005-08-13  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-async.el (riece-async-open-network-stream): Locate Ruby
+	script file in riece-data-directory.
+	* riece-toolbar.el (riece-make-toolbar-from-menu): Locate Ruby
+	script file in riece-data-directory.
+	* riece-ruby.el (riece-ruby-execute): Locate Ruby script file in
+	riece-data-directory.
+	* riece-options.el (riece-data-directory): New user option.
+
 	* riece-ruby.el (riece-ruby-execute): Bind process-connection-type
 	to nil.
 
