@@ -1,3 +1,35 @@
+* Riece 1.0.9 の主な変更点
+
+** デバッグ出力を専用のバッファに分離 (ueno)
+
+** 既に離脱したチャンネルに参加していたユーザが IRC をやめた場合に、エ
+   ラーが発生する不具合を修正 (ueno)
+
+** C-c g でチャンネルを移動する際に、新しい発言があったチャンネルから
+   辿るようにした (ueno)
+
+** チャンネル名とサーバ名の区切り文字列を、従来の " " から "@" も使え
+   るようにした (ueno)
+
+** 日本語マニュアル (riece-ja.texi) を初心者向けに書き換えた (ueno)
+
+** 開発者向けの文書 (doc/HACKING.ja) を同梱 (ueno)
+
+** *Others* バッファを隠せるようにした (ueno)
+
+** 単一のプロセスで Ruby のプログラムを評価する枠組みの導入。
+   riece-ruby.el 冒頭のコメントを参照 (ueno)
+
+** 新規アドオン riece-eval-ruby.el を導入。",ruby " に続いて任意の 
+   Ruby のプログラムを発言すると、評価結果をチャンネルに送信する (ueno)
+
+** ログの保存時に、使用した coding-system の名前をファイル名に埋め込む
+   ようにした。これにより riece-log-coding-system を設定しなくても文字
+   化けが発生しにくくなった (ueno)
+
+** elisp ファイルを１つずつ byte-compile する make ルールを設けた。
+   configure 後、lisp/ 以下で make compile-individually (ueno)
+
 * Riece 1.0.8 の主な変更点
 
 ** riece-log のロックの緩和 (ueno)
