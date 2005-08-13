@@ -1,5 +1,7 @@
 2005-08-13  Daiki Ueno  <ueno@unixuser.org>
 
+	* COMPILE (riece-install-package): Install *.xpm and *.rb in etc/riece.
+
 	* riece-async.el (riece-async-open-network-stream): Locate Ruby
 	script files in riece-data-directory.
 	* riece-toolbar.el (riece-make-toolbar-from-menu): Locate icon
@@ -7,9 +9,6 @@
 	* riece-ruby.el (riece-ruby-execute): Locate Ruby script files in
 	riece-data-directory.
 	* riece-options.el (riece-data-directory): New user option.
-
-	* riece-ruby.el (riece-ruby-execute): Bind process-connection-type
-	to nil.
 
 2005-08-12  Daiki Ueno  <ueno@unixuser.org>
 
