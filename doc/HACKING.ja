@@ -169,6 +169,7 @@ riece-identity オブジェクトは以下の 2 つの要素をもつベクターです。
 
 - prefix
   チャンネル名やニックネームなど、IRC サーバに固有の名前
+
 - server
   IRC サーバの名前
 
@@ -275,9 +276,10 @@ riece-naming が提供する主な関数は以下の 3 つです。
 シグナルを送信するには、riece-emit-signal を使います。
 
 - riece-emit-signal signal-name &rest args
-引数 signal-name で指示されるシグナルを、引数 args とともに送出します
+  引数 signal-name で指示されるシグナルを、引数 args とともに送出しま
+  す
 
-シグナルに応答する処理は、riece-connect-signal を使って定義します。
+  シグナルに応答する処理は、riece-connect-signal を使って定義します。
 
 - riece-connect-signal signal-name slot-function &optional
                        filter-function handback
