@@ -65,9 +65,6 @@
 (defvar riece-shrink-buffer-idle-timer nil
   "Timer object to periodically shrink channel buffers.")
 
-(defvar riece-addons-insinuated nil
-  "Non nil if add-ons are already insinuated.")
-
 (defvar riece-select-keys
   `("#" riece-command-switch-to-channel-by-number
     "1" riece-command-switch-to-channel-by-number-1
@@ -282,13 +279,11 @@ If optional argument CONFIRM is non-nil, ask which IRC server to connect."
     (modify-frame-parameters (selected-frame)
 			     (list (cons 'riece-window-configuration
 					 (current-window-configuration))))
-    (unless riece-addons-insinuated
-      (setq riece-addons (riece-resolve-addons riece-addons))
-      (let ((pointer riece-addons))
-	(while pointer
-	  (riece-insinuate-addon (car pointer) riece-debug)
-	  (setq pointer (cdr pointer))))
-      (setq riece-addons-insinuated t))
+    (setq riece-addons (riece-resolve-addons riece-addons))
+    (let ((pointer riece-addons))
+      (while pointer
+	(riece-insinuate-addon (car pointer) riece-debug)
+	(setq pointer (cdr pointer))))
     (if (or confirm (null riece-server))
 	(setq riece-server (completing-read "Server: " riece-server-alist)))
     (if (stringp riece-server)

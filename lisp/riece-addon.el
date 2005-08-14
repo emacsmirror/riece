@@ -192,10 +192,13 @@
      addons)))
 
 (defun riece-insinuate-addon (addon &optional verbose)
-  (require addon)		;implicit dependency
-  (funcall (intern (concat (symbol-name addon) "-insinuate")))
-  (if verbose
-      (message "Add-on %S is insinuated" addon)))
+  (if (get addon 'riece-addon-insinuated)
+      (if verbose
+	  (message "Add-on %S is alread insinuated" addon))
+    (funcall (intern (concat (symbol-name addon) "-insinuate")))
+    (put addon 'riece-addon-insinuated t)
+    (if verbose
+	(message "Add-on %S is insinuated" addon))))
 
 (defun riece-enable-addon (addon &optional verbose)
   (let ((enabled (intern-soft (concat (symbol-name addon) "-enabled"))))
@@ -204,7 +207,7 @@
 	    (message "Add-on %S doesn't support enable/disable" addon))
       (if (symbol-value enabled)
 	  (if verbose
-	      (message "Can't enable add-on %S" addon))
+	      (message "Add-on %S is already enabled" addon))
 	(funcall (intern (concat (symbol-name addon) "-enable")))
 	(if verbose
 	    (message "Add-on %S enabled" addon))))))
@@ -220,7 +223,7 @@
 	    (if verbose
 		(message "Add-on %S disabled" addon)))
 	(if verbose
-	    (message "Can't disable add-on %S" addon))))))
+	    (message "Add-on %S is already enabled" addon))))))
 
 (put 'riece-addon-list-mode 'font-lock-defaults
      '(riece-addon-list-font-lock-keywords t))

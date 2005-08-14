@@ -1,3 +1,11 @@
+2005-08-14  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece.el (riece-addons-insinuated): Abolished.
+	(riece): Don't check riece-addons-insinuated.
+
+	* riece-addon.el (riece-insinuate-addon): Put
+	'riece-addon-insinuated property on add-on feature.
+
 2005-08-13  Daiki Ueno  <ueno@unixuser.org>
 
 	* COMPILE (riece-install-package): Install *.xpm and *.rb in etc/riece.
