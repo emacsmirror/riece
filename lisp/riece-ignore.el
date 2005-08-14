@@ -35,6 +35,7 @@
 
 (defgroup riece-ignore nil
   "Ignore messages in IRC buffers."
+  :prefix "riece-"
   :group 'riece)
 
 (defcustom riece-ignore-discard-message 'log

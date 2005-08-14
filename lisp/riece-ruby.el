@@ -52,6 +52,7 @@
 
 (defgroup riece-ruby nil
   "Interact with Ruby interpreter."
+  :prefix "riece-"
   :group 'riece)
 
 (defcustom riece-ruby-command "ruby"

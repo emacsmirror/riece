@@ -34,6 +34,7 @@
 
 (defgroup riece-ctlseq nil
   "Highlight control sequences in IRC buffer."
+  :prefix "riece-"
   :group 'riece)
 
 (defcustom riece-ctlseq-colors

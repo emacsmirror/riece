@@ -32,6 +32,7 @@
 
 (defgroup riece-biff nil
   "Biff for new arrival messages"
+  :prefix "riece-"
   :group 'riece)
 
 (defcustom riece-biff-check-channels nil

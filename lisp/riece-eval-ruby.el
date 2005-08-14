@@ -34,6 +34,7 @@
 
 (defgroup riece-eval-ruby nil
   "Evaluate Ruby programs in channels."
+  :prefix "riece-"
   :group 'riece)
 
 (defcustom riece-eval-ruby-prefix-regexp "^,ruby\\s-+"

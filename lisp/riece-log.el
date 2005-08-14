@@ -37,6 +37,7 @@
 
 (defgroup riece-log nil
   "Save irc log"
+  :prefix "riece-"
   :group 'riece)
 
 (defcustom riece-log-directory

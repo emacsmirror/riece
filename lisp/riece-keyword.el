@@ -33,6 +33,7 @@
 
 (defgroup riece-keyword nil
   "Highlight keyword in IRC buffer."
+  :prefix "riece-"
   :group 'riece)
 
 (defcustom riece-keywords nil

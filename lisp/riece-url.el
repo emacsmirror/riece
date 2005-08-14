@@ -37,6 +37,7 @@
 
 (defgroup riece-url nil
   "URL Browsing in IRC buffer."
+  :prefix "riece-"
   :group 'riece)
 
 (defcustom riece-url-regexp  "\\b\\(s?https?\\|ftp\\|file\\|gopher\\|news\\|telnet\\|wais\\|mailto\\):\\(//[-a-zA-Z0-9_.]+:[0-9]*\\)?[-a-zA-Z0-9_=?#$@~`%&*+|\\/.,;]*[-a-zA-Z0-9_=#$@~`%&*+|\\/;]"
