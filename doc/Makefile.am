@@ -1,4 +1,5 @@
-EXTRA_DIST = texinfo.tex infohack.el ptexinfmt.el irchat-copyright.el HACKING.ja
+EXTRA_DIST = texinfo.tex infohack.el ptexinfmt.el irchat-copyright.el \
+	HACKING HACKING.ja
 
 info_TEXINFOS = riece-ja.texi riece-en.texi
 
