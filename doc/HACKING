@@ -8,18 +8,16 @@ internals.)
 
 ** Bug report
 
-You can create a bug report by clicking the "bug" button in a toolbar,
-or M-x riece-submit-bug-report.  It is necessary to set riece-debug to
-t before preparing a bug report.
+You can create a template of a bug report by clicking the "bug" button
+in a toolbar, or M-x riece-submit-bug-report.  It is necessary to set
+riece-debug to t before preparing a bug report.
 
 ** Debug output
 
 If the riece-debug variable is set to t, Riece begins to collect
-debugging information in *Debug* buffer.
-
-And also, interactions with IRC servers are stored in
-" *IRC*<IRC-server-name>" buffers.  Note that the buffer names start
-with a whitespace character (" ").
+debugging information in *Debug* buffer.  Interactions with IRC
+servers are stored in " *IRC*<IRC-server-name>" buffers.  Note that
+these buffer names start with a whitespace character (" ").
 
 ** Joining the development
 
@@ -29,8 +27,9 @@ To join the development, send us a patch or an add-on.
 
 Development of Riece uses CVS.  Latest developing version is available
 at CVS.  Please note that the newest development version from CVS may
-_not_ be reliable.  You can only use it at your own risk.  We may
-ignore bug reports for that version.
+NOT be reliable.  You can only use it at your own risk.  We may ignore
+bug reports for that version.  The instruction to access the CVS
+server is below.
 
 (1) logging in to anonymous CVS server
 
@@ -51,8 +50,8 @@ You will need newer version of GNU Automake.
 
 ** Modules
 
-Riece consists of elisp modules listed below, ordered by the number of
-dependencies.
+Riece consists of many elisp modules listed below, ordered by the
+number of dependencies they have.
 
 - riece-globals
   This module defines global variables.
@@ -64,12 +63,11 @@ dependencies.
   This module defines the version of Riece.
 
 - riece-coding
-  This module provides functions which support code conversions.
+  This module provides functions which support character code conversions.
 
 - riece-complete
-
-  This module provides functions which support tab completion in a
-  mini buffer.
+  This module provides functions which support tab completion feature
+  in a mini buffer.
 
 - riece-addon
   This module manages add-ons.
@@ -91,7 +89,8 @@ dependencies.
   This module provides miscellaneous functions.
 
 - riece-signal
-  This module manages routing display signals.
+  This module defines the riece-signal object type used to manage
+  display events.
 
 - riece-layout
   This module manages window layouts.
@@ -103,49 +102,49 @@ dependencies.
   This module manages connections to IRC servers.
 
 - riece-naming
-  This module is a so called Mediator pattern which knows relations of
-  channels and users.
+  This module is a so called the Mediator design pattern.  It knows
+  relationships of riece-channel/riece-user objects.
 
 - riece-message
   This module defines the riece-message object type.
 
 - riece-filter
-  This module defines the process filter.
+  This module only provides the process filter function.
 
 - riece-handle
-  This module provides handler definitions for IRC messages.  These
-  handlers are called from riece-filter.
+  This module provides handler functions for IRC messages.  These
+  functions are called from riece-filter.
 
 - riece-000
-  This module provides handler definitions for numeric replies whose
+  This module provides handler functions for numeric replies whose
   response codes are in 000 to 100 range.  These handlers are called
   from riece-filter.
 
 - riece-200
-  This module provides handler definitions for numeric replies whose
+  This module provides handler functions for numeric replies whose
   response codes are in 200 to 300 range.  These handlers are called
   from riece-filter.
 
 - riece-300
-  This module provides handler definitions for numeric replies whose
+  This module provides handler functions for numeric replies whose
   response codes are in 300 to 400 range.  These handlers are called
   from riece-filter.
 
 - riece-400
-  This module provides handler definitions for numeric replies whose
+  This module provides handler functions for numeric replies whose
   response codes are in 400 to 500 range.  These handlers are called
   from riece-filter.
 
 - riece-500
-  This module provides handler definitions for numeric replies whose
+  This module provides handler functions for numeric replies whose
   response codes are in 500 to 600 range.  These handlers are called
   from riece-filter.
 
 - riece-commands
-  This module provides commands.
+  This module provides user commands.
 
 - riece-irc
-  This module sets up process-filter for the IRC protocol.
+  This module provides the binding for the IRC protocol.
 
 - riece
   This module is the entry point of M-x riece.
