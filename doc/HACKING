@@ -164,7 +164,7 @@ needed to distinguish process object of each connection by its name.
 
 It can be known by:
 
-(1) checking the value of riece-overrinding-server-name,
+(1) checking the value of riece-overriding-server-name,
 
 (2) checking the value of riece-server-name,
     (If the variable riece-server-name is local to the current buffer,
@@ -306,7 +306,7 @@ riece-connect-signal.
   the fourth argument of riece-connect-signal.
 
   If the third argument filter-function is specified, the
-  slot-function is called conditionaly.  The filter-function gets the
+  slot-function is called conditionally.  The filter-function gets the
   signal object and returns nil or t.  If the return value is nil, the
   slot-function is not called.
 
