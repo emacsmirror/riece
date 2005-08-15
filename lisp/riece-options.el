@@ -87,9 +87,13 @@ See the document of the function `recenter'."
   :group 'riece-options)
 
 (defcustom riece-data-directory
-  (if (fboundp 'locate-data-directory)
-      (locate-data-directory "riece")
-    (file-name-directory (locate-library (symbol-file 'riece-data-directory))))
+  (cond ((fboundp 'locate-data-directory)
+	 (locate-data-directory "riece"))
+	((symbol-file 'riece-data-directory)
+	 (file-name-directory
+	  (locate-library (symbol-file 'riece-data-directory))))
+	(t
+	 (expand-file-name "riece" data-directory)))
   "Where to look for data files."
   :type 'directory
   :group 'riece-options)

@@ -1,3 +1,8 @@
+2005-08-15  TAKAHASHI Kaoru  <kaoru@kaisei.org>
+
+	* riece-options.el (riece-data-directory): Avoid compile time
+	error when locate-data-directory undefined.
+
 2005-08-15  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-options.el (riece-quit-timeout): Set default to 1.
