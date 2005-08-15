@@ -17,7 +17,7 @@ riece-debug to t before preparing a bug report.
 If the riece-debug variable is set to t, Riece begins to collect
 debugging information in *Debug* buffer.  Interactions with IRC
 servers are stored in " *IRC*<IRC-server-name>" buffers.  Note that
-these buffer names start with a whitespace character (" ").
+these buffers have names starting with a whitespace character (" ").
 
 ** Joining the development
 
