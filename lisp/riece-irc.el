@@ -96,10 +96,12 @@
 			   (if (rassq process riece-server-process-alist)
 			       (delete-process process)))
 			 process))
+  (message "Sending QUIT to server...")
   (riece-process-send-string process
 			     (if message
 				 (format "QUIT :%s\r\n" message)
-			       "QUIT\r\n")))
+			       "QUIT\r\n"))
+  (message "Sending QUIT to server...done"))
 
 (provide 'riece-irc)
 
