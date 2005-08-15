@@ -236,7 +236,7 @@ way is to put Riece variables on .emacs or file loaded from there."
   :type 'boolean
   :group 'riece-server)
 
-(defcustom riece-quit-timeout 10
+(defcustom riece-quit-timeout 1
   "Quit timeout when there is no response from server."
   :type '(radio (integer :tag "Seconds")
 		(const nil))

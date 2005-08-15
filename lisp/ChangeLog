@@ -1,5 +1,7 @@
 2005-08-15  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-options.el (riece-quit-timeout): Set default to 1.
+
 	* riece-irc.el (riece-irc-quit-server-process): Display message
 	before/after sending QUIT.
 
