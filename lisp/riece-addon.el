@@ -242,8 +242,8 @@ All normal editing commands are turned off."
   (use-local-map riece-addon-list-mode-map)
   (make-local-variable 'font-lock-defaults)
   (setq font-lock-defaults '(riece-addon-list-font-lock-keywords t))
-  ;; In XEmacs, auto-initialization of font-lock is not affective
-  ;; when buffer-file-name is not set.
+  ;; In XEmacs, auto-initialization of font-lock is not effective
+  ;; if buffer-file-name is not set.
   (font-lock-set-defaults)
   (run-hooks 'riece-addon-list-mode-hook))
 
