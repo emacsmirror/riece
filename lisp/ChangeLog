@@ -1,3 +1,7 @@
+2005-08-16  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-options.el (riece-data-directory): Use load-file-name.
+
 2005-08-15  TAKAHASHI Kaoru  <kaoru@kaisei.org>
 
 	* riece-options.el (riece-data-directory): Avoid compile time
