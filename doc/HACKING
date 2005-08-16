@@ -26,10 +26,9 @@ To join the development, send us a patch or an add-on.
 ** CVS
 
 Development of Riece uses CVS.  Latest developing version is available
-at CVS.  Please note that the newest development version from CVS may
-NOT be reliable.  You can only use it at your own risk.  We may ignore
-bug reports for that version.  The instruction to access the CVS
-server is below.
+at CVS.  Please note that the version from CVS may NOT be reliable,
+and you can only use it at your own risk.  We may ignore bug reports
+for that version.  The instruction to access the CVS server is below.
 
 (1) logging in to anonymous CVS server
 
