@@ -41,9 +41,7 @@
 	     (format "riece-handle-default-%03d-message" base-number))))
     (if (and function
 	     (symbol-function function))
-	(riece-funcall-ignore-errors (if (symbolp function)
-					 (symbol-name function)
-				       (format "numeric-reply-%d" number))
+	(riece-funcall-ignore-errors (symbol-name function)
 				     function prefix number name
 				     (riece-decode-coding-string string)))))
 
@@ -58,19 +56,15 @@
   (let ((function (intern-soft (concat "riece-handle-" message "-message")))
 	(hook (intern (concat "riece-" message "-hook")))
 	(after-hook (intern (concat "riece-after-" message "-hook"))))
-    (unless (riece-ignore-errors (if (symbolp hook)
-				     (symbol-name hook)
-				   (format "%s-hook" message))
-	      (run-hook-with-args-until-success hook prefix string))
+    (unless (riece-funcall-ignore-errors (symbol-name hook)
+					 #'run-hook-with-args-until-success
+					 hook prefix string)
       (if function
-	  (riece-funcall-ignore-errors (if (symbolp function)
-					   (symbol-name function)
-					 (format "message-%s" message))
+	  (riece-funcall-ignore-errors (symbol-name function)
 				       function prefix string))
-      (riece-ignore-errors (if (symbolp after-hook)
-			       (symbol-name after-hook)
-			     (format "%s-after-hook" message))
-	(run-hook-with-args-until-success after-hook prefix string)))))
+      (riece-funcall-ignore-errors (symbol-name after-hook)
+				   #'run-hook-with-args-until-success
+				   after-hook prefix string))))
 
 (defsubst riece-chomp-string (string)
   (if (string-match "\r\\'" string)

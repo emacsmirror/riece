@@ -73,16 +73,18 @@
 		  (after-hook
 		   (intern (concat "riece-ctcp-after-" request
 				   "-request-hook"))))
-	      (unless (riece-ignore-errors (symbol-name hook)
-			(run-hook-with-args-until-success
-			 hook prefix (car targets) message))
+	      (unless (riece-funcall-ignore-errors
+		       (symbol-name hook)
+		       #'run-hook-with-args-until-success
+		       hook prefix (car targets) message)
 		(if function
 		    (riece-funcall-ignore-errors (symbol-name function)
 						  function prefix (car targets)
 						  message))
-		(riece-ignore-errors (symbol-name after-hook)
-		  (run-hook-with-args-until-success
-		   after-hook prefix (car targets) message))))
+		(riece-funcall-ignore-errors (symbol-name after-hook)
+					     #'run-hook-with-args-until-success
+					     after-hook prefix (car targets)
+					     message)))
 	    t)))))
 
 (defun riece-handle-ctcp-version-request (prefix target string)
@@ -231,16 +233,18 @@
 		  (after-hook
 		   (intern (concat "riece-ctcp-after-" response
 				   "-response-hook"))))
-	      (unless (riece-ignore-errors (symbol-name hook)
-			(run-hook-with-args-until-success
-			 hook prefix (car targets) message))
+	      (unless (riece-funcall-ignore-errors
+		       (symbol-name hook)
+		       #'run-hook-with-args-until-success
+		       hook prefix (car targets) message)
 		(if function
 		    (riece-funcall-ignore-errors
 		     (symbol-name function)
 		     function prefix (car targets) message))
-		(riece-ignore-errors (symbol-name after-hook)
-		  (run-hook-with-args-until-success
-		   after-hook prefix (car targets) message))))
+		(riece-funcall-ignore-errors (symbol-name after-hook)
+					     #'run-hook-with-args-until-success
+					     after-hook prefix (car targets)
+					     message)))
 	    t)))))
 
 (defun riece-handle-ctcp-version-response (prefix target string)

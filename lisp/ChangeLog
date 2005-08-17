@@ -1,3 +1,12 @@
+2005-08-17  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-filter.el (riece-handle-message): Use
+	riece-funcall-ignore-errors instead of riece-ignore-errors.
+
+	* riece-ctcp.el (riece-handle-ctcp-request): Use
+	riece-funcall-ignore-errors instead of riece-ignore-errors.
+	(riece-handle-ctcp-response): Ditto.
+
 2005-08-16  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-options.el (riece-data-directory): Use load-file-name.
