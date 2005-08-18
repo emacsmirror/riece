@@ -39,7 +39,7 @@
 (require 'ring)
 
 (defgroup riece-history nil
-  "Channel history"
+  "Channel switch history."
   :tag "History"
   :prefix "riece-"
   :group 'riece)

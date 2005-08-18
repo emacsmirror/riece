@@ -44,7 +44,7 @@
 (require 'riece-biff)
 
 (defgroup riece-mini nil
-  "riece on minibuffer"
+  "Riece on minibuffer."
   :group 'riece)
 
 (defcustom riece-mini-backlog-size 5

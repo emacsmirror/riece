@@ -29,7 +29,7 @@
 (require 'riece-commands)
 
 (defgroup riece-yank nil
-  "Enter the element of `kill-ring'"
+  "Enter the element of `kill-ring'."
   :tag "Yank"
   :prefix "riece-"
   :group 'riece)

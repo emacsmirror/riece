@@ -29,10 +29,10 @@
 
 ;; User modifiable variables.
 (defgroup riece nil
-  "Riece specific customize group")
+  "Riece specific customize group.")
 
 (defgroup riece-options nil
-  "Riece user customizable variables"
+  "Riece user customizable variables."
   :prefix "riece-"
   :group 'riece)
 
@@ -58,7 +58,7 @@
   :group 'riece-options)
 
 (defgroup riece-looks nil
-  "Related to look and feel"
+  "Look and feel."
   :prefix "riece-"
   :group 'riece)
 
@@ -135,12 +135,12 @@ way is to put Riece variables on .emacs or file loaded from there."
   :group 'riece-options)
 
 (defgroup riece-server nil
-  "Server settings"
+  "Server settings."
   :prefix "riece-"
   :group 'riece)
 
 (defgroup riece-channel nil
-  "Channel settings"
+  "Channel settings."
   :prefix "riece-"
   :group 'riece)
 

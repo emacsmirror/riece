@@ -40,7 +40,7 @@
 (eval-when-compile (require 'riece-highlight))
 
 (defgroup riece-unread nil
-  "Mark unread channels"
+  "Mark unread channels."
   :tag "Unread"
   :prefix "riece-"
   :group 'riece)

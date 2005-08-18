@@ -1,4 +1,4 @@
-;;; riece-rdcc.el --- ruby implementation of DCC add-on
+;;; riece-rdcc.el --- Ruby implementation of DCC add-on
 ;; Copyright (C) 1998-2003 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>
@@ -31,7 +31,7 @@
 (require 'riece-ruby)
 
 (defgroup riece-rdcc nil
-  "DCC implementation using ruby"
+  "DCC written in Ruby."
   :prefix "riece-"
   :group 'riece)
 

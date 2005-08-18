@@ -28,7 +28,7 @@
 (require 'riece-misc)
 
 (defgroup riece-layout nil
-  "Manage window layouts"
+  "Window layouts."
   :prefix "riece-"
   :group 'riece)
 

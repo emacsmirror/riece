@@ -30,7 +30,7 @@
 (require 'riece-misc)
 
 (defgroup riece-message nil
-  "Messages"
+  "Display messages."
   :tag "Message"
   :prefix "riece-"
   :group 'riece)

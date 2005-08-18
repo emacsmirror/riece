@@ -36,7 +36,7 @@
 (require 'riece-signal)
 
 (defgroup riece-alias nil
-  "Define aliases of names"
+  "Aliases of channel/user names."
   :prefix "riece-"
   :group 'riece)
 

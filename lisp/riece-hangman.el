@@ -34,7 +34,7 @@
 (require 'riece-server)
 
 (defgroup riece-hangman nil
-  "Interface to hangman.el"
+  "Interface to hangman.el."
   :prefix "riece-"
   :group 'riece)
 

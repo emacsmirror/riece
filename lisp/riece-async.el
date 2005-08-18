@@ -40,7 +40,7 @@
 (require 'riece-options)
 
 (defgroup riece-async nil
-  "Connect to IRC server via asynchronous proxy"
+  "Connect to IRC server via async proxy."
   :prefix "riece-"
   :group 'riece)
 

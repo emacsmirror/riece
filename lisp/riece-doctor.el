@@ -36,7 +36,7 @@
 (require 'riece-server)
 
 (defgroup riece-doctor nil
-  "Interface to doctor.el"
+  "Interface to doctor.el."
   :prefix "riece-"
   :group 'riece)
 

@@ -27,7 +27,7 @@
 (require 'riece-globals)
 
 (defgroup riece-coding nil
-  "Coding system"
+  "Coding system."
   :tag "Coding"
   :prefix "riece-"
   :group 'riece)

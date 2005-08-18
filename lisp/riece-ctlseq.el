@@ -33,7 +33,7 @@
 (require 'riece-misc)
 
 (defgroup riece-ctlseq nil
-  "Highlight control sequences in IRC buffer."
+  "Control sequences in IRC buffer."
   :prefix "riece-"
   :group 'riece)
 

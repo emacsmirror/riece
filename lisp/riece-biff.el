@@ -31,7 +31,7 @@
 (require 'riece-message)
 
 (defgroup riece-biff nil
-  "Biff for new arrival messages"
+  "Biff for new arrival messages."
   :prefix "riece-"
   :group 'riece)
 

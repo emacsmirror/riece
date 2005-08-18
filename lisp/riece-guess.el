@@ -27,7 +27,7 @@
 (require 'riece-commands)
 
 (defgroup riece-guess nil
-  "Guess the next channel"
+  "Guess the next channel to be switched."
   :tag "Guess"
   :prefix "riece-"
   :group 'riece)

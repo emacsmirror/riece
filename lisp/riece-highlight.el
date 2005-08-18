@@ -32,13 +32,13 @@
 (require 'derived)
 
 (defgroup riece-highlight nil
-  "Highlight IRC buffers"
+  "Decorate IRC buffers with faces and fonts."
   :tag "Highlight"
   :prefix "riece-"
   :group 'riece)
 
 (defgroup riece-highlight-faces nil
-  "Faces for highlight IRC buffers"
+  "Faces for highlight IRC buffers."
   :tag "Faces"
   :prefix "riece-highlight-"
   :group 'riece-highlight)

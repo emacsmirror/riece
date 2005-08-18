@@ -30,16 +30,16 @@
 (require 'riece-misc)
 
 (defgroup riece-addon-list nil
-  "Add-on management"
-  :tag "Addon"
-  :prefix "riece-"
+  "Add-on listing."
+  :tag "Addon list"
+  :prefix "riece-addon-list-"
   :group 'riece)
 
 (defgroup riece-addon-list-faces nil
-  "Faces for riece-addon-list-mode"
+  "Faces for riece-addon-list-mode."
   :tag "Faces"
-  :prefix "riece-addon-list"
-  :group 'riece-addon)
+  :prefix "riece-addon-list-"
+  :group 'riece-addon-list)
 
 (defface riece-addon-list-enabled-face
   '((((class color) (background dark))

@@ -36,7 +36,7 @@
 (require 'riece-button)
 
 (defgroup riece-log nil
-  "Save irc log"
+  "Save IRC logs."
   :prefix "riece-"
   :group 'riece)
 

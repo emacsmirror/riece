@@ -29,7 +29,7 @@
 (require 'calc)
 
 (defgroup riece-ndcc nil
-  "Elisp native DCC implementation"
+  "DCC written in elisp."
   :prefix "riece-"
   :group 'riece)
 
