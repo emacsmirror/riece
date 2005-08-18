@@ -169,9 +169,8 @@
 	(let* ((entry (assq (car pointer) dependencies))
 	       (count (1- (nth 1 entry))))
 	  (if (zerop count)
-	      (progn
-		(setq dependencies (delq entry dependencies)
-		      queue (nconc queue (list entry))))
+	      (setq dependencies (delq entry dependencies)
+		    queue (nconc queue (list entry)))
 	    (setcar (cdr entry) count)))
 	(setq pointer (cdr pointer)))
       (setq queue (cdr queue)))
