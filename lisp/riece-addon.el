@@ -175,7 +175,7 @@
 	(setq pointer (cdr pointer)))
       (setq queue (cdr queue)))
     (if dependencies
-	(error "Circular add-on dependency found: %S" dependency))
+	(error "Circular add-on dependency found: %S" dependencies))
     (nreverse addons)))
 
 (defun riece-resolve-addons (addons)
