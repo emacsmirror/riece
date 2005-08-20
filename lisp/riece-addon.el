@@ -318,7 +318,7 @@ Useful keys:
   (when (eq major-mode 'riece-addon-list-mode)
     (riece-command-list-addons)
     (let ((point (point-min)))
-      (while (not (eq (get-text-property point 'riece-addon) addon)
+      (while (and (not (eq (get-text-property point 'riece-addon) addon))
 		  (setq point (next-single-property-change point
 							   'riece-addon))))
       (if point
@@ -345,7 +345,7 @@ Useful keys:
   (when (eq major-mode 'riece-addon-list-mode)
     (riece-command-list-addons)
     (let ((point (point-min)))
-      (while (not (eq (get-text-property point 'riece-addon) addon)
+      (while (and (not (eq (get-text-property point 'riece-addon) addon))
 		  (setq point (next-single-property-change point
 							   'riece-addon))))
       (if point
