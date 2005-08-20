@@ -315,18 +315,14 @@ Useful keys:
 				   (null (symbol-value enabled)))))
 			  t)))))
   (riece-enable-addon addon t)
-  (let ((enabled (intern-soft (concat (symbol-name addon) "-enabled"))))
-    (if (and (eq major-mode 'riece-addon-list-mode)
-	     (get-text-property (point) 'riece-addon)
-	     enabled (symbol-value enabled))
-	(save-excursion
-	  (beginning-of-line)
-	  (let ((point (point))
-		(inhibit-read-only t)
-		buffer-read-only)
-	    (delete-char 1)
-	    (insert "+")
-	    (put-text-property point (point) 'riece-addon addon))))))
+  (when (eq major-mode 'riece-addon-list-mode)
+    (riece-command-list-addons)
+    (let ((point (point-min)))
+      (while (not (eq (get-text-property point 'riece-addon) addon)
+		  (setq point (next-single-property-change point
+							   'riece-addon))))
+      (if point
+	  (goto-char point)))))
 
 (defun riece-command-disable-addon (addon)
   (interactive
@@ -346,18 +342,14 @@ Useful keys:
 				   (symbol-value enabled))))
 			  t)))))
   (riece-disable-addon addon t)
-  (let ((enabled (intern-soft (concat (symbol-name addon) "-enabled"))))
-    (if (and (eq major-mode 'riece-addon-list-mode)
-	     (get-text-property (point) 'riece-addon)
-	     enabled (null (symbol-value enabled)))
-	(save-excursion
-	  (beginning-of-line)
-	  (let ((point (point))
-		(inhibit-read-only t)
-		buffer-read-only)
-	    (delete-char 1)
-	    (insert "-")
-	    (put-text-property point (point) 'riece-addon addon))))))
+  (when (eq major-mode 'riece-addon-list-mode)
+    (riece-command-list-addons)
+    (let ((point (point-min)))
+      (while (not (eq (get-text-property point 'riece-addon) addon)
+		  (setq point (next-single-property-change point
+							   'riece-addon))))
+      (if point
+	  (goto-char point)))))
 
 (provide 'riece-addon)
 
