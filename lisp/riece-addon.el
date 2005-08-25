@@ -196,11 +196,35 @@
 (defun riece-insinuate-addon (addon &optional verbose)
   (if (get addon 'riece-addon-insinuated)
       (if verbose
-	  (message "Add-on %S is alread insinuated" addon))
+	  (message "Add-on %S is already insinuated" addon))
     (funcall (intern (concat (symbol-name addon) "-insinuate")))
     (put addon 'riece-addon-insinuated t)
     (if verbose
 	(message "Add-on %S is insinuated" addon))))
+
+(defun riece-uninstall-addon (addon &optional verbose)
+  (if (not (get addon 'riece-addon-insinuated))
+      (if verbose
+	  (message "Add-on %S is not insinuated" addon))
+    (let ((entry (assq addon riece-addon-dependencies))
+	  (enabled (intern-soft (concat (symbol-name addon) "-enabled"))))
+      (if entry
+	  (if (cdr entry)
+	      (if (= (length (cdr entry)) 1)
+		  (error "%S depends %S" (car (cdr entry)) addon)
+		(error "%s depends %S" (mapconcat #'identity (cdr entry) ",")
+		       addon))
+	    (if (and enabled
+		     (symbol-value enabled))
+		(riece-disable-addon addon verbose))
+	    (funcall (or (intern-soft (concat (symbol-name addon)
+					      "-uninstall"))
+			 #'ignore))
+	    (setq riece-addon-dependencies
+		  (delq entry riece-addon-dependencies))
+	    (put addon 'riece-addon-insinuated nil)))
+      (if verbose
+	  (message "Add-on %S is uninstalled" addon)))))
 
 (defun riece-enable-addon (addon &optional verbose)
   (let ((enabled (intern-soft (concat (symbol-name addon) "-enabled"))))

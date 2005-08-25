@@ -4,6 +4,7 @@
 	riece-addon-dependencies instead of riece-addons.
 	(riece-command-enable-addon): Ditto.
 	(riece-command-disable-addon): Ditto.
+	(riece-uninstall-addon): New function.
 
 2005-08-25  Daiki Ueno  <ueno@unixuser.org>
 
