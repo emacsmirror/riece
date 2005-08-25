@@ -1,5 +1,12 @@
 2005-08-25  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-addon.el (riece-command-list-addons): Use
+	riece-addon-dependencies instead of riece-addons.
+	(riece-command-enable-addon): Ditto.
+	(riece-command-disable-addon): Ditto.
+
+2005-08-25  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece.el (riece): Don't override riece-addons setting.
 
 	* riece-globals.el (riece-addon-dependencies): New variable.

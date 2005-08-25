@@ -255,32 +255,32 @@ All normal editing commands are turned off."
   (riece-addon-list-mode)
   (let ((inhibit-read-only t)
 	buffer-read-only
-	(pointer (sort (copy-sequence riece-addons)
-		       (lambda (symbol1 symbol2)
-				  (string-lessp (symbol-name symbol1)
-						(symbol-name symbol2)))))
+	(pointer (sort (copy-sequence riece-addon-dependencies)
+		       (lambda (dependency1 dependency2)
+			 (string-lessp (symbol-name (car dependency1))
+				       (symbol-name (car dependency2))))))
 	enabled description point)
     (erase-buffer)
     (riece-kill-all-overlays)
     (while pointer
-      (setq enabled (intern-soft (concat (symbol-name (car pointer))
+      (setq enabled (intern-soft (concat (symbol-name (car (car pointer)))
 					 "-enabled"))
-	    description (intern-soft (concat (symbol-name (car pointer))
+	    description (intern-soft (concat (symbol-name (car (car pointer)))
 					     "-description")))
       (setq point (point))
       (insert (format "%c %S: %s\n"
-		      (if (not (featurep (car pointer)))
+		      (if (not (featurep (car (car pointer))))
 			  ??
 			(if (null enabled)
 			    ?!
 			  (if (symbol-value enabled)
 			      ?+
 			    ?-)))
-		      (car pointer)
+		      (car (car pointer))
 		      (if description
 			  (symbol-value description)
 			"(no description)")))
-      (put-text-property point (point) 'riece-addon (car pointer))
+      (put-text-property point (point) 'riece-addon (car (car pointer)))
       (setq pointer (cdr pointer)))
     (insert "
 Symbols in the leftmost column:
@@ -307,9 +307,9 @@ Useful keys:
 	    (get-text-property (point) 'riece-addon))
 	(intern-soft
 	 (completing-read "Add-on: "
-			  (mapcar (lambda (addon)
-				    (list (symbol-name addon)))
-				  riece-addons)
+			  (mapcar (lambda (dependency)
+				    (list (symbol-name (car dependency))))
+				  riece-addon-dependencies)
 			  (lambda (pointer)
 			    (let ((enabled
 				   (intern-soft (concat (car pointer)
@@ -334,9 +334,9 @@ Useful keys:
 	    (get-text-property (point) 'riece-addon))
 	(intern-soft
 	 (completing-read "Add-on: "
-			  (mapcar (lambda (addon)
-				    (list (symbol-name addon)))
-				  riece-addons)
+			  (mapcar (lambda (dependency)
+				    (list (symbol-name (car dependency))))
+				  riece-addon-dependencies)
 			  (lambda (pointer)
 			    (let ((enabled
 				   (intern-soft (concat (car pointer)
