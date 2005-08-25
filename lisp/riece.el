@@ -279,7 +279,8 @@ If optional argument CONFIRM is non-nil, ask which IRC server to connect."
     (modify-frame-parameters (selected-frame)
 			     (list (cons 'riece-window-configuration
 					 (current-window-configuration))))
-    (setq riece-addon-dependencies (riece-resolve-addons riece-addons))
+    (setq riece-addon-dependencies (riece-resolve-addons
+				    (copy-sequence riece-addons)))
     (let ((pointer riece-addon-dependencies))
       (while pointer
 	(riece-insinuate-addon (car (car pointer)) riece-debug)
