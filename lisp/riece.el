@@ -325,8 +325,8 @@ If optional argument CONFIRM is non-nil, ask which IRC server to connect."
 	  (setq channel-list (cdr channel-list))))
       (let ((pointer riece-addon-dependencies))
 	(while pointer
-	  (unless (get (car pointer) 'riece-addon-default-disabled)
-	    (riece-enable-addon (car pointer) riece-debug))
+	  (unless (get (car (car pointer)) 'riece-addon-default-disabled)
+	    (riece-enable-addon (car (car pointer)) riece-debug))
 	  (setq pointer (cdr pointer))))
       (run-hooks 'riece-startup-hook)
       (message "%s" (substitute-command-keys

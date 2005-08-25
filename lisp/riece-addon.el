@@ -190,7 +190,7 @@
       (setq pointer (cdr pointer)))
     (delq nil addons))
   ;; Build & resolve dependencies.
-  (riece-resolve-addon-dependencies
+  (riece-sort-addon-dependencies
    (riece-load-and-build-addon-dependencies addons)))
 
 (defun riece-insinuate-addon (addon &optional verbose)
