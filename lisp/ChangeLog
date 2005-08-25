@@ -1,3 +1,13 @@
+2005-08-25  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece.el (riece): Don't override riece-addons setting.
+
+	* riece-globals.el (riece-addon-dependencies): New variable.
+
+	* riece-addon.el (riece-sort-addon-dependencies): Rename from
+	riece-resolve-addon-dependencies; return addon dependencies as an
+	alist, instead of returning a list of addons.
+
 2005-08-20  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-addon.el (riece-command-enable-addon): Redraw entire

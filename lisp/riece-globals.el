@@ -71,6 +71,8 @@
 (defvar riece-channel-obarray-size 103
   "The size of obarray used by riece on channelname space.")
 
+(defvar riece-addon-dependencies nil)
+
 ;;; Variables local to the server buffers:
 (defvar riece-server-name nil
   "The name of the server.

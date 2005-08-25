@@ -279,10 +279,10 @@ If optional argument CONFIRM is non-nil, ask which IRC server to connect."
     (modify-frame-parameters (selected-frame)
 			     (list (cons 'riece-window-configuration
 					 (current-window-configuration))))
-    (setq riece-addons (riece-resolve-addons riece-addons))
-    (let ((pointer riece-addons))
+    (setq riece-addon-dependencies (riece-resolve-addons riece-addons))
+    (let ((pointer riece-addon-dependencies))
       (while pointer
-	(riece-insinuate-addon (car pointer) riece-debug)
+	(riece-insinuate-addon (car (car pointer)) riece-debug)
 	(setq pointer (cdr pointer))))
     (if (or confirm (null riece-server))
 	(setq riece-server (completing-read "Server: " riece-server-alist)))
@@ -323,7 +323,7 @@ If optional argument CONFIRM is non-nil, ask which IRC server to connect."
 	  (unless (riece-server-opened server)
 	    (riece-command-open-server server))
 	  (setq channel-list (cdr channel-list))))
-      (let ((pointer riece-addons))
+      (let ((pointer riece-addon-dependencies))
 	(while pointer
 	  (unless (get (car pointer) 'riece-addon-default-disabled)
 	    (riece-enable-addon (car pointer) riece-debug))

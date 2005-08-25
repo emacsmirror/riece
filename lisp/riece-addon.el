@@ -136,34 +136,24 @@
 	;; Merge pred's succs.
 	(while pointer
 	  (if (setq entry (assq (car pointer) dependencies))
-	      (setcdr (cdr entry)
-		      (cons (car addons) (nthcdr 2 entry)))
+	      (setcdr (cdr entry) (cons (car addons) (nthcdr 2 entry)))
 	    (setq dependencies (cons (list (car pointer) 0 (car addons))
 				     dependencies)))
 	  (setq pointer (cdr pointer))))
       (setq addons (cdr addons)))
     dependencies))
 
-(defun riece-resolve-addon-dependencies (addons)
-  (let ((pointer addons)
-	dependencies queue)
-    ;; Uniquify, first.
-    (while pointer
-      (if (memq (car pointer) (cdr pointer))
-	  (setcar pointer nil))
-      (setq pointer (cdr pointer)))
-    (setq dependencies (riece-load-and-build-addon-dependencies
-			(delq nil addons))
-	  pointer dependencies)
-    ;; Sort them.
+(defun riece-sort-addon-dependencies (dependencies)
+  (let ((pointer dependencies)
+	addons queue)
     (while pointer
       (if (zerop (nth 1 (car pointer)))
 	  (setq dependencies (delq (car pointer) dependencies)
 		queue (cons (car pointer) queue)))
       (setq pointer (cdr pointer)))
-    (setq addons nil)
     (while queue
-      (setq addons (cons (car (car queue)) addons)
+      (setq addons (cons (cons (car (car queue)) (nthcdr 2 (car queue)))
+			 addons)
 	    pointer (nthcdr 2 (car queue)))
       (while pointer
 	(let* ((entry (assq (car pointer) dependencies))
@@ -179,16 +169,29 @@
     (nreverse addons)))
 
 (defun riece-resolve-addons (addons)
+  ;; Add files in riece-addon-directory to addons.
+  (if (file-directory-p riece-addon-directory)
+      (setq addons (nconc
+		    addons
+		    (mapcar
+		     (lambda (name)
+		       (unless (file-directory-p
+				(expand-file-name name riece-addon-directory))
+			 (intern (file-name-sans-extension name))))
+		     (directory-files riece-addon-directory nil "\\`[^.]")))))
+  ;; Sort & uniquify.
+  (setq addons (sort addons (lambda (symbol1 symbol2)
+			      (string-lessp (symbol-name symbol1)
+					    (symbol-name symbol2)))))
+  (let ((pointer addons))
+    (while pointer
+      (if (memq (car pointer) (cdr pointer))
+	  (setcar pointer nil))
+      (setq pointer (cdr pointer)))
+    (delq nil addons))
+  ;; Build & resolve dependencies.
   (riece-resolve-addon-dependencies
-   (if (file-directory-p riece-addon-directory)
-       (append addons
-	       (mapcar
-		(lambda (name)
-		  (unless (file-directory-p
-			   (expand-file-name name riece-addon-directory))
-		    (intern (file-name-sans-extension name))))
-		(directory-files riece-addon-directory nil "\\`[^.]" t)))
-     addons)))
+   (riece-load-and-build-addon-dependencies addons)))
 
 (defun riece-insinuate-addon (addon &optional verbose)
   (if (get addon 'riece-addon-insinuated)
