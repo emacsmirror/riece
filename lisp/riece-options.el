@@ -42,7 +42,8 @@
     riece-others-buffer-mode
     riece-user-list-buffer-mode
     riece-channel-list-buffer-mode
-    riece-layout)
+    riece-layout
+    riece-addons)
   "Variables saved after each session is completed."
   :type 'string
   :group 'riece-options)

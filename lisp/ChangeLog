@@ -1,5 +1,7 @@
 2005-08-26  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-options.el (riece-saved-forms): Added riece-addons.
+
 	* riece-addon.el: Require 'riece-addon-modules.
 	(riece-command-list-addons): List all available add-ons from
 	riece-addon-modules.
