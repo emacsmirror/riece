@@ -207,7 +207,9 @@
     (funcall (intern (concat (symbol-name addon) "-insinuate")))
     (put addon 'riece-addon-insinuated t)
     (if verbose
-	(message "Add-on %S is insinuated" addon))))
+	(message "Add-on %S is insinuated" addon))
+    (unless (get addon 'riece-addon-default-disabled)
+      (riece-enable-addon addon t))))
 
 (defun riece-uninstall-addon (addon &optional verbose)
   (if (not (get addon 'riece-addon-insinuated))
