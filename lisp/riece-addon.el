@@ -69,12 +69,12 @@
   :group 'riece-addon-list-faces)
 (defvar riece-addon-list-unsupported-face 'riece-addon-list-unsupported-face)
 
-(defface riece-addon-list-unknown-face
+(defface riece-addon-list-uninstalled-face
   '((t
      (:foreground "red")))
-  "Face used for displaying the unknown addon."
+  "Face used for displaying the uninstalled addon."
   :group 'riece-addon-list-faces)
-(defvar riece-addon-list-unknown-face 'riece-addon-list-unknown-face)
+(defvar riece-addon-list-uninstalled-face 'riece-addon-list-uninstalled-face)
 
 (defface riece-addon-list-description-face
   '((((class color)
@@ -93,13 +93,13 @@
   '((?+ . riece-addon-list-enabled-face)
     (?- . riece-addon-list-disabled-face)
     (?! . riece-addon-list-unsupported-face)
-    (?? . riece-addon-list-unknown-face))
+    (?  . riece-addon-list-uninstalled-face))
   "An alist mapping marks on riece-addon-list-buffer to faces."
   :type 'list
   :group 'riece-addon-list)
 
 (defcustom riece-addon-list-font-lock-keywords
-  '(("^\\([-+!?] [^:]+\\): \\(.*\\)"
+  '(("^\\([-+! ] [^:]+\\): \\(.*\\)"
      (1 (cdr (assq (aref (match-string 1) 0)
 		   riece-addon-list-mark-face-alist)))
      (2 riece-addon-list-description-face)))
@@ -312,8 +312,9 @@ All normal editing commands are turned off."
 					 "-enabled")))
       (setq point (point))
       (insert (format "%c %S: %s\n"
-		      (if (not (featurep (car (car pointer))))
-			  ??
+		      (if (not (get (car (car pointer))
+				    'riece-addon-insinuated))
+			  ? 
 			(if (null enabled)
 			    ?!
 			  (if (symbol-value enabled)
@@ -329,7 +330,7 @@ Symbols in the leftmost column:
   +     The add-on is enabled.
   -     The add-on is disabled.
   !	The add-on doesn't support enable/disable operation.
-  ?	The add-on is not loaded.
+  	The add-on is not insinuated.
 ")
     (insert (substitute-command-keys "
 Useful keys:
