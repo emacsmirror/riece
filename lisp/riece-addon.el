@@ -219,7 +219,7 @@
 	  (enabled (intern-soft (concat (symbol-name addon) "-enabled"))))
       (if entry
 	  (if (cdr entry)
-	      (error "dependency problem: %S <- %S" addon (cdr entry))
+	      (error "Dependency problem: %S <- %S" addon (cdr entry))
 	    (if (and enabled
 		     (symbol-value enabled))
 		(riece-disable-addon addon verbose))
