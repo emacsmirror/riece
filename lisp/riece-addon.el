@@ -199,7 +199,8 @@
 (defun riece-insinuate-addon (addon &optional verbose)
   (unless (assq addon riece-addon-dependencies)
     (setq riece-addons (cons addon riece-addons)
-	  riece-addon-dependencies (riece-resolve-addons riece-addons)))
+	  riece-addon-dependencies (riece-resolve-addons
+				    (copy-sequence riece-addons))))
   (if (get addon 'riece-addon-insinuated)
       (if verbose
 	  (message "Add-on %S is already insinuated" addon))
