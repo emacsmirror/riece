@@ -226,27 +226,51 @@ This function is used as a callback for a channel button."
 (defvar riece-channel-list-mode-map)
 (defvar riece-user-list-mode-map)
 (defvar riece-dialogue-mode-map)
+
+(defun riece-button-channel-list-mode-hook ()
+  (set-keymap-parent riece-channel-list-mode-map widget-keymap)
+  (set (make-local-variable 'riece-identity-button-map)
+       (riece-make-identity-button-map))
+  (add-hook 'riece-update-buffer-functions
+	    'riece-button-update-buffer t t))
+
+(defun riece-button-user-list-mode-hook ()
+  (set-keymap-parent riece-user-list-mode-map widget-keymap)
+  (set (make-local-variable 'riece-identity-button-map)
+       (riece-make-identity-button-map))
+  (add-hook 'riece-update-buffer-functions
+	    'riece-button-update-buffer t t))
+
+(defun riece-button-dialogue-mode-hook ()
+  (set-keymap-parent riece-dialogue-mode-map widget-keymap)
+  (set (make-local-variable 'riece-identity-button-map)
+       (riece-make-identity-button-map)))
+
 (defun riece-button-insinuate ()
   (add-hook 'riece-channel-list-mode-hook
-	    (lambda ()
-	      (set-keymap-parent riece-channel-list-mode-map widget-keymap)
-	      (set (make-local-variable 'riece-identity-button-map)
-		   (riece-make-identity-button-map))
-	      (add-hook 'riece-update-buffer-functions
-			'riece-button-update-buffer t t)))
+	    'riece-button-channel-list-mode-hook)
   (add-hook 'riece-user-list-mode-hook
-	    (lambda ()
-	      (set-keymap-parent riece-user-list-mode-map widget-keymap)
-	      (set (make-local-variable 'riece-identity-button-map)
-		   (riece-make-identity-button-map))
-	      (add-hook 'riece-update-buffer-functions
-			'riece-button-update-buffer t t)))
+	    'riece-button-user-list-mode-hook)
   (add-hook 'riece-dialogue-mode-hook
-	    (lambda ()
-	      (set-keymap-parent riece-dialogue-mode-map widget-keymap)
-	      (set (make-local-variable 'riece-identity-button-map)
-		   (riece-make-identity-button-map))))
+	    'riece-button-dialogue-mode-hook)
   (add-hook 'riece-after-insert-functions 'riece-button-add-identity-button))
+
+(defun riece-button-uninstall ()
+  (let ((buffers riece-buffer-list))
+    (save-excursion
+      (while buffers
+	(set-buffer (car buffers))
+	(remove-hook 'riece-update-buffer-functions
+		     'riece-button-update-buffer)
+	(setq buffers (cdr buffers)))))
+  (remove-hook 'riece-channel-list-mode-hook
+	       'riece-button-channel-list-mode-hook)
+  (remove-hook 'riece-user-list-mode-hook
+	       'riece-button-user-list-mode-hook)
+  (remove-hook 'riece-dialogue-mode-hook
+	       'riece-button-dialogue-mode-hook)
+  (remove-hook 'riece-after-insert-functions
+	       'riece-button-add-identity-button)))
 
 (defun riece-button-enable ()
   (setq riece-button-enabled t)

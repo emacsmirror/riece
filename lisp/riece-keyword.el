@@ -115,6 +115,9 @@ and the matched message object."
 (defun riece-keyword-insinuate ()
   (add-hook 'riece-message-filter-functions 'riece-keyword-message-filter))
 
+(defun riece-keyword-uninstall ()
+  (remove-hook 'riece-message-filter-functions 'riece-keyword-message-filter))
+
 (defun riece-keyword-enable ()
   (setq riece-keyword-enabled t))
 

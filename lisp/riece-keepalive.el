@@ -63,8 +63,12 @@
     (setq riece-keepalive-timer nil)))
 
 (defun riece-keepalive-insinuate ()
-  (add-hook 'riece-after-login-hook #'riece-keepalive-after-login-hook)
-  (add-hook 'riece-after-close-hook #'riece-keepalive-after-close-hook))
+  (add-hook 'riece-after-login-hook 'riece-keepalive-after-login-hook)
+  (add-hook 'riece-after-close-hook 'riece-keepalive-after-close-hook))
+
+(defun riece-keepalive-uninstall ()
+  (remove-hook 'riece-after-login-hook 'riece-keepalive-after-login-hook)
+  (remove-hook 'riece-after-close-hook 'riece-keepalive-after-close-hook))
 
 (provide 'riece-keepalive)
 

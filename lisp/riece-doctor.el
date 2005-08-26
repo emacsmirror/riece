@@ -126,6 +126,9 @@ Please, describe your problems."
 (defun riece-doctor-insinuate ()
   (add-hook 'riece-after-privmsg-hook 'riece-doctor-after-privmsg-hook))
 
+(defun riece-doctor-uninstall ()
+  (remove-hook 'riece-after-privmsg-hook 'riece-doctor-after-privmsg-hook))
+
 (defun riece-doctor-enable ()
   (setq riece-doctor-enabled t))
 

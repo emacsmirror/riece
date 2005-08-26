@@ -234,6 +234,9 @@ Only used for sending files."
 (defun riece-ndcc-insinuate ()
   (add-hook 'riece-ctcp-dcc-request-hook 'riece-handle-dcc-request))
 
+(defun riece-ndcc-uninstall ()
+  (remove-hook 'riece-ctcp-dcc-request-hook 'riece-handle-dcc-request))
+
 (defun riece-ndcc-enable ()
   (define-key riece-dialogue-mode-map "\C-ds" 'riece-command-dcc-send)
   (define-key riece-dialogue-mode-map "\C-dr" 'riece-command-dcc-receive))

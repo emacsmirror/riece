@@ -227,6 +227,9 @@ The wordlist is read from `riece-hangman-words-file'."
 (defun riece-hangman-insinuate ()
   (add-hook 'riece-after-privmsg-hook 'riece-hangman-after-privmsg-hook))
 
+(defun riece-hangman-uninstall ()
+  (remove-hook 'riece-after-privmsg-hook 'riece-hangman-after-privmsg-hook))
+
 (defun riece-hangman-enable ()
   (random t)
   (setq riece-hangman-enabled t))

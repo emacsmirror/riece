@@ -153,6 +153,23 @@
 ;;;		'riece-guess-channel-from-unread))
   )
 
+(defun riece-unread-uninstall ()
+  (remove-hook 'riece-after-display-message-functions
+	       'riece-unread-after-display-message-function)
+  (remove-hook 'riece-after-switch-to-channel-functions
+	       'riece-unread-after-switch-to-channel-function)
+  (remove-hook 'riece-format-identity-for-channel-list-buffer-functions
+	       'riece-unread-format-identity-for-channel-list-buffer)
+  (remove-hook 'riece-format-identity-for-channel-list-indicator-functions
+	       'riece-unread-format-identity-for-channel-list-indicator)
+  (setq riece-channel-list-mark-face-alist
+	(delq (assq ?! riece-channel-list-mark-face-alist)
+	      riece-channel-list-mark-face-alist))
+;;;  (if (memq 'riece-guess riece-addons)
+;;;      (add-hook 'riece-guess-channel-try-functions
+;;;		'riece-guess-channel-from-unread))
+  )
+
 (defvar riece-command-mode-map)
 (defvar riece-dialogue-mode-map)
 (defvar riece-channel-list-mode-map)

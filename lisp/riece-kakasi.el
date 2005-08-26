@@ -58,6 +58,9 @@
 (defun riece-kakasi-insinuate ()
   (add-hook 'riece-message-filter-functions 'riece-kakasi-message-filter))
 
+(defun riece-kakasi-uninstall ()
+  (remove-hook 'riece-message-filter-functions 'riece-kakasi-message-filter))
+
 (defun riece-kakasi-enable ()
   (setq riece-kakasi-process
 	(start-process "kakasi" (generate-new-buffer " *riece-kakasi*")

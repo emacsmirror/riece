@@ -150,6 +150,11 @@ If twice (C-u C-u), then ask the channel."
 	    'riece-mini-display-message-function)
   (add-hook 'pre-command-hook 'riece-mini-pre-command))
 
+(defun riece-mini-uninstall ()
+  (remove-hook 'riece-after-display-message-functions
+	       'riece-mini-display-message-function)
+  (remove-hook 'pre-command-hook 'riece-mini-pre-command))
+
 (defun riece-mini-enable ()
   (setq riece-mini-enabled t))
 

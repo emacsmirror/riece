@@ -374,16 +374,26 @@
   (if (memq 'riece-highlight riece-addons)
       '(riece-highlight)))
 
+(defvar riece-ctcp-dialogue-font-lock-keywords
+  (list (concat "^" riece-time-prefix-regexp "\\("
+		(regexp-quote riece-ctcp-action-prefix)
+		".*\\)$")
+	1 riece-ctcp-action-face t t))
+
 (defun riece-ctcp-insinuate ()
   (add-hook 'riece-privmsg-hook 'riece-handle-ctcp-request)
   (add-hook 'riece-notice-hook 'riece-handle-ctcp-response)
   (if (memq 'riece-highlight riece-addons)
       (setq riece-dialogue-font-lock-keywords
-	    (cons (list (concat "^" riece-time-prefix-regexp "\\("
-				(regexp-quote riece-ctcp-action-prefix)
-				".*\\)$")
-			1 riece-ctcp-action-face t t)
+	    (cons riece-ctcp-dialogue-font-lock-keywords
 		  riece-dialogue-font-lock-keywords))))
+
+(defun riece-ctcp-uninstall ()
+  (remove-hook 'riece-privmsg-hook 'riece-handle-ctcp-request)
+  (remove-hook 'riece-notice-hook 'riece-handle-ctcp-response)
+  (setq riece-dialogue-font-lock-keywords
+	(delq riece-ctcp-dialogue-font-lock-keywords
+	      riece-dialogue-font-lock-keywords)))
 
 (defun riece-ctcp-enable ()
   (define-key riece-dialogue-mode-map "\C-cv" 'riece-command-ctcp-version)

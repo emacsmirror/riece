@@ -1,5 +1,49 @@
 2005-08-26  Daiki Ueno  <ueno@unixuser.org>
 
+	* Make add-ons uninstallable.
+
+	* riece-xface.el (riece-xface-user-list-mode-hook): New function.
+	(riece-xface-insinuate): Use it.
+	(riece-xface-uninstall): New function.
+	* riece-url.el (riece-url-command-mode-hook): New function.
+	(riece-url-insinuate): Use it.
+	(riece-url-uninstall): New function.
+	* riece-unread.el (riece-unread-uninstall): New function.
+	* riece-toolbar.el (riece-toolbar-uninstall): New function.
+	* riece-rdcc.el (riece-rdcc-uninstall): New function.
+	* riece-ndcc.el (riece-ndcc-uninstall): New function.
+	* riece-mini.el (riece-mini-uninstall): New function.
+	* riece-menu.el (riece-menu-uninstall): New function.
+	* riece-lsdb.el: New function.
+	* riece-log.el (riece-log-uninstall): New function.
+	* riece-keyword.el (riece-keyword-uninstall): New function.
+	* riece-keepalive.el (riece-keepalive-uninstall): New function.
+	* riece-kakasi.el (riece-kakasi-uninstall): New function.
+	* riece-ignore.el (riece-ignore-uninstall): New function.
+	* riece-icon.el (riece-icon-user-list-mode-hook): New function.
+	(riece-icon-channel-list-mode-hook): New function.
+	(riece-icon-original-mode-line-buffer-identification): New variable.
+	(riece-icon-insinuate): Use them.
+	(riece-icon-uninstall): New function.
+	* riece-history.el
+	(riece-history-after-switch-to-channel-functions): New function.
+	(riece-history-insinuate): Use it.
+	(riece-history-uninstall): New function.
+	* riece-highlight.el (riece-highlight-uninstall): New function.
+	* riece-hangman.el (riece-hangman-uninstall): New function.
+	* riece-google.el (riece-google-uninstall): New function.
+	* riece-foolproof.el (riece-foolproof-uninstall): New function.
+	* riece-eval.el (riece-eval-uninstall): New function.
+	* riece-eval-ruby.el (riece-eval-ruby-uninstall): New function.
+	* riece-doctor.el (riece-doctor-uninstall): New function.
+	* riece-ctlseq.el (riece-ctlseq-uninstall): New function.
+	* riece-ctcp.el (riece-ctcp-dialogue-font-lock-keywords): New variable.
+	(riece-ctcp-uninstall): New function.
+	* riece-button.el (riece-button-channel-list-mode-hook): New function.
+	* riece-biff.el (riece-biff-uninstall): New function.
+
+2005-08-26  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-options.el (riece-saved-forms): Added riece-addons.
 
 	* riece-addon.el: Require 'riece-addon-modules.

@@ -308,19 +308,42 @@ Modify whole identification by side effect."
       (error
        (defalias 'riece-icon-modeline-buffer-identification 'identity)))))
 
+(defun riece-icon-user-list-mode-hook ()
+  (if (riece-icon-available-p)
+      (add-hook 'riece-update-buffer-functions
+		'riece-icon-update-user-list-buffer t t)))
+
+(defun riece-icon-channel-list-mode-hook ()
+  (if (riece-icon-available-p)
+      (add-hook 'riece-update-buffer-functions
+		'riece-icon-update-channel-list-buffer t t)))
+
+(defvar riece-icon-original-mode-line-buffer-identification nil)
+
 (defun riece-icon-insinuate ()
+  (setq riece-icon-original-mode-line-buffer-identification
+	(symbol-function 'riece-mode-line-buffer-identification))
   (defalias 'riece-mode-line-buffer-identification
     #'riece-icon-modeline-buffer-identification)
   (add-hook 'riece-user-list-mode-hook
-	    (lambda ()
-	      (if (riece-icon-available-p)
-		  (add-hook 'riece-update-buffer-functions
-			    'riece-icon-update-user-list-buffer t t))))
+	    'riece-icon-user-list-mode-hook)
   (add-hook 'riece-channel-list-mode-hook
-	    (lambda ()
-	      (if (riece-icon-available-p)
-		  (add-hook 'riece-update-buffer-functions
-			    'riece-icon-update-channel-list-buffer t t)))))
+	    'riece-icon-channel-list-mode-hook))
+
+(defun riece-icon-uninstall ()
+  (fset 'riece-mode-line-buffer-identification
+	riece-icon-original-mode-line-buffer-identification)
+  (save-excursion
+    (set-buffer riece-user-list-buffer)
+    (remove-hook 'riece-update-buffer-functions
+		 'riece-icon-update-user-list-buffer)
+    (set-buffer riece-channel-list-buffer)
+    (remove-hook 'riece-update-buffer-functions
+		 'riece-icon-update-user-list-buffer))
+  (remove-hook 'riece-user-list-mode-hook
+	       'riece-icon-user-list-mode-hook)
+  (remove-hook 'riece-channel-list-mode-hook
+	       'riece-icon-channel-list-mode-hook))
 
 (defun riece-icon-enable ()
   (setq riece-icon-enabled t)

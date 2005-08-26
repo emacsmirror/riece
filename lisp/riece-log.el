@@ -289,6 +289,13 @@ If LINES is t, insert today's logs entirely."
   (add-hook 'riece-channel-buffer-create-functions
 	    'riece-log-flashback))
 
+(defun riece-log-uninstall ()
+  (setq riece-log-lock-file nil)
+  (remove-hook 'riece-after-display-message-functions
+	       'riece-log-display-message-function)
+  (remove-hook 'riece-channel-buffer-create-functions
+	       'riece-log-flashback))
+
 (defvar riece-command-mode-map)
 (defun riece-log-enable ()
   (define-key riece-command-mode-map "\C-cd" 'riece-log-dired)

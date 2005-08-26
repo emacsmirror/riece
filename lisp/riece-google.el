@@ -234,6 +234,10 @@ end
   (add-hook 'riece-after-display-message-functions
 	    'riece-google-display-message-function))
 
+(defun riece-google-uninstall ()
+  (remove-hook 'riece-after-display-message-functions
+	       'riece-google-display-message-function))
+
 (defun riece-google-enable ()
   (setq riece-google-enabled t))
 

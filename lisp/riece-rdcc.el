@@ -355,6 +355,11 @@ end
   (add-to-list 'riece-ctcp-additional-clientinfo "DCC")
   (add-hook 'riece-ctcp-dcc-request-hook 'riece-handle-dcc-request))
 
+(defun riece-rdcc-uninstall ()
+  (setq riece-ctcp-additional-clientinfo
+	(delete "DCC" riece-ctcp-additional-clientinfo))
+  (remove-hook 'riece-ctcp-dcc-request-hook 'riece-handle-dcc-request))
+
 (defun riece-rdcc-enable ()
   (define-key riece-dialogue-mode-map "\C-ds" 'riece-command-dcc-send)
   (define-key riece-dialogue-mode-map "\C-dr" 'riece-command-dcc-receive)

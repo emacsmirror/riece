@@ -283,6 +283,24 @@
   (add-hook 'riece-after-insert-functions
 	    'riece-highlight-put-overlay-faces))
 
+(defun riece-highlight-uninstall ()
+  (remprop 'riece-channel-mode 'font-lock-defaults)
+  (remove-hook 'riece-channel-mode-hook
+	       'riece-highlight-setup-dialogue)
+  (remprop 'riece-others-mode 'font-lock-defaults)
+  (remove-hook 'riece-others-mode-hook
+	       'riece-highlight-setup-dialogue)
+  (remprop 'riece-dialogue-mode 'font-lock-defaults)
+  (remove-hook 'riece-dialogue-mode-hook
+	       'riece-highlight-setup-dialogue)
+  (remprop 'riece-channel-list-mode 'font-lock-defaults)
+  (remove-hook 'riece-channel-list-mode-hook
+	       'riece-highlight-setup-channel-list)
+  (remove-hook 'riece-format-identity-for-channel-list-indicator-functions
+	       'riece-highlight-format-identity-for-channel-list-indicator)
+  (remove-hook 'riece-after-insert-functions
+	       'riece-highlight-put-overlay-faces))
+
 (defun riece-highlight-enable ()
   (let ((buffers riece-buffer-list))
     (while buffers

@@ -187,6 +187,9 @@
 (defun riece-ctlseq-insinuate ()
   (add-hook 'riece-message-filter-functions 'riece-ctlseq-message-filter))
 
+(defun riece-ctlseq-uninstall ()
+  (remove-hook 'riece-message-filter-functions 'riece-ctlseq-message-filter))
+
 (defun riece-ctlseq-enable ()
   (setq riece-ctlseq-enabled t))
 

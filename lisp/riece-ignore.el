@@ -133,6 +133,10 @@ Otherwise, they are not removed from IRC buffers, but are hidden with
 	(mapcar #'riece-parse-identity riece-startup-ignored-user-list))
   (add-hook 'riece-message-filter-functions 'riece-ignore-message-filter))
 
+(defun riece-ignore-uninstall ()
+  (setq riece-ignored-user-list nil)
+  (remove-hook 'riece-message-filter-functions 'riece-ignore-message-filter))
+
 (defun riece-ignore-enable ()
   (define-key riece-command-mode-map
     "\C-ck" 'riece-ignore-user)

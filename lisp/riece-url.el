@@ -122,15 +122,22 @@ This maps a string \"Bug#12345\" to a URL
 	  (if (memq 'riece-menu riece-addons)
 	      '(riece-menu))))
 
+(defun riece-url-command-mode-hook ()
+  (easy-menu-add-item
+   nil (list (car riece-menu-items))
+   '("Open URL..." :filter riece-url-create-menu)))
+
 (defun riece-url-insinuate ()
   (add-hook 'riece-after-insert-functions 'riece-url-scan-region)
   (if (memq 'riece-menu riece-addons)
       (add-hook 'riece-command-mode-hook
-		(lambda ()
-		  (easy-menu-add-item
-		   nil (list (car riece-menu-items))
-		   '("Open URL..." :filter riece-url-create-menu)))
+		'riece-url-command-mode-hook
 		t)))
+
+(defun riece-url-uninstall ()
+  (remove-hook 'riece-after-insert-functions 'riece-url-scan-region)
+  (remove-hook 'riece-command-mode-hook
+	       'riece-url-command-mode-hook)))
 
 (defun riece-url-enable ()
   (define-key riece-dialogue-mode-map "U" 'riece-command-browse-url)

@@ -125,6 +125,14 @@
   (add-to-list 'lsdb-after-delete-record-functions
 	       'riece-lsdb-delete-cache))
 
+(defun riece-lsdb-uninstall ()
+  (setq lsdb-secondary-hash-tables
+	(delq 'riece-lsdb-cache lsdb-secondary-hash-tables)
+	lsdb-after-update-record-functions
+	(delq 'riece-lsdb-update-cache lsdb-after-update-record-functions)
+	lsdb-after-delete-record-functions
+	(delq 'riece-lsdb-delete-cache lsdb-after-delete-record-functions))
+
 (defun riece-lsdb-enable ()
   (define-key riece-command-mode-map
     "\C-c\C-ll" 'riece-lsdb-display-records)

@@ -62,6 +62,10 @@
   (add-hook 'riece-command-send-message-hook
 	    'riece-foolproof-command-send-message-function))
 
+(defun riece-foolproof-uninstall ()
+  (remove-hook 'riece-command-send-message-hook
+	       'riece-foolproof-command-send-message-function))
+
 (defun riece-foolproof-enable ()
   (setq riece-foolproof-enabled t))
 

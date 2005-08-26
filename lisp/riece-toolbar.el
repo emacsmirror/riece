@@ -112,6 +112,12 @@
 	    'riece-toolbar-insinuate-in-command-buffer
 	    t))
 
+(defun riece-toolbar-uninstall ()
+  (remove-hook 'riece-command-mode-hook
+	       'riece-toolbar-insinuate-in-command-buffer)
+  ;;FIXME: couldn't uninstall completely.
+  )
+
 (provide 'riece-toolbar)
 
 ;;; riece-toolbar.el ends here

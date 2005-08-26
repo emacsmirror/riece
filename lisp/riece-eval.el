@@ -87,6 +87,10 @@
   (add-hook 'riece-after-display-message-functions
 	    'riece-eval-display-message-function))
 
+(defun riece-eval-uninstall ()
+  (remove-hook 'riece-after-display-message-functions
+	       'riece-eval-display-message-function))
+
 (defun riece-eval-enable ()
   (setq riece-eval-enabled t))
 

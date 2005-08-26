@@ -116,12 +116,14 @@
 ;;;   (if (memq 'riece-guess riece-addons)
 ;;;       '(riece-guess)))
 
+(defun riece-history-after-switch-to-channel-functions (last)
+  (if (and riece-history-enabled last
+	   (not (riece-identity-equal last riece-current-channel)))
+      (ring-insert riece-channel-history last)))
+
 (defun riece-history-insinuate ()
   (add-hook 'riece-after-switch-to-channel-functions
-	    (lambda (last)
-	      (if (and riece-history-enabled last
-		       (not (riece-identity-equal last riece-current-channel)))
-		  (ring-insert riece-channel-history last))))
+	    'riece-history-after-switch-to-channel-functions)
   (add-hook 'riece-format-identity-for-channel-list-buffer-functions
 	    'riece-history-format-identity-for-channel-list-buffer)
   (add-hook 'riece-format-identity-for-channel-list-indicator-functions
@@ -134,6 +136,17 @@
 ;;;      (add-hook 'riece-guess-channel-try-functions
 ;;;		'riece-guess-channel-from-history))
   )
+
+(defun riece-history-uninstall ()
+  (remove-hook 'riece-after-switch-to-channel-functions
+	       'riece-history-after-switch-to-channel-functions)
+  (remove-hook 'riece-format-identity-for-channel-list-buffer-functions
+	       'riece-history-format-identity-for-channel-list-buffer)
+  (remove-hook 'riece-format-identity-for-channel-list-indicator-functions
+	       'riece-history-format-identity-for-channel-list-indicator)
+  (setq riece-channel-list-mark-face-alist
+	(delq (assq ?+ riece-channel-list-mark-face-alist)
+	      riece-channel-list-mark-face-alist)))
 
 (defun riece-history-enable ()
   (setq riece-channel-history

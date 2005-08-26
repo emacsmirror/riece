@@ -102,14 +102,23 @@
 
 (defvar riece-command-mode-map)
 (defvar riece-menu)
+
+(defun riece-menu-command-mode-hook ()
+  (easy-menu-define riece-menu
+		    riece-command-mode-map
+		    "Riece Menu"
+		    riece-menu-items)
+  (easy-menu-add riece-menu))
+
 (defun riece-menu-insinuate ()
   (add-hook 'riece-command-mode-hook
-	    (lambda ()
-	      (easy-menu-define riece-menu
-				riece-command-mode-map
-				"Riece Menu"
-				riece-menu-items)
-	      (easy-menu-add riece-menu))))
+	    'riece-menu-command-mode-hook))
+
+(defun riece-menu-uninstall ()
+  (remove-hook 'riece-command-mode-hook
+	       'riece-menu-command-mode-hook)
+  ;;FIXME: couldn't uninstall completely.
+  )
 
 (provide 'riece-menu)
 

@@ -84,6 +84,10 @@
   (add-hook 'riece-after-display-message-functions
 	    'riece-eval-ruby-display-message-function))
 
+(defun riece-eval-ruby-uninstall ()
+  (remove-hook 'riece-after-display-message-functions
+	       'riece-eval-ruby-display-message-function))
+
 (defun riece-eval-ruby-enable ()
   (setq riece-eval-ruby-enabled t))
 
