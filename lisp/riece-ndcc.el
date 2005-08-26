@@ -232,6 +232,8 @@ Only used for sending files."
 
 (defvar riece-dialogue-mode-map)
 (defun riece-ndcc-insinuate ()
+  (unless (fboundp 'make-network-process)
+    (error "This Emacs does not have make-network-process"))
   (add-hook 'riece-ctcp-dcc-request-hook 'riece-handle-dcc-request))
 
 (defun riece-ndcc-uninstall ()
