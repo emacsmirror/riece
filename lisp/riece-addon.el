@@ -230,7 +230,9 @@
 	    (setq riece-addon-dependencies
 		  (delq entry riece-addon-dependencies))
 	    (remprop addon 'riece-addon-insinuated)
-	    (setq riece-addons (delq addon riece-addons))))
+	    (setq riece-addons (delq addon riece-addons)
+		  riece-addon-dependencies (riece-resolve-addons
+					    (copy-sequence riece-addons)))))
       (if verbose
 	  (message "Add-on %S is uninstalled" addon)))))
 

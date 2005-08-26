@@ -1,5 +1,10 @@
 2005-08-26  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-addon.el (riece-uninstall-addon): Update
+	riece-addon-dependencies.
+
+2005-08-26  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece.el (riece-command-mode): Set
 	riece-mode-line-buffer-identification.
 	(riece-dialogue-mode): Ditto.
