@@ -270,7 +270,7 @@ This function is used as a callback for a channel button."
   (remove-hook 'riece-dialogue-mode-hook
 	       'riece-button-dialogue-mode-hook)
   (remove-hook 'riece-after-insert-functions
-	       'riece-button-add-identity-button)))
+	       'riece-button-add-identity-button))
 
 (defun riece-button-enable ()
   (setq riece-button-enabled t)

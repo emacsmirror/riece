@@ -137,7 +137,7 @@ This maps a string \"Bug#12345\" to a URL
 (defun riece-url-uninstall ()
   (remove-hook 'riece-after-insert-functions 'riece-url-scan-region)
   (remove-hook 'riece-command-mode-hook
-	       'riece-url-command-mode-hook)))
+	       'riece-url-command-mode-hook))
 
 (defun riece-url-enable ()
   (define-key riece-dialogue-mode-map "U" 'riece-command-browse-url)

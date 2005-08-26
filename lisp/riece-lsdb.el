@@ -131,7 +131,7 @@
 	lsdb-after-update-record-functions
 	(delq 'riece-lsdb-update-cache lsdb-after-update-record-functions)
 	lsdb-after-delete-record-functions
-	(delq 'riece-lsdb-delete-cache lsdb-after-delete-record-functions))
+	(delq 'riece-lsdb-delete-cache lsdb-after-delete-record-functions)))
 
 (defun riece-lsdb-enable ()
   (define-key riece-command-mode-map
