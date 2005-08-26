@@ -253,6 +253,20 @@ This function is used as a callback for a channel button."
 	    'riece-button-user-list-mode-hook)
   (add-hook 'riece-dialogue-mode-hook
 	    'riece-button-dialogue-mode-hook)
+  (save-excursion
+    (when riece-channel-list-buffer
+      (set-buffer riece-channel-list-buffer)
+      (riece-button-channel-list-mode-hook))
+    (when riece-user-list-buffer
+      (set-buffer riece-user-list-buffer)
+      (riece-button-user-list-mode-hook))
+    (let ((buffers riece-buffer-list))
+      (while buffers
+	(set-buffer (car buffers))
+	(if (eq (derived-mode-class major-mode)
+		'riece-dialogue-mode)
+	    (riece-button-dialogue-mode-hook))
+	(setq buffers (cdr buffers)))))
   (add-hook 'riece-after-insert-functions 'riece-button-add-identity-button))
 
 (defun riece-button-uninstall ()
@@ -262,6 +276,9 @@ This function is used as a callback for a channel button."
 	(set-buffer (car buffers))
 	(remove-hook 'riece-update-buffer-functions
 		     'riece-button-update-buffer)
+	(if (local-variable-p 'riece-identity-button-map
+			      (car buffers))
+	    (kill-local-variable 'riece-identity-button-map))
 	(setq buffers (cdr buffers)))))
   (remove-hook 'riece-channel-list-mode-hook
 	       'riece-button-channel-list-mode-hook)
