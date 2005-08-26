@@ -3,6 +3,11 @@
 	* riece-addon.el: Require 'riece-addon-modules.
 	(riece-command-list-addons): List all available add-ons from
 	riece-addon-modules.
+	(riece-addon-list-mode-map): Bind riece-command-insinuate-addon
+	and riece-command-uninstall-addon.
+	(riece-insinuate-addon): Rebuild riece-addon-dependencies.
+	(riece-command-insinuate-addon): New command.
+	(riece-command-uninstall-addon): New command.
 
 	* COMPILE (riece-examine-modules): New function.
 	(riece-examine): Use it.
