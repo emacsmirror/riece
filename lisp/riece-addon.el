@@ -219,10 +219,7 @@
 	  (enabled (intern-soft (concat (symbol-name addon) "-enabled"))))
       (if entry
 	  (if (cdr entry)
-	      (if (= (length (cdr entry)) 1)
-		  (error "%S depends %S" (car (cdr entry)) addon)
-		(error "%s depends %S" (mapconcat #'identity (cdr entry) ",")
-		       addon))
+	      (error "dependency problem: %S <- %S" addon (cdr entry))
 	    (if (and enabled
 		     (symbol-value enabled))
 		(riece-disable-addon addon verbose))
