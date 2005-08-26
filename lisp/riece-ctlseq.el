@@ -59,7 +59,7 @@
 
 (defvar riece-ctlseq-enabled nil)
 
-(defvar riece-ctlseq-description
+(defconst riece-ctlseq-description
   "Mark up control sequences in IRC buffers.")
 
 (defun riece-ctlseq-compatible-attributes-p (this other)

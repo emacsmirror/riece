@@ -43,7 +43,7 @@ before/after the first/last non-blank line."
   :type 'boolean
   :group 'riece-yank)
 
-(defvar riece-yank-description
+(defconst riece-yank-description
   "Enter the element of kill-ring.")
 
 (defvar riece-yank-enabled nil)

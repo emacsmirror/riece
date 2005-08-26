@@ -30,7 +30,7 @@
 
 (defvar riece-kakasi-enabled nil)
 
-(defvar riece-kakasi-description
+(defconst riece-kakasi-description
   "Convert Japanese to roman string by KAKASI.")
 
 (defvar riece-kakasi-process nil)
