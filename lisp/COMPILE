@@ -1,84 +1,56 @@
 ;;; -*- Emacs-Lisp -*-
 
+(require 'riece-addon-modules)
+
 (defvar riece-modules
-  (cons 'riece-compat
-	(cons (if (featurep 'xemacs)
-		  'riece-xemacs
-		'riece-emacs)
-	      '(riece-globals
-		riece-options
-		riece-debug
-		riece-version
-		riece-coding
-		riece-complete
-		riece-addon
-		riece-ruby
+  (nconc
+   (cons 'riece-compat
+	 (cons (if (featurep 'xemacs)
+		   'riece-xemacs
+		 'riece-emacs)
+	       '(riece-globals
+		 riece-options
+		 riece-debug
+		 riece-version
+		 riece-coding
+		 riece-complete
+		 riece-addon-modules
+		 riece-addon
+		 riece-ruby
 
-		riece-mode
-		;; riece-identity -+-> riece-channel
-		;;                 +-> riece-user
-		riece-identity
-		riece-channel
-		riece-user
+		 riece-mode
+		 ;; riece-identity -+-> riece-channel
+		 ;;                 +-> riece-user
+		 riece-identity
+		 riece-channel
+		 riece-user
 
-		riece-misc
-		riece-signal
+		 riece-misc
+		 riece-signal
 
-		;; riece-layout ---> riece-display
-		riece-layout
-		riece-display
-		riece-server
+		 ;; riece-layout ---> riece-display
+		 riece-layout
+		 riece-display
+		 riece-server
 
-		;; riece-channel -+-> riece-naming
-		;; riece-user    -+
-		riece-naming
-		riece-message
+		 ;; riece-channel -+-> riece-naming
+		 ;; riece-user    -+
+		 riece-naming
+		 riece-message
 
-		;; riece-filter calls riece-{handle,000,200,300,400,500}
-		riece-filter
-		riece-handle
-		riece-000
-		riece-200
-		riece-300
-		riece-400
-		riece-500
+		 ;; riece-filter calls riece-{handle,000,200,300,400,500}
+		 riece-filter
+		 riece-handle
+		 riece-000
+		 riece-200
+		 riece-300
+		 riece-400
+		 riece-500
 
-		riece-commands
-		riece-irc
-		riece
-
-		;; add-ons
-		riece-ctcp
-		riece-highlight
-		riece-log
-		riece-mini
-		riece-rdcc
-		riece-url
-		riece-unread
-		riece-doctor
-		riece-alias
-		riece-skk-kakutei
-		riece-foolproof
-		riece-guess
-		riece-history
-		riece-button
-		riece-keyword
-		riece-menu
-		riece-icon
-		riece-async
-		riece-lsdb
-		riece-xface
-		riece-ctlseq
-		riece-ignore
-		riece-hangman
-		riece-biff
-		riece-kakasi
-		riece-yank
-		riece-toolbar
-		riece-eval
-		riece-google
-		riece-keepalive
-		riece-eval-ruby))))
+		 riece-commands
+		 riece-irc
+		 riece)))
+   (mapcar #'car riece-addon-modules)))
 
 (defvar riece-icons
   '("riece-command-quit.xpm"

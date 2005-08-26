@@ -1,3 +1,12 @@
+2005-08-26  Daiki Ueno  <ueno@unixuser.org>
+
+	* COMPILE: Require 'riece-addon-modules.
+	(riece-modules): Added riece-addon-modules.
+
+	* Makefile.am (EXTRA_DIST): Added riece-addon-modules.el.
+
+	* riece-addon-modules.el: New file.
+
 2005-08-25  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-addon.el (riece-command-list-addons): Use
