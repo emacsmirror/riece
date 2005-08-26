@@ -1,4 +1,4 @@
-;;; riece-yank.el --- enter the element in kill-ring
+;;; riece-yank.el --- enter the element of kill-ring
 ;; Copyright (C) 2004 Masatake YAMATO
 
 ;; Author: Masatake YAMATO <jet@gyve.org>
@@ -20,16 +20,14 @@
 ;; Boston, MA 02111-1307, USA.
 
 ;;; Commentary:
-;;
-;; In riece's command buffer, you can send the top element of kill-ring
-;; by C-c y. 
-;; Don't forget do (riece-command-enable-addon 'riece-yank) to test.
-;;
+
+;; NOTE: This is an add-on module for Riece.
+
 ;;; Code:
 (require 'riece-commands)
 
 (defgroup riece-yank nil
-  "Enter the element of `kill-ring'."
+  "Enter the element of kill-ring."
   :tag "Yank"
   :prefix "riece-"
   :group 'riece)
@@ -44,6 +42,9 @@
 before/after the first/last non-blank line."
   :type 'boolean
   :group 'riece-yank)
+
+(defvar riece-yank-description
+  "Enter the element of kill-ring.")
 
 (defvar riece-yank-enabled nil)
 

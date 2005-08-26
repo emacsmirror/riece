@@ -1,4 +1,4 @@
-;;; riece-ignore.el --- ignore user
+;;; riece-ignore.el --- ignore messages from some users
 ;; Copyright (C) 1998-2004 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>
@@ -24,8 +24,7 @@
 
 ;;; Commentary:
 
-;; To use, add the following line to your ~/.riece/init.el:
-;; (add-to-list 'riece-addons 'riece-ignore)
+;; NOTE: This is an add-on module for Riece.
 
 ;;; Code:
 
@@ -34,7 +33,7 @@
 (require 'riece-message)
 
 (defgroup riece-ignore nil
-  "Ignore messages in IRC buffers."
+  "Ignore messages from some users."
   :prefix "riece-"
   :group 'riece)
 
@@ -64,7 +63,7 @@ Otherwise, they are not removed from IRC buffers, but are hidden with
 (defvar riece-ignore-enabled nil)
 
 (defconst riece-ignore-description
-  "Ignore users")
+  "Ignore messages from some users.")
 (defvar riece-ignored-user-list nil)
 
 (defun riece-ignore-user-rename-signal-function (signal handback)

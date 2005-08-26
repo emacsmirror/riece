@@ -1,4 +1,4 @@
-;;; riece-url.el --- URL collector add-on
+;;; riece-url.el --- collect URL in IRC buffers
 ;; Copyright (C) 1998-2003 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>
@@ -24,8 +24,7 @@
 
 ;;; Commentary:
 
-;; To use, add the following line to your ~/.riece/init.el:
-;; (add-to-list 'riece-addons 'riece-url)
+;; NOTE: This is an add-on module for Riece.
 
 ;;; Code:
 
@@ -63,7 +62,7 @@ This maps a string \"Bug#12345\" to a URL
 (defvar riece-url-enabled nil)
 
 (defconst riece-url-description
-  "Collect URL in IRC buffers")
+  "Collect URL in IRC buffers.")
 
 (autoload 'widget-convert-button "wid-edit")
 

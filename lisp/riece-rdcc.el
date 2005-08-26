@@ -1,4 +1,4 @@
-;;; riece-rdcc.el --- Ruby implementation of DCC add-on
+;;; riece-rdcc.el --- DCC file sending protocol support (written in Ruby)
 ;; Copyright (C) 1998-2003 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>
@@ -20,6 +20,10 @@
 ;; along with GNU Emacs; see the file COPYING.  If not, write to the
 ;; Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 ;; Boston, MA 02111-1307, USA.
+
+;;; Commentary:
+
+;; NOTE: This is an add-on module for Riece.
 
 ;;; Code:
 
@@ -101,7 +105,7 @@ end
 (defvar riece-rdcc-enabled nil)
 
 (defconst riece-rdcc-description
-  "DCC file sending extension implemented in Ruby")
+  "DCC file sending protocol support (written in Ruby.)")
 
 (defvar temporary-file-directory)
 (defvar jka-compr-compression-info-list)

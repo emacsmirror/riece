@@ -1,4 +1,4 @@
-;;; riece-keyword.el --- highlight keywords in channel buffers
+;;; riece-keyword.el --- detect keywords in IRC buffers
 ;; Copyright (C) 1998-2003 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>
@@ -24,15 +24,14 @@
 
 ;;; Commentary:
 
-;; To use, add the following line to your ~/.riece/init.el:
-;; (add-to-list 'riece-addons 'riece-keyword)
+;; NOTE: This is an add-on module for Riece.
 
 ;;; Code:
 
 (require 'riece-message)
 
 (defgroup riece-keyword nil
-  "Highlight keyword in IRC buffer."
+  "Detect keywords in IRC buffers."
   :prefix "riece-"
   :group 'riece)
 
@@ -70,7 +69,7 @@ and the matched message object."
 (defvar riece-keyword-enabled nil)
 
 (defconst riece-keyword-description
-  "Highlight keywords in IRC buffers")
+  "Detect keywords in IRC buffers.")
 
 ;;; The old XEmacs package doesn't have autoload setting for regexp-opt.
 (autoload 'regexp-opt "regexp-opt")

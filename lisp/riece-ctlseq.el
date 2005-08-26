@@ -1,4 +1,4 @@
-;;; riece-ctlseq.el --- highlight control sequences in channel buffers
+;;; riece-ctlseq.el --- mark up control sequences in IRC buffers
 ;; Copyright (C) 1998-2004 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>
@@ -24,8 +24,7 @@
 
 ;;; Commentary:
 
-;; To use, add the following line to your ~/.riece/init.el:
-;; (add-to-list 'riece-addons 'riece-ctlseq)
+;; NOTE: This is an add-on module for Riece.
 
 ;;; Code:
 
@@ -33,7 +32,7 @@
 (require 'riece-misc)
 
 (defgroup riece-ctlseq nil
-  "Control sequences in IRC buffer."
+  "Mark up control sequences in IRC buffer."
   :prefix "riece-"
   :group 'riece)
 
@@ -61,7 +60,7 @@
 (defvar riece-ctlseq-enabled nil)
 
 (defvar riece-ctlseq-description
-  "Highlight control sequences in IRC buffers")
+  "Mark up control sequences in IRC buffers.")
 
 (defun riece-ctlseq-compatible-attributes-p (this other)
   (let ((pointer this))

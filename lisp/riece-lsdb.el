@@ -1,4 +1,4 @@
-;;; riece-lsdb.el --- interface to LSDB
+;;; riece-lsdb.el --- help register nicknames in LSDB rolodex program
 ;; Copyright (C) 1998-2003 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>
@@ -24,8 +24,7 @@
 
 ;;; Commentary:
 
-;; To use, add the following line to your ~/.riece/init.el:
-;; (add-to-list 'riece-addons 'riece-lsdb)
+;; NOTE: This is an add-on module for Riece.
 
 ;;; Code:
 
@@ -46,7 +45,7 @@
 (defvar riece-lsdb-enabled nil)
 
 (defconst riece-lsdb-description
-  "Use LSDB (Lovely Sister Database)")
+  "Help register nicknames in LSDB rolodex program.")
 
 (defun riece-lsdb-update-cache (record)
   (let ((irc (cdr (assq 'irc record))))

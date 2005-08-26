@@ -1,4 +1,4 @@
-;;; riece-toolbar.el --- show toolbar icons
+;;; riece-toolbar.el --- display toolbar icons
 ;; Copyright (C) 1998-2004 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>
@@ -24,15 +24,14 @@
 
 ;;; Commentary:
 
-;; To use, add the following line to your ~/.riece/init.el:
-;; (add-to-list 'riece-addons 'riece-toolbar)
+;; NOTE: This is an add-on module for Riece.
 
 ;;; Code:
 
 (require 'riece-menu)
 
 (defconst riece-toolbar-description
-  "Show toolbar icons.")
+  "Display toolbar icons.")
 
 (defvar riece-toolbar-items
   '(riece-command-quit

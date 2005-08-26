@@ -1,4 +1,4 @@
-;;; riece-xface.el --- display X-Face in user list buffer
+;;; riece-xface.el --- display X-Face in IRC buffers
 ;; Copyright (C) 1998-2003 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>
@@ -24,8 +24,7 @@
 
 ;;; Commentary:
 
-;; To use, add the following line to your ~/.riece/init.el:
-;; (add-to-list 'riece-addons 'riece-xface)
+;; NOTE: This is an add-on module for Riece.
 
 ;;; Code:
 
@@ -37,7 +36,7 @@
 (defvar riece-xface-enabled nil)
 
 (defconst riece-xface-description
-  "Display X-Face in user list buffer")
+  "Display X-Face in IRC buffers.")
 
 (defvar lsdb-insert-x-face-function)
 

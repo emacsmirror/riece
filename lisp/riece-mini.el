@@ -1,4 +1,4 @@
-;;; riece-mini.el --- "riece on minibuffer" add-on
+;;; riece-mini.el --- use Riece only on the minibuffer
 ;; Copyright (C) 2003 OHASHI Akira
 
 ;; Author: OHASHI Akira <bg66@koka-in.org>
@@ -23,6 +23,8 @@
 
 ;;; Commentary:
 
+;; NOTE: This is an add-on module for Riece.
+
 ;; This add-on shows arrival messages to minibuffer. And you can send
 ;; message using minibuffer.
 ;;
@@ -44,7 +46,7 @@
 (require 'riece-biff)
 
 (defgroup riece-mini nil
-  "Riece on minibuffer."
+  "Use Riece only on the minibuffer."
   :group 'riece)
 
 (defcustom riece-mini-backlog-size 5
@@ -59,7 +61,7 @@
 (defvar riece-mini-enabled nil)
 
 (defconst riece-mini-description
-  "Send arrival messages to minibuffer")
+  "Use Riece only on the minibuffer.")
 
 (defun riece-mini-message-no-log (string &rest args)
   "Like `message', except that message logging is disabled."

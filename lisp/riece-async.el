@@ -23,11 +23,10 @@
 
 ;;; Commentary:
 
+;; NOTE: This is an add-on module for Riece.
+
 ;; This program allows to connect to an IRC server via local proxy
 ;; which responds to PING requests from server.
-
-;; To use, add the following line to your ~/.riece/init.el:
-;; (add-to-list 'riece-addons 'riece-async)
 
 ;; If you want to enable this feature per server, write the server
 ;; spec like this:
@@ -65,7 +64,7 @@ assumed that the file is in the same directory of this file.")
   "Command line arguments passed to `riece-async-server-program'.")
 
 (defconst riece-async-description
-  "Keep IRC connection with external process")
+  "Connect to IRC server via async proxy.")
 
 ;;;###autoload
 (defun riece-async-open-network-stream (name buffer host service)

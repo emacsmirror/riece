@@ -23,10 +23,7 @@
 
 ;;; Commentary:
 
-;; This add-on channel miss hold in check
-
-;; To use, add the following line to your ~/.riece/init.el:
-;; (add-to-list 'riece-addons 'riece-foolproof)
+;; NOTE: This is an add-on module for Riece.
 
 ;;; Code:
 

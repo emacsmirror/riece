@@ -1,4 +1,4 @@
-;;; riece-google.el --- Interface to Google API
+;;; riece-google.el --- search keywords by Google
 ;; Copyright (C) 2005 OHASHI Akira
 
 ;; Author: OHASHI Akira <bg66@koka-in.org>
@@ -24,19 +24,16 @@
 
 ;;; Commentary:
 
-;; This add-on searches keywords by Google.
+;; NOTE: This is an add-on module for Riece.
 
 ;; Ruby code was stolen (and modified) from nadoka.
-
-;; To use, add the following line to your ~/.riece/init.el:
-;; (add-to-list 'riece-addons 'riece-google)
 
 ;;; Code:
 
 (require 'riece-message)
 
 (defgroup riece-google nil
-  "Interface to Google API."
+  "Search keywords by Google."
   :prefix "riece-"
   :group 'riece)
 

@@ -1,4 +1,4 @@
-;;; riece-menu.el --- define command menu on menubar
+;;; riece-menu.el --- setup Riece's command menus
 ;; Copyright (C) 1998-2003 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>
@@ -24,8 +24,7 @@
 
 ;;; Commentary:
 
-;; To use, add the following line to your ~/.riece/init.el:
-;; (add-to-list 'riece-addons 'riece-menu)
+;; NOTE: This is an add-on module for Riece.
 
 ;;; Code:
 
@@ -70,7 +69,7 @@
   "Menu used in command mode.")
 
 (defconst riece-menu-description
-  "Setup command menus on menubar")
+  "Setup Riece's command menus.")
 
 (defun riece-menu-create-layouts-menu (menu)
   (mapcar (lambda (entry)

@@ -1,4 +1,4 @@
-;;; riece-ctcp.el --- CTCP add-on
+;;; riece-ctcp.el --- CTCP (Client To Client Protocol) support
 ;; Copyright (C) 1998-2003 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>
@@ -21,6 +21,10 @@
 ;; along with GNU Emacs; see the file COPYING.  If not, write to the
 ;; Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 ;; Boston, MA 02111-1307, USA.
+
+;;; Commentary:
+
+;; NOTE: This is an add-on module for Riece.
 
 ;;; Code:
 
@@ -53,7 +57,7 @@
 (defvar riece-ctcp-enabled nil)
 
 (defconst riece-ctcp-description
-  "CTCP (Client To Client Protocol) support")
+  "CTCP (Client To Client Protocol) support.")
 
 (defun riece-handle-ctcp-request (prefix string)
   (when (and riece-ctcp-enabled prefix string

@@ -1,4 +1,4 @@
-;;; riece-biff.el --- biff add-on
+;;; riece-biff.el --- be notified if messages arrives
 ;; Copyright (C) 2004 OHASHI Akira
 
 ;; Author: OHASHI Akira <bg66@koka-in.org>
@@ -23,15 +23,14 @@
 
 ;;; Commentary:
 
-;; To use, add the following line to your ~/.riece/init.el:
-;; (add-to-list 'riece-addons 'riece-biff)
+;; NOTE: This is an add-on module for Riece.
 
 ;;; Code:
 
 (require 'riece-message)
 
 (defgroup riece-biff nil
-  "Biff for new arrival messages."
+  "Be notified if messages arrives."
   :prefix "riece-"
   :group 'riece)
 
@@ -55,7 +54,7 @@
 (defvar riece-biff-enabled nil)
 
 (defconst riece-biff-description
-  "Biff for new arrival messages")
+  "Be notified if messages arrives.")
 
 (defun riece-biff-after-display-message-function (message)
   (when (and riece-biff-enabled

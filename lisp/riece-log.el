@@ -1,4 +1,4 @@
-;;; riece-log.el --- saving irc logs add-on
+;;; riece-log.el --- Save IRC logs
 ;; Copyright (C) 2003 OHASHI Akira
 ;; Copyright (C) 2004 Daiki Ueno
 
@@ -25,10 +25,7 @@
 
 ;;; Commentary:
 
-;; This add-on saves irc logs for every channel.
-
-;; To use, add the following line to your ~/.riece/init.el:
-;; (add-to-list 'riece-addons 'riece-log)
+;;; NOTE: This is an add-on module for Riece.
 
 ;;; Code:
 
@@ -95,7 +92,7 @@ It is created if there is at least one instance of Emacs running riece-log.")
 (defvar riece-log-enabled nil)
 
 (defconst riece-log-description
-  "Saving IRC logs")
+  "Save IRC logs.")
 
 (defun riece-log-display-message-function (message)
   (if riece-log-enabled

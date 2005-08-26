@@ -24,8 +24,7 @@
 
 ;;; Commentary:
 
-;; To use, add the following line to your ~/.riece/init.el:
-;; (add-to-list 'riece-addons 'riece-keepalive)
+;; NOTE: This is an add-on module for Riece.
 
 ;;; Code:
 

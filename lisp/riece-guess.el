@@ -21,13 +21,17 @@
 ;; Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 ;; Boston, MA 02111-1307, USA.
 
+;;; Commentary:
+
+;; NOTE: This is an add-on module for Riece.
+
 ;;; Code:
 
 (require 'riece-identity)
 (require 'riece-commands)
 
 (defgroup riece-guess nil
-  "Guess the next channel to be switched."
+  "Guess the next channel."
   :tag "Guess"
   :prefix "riece-"
   :group 'riece)
@@ -40,7 +44,7 @@
 (defvar riece-guess-enabled nil)
 
 (defconst riece-guess-description
-  "Guess the next channel, using multiple methods")
+  "Guess the next channel, using multiple methods.")
 
 (defvar riece-current-channels)
 

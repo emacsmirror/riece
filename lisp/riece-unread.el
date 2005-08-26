@@ -1,4 +1,4 @@
-;;; riece-unread.el --- "unread message mark" add-on
+;;; riece-unread.el --- mark channels where new messages arrived
 ;; Copyright (C) 1998-2003 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>
@@ -23,7 +23,9 @@
 
 ;;; Commentary:
 
-;; This add-on marks channels where new messages are arrived.
+;; NOTE: This is an add-on module for Riece.
+
+;; This add-on marks channels where new messages arrived.
 
 ;; You can check the unread channels via `C-c g' in the commands
 ;; buffer, by adding the following lines to ~/.riece/init.el:
@@ -71,7 +73,7 @@
 (defvar riece-unread-enabled nil)
 
 (defconst riece-unread-description
-  "Mark channels where \"unread\" messages arrived")
+  "Mark channels where new messages arrived.")
 
 (defun riece-unread-after-display-message-function (message)
   (if riece-unread-enabled

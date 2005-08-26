@@ -1,4 +1,4 @@
-;;; riece-eval-ruby.el --- evaluate Ruby programs in channels
+;;; riece-eval-ruby.el --- evaluate input string as a Ruby program
 ;; Copyright (C) 1998-2005 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>
@@ -24,8 +24,7 @@
 
 ;;; Commentary:
 
-;; To use, add the following line to your ~/.riece/init.el:
-;; (add-to-list 'riece-addons 'riece-eval-ruby)
+;; NOTE: This is an add-on module for Riece.
 
 ;;; Code:
 
@@ -33,7 +32,7 @@
 (require 'riece-message)
 
 (defgroup riece-eval-ruby nil
-  "Evaluate Ruby programs in channels."
+  "Evaluate input string as a Ruby program."
   :prefix "riece-"
   :group 'riece)
 
@@ -45,7 +44,7 @@
 (defvar riece-eval-ruby-enabled nil)
 
 (defconst riece-eval-ruby-description
-  "Evaluate an input string as Ruby program.")
+  "Evaluate input string as a Ruby program.")
 
 (defun riece-eval-ruby-exit-handler (name)
   (riece-ruby-inspect name)

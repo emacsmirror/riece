@@ -1,4 +1,4 @@
-;;; riece-doctor.el --- "become a psychotherapist" add-on
+;;; riece-doctor.el --- pretend to be a psychotherapist
 ;; Copyright (C) 1998-2003 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>
@@ -23,10 +23,7 @@
 
 ;;; Commentary:
 
-;; This add-on allows you to become a psychotherapist.
-
-;; To use, add the following line to your ~/.riece/init.el:
-;; (add-to-list 'riece-addons 'riece-doctor)
+;; NOTE: This is an add-on module for Riece.
 
 ;;; Code:
 
@@ -55,7 +52,7 @@
 (defvar riece-doctor-enabled nil)
 
 (defconst riece-doctor-description
-  "Allow users in channel to talk with the classic pseudo-AI")
+  "Pretend to be a psychotherapist.")
 
 (put 'riece-doctor 'riece-addon-default-disabled t)
 

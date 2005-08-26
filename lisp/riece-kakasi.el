@@ -1,4 +1,4 @@
-;;; riece-kakasi.el --- convert Japanese to roman string by kakasi
+;;; riece-kakasi.el --- convert Japanese to roman string by KAKASI
 ;; Copyright (C) 1998-2004 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>
@@ -24,15 +24,14 @@
 
 ;;; Commentary:
 
-;; To use, add the following line to your ~/.riece/init.el:
-;; (add-to-list 'riece-addons 'riece-kakasi)
+;; NOTE: This is an add-on module for Riece.
 
 ;;; Code:
 
 (defvar riece-kakasi-enabled nil)
 
 (defvar riece-kakasi-description
-  "Convert Japanese to roman string by kakasi")
+  "Convert Japanese to roman string by KAKASI.")
 
 (defvar riece-kakasi-process nil)
 

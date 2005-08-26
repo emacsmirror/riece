@@ -1,4 +1,4 @@
-;;; riece-history.el --- channel history management add-on
+;;; riece-history.el --- manage history of channel shifting
 ;; Copyright (C) 1998-2003 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>
@@ -23,6 +23,8 @@
 
 ;;; Commentary:
 
+;; NOTE: This is an add-on module for Riece.
+
 ;; You can check recently visited channels via `C-c g' in the commands
 ;; buffer, by adding the following lines to ~/.riece/init.el:
 
@@ -39,7 +41,7 @@
 (require 'ring)
 
 (defgroup riece-history nil
-  "Channel switch history."
+  "Manage history of channel shifting."
   :tag "History"
   :prefix "riece-"
   :group 'riece)
@@ -77,7 +79,7 @@
 (defvar riece-history-enabled nil)
 
 (defconst riece-history-description
-  "Keep track channel history")
+  "Manage history of channel shifting.")
 
 (defun riece-guess-channel-from-history ()
   (let ((length (ring-length riece-channel-history))

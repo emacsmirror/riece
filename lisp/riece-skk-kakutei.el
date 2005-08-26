@@ -1,4 +1,4 @@
-;;; riece-skk-kakutei.el --- add-on skk-kakutei
+;;; riece-skk-kakutei.el --- remove SKK's preedit mark before sending messages
 ;; Copyright (C) 2003 TAKAHASHI Kaoru
 
 ;; Author: TAKAHASHI "beatmaria" Kaoru <kaoru@kaisei.org>
@@ -23,10 +23,7 @@
 
 ;;; Commentary:
 
-;; This add-on deny SKK's sankaku send.
-
-;; To use, add the following line to your ~/.riece/init.el:
-;; (add-to-list 'riece-addons 'riece-skk-kakutei)
+;; NOTE: This is an add-on module for Riece.
 
 ;;; Code:
 
@@ -35,7 +32,7 @@
 (defvar riece-skk-kakutei-enabled nil)
 
 (defconst riece-skk-kakutei-description
-  "Deny SKK's sankaku send")
+  "Remove SKK's preedit mark before sending messages.")
 
 (defun riece-skk-kakutei-command-enter-message ()
   "Send the current line to the current channel."

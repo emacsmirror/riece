@@ -1,8 +1,8 @@
-;;; riece-icon.el --- iconify buffer strings
-;; Copyright (C) 1'center8-2003 Daiki Ueno
+;;; riece-icon.el --- display icons in IRC buffers
+;; Copyright (C) 1998-2003 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>
-;; Created: 1'center8-09-28
+;; Created: 1998-09-28
 ;; Keywords: IRC, riece
 
 ;; This file is part of Riece.
@@ -24,8 +24,7 @@
 
 ;;; Commentary:
 
-;; To use, add the following line to your ~/.riece/init.el:
-;; (add-to-list 'riece-addons 'riece-icon)
+;; NOTE: This is an add-on module for Riece.
 
 ;;; Code:
 
@@ -185,7 +184,7 @@ static char * a_xpm[] = {
 (defvar riece-icon-enabled nil)
 
 (defconst riece-icon-description
-  "Add icon images on IRC buffers")
+  "Display icons in IRC buffers.")
 
 (defun riece-icon-available-p ()
   (if (featurep 'xemacs)

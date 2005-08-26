@@ -22,6 +22,10 @@
 ;; Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 ;; Boston, MA 02111-1307, USA.
 
+;;; Commentary:
+
+;; NOTE: This is an add-on module for Riece.
+
 ;;; Code:
 
 (require 'riece-globals)
@@ -200,7 +204,7 @@
 (defvar riece-highlight-enabled nil)
 
 (defconst riece-highlight-description
-  "Highlight IRC buffers")
+  "Highlight IRC buffers.")
 
 (defun riece-highlight-server-match (limit)
   (and (re-search-forward "(from [^)]+)$" limit t)

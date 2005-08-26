@@ -1,4 +1,4 @@
-;;; riece-button.el --- adding buttons in channel buffers
+;;; riece-button.el --- display useful buttons in IRC buffers
 ;; Copyright (C) 1998-2003 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>
@@ -24,8 +24,7 @@
 
 ;;; Commentary:
 
-;; To use, add the following line to your ~/.riece/init.el:
-;; (add-to-list 'riece-addons 'riece-button)
+;; NOTE: This is an add-on module for Riece.
 
 ;;; Code:
 
@@ -52,7 +51,7 @@
 (defvar riece-button-enabled nil)
 
 (defconst riece-button-description
-  "Display useful buttons in IRC buffers")
+  "Display useful buttons in IRC buffers.")
 
 (defvar help-echo-owns-message)
 (define-widget 'riece-identity-button 'push-button

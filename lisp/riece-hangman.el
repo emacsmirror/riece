@@ -1,4 +1,4 @@
-;;; riece-hangman.el --- hangman
+;;; riece-hangman.el --- allow channel members to play the hangman game
 ;; Copyright (C) 1998-2004 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>
@@ -23,8 +23,7 @@
 
 ;;; Commentary:
 
-;; To use, add the following line to your ~/.riece/init.el:
-;; (add-to-list 'riece-addons 'riece-hangman)
+;; NOTE: This is an add-on module for Riece.
 
 ;;; Code:
 
@@ -34,7 +33,7 @@
 (require 'riece-server)
 
 (defgroup riece-hangman nil
-  "Interface to hangman.el."
+  "Allow channel members to play the hangman game."
   :prefix "riece-"
   :group 'riece)
 
@@ -59,7 +58,7 @@
 (defvar riece-hangman-enabled nil)
 
 (defconst riece-hangman-description
-  "Allow users in channel to play classic textual game \"hangman\"")
+  "Allow channel members to play the hangman game.")
 
 (put 'riece-hangman 'riece-addon-default-disabled t)
 
