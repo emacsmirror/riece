@@ -148,6 +148,7 @@ Local to the channel buffers.")
 Local to the channel buffers.")
 
 ;;; Modeline indicators:
+(defvar riece-mode-line-buffer-identification nil)
 (defvar riece-channel-indicator "None"
   "String displayed on the modeline to indicate the current channel.")
 (defvar riece-long-channel-indicator "None"

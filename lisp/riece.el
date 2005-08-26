@@ -393,21 +393,24 @@ For a list of the generic commands type \\[riece-command-generic] ? RET.
   (make-local-variable 'truncate-partial-width-windows)
   (setq truncate-partial-width-windows nil)
 
+  (make-local-variable 'riece-mode-line-buffer-identification)
   (setq riece-away-indicator "-"
 	riece-operator-indicator "-"
 	riece-channel-status-indicator "-"
 	major-mode 'riece-command-mode
 	mode-name "Command"
+	riece-mode-line-buffer-identification
+	'("Riece: "
+	  riece-away-indicator
+	  riece-operator-indicator
+	  riece-channel-status-indicator
+	  " "
+	  riece-user-indicator
+	  " "
+	  riece-channel-indicator)
 	mode-line-buffer-identification
 	(riece-mode-line-buffer-identification
-	 '("Riece: "
-	   riece-away-indicator
-	   riece-operator-indicator
-	   riece-channel-status-indicator
-	   " "
-	   riece-user-indicator
-	   " "
-	   riece-channel-indicator))
+	 riece-mode-line-buffer-identification)
 	truncate-lines nil)
   (riece-simplify-mode-line-format)
   (use-local-map riece-command-mode-map)
@@ -436,21 +439,24 @@ Instead, these commands are available:
   (make-local-variable 'truncate-partial-width-windows)
   (setq truncate-partial-width-windows nil)
 
+  (make-local-variable 'riece-mode-line-buffer-identification)
   (setq riece-freeze riece-default-freeze
 	riece-away-indicator "-"
 	riece-operator-indicator "-"
 	riece-channel-status-indicator "-"
 	major-mode 'riece-dialogue-mode
 	mode-name "Dialogue"
+	riece-mode-line-buffer-identification
+	'("Riece: "
+	  riece-away-indicator
+	  riece-operator-indicator
+	  riece-freeze-indicator
+	  riece-channel-status-indicator
+	  " "
+	  riece-channel-list-indicator " ")
 	mode-line-buffer-identification
 	(riece-mode-line-buffer-identification
-	 '("Riece: "
-	   riece-away-indicator
-	   riece-operator-indicator
-	   riece-freeze-indicator
-	   riece-channel-status-indicator
-	   " "
-	   riece-channel-list-indicator " "))
+	 riece-mode-line-buffer-identification)
 	truncate-lines nil
 	buffer-read-only t)
   (riece-simplify-mode-line-format)
@@ -472,15 +478,18 @@ All normal editing commands are turned off.
 Instead, these commands are available:
 \\{riece-channel-mode-map}"
   (make-local-variable 'riece-channel-buffer-window-point)
-  (setq mode-line-buffer-identification
+  (make-local-variable 'riece-mode-line-buffer-identification)
+  (setq riece-mode-line-buffer-identification
+	'("Riece: "
+	  riece-away-indicator
+	  riece-operator-indicator
+	  riece-freeze-indicator
+	  riece-channel-status-indicator
+	  " "
+	  riece-long-channel-indicator)
+	mode-line-buffer-identification
 	(riece-mode-line-buffer-identification
-	 '("Riece: "
-	   riece-away-indicator
-	   riece-operator-indicator
-	   riece-freeze-indicator
-	   riece-channel-status-indicator
-	   " "
-	   riece-long-channel-indicator))))
+	 riece-mode-line-buffer-identification)))
 
 (defun riece-channel-list-mode ()
   "Major mode for displaying channel list.
@@ -493,10 +502,13 @@ All normal editing commands are turned off."
   (make-local-variable 'truncate-partial-width-windows)
   (setq truncate-partial-width-windows nil)
 
+  (make-local-variable 'riece-mode-line-buffer-identification)
   (setq major-mode 'riece-channel-list-mode
 	mode-name "Channels"
+	riece-mode-line-buffer-identification '("Riece: ")
 	mode-line-buffer-identification
-	(riece-mode-line-buffer-identification '("Riece: "))
+	(riece-mode-line-buffer-identification
+	 riece-mode-line-buffer-identification)
 	truncate-lines t
 	buffer-read-only t)
   (make-local-hook 'riece-update-buffer-functions)
@@ -518,11 +530,14 @@ Instead, these commands are available:
   (make-local-variable 'truncate-partial-width-windows)
   (setq truncate-partial-width-windows nil)
 
+  (make-local-variable 'riece-mode-line-buffer-identification)
   (setq major-mode 'riece-user-list-mode
 	mode-name "Users"
+	riece-mode-line-buffer-identification
+	'("Riece: " riece-long-channel-indicator " ")
 	mode-line-buffer-identification
 	(riece-mode-line-buffer-identification
-	 '("Riece: " riece-long-channel-indicator " "))
+	 riece-mode-line-buffer-identification)
 	truncate-lines t
 	buffer-read-only t)
   (if (boundp 'transient-mark-mode)

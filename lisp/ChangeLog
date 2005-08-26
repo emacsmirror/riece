@@ -1,5 +1,20 @@
 2005-08-26  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece.el (riece-command-mode): Set
+	riece-mode-line-buffer-identification.
+	(riece-dialogue-mode): Ditto.
+	(riece-channel-mode): Ditto.
+	(riece-channel-list-mode): Ditto.
+	(riece-user-list-mode): Ditto.
+	* riece-icon.el
+	(riece-icon-update-mode-line-buffer-identification): New function.
+	(riece-icon-insinuate): Use it.
+	(riece-icon-uninstall): Use it.
+	* riece-globals.el (riece-mode-line-buffer-identification): New
+	variable.
+
+2005-08-26  Daiki Ueno  <ueno@unixuser.org>
+
 	* Make add-ons uninstallable.
 
 	* riece-xface.el (riece-xface-user-list-mode-hook): New function.

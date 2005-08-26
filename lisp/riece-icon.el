@@ -320,11 +320,24 @@ Modify whole identification by side effect."
 
 (defvar riece-icon-original-mode-line-buffer-identification nil)
 
+(defun riece-icon-update-mode-line-buffer-identification ()
+  (let ((buffers riece-buffer-list))
+    (save-excursion
+      (while buffers
+	(set-buffer (car buffers))
+	(if (local-variable-p 'riece-mode-line-buffer-identification
+			      (car buffers))
+	    (setq mode-line-buffer-identification
+		  (riece-mode-line-buffer-identification
+		   riece-mode-line-buffer-identification)))
+	(setq buffers (cdr buffers))))))
+
 (defun riece-icon-insinuate ()
   (setq riece-icon-original-mode-line-buffer-identification
 	(symbol-function 'riece-mode-line-buffer-identification))
   (defalias 'riece-mode-line-buffer-identification
     #'riece-icon-modeline-buffer-identification)
+  (riece-icon-update-mode-line-buffer-identification)
   (add-hook 'riece-user-list-mode-hook
 	    'riece-icon-user-list-mode-hook)
   (add-hook 'riece-channel-list-mode-hook
@@ -333,6 +346,7 @@ Modify whole identification by side effect."
 (defun riece-icon-uninstall ()
   (fset 'riece-mode-line-buffer-identification
 	riece-icon-original-mode-line-buffer-identification)
+  (riece-icon-update-mode-line-buffer-identification)
   (save-excursion
     (set-buffer riece-user-list-buffer)
     (remove-hook 'riece-update-buffer-functions
