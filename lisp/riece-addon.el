@@ -55,7 +55,7 @@
   '((((class color) (background dark))
      (:foreground "PaleTurquoise" :italic t))
     (t
-     (:italic t)))
+     ()))
   "Face used for displaying the disabled addon."
   :group 'riece-addon-list-faces)
 (defvar riece-addon-list-disabled-face 'riece-addon-list-disabled-face)
@@ -71,7 +71,7 @@
 
 (defface riece-addon-list-uninstalled-face
   '((t
-     (:foreground "red")))
+     (:italic t)))
   "Face used for displaying the uninstalled addon."
   :group 'riece-addon-list-faces)
 (defvar riece-addon-list-uninstalled-face 'riece-addon-list-uninstalled-face)
