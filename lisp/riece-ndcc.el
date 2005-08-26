@@ -1,4 +1,4 @@
-;;; riece-ndcc.el --- elisp native DCC add-on
+;;; riece-ndcc.el --- DCC file sending protocol support (written in elisp)
 ;; Copyright (C) 1998-2003 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>
@@ -20,6 +20,10 @@
 ;; along with GNU Emacs; see the file COPYING.  If not, write to the
 ;; Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 ;; Boston, MA 02111-1307, USA.
+
+;;; Commentary:
+
+;; NOTE: This is an add-on module for Riece.
 
 ;;; Code:
 
@@ -47,7 +51,7 @@ Only used for sending files."
 (defvar riece-ndcc-enabled nil)
 
 (defconst riece-ndcc-description
-  "DCC file sending extension implemented with `make-network-process'")
+  "DCC file sending protocol support (written in elisp.)")
 
 (defun riece-ndcc-encode-address (address)
   (unless (string-match
