@@ -234,6 +234,8 @@
 	  (message "Add-on %S is uninstalled" addon)))))
 
 (defun riece-enable-addon (addon &optional verbose)
+  (unless (get addon 'riece-addon-insinuated)
+    (error "Add-on %S is not insinuated" addon))
   (let ((enabled (intern-soft (concat (symbol-name addon) "-enabled"))))
     (if (null enabled)
 	(if verbose
@@ -246,6 +248,8 @@
 	    (message "Add-on %S enabled" addon))))))
 
 (defun riece-disable-addon (addon &optional verbose)
+  (unless (get addon 'riece-addon-insinuated)
+    (error "Add-on %S is not insinuated" addon))
   (let ((enabled (intern-soft (concat (symbol-name addon) "-enabled"))))
     (if (null enabled)
 	(if verbose
