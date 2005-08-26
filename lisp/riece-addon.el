@@ -317,7 +317,7 @@ All normal editing commands are turned off."
 			      ?+
 			    ?-)))
 		      (car (car pointer))
-		      description))
+		      (cdr (car pointer))))
       (put-text-property point (point) 'riece-addon (car (car pointer)))
       (setq pointer (cdr pointer)))
     (insert "
