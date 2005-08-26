@@ -229,7 +229,7 @@
 			 #'ignore))
 	    (setq riece-addon-dependencies
 		  (delq entry riece-addon-dependencies))
-	    (put addon 'riece-addon-insinuated nil)
+	    (remoprop addon 'riece-addon-insinuated)
 	    (setq riece-addons (delq addon riece-addons))))
       (if verbose
 	  (message "Add-on %S is uninstalled" addon)))))
