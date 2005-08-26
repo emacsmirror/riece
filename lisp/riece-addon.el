@@ -303,7 +303,10 @@ All normal editing commands are turned off."
       (setq pointer (cdr pointer)))
     (erase-buffer)
     (riece-kill-all-overlays)
-    (setq pointer module-description-alist)
+    (setq pointer (sort module-description-alist
+			(lambda (entry1 entry2)
+			  (string-lessp (symbol-name (car entry1))
+					(symbol-name (car entry2))))))
     (while pointer
       (setq enabled (intern-soft (concat (symbol-name (car (car pointer)))
 					 "-enabled")))
@@ -326,7 +329,7 @@ Symbols in the leftmost column:
   +     The add-on is enabled.
   -     The add-on is disabled.
   !	The add-on doesn't support enable/disable operation.
-  ?	The add-on status is unknown.
+  ?	The add-on is not loaded.
 ")
     (insert (substitute-command-keys "
 Useful keys:
