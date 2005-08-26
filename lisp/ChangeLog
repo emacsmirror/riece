@@ -1,7 +1,15 @@
 2005-08-26  Daiki Ueno  <ueno@unixuser.org>
 
-	* COMPILE: Require 'riece-addon-modules.
-	(riece-modules): Added riece-addon-modules.
+	* riece-addon.el: Require 'riece-addon-modules.
+	(riece-command-list-addons): List all available add-ons from
+	riece-addon-modules.
+
+	* COMPILE (riece-examine-modules): New function.
+	(riece-examine): Use it.
+	(riece-compile): Use it.
+	(riece-install): Use it.
+	(riece-compile-package): Use it.
+	(riece-install-package): Use it.
 
 	* Makefile.am (EXTRA_DIST): Added riece-addon-modules.el.
 

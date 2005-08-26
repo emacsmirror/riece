@@ -1,56 +1,52 @@
 ;;; -*- Emacs-Lisp -*-
 
-(require 'riece-addon-modules)
-
 (defvar riece-modules
-  (nconc
-   (cons 'riece-compat
-	 (cons (if (featurep 'xemacs)
-		   'riece-xemacs
-		 'riece-emacs)
-	       '(riece-globals
-		 riece-options
-		 riece-debug
-		 riece-version
-		 riece-coding
-		 riece-complete
-		 riece-addon-modules
-		 riece-addon
-		 riece-ruby
+  (cons 'riece-compat
+	(cons (if (featurep 'xemacs)
+		  'riece-xemacs
+		'riece-emacs)
+	      '(riece-globals
+		riece-options
+		riece-debug
+		riece-version
+		riece-coding
+		riece-complete
+		riece-addon-modules
+		riece-addon
+		riece-ruby
 
-		 riece-mode
-		 ;; riece-identity -+-> riece-channel
-		 ;;                 +-> riece-user
-		 riece-identity
-		 riece-channel
-		 riece-user
+		riece-mode
+		;; riece-identity -+-> riece-channel
+		;;                 +-> riece-user
+		riece-identity
+		riece-channel
+		riece-user
 
-		 riece-misc
-		 riece-signal
+		riece-misc
+		riece-signal
 
-		 ;; riece-layout ---> riece-display
-		 riece-layout
-		 riece-display
-		 riece-server
+		;; riece-layout ---> riece-display
+		riece-layout
+		riece-display
+		riece-server
 
-		 ;; riece-channel -+-> riece-naming
-		 ;; riece-user    -+
-		 riece-naming
-		 riece-message
+		;; riece-channel -+-> riece-naming
+		;; riece-user    -+
+		riece-naming
+		riece-message
 
-		 ;; riece-filter calls riece-{handle,000,200,300,400,500}
-		 riece-filter
-		 riece-handle
-		 riece-000
-		 riece-200
-		 riece-300
-		 riece-400
-		 riece-500
+		;; riece-filter calls riece-{handle,000,200,300,400,500}
+		riece-filter
+		riece-handle
+		riece-000
+		riece-200
+		riece-300
+		riece-400
+		riece-500
 
-		 riece-commands
-		 riece-irc
-		 riece)))
-   (mapcar #'car riece-addon-modules)))
+		riece-commands
+		riece-irc
+		riece))))
 
 (defvar riece-icons
   '("riece-command-quit.xpm"
@@ -66,8 +62,7 @@
     "aproxy.rb"))
 
 (defun riece-compile-modules (modules)
-  (let ((load-path (cons nil load-path))
-	error-modules)
+  (let (error-modules)
     (while modules
       (let ((source (expand-file-name
 		     (concat (symbol-name (car modules)) ".el"))))
@@ -145,15 +140,21 @@
     (if flag
 	(string-match "^\\(\\(--[^ ]+ \\)+-\\|[^ =-]\\)*n" flag))))
 
+(defun riece-examine-modules ()
+  (let ((load-path (cons nil load-path)))
+    (require 'riece-addon-modules)
+    (append riece-modules
+	    (mapcar #'car riece-addon-modules))))
+
 (defun riece-examine ()
-  (princ (mapconcat #'symbol-name riece-modules " ")))
+  (princ (mapconcat #'symbol-name (riece-examine-modules) " ")))
 
 (defun riece-compile ()
-  (riece-compile-modules riece-modules))
+  (riece-compile-modules (riece-examine-modules)))
 
 (defun riece-install ()
   (riece-install-modules
-   riece-modules
+   (riece-examine-modules)
    (expand-file-name "riece" (car command-line-args-left))
    (riece-install-just-print-p))
   (riece-install-icons
@@ -172,12 +173,12 @@
   (add-to-list 'command-line-args-left ".")
   (Custom-make-dependencies)
   (riece-compile-modules
-   (append riece-modules
+   (append (riece-examine-modules)
 	   '(auto-autoloads custom-load))))
 
 (defun riece-install-package ()
   (riece-install-modules
-   (append riece-modules
+   (append (riece-examine-modules)
 	   '(auto-autoloads custom-load))
    (expand-file-name "lisp/riece" (car command-line-args-left))
    (riece-install-just-print-p))

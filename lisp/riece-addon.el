@@ -28,6 +28,7 @@
 (require 'riece-options)
 (require 'riece-compat)
 (require 'riece-misc)
+(require 'riece-addon-modules)
 
 (defgroup riece-addon-list nil
   "Add-on listing."
@@ -279,18 +280,33 @@ All normal editing commands are turned off."
   (riece-addon-list-mode)
   (let ((inhibit-read-only t)
 	buffer-read-only
-	(pointer (sort (copy-sequence riece-addon-dependencies)
-		       (lambda (dependency1 dependency2)
-			 (string-lessp (symbol-name (car dependency1))
-				       (symbol-name (car dependency2))))))
-	enabled description point)
+	(pointer riece-addon-dependencies)
+	module-description-alist
+	description enabled point)
+    (while pointer
+      
+      (setq description (intern-soft (concat (symbol-name (car (car pointer)))
+					     "-description"))
+	    module-description-alist
+	    (cons (cons (car (car pointer))
+			(if description
+			    (symbol-value description)
+			  "(no description)"))
+		  module-description-alist)
+	    pointer (cdr pointer)))
+    (setq pointer riece-addon-modules)
+    (while pointer
+      (unless (assq (car (car pointer))
+		    module-description-alist)
+	(setq module-description-alist
+	      (cons (car pointer) module-description-alist)))
+      (setq pointer (cdr pointer)))
     (erase-buffer)
     (riece-kill-all-overlays)
+    (setq pointer module-description-alist)
     (while pointer
       (setq enabled (intern-soft (concat (symbol-name (car (car pointer)))
-					 "-enabled"))
-	    description (intern-soft (concat (symbol-name (car (car pointer)))
-					     "-description")))
+					 "-enabled")))
       (setq point (point))
       (insert (format "%c %S: %s\n"
 		      (if (not (featurep (car (car pointer))))
@@ -301,9 +317,7 @@ All normal editing commands are turned off."
 			      ?+
 			    ?-)))
 		      (car (car pointer))
-		      (if description
-			  (symbol-value description)
-			"(no description)")))
+		      description))
       (put-text-property point (point) 'riece-addon (car (car pointer)))
       (setq pointer (cdr pointer)))
     (insert "
