@@ -1,9 +1,6 @@
 * Major changes in 2.0.0
 
-** Support uninstall/unload operations for add-ons. (ueno)
-
-** Don't signal an error when a user is quitting, and he joined a
-   channel where you left. (ueno)
+** Support uninstall, unload (dangerous) operations for add-ons. (ueno)
 
 ** New mechanism for executing Ruby programs.  The usage is documented
    in comments at the beginning of riece-ruby.el. (ueno)
@@ -11,6 +8,13 @@
 ** New add-on riece-eval-ruby.el, which takes Ruby programs from
    user's input prefixed with ",ruby " and send the result to the
    current channel. (ueno)
+
+** New add-on riece-shrink-buffer.el, which now takes care of periodic
+   buffer shrinking.  Please enable riece-shrink-buffer add-on in the
+   add-on listing mode (C-c ^).
+
+** Don't signal an error when a user is quitting, and he joined a
+   channel where you left. (ueno)
 
 ** When saving a log file, embed the name of the coding-system used in
    the filename.  This will avoid mojibake even
