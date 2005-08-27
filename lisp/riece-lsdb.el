@@ -116,6 +116,9 @@
 			  (list (cons 'irc (cons irc old)))))))
 
 (defvar riece-command-mode-map)
+(defvar lsdb-secondary-hash-tables)
+(defvar lsdb-after-update-record-functions)
+(defvar lsdb-after-delete-record-functions)
 (defun riece-lsdb-insinuate ()
   (require 'lsdb)
   (add-to-list 'lsdb-secondary-hash-tables
