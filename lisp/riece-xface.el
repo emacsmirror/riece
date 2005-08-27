@@ -68,15 +68,19 @@
 	    'riece-xface-update-user-list-buffer t t))
 
 (defun riece-xface-insinuate ()
+  (if riece-user-list-buffer
+      (with-current-buffer riece-user-list-buffer
+	(riece-xface-user-list-mode-hook)))
   (add-hook 'riece-user-list-mode-hook
 	    'riece-xface-user-list-mode-hook))
 
 (defun riece-xface-uninstall ()
+  (if riece-user-list-buffer
+      (with-current-buffer riece-user-list-buffer
+	(remove-hook 'riece-update-buffer-functions
+		     'riece-xface-update-user-list-buffer t)))
   (remove-hook 'riece-user-list-mode-hook
-	       'riece-xface-user-list-mode-hook)
-  (with-current-buffer riece-user-list-buffer
-    (remove-hook 'riece-update-buffer-functions
-		 'riece-xface-update-user-list-buffer t)))
+	       'riece-xface-user-list-mode-hook))
 
 (defun riece-xface-enable ()
   (setq riece-xface-enabled t)
