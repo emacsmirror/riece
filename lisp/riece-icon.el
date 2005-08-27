@@ -336,11 +336,11 @@ Modify whole identification by side effect."
     (when riece-user-list-buffer
       (set-buffer riece-user-list-buffer)
       (remove-hook 'riece-update-buffer-functions
-		   'riece-icon-update-user-list-buffer))
+		   'riece-icon-update-user-list-buffer t))
     (when riece-channel-list-buffer
       (set-buffer riece-channel-list-buffer)
       (remove-hook 'riece-update-buffer-functions
-		   'riece-icon-update-user-list-buffer)))
+		   'riece-icon-update-user-list-buffer t)))
   (remove-hook 'riece-user-list-mode-hook
 	       'riece-icon-user-list-mode-hook)
   (remove-hook 'riece-channel-list-mode-hook

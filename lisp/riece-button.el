@@ -275,7 +275,7 @@ This function is used as a callback for a channel button."
       (while buffers
 	(set-buffer (car buffers))
 	(remove-hook 'riece-update-buffer-functions
-		     'riece-button-update-buffer)
+		     'riece-button-update-buffer t)
 	(if (local-variable-p 'riece-identity-button-map
 			      (car buffers))
 	    (kill-local-variable 'riece-identity-button-map))

@@ -76,7 +76,7 @@
 	       'riece-xface-user-list-mode-hook)
   (with-current-buffer riece-user-list-buffer
     (remove-hook 'riece-update-buffer-functions
-		 'riece-xface-update-user-list-buffer)))
+		 'riece-xface-update-user-list-buffer t)))
 
 (defun riece-xface-enable ()
   (setq riece-xface-enabled t)
