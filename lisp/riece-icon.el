@@ -340,7 +340,7 @@ Modify whole identification by side effect."
     (when riece-channel-list-buffer
       (set-buffer riece-channel-list-buffer)
       (remove-hook 'riece-update-buffer-functions
-		   'riece-icon-update-user-list-buffer t)))
+		   'riece-icon-update-channel-list-buffer t)))
   (remove-hook 'riece-user-list-mode-hook
 	       'riece-icon-user-list-mode-hook)
   (remove-hook 'riece-channel-list-mode-hook
