@@ -140,7 +140,7 @@ If N is nil, all messages will be returned."
     (if (eq (car plist) property)
 	(setplist symbol (cdr (cdr plist)))
       (while (and (nthcdr 2 plist)
-		  (eq (car (nthcdr 2 plist)) property))
+		  (not (eq (car (nthcdr 2 plist)) property)))
 	(setq plist (nthcdr 2 plist)))
       (if (nthcdr 2 plist)
 	  (setcdr (cdr plist) (nthcdr 4 plist))))))

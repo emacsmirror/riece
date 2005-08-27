@@ -125,7 +125,7 @@
       (with-current-buffer riece-command-buffer
 	(riece-toolbar-command-mode-hook)))
   (add-hook 'riece-command-mode-hook
-	    'riece-toolbar-command-mode-hook))
+	    'riece-toolbar-command-mode-hook t))
 
 (defun riece-toolbar-uninstall ()
   (if riece-command-buffer

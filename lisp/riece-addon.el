@@ -375,17 +375,20 @@ All normal editing commands are turned off."
     (insert "
 Symbols in the leftmost column:
 
-  +     The add-on is enabled.
-  -     The add-on is disabled.
-  !	The add-on doesn't support enable/disable operation.
-  ?	The add-on is not insinuated.
+   +     The add-on is enabled.
+   -     The add-on is disabled.
+   !	The add-on doesn't support enable/disable operation.
+   ?	The add-on is not insinuated.
   	The add-on is not loaded.
 ")
     (insert (substitute-command-keys "
 Useful keys:
 
-  `\\[riece-command-enable-addon]' to enable the current add-on.
-  `\\[riece-command-disable-addon]' to disable the current add-on.
+   `\\[riece-command-enable-addon]' to enable the current add-on.
+   `\\[riece-command-disable-addon]' to disable the current add-on.
+   `\\[riece-command-insinuate-addon]' to insinuate the add-on.
+   `\\[riece-command-uninstall-addon]' to uninstall the current add-on.
+   `\\[riece-command-unload-addon]' to unload the current add-on.
 "))
     (goto-char (point-min))
     (pop-to-buffer (current-buffer))
