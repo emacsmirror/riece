@@ -289,12 +289,12 @@
 	    (remove-hook 'after-change-functions
 			 'riece-highlight-hide-prefix t))
 	(setq buffers (cdr buffers)))))
-  (remprop 'riece-channel-mode 'font-lock-defaults)
-  (remprop 'riece-others-mode 'font-lock-defaults)
-  (remprop 'riece-dialogue-mode 'font-lock-defaults)
+  (riece-remprop 'riece-channel-mode 'font-lock-defaults)
+  (riece-remprop 'riece-others-mode 'font-lock-defaults)
+  (riece-remprop 'riece-dialogue-mode 'font-lock-defaults)
   (remove-hook 'riece-dialogue-mode-hook
 	       'riece-highlight-setup-dialogue)
-  (remprop 'riece-channel-list-mode 'font-lock-defaults)
+  (riece-remprop 'riece-channel-list-mode 'font-lock-defaults)
   (remove-hook 'riece-channel-list-mode-hook
 	       'riece-highlight-setup-channel-list)
   (remove-hook 'riece-format-identity-for-channel-list-indicator-functions

@@ -1,5 +1,16 @@
 2005-08-27  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-highlight.el (riece-highlight-uninstall): Use
+	riece-remprop instead of remprop.
+
+	* riece-addon.el (riece-uninstall-addon): Use riece-remprop
+	instead of remprop.
+
+	* riece-xemacs.el (riece-remprop): New alias.
+	* riece-emacs.el (riece-remprop): New function.
+
+	* COMPILE (riece-compile-modules): Add current directory to load-path.
+
 	* riece-history.el (riece-history-requires): New function.
 	* riece-addon.el (riece-insinuate-addon-1): Require add-on feature.
 

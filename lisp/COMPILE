@@ -62,7 +62,8 @@
     "aproxy.rb"))
 
 (defun riece-compile-modules (modules)
-  (let (error-modules)
+  (let ((load-path (cons nil load-path))
+	error-modules)
     (while modules
       (let ((source (expand-file-name
 		     (concat (symbol-name (car modules)) ".el"))))

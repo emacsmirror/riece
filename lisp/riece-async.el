@@ -37,6 +37,7 @@
 ;;; Code:
 
 (require 'riece-options)
+(require 'riece-ruby)			;riece-ruby-command
 
 (defgroup riece-async nil
   "Connect to IRC server via async proxy."

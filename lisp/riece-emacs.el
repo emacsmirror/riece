@@ -135,6 +135,16 @@ If N is nil, all messages will be returned."
 	    (reverse-region (point-min) (point-max))
 	    (buffer-string))))))
 
+(defun riece-remprop (symbol property)
+  (let ((plist (symbol-plist symbol)))
+    (if (eq (car plist) property)
+	(setplist symbol (cdr (cdr plist)))
+      (while (and (nthcdr 2 plist)
+		  (eq (car (nthcdr 2 plist)) property))
+	(setq plist (nthcdr 2 plist)))
+      (if (nthcdr 2 plist)
+	  (setcdr (cdr plist) (nthcdr 4 plist))))))
+
 (provide 'riece-emacs)
 
 ;;; riece-emacs.el ends here

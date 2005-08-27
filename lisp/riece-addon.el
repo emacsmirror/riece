@@ -258,7 +258,7 @@
 		(funcall uninstall))
 	    (setq riece-addon-dependencies
 		  (delq entry riece-addon-dependencies))
-	    (remprop addon 'riece-addon-insinuated)
+	    (riece-remprop addon 'riece-addon-insinuated)
 	    (setq riece-addons (delq addon riece-addons)
 		  riece-save-variables-are-dirty t
 		  riece-addon-dependencies
