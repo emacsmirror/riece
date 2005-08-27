@@ -223,6 +223,7 @@
 (defun riece-insinuate-addon (addon &optional verbose)
   (unless (assq addon riece-addon-dependencies)
     (setq riece-addons (cons addon riece-addons)
+	  riece-save-variables-are-dirty t
 	  riece-addon-dependencies
 	  (riece-resolve-addons
 	   (cons addon (mapcar #'car riece-addon-dependencies)))))
@@ -259,6 +260,7 @@
 		  (delq entry riece-addon-dependencies))
 	    (remprop addon 'riece-addon-insinuated)
 	    (setq riece-addons (delq addon riece-addons)
+		  riece-save-variables-are-dirty t
 		  riece-addon-dependencies
 		  (riece-resolve-addons
 		   (delq addon (mapcar #'car riece-addon-dependencies))))))
