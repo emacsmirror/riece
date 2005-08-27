@@ -135,6 +135,9 @@ This maps a string \"Bug#12345\" to a URL
 		t)))
 
 (defun riece-url-uninstall ()
+  (easy-menu-remove-item
+   nil (list (car riece-menu-items))
+   "Open URL...")
   (remove-hook 'riece-after-insert-functions 'riece-url-scan-region)
   (remove-hook 'riece-command-mode-hook
 	       'riece-url-command-mode-hook))
