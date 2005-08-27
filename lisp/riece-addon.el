@@ -76,6 +76,13 @@
   :group 'riece-addon-list-faces)
 (defvar riece-addon-list-uninstalled-face 'riece-addon-list-uninstalled-face)
 
+(defface riece-addon-list-unloaded-face
+  '((t
+     (:italic t :inverse-video t)))
+  "Face used for displaying the unloaded addon."
+  :group 'riece-addon-list-faces)
+(defvar riece-addon-list-unloaded-face 'riece-addon-list-unloaded-face)
+
 (defface riece-addon-list-description-face
   '((((class color)
       (background dark))
@@ -93,7 +100,8 @@
   '((?+ . riece-addon-list-enabled-face)
     (?- . riece-addon-list-disabled-face)
     (?! . riece-addon-list-unsupported-face)
-    (?  . riece-addon-list-uninstalled-face))
+    (?? . riece-addon-list-uninstalled-face)
+    (?  . riece-addon-list-unloaded-face))
   "An alist mapping marks on riece-addon-list-buffer to faces."
   :type 'list
   :group 'riece-addon-list)
@@ -348,14 +356,16 @@ All normal editing commands are turned off."
 					 "-enabled")))
       (setq point (point))
       (insert (format "%c %S: %s\n"
-		      (if (not (get (car (car pointer))
-				    'riece-addon-insinuated))
+		      (if (not (featurep (car (car pointer))))
 			  ? 
-			(if (null enabled)
-			    ?!
-			  (if (symbol-value enabled)
-			      ?+
-			    ?-)))
+			(if (not (get (car (car pointer))
+				      'riece-addon-insinuated))
+			    ??
+			  (if (null enabled)
+			      ?!
+			    (if (symbol-value enabled)
+				?+
+			      ?-))))
 		      (car (car pointer))
 		      (cdr (car pointer))))
       (put-text-property point (point) 'riece-addon (car (car pointer)))
@@ -366,7 +376,8 @@ Symbols in the leftmost column:
   +     The add-on is enabled.
   -     The add-on is disabled.
   !	The add-on doesn't support enable/disable operation.
-  	The add-on is not insinuated.
+  ?	The add-on is not insinuated.
+  	The add-on is not loaded.
 ")
     (insert (substitute-command-keys "
 Useful keys:
