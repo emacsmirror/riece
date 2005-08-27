@@ -86,8 +86,10 @@
 		  (specifier-specs default-toolbar (current-buffer)))
 	    (set-specifier default-toolbar toolbar (current-buffer)))
 	  (defun riece-unset-toolbar ()
-	    (set-specifier default-toolbar riece-toolbar-original-toolbar
-			   (current-buffer))
+	    (if riece-toolbar-original-toolbar
+		(set-specifier default-toolbar riece-toolbar-original-toolbar
+			       (current-buffer))
+	      (remove-specifier default-toolbar (current-buffer)))
 	    (kill-local-variable 'riece-toolbar-original-toolbar)))
       (defalias 'riece-make-toolbar-from-menu 'ignore)
       (defalias 'riece-set-toolbar 'ignore)
