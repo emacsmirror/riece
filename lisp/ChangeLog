@@ -1,5 +1,16 @@
 2005-08-27  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-addon.el (riece-addon-list-mode-map): Bind
+	riece-command-unload-addon.
+	(riece-insinuate-addon-1): New function; renamed from
+	riece-insinuate-addon.
+	(riece-insinuate-addon): Use it; re-insinuate add-ons preceding to
+	the add-on.
+	(riece-addon-list-set-point): New function.
+	(riece-command-unload-addon): New command.
+
+2005-08-27  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-menu.el (riece-menu-uninstall): Call easy-menu-remove.
 
 	* riece-toolbar.el (riece-toolbar-original-toolbar) [XEmacs]: New

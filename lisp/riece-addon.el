@@ -111,8 +111,9 @@
   (let ((keymap (make-sparse-keymap)))
     (define-key keymap "+" 'riece-command-enable-addon)
     (define-key keymap "-" 'riece-command-disable-addon)
-    (define-key keymap "I" 'riece-command-insinuate-addon)
-    (define-key keymap "D" 'riece-command-uninstall-addon)
+    (define-key keymap "i" 'riece-command-insinuate-addon)
+    (define-key keymap "u" 'riece-command-uninstall-addon)
+    (define-key keymap "U" 'riece-command-unload-addon)
     (define-key keymap "n" 'next-line)
     (define-key keymap "p" 'previous-line)
     (define-key keymap " " 'scroll-up)
@@ -196,11 +197,7 @@
   (riece-sort-addon-dependencies
    (riece-load-and-build-addon-dependencies addons)))
 
-(defun riece-insinuate-addon (addon &optional verbose)
-  (unless (assq addon riece-addon-dependencies)
-    (setq riece-addons (cons addon riece-addons)
-	  riece-addon-dependencies (riece-resolve-addons
-				    (copy-sequence riece-addons))))
+(defun riece-insinuate-addon-1 (addon verbose)
   (if (get addon 'riece-addon-insinuated)
       (if verbose
 	  (message "Add-on %S is already insinuated" addon))
@@ -211,6 +208,19 @@
     (unless (get addon 'riece-addon-default-disabled)
       (riece-enable-addon addon t))))
 
+(defun riece-insinuate-addon (addon &optional verbose)
+  (unless (assq addon riece-addon-dependencies)
+    (setq riece-addons (cons addon riece-addons)
+	  riece-addon-dependencies (riece-resolve-addons
+				    (copy-sequence riece-addons))))
+  (let ((pointer riece-addon-dependencies))
+    (while pointer
+      (unless (get (car (car pointer)) 'riece-addon-insinuated)
+	(riece-insinuate-addon-1 (car (car pointer)) verbose))
+      (if (eq (car (car pointer)) addon)
+	  (setq pointer nil)
+	(setq pointer (cdr pointer))))))
+
 (defun riece-uninstall-addon (addon &optional verbose)
   (if (not (get addon 'riece-addon-insinuated))
       (if verbose
@@ -219,8 +229,11 @@
 	  (enabled (intern-soft (concat (symbol-name addon) "-enabled"))))
       (if entry
 	  (if (cdr entry)
-	      (error "Add-on %S has a dependency problem: %S" addon
-		     (cdr entry))
+	      (if (= (length (cdr entry)) 1)
+		  (error "%S depends on %S" (car (cdr entry)) addon)
+		(error "%s depend on %S"
+		       (mapconcat #'symbol-name (cdr entry) ", ")
+		       addon))
 	    (if (and enabled
 		     (symbol-value enabled))
 		(riece-disable-addon addon verbose))
@@ -355,6 +368,14 @@ Useful keys:
     (pop-to-buffer (current-buffer))
     (delete-other-windows)))
 
+(defun riece-addon-list-set-point (addon)
+  (let ((point (point-min)))
+    (while (and (not (eq (get-text-property point 'riece-addon) addon))
+		(setq point (next-single-property-change point
+							 'riece-addon))))
+    (if point
+	(goto-char point))))
+
 (defun riece-command-enable-addon (addon)
   (interactive
    (list
@@ -375,12 +396,7 @@ Useful keys:
   (riece-enable-addon addon t)
   (when (eq major-mode 'riece-addon-list-mode)
     (riece-command-list-addons)
-    (let ((point (point-min)))
-      (while (and (not (eq (get-text-property point 'riece-addon) addon))
-		  (setq point (next-single-property-change point
-							   'riece-addon))))
-      (if point
-	  (goto-char point)))))
+    (riece-addon-list-set-point addon)))
 
 (defun riece-command-disable-addon (addon)
   (interactive
@@ -402,12 +418,7 @@ Useful keys:
   (riece-disable-addon addon t)
   (when (eq major-mode 'riece-addon-list-mode)
     (riece-command-list-addons)
-    (let ((point (point-min)))
-      (while (and (not (eq (get-text-property point 'riece-addon) addon))
-		  (setq point (next-single-property-change point
-							   'riece-addon))))
-      (if point
-	  (goto-char point)))))
+    (riece-addon-list-set-point addon)))
 
 (defun riece-command-insinuate-addon (addon)
   (interactive
@@ -420,17 +431,12 @@ Useful keys:
 				    (list (symbol-name (car dependency))))
 				  riece-addon-modules)
 			  (lambda (pointer)
-			    (get (car pointer) 'riece-addon-insinuated))
+			    (not (get (car pointer) 'riece-addon-insinuated)))
 			  t)))))
   (riece-insinuate-addon addon t)
   (when (eq major-mode 'riece-addon-list-mode)
     (riece-command-list-addons)
-    (let ((point (point-min)))
-      (while (and (not (eq (get-text-property point 'riece-addon) addon))
-		  (setq point (next-single-property-change point
-							   'riece-addon))))
-      (if point
-	  (goto-char point)))))
+    (riece-addon-list-set-point addon)))
 
 (defun riece-command-uninstall-addon (addon)
   (interactive
@@ -442,16 +448,35 @@ Useful keys:
 			  (mapcar (lambda (dependency)
 				    (list (symbol-name (car dependency))))
 				  riece-addon-dependencies)
-			  nil t)))))
+			  (lambda (pointer)
+			    (get (car pointer) 'riece-addon-insinuated))
+			  t)))))
   (riece-uninstall-addon addon t)
   (when (eq major-mode 'riece-addon-list-mode)
     (riece-command-list-addons)
-    (let ((point (point-min)))
-      (while (and (not (eq (get-text-property point 'riece-addon) addon))
-		  (setq point (next-single-property-change point
-							   'riece-addon))))
-      (if point
-	  (goto-char point)))))
+    (riece-addon-list-set-point addon)))
+
+(defun riece-command-unload-addon (addon)
+  (interactive
+   (list
+    (or (if (eq major-mode 'riece-addon-list-mode)
+	    (get-text-property (point) 'riece-addon))
+	(intern-soft
+	 (completing-read "Add-on: "
+			  (mapcar (lambda (dependency)
+				    (list (symbol-name (car dependency))))
+				  riece-addon-dependencies)
+			  (lambda (pointer)
+			    (get (car pointer) 'riece-addon-insinuated))
+			  t)))))
+  (riece-uninstall-addon addon t)
+  (if (get addon 'riece-addon-not-unloadable)
+      (message "Add-on %S is not allowed to unload" addon)
+    (unload-feature addon)
+    (message "Add-on %S is unloaded" addon))
+  (when (eq major-mode 'riece-addon-list-mode)
+    (riece-command-list-addons)
+    (riece-addon-list-set-point addon)))
 
 (provide 'riece-addon)
 
