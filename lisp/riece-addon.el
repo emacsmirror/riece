@@ -107,7 +107,7 @@
   :group 'riece-addon-list)
 
 (defcustom riece-addon-list-font-lock-keywords
-  '(("^\\([-+! ] [^:]+\\): \\(.*\\)"
+  '(("^\\([-+!? ] \\S-+\\)\\s-+\\(.*\\)"
      (1 (cdr (assq (aref (match-string 1) 0)
 		   riece-addon-list-mark-face-alist)))
      (2 riece-addon-list-description-face)))
@@ -357,7 +357,7 @@ All normal editing commands are turned off."
       (setq enabled (intern-soft (concat (symbol-name (car (car pointer)))
 					 "-enabled")))
       (setq point (point))
-      (insert (format "%c %S: %s\n"
+      (insert (format "%c %-15S %s\n"
 		      (if (not (featurep (car (car pointer))))
 			  ? 
 			(if (not (get (car (car pointer))
