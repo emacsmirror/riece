@@ -46,15 +46,5 @@ and type M-x info and select "Riece-en".
 
 * Bug reports
 
-If you write bug reports and/or suggestions for improvement, 
-please send them to the Liece Mailing List.
-
-This mailing list is also for other general discussions (about
-future enhancements, customization, etc). To join the Liece ML,
-send an e-mail to:
-
-     liece-ctl@unixuser.org
-
-with the message body, 
-
-     subscribe Your Name
+If you write a bug report, please send them to the Liece Mailing List
+(liece@unixuser.org).
