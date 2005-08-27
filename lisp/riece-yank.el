@@ -51,6 +51,7 @@ before/after the first/last non-blank line."
 (defun riece-yank-insinuate ()
   )
 
+(defvar riece-command-mode-map)
 (defun riece-yank-enable ()
   (define-key riece-command-mode-map "\C-cy" 'riece-command-yank)
   (setq riece-yank-enabled t))

@@ -29,6 +29,7 @@
 ;;; Code:
 
 (require 'riece-options)
+(require 'riece-server)
 
 (defgroup riece-keepalive nil
   "Keep an IRC connection."
