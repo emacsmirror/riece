@@ -1,6 +1,8 @@
 * Major changes in 2.0.0
 
-** Support uninstall, unload (dangerous) operations for add-ons. (ueno)
+** Support uninstall, unload (dangerous) operations for add-ons.
+   You can now customize riece-addons in the add-on listing
+   mode. (ueno)
 
 ** New mechanism for executing Ruby programs.  The usage is documented
    in comments at the beginning of riece-ruby.el. (ueno)
