@@ -27,6 +27,7 @@
 (require 'riece-misc)
 (require 'riece-naming)
 (require 'riece-signal)
+(require 'riece-display)
 
 (eval-when-compile
   (autoload 'riece-default-handle-numeric-reply "riece-handle"))
