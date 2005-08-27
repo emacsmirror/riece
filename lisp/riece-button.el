@@ -250,16 +250,16 @@ This function is used as a callback for a channel button."
   (save-excursion
     (when riece-channel-list-buffer
       (set-buffer riece-channel-list-buffer)
-      (riece-channel-list-mode-hook))
+      (riece-button-channel-list-mode-hook))
     (when riece-user-list-buffer
       (set-buffer riece-user-list-buffer)
-      (riece-user-list-mode-hook))
+      (riece-button-user-list-mode-hook))
     (let ((buffers riece-buffer-list))
       (while buffers
 	(set-buffer (car buffers))
 	(if (eq (derived-mode-class major-mode)
 		'riece-dialogue-mode)
-	    (riece-dialogue-mode-hook))
+	    (riece-button-dialogue-mode-hook))
 	(setq buffers (cdr buffers)))))
   (add-hook 'riece-channel-list-mode-hook
 	    'riece-button-channel-list-mode-hook)
