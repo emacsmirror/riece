@@ -235,13 +235,15 @@
       (if (eq (car (car pointer)) addon)
 	  (setq pointer nil)
 	(setq pointer (cdr pointer))))
-    (if (if (eq verbose 'ask)
-	    (y-or-n-p (format "%s will be insinuated.  Continue?"
-			      (mapconcat #'symbol-name addons ", ")))
-	  verbose)
-	(while addons
-	  (riece-insinuate-addon-1 (car addons) verbose)
-	  (setq addons (cdr addons))))))
+    (setq addons (nreverse addons))
+    (if (and (> (length addon) 1)
+	     (eq verbose 'ask)
+	     (not (y-or-n-p (format "%s will be insinuated.  Continue?"
+				    (mapconcat #'symbol-name addons ", ")))))
+	(error "Insinuate operation was cancelled"))
+    (while addons
+      (riece-insinuate-addon-1 (car addons) verbose)
+      (setq addons (cdr addons)))))
 
 (defun riece-uninstall-addon (addon &optional verbose)
   (if (not (get addon 'riece-addon-insinuated))
