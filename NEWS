@@ -10,8 +10,8 @@
    current channel. (ueno)
 
 ** New add-on riece-shrink-buffer.el, which now takes care of periodic
-   buffer shrinking.  Please enable riece-shrink-buffer add-on in the
-   add-on listing mode (C-c ^).
+   buffer shrinking.  Please enable the riece-shrink-buffer add-on in
+   the add-on listing mode (C-c ^).
 
 ** Don't signal an error when a user is quitting, and he joined a
    channel where you left. (ueno)

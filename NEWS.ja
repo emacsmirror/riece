@@ -1,15 +1,19 @@
 * Riece 2.0.0 の主な変更点
 
-** アドオンの uninstall/unload に対応 (ueno)
-
-** 離脱したチャンネルに参加していたユーザが IRC をやめた場合に、エラー
-   が発生する不具合を修正 (ueno)
+** アドオンの uninstall, unload (危険) に対応 (ueno)
 
 ** Ruby のプログラムを評価するライブラリの導入。
    利用方法は riece-ruby.el 冒頭のコメントを参照 (ueno)
 
 ** 新規アドオン riece-eval-ruby.el を導入。",ruby " に続いて任意の 
    Ruby のプログラムを発言すると、評価結果をチャンネルに送信する (ueno)
+
+** 定期的にバッファを切り詰める機能をアドオンに分離
+   これまで riece-max-buffer-size を設定していた人は、C-c ^ で 
+   riece-shrink-buffer アドオンを有効にする必要があるので注意 (ueno)
+
+** 離脱したチャンネルに参加していたユーザが IRC をやめた場合に、エラー
+   が発生する不具合を修正 (ueno)
 
 ** ログの保存時に、使用した coding-system の名前をファイル名に埋め込む
    ようにした。これにより riece-log-coding-system を設定しなくても文字
