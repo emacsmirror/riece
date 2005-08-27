@@ -227,13 +227,19 @@
 	  riece-addon-dependencies
 	  (riece-resolve-addons
 	   (cons addon (mapcar #'car riece-addon-dependencies)))))
-  (let ((pointer riece-addon-dependencies))
+  (let ((pointer riece-addon-dependencies)
+	addons)
     (while pointer
       (unless (get (car (car pointer)) 'riece-addon-insinuated)
-	(riece-insinuate-addon-1 (car (car pointer)) verbose))
+	(setq addons (cons (car (car pointer)) addons)))
       (if (eq (car (car pointer)) addon)
 	  (setq pointer nil)
-	(setq pointer (cdr pointer))))))
+	(setq pointer (cdr pointer))))
+    (if (y-or-n-p (format "%s will be insinuated.  Continue?"
+			  (mapconcat #'symbol-name addons ", ")))
+	(while addons
+	  (riece-insinuate-addon-1 (car addons))
+	  (setq addons (cdr addons))))))
 
 (defun riece-uninstall-addon (addon &optional verbose)
   (if (not (get addon 'riece-addon-insinuated))
