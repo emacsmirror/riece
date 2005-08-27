@@ -218,7 +218,7 @@
   (font-lock-set-defaults)
   (make-local-hook 'after-change-functions)
   (add-hook 'after-change-functions
-	    'riece-highlight-hide-prefix nil 'local)
+	    'riece-highlight-hide-prefix nil t)
   (if riece-highlight-enabled
       (font-lock-mode 1)))
 
@@ -264,12 +264,8 @@
 (defun riece-highlight-insinuate ()
   (put 'riece-channel-mode 'font-lock-defaults
        '(riece-dialogue-font-lock-keywords t))
-  (add-hook 'riece-channel-mode-hook
-	    'riece-highlight-setup-dialogue)
   (put 'riece-others-mode 'font-lock-defaults
        '(riece-dialogue-font-lock-keywords t))
-  (add-hook 'riece-others-mode-hook
-	    'riece-highlight-setup-dialogue)
   (put 'riece-dialogue-mode 'font-lock-defaults
        '(riece-dialogue-font-lock-keywords t))
   (add-hook 'riece-dialogue-mode-hook
@@ -284,12 +280,17 @@
 	    'riece-highlight-put-overlay-faces))
 
 (defun riece-highlight-uninstall ()
+  (let ((buffers riece-buffer-list))
+    (save-excursion
+      (while buffers
+	(set-buffer (car buffers))
+	(if (eq (derived-mode-class major-mode)
+		'riece-dialogue-mode)
+	    (remove-hook 'after-change-functions
+			 'riece-highlight-hide-prefix t))
+	(setq buffers (cdr buffers)))))
   (remprop 'riece-channel-mode 'font-lock-defaults)
-  (remove-hook 'riece-channel-mode-hook
-	       'riece-highlight-setup-dialogue)
   (remprop 'riece-others-mode 'font-lock-defaults)
-  (remove-hook 'riece-others-mode-hook
-	       'riece-highlight-setup-dialogue)
   (remprop 'riece-dialogue-mode 'font-lock-defaults)
   (remove-hook 'riece-dialogue-mode-hook
 	       'riece-highlight-setup-dialogue)
