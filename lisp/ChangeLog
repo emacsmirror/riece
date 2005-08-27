@@ -1,5 +1,10 @@
 2005-08-27  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-history.el (riece-history-requires): New function.
+	* riece-addon.el (riece-insinuate-addon-1): Require add-on feature.
+
+2005-08-27  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-foolproof.el (riece-foolproof-description): Made it more
 	descriptive.
 

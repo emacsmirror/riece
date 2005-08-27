@@ -201,6 +201,7 @@
   (if (get addon 'riece-addon-insinuated)
       (if verbose
 	  (message "Add-on %S is already insinuated" addon))
+    (require addon)
     (funcall (intern (concat (symbol-name addon) "-insinuate")))
     (put addon 'riece-addon-insinuated t)
     (if verbose
@@ -310,7 +311,6 @@ All normal editing commands are turned off."
 	module-description-alist
 	description enabled point)
     (while pointer
-      
       (setq description (intern-soft (concat (symbol-name (car (car pointer)))
 					     "-description"))
 	    module-description-alist

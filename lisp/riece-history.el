@@ -35,10 +35,10 @@
 
 (require 'riece-options)
 (require 'riece-globals)
-(require 'riece-highlight)
 (require 'riece-identity)
 (require 'riece-signal)
 (require 'ring)
+(eval-when-compile (require 'riece-highlight))
 
 (defgroup riece-history nil
   "Manage history of channel shifting."
@@ -120,6 +120,10 @@
   (if (and riece-history-enabled last
 	   (not (riece-identity-equal last riece-current-channel)))
       (ring-insert riece-channel-history last)))
+
+(defun riece-history-requires ()
+  (if (memq 'riece-highlight riece-addons)
+      '(riece-highlight)))
 
 (defun riece-history-insinuate ()
   (add-hook 'riece-after-switch-to-channel-functions

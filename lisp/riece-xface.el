@@ -31,7 +31,7 @@
 (require 'riece-identity)
 (require 'riece-globals)
 (require 'riece-display)
-(require 'riece-lsdb)
+(eval-when-compile (require 'riece-lsdb))
 
 (defvar riece-xface-enabled nil)
 
