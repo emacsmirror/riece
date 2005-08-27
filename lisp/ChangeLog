@@ -1,3 +1,18 @@
+2005-08-27  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-menu.el (riece-menu-uninstall): Call easy-menu-remove.
+
+	* riece-toolbar.el (riece-toolbar-original-toolbar) [XEmacs]: New
+	variable.
+	(riece-unset-toolbar): New function.
+	(riece-toolbar-uninstall): Call riece-unset-toolbar.
+	(riece-toolbar-command-mode-hook): Renamed from
+	riece-toolbar-insinuate-in-command-buffer.
+
+	* riece-icon.el (riece-icon-enable): Update
+	mode-line-buffer-identification here.
+	(riece-icon-disable): Ditto.
+
 2005-08-26  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-addon.el (riece-uninstall-addon): Update

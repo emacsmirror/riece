@@ -79,10 +79,19 @@
 			      (symbol-name (car pointer)))))))
 		(setq pointer (cdr pointer)))
 	      toolbar))
+	  (defvar riece-toolbar-original-toolbar nil)
 	  (defun riece-set-toolbar (toolbar)
-	    (set-specifier default-toolbar toolbar (current-buffer))))
+	    (make-local-variable 'riece-toolbar-original-toolbar)
+	    (setq riece-toolbar-original-toolbar
+		  (specifier-specs default-toolbar (current-buffer)))
+	    (set-specifier default-toolbar toolbar (current-buffer)))
+	  (defun riece-unset-toolbar ()
+	    (set-specifier default-toolbar riece-toolbar-original-toolbar
+			   (current-buffer))
+	    (kill-local-variable 'riece-toolbar-original-toolbar)))
       (defalias 'riece-make-toolbar-from-menu 'ignore)
-      (defalias 'riece-set-toolbar 'ignore))
+      (defalias 'riece-set-toolbar 'ignore)
+      (defalias 'riece-unset-toolbar 'ignore))
   (defun riece-make-toolbar-from-menu (items menu-items map)
     (let ((pointer items)
 	  (tool-bar-map (make-sparse-keymap)))
@@ -94,10 +103,12 @@
       tool-bar-map))
   (defun riece-set-toolbar (toolbar)
     (make-local-variable 'tool-bar-map)
-    (setq tool-bar-map toolbar)))
+    (setq tool-bar-map toolbar))
+  (defun riece-unset-toolbar ()
+    (kill-local-variable 'tool-bar-map)))
 
 (defvar riece-command-mode-map)
-(defun riece-toolbar-insinuate-in-command-buffer ()
+(defun riece-toolbar-command-mode-hook ()
   (riece-set-toolbar
    (riece-make-toolbar-from-menu
     riece-toolbar-items
@@ -109,14 +120,14 @@
 
 (defun riece-toolbar-insinuate ()
   (add-hook 'riece-command-mode-hook
-	    'riece-toolbar-insinuate-in-command-buffer
+	    'riece-toolbar-command-mode-hook
 	    t))
 
 (defun riece-toolbar-uninstall ()
   (remove-hook 'riece-command-mode-hook
-	       'riece-toolbar-insinuate-in-command-buffer)
-  ;;FIXME: couldn't uninstall completely.
-  )
+	       'riece-toolbar-command-mode-hook)
+  (with-current-buffer riece-command-buffer
+    (riece-unset-toolbar)))
 
 (provide 'riece-toolbar)
 
