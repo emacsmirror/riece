@@ -126,10 +126,13 @@
 	dependencies)
     (while addons
       (require (car addons))		;error will be reported here
-      (let* ((requires
-	      (funcall (or (intern-soft
-			    (concat (symbol-name (car addons)) "-requires"))
-			   #'ignore)))
+      (let* ((requires-function
+	      (intern-soft
+	       (concat (symbol-name (car addons)) "-requires")))
+	     (requires
+	      (if (and requires-function
+		       (fboundp requires-function))
+		  (funcall requires-function)))
 	     (pointer requires)
 	     entry)
 	;; Increment succs' pred count.
@@ -212,8 +215,9 @@
 (defun riece-insinuate-addon (addon &optional verbose)
   (unless (assq addon riece-addon-dependencies)
     (setq riece-addons (cons addon riece-addons)
-	  riece-addon-dependencies (riece-resolve-addons
-				    (copy-sequence riece-addons))))
+	  riece-addon-dependencies
+	  (riece-resolve-addons
+	   (cons addon (mapcar #'car riece-addon-dependencies)))))
   (let ((pointer riece-addon-dependencies))
     (while pointer
       (unless (get (car (car pointer)) 'riece-addon-insinuated)
@@ -227,7 +231,8 @@
       (if verbose
 	  (message "Add-on %S is not insinuated" addon))
     (let ((entry (assq addon riece-addon-dependencies))
-	  (enabled (intern-soft (concat (symbol-name addon) "-enabled"))))
+	  (enabled (intern-soft (concat (symbol-name addon) "-enabled")))
+	  (uninstall (intern-soft (concat (symbol-name addon) "-uninstall"))))
       (if entry
 	  (if (cdr entry)
 	      (if (= (length (cdr entry)) 1)
@@ -236,17 +241,19 @@
 		       (mapconcat #'symbol-name (cdr entry) ", ")
 		       addon))
 	    (if (and enabled
+		     (boundp enabled)
 		     (symbol-value enabled))
 		(riece-disable-addon addon verbose))
-	    (funcall (or (intern-soft (concat (symbol-name addon)
-					      "-uninstall"))
-			 #'ignore))
+	    (if (and uninstall
+		     (fboundp uninstall))
+		(funcall uninstall))
 	    (setq riece-addon-dependencies
 		  (delq entry riece-addon-dependencies))
 	    (remprop addon 'riece-addon-insinuated)
 	    (setq riece-addons (delq addon riece-addons)
-		  riece-addon-dependencies (riece-resolve-addons
-					    (copy-sequence riece-addons)))))
+		  riece-addon-dependencies
+		  (riece-resolve-addons
+		   (delq addon (mapcar #'car riece-addon-dependencies))))))
       (if verbose
 	  (message "Add-on %S is uninstalled" addon)))))
 
@@ -254,7 +261,8 @@
   (unless (get addon 'riece-addon-insinuated)
     (error "Add-on %S is not insinuated" addon))
   (let ((enabled (intern-soft (concat (symbol-name addon) "-enabled"))))
-    (if (null enabled)
+    (if (or (null enabled)
+	    (not (boundp enabled)))
 	(if verbose
 	    (message "Add-on %S doesn't support enable/disable" addon))
       (if (symbol-value enabled)
@@ -268,7 +276,8 @@
   (unless (get addon 'riece-addon-insinuated)
     (error "Add-on %S is not insinuated" addon))
   (let ((enabled (intern-soft (concat (symbol-name addon) "-enabled"))))
-    (if (null enabled)
+    (if (or (null enabled)
+	    (not (boundp enabled)))
 	(if verbose
 	    (message "Add-on %S doesn't support enable/disable" addon))
       (if (symbol-value enabled)
@@ -315,7 +324,8 @@ All normal editing commands are turned off."
 					     "-description"))
 	    module-description-alist
 	    (cons (cons (car (car pointer))
-			(if description
+			(if (and description
+				 (boundp description))
 			    (symbol-value description)
 			  "(no description)"))
 		  module-description-alist)
