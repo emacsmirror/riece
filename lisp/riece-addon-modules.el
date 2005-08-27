@@ -8,7 +8,7 @@
     (riece-doctor . "Pretend to be a psychotherapist.")
     (riece-eval-ruby . "Evaluate input string as a Ruby program.")
     (riece-eval . "Evaluate an input string as an elisp form.")
-    (riece-foolproof . "Channel miss killer")
+    (riece-foolproof . "Prevent miss-operation in the command buffer.")
     (riece-google . "Search keywords by Google.")
     (riece-guess . "Guess the next channel, using multiple methods.")
     (riece-hangman . "Allow channel members to play the hangman game.")
