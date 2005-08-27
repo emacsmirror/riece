@@ -310,22 +310,6 @@ way is to put Riece variables on .emacs or file loaded from there."
   :type 'function
   :group 'riece-options)
 
-(defcustom riece-shrink-buffer-idle-time-delay 5
-  "Number of idle seconds to wait before shrinking channel buffers."
-  :type 'integer
-  :group 'riece-options)
-
-(defcustom riece-max-buffer-size nil
-  "Maximum size of channel buffers."
-  :type '(radio (integer :tag "Number of characters")
-		(const nil))
-  :group 'riece-options)
-
-(defcustom riece-shrink-buffer-remove-chars (/ riece-max-send-size 2)
-  "Number of chars removed when shrinking channel buffers."
-  :type 'integer
-  :group 'riece-options)
-
 (defcustom riece-format-time-function #'current-time-string
   "Function to convert the specified time to the human readable form."
   :type 'function

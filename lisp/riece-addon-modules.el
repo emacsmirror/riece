@@ -25,6 +25,7 @@
     (riece-mini . "Use Riece only on the minibuffer.")
     ;;(riece-ndcc . "DCC file sending protocol support (written in elisp.)")
     (riece-rdcc . "DCC file sending protocol support (written in Ruby.)")
+    (riece-shrink-buffer . "Free old IRC messages to save memory usage.")
     (riece-skk-kakutei . "Remove SKK's preedit mark before sending messages.")
     (riece-toolbar . "Display toolbar icons.")
     (riece-unread . "Mark channels where new messages arrived.")
