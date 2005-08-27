@@ -236,7 +236,7 @@
 	  (setq pointer nil)
 	(setq pointer (cdr pointer))))
     (setq addons (nreverse addons))
-    (if (and (> (length addon) 1)
+    (if (and (> (length addons) 1)
 	     (eq verbose 'ask)
 	     (not (y-or-n-p (format "%s will be insinuated.  Continue?"
 				    (mapconcat #'symbol-name addons ", ")))))
