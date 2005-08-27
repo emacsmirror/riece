@@ -38,8 +38,7 @@
 (require 'riece-message)
 (require 'riece-commands)
 (require 'riece-signal)
-
-(eval-when-compile (require 'riece-highlight))
+(require 'riece-highlight)
 
 (defgroup riece-unread nil
   "Mark unread channels."

@@ -38,7 +38,7 @@
 (require 'riece-identity)
 (require 'riece-signal)
 (require 'ring)
-(eval-when-compile (require 'riece-highlight))
+(require 'riece-highlight)
 
 (defgroup riece-history nil
   "Manage history of channel shifting."
