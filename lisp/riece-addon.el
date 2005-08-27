@@ -302,7 +302,7 @@ All normal editing commands are turned off."
 
 (defun riece-command-list-addons ()
   (interactive)
-  (set-buffer (riece-get-buffer-create "*AddOns*" 'riece-addon-list-mode))
+  (set-buffer (riece-get-buffer-create "*AddOn*" 'riece-addon-list-mode))
   (riece-addon-list-mode)
   (let ((inhibit-read-only t)
 	buffer-read-only
