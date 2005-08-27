@@ -48,8 +48,6 @@ Only used for sending files."
 (defvar riece-ndcc-request-user nil)
 (defvar riece-ndcc-request-size nil)
 
-(defvar riece-ndcc-enabled nil)
-
 (defconst riece-ndcc-description
   "DCC file sending protocol support (written in elisp.)")
 
@@ -196,7 +194,7 @@ Only used for sending files."
 
 (defun riece-handle-dcc-request (prefix target message)
   (let ((case-fold-search t))
-    (when (and riece-ndcc-enabled
+    (when (and (get 'riece-ndcc 'riece-addon-enabled)
 	       (string-match
 		"SEND \\([^ ]+\\) \\([^ ]+\\) \\([^ ]+\\) \\([^ ]+\\)"
 		message))

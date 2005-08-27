@@ -51,13 +51,11 @@
 
 (defvar riece-biff-mode-string 'riece-biff-default-mode-string)
 
-(defvar riece-biff-enabled nil)
-
 (defconst riece-biff-description
   "Be notified if messages arrives.")
 
 (defun riece-biff-after-display-message-function (message)
-  (when (and riece-biff-enabled
+  (when (and (get 'riece-biff 'riece-addon-enabled)
 	     (not (or (eq (window-buffer (selected-window))
 			  (get-buffer riece-command-buffer))
 		      (riece-message-own-p message)
@@ -68,7 +66,7 @@
       (setq riece-biff-mode-string 'riece-biff-biff-mode-string))))
 
 (defun riece-biff-clear (&optional dummy)
-  (when riece-biff-enabled
+  (when (get 'riece-biff 'riece-addon-enabled)
     (setq riece-biff-mode-string 'riece-biff-default-mode-string)))
 
 (defun riece-biff-insinuate ()
@@ -94,8 +92,7 @@
 	  (append '("" riece-biff-mode-string)
 		  (remove "" global-mode-string)))
 	 (t
-	  global-mode-string)))
-  (setq riece-biff-enabled t))
+	  global-mode-string))))
 
 (defun riece-biff-disable ()
   (setq global-mode-string
@@ -105,8 +102,7 @@
 	  (remq 'riece-biff-mode-string global-mode-string))
 	 (t
 	  global-mode-string)))
-  (riece-biff-clear)
-  (setq riece-biff-enabled nil))
+  (riece-biff-clear))
 
 (provide 'riece-biff)
 

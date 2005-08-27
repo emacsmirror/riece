@@ -49,8 +49,6 @@
 
 (defvar riece-doctor-patients nil)
 
-(defvar riece-doctor-enabled nil)
-
 (defconst riece-doctor-description
   "Pretend to be a psychotherapist.")
 
@@ -73,7 +71,7 @@
   (riece-send-string (format "NOTICE %s :%s\r\n" target string)))
 
 (defun riece-doctor-after-privmsg-hook (prefix string)
-  (if riece-doctor-enabled
+  (if (get 'riece-doctor 'riece-addon-enabled)
       (let* ((user (riece-prefix-nickname prefix))
 	     (parameters (riece-split-parameters string))
 	     (targets (split-string (car parameters) ","))
@@ -130,10 +128,10 @@ Please, describe your problems."
   (remove-hook 'riece-after-privmsg-hook 'riece-doctor-after-privmsg-hook))
 
 (defun riece-doctor-enable ()
-  (setq riece-doctor-enabled t))
+  )
 
 (defun riece-doctor-disable ()
-  (setq riece-doctor-enabled nil))
+  )
 
 (provide 'riece-doctor)
 

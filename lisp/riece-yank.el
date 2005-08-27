@@ -46,18 +46,14 @@ before/after the first/last non-blank line."
 (defconst riece-yank-description
   "Enter the element of kill-ring.")
 
-(defvar riece-yank-enabled nil)
-
 (defun riece-yank-insinuate ()
   )
 
 (defvar riece-command-mode-map)
 (defun riece-yank-enable ()
-  (define-key riece-command-mode-map "\C-cy" 'riece-command-yank)
-  (setq riece-yank-enabled t))
+  (define-key riece-command-mode-map "\C-cy" 'riece-command-yank))
 (defun riece-yank-disable ()
-  (define-key riece-command-mode-map "\C-cy" 'undefined)
-  (setq riece-yank-enabled nil))
+  (define-key riece-command-mode-map "\C-cy" 'undefined))
 
 (defun riece-yank-strip-space (string)
   (with-temp-buffer

@@ -1,5 +1,16 @@
 2005-08-27  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-addon.el (riece-uninstall-addon): Don't check the add-on
+	is enabled.
+	(riece-uninstall-addon): Don't use riece-remprop.
+	(riece-enable-addon): Put 'riece-addon-enabled property on the
+	add-on feature.
+	(riece-disable-addon): Ditto.
+	(riece-command-list-addons): Check 'riece-addon-enabled property
+	instead of riece-*-enabled variables.
+
+2005-08-27  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-options.el (riece-shrink-buffer-idle-time-delay):
 	Abolished; moved to riece-shrink-buffer.el.
 	(riece-max-buffer-size): Ditto.

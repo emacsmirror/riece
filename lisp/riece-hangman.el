@@ -55,8 +55,6 @@
 (defvar riece-hangman-player-context-alist nil)
 (defvar riece-hangman-words-buffer nil)
 
-(defvar riece-hangman-enabled nil)
-
 (defconst riece-hangman-description
   "Allow channel members to play the hangman game.")
 
@@ -140,7 +138,7 @@ The wordlist is read from `riece-hangman-words-file'."
 	       "")))))
 
 (defun riece-hangman-after-privmsg-hook (prefix string)
-  (if riece-hangman-enabled
+  (if (get 'riece-hangman 'riece-addon-enabled)
       (let* ((user (riece-prefix-nickname prefix))
 	     (parameters (riece-split-parameters string))
 	     (targets (split-string (car parameters) ","))
@@ -231,11 +229,10 @@ The wordlist is read from `riece-hangman-words-file'."
   (remove-hook 'riece-after-privmsg-hook 'riece-hangman-after-privmsg-hook))
 
 (defun riece-hangman-enable ()
-  (random t)
-  (setq riece-hangman-enabled t))
+  (random t))
 
 (defun riece-hangman-disable ()
-  (setq riece-hangman-enabled nil))
+  )
 
 (provide 'riece-hangman)
 

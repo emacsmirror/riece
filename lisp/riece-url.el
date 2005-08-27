@@ -59,8 +59,6 @@ This maps a string \"Bug#12345\" to a URL
 (defvar riece-urls nil
   "A list of URL which appears in Riece buffers.")
 
-(defvar riece-url-enabled nil)
-
 (defconst riece-url-description
   "Collect URL in IRC buffers.")
 
@@ -143,12 +141,10 @@ This maps a string \"Bug#12345\" to a URL
 	       'riece-url-command-mode-hook))
 
 (defun riece-url-enable ()
-  (define-key riece-dialogue-mode-map "U" 'riece-command-browse-url)
-  (setq riece-url-enabled t))
+  (define-key riece-dialogue-mode-map "U" 'riece-command-browse-url))
 
 (defun riece-url-disable ()
-  (define-key riece-dialogue-mode-map "U" nil)
-  (setq riece-url-enabled nil))
+  (define-key riece-dialogue-mode-map "U" nil))
 
 (provide 'riece-url)
 

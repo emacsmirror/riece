@@ -54,13 +54,11 @@
 
 (defvar riece-dialogue-mode-map)
 
-(defvar riece-ctcp-enabled nil)
-
 (defconst riece-ctcp-description
   "CTCP (Client To Client Protocol) support.")
 
 (defun riece-handle-ctcp-request (prefix string)
-  (when (and riece-ctcp-enabled prefix string
+  (when (and (get 'riece-ctcp 'riece-addon-enabled) prefix string
 	     (riece-prefix-nickname prefix))
     (let* ((parameters (riece-split-parameters string))
 	   (targets (split-string (car parameters) ","))
@@ -221,7 +219,7 @@
       "\n"))))
 
 (defun riece-handle-ctcp-response (prefix string)
-  (when (and riece-ctcp-enabled prefix string
+  (when (and (get 'riece-ctcp 'riece-addon-enabled) prefix string
 	     (riece-prefix-nickname prefix))
     (let* ((parameters (riece-split-parameters string))
 	   (targets (split-string (car parameters) ","))
@@ -400,16 +398,14 @@
   (define-key riece-dialogue-mode-map "\C-cp" 'riece-command-ctcp-ping)
   (define-key riece-dialogue-mode-map "\C-ca" 'riece-command-ctcp-action)
   (define-key riece-dialogue-mode-map "\C-cc" 'riece-command-ctcp-clientinfo)
-  (define-key riece-dialogue-mode-map "\C-ct" 'riece-command-ctcp-time)
-  (setq riece-ctcp-enabled t))
+  (define-key riece-dialogue-mode-map "\C-ct" 'riece-command-ctcp-time))
 
 (defun riece-ctcp-disable ()
   (define-key riece-dialogue-mode-map "\C-cv" nil)
   (define-key riece-dialogue-mode-map "\C-cp" nil)
   (define-key riece-dialogue-mode-map "\C-ca" nil)
   (define-key riece-dialogue-mode-map "\C-cc" nil)
-  (define-key riece-dialogue-mode-map "\C-ct" nil)
-  (setq riece-ctcp-enabled nil))
+  (define-key riece-dialogue-mode-map "\C-ct" nil))
 
 (provide 'riece-ctcp)
 

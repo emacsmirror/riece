@@ -102,8 +102,6 @@ end
 (defvar riece-rdcc-temp-file nil)
 (defvar riece-rdcc-received-size nil)
 
-(defvar riece-rdcc-enabled nil)
-
 (defconst riece-rdcc-description
   "DCC file sending protocol support (written in Ruby.)")
 
@@ -305,7 +303,7 @@ end
 
 (defun riece-handle-dcc-request (prefix target message)
   (let ((case-fold-search t))
-    (when (and riece-rdcc-enabled
+    (when (and (get 'riece-rdcc 'riece-addon-enabled)
 	       (string-match
 		"SEND \\(\\([^ ]+\\)\\|\"\\(.+\\)\"\\) \\([^ ]+\\) \\([^ ]+\\) \\([^ ]+\\)"
 		message))
@@ -362,13 +360,11 @@ end
 
 (defun riece-rdcc-enable ()
   (define-key riece-dialogue-mode-map "\C-ds" 'riece-command-dcc-send)
-  (define-key riece-dialogue-mode-map "\C-dr" 'riece-command-dcc-receive)
-  (setq riece-rdcc-enabled t))
+  (define-key riece-dialogue-mode-map "\C-dr" 'riece-command-dcc-receive))
 
 (defun riece-rdcc-disable ()
   (define-key riece-dialogue-mode-map "\C-ds" nil)
-  (define-key riece-dialogue-mode-map "\C-dr" nil)
-  (setq riece-rdcc-enabled nil))
+  (define-key riece-dialogue-mode-map "\C-dr" nil))
 
 (provide 'riece-rdcc)
 

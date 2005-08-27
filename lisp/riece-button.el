@@ -48,8 +48,6 @@
     ["Set +v" riece-user-button-set-speakers])
   "Menu for user buttons.")
 
-(defvar riece-button-enabled nil)
-
 (defconst riece-button-description
   "Display useful buttons in IRC buffers.")
 
@@ -206,7 +204,7 @@ This function is used as a callback for a channel button."
 
 (defvar riece-identity-button-map)
 (defun riece-button-add-identity-button (start end)
-  (if riece-button-enabled
+  (if (get 'riece-button 'riece-addon-enabled)
       (riece-scan-property-region
        'riece-identity
        start end
@@ -290,7 +288,6 @@ This function is used as a callback for a channel button."
 	       'riece-button-add-identity-button))
 
 (defun riece-button-enable ()
-  (setq riece-button-enabled t)
   (let ((pointer riece-buffer-list))
     (while pointer
       (with-current-buffer (car pointer)
@@ -303,7 +300,6 @@ This function is used as a callback for a channel button."
     (riece-emit-signal 'channel-list-changed)))
 
 (defun riece-button-disable ()
-  (setq riece-button-enabled nil)
   (save-excursion
     (let ((pointer riece-buffer-list))
       (while pointer

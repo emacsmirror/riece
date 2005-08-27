@@ -42,8 +42,6 @@
 
 (defvar riece-lsdb-cache nil)
 
-(defvar riece-lsdb-enabled nil)
-
 (defconst riece-lsdb-description
   "Help register nicknames in LSDB rolodex program.")
 
@@ -140,15 +138,13 @@
   (define-key riece-command-mode-map
     "\C-c\C-ll" 'riece-lsdb-display-records)
   (define-key riece-command-mode-map
-    "\C-c\C-la" 'riece-lsdb-add-user)
-  (setq riece-lsdb-enabled t))
+    "\C-c\C-la" 'riece-lsdb-add-user))
 
 (defun riece-lsdb-disable ()
   (define-key riece-command-mode-map
     "\C-c\C-ll" nil)
   (define-key riece-command-mode-map
-    "\C-c\C-la" nil)
-  (setq riece-lsdb-enabled nil))
+    "\C-c\C-la" nil))
 
 (provide 'riece-lsdb)
 

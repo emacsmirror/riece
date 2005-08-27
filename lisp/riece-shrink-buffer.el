@@ -56,12 +56,10 @@
 (defconst riece-shrink-buffer-description
   "Free old IRC messages to save memory usage.")
 
-(defvar riece-shrink-buffer-enabled nil)
-
 (defun riece-shrink-buffer-idle-timer ()
   (let ((buffers riece-buffer-list))
     (while buffers
-      (if (and riece-shrink-buffer-enabled
+      (if (and (get 'riece-shrink-buffer 'riece-addon-enabled)
 	       (buffer-live-p (car buffers))
 	       (eq (derived-mode-class
 		    (with-current-buffer (car buffers)
@@ -115,10 +113,10 @@
 	       'riece-shrink-buffer-exit-hook))
 
 (defun riece-shrink-buffer-enable ()
-  (setq riece-shrink-buffer-enabled t))
+  )
 
 (defun riece-shrink-buffer-disable ()
-  (setq riece-shrink-buffer-enabled nil))
+  )
 
 (provide 'riece-shrink-buffer)
 

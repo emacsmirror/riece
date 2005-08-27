@@ -33,15 +33,13 @@
 (require 'riece-display)
 (require 'riece-lsdb)
 
-(defvar riece-xface-enabled nil)
-
 (defconst riece-xface-description
   "Display X-Face in IRC buffers.")
 
 (defvar lsdb-insert-x-face-function)
 
 (defun riece-xface-update-user-list-buffer ()
-  (if riece-xface-enabled
+  (if (get 'riece-xface 'riece-addon-enabled)
       (riece-scan-property-region
        'riece-identity (point-min)(point-max)
        (lambda (start end)
@@ -83,12 +81,10 @@
 	       'riece-xface-user-list-mode-hook))
 
 (defun riece-xface-enable ()
-  (setq riece-xface-enabled t)
   (if riece-current-channel
       (riece-emit-signal 'user-list-changed riece-current-channel)))
 
 (defun riece-xface-disable ()
-  (setq riece-xface-enabled nil)
   (if riece-current-channel
       (riece-emit-signal 'user-list-changed riece-current-channel)))
 

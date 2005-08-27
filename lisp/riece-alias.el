@@ -61,8 +61,6 @@
   :type 'list
   :group 'riece-alias)
 
-(defvar riece-alias-enabled nil)
-
 (defconst riece-alias-description
   "Define aliases for IRC names.")
 
@@ -167,14 +165,12 @@
 	#'riece-alias-abbrev-identity-string
 	riece-expand-identity-string-function
 	#'riece-alias-expand-identity-string)
-  (riece-emit-signal 'channel-list-changed)
-  (setq riece-alias-enabled t))
+  (riece-emit-signal 'channel-list-changed))
 
 (defun riece-alias-disable ()
   (setq riece-abbrev-identity-string-function nil
 	riece-expand-identity-string-function nil)
-  (riece-emit-signal 'channel-list-changed)
-  (setq riece-alias-enabled nil))
+  (riece-emit-signal 'channel-list-changed))
 
 (provide 'riece-alias)
 

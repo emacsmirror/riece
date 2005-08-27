@@ -58,8 +58,6 @@
 (defvar riece-mini-backlog-history nil)
 (defvar riece-mini-backlog-shown nil)
 
-(defvar riece-mini-enabled nil)
-
 (defconst riece-mini-description
   "Use Riece only on the minibuffer.")
 
@@ -84,7 +82,7 @@
 	    (cdr riece-mini-backlog-history)))
     (setq riece-mini-backlog-history
 	  (reverse (cons string (reverse riece-mini-backlog-history))))
-    (when (and riece-mini-enabled
+    (when (and (get 'riece-mini 'riece-addon-enabled)
 	       (not (or (eq (window-buffer (selected-window))
 			    (get-buffer riece-command-buffer))
 			(riece-message-own-p message)
@@ -130,7 +128,7 @@ If twice (C-u C-u), then ask the channel."
 	    (resize-mini-windows t))
 	(setq riece-mini-backlog-shown t)
 	(when (and (memq 'riece-biff riece-addons)
-		   riece-biff-enabled)
+		   (get 'riece-biff 'riece-addon-enabled))
 	  (riece-biff-clear))
 	(riece-mini-message-no-log
 	 "%s" (mapconcat #'identity riece-mini-backlog-history "\n"))))))
@@ -156,10 +154,10 @@ If twice (C-u C-u), then ask the channel."
   (remove-hook 'pre-command-hook 'riece-mini-pre-command))
 
 (defun riece-mini-enable ()
-  (setq riece-mini-enabled t))
+  )
 
 (defun riece-mini-disable ()
-  (setq riece-mini-enabled nil))
+  )
 
 (provide 'riece-mini)
 

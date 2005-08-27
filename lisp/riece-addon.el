@@ -240,7 +240,6 @@
       (if verbose
 	  (message "Add-on %S is not insinuated" addon))
     (let ((entry (assq addon riece-addon-dependencies))
-	  (enabled (intern-soft (concat (symbol-name addon) "-enabled")))
 	  (uninstall (intern-soft (concat (symbol-name addon) "-uninstall"))))
       (if entry
 	  (if (cdr entry)
@@ -249,16 +248,13 @@
 		(error "%s depend on %S"
 		       (mapconcat #'symbol-name (cdr entry) ", ")
 		       addon))
-	    (if (and enabled
-		     (boundp enabled)
-		     (symbol-value enabled))
-		(riece-disable-addon addon verbose))
+	    (riece-disable-addon addon verbose)
 	    (if (and uninstall
 		     (fboundp uninstall))
 		(funcall uninstall))
 	    (setq riece-addon-dependencies
 		  (delq entry riece-addon-dependencies))
-	    (riece-remprop addon 'riece-addon-insinuated)
+	    (put addon 'riece-addon-insinuated nil)
 	    (setq riece-addons (delq addon riece-addons)
 		  riece-save-variables-are-dirty t
 		  riece-addon-dependencies
@@ -270,29 +266,31 @@
 (defun riece-enable-addon (addon &optional verbose)
   (unless (get addon 'riece-addon-insinuated)
     (error "Add-on %S is not insinuated" addon))
-  (let ((enabled (intern-soft (concat (symbol-name addon) "-enabled"))))
-    (if (or (null enabled)
-	    (not (boundp enabled)))
+  (let ((enable (intern-soft (concat (symbol-name addon) "-enable"))))
+    (if (or (null enable)
+	    (not (fboundp enable)))
 	(if verbose
 	    (message "Add-on %S doesn't support enable/disable" addon))
-      (if (symbol-value enabled)
+      (if (get addon 'riece-addon-enabled)
 	  (if verbose
 	      (message "Add-on %S is already enabled" addon))
-	(funcall (intern (concat (symbol-name addon) "-enable")))
+	(funcall enable)
+	(put addon 'riece-addon-enabled t)
 	(if verbose
 	    (message "Add-on %S enabled" addon))))))
 
 (defun riece-disable-addon (addon &optional verbose)
   (unless (get addon 'riece-addon-insinuated)
     (error "Add-on %S is not insinuated" addon))
-  (let ((enabled (intern-soft (concat (symbol-name addon) "-enabled"))))
-    (if (or (null enabled)
-	    (not (boundp enabled)))
+  (let ((disable (intern-soft (concat (symbol-name addon) "-disable"))))
+    (if (or (null disable)
+	    (not (fboundp disable)))
 	(if verbose
 	    (message "Add-on %S doesn't support enable/disable" addon))
-      (if (symbol-value enabled)
+      (if (get addon 'riece-addon-enabled)
 	  (progn
-	    (funcall (intern (concat (symbol-name addon) "-disable")))
+	    (funcall disable)
+	    (put addon 'riece-addon-enabled nil)
 	    (if verbose
 		(message "Add-on %S disabled" addon)))
 	(if verbose
@@ -328,7 +326,7 @@ All normal editing commands are turned off."
 	buffer-read-only
 	(pointer riece-addon-dependencies)
 	module-description-alist
-	description enabled point)
+	description enable point)
     (while pointer
       (setq description (intern-soft (concat (symbol-name (car (car pointer)))
 					     "-description"))
@@ -354,8 +352,8 @@ All normal editing commands are turned off."
 			  (string-lessp (symbol-name (car entry1))
 					(symbol-name (car entry2))))))
     (while pointer
-      (setq enabled (intern-soft (concat (symbol-name (car (car pointer)))
-					 "-enabled")))
+      (setq enable (intern-soft (concat (symbol-name (car (car pointer)))
+					"-enable")))
       (setq point (point))
       (insert (format "%c %-15S %s\n"
 		      (if (not (featurep (car (car pointer))))
@@ -363,9 +361,10 @@ All normal editing commands are turned off."
 			(if (not (get (car (car pointer))
 				      'riece-addon-insinuated))
 			    ??
-			  (if (null enabled)
+			  (if (or (null enable)
+				  (not (fboundp enable)))
 			      ?!
-			    (if (symbol-value enabled)
+			    (if (get (car (car pointer)) 'riece-addon-enabled)
 				?+
 			      ?-))))
 		      (car (car pointer))
@@ -377,9 +376,9 @@ Symbols in the leftmost column:
 
    +     The add-on is enabled.
    -     The add-on is disabled.
-   !	The add-on doesn't support enable/disable operation.
-   ?	The add-on is not insinuated.
-  	The add-on is not loaded.
+   !     The add-on doesn't support enable/disable operation.
+   ?     The add-on is not insinuated.
+         The add-on is not loaded.
 ")
     (insert (substitute-command-keys "
 Useful keys:

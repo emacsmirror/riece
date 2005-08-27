@@ -76,8 +76,6 @@
 
 (defvar riece-channel-history nil)
 
-(defvar riece-history-enabled nil)
-
 (defconst riece-history-description
   "Manage history of channel shifting.")
 
@@ -91,7 +89,7 @@
     (nreverse result)))
 
 (defun riece-history-format-identity-for-channel-list-buffer (index identity)
-  (if (and riece-history-enabled
+  (if (and (get 'riece-history 'riece-addon-enabled)
 	   (not (ring-empty-p riece-channel-history))
 	   (riece-identity-equal identity (ring-ref riece-channel-history 0)))
       (concat (format "%2d:+" index)
@@ -99,7 +97,7 @@
 
 (defun riece-history-format-identity-for-channel-list-indicator (index
 								 identity)
-  (if (and riece-history-enabled
+  (if (and (get 'riece-history 'riece-addon-enabled)
 	   (not (ring-empty-p riece-channel-history))
 	   (riece-identity-equal identity (ring-ref riece-channel-history 0)))
       (let ((string (riece-format-identity identity))
@@ -117,7 +115,7 @@
 ;;;       '(riece-guess)))
 
 (defun riece-history-after-switch-to-channel-functions (last)
-  (if (and riece-history-enabled last
+  (if (and (get 'riece-history 'riece-addon-enabled) last
 	   (not (riece-identity-equal last riece-current-channel)))
       (ring-insert riece-channel-history last)))
 
@@ -155,12 +153,10 @@
 (defun riece-history-enable ()
   (setq riece-channel-history
 	(make-ring riece-channel-history-length))
-  (setq riece-history-enabled t)
   (riece-emit-signal 'channel-list-changed))
 
 (defun riece-history-disable ()
-  (setq riece-channel-history nil
-	riece-history-enabled nil)
+  (setq riece-channel-history nil)
   (riece-emit-signal 'channel-list-changed))
 
 (provide 'riece-history)

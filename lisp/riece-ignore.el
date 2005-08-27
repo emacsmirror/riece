@@ -60,8 +60,6 @@ Otherwise, they are not removed from IRC buffers, but are hidden with
 
 (defvar riece-ignore-buffer nil)
 
-(defvar riece-ignore-enabled nil)
-
 (defconst riece-ignore-description
   "Ignore messages from some users.")
 (defvar riece-ignored-user-list nil)
@@ -103,7 +101,7 @@ Otherwise, they are not removed from IRC buffers, but are hidden with
 (eval-when-compile
   (autoload 'riece-dialogue-mode "riece"))
 (defun riece-ignore-message-filter (message)
-  (if (and riece-ignore-enabled
+  (if (and (get 'riece-ignore 'riece-addon-enabled)
 	   (riece-identity-member (riece-message-speaker message)
 				  riece-ignored-user-list))
       (if riece-ignore-discard-message
@@ -139,13 +137,11 @@ Otherwise, they are not removed from IRC buffers, but are hidden with
 
 (defun riece-ignore-enable ()
   (define-key riece-command-mode-map
-    "\C-ck" 'riece-ignore-user)
-  (setq riece-ignore-enabled t))
+    "\C-ck" 'riece-ignore-user))
 
 (defun riece-ignore-disable ()
   (define-key riece-command-mode-map
-    "\C-ck" nil)
-  (setq riece-ignore-enabled nil))
+    "\C-ck" nil))
 
 (provide 'riece-ignore)
 

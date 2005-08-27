@@ -41,8 +41,6 @@
   :type 'string
   :group 'riece-eval-ruby)
 
-(defvar riece-eval-ruby-enabled nil)
-
 (defconst riece-eval-ruby-description
   "Evaluate input string as a Ruby program.")
 
@@ -67,7 +65,7 @@
 			 'notice))))
 
 (defun riece-eval-ruby-display-message-function (message)
-  (if (and riece-eval-ruby-enabled
+  (if (and (get 'riece-eval-ruby 'riece-addon-enabled)
 	   (riece-message-own-p message)
 	   (string-match riece-eval-ruby-prefix-regexp
 			 (riece-message-text message)))
@@ -89,10 +87,10 @@
 	       'riece-eval-ruby-display-message-function))
 
 (defun riece-eval-ruby-enable ()
-  (setq riece-eval-ruby-enabled t))
+  )
 
 (defun riece-eval-ruby-disable ()
-  (setq riece-eval-ruby-enabled nil))
+  )
 
 (provide 'riece-eval-ruby)
 

@@ -201,8 +201,6 @@
   (set-face-foreground 'riece-modeline-current-face
 		       (face-foreground 'riece-channel-list-current-face)))
 
-(defvar riece-highlight-enabled nil)
-
 (defconst riece-highlight-description
   "Highlight IRC buffers.")
 
@@ -219,7 +217,7 @@
   (make-local-hook 'after-change-functions)
   (add-hook 'after-change-functions
 	    'riece-highlight-hide-prefix nil t)
-  (if riece-highlight-enabled
+  (if (get 'riece-highlight 'riece-addon-enabled)
       (font-lock-mode 1)))
 
 (defun riece-highlight-setup-channel-list ()
@@ -228,7 +226,7 @@
   ;; In XEmacs, auto-initialization of font-lock is not affective
   ;; when buffer-file-name is not set.
   (font-lock-set-defaults)
-  (if riece-highlight-enabled
+  (if (get 'riece-highlight 'riece-addon-enabled)
       (font-lock-mode 1)))
 
 (defun riece-highlight-hide-prefix (start end length)
@@ -238,7 +236,7 @@
 	(put-text-property (match-beginning 1) (match-end 1) 'invisible t))))
 
 (defun riece-highlight-put-overlay-faces (start end)
-  (if riece-highlight-enabled
+  (if (get 'riece-highlight 'riece-addon-enabled)
       (riece-scan-property-region
        'riece-overlay-face
        start end
@@ -249,7 +247,7 @@
 
 (defun riece-highlight-format-identity-for-channel-list-indicator (index
 								   identity)
-  (if (and riece-highlight-enabled
+  (if (and (get 'riece-highlight 'riece-addon-enabled)
 	   (riece-identity-equal identity riece-current-channel))
       (let ((string (riece-format-identity identity))
 	    (start 0))
@@ -311,8 +309,7 @@
 		'(riece-dialogue-mode riece-channel-list-mode))
 	  (with-current-buffer (car buffers)
 	    (font-lock-mode 1)))
-      (setq buffers (cdr buffers))))
-  (setq riece-highlight-enabled t))
+      (setq buffers (cdr buffers)))))
 
 (defun riece-highlight-disable ()
   (let ((buffers riece-buffer-list))
@@ -323,8 +320,7 @@
 		'(riece-dialogue-mode riece-channel-list-mode))
 	  (with-current-buffer (car buffers)
 	    (font-lock-mode 0)))
-      (setq buffers (cdr buffers))))
-  (setq riece-highlight-enabled nil))
+      (setq buffers (cdr buffers)))))
 
 (provide 'riece-highlight)
 

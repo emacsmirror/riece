@@ -66,15 +66,13 @@ and the matched message object."
   :group 'riece-highlight-faces)
 (defvar riece-keyword-face 'riece-keyword-face)
 
-(defvar riece-keyword-enabled nil)
-
 (defconst riece-keyword-description
   "Detect keywords in IRC buffers.")
 
 ;;; The old XEmacs package doesn't have autoload setting for regexp-opt.
 (autoload 'regexp-opt "regexp-opt")
 (defun riece-keyword-message-filter (message)
-  (if (and riece-keyword-enabled
+  (if (and (get 'riece-keyword 'riece-addon-enabled)
 	   riece-keywords
 	   ;; Ignore messages which belongs to myself.
 	   (not (riece-message-own-p message)))
@@ -119,10 +117,10 @@ and the matched message object."
   (remove-hook 'riece-message-filter-functions 'riece-keyword-message-filter))
 
 (defun riece-keyword-enable ()
-  (setq riece-keyword-enabled t))
+  )
 
 (defun riece-keyword-disable ()
-  (setq riece-keyword-enabled nil))
+  )
 
 (provide 'riece-keyword)
 

@@ -89,13 +89,11 @@ It is created if there is at least one instance of Emacs running riece-log.")
 (defconst riece-log-file-name-regexp
   (concat (riece-make-interval-regexp "[0-9]" 8) "\\.txt\\(\\.\\(.*\\)\\)?$"))
 
-(defvar riece-log-enabled nil)
-
 (defconst riece-log-description
   "Save IRC logs.")
 
 (defun riece-log-display-message-function (message)
-  (if riece-log-enabled
+  (if (get 'riece-log 'riece-addon-enabled)
       (let* ((coding-system-for-write
 	      (if (featurep 'mule)
 		  (or riece-log-coding-system
@@ -298,12 +296,10 @@ If LINES is t, insert today's logs entirely."
 
 (defvar riece-command-mode-map)
 (defun riece-log-enable ()
-  (define-key riece-command-mode-map "\C-cd" 'riece-log-dired)
-  (setq riece-log-enabled t))
+  (define-key riece-command-mode-map "\C-cd" 'riece-log-dired))
 
 (defun riece-log-disable ()
-  (define-key riece-command-mode-map "\C-cd" nil)
-  (setq riece-log-enabled nil))
+  (define-key riece-command-mode-map "\C-cd" nil))
 
 (provide 'riece-log)
 

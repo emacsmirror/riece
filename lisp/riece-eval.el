@@ -45,13 +45,11 @@
   :type 'boolean
   :group 'riece-eval)
 
-(defvar riece-eval-enabled nil)
-
 (defconst riece-eval-description
   "Evaluate an input string as an elisp form.")
 
 (defun riece-eval-display-message-function (message)
-  (when (and riece-eval-enabled
+  (when (and (get 'riece-eval 'riece-addon-enabled)
 	     (riece-message-own-p message)
 	     (string-match riece-eval-regexp (riece-message-text message)))
     (let* ((form (match-string 1 (riece-message-text message)))
@@ -92,10 +90,10 @@
 	       'riece-eval-display-message-function))
 
 (defun riece-eval-enable ()
-  (setq riece-eval-enabled t))
+  )
 
 (defun riece-eval-disable ()
-  (setq riece-eval-enabled nil))
+  )
 
 (provide 'riece-eval)
 

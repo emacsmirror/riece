@@ -181,8 +181,6 @@ static char * a_xpm[] = {
 \"  @@@@@@@@@@@ \",
 \"              \"};")
 
-(defvar riece-icon-enabled nil)
-
 (defconst riece-icon-description
   "Display icons in IRC buffers.")
 
@@ -236,7 +234,7 @@ static char * a_xpm[] = {
 				   'rear-nonsticky (list 'display)))))))
 
 (defun riece-icon-update-user-list-buffer ()
-  (if riece-icon-enabled
+  (if (get 'riece-icon 'riece-addon-enabled)
       (let ((images (riece-icon-make-images riece-user-list-icons)))
 	(save-excursion
 	  (goto-char (point-min))
@@ -246,7 +244,7 @@ static char * a_xpm[] = {
 	     (1- (point)) (point)))))))
 
 (defun riece-icon-update-channel-list-buffer ()
-  (if riece-icon-enabled
+  (if (get 'riece-icon 'riece-addon-enabled)
       (let ((images (riece-icon-make-images riece-channel-list-icons)))
 	(save-excursion
 	  (goto-char (point-min))
@@ -366,7 +364,6 @@ Modify whole identification by side effect."
   (defalias 'riece-mode-line-buffer-identification
     'riece-icon-modeline-buffer-identification)
   (riece-icon-update-mode-line-buffer-identification)
-  (setq riece-icon-enabled t)
   (if riece-current-channel
       (riece-emit-signal 'user-list-changed riece-current-channel))
   (riece-emit-signal 'channel-list-changed))
@@ -375,7 +372,6 @@ Modify whole identification by side effect."
   (fset 'riece-mode-line-buffer-identification
 	riece-icon-original-mode-line-buffer-identification)
   (riece-icon-update-mode-line-buffer-identification)
-  (setq riece-icon-enabled nil)
   (if riece-current-channel
       (riece-emit-signal 'user-list-changed riece-current-channel))
   (riece-emit-signal 'channel-list-changed))

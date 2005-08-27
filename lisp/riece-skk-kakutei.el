@@ -29,8 +29,6 @@
 
 (eval-when-compile (require 'riece))
 
-(defvar riece-skk-kakutei-enabled nil)
-
 (defconst riece-skk-kakutei-description
   "Remove SKK's preedit mark before sending messages.")
 
@@ -68,14 +66,12 @@
 (defun riece-skk-kakutei-enable ()
   (riece-define-keys riece-command-mode-map
     "\r" riece-skk-kakutei-command-enter-message
-    [(control return)] riece-skk-kakutei-command-enter-message-as-notice)
-  (setq riece-skk-kakutei-enabled t))
+    [(control return)] riece-skk-kakutei-command-enter-message-as-notice))
 
 (defun riece-skk-kakutei-disable ()
   (riece-define-keys riece-command-mode-map
     "\r" riece-command-enter-message
-    [(control return)] riece-command-enter-message-as-notice)
-  (setq riece-skk-kakutei-enabled nil))
+    [(control return)] riece-command-enter-message-as-notice))
 
 (provide 'riece-skk-kakutei)
 

@@ -31,8 +31,6 @@
   (require 'riece-identity)
   (require 'riece-display))
 
-(defvar riece-foolproof-enabled nil)
-
 (defconst riece-foolproof-description
   "Prevent miss-operation in the command buffer.")
 
@@ -42,7 +40,7 @@
 	 identity riece-channel-buffer-alist))))
 
 (defun riece-foolproof-command-send-message-function ()
-  (when riece-foolproof-enabled
+  (when (get 'riece-foolproof 'riece-addon-enabled)
     (unless (or (not riece-channel-buffer-mode)
 		(riece-foolproof-get-channel-window
 		 riece-current-channel))
@@ -67,10 +65,10 @@
 	       'riece-foolproof-command-send-message-function))
 
 (defun riece-foolproof-enable ()
-  (setq riece-foolproof-enabled t))
+  )
 
 (defun riece-foolproof-disable ()
-  (setq riece-foolproof-enabled nil))
+  )
 
 (provide 'riece-foolproof)
 
