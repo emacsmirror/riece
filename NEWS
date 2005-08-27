@@ -8,7 +8,7 @@
    commentary section of riece-ruby.el. (ueno)
 
 ** New add-on riece-eval-ruby.el, which regards user input prefixed
-   with ",ruby " as a Ruby program and sends the result to the current
+   by ",ruby " as a Ruby program and sends the result to the current
    channel. (ueno)
 
 ** New add-on riece-shrink-buffer.el, which now takes care of periodic
