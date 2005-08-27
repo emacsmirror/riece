@@ -1,5 +1,8 @@
 2005-08-27  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-foolproof.el (riece-foolproof-description): Made it more
+	descriptive.
+
 	* riece-url.el (riece-url-uninstall): Call easy-menu-remove-item.
 
 	* riece-addon.el (riece-addon-list-mode-map): Bind

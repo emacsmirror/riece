@@ -1,4 +1,4 @@
-;;; riece-foolproof.el --- channel miss killer
+;;; riece-foolproof.el --- prevent miss-operation in the command buffer
 ;; Copyright (C) 2004 TAKAHASHI Kaoru
 
 ;; Author: TAKAHASHI "beatmaria" Kaoru <kaoru@kaisei.org>
@@ -34,7 +34,7 @@
 (defvar riece-foolproof-enabled nil)
 
 (defconst riece-foolproof-description
-  "Channel miss killer")
+  "Prevent miss-operation in the command buffer.")
 
 (defun riece-foolproof-get-channel-window (identity)
   (get-buffer-window
