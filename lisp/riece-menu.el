@@ -111,14 +111,18 @@
   (easy-menu-add riece-menu))
 
 (defun riece-menu-insinuate ()
+  (if riece-command-buffer
+      (with-current-buffer riece-command-buffer
+	(riece-menu-command-mode-hook)))
   (add-hook 'riece-command-mode-hook
 	    'riece-menu-command-mode-hook))
 
 (defun riece-menu-uninstall ()
+  (if riece-command-buffer
+      (with-current-buffer riece-command-buffer
+	(easy-menu-remove riece-menu)))
   (remove-hook 'riece-command-mode-hook
-	       'riece-menu-command-mode-hook)
-  (with-current-buffer riece-command-buffer
-    (easy-menu-remove riece-menu)))
+	       'riece-menu-command-mode-hook))
 
 (provide 'riece-menu)
 

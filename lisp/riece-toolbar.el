@@ -121,15 +121,18 @@
   '(riece-menu))
 
 (defun riece-toolbar-insinuate ()
+  (if riece-command-buffer
+      (with-current-buffer riece-command-buffer
+	(riece-toolbar-command-mode-hook)))
   (add-hook 'riece-command-mode-hook
-	    'riece-toolbar-command-mode-hook
-	    t))
+	    'riece-toolbar-command-mode-hook))
 
 (defun riece-toolbar-uninstall ()
+  (if riece-command-buffer
+      (with-current-buffer riece-command-buffer
+	(riece-unset-toolbar))
   (remove-hook 'riece-command-mode-hook
-	       'riece-toolbar-command-mode-hook)
-  (with-current-buffer riece-command-buffer
-    (riece-unset-toolbar)))
+	       'riece-toolbar-command-mode-hook))
 
 (provide 'riece-toolbar)
 

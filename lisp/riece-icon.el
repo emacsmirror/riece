@@ -319,23 +319,32 @@ Modify whole identification by side effect."
 		'riece-icon-update-channel-list-buffer t t)))
 
 (defun riece-icon-insinuate ()
+  (save-excursion
+    (when riece-user-list-buffer
+      (set-buffer riece-user-list-buffer)
+      (riece-icon-user-list-mode-hook))
+    (when riece-channel-list-buffer
+      (set-buffer riece-channel-list-buffer)
+      (riece-icon-channel-list-mode-hook)))
   (add-hook 'riece-user-list-mode-hook
 	    'riece-icon-user-list-mode-hook)
   (add-hook 'riece-channel-list-mode-hook
 	    'riece-icon-channel-list-mode-hook))
 
 (defun riece-icon-uninstall ()
+  (save-excursion
+    (when riece-user-list-buffer
+      (set-buffer riece-user-list-buffer)
+      (remove-hook 'riece-update-buffer-functions
+		   'riece-icon-update-user-list-buffer))
+    (when riece-channel-list-buffer
+      (set-buffer riece-channel-list-buffer)
+      (remove-hook 'riece-update-buffer-functions
+		   'riece-icon-update-user-list-buffer)))
   (remove-hook 'riece-user-list-mode-hook
 	       'riece-icon-user-list-mode-hook)
   (remove-hook 'riece-channel-list-mode-hook
-	       'riece-icon-channel-list-mode-hook)
-  (save-excursion
-    (set-buffer riece-user-list-buffer)
-    (remove-hook 'riece-update-buffer-functions
-		 'riece-icon-update-user-list-buffer)
-    (set-buffer riece-channel-list-buffer)
-    (remove-hook 'riece-update-buffer-functions
-		 'riece-icon-update-user-list-buffer)))
+	       'riece-icon-channel-list-mode-hook))
 
 (defvar riece-icon-original-mode-line-buffer-identification nil)
 
