@@ -238,7 +238,7 @@
     (setq addons (nreverse addons))
     (if (and (> (length addons) 1)
 	     (eq verbose 'ask)
-	     (not (y-or-n-p (format "%s will be insinuated.  Continue?"
+	     (not (y-or-n-p (format "%s will be insinuated.  Continue? "
 				    (mapconcat #'symbol-name addons ", ")))))
 	(error "Insinuate operation was cancelled"))
     (while addons
