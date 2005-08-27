@@ -235,10 +235,12 @@
       (if (eq (car (car pointer)) addon)
 	  (setq pointer nil)
 	(setq pointer (cdr pointer))))
-    (if (y-or-n-p (format "%s will be insinuated.  Continue?"
-			  (mapconcat #'symbol-name addons ", ")))
+    (if (if (eq verbose 'ask)
+	    (y-or-n-p (format "%s will be insinuated.  Continue?"
+			      (mapconcat #'symbol-name addons ", ")))
+	  verbose)
 	(while addons
-	  (riece-insinuate-addon-1 (car addons))
+	  (riece-insinuate-addon-1 (car addons) verbose)
 	  (setq addons (cdr addons))))))
 
 (defun riece-uninstall-addon (addon &optional verbose)
@@ -464,7 +466,7 @@ Useful keys:
 			  (lambda (pointer)
 			    (not (get (car pointer) 'riece-addon-insinuated)))
 			  t)))))
-  (riece-insinuate-addon addon t)
+  (riece-insinuate-addon addon 'ask)
   (when (eq major-mode 'riece-addon-list-mode)
     (riece-command-list-addons)
     (riece-addon-list-set-point addon)))
