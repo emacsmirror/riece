@@ -130,7 +130,7 @@
 (defun riece-toolbar-uninstall ()
   (if riece-command-buffer
       (with-current-buffer riece-command-buffer
-	(riece-unset-toolbar))
+	(riece-unset-toolbar)))
   (remove-hook 'riece-command-mode-hook
 	       'riece-toolbar-command-mode-hook))
 
