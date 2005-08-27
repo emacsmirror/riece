@@ -117,8 +117,8 @@
 (defun riece-menu-uninstall ()
   (remove-hook 'riece-command-mode-hook
 	       'riece-menu-command-mode-hook)
-  ;;FIXME: couldn't uninstall completely.
-  )
+  (with-current-buffer riece-command-buffer
+    (easy-menu-remove riece-menu)))
 
 (provide 'riece-menu)
 
