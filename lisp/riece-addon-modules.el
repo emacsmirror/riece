@@ -23,7 +23,7 @@
     (riece-lsdb . "Help register nicknames in LSDB rolodex program.")
     (riece-menu . "Setup Riece's command menus.")
     (riece-mini . "Use Riece only on the minibuffer.")
-    (riece-ndcc . "DCC file sending protocol support (written in elisp.)")
+    ;;(riece-ndcc . "DCC file sending protocol support (written in elisp.)")
     (riece-rdcc . "DCC file sending protocol support (written in Ruby.)")
     (riece-skk-kakutei . "Remove SKK's preedit mark before sending messages.")
     (riece-toolbar . "Display toolbar icons.")
