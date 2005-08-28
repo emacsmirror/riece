@@ -44,6 +44,12 @@ specifying the coding systems for decoding and encoding respectively."
 		 (const nil :tag "No conversion"))
   :group 'riece-coding)
 
+(defcustom riece-coding-system-alist nil
+  "An alist mapping from identities to coding-systems."
+  :type '(repeat (cons (string :tag "Identity")
+		       (symbol :tag "Coding system")))
+  :group 'riece-coding)
+
 (defun riece-encode-coding-string (string)
   (if (and (local-variable-p 'riece-coding-system (current-buffer))
 	   riece-coding-system)		;should be nil on non-Mule environment
@@ -61,17 +67,6 @@ specifying the coding systems for decoding and encoding respectively."
 				      riece-coding-system))
     string))
 
-(defun riece-retry-decode-coding-string (string coding-system)
-  (if (eq (get-text-property 0 'riece-coding-decoded-coding-system string)
-	  coding-system)
-      string
-    (riece-decode-coding-string-1
-     (get-text-property 0 'riece-coding-encoded-string string)
-     coding-system)))
-
-(defun riece-decoded-coding-system (string)
-  (get-text-property 0 'riece-coding-decoded-coding-system string))
-
 (defun riece-decode-coding-string-1 (string coding-system)
   (let* ((decoded (decode-coding-string string coding-system))
 	 (length (length decoded)))
@@ -80,6 +75,38 @@ specifying the coding systems for decoding and encoding respectively."
     (put-text-property 0 length 'riece-coding-decoded-coding-system
 		       coding-system decoded)
     decoded))
+
+(defun riece-coding-system-for-prefix-server (prefix server)
+  (let ((alist riece-coding-system-alist)
+	identity)
+    (catch 'found
+      (while alist
+	(setq identity (riece-parse-identity (car (car alist))))
+	(if (and (equal (riece-identity-server identity)
+			server)
+		 (equal (riece-identity-prefix identity)
+			prefix))
+	    (throw 'found (cdr (car alist))))
+	(setq alist (cdr alist))))))
+
+(defun riece-decoded-coding-system (string)
+  (get-text-property 0 'riece-coding-decoded-coding-system string))
+
+(defun riece-encoded-string (string)
+  (get-text-property 0 'riece-coding-encoded-string string))
+
+(defalias 'riece-decoded-string 'identity)
+
+(defun riece-decoded-string-for-identity (string identity)
+  (let ((coding-system (riece-coding-system-for-prefix-server
+			(riece-identity-prefix identity)
+			(riece-identity-server identity))))
+    (if (and coding-system
+	     (not (eq (riece-decoded-coding-system string)
+		      coding-system)))
+	(riece-decode-coding-string-1 (riece-encoded-string string)
+				      coding-system)
+      string)))
 
 (provide 'riece-coding)
 

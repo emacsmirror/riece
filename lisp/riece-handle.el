@@ -80,25 +80,22 @@
 
 (defun riece-handle-privmsg-message (prefix string)
   (let* ((user (riece-prefix-nickname prefix))
-	 (parameters (riece-split-parameters string))
-	 (targets (split-string (car parameters) ","))
-	 (coding-system (cdr (assoc (car targets) riece-coding-system-alist)))
-	 (message (nth 1 parameters)))
-    (if (eq coding-system
-	    (riece-decoded-coding-system string))
-	(riece-display-message
-	 (riece-make-message (riece-make-identity user
-						  riece-server-name)
-			     (riece-make-identity (car targets)
-						  riece-server-name)
-			     message
-			     nil
-			     (riece-identity-equal-no-server
-			      user riece-real-nickname)))
-      (riece-handle-privmsg-message
-       prefix
-       (riece-retry-decode-coding-string string
-					 coding-system)))))
+	 (parameters (riece-split-parameters (riece-decoded-string string)))
+	 (targets (split-string (car parameters) ",")))
+    (setq parameters (riece-split-parameters
+		      (riece-decoded-string-for-identity
+		       string
+		       (riece-make-identity (car targets) riece-server-name)))
+	  message (nth 1 parameters))
+    (riece-display-message
+     (riece-make-message (riece-make-identity user
+					      riece-server-name)
+			 (riece-make-identity (car targets)
+					      riece-server-name)
+			 message
+			 nil
+			 (riece-identity-equal-no-server
+			  user riece-real-nickname)))))
 
 (defun riece-handle-notice-message (prefix string)
   (let* ((user (if prefix
