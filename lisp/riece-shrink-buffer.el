@@ -112,12 +112,6 @@
   (remove-hook 'riece-exit-hook
 	       'riece-shrink-buffer-exit-hook))
 
-(defun riece-shrink-buffer-enable ()
-  )
-
-(defun riece-shrink-buffer-disable ()
-  )
-
 (provide 'riece-shrink-buffer)
 
 ;;; riece-shrink-buffer.el ends here

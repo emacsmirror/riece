@@ -60,15 +60,6 @@
   :group 'riece-addon-list-faces)
 (defvar riece-addon-list-disabled-face 'riece-addon-list-disabled-face)
 
-(defface riece-addon-list-unsupported-face
-  '((((class color) (background dark))
-     (:foreground "PaleTurquoise"))
-    (t
-     ()))
-  "Face used for displaying the unsupported addon."
-  :group 'riece-addon-list-faces)
-(defvar riece-addon-list-unsupported-face 'riece-addon-list-unsupported-face)
-
 (defface riece-addon-list-uninstalled-face
   '((t
      (:italic t)))
@@ -99,7 +90,6 @@
 (defcustom riece-addon-list-mark-face-alist
   '((?+ . riece-addon-list-enabled-face)
     (?- . riece-addon-list-disabled-face)
-    (?! . riece-addon-list-unsupported-face)
     (?? . riece-addon-list-uninstalled-face)
     (?  . riece-addon-list-unloaded-face))
   "An alist mapping marks on riece-addon-list-buffer to faces."
@@ -107,7 +97,7 @@
   :group 'riece-addon-list)
 
 (defcustom riece-addon-list-font-lock-keywords
-  '(("^\\([-+!? ] \\S-+\\)\\s-+\\(.*\\)"
+  '(("^\\([-+? ] \\S-+\\)\\s-+\\(.*\\)"
      (1 (cdr (assq (aref (match-string 1) 0)
 		   riece-addon-list-mark-face-alist)))
      (2 riece-addon-list-description-face)))
@@ -276,35 +266,30 @@
 (defun riece-enable-addon (addon &optional verbose)
   (unless (get addon 'riece-addon-insinuated)
     (error "Add-on %S is not insinuated" addon))
-  (let ((enable (intern-soft (concat (symbol-name addon) "-enable"))))
-    (if (or (null enable)
-	    (not (fboundp enable)))
-	(if verbose
-	    (message "Add-on %S doesn't support enable/disable" addon))
-      (if (get addon 'riece-addon-enabled)
-	  (if verbose
-	      (message "Add-on %S is already enabled" addon))
-	(funcall enable)
-	(put addon 'riece-addon-enabled t)
-	(if verbose
-	    (message "Add-on %S enabled" addon))))))
+  (if (get addon 'riece-addon-enabled)
+      (if verbose
+	  (message "Add-on %S is already enabled" addon))
+    (let ((enable (intern-soft (concat (symbol-name addon) "-enable"))))
+      (if (or (null enable)
+	      (not (fboundp enable)))
+	  (funcall enable))
+      (put addon 'riece-addon-enabled t)
+      (if verbose
+	  (message "Add-on %S enabled" addon)))))
 
 (defun riece-disable-addon (addon &optional verbose)
   (unless (get addon 'riece-addon-insinuated)
     (error "Add-on %S is not insinuated" addon))
-  (let ((disable (intern-soft (concat (symbol-name addon) "-disable"))))
-    (if (or (null disable)
-	    (not (fboundp disable)))
-	(if verbose
-	    (message "Add-on %S doesn't support enable/disable" addon))
-      (if (get addon 'riece-addon-enabled)
-	  (progn
-	    (funcall disable)
-	    (put addon 'riece-addon-enabled nil)
-	    (if verbose
-		(message "Add-on %S disabled" addon)))
-	(if verbose
-	    (message "Add-on %S is already enabled" addon))))))
+  (if (not (get addon 'riece-addon-enabled))
+      (if verbose
+	  (message "Add-on %S is already disabled" addon))
+    (let ((disable (intern-soft (concat (symbol-name addon) "-disable"))))
+      (if (or (null disable)
+	      (not (fboundp disable)))
+	  (funcall disable))
+      (put addon 'riece-addon-enabled nil)
+      (if verbose
+	  (message "Add-on %S disabled" addon)))))
 
 (put 'riece-addon-list-mode 'font-lock-defaults
      '(riece-addon-list-font-lock-keywords t))
@@ -336,7 +321,7 @@ All normal editing commands are turned off."
 	buffer-read-only
 	(pointer riece-addon-dependencies)
 	module-description-alist
-	description enable point)
+	description point)
     (while pointer
       (setq description (intern-soft (concat (symbol-name (car (car pointer)))
 					     "-description"))
@@ -362,8 +347,6 @@ All normal editing commands are turned off."
 			  (string-lessp (symbol-name (car entry1))
 					(symbol-name (car entry2))))))
     (while pointer
-      (setq enable (intern-soft (concat (symbol-name (car (car pointer)))
-					"-enable")))
       (setq point (point))
       (insert (format "%c %-15S %s\n"
 		      (if (not (featurep (car (car pointer))))
@@ -371,12 +354,9 @@ All normal editing commands are turned off."
 			(if (not (get (car (car pointer))
 				      'riece-addon-insinuated))
 			    ??
-			  (if (or (null enable)
-				  (not (fboundp enable)))
-			      ?!
-			    (if (get (car (car pointer)) 'riece-addon-enabled)
-				?+
-			      ?-))))
+			  (if (get (car (car pointer)) 'riece-addon-enabled)
+			      ?+
+			    ?-)))
 		      (car (car pointer))
 		      (cdr (car pointer))))
       (put-text-property point (point) 'riece-addon (car (car pointer)))
@@ -386,7 +366,6 @@ Symbols in the leftmost column:
 
    +     The add-on is enabled.
    -     The add-on is disabled.
-   !     The add-on doesn't support enable/disable operation.
    ?     The add-on is not insinuated.
          The add-on is not loaded.
 ")
@@ -395,7 +374,7 @@ Useful keys:
 
    `\\[riece-command-enable-addon]' to enable the current add-on.
    `\\[riece-command-disable-addon]' to disable the current add-on.
-   `\\[riece-command-insinuate-addon]' to insinuate the add-on.
+   `\\[riece-command-insinuate-addon]' to insinuate the current add-on.
    `\\[riece-command-uninstall-addon]' to uninstall the current add-on.
    `\\[riece-command-unload-addon]' to unload the current add-on.
 "))

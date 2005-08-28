@@ -86,12 +86,6 @@
   (remove-hook 'riece-after-display-message-functions
 	       'riece-eval-ruby-display-message-function))
 
-(defun riece-eval-ruby-enable ()
-  )
-
-(defun riece-eval-ruby-disable ()
-  )
-
 (provide 'riece-eval-ruby)
 
 ;;; riece-eval-ruby.el ends here

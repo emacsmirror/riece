@@ -64,12 +64,6 @@
   (remove-hook 'riece-command-send-message-hook
 	       'riece-foolproof-command-send-message-function))
 
-(defun riece-foolproof-enable ()
-  )
-
-(defun riece-foolproof-disable ()
-  )
-
 (provide 'riece-foolproof)
 
 ;;; riece-foolproof.el ends here

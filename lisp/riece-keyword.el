@@ -116,12 +116,6 @@ and the matched message object."
 (defun riece-keyword-uninstall ()
   (remove-hook 'riece-message-filter-functions 'riece-keyword-message-filter))
 
-(defun riece-keyword-enable ()
-  )
-
-(defun riece-keyword-disable ()
-  )
-
 (provide 'riece-keyword)
 
 ;;; riece-keyword.el ends here

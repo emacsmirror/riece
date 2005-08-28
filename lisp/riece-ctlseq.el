@@ -188,12 +188,6 @@
 (defun riece-ctlseq-uninstall ()
   (remove-hook 'riece-message-filter-functions 'riece-ctlseq-message-filter))
 
-(defun riece-ctlseq-enable ()
-  )
-
-(defun riece-ctlseq-disable ()
-  )
-
 (provide 'riece-ctlseq)
 
 ;;; riece-ctlseq.el ends here

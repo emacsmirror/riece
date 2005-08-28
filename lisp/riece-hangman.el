@@ -231,9 +231,6 @@ The wordlist is read from `riece-hangman-words-file'."
 (defun riece-hangman-enable ()
   (random t))
 
-(defun riece-hangman-disable ()
-  )
-
 (provide 'riece-hangman)
 
 ;;; riece-hangman.el ends here

@@ -236,12 +236,6 @@ end
   (remove-hook 'riece-after-display-message-functions
 	       'riece-google-display-message-function))
 
-(defun riece-google-enable ()
-  )
-
-(defun riece-google-disable ()
-  )
-
 (provide 'riece-google)
 
 ;;; riece-google.el ends here

@@ -127,12 +127,6 @@ Please, describe your problems."
 (defun riece-doctor-uninstall ()
   (remove-hook 'riece-after-privmsg-hook 'riece-doctor-after-privmsg-hook))
 
-(defun riece-doctor-enable ()
-  )
-
-(defun riece-doctor-disable ()
-  )
-
 (provide 'riece-doctor)
 
 ;;; riece-doctor.el ends here
