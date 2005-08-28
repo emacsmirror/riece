@@ -89,24 +89,31 @@ specifying the coding systems for decoding and encoding respectively."
 	    (throw 'found (cdr (car alist))))
 	(setq alist (cdr alist))))))
 
-(defun riece-decoded-coding-system (string)
-  (get-text-property 0 'riece-coding-decoded-coding-system string))
+;; The following functions are API used from handler functions.  For
+;; the meantime DECODED is actually a string (with some text properties).
+;; In the future, however, the implementation _should_ be changed string
+;; so that decoding phase is delayed until the body of handler functions.
+(defun riece-decoded-coding-system (decoded)
+  "Return the coding-system used for decoding DECODED."
+  (get-text-property 0 'riece-coding-decoded-coding-system decoded))
 
-(defun riece-encoded-string (string)
-  (get-text-property 0 'riece-coding-encoded-string string))
+(defun riece-encoded-string (decoded)
+  "Return the string before decoding."
+  (get-text-property 0 'riece-coding-encoded-string decoded))
 
 (defalias 'riece-decoded-string 'identity)
 
-(defun riece-decoded-string-for-identity (string identity)
+(defun riece-decoded-string-for-identity (decoded identity)
+  "Return the string decoded for IDENTITY."
   (let ((coding-system (riece-coding-system-for-prefix-server
 			(riece-identity-prefix identity)
 			(riece-identity-server identity))))
     (if (and coding-system
 	     (not (eq (riece-decoded-coding-system string)
 		      coding-system)))
-	(riece-decode-coding-string-1 (riece-encoded-string string)
+	(riece-decode-coding-string-1 (riece-encoded-string decoded)
 				      coding-system)
-      string)))
+      decoded)))
 
 (provide 'riece-coding)
 
