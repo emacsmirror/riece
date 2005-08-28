@@ -1,4 +1,4 @@
-;;; riece-biff.el --- biff add-on
+;;; riece-biff.el --- be notified if messages arrives
 ;; Copyright (C) 2004 OHASHI Akira
 
 ;; Author: OHASHI Akira <bg66@koka-in.org>
@@ -23,15 +23,15 @@
 
 ;;; Commentary:
 
-;; To use, add the following line to your ~/.riece/init.el:
-;; (add-to-list 'riece-addons 'riece-biff)
+;; NOTE: This is an add-on module for Riece.
 
 ;;; Code:
 
 (require 'riece-message)
 
 (defgroup riece-biff nil
-  "Biff for new arrival messages"
+  "Be notified if messages arrives."
+  :prefix "riece-"
   :group 'riece)
 
 (defcustom riece-biff-check-channels nil
@@ -51,13 +51,11 @@
 
 (defvar riece-biff-mode-string 'riece-biff-default-mode-string)
 
-(defvar riece-biff-enabled nil)
-
 (defconst riece-biff-description
-  "Biff for new arrival messages")
+  "Be notified if messages arrives.")
 
 (defun riece-biff-after-display-message-function (message)
-  (when (and riece-biff-enabled
+  (when (and (get 'riece-biff 'riece-addon-enabled)
 	     (not (or (eq (window-buffer (selected-window))
 			  (get-buffer riece-command-buffer))
 		      (riece-message-own-p message)
@@ -68,7 +66,7 @@
       (setq riece-biff-mode-string 'riece-biff-biff-mode-string))))
 
 (defun riece-biff-clear (&optional dummy)
-  (when riece-biff-enabled
+  (when (get 'riece-biff 'riece-addon-enabled)
     (setq riece-biff-mode-string 'riece-biff-default-mode-string)))
 
 (defun riece-biff-insinuate ()
@@ -77,6 +75,13 @@
   (add-hook 'riece-redisplay-buffers-hook 'riece-biff-clear)
   (add-hook 'riece-after-switch-to-channel-functions 'riece-biff-clear)
   (add-hook 'riece-exit-hook 'riece-biff-disable))
+
+(defun riece-biff-uninstall ()
+  (remove-hook 'riece-after-display-message-functions
+	       'riece-biff-after-display-message-function)
+  (remove-hook 'riece-redisplay-buffers-hook 'riece-biff-clear)
+  (remove-hook 'riece-after-switch-to-channel-functions 'riece-biff-clear)
+  (remove-hook 'riece-exit-hook 'riece-biff-disable))
 
 (defun riece-biff-enable ()
   (setq global-mode-string
@@ -87,8 +92,7 @@
 	  (append '("" riece-biff-mode-string)
 		  (remove "" global-mode-string)))
 	 (t
-	  global-mode-string)))
-  (setq riece-biff-enabled t))
+	  global-mode-string))))
 
 (defun riece-biff-disable ()
   (setq global-mode-string
@@ -98,8 +102,7 @@
 	  (remq 'riece-biff-mode-string global-mode-string))
 	 (t
 	  global-mode-string)))
-  (riece-biff-clear)
-  (setq riece-biff-enabled nil))
+  (riece-biff-clear))
 
 (provide 'riece-biff)
 

@@ -1,4 +1,4 @@
-;;; riece-yank.el --- enter the element in kill-ring
+;;; riece-yank.el --- enter the element of kill-ring
 ;; Copyright (C) 2004 Masatake YAMATO
 
 ;; Author: Masatake YAMATO <jet@gyve.org>
@@ -20,16 +20,14 @@
 ;; Boston, MA 02111-1307, USA.
 
 ;;; Commentary:
-;;
-;; In riece's command buffer, you can send the top element of kill-ring
-;; by C-c y. 
-;; Don't forget do (riece-command-enable-addon 'riece-yank) to test.
-;;
+
+;; NOTE: This is an add-on module for Riece.
+
 ;;; Code:
 (require 'riece-commands)
 
 (defgroup riece-yank nil
-  "Enter the element of `kill-ring'"
+  "Enter the element of kill-ring."
   :tag "Yank"
   :prefix "riece-"
   :group 'riece)
@@ -45,17 +43,17 @@ before/after the first/last non-blank line."
   :type 'boolean
   :group 'riece-yank)
 
-(defvar riece-yank-enabled nil)
+(defconst riece-yank-description
+  "Enter the element of kill-ring.")
 
 (defun riece-yank-insinuate ()
   )
 
+(defvar riece-command-mode-map)
 (defun riece-yank-enable ()
-  (define-key riece-command-mode-map "\C-cy" 'riece-command-yank)
-  (setq riece-yank-enabled t))
+  (define-key riece-command-mode-map "\C-cy" 'riece-command-yank))
 (defun riece-yank-disable ()
-  (define-key riece-command-mode-map "\C-cy" 'undefined)
-  (setq riece-yank-enabled nil))
+  (define-key riece-command-mode-map "\C-cy" 'undefined))
 
 (defun riece-yank-strip-space (string)
   (with-temp-buffer

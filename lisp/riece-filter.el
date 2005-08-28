@@ -56,13 +56,15 @@
   (let ((function (intern-soft (concat "riece-handle-" message "-message")))
 	(hook (intern (concat "riece-" message "-hook")))
 	(after-hook (intern (concat "riece-after-" message "-hook"))))
-    (unless (riece-ignore-errors (symbol-name hook)
-	      (run-hook-with-args-until-success hook prefix string))
+    (unless (riece-funcall-ignore-errors (symbol-name hook)
+					 #'run-hook-with-args-until-success
+					 hook prefix string)
       (if function
 	  (riece-funcall-ignore-errors (symbol-name function)
 				       function prefix string))
-      (riece-ignore-errors (symbol-name after-hook)
-	(run-hook-with-args-until-success after-hook prefix string)))))
+      (riece-funcall-ignore-errors (symbol-name after-hook)
+				   #'run-hook-with-args-until-success
+				   after-hook prefix string))))
 
 (defsubst riece-chomp-string (string)
   (if (string-match "\r\\'" string)

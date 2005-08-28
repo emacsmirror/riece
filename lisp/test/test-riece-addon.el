@@ -28,15 +28,16 @@
   (lunit-assert-2
    case
    (equal
-    (riece-resolve-addons '(test-riece-addon-1 test-riece-addon-2))
+    (mapcar #'car (riece-resolve-addons
+		   '(test-riece-addon-1 test-riece-addon-2)))
     '(test-riece-addon-3 test-riece-addon-4
 			 test-riece-addon-2 test-riece-addon-1))))
 
 (luna-define-method test-riece-resolve-addons-2 ((case test-riece-addon))
   (lunit-assert-2
    case
-   (equal
-    (condition-case error
-	(riece-resolve-addons '(test-riece-addon-5 test-riece-addon-6))
-      (error (nth 1 error)))
-    "Circular add-on dependency found")))
+   (condition-case error
+       (progn
+	 (riece-resolve-addons '(test-riece-addon-5 test-riece-addon-6))
+	 nil)
+     (error (nth 1 error)))))

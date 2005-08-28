@@ -1,0 +1,444 @@
+-*- mode: text -*-
+
+This document is for Riece developers.  The information necessary for
+Riece development is explained (i.e. its development process and the
+internals.)
+
+* Development process
+
+** Bug report
+
+You can create a template of a bug report by clicking the "bug" button
+in a toolbar, or M-x riece-submit-bug-report.  It is necessary to set
+riece-debug to t before preparing a bug report.
+
+** Debug output
+
+If the riece-debug variable is set to t, Riece begins to collect
+debugging information in *Debug* buffer.  Interactions with IRC
+servers are stored in " *IRC*<IRC-server-name>" buffers.  Note that
+these buffers have names starting with a whitespace character (" ").
+
+** Joining the development
+
+To join the development, send us a patch or an add-on.
+
+** CVS
+
+Development of Riece uses CVS.  Latest developing version is available
+at CVS.  Please note that the version from CVS may NOT be reliable,
+and you can only use it at your own risk.  We may ignore bug reports
+for that version.  The instruction to access the CVS server is below.
+
+(1) logging in to anonymous CVS server
+
+    cvs -d :pserver:anonymous@cvs.m17n.org:/cvs/root login
+    CVS password: [CR] # NULL string
+
+(2) checkout modules
+
+    cvs -d :pserver:anonymous@cvs.m17n.org:/cvs/root checkout riece
+
+(3) generate configure script
+
+    autoreconf -f -i -v
+
+You will need newer version of GNU Automake.
+
+* Internals
+
+** Modules
+
+Riece consists of many elisp modules listed below, ordered by the
+number of dependencies they have.
+
+- riece-globals
+  This module defines global variables.
+
+- riece-options
+  This module defines user options.
+
+- riece-version
+  This module defines the version of Riece.
+
+- riece-coding
+  This module provides functions which support character code conversions.
+
+- riece-complete
+  This module provides functions which support tab completion feature
+  in a mini buffer.
+
+- riece-addon
+  This module manages add-ons.
+
+- riece-mode
+  This module manages modes of riece-channel/riece-user objects.
+
+- riece-identity
+  This module defines the riece-identity object type which represents
+  global names of riece-channel/riece-user objects.
+
+- riece-channel
+  This module defines the riece-channel object type.
+
+- riece-user
+  This module defines the riece-user object type.
+
+- riece-misc
+  This module provides miscellaneous functions.
+
+- riece-signal
+  This module defines the riece-signal object type used to manage
+  display events.
+
+- riece-layout
+  This module manages window layouts.
+
+- riece-display
+  This module manages display events.
+
+- riece-server
+  This module manages connections to IRC servers.
+
+- riece-naming
+  This module is a so called the Mediator design pattern.  It knows
+  relationships of riece-channel/riece-user objects.
+
+- riece-message
+  This module defines the riece-message object type.
+
+- riece-filter
+  This module only provides the process filter function.
+
+- riece-handle
+  This module provides handler functions for IRC messages.  These
+  functions are called from riece-filter.
+
+- riece-000
+  This module provides handler functions for numeric replies whose
+  response codes are in 000 to 100 range.  These handlers are called
+  from riece-filter.
+
+- riece-200
+  This module provides handler functions for numeric replies whose
+  response codes are in 200 to 300 range.  These handlers are called
+  from riece-filter.
+
+- riece-300
+  This module provides handler functions for numeric replies whose
+  response codes are in 300 to 400 range.  These handlers are called
+  from riece-filter.
+
+- riece-400
+  This module provides handler functions for numeric replies whose
+  response codes are in 400 to 500 range.  These handlers are called
+  from riece-filter.
+
+- riece-500
+  This module provides handler functions for numeric replies whose
+  response codes are in 500 to 600 range.  These handlers are called
+  from riece-filter.
+
+- riece-commands
+  This module provides user commands.
+
+- riece-irc
+  This module provides the binding for the IRC protocol.
+
+- riece
+  This module is the entry point of M-x riece.
+
+** Namespace management
+
+Riece is capable to connect to several IRC servers.
+
+Riece has separate namespace (obarray) for each connection.  These
+namespaces can be accessed as buffer local variables of process
+buffer.
+
+*** Obtaining server buffer
+
+To access to the buffer local variables of process buffer, it is
+needed to distinguish process object of each connection by its name.
+
+It can be known by:
+
+(1) checking the value of riece-overriding-server-name,
+
+(2) checking the value of riece-server-name,
+    (If the variable riece-server-name is local to the current buffer,
+    you are already in the process buffer.)
+
+(3) or parsing riece-identity objects
+
+Once you get the name of the IRC server, you can get the process
+object by passing the name to the function riece-server-process.
+
+*** riece-identity objects
+
+A riece-identity object represents a name of a channel/user.  It is
+used to distinguish a channel/user among several servers.
+
+A riece-identity object is actually a vector, which consists of two
+elements listed below.
+
+- prefix
+  A channel/user name local to an IRC server.
+
+- server
+  The name of the IRC server.
+
+Methods to manipulate riece-identity object are listed below.
+
+- riece-make-identity prefix &optional server
+  Create a new riece-identity object.  If the server argument is
+  omitted, it sets the server part to the value returned by the
+  riece-find-server-name function.
+
+- riece-identity-prefix identity
+  Return the prefix element from the given riece-identity object.
+
+- riece-identity-server identity
+  Return the server element from the given riece-identity object.
+
+- riece-identity-equal ident1 ident2
+  Return t, if two riece-identity objects are equal.
+
+- riece-identity-equal-no-server ident1 ident2
+  Return t, if two riece-identity objects are equal.  This function
+  only consider a prefix part of a riece-identity object.
+
+- riece-identity-member elt list
+  Return non-nil if a riece-identity object is an element of a list.
+
+*** Channels and users
+
+A riece-channel object provides an abstraction of a channel.
+Likewise, a riece-user object provides an abstraction of a user.
+
+**** riece-channel objects
+
+A riece-channel object has many information about a channel.  A
+riece-channel object is actually a vector whose seven elements are listed
+below.
+
+- users
+  A list of nicknames which are of users in this channel.
+
+- operators
+  A list of nicknames which are of channel operators in this channel.
+
+- speakers
+  A list of nicknames which are of users who have the right to speak
+  in this channel.
+
+- modes
+  An alist which represents modes of this channel.
+
+- banned
+  A list of patterns set by MODE +b.
+
+- invited
+  A list of patterns set by MODE +I.
+
+- uninvited
+  A list of patterns set by MODE +e.
+
+**** riece-user objects
+
+A riece-user object has many information about a user.  A riece-user
+object is actually a vector whose four elements are listed below.
+
+- channels
+  A list of channel names this user is participating.
+
+- user-at-host
+  Connection information of this user, set in "<user>@<host>" format.
+
+- modes
+  An alist which represents modes of this user.
+
+- away
+  A flag represent whether this user is AWAY.
+
+**** The Mediator pattern
+
+The riece-naming module is used to manage relationships between
+channels and users.  It utilizes the Mediator design pattern.
+
+Using the riece-naming module allows to safely access to the namespace
+rather than directly connects riece-channel/riece-user objects.
+
+The riece-naming module provides the following functions.
+
+- riece-naming-assert-join user-name channel-name
+  Assert that a user is a member of a channel.
+
+- riece-naming-assert-part user-name channel-name
+  Assert that a user is no longer a member of a channel.
+
+- riece-naming-assert-rename old-name new-name
+  Assert that a user changed his nickname.
+
+** Signals
+
+There is a mechanism to connect events and display objects (windows,
+buffers, and modeline indicators).  This is done by signals.
+
+When it is needed to redraw, a signal is emitted.  The concept of
+signals is corresponding to signals in generic window system toolkit
+such as Qt or GTK+.
+
+To emit a signal, use riece-emit-signal.
+
+- riece-emit-signal signal-name &rest args
+  Emit a signal named signal-name with args.
+
+To define a function called when a signal is emitted, use
+riece-connect-signal.
+
+- riece-connect-signal signal-name slot-function &optional
+                       filter-function handback
+
+  Give a signal a slot-function.  The slot-function gets two
+  arguments: the signal object itself and a handback object given as
+  the fourth argument of riece-connect-signal.
+
+  If the third argument filter-function is specified, the
+  slot-function is called conditionally.  The filter-function gets the
+  signal object and returns nil or t.  If the return value is nil, the
+  slot-function is not called.
+
+To access to a signal object, use the following functions.
+
+- riece-signal-name signal
+  Return the name of a signal.
+
+- riece-signal-args
+  Return the data of a signal.
+
+Below is a list of signal names reserved.
+
+- channel-list-changed
+  Need update the channel list.
+
+- user-list-changed
+  Need update the user list.
+  (This signal gets a riece-identity object as an argument which
+  represents the channel.)
+
+- channel-switched
+  A user selected another channel.
+
+- user-joined-channel
+  A user joined a channel.
+  (This signal gets two riece-identity objects as arguments
+  corresponding to the user and the channel respectively.)
+
+- user-left-channel
+  A user left a channel.
+  (This signal gets two riece-identity objects as arguments
+  corresponding to the user and the channel respectively.)
+
+- user-renamed
+  A user changed his nickname.
+  (This signal gets two riece-identity objects as arguments
+  corresponding to the old and the new nickname respectively.)
+
+- user-away-changed
+  A user changed his AWAY status.
+  (This signal gets a riece-identity object as an argument which
+  represents the user.)
+
+- user-operator-changed
+  A user changed his IRC operator status. 
+  (This signal gets a riece-identity object as an argument which
+  represents the user.)
+
+- channel-topic-changed
+  A topic of a channel changed.
+  (This signal gets a riece-identity object as an argument which
+  represents the channel.)
+
+- channel-modes-changed
+  Modes of a channel changed.
+  (This signal gets a riece-identity object as an argument which
+  represents the channel.)
+
+- channel-operators-changed
+  A list of operators in a channel changed.
+  (This signal gets a riece-identity object as an argument which
+  represents the channel.)
+
+- channel-speakers-changed
+  A list of users who have the right to speak in a channel changed.
+  (This signal gets a riece-identity object as an argument which
+  represents the channel.)
+
+- buffer-freeze-changed
+  A buffer is frozen or unfrozen.
+  (This signal gets a buffer as an argument.)
+
+** Writing add-ons
+
+Elisp modules that satisfy add-on spec should provide the following
+functions.
+
+- <module-name>-requires
+  Return a list of names of other add-ons this add-on depends. (optional)
+
+- <module-name>-insinuate
+  Called on initialization of this module.
+
+It is recommended to set short explanation of the add-on to
+<module-name>-description variable which is displayed on add-on
+listing shown up by C-c ^ (M-x riece-command-list-addons).
+
+Add-ons that support enabling/disabling set the current status to
+<module-name>-enabled variable.  If this variable is nil, the add-on
+is regarded as currently disabled.  In addition, the add-on must
+provide the following two functions.
+
+- <module-name>-enable
+  Called to enable this add-on.
+
+- <module-name>-disable
+  Called to disable this add-on.
+
+Riece does the following process when startup.
+
+(1) Load add-ons listed in the riece-addons variable.
+
+(2) Call <module-name>-requires on each add-on (if exists) and build a
+    dependency graph.
+
+(3) Sort the dependency graph.
+
+(4) Call <module-name>-insinuate on each add-on in order of the
+    dependencies.
+
+(5) Call <module-name>-enable on each add-on, iff it supports
+    enabling/disabling and is not disabled explicitly.
+
+Add-ons are loaded from directories listed in load-path, or from
+~/.riece/addons/.
+
+** Handler hooks
+
+There are hooks called "handler hooks " which have special meaning in
+Riece.  Handler hooks are called before/after processing IRC messages.
+
+- riece-<message>-hook
+  Called before processing an IRC message.
+
+- riece-after-<message>-hook
+  Called after processing an IRC message.
+
+Where <message> is a type of IRC message and consists only lowercase
+characters.
+
+If riece-<message>-hook returns non-nil, <message> is not processed.
+In this case riece-after-<message>-hook is not called.
+
+Handler hooks gets two arguments corresponding to prefix and
+parameters in RFC2812.

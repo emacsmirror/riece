@@ -1,4 +1,4 @@
-;;; riece-xface.el --- display X-Face in user list buffer
+;;; riece-xface.el --- display X-Face in IRC buffers
 ;; Copyright (C) 1998-2003 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>
@@ -24,8 +24,7 @@
 
 ;;; Commentary:
 
-;; To use, add the following line to your ~/.riece/init.el:
-;; (add-to-list 'riece-addons 'riece-xface)
+;; NOTE: This is an add-on module for Riece.
 
 ;;; Code:
 
@@ -34,15 +33,13 @@
 (require 'riece-display)
 (require 'riece-lsdb)
 
-(defvar riece-xface-enabled nil)
-
 (defconst riece-xface-description
-  "Display X-Face in user list buffer")
+  "Display X-Face in IRC buffers.")
 
 (defvar lsdb-insert-x-face-function)
 
 (defun riece-xface-update-user-list-buffer ()
-  (if riece-xface-enabled
+  (if (get 'riece-xface 'riece-addon-enabled)
       (riece-scan-property-region
        'riece-identity (point-min)(point-max)
        (lambda (start end)
@@ -64,19 +61,30 @@
 (defun riece-xface-requires ()
   '(riece-lsdb))
 
+(defun riece-xface-user-list-mode-hook ()
+  (add-hook 'riece-update-buffer-functions
+	    'riece-xface-update-user-list-buffer t t))
+
 (defun riece-xface-insinuate ()
+  (if riece-user-list-buffer
+      (with-current-buffer riece-user-list-buffer
+	(riece-xface-user-list-mode-hook)))
   (add-hook 'riece-user-list-mode-hook
-	    (lambda ()
-	      (add-hook 'riece-update-buffer-functions
-			'riece-xface-update-user-list-buffer t t))))
+	    'riece-xface-user-list-mode-hook))
+
+(defun riece-xface-uninstall ()
+  (if riece-user-list-buffer
+      (with-current-buffer riece-user-list-buffer
+	(remove-hook 'riece-update-buffer-functions
+		     'riece-xface-update-user-list-buffer t)))
+  (remove-hook 'riece-user-list-mode-hook
+	       'riece-xface-user-list-mode-hook))
 
 (defun riece-xface-enable ()
-  (setq riece-xface-enabled t)
   (if riece-current-channel
       (riece-emit-signal 'user-list-changed riece-current-channel)))
 
 (defun riece-xface-disable ()
-  (setq riece-xface-enabled nil)
   (if riece-current-channel
       (riece-emit-signal 'user-list-changed riece-current-channel)))
 

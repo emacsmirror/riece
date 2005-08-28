@@ -11,7 +11,9 @@
 		riece-version
 		riece-coding
 		riece-complete
+		riece-addon-modules
 		riece-addon
+		riece-ruby
 
 		riece-mode
 		;; riece-identity -+-> riece-channel
@@ -44,48 +46,20 @@
 
 		riece-commands
 		riece-irc
-		riece
-
-		;; add-ons
-		riece-ctcp
-		riece-highlight
-		riece-log
-		riece-mini
-		riece-rdcc
-		riece-url
-		riece-unread
-		riece-doctor
-		riece-alias
-		riece-skk-kakutei
-		riece-foolproof
-		riece-guess
-		riece-history
-		riece-button
-		riece-keyword
-		riece-menu
-		riece-icon
-		riece-async
-		riece-lsdb
-		riece-xface
-		riece-ctlseq
-		riece-ignore
-		riece-hangman
-		riece-biff
-		riece-kakasi
-		riece-yank
-		riece-toolbar
-		riece-eval
-		riece-google
-		riece-keepalive))))
+		riece))))
 
 (defvar riece-icons
-  '(riece-command-quit
-    riece-command-join
-    riece-command-part
-    riece-command-previous-channel
-    riece-command-next-channel
-    riece-command-change-layout
-    riece-submit-bug-report))
+  '("riece-command-quit.xpm"
+    "riece-command-join.xpm"
+    "riece-command-part.xpm"
+    "riece-command-previous-channel.xpm"
+    "riece-command-next-channel.xpm"
+    "riece-command-change-layout.xpm"
+    "riece-submit-bug-report.xpm"))
+
+(defvar riece-scripts
+  '("server.rb"
+    "aproxy.rb"))
 
 (defun riece-compile-modules (modules)
   (let ((load-path (cons nil load-path))
@@ -109,6 +83,13 @@
   WARNING: You should probably stop here, try \"make distclean\" to clear
   WARNING: the last build, and then reconfigure.
   WARNING: ---------------------------------------------------------\n\n")))))
+
+(defun riece-compile-module ()
+  (let ((load-path (cons nil load-path)))
+    (let ((source (expand-file-name
+		   (concat (car command-line-args-left) ".el"))))
+      (if (file-newer-than-file-p source (concat source "c"))
+	  (byte-compile-file source)))))
 
 (defun riece-install-modules (modules dest just-print)
   (unless (or just-print (file-exists-p dest))
@@ -134,14 +115,25 @@
   (unless (or just-print (file-exists-p dest))
     (make-directory dest t))
   (while icons
-    (let ((name (symbol-name (car icons))))
-      (when (file-exists-p (expand-file-name (concat name ".xpm")))
-	(princ (format "%s.xpm -> %s\n" name dest))
-	(unless just-print
-	  (copy-file (expand-file-name (concat name ".xpm"))
-		     (expand-file-name (concat name ".xpm") dest)
-		     t t))))
+    (when (file-exists-p (expand-file-name (car icons)))
+      (princ (format "%s -> %s\n" (car icons) dest))
+      (unless just-print
+	(copy-file (expand-file-name (car icons))
+		   (expand-file-name (car icons) dest)
+		   t t)))
     (setq icons (cdr icons))))
+
+(defun riece-install-scripts (scripts dest just-print)
+  (unless (or just-print (file-exists-p dest))
+    (make-directory dest t))
+  (while scripts
+    (when (file-exists-p (expand-file-name (car scripts)))
+      (princ (format "%s -> %s\n" (car scripts) dest))
+      (unless just-print
+	(copy-file (expand-file-name (car scripts))
+		   (expand-file-name (car scripts) dest)
+		   t t)))
+    (setq scripts (cdr scripts))))
 
 (defun riece-install-just-print-p ()
   (let ((flag (getenv "MAKEFLAGS"))
@@ -149,16 +141,29 @@
     (if flag
 	(string-match "^\\(\\(--[^ ]+ \\)+-\\|[^ =-]\\)*n" flag))))
 
+(defun riece-examine-modules ()
+  (let ((load-path (cons nil load-path)))
+    (require 'riece-addon-modules)
+    (append riece-modules
+	    (mapcar #'car riece-addon-modules))))
+
+(defun riece-examine ()
+  (princ (mapconcat #'symbol-name (riece-examine-modules) " ")))
+
 (defun riece-compile ()
-  (riece-compile-modules riece-modules))
+  (riece-compile-modules (riece-examine-modules)))
 
 (defun riece-install ()
   (riece-install-modules
-   riece-modules
+   (riece-examine-modules)
    (expand-file-name "riece" (car command-line-args-left))
    (riece-install-just-print-p))
   (riece-install-icons
    riece-icons
+   (expand-file-name "riece" (car command-line-args-left))
+   (riece-install-just-print-p))
+  (riece-install-scripts
+   riece-scripts
    (expand-file-name "riece" (car command-line-args-left))
    (riece-install-just-print-p)))
 
@@ -169,20 +174,22 @@
   (add-to-list 'command-line-args-left ".")
   (Custom-make-dependencies)
   (riece-compile-modules
-   (append riece-modules
+   (append (riece-examine-modules)
 	   '(auto-autoloads custom-load))))
 
 (defun riece-install-package ()
   (riece-install-modules
-   (append riece-modules
+   (append (riece-examine-modules)
 	   '(auto-autoloads custom-load))
-   (expand-file-name "riece"
-		     (expand-file-name "lisp" (car command-line-args-left)))
+   (expand-file-name "lisp/riece" (car command-line-args-left))
    (riece-install-just-print-p))
   (riece-install-icons
    riece-icons
-   (expand-file-name "riece"
-		     (expand-file-name "lisp" (car command-line-args-left)))
+   (expand-file-name "etc/riece" (car command-line-args-left))
+   (riece-install-just-print-p))
+  (riece-install-scripts
+   riece-scripts
+   (expand-file-name "etc/riece" (car command-line-args-left))
    (riece-install-just-print-p)))
 
 (defun riece-test ()

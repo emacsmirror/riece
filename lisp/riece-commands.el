@@ -144,6 +144,13 @@ the layout to the selected layout-name."
 	riece-save-variables-are-dirty t)
   (riece-command-configure-windows))
 
+(defun riece-command-toggle-others-buffer-mode ()
+  (interactive)
+  (setq riece-others-buffer-mode
+	(not riece-others-buffer-mode)
+	riece-save-variables-are-dirty t)
+  (riece-command-configure-windows))
+
 (defun riece-command-toggle-user-list-buffer-mode ()
   (interactive)
   (setq riece-user-list-buffer-mode

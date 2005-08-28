@@ -1,4 +1,4 @@
-;;; riece-mini.el --- "riece on minibuffer" add-on
+;;; riece-mini.el --- use Riece only on the minibuffer
 ;; Copyright (C) 2003 OHASHI Akira
 
 ;; Author: OHASHI Akira <bg66@koka-in.org>
@@ -23,6 +23,8 @@
 
 ;;; Commentary:
 
+;; NOTE: This is an add-on module for Riece.
+
 ;; This add-on shows arrival messages to minibuffer. And you can send
 ;; message using minibuffer.
 ;;
@@ -44,7 +46,7 @@
 (require 'riece-biff)
 
 (defgroup riece-mini nil
-  "riece on minibuffer"
+  "Use Riece only on the minibuffer."
   :group 'riece)
 
 (defcustom riece-mini-backlog-size 5
@@ -56,19 +58,17 @@
 (defvar riece-mini-backlog-history nil)
 (defvar riece-mini-backlog-shown nil)
 
-(defvar riece-mini-enabled nil)
-
 (defconst riece-mini-description
-  "Send arrival messages to minibuffer")
+  "Use Riece only on the minibuffer.")
 
-(defmacro riece-mini-message-no-log (string &rest args)
+(defun riece-mini-message-no-log (string &rest args)
   "Like `message', except that message logging is disabled."
   (if (featurep 'xemacs)
       (if args
-	  `(display-message 'no-log (format ,string ,@args))
-	`(display-message 'no-log ,string))
-    `(let (message-log-max)
-       (message ,string ,@args))))
+	  (display-message 'no-log (apply #'format string args))
+	(display-message 'no-log string))
+    (let (message-log-max)
+      (apply #'message string args))))
 
 (defun riece-mini-display-message-function (message)
   "Show arrival messages to minibuffer."
@@ -82,7 +82,7 @@
 	    (cdr riece-mini-backlog-history)))
     (setq riece-mini-backlog-history
 	  (reverse (cons string (reverse riece-mini-backlog-history))))
-    (when (and riece-mini-enabled
+    (when (and (get 'riece-mini 'riece-addon-enabled)
 	       (not (or (eq (window-buffer (selected-window))
 			    (get-buffer riece-command-buffer))
 			(riece-message-own-p message)
@@ -128,7 +128,7 @@ If twice (C-u C-u), then ask the channel."
 	    (resize-mini-windows t))
 	(setq riece-mini-backlog-shown t)
 	(when (and (memq 'riece-biff riece-addons)
-		   riece-biff-enabled)
+		   (get 'riece-biff 'riece-addon-enabled))
 	  (riece-biff-clear))
 	(riece-mini-message-no-log
 	 "%s" (mapconcat #'identity riece-mini-backlog-history "\n"))))))
@@ -141,18 +141,23 @@ If twice (C-u C-u), then ask the channel."
 
 (defun riece-mini-requires ()
   (if (memq 'riece-biff riece-addons)
- '(riece-biff)))
+      '(riece-biff)))
 
 (defun riece-mini-insinuate ()
   (add-hook 'riece-after-display-message-functions
 	    'riece-mini-display-message-function)
   (add-hook 'pre-command-hook 'riece-mini-pre-command))
 
+(defun riece-mini-uninstall ()
+  (remove-hook 'riece-after-display-message-functions
+	       'riece-mini-display-message-function)
+  (remove-hook 'pre-command-hook 'riece-mini-pre-command))
+
 (defun riece-mini-enable ()
-  (setq riece-mini-enabled t))
+  )
 
 (defun riece-mini-disable ()
-  (setq riece-mini-enabled nil))
+  )
 
 (provide 'riece-mini)
 

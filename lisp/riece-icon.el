@@ -1,8 +1,8 @@
-;;; riece-icon.el --- iconify buffer strings
-;; Copyright (C) 1'center8-2003 Daiki Ueno
+;;; riece-icon.el --- display icons in IRC buffers
+;; Copyright (C) 1998-2003 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>
-;; Created: 1'center8-09-28
+;; Created: 1998-09-28
 ;; Keywords: IRC, riece
 
 ;; This file is part of Riece.
@@ -24,8 +24,7 @@
 
 ;;; Commentary:
 
-;; To use, add the following line to your ~/.riece/init.el:
-;; (add-to-list 'riece-addons 'riece-icon)
+;; NOTE: This is an add-on module for Riece.
 
 ;;; Code:
 
@@ -182,10 +181,8 @@ static char * a_xpm[] = {
 \"  @@@@@@@@@@@ \",
 \"              \"};")
 
-(defvar riece-icon-enabled nil)
-
 (defconst riece-icon-description
-  "Add icon images on IRC buffers")
+  "Display icons in IRC buffers.")
 
 (defun riece-icon-available-p ()
   (if (featurep 'xemacs)
@@ -237,7 +234,7 @@ static char * a_xpm[] = {
 				   'rear-nonsticky (list 'display)))))))
 
 (defun riece-icon-update-user-list-buffer ()
-  (if riece-icon-enabled
+  (if (get 'riece-icon 'riece-addon-enabled)
       (let ((images (riece-icon-make-images riece-user-list-icons)))
 	(save-excursion
 	  (goto-char (point-min))
@@ -247,7 +244,7 @@ static char * a_xpm[] = {
 	     (1- (point)) (point)))))))
 
 (defun riece-icon-update-channel-list-buffer ()
-  (if riece-icon-enabled
+  (if (get 'riece-icon 'riece-addon-enabled)
       (let ((images (riece-icon-make-images riece-channel-list-icons)))
 	(save-excursion
 	  (goto-char (point-min))
@@ -309,28 +306,72 @@ Modify whole identification by side effect."
       (error
        (defalias 'riece-icon-modeline-buffer-identification 'identity)))))
 
+(defun riece-icon-user-list-mode-hook ()
+  (if (riece-icon-available-p)
+      (add-hook 'riece-update-buffer-functions
+		'riece-icon-update-user-list-buffer t t)))
+
+(defun riece-icon-channel-list-mode-hook ()
+  (if (riece-icon-available-p)
+      (add-hook 'riece-update-buffer-functions
+		'riece-icon-update-channel-list-buffer t t)))
+
 (defun riece-icon-insinuate ()
-  (defalias 'riece-mode-line-buffer-identification
-    #'riece-icon-modeline-buffer-identification)
+  (save-excursion
+    (when riece-user-list-buffer
+      (set-buffer riece-user-list-buffer)
+      (riece-icon-user-list-mode-hook))
+    (when riece-channel-list-buffer
+      (set-buffer riece-channel-list-buffer)
+      (riece-icon-channel-list-mode-hook)))
   (add-hook 'riece-user-list-mode-hook
-	    (lambda ()
-	      (if (riece-icon-available-p)
-		  (add-hook 'riece-update-buffer-functions
-			    'riece-icon-update-user-list-buffer t t))))
+	    'riece-icon-user-list-mode-hook)
   (add-hook 'riece-channel-list-mode-hook
-	    (lambda ()
-	      (if (riece-icon-available-p)
-		  (add-hook 'riece-update-buffer-functions
-			    'riece-icon-update-channel-list-buffer t t)))))
+	    'riece-icon-channel-list-mode-hook))
+
+(defun riece-icon-uninstall ()
+  (save-excursion
+    (when riece-user-list-buffer
+      (set-buffer riece-user-list-buffer)
+      (remove-hook 'riece-update-buffer-functions
+		   'riece-icon-update-user-list-buffer t))
+    (when riece-channel-list-buffer
+      (set-buffer riece-channel-list-buffer)
+      (remove-hook 'riece-update-buffer-functions
+		   'riece-icon-update-channel-list-buffer t)))
+  (remove-hook 'riece-user-list-mode-hook
+	       'riece-icon-user-list-mode-hook)
+  (remove-hook 'riece-channel-list-mode-hook
+	       'riece-icon-channel-list-mode-hook))
+
+(defvar riece-icon-original-mode-line-buffer-identification nil)
+
+(defun riece-icon-update-mode-line-buffer-identification ()
+  (let ((buffers riece-buffer-list))
+    (save-excursion
+      (while buffers
+	(set-buffer (car buffers))
+	(if (local-variable-p 'riece-mode-line-buffer-identification
+			      (car buffers))
+	    (setq mode-line-buffer-identification
+		  (riece-mode-line-buffer-identification
+		   riece-mode-line-buffer-identification)))
+	(setq buffers (cdr buffers))))))
 
 (defun riece-icon-enable ()
-  (setq riece-icon-enabled t)
+  (setq riece-icon-original-mode-line-buffer-identification
+	(symbol-function 'riece-mode-line-buffer-identification))
+  (defalias 'riece-mode-line-buffer-identification
+    'riece-icon-modeline-buffer-identification)
+  (riece-icon-update-mode-line-buffer-identification)
   (if riece-current-channel
       (riece-emit-signal 'user-list-changed riece-current-channel))
   (riece-emit-signal 'channel-list-changed))
 
 (defun riece-icon-disable ()
-  (setq riece-icon-enabled nil)
+  (fset 'riece-mode-line-buffer-identification
+	riece-icon-original-mode-line-buffer-identification)
+  (riece-icon-update-mode-line-buffer-identification)
   (if riece-current-channel
       (riece-emit-signal 'user-list-changed riece-current-channel))
   (riece-emit-signal 'channel-list-changed))

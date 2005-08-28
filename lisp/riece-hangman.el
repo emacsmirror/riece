@@ -1,4 +1,4 @@
-;;; riece-hangman.el --- hangman
+;;; riece-hangman.el --- allow channel members to play the hangman game
 ;; Copyright (C) 1998-2004 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>
@@ -23,8 +23,7 @@
 
 ;;; Commentary:
 
-;; To use, add the following line to your ~/.riece/init.el:
-;; (add-to-list 'riece-addons 'riece-hangman)
+;; NOTE: This is an add-on module for Riece.
 
 ;;; Code:
 
@@ -34,16 +33,16 @@
 (require 'riece-server)
 
 (defgroup riece-hangman nil
-  "Interface to hangman.el"
+  "Allow channel members to play the hangman game."
   :prefix "riece-"
   :group 'riece)
 
-(defcustom riece-hangman-hello-regexp "^, hangman"
+(defcustom riece-hangman-hello-regexp "^,hangman$"
   "Pattern of string to start the game."
   :type 'string
   :group 'riece-hangman)
 
-(defcustom riece-hangman-bye-regexp "^, bye hangman"
+(defcustom riece-hangman-bye-regexp "^,hangman bye$"
   "Pattern of string to end the game."
   :type 'string
   :group 'riece-hangman)
@@ -56,10 +55,8 @@
 (defvar riece-hangman-player-context-alist nil)
 (defvar riece-hangman-words-buffer nil)
 
-(defvar riece-hangman-enabled nil)
-
 (defconst riece-hangman-description
-  "Allow users in channel to play classic textual game \"hangman\"")
+  "Allow channel members to play the hangman game.")
 
 (put 'riece-hangman 'riece-addon-default-disabled t)
 
@@ -141,7 +138,7 @@ The wordlist is read from `riece-hangman-words-file'."
 	       "")))))
 
 (defun riece-hangman-after-privmsg-hook (prefix string)
-  (if riece-hangman-enabled
+  (if (get 'riece-hangman 'riece-addon-enabled)
       (let* ((user (riece-prefix-nickname prefix))
 	     (parameters (riece-split-parameters string))
 	     (targets (split-string (car parameters) ","))
@@ -228,12 +225,14 @@ The wordlist is read from `riece-hangman-words-file'."
 (defun riece-hangman-insinuate ()
   (add-hook 'riece-after-privmsg-hook 'riece-hangman-after-privmsg-hook))
 
+(defun riece-hangman-uninstall ()
+  (remove-hook 'riece-after-privmsg-hook 'riece-hangman-after-privmsg-hook))
+
 (defun riece-hangman-enable ()
-  (random t)
-  (setq riece-hangman-enabled t))
+  (random t))
 
 (defun riece-hangman-disable ()
-  (setq riece-hangman-enabled nil))
+  )
 
 (provide 'riece-hangman)
 

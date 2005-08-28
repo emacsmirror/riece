@@ -27,18 +27,21 @@
 (require 'riece-globals)
 (require 'riece-options)
 
-(defun riece-debug (message &optional detail)
-  "Print a one-line debug MESSAGE at the bottom of the frame.
-If the optional 2nd argument DETAIL is specified, it is stored into
-`riece-debug-buffer'."
+(defun riece-debug-1 (message detail)
   (message "riece-debug: %s" message)
   (save-excursion
     (set-buffer riece-debug-buffer)
     (goto-char (point-max))
-    (let ((point (point)))
+    (let ((time (format-time-string "%Y-%m-%d:%H:%M:%S")))
       (if detail
-	  (insert message "\n" detail "\n")
-	(insert message "\n")))))
+	  (insert "*** " time ": " message "\n" detail "\n")
+	(insert "*** " time ": " message "\n")))))
+
+(defun riece-debug (message &optional detail)
+  "Print a one-line debug MESSAGE at the bottom of the frame.
+If the optional 2nd argument DETAIL is specified, it is stored into
+`riece-debug-buffer'."
+  (ignore (riece-debug-1 message detail)))
 
 (defun riece-debug-reset-standard-output ()
   "Reset `riece-temp-buffer' to be used as `standard-output'."

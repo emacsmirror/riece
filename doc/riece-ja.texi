@@ -49,15 +49,16 @@ Free Documentation License".
 @node Top, Overview, (dir), (dir)
 @top Riece user's manual
 
-Riece $B$O(B Emacs $B$G(B IRC (Internet Relay Chat) $B$K;22C$9$k$?$a$N%W%m%0%i%`$G$9!#(B
+$B$3$N%^%K%e%"%k$G$O!"(BRiece $B%P!<%8%g%s(B @value{VERSION} $B$K$D$$$F2r@b$7$^$9!#(B
+$B$3$N%^%K%e%"%k$G07$&HO0O$r1[$($?>pJs$O(B Riece $B$N8x<0%[!<%`%Z!<%8(B 
+@uref{http://www.nongnu.org/riece/} $B$+$iF@$i$l$k$+$b$7$l$^$;$s!#(B
 
 @menu
-* Overview::                    Riece $B$H$O2?$+(B
-* Getting started::             
+* Overview::                    $B$O$8$a$KFI$s$G$M(B
+* Getting started::             IRC $B%5!<%P$K@\B3$7$F2qOC$7$F$_$h$&(B
 * Basic usage::                 $B4pK\E*$J;H$$J}(B
 * Advanced usage::              $B?J$s$@;H$$J}(B
 * Tips::                        $BJXMx$J@_Dj(B
-* Development::                 $B3+H/<T8~$1>pJs(B
 * Index::                       
 * Function Index::              
 * Variable Index::              
@@ -66,140 +67,65 @@ Riece $B$O(B Emacs $B$G(B IRC (Internet Relay Chat) $B$K;22C$9$k$?$a$N%W%m%
 @node Overview, Getting started, Top, Top
 @chapter Overview
 
-Riece $B$O!"D9$$4V%a%s%F%J%s%9IT2DG=$J>uBV$K$"$C$?(B Liece $B$N%3!<%I$r40A4$K(B
-$B=q$-D>$7$?$b$N$G$9!#%f!<%6%$%s%?!<%U%'!<%9$NBgItJ,$O(B Liece $B$N$b$N$rF'=1(B
-$B$7$F$$$^$9!#(B
+Riece $B$O(B IRC (Internet Relay Chat) $B$N@$3&$G%A%c%C%H$r3Z$7$`$?$a$N%f!<%6(B
+$B%$%s%?!<%U%'!<%9$G$9!#(BRiece $B$O!V$j!<$9!W$HFI$_$^$9!#(B
 
-Riece $B$K$O(B Liece $B$K$O$J$$FCD9$,$$$/$D$+$"$j$^$9!#(B
-$B0J2<$K$=$l$i$N0lIt$r5s$2$^$9!#(B
+Riece $B$N<g$JFCD9$O0J2<$NDL$j$G$9!#(B
 
 @itemize @bullet
 @item $BJ#?t$N(B IRC $B%5!<%P$KF1;~$K@\B32DG=(B
-@item $B%"%I%*%s$K$h$j5!G=$NDI2C$d<h$j30$7$,2DG=(B
+@item $B%"%I%*%s$K$h$j5!G=$NDI2C$d<h$j30$7$,MF0W(B
 @item $BB>$N(B elisp $B%Q%C%1!<%8$K0MB8$7$J$$$?$a!"%$%s%9%H!<%k$,4JC1(B
 @item $B@_Dj$,4JC1$G!"A02s5/F0;~$N@_Dj$r5-O?!&I|85$9$k;EAH$_$rDs6!(B
 @item $BCJ3,E*$JA`:n@bL@=q$,ImB0(B
 @item $B:G?7$N(B IRC $B$N%/%i%$%"%s%H%W%m%H%3%k(B (RFC2812) $B$K=`5r(B
 @end itemize
 
-$B$h$j>\$7$$>pJs$O!"0J2<$N%Z!<%8$r8fMw$/$@$5$$!#(B
-
-@itemize @bullet
-@item http://www.nongnu.org/riece/
-@end itemize
-
 @node Getting started, Basic usage, Overview, Top
 @chapter Getting started
 
-@menu
-* Required Environments::       $BF0:n4D6-(B
-* Installation::                $B%$%s%9%H!<%kJ}K!(B
-* Startup File::                $B@_Dj%U%!%$%k(B
-@end menu
+Riece $B$r5/F0$9$k<j=g$O<!$NDL$j$G$9!#(B
 
-@node Required Environments, Installation, Getting started, Getting started
-@section Required Environments
+@enumerate
+@item
+@kbd{M-x load-library riece}
 
-$B<!$K5s$2$k4D6-$GF0:n$r3NG'$7$F$$$^$9!#(B
+@item
+@kbd{M-x riece}
+@end enumerate
 
-@itemize @bullet
-@item Emacs 20.7 $B0J>e(B
-@item XEmacs 21.4 $B0J>e(B
-@end itemize
+$B$b$7(B (1) $B$G(B @samp{Cannot open load file: riece} $B$N%(%i!<$,H/@8$9$k>l9g$K(B
+$B$O%$%s%9%H!<%k$K<:GT$7$F$$$^$9!#<+J,$G%=!<%9$+$i%$%s%9%H!<%k$7$?>l9g$K$O(B 
+README $B$r$b$&0lEYFI$_D>$7$F$/$@$5$$!#(BOS$B!&%G%#%9%H%j%S%e!<%7%g%s$N%Q%C%1!<(B
+$B%8$+$i%$%s%9%H!<%k$7$?>l9g$K$O!"%Q%C%1!<%8$K4^$^$l$kJ8=q$r$43NG'$/$@$5$$!#(B
 
-@node Installation, Startup File, Required Environments, Getting started
-@section Installation
-
-Riece $B$N:G?7HG$O!"(B
-@uref{http://wiliki.designflaw.org/riece.cgi} $B$GG[I[$7$F$$$^(B
-$B$9!#E83+$7$?$i!"0J2<$N%3%^%s%I$r<B9T$9$k$3$H$G<j85$N4D6-$K%$%s%9%H!<%k$G(B
-$B$-$^$9(B
-
-@example
-./configure
-make
-make install
-@end example
-
-XEmacs $B$N%Q%C%1!<%8$H$7$F%$%s%9%H!<%k$9$k>l9g$K$O0J2<$N$h$&$K$7$^$9!#(B
-
-@example
-./configure --with-xemacs[=xemacs-21.4.17]
-make package
-make install-package
-@end example
-
-XEmacs $B$N%Q%C%1!<%8$H$7$F%$%s%9%H!<%k$7$?>l9g$K$OI,MW$"$j$^$;$s$,!"(B
-@kbd{M-x riece} $B$G5/F0$9$k$?$a$K$O!"(Bautoload $B$N@_Dj$r8f<+J,$N(B Emacs $B$N@_(B
-$BDj%U%!%$%k$K2C$($kI,MW$,$"$j$^$9!#(B
-
-@lisp
-(autoload 'riece "riece" "Start Riece" t)
-@end lisp
-
-@node Startup File,  , Installation, Getting started
-@section Startup file
-
-$B$3$N>O$G$O!"@_Dj%U%!%$%k$K$D$$$F2r@b$7$^$9!#(B
-
-$B;n$7$K;H$C$F$_$k>l9g$K$O!"FC$K2?$b@_Dj$9$kI,MW$O$"$j$^$;$s!#(B
-$B$3$N>O$OFI$_Ht$P$7$F$b9=$$$^$;$s!#(B
-
-Riece $B$O@_Dj%U%!%$%k$rJQ?t(B @code{riece-directory} $B$G;X<($5$l$k%G%#%l%/%H(B
-$B%j(B ($B%G%U%)%k%H$O(B @file{~/.riece/}) $B$+$iFI$_9~$_$^$9!#$3$N%G%#%l%/%H%j$K(B
-$B$O0J2<$N(B 2 $B$D$N@_Dj%U%!%$%k$,G[CV$5$l$^$9!#(B
-
-@table @code
-@item riece-saved-variables-file
-@vindex riece-saved-variables-file
-$BA02s$N%;%C%7%g%s$G99?7$5$l$?@_Dj$,<+F0E*$KJ]B8$5$l$^$9(B($B%G%U%)%k%H$O(B @file{~/.riece/save})
-@item riece-variables-file
-@vindex riece-variables-file
-$B%f!<%6$K8GM-$N@_Dj$r5-=R$7$^$9(B($B%G%U%)%k%H$O(B @file{~/.riece/init})
-@end table
-
-$B5/F0;~$K$O!":G=i$K(B @code{riece-saved-variables-file} $B$r!"<!$K(B 
-@code{riece-variables-file} $B$rFI$_9~$_$^$9!#$D$^$j!"(B
-@file{~/.riece/save} $B$K<+F0E*$KJ]B8$5$l$?FbMF$O!"(B@file{~/.riece/init} $B$K(B
-$B5-=R$5$l$?FbMF$G>e=q$-$5$l$^$9!#(B
-
-@node Basic usage, Advanced usage, Getting started, Top
-@chapter Basic usage
-
-@kbd{M-x riece} $B$H$9$k$3$H$G5/F0$7$^$9!#%5!<%PL>$rJ9$+$l$k$N$GEz$($^$9!#(B
-$B@\B32DG=$J(B IRC $B%5!<%P$O3F(B IRC $B%M%C%H%o!<%/Kh$K0[$J$j$^$9$,!"BgDq$O(B Web 
-$B%Z!<%8$K0lMw$,$^$H$a$F$"$k$3$H$,B?$$$G$7$g$&!#(B
+Riece $B$r5/F0$9$k$H!"(BIRC $B%5!<%P$NL>A0$rJ9$+$l$^$9!#8x6&$KMxMQ2DG=$J(B IRC 
+$B%5!<%P$N0lMw$O(B Web $B%Z!<%8$J$I$+$iF@$k$3$H$,$G$-$^$9!#(B
 
 @itemize @bullet
 @item http://irc.kyoto-u.ac.jp
 @item http://freenode.net
 @end itemize
 
-$B$b$7%K%C%/%M!<%`$,4{$K;HMQ$5$l$F$$$k>l9g!"JL$N%K%C%/%M!<%`$NF~NO$rB%$5$l$^$9!#(B
-$B%K%C%/%M!<%`$N=i4|CM$O(B @code{riece-nickname} $B$G@_Dj$7$^$9!#%G%U%)%k%H$G$O!"(B
-$B%f!<%6$N%m%0%$%sL>$,$=$N$^$^;H$o$l$^$9!#(B
-@vindex riece-nickname
+$B$^$?!"0J2<$N$h$&$J%a%C%;!<%8$,I=<($5$l$k$+$b$7$l$^$;$s!#(B
 
-$BL5;v$K@\B3$G$-$?$i!"<!$O%A%c%s%M%k$K;22C$7$F2qOC$r$7$F$_$^$7$g$&!#(B
-@kbd{C-c j} $B$H%?%$%W$9$k$H;22C$9$k%A%c%s%M%kL>$r?R$M$i$l$k$N$G!"E,Ev$J%A%c(B
+@example
+Nickname "ueno" already in use.  Choose a new one: 
+@end example
+
+IRC $B$G$O!";22C<T$rI=$9$N$K(B@emph{$B%K%C%/%M!<%`(B}$B$H8F$P$l$kC;$$8F>N$,;H$o$l(B
+$B$^$9!#$b$74uK>$N%K%C%/%M!<%`$,B>$NC/$+$K;HMQ$5$l$F$$$k>l9g!"JL$N%K%C%/%M!<(B
+$B%`$rA*$VI,MW$,$"$j$^$9!#(B
+
+IRC $B%5!<%P$K@\B3$G$-$?$i!"<!$O2qOC$r$7$F$_$^$7$g$&!#(BIRC $B$G$O(B@emph{$B%A%c%s%M%k(B}
+$B$H8F$P$l$k2>A[E*$J2q5D<<$K;22C$7$F2qOC$r9T$J$$$^$9!#%A%c%s%M%k$KF~$k$K$O(B 
+@kbd{C-c j} $B$H%?%$%W$7$^$9!#;22C$9$k%A%c%s%M%kL>$r?R$M$i$l$?$i!"E,@Z$J%A%c(B
 $B%s%M%kL>$rF~NO$7$^$7$g$&!#(BIRCnet $B$K$O(B @samp{#Riece} $B$H$$$&%A%c%s%M%k$,$"(B
-$B$k$N$G!"%F%9%H$K$*;H$$$/$@$5$$!#(B
+$B$k$N$G!"%F%9%H$r$7$?$$>l9g$K$O<+M3$K$*;H$$$/$@$5$$!#(B
 
-$B%A%c%s%M%k$KF~$k$3$H$,$G$-$?$i!"J8>O$rF~NO$7$F%j%?!<%s%-!<$r2!$9$HH/8@$9(B
-$B$k$3$H$,$G$-$^$9!#B>$N?M$N2qOC$O2hLL1&>e$N%P%C%U%!$KI=<($5$l$^$9!#(B
-
-@menu
-* Windows::                     $B2hLL9=@.(B
-* Indicators::                  $B<+J,$N>uBV$NI=<((B
-* Commands::                    $B%3%^%s%I$N0lMw(B
-* Connecting to multiple servers::  $BJ#?t$N%5!<%P$K$D$J$0$K$O(B
-@end menu
-
-@node Windows, Indicators, Basic usage, Basic usage
-@section Windows
-
-$B%G%U%)%k%H$N@_Dj$G$O!"%A%c%s%M%k$KF~$k$H!"2<$N?^$K<($9$h$&$J(B 5 $B$D$N%&%#%s(B
-$B%I%&$+$i$J$k2hLL$K@Z$jBX$o$j$^$9!#(B
+$B%A%c%s%M%k$KF~$k$H!"2<$N?^$K<($9$h$&$J(B 5 $B$D$N%&%#%s%I%&(B
+@footnote{$B$^$.$i$o$7$$$G$9$,!"(BEmacs $B$N@$3&$G$O%P%C%U%!$rI=<($9$kNN0h$r%&%#(B
+$B%s%I%&$H8F$S$^$9!#(B}$B$+$i$J$k2hLL$K@Z$jBX$o$j$^$9!#(B
 
 @example
 +-----+-----------------+
@@ -217,59 +143,99 @@ Riece $B$O@_Dj%U%!%$%k$rJQ?t(B @code{riece-directory} $B$G;X<($5$l$k%G%#%l%/%
 +-----+-----------------+
 @end example
 
-$B$3$l$i$N3F%&%#%s%I%&$KI=<($5$l$k%P%C%U%!$NLr3d$O0J2<$NDL$j$G$9!#(B
+(4) $B$N%&%#%s%I%&$KI=<($5$l$k%P%C%U%!$KJ8>O$rF~NO$7$F%j%?!<%s%-!<$r2!$9$H(B
+$BH/8@$G$-$^$9!#B>$N;22C<T$NH/8@$O(B (2) $B$N%&%#%s%I%&$KI=<($5$l$^$9!#(B
+
+@node Basic usage, Advanced usage, Getting started, Top
+@chapter Basic usage
+
+@menu
+* Windows::                     $B2hLL9=@.(B
+* Indicators::                  $B<+J,$N>uBV$NI=<((B
+* Commands::                    $B%3%^%s%I$N0lMw(B
+@end menu
+
+@node Windows, Indicators, Basic usage, Basic usage
+@section Windows
+
+@example
++-----+-----------------+
+|     |                 |
+|     |                 |
+| (1) |       (2)       |
+|     |                 |
+|     |                 |
++-----+-----------------+
+|     |       (4)       |
+|     +-----------------+
+| (3) |                 |
+|     |       (5)       |
+|     |                 |
++-----+-----------------+
+@end example
+
+$B3F%&%#%s%I%&$KI=<($5$l$k%P%C%U%!$NLr3d$O0J2<$NDL$j$G$9!#(B
 
 @enumerate
 @item
-$B%f!<%6%j%9%H%P%C%U%!(B (@samp{*Users XXX*})$B!#%A%c%s%M%k$K$$$k%f!<%6$N0lMw(B
-$B$,I=<($5$l$^$9!#(B
+$B%f!<%6%j%9%H%P%C%U%!(B (@samp{ *Users*})$B!#%A%c%s%M%k$K;22C$7$F$$$k%f!<(B
+$B%6$N%K%C%/%M!<%`$N0lMw$,I=<($5$l$^$9!#(B
 
 @item
-$B%A%c%s%M%k%P%C%U%!(B (@samp{*Channel XXX*})$B!#%A%c%s%M%kFb$N2qOC$,I=<($5$l(B
+$B%A%c%s%M%k%P%C%U%!(B (@samp{ *Channel:XXX*})$B!#%A%c%s%M%kFb$N2qOC$,I=<($5$l(B
 $B$^$9!#(B
 
 @item
-$B%A%c%s%M%k%j%9%H%P%C%U%!(B (@samp{*Channels*})$B!#;22C$7$F$$$k%A%c%s%M%k$N0l(B
-$BMw$,I=<($5$l$^$9!#(B
+$B%A%c%s%M%k%j%9%H%P%C%U%!(B (@samp{ *Channels*})$B!#<+J,$,;22C$7$F$$$k%A%c%s%M(B
+$B%k$N0lMw$,I=<($5$l$^$9!#(B
 
 @item
-$B%3%^%s%I%P%C%U%!(B (@samp{*Commands*})$B!#J8>O$d%3%^%s%I$rAw?.$9$k$?$a$K;H$$(B
+$B%3%^%s%I%P%C%U%!(B (@samp{*Command*})$B!#J8>O$d%3%^%s%I$rAw?.$9$k$?$a$K;H$$(B
 $B$^$9!#(B
 
 @item
-$B%"%6!<%:%P%C%U%!(B (@samp{*Others*})$B!#8=:_$N%A%c%s%M%k0J30$N2qOC$,N.$l$^$9!#(B
+$B%"%6!<%:%P%C%U%!(B (@samp{ *Others*})$B!#8=:_A*BrCf$N%A%c%s%M%k0J30$N2qOC$,N.(B
+$B$l$^$9!#(B
 @end enumerate
 
 @node Indicators, Commands, Windows, Basic usage
 @section Indicators
 
-$B%3%^%s%I%P%C%U%!$d%A%c%s%M%k%P%C%U%!$N%b!<%I%i%$%s$N:8C<$K$O!"(B
-$B<+J,$N8=:_$N>uBV$r<($90u$,I=<($5$l$^$9!#(B
+$B%b!<%I%i%$%s$N:8C<$K$O!"8=:_$N<+J,$N>uBV$r<($90u$,I=<($5$l$^$9!#(B
+@footnote{$B$b$72hA|$rI=<($G$-$k(B Emacs $B$r$*;H$$$J$i!":8C<$K(B "R" $B$N%"%$%3%s(B
+$B$,I=<($5$l$^$9!#(B}
 
 @example
-Riece: --- ueno #Riece [n]
+Riece: ---- ueno #Riece [n]
 @end example
 
-$B$3$3$G!"(B@samp{---} $B$NItJ,$K$O:8$+$i=g$K0J2<$N0UL#$,$"$j$^$9!#(B
+$B$3$3$G!"(B@samp{----} $B$NItJ,$K$O:8$+$i=g$K0J2<$N0UL#$,$"$j$^$9!#(B
 
 @enumerate
 @item
 $BN%@J>uBV(B ($BN%@J$7$F$$$l$P(B @samp{A})
 
 @item
-$B%*%Z%l!<%?>uBV(B (IRC $B%*%Z%l!<%?$G$"$l$P(B @samp{O})
+IRC $B%*%Z%l!<%?>uBV(B (IRC $B%M%C%H%o!<%/$N4IM}<T8"8B$r;}$C$F$$$l$P(B @samp{O})
 
 @item
-$B%A%c%s%M%k%P%C%U%!!"$^$?$O%@%$%"%m%0%P%C%U%!$N%9%/%m!<%k6X;_>uBV(B
-($B40A4$K6X;_$7$F$$$l$P(B @samp{F}$B!"<+J,$N<!2s$NH/8@$^$G6X;_$7$F$$$k$N$G$"$l(B
-$B$P(B @samp{f})
+$B%&%#%s%I%&$N<+F0%9%/%m!<%k$N6X;_(B ($B40A4$K6X;_$7$F$$$l$P(B @samp{F}$B!"<+J,$N(B
+$B<!2s$NH/8@$^$G6X;_$7$F$$$k$N$G$"$l$P(B @samp{f})
+
+@item
+$B%A%c%s%M%k%*%Z%l!<%?>uBV(B ($B%A%c%s%M%k$N4IM}<T8"8B$r;}$C$F$$$l$P(B @samp{@@})
 @end enumerate
 
-@node Commands, Connecting to multiple servers, Indicators, Basic usage
+@node Commands,  , Indicators, Basic usage
 @section Commands
 
-$BJ8>O$rF~NO$7$?%P%C%U%!$O!"%3%^%s%I%P%C%U%!$H8F$P$l!"%3%^%s%I%P%C%U%!$+$i(B
-$B$OMM!9$J%3%^%s%I$rH/9T$9$k$3$H$,$G$-$^$9!#0J2<$K0lIt$r5s$2$^$9!#(B
+@ref{Basic usage}$B$GJ8>O$rF~NO$7$?%P%C%U%!$O%3%^%s%I%P%C%U%!$H8F$P$l$^$9!#(B
+$B%3%^%s%I%P%C%U%!$+$i$OJ8>O$rAw?.$9$k0J30$K!"MM!9$J%3%^%s%I$rH/9T$9$k$3$H(B
+$B$,$G$-$^$9!#0J2<$K0lIt$r5s$2$^$9!#(B
+
+$B:G=i$O$J$+$J$+3P$($K$/$$$G$9$,!"(B@kbd{C-h b}
+ (@kbd{M-x describe-bindings}) $B$G;HMQ2DG=$J%-!<A`:n$N0lMw$,I=<($5$l$k$N(B
+$B$G>/$7$:$D3P$($F$$$/$HNI$$$G$7$g$&!#(B
 
 @subsection IRC commands
 @table @kbd
@@ -320,47 +286,44 @@ IRC $B$r$d$a$^$9(B(@code{riece-command-quit})
 $B%A%c%s%M%k$N%b!<%I$r@_Dj$7$^$9(B(@code{riece-command-change-mode})
 @item C-c o
 @findex riece-command-set-operators
-$B%f!<%6$K%*%Z%l!<%?8"8B$rM?$($^$9!#A0CV0z?t(B (@kbd{C-u}) $B$rM?$($k$H!"%f!<%6$+$i%*%Z%l!<%?8"8B$rC%$$$^$9(B(@code{riece-command-set-operators})
+$B%f!<%6$K%A%c%s%M%k$N4IM}<T8"8B$rM?$($^$9!#(B@kbd{C-u C-c o} $B$G$O5U$K!"%f!<%6$+$i%A%c%s%M%k$N4IM}<T8"8B$rC%$$$^$9(B(@code{riece-command-set-operators})
 @item C-c v
 @findex riece-command-set-speakers
-$B%f!<%6$KH/8@8"$rM?$($^$9!#A0CV0z?t(B (@kbd{C-u}) $B$rM?$($k$H!"%f!<%6$+$iH/8@8"$rC%$$$^$9(B(@code{riece-command-set-speakers})
+$B%f!<%6$K%A%c%s%M%k$G$NH/8@8"$rM?$($^$9!#(B@kbd{C-u C-c v} $B$G$O5U$K!"%f!<%6$+$i%A%c%s%M%k$G$NH/8@8"$rC%$$$^$9(B(@code{riece-command-set-speakers})
 @item C-c V
 @findex riece-version
-Riece $B$N%P!<%8%g%s$rI=<($7$^$9!#A0CV0z?t(B (@kbd{C-u}) $B$rM?$($k$H!"$h$j>\:Y$J>pJs$rI=<($7$^$9!#(B
+Riece $B$N%P!<%8%g%s$rI=<($7$^$9!#(B(@kbd{C-u C-c V}) $B$G!"$h$j>\:Y$J>pJs$rI=<($7$^$9!#(B
 @item C-c /
 @findex riece-command-raw
-$B@8$N(B IRC $B%3%^%s%I$rAw$j$^$9(B(@code{riece-command-raw})
+IRC $B%3%^%s%I$rD>@\Aw$j$^$9(B(@code{riece-command-raw})
 @end table
 
 @subsection Window manipulating commands
 @table @kbd
 @item C-c r
 @findex riece-command-configure-windows
-$B%&%#%s%I%&$r:FIA2h$7$^$9(B(@code{riece-command-configure-windows})
-@item C-c C-j
+$B%U%l!<%`A4BN$r:FIA2h$7$^$9(B(@code{riece-command-configure-windows})
+@item C-c C-j $B$^$?$O(B C-c >
 @findex riece-command-next-channel
-$B<!$N%A%c%s%M%k$K0\$j$^$9(B(@code{riece-command-next-channel})
+$B%A%c%s%M%k0lMw$G<!$N%A%c%s%M%k$rA*Br$7$^$9(B(@code{riece-command-next-channel})
 @item C-c <
 @findex riece-command-previous-channel
-$BA0$N%A%c%s%M%k$K0\$j$^$9(B(@code{riece-command-previous-channel})
-@item C-c >
-@findex riece-command-next-channel
-$B<!$N%A%c%s%M%k$K0\$j$^$9(B(@code{riece-command-next-channel})
+$B%A%c%s%M%k0lMw$GA0$N%A%c%s%M%k$rA*Br$7$^$9(B(@code{riece-command-previous-channel})
 @item C-c ^
 @findex riece-command-list-addons
 $B%"%I%*%s$N0lMw$rI=<($7$^$9(B(@code{riece-command-list-addons})
 @item C-c $B?t;z(B
 @findex riece-command-switch-to-channel-by-number
-@var{n}$BHVL\$N%A%c%s%M%k$K0\F0$7$^$9(B(@code{riece-command-switch-to-channel-by-number})
+$B%A%c%s%M%k0lMw$G(B @var{n}$BHVL\$N%A%c%s%M%k$rA*Br$7$^$9(B(@code{riece-command-switch-to-channel-by-number})
 @item C-c C-c $B?t;z(B
 @findex riece-command-switch-to-channel-by-number
-@var{n} + 10$BHVL\$N%A%c%s%M%k$K0\F0$7$^$9(B(@code{riece-command-switch-to-channel-by-number})
+$B%A%c%s%M%k0lMw$G(B @var{n} + 10$BHVL\$N%A%c%s%M%k$rA*Br$7$^$9(B(@code{riece-command-switch-to-channel-by-number})
 @item C-c Home
 @findex riece-command-beginning-of-buffer
-$B%A%c%s%M%k%P%C%U%!!"$^$?$O%@%$%"%m%0%P%C%U%!$N%S%e!<$r>eC<$^$G0\F0$7$^$9(B(@code{riece-command-beginning-of-buffer})
+$B%A%c%s%M%k%P%C%U%!!"$^$?$O%@%$%"%m%0%P%C%U%!$r>eC<$^$G%9%/%m!<%k$7$^$9(B(@code{riece-command-beginning-of-buffer})
 @item C-c $
 @findex riece-command-end-of-buffer
-$B%A%c%s%M%k%P%C%U%!!"$^$?$O%@%$%"%m%0%P%C%U%!$N%S%e!<$r2<C<$^$G0\F0$7$^$9(B(@code{riece-command-end-of-buffer})
+$B%A%c%s%M%k%P%C%U%!!"$^$?$O%@%$%"%m%0%P%C%U%!$r2<C<$^$G%9%/%m!<%k$7$^$9(B(@code{riece-command-end-of-buffer})
 @item C-c SPC
 @findex riece-command-scroll-up
 $B%A%c%s%M%k%P%C%U%!!"$^$?$O%@%$%"%m%0%P%C%U%!$r>eJ}8~$K%9%/%m!<%k$7$^$9(B(@code{riece-command-scroll-up})
@@ -382,39 +345,113 @@ Riece $B$N%P!<%8%g%s$rI=<($7$^$9!#A0CV0z?t(B (@kbd{C-u}) $B$rM?$($k$H!"$h$j>\
 $B%f!<%6%j%9%H%P%C%U%!$NI=<(!&HsI=<($r@Z$jBX$($^$9(B(@code{riece-command-toggle-user-list-buffer-mode})
 @item C-c C-t f
 @findex riece-command-toggle-freeze
-$B%A%c%s%M%k%P%C%U%!!"$^$?$O%@%$%"%m%0%P%C%U%!$rE`7k(B($B%9%/%m!<%k$r6X;_(B)$B$7$^(B
+$B%A%c%s%M%k%P%C%U%!!"$^$?$O%@%$%"%m%0%P%C%U%!$N<+F0%9%/%m!<%k$r6X;_$7$^(B
 $B$9(B(@code{riece-command-toggle-freeze})
 @item C-c C-t o
 @findex riece-command-toggle-own-freeze
-$B%A%c%s%M%k%P%C%U%!!"$^$?$O%@%$%"%m%0%P%C%U%!$r!"<+J,$,H/8@$9$k$^$GE`7k$7(B
-$B$^$9(B(@code{riece-command-toggle-own-freeze})
+$B%A%c%s%M%k%P%C%U%!!"$^$?$O%@%$%"%m%0%P%C%U%!$r!"<+J,$,H/8@$9$k$^$G!"<+F0(B
+$B%9%/%m!<%k$r6X;_$7$^$9(B(@code{riece-command-toggle-own-freeze})
 @item C-c C-t a
 @findex riece-command-toggle-away
 $B<+J,$NN%@J>uBV$r@Z$jBX$($^$9(B(@code{riece-command-toggle-away})
 @end table
 
-@node Connecting to multiple servers,  , Commands, Basic usage
+@node Advanced usage, Tips, Basic usage, Top
+@chapter Advanced usage
+
+$B$3$N>O$G$O!"$b$C$H?J$s$@;H$$J}$r2r@b$7$^$9!#(B
+
+@menu
+* Startup File::                $B@_Dj%U%!%$%k(B
+* Server settings::             $B%5!<%P$N>\:Y@_Dj(B
+* Connecting to multiple servers::  $BF1;~$KJ#?t$N%5!<%P$K@\B3$9$k$K$O(B
+* Add-ons::                     $B%"%I%*%s$H$O(B
+@end menu
+
+@node Startup File, Server settings, Advanced usage, Advanced usage
+@section Startup file
+
+$B$3$N>O$G$O!"@_Dj%U%!%$%k$K$D$$$F2r@b$7$^$9!#(BRiece $B$N@_Dj$O(B Emacs $B$N@_Dj(B
+$B%U%!%$%k$K=q$$$F$bNI$$$G$9$,!"(BRiece $B$K8GM-$N@_Dj$O$J$k$Y$/(B 
+@file{~/.riece/init} $B$K=q$/$3$H$r4+$a$^$9!#(B
+
+$B$^$?!"(BRiece $B$r;H$$;O$a$k$H(B @file{~/.riece/save} $B$H$$$&%U%!%$%k$,:n@.$5$l(B
+$B$^$9!#$3$N%U%!%$%k$K$OA02s5/F0;~$N@_Dj$N0lIt(B($B%&%#%s%I%&9=@.Ey(B)$B$,<+F0E*$K(B
+$BJ]B8$5$l$^$9!#(B
+
+$B5/F0;~$K$O!":G=i$K(B @file{~/.riece/save} $B$r!"<!$K(B @file{~/.riece/init}$B$r(B
+$BFI$_9~$_$^$9!#$D$^$j!"A02s5/F0;~$K(B @file{~/.riece/save} $B$KJ]B8$5$l$?FbMF(B
+$B$O!"(B@file{~/.riece/init} $B$NFbMF$G>e=q$-$5$l$^$9!#(B
+
+@node Server settings, Connecting to multiple servers, Startup File, Advanced usage
+@section Server settings
+
+$B5/F0;~$K@\B3$9$k(B IRC $B%5!<%P$NL>A0$OJQ?t(B @code{riece-server} $B$G;XDj$7$^$9!#(B
+@vindex riece-server
+
+@code{riece-server} $B$N7A<0$O<!$NDL$j$G$9!#(B
+@example
+<$B%5!<%P$N%[%9%HL>(B>:<$B%]!<%HHV9f(B>[:<$B%Q%9%o!<%I(B>]
+@end example
+
+@code{riece-server-alist} $B$r@_Dj$9$k$H!"$h$jJ#;($J;XDj$,2DG=$K$J$j$^$9!#(B
+@vindex riece-server-alist
+
+$B0J2<$NNc$r9M$($^$9!#(B
+
+@example
+(setq riece-server-alist
+      '(("foo" :host "irc.example.com" :coding shift_jis)
+        ("bar" :host "irc.example.net" :nickname "baz")))
+
+(setq riece-server "foo")
+@end example
+
+$B$3$N@_Dj$N0UL#$O0J2<$NDL$j$G$9!#(B
+
+@itemize
+@item
+@samp{foo} $B$H$$$&L>A0$N(B IRC $B%5!<%P$N%[%9%HL>$O(B @samp{irc.example.com} $B$G!";HMQ$9$kJ8;z%3!<%I$O(B Shift_JIS
+
+@item
+@samp{bar} $B$H$$$&L>A0$N(B IRC $B%5!<%P$N%[%9%HL>$O(B @samp{irc.example.com} $B$G!"$3$N%5!<%P$G$O%K%C%/%M!<%`(B @samp{baz} $B$r;H$&(B
+@end itemize
+
+$B;XDj$G$-$k%-!<%o!<%I$N0lMw$O0J2<$NDL$j$G$9!#(B
+
+@table @code
+@item :host
+$B%5!<%P$N%[%9%HL>$^$?$O(B IP $B%"%I%l%9(B
+@item :service
+$B%5!<%P$N%5!<%S%9L>$^$?$O%]!<%HHV9f(B
+@item :nickname
+$B@\B3;~$N%K%C%/%M!<%`(B
+@item :username
+$B@\B3;~$N%f!<%6%M!<%`(B
+@item :password
+$B@\B3;~$N%Q%9%o!<%I(B
+@item :function
+$B@\B3MQ4X?t(B
+@item :coding
+$BJ8;z%3!<%I(B
+@end table
+
+@node Connecting to multiple servers, Add-ons, Server settings, Advanced usage
 @section Connecting to multiple servers
 
-Riece $B$NBg$-$JFCD9$K!"J#?t$N%5!<%P$KF1;~$K@\B3$9$k5!G=$,$"$j$^$9!#(B
+$BF1;~$KJ#?t$N%5!<%P$K@\B3$9$k<j=g$r0J2<$K<($7$^$9!#(B
 
-$B?7$?$J%5!<%P$K@\B3$7!"$=$N%5!<%P>e$N%A%c%s%M%k$K;22C$9$k<j=g$O0J2<$N$h$&(B
-$B$K$J$j$^$9!#(B
+$B4{$KFCDj$N%5!<%P$K@\B3$7$F$$$k>uBV$G!"JL$N%5!<%P$K@\B3$9$k$K$O(B @kbd{C-c O} (@code{riece-command-open-server}) $B$r;H$$$^$9!#(B
 
-@enumerate
-@item
-@kbd{C-c O} (@code{riece-command-open-server}) $B$H$7$^$9!#%5!<%PL>$rJ9$+$l$k$N$GEz$($^$9!#(B
+$BJL$N%5!<%P>e$N%A%c%s%M%k$K;22C$9$k$K$O!"(B@kbd{C-c j} (@code{riece-command-join})$B$G%A%c%s%M%kL>$K%5!<%PL>$rB3$1$^$9!#(B
 
-@item
-@kbd{C-c j} (@code{riece-command-join}) $B$G%A%c%s%M%k$K;22C$7$^$9!#$3$3$G!"(B
-$B%A%c%s%M%kL>$N8e$K6uGr$G6h@Z$C$F%5!<%PL>$rB3$1$^$9!#6uGr$rF~NO$9$k$K$O!"(B
-@kbd{C-q} $B$r;H$$$^$9!#$?$H$($P!"%5!<%P(B @samp{irc6} $B>e$N(B @samp{#Riece} $B$K;22C$9$k$K$O(B @kbd{C-c j #Riece C-q SPC irc6} $B$H%?%$%W$9$k$3$H$K$J$j$^$9!#(B
-@end enumerate
+$B$?$H$($P!"%5!<%P(B @samp{irc.freenode.net} $B>e$N(B @samp{#Riece} $B$O<!$N$h$&$KI=5-$7$^$9!#(B
 
-$B%A%c%s%M%k$KF~$i$:$K%3%^%s%I$rAw$k$K$O!"(B@kbd{C-c M}
-(@code{riece-command-universal-server-name-argument}) $B$,JXMx$G$9!#(B
+@example
+#Riece@@irc.freenode.net
+@end example
 
-$B%5!<%P$H$N@\B3$K4X$9$k%3%^%s%I$O0J2<$NDL$j$G$9!#(B
+$BJ#?t$N@\B3$rA`:n$9$k%3%^%s%I$r0J2<$K$^$H$a$^$9!#(B
 
 @table @kbd
 @item C-c O
@@ -428,70 +465,7 @@ Riece $B$NBg$-$JFCD9$K!"J#?t$N%5!<%P$KF1;~$K@\B3$9$k5!G=$,$"$j$^$9!#(B
 $BFCDj$N%5!<%P$KBP$7$F!"B3$/%3%^%s%I$rH/9T$7$^$9(B(@code{riece-command-universal-server-name-argument})
 @end table
 
-@node Advanced usage, Tips, Basic usage, Top
-@chapter Advanced usage
-
-$B$3$N>O$G$O!"$b$C$H?J$s$@;H$$J}$r2r@b$7$^$9!#(B
-
-@menu
-* Server settings::             $B%5!<%P$N>\:Y@_Dj(B
-* Add-ons::                     $B%"%I%*%s$H$O(B
-@end menu
-
-@node Server settings, Add-ons, Advanced usage, Advanced usage
-@section Server settings
-
-$B5/F0;~$K%G%U%)%k%H$G@\B3$9$k(B IRC $B%5!<%P$O(B @code{riece-server} $B$G;XDj$7$^$9!#(B
-@vindex riece-server
-
-$B$3$3$G(B @code{riece-server} $B$OJ8;zNs$G$"$j!"$=$N%U%)!<%^%C%H$O<!$N$h$&$K(B
-$B$J$j$^$9!#(B
-@example
- "<$B%5!<%P$N%[%9%HL>(B>:<$B%]!<%HHV9f(B>[:<$B%Q%9%o!<%I(B>]"
-@end example
-
-@code{riece-server-alist} $B$rE,@Z$K@_Dj$9$k$H!"%-!<%o!<%I$r;H$C$F!"$h$j>\(B
-$B:Y$J;XDj$,2DG=$K$J$j$^$9!#0J2<$OI.<T$N@_Dj$+$iH4$-=P$7$?Nc$G$9!#(B
-@vindex riece-server-alist
-
-@example
-(setq riece-server-alist
-      '(("irc6" :host "irc6.nara.wide.ad.jp")
-        ("plum" :host "localhost" :service 26667
-         :function relay-open-network-stream))
-      riece-server "irc6")
-@end example
-
-@code{riece-server-alist} $B$N3FMWAG$N0UL#$O0J2<$NDL$j$G$9!#(B
-
-@itemize
-@item
-@samp{irc6} $B$H$$$&N,5-L>$G(B @samp{irc6.nara.wide.ad.jp} $B$K@\B3(B
-
-@item
-@samp{plum} $B$H$$$&N,5-L>$G(B @code{relay-open-network-stream} $B$rDL$8$F(B (SSH $B7PM3$G(B) $B@\B3(B
-@end itemize
-
-$B;XDj2DG=$J%-!<%o!<%I$O0J2<$NDL$j$G$9!#(B
-
-@table @code
-@item :host
-$B%5!<%P$N%[%9%HL>$^$?$O(B IP $B%"%I%l%9(B
-@item :service
-$B%5!<%P$N%5!<%S%9L>$^$?$O%]!<%HHV9f(B ($B%G%U%)%k%H$O(B 6667)
-@item :nickname
-$B@\B3;~$N%K%C%/%M!<%`(B
-@item :username
-$B@\B3;~$N%f!<%6%M!<%`(B
-@item :password
-$B@\B3;~$N%Q%9%o!<%I(B
-@item :function
-$B@\B3MQ4X?t(B
-@item :coding
-$B%3!<%G%#%s%0%7%9%F%`(B ($B%G%U%)%k%H$O(B @code{riece-default-coding-system} $B$NCM(B)
-@end table
-
-@node Add-ons,  , Server settings, Advanced usage
+@node Add-ons,  , Connecting to multiple servers, Advanced usage
 @section Add-ons
 
 Riece $B$G$O!"%f!<%6$,?7$?$J5!G=$rDI2C$7!"<+M3$K<h$j30$7$G$-$k$h$&!"%"%I%*(B
@@ -566,42 +540,38 @@ PING $B$K1~Ez$9$k(B local proxy $B7PM3$G(B IRC $B%5!<%P$K@\B3(B
 $B%-!<%o!<%I$r(B Google $B$G8!:w(B
 @item riece-keepalive
 IRC $B%5!<%P$H$N@\B3$rJ];}(B
+@item riece-eval-ruby
+$BF~NO$5$l$?J8;zNs$r(B Ruby $B$N<0$H$7$FI>2A(B
 @end table
 
 $B$3$l$i$N$&$A!"(B@samp{riece-highlight} $B$H(B @samp{riece-ctcp}$B!"(B
 @samp{riece-url}$B!"(B @samp{riece-unread}$B!"(B @samp{riece-guess}$B!"(B
 @samp{riece-history}$B!"(B @samp{riece-button}$B!"(B@samp{riece-menu}$B!"(B
 @samp{riece-ignore}$B!"(B@samp{riece-log}$B!"(B@samp{riece-alias}$B!"(B
-@samp{riece-ctlseq}$B!"(B@samp{riece-keyword} $B$O%G%U%)%k%H$GAH$_9~$^$l$F$$$^$9!#(B
+@samp{riece-ctlseq}$B!"(B@samp{riece-keyword} $B$OI8=`$GAH$_9~$^$l$F$$$^$9!#(B
 
 $B%"%I%*%s$rAH$_9~$`$K$O(B @code{riece-addons} $B$r@_Dj$7$^$9!#$?$H$($P(B 
-@samp{riece-alias} $B$rAH$_9~$`>l9g$K$O!"(B@file{~/.riece/init.el} $B$K0J2<$N$h(B
+@samp{riece-alias} $B$rAH$_9~$`>l9g$K$O!"(B@file{~/.riece/init} $B$K0J2<$N$h(B
 $B$&$K5-=R$7$^$9!#(B
 @vindex riece-addons
 
 @example
-(add-to-list 'riece-addons 'riece-alias)
+(add-to-list 'riece-addons 'riece-keyword)
 @end example
 
-@node Tips, Development, Advanced usage, Top
+@node Tips, Index, Advanced usage, Top
 @comment  node-name,  next,  previous,  up
 @chapter Tips
 
-$B$3$N>O$G$O!"$h$/J9$+$l$k<ALd$KBP$9$kEz$($d!"JXMx$J@_Dj$r>R2p$7$^$9!#(B
+$B$3$N>O$G$O!"$h$/J9$+$l$k<ALd$KBP$9$kEz$($HJXMx$J@_DjNc$r>R2p$7$^$9!#(B
 
-@section $B%A%c%s%M%kL>!V(B#$B$[$2(B:*.jp$B!W$r!V(B%$B$[$2!W$HN,5-$7$?$$(B
-
-$B0J2<$N9T$r(B @file{~/.riece/init.el} $B$KDI2C$7$^$9!'(B
-
-@example
-(add-to-list 'riece-addons 'riece-alias)
-@end example
-
-@section $BD>A0$K$$$?%A%c%s%M%k$KLa$j$?$$(B
+@section $BD>A0$KA*Br$7$F$$$?%A%c%s%M%k$K0\F0$7$?$$(B
 @vindex riece-guess-channel-try-functions
 
-$B0J2<$N9T$r(B @file{~/.riece/init.el} $B$KDI2C$9$k$3$H$G!"(B
-@kbd{C-c g} $B$GMzNr$rC)$j$D$D0\F0$G$-$^$9!#(B
+$B0J2<$N9T$r(B @file{~/.riece/init} $B$KDI2C$9$k$3$H$G!"(B@kbd{C-c g} $B$GMzNr$rC)(B
+$B$j$D$D0\F0$G$-$^$9!#(B@samp{riece-guess} $B%"%I%*%s$O!"%A%c%s%M%kA*Br$NMzNr(B
+$B$dL$FI%a%C%;!<%8$NM-L5$J$I$+$i<!$KA*Br$9$k%A%c%s%M%k$r?dB,$7$F$/$l$k%"%I(B
+$B%*%s$G!"I8=`$GAH$_9~$^$l$F$$$^$9!#(B
 
 @example
 (add-hook 'riece-guess-channel-try-functions
@@ -610,50 +580,36 @@ IRC $B%5!<%P$H$N@\B3$rJ];}(B
 
 @section $BH/8@$,$"$k$H%P%C%U%!$,%9%/%m!<%k$9$k$N$r;_$a$?$$(B
 
-@kbd{C-c C-t f} $B$G$9!#(B(irchat $B$G$O(B @kbd{C-c C-f}) "t"oggle "f"reeze $B$H3P(B
-$B$($^$7$g$&!#(B
+@kbd{C-c C-t f} $B$G$9!#(B@emph{t}oggle @emph{f}reeze $B$H3P$($k$HNI$$$G$7$g$&!#(B
 
-@section $BGI<j$JAu>~$rM^@)$7$?$$(B
+@section $BAu>~$rM^@)$7$?$$(B
 
-@code{riece-addons} $B$+$i!"?'IU$1(B (@samp{riece-highlight})$B!"%\%?%s(B 
-(@samp{riece-button})$B!"%"%$%3%s(B (@samp{riece-icon}) $B$r=|$-$^$9!#(B
+@code{riece-addons} $B$+$iAu>~$N$?$a$N%"%I%*%s$r=|30$7$^$9!#(B
+$BDL>oM-8z$K$J$C$F$$$kAu>~$N$?$a$N%"%I%*%s$O<!$NDL$j$G$9!#(B
 
-$B$?$H$($P?'IU$1$r$d$a$?$$$N$G$"$l$P!"0J2<$N9T$r(B @file{~/.riece/init.el} 
-$B$KDI2C$7$^$9!'(B
+@itemize
+@item
+$B?'IU$1(B (@samp{riece-highlight})
+
+@item
+$B%\%?%sI=<((B (@samp{riece-button})
+
+@item
+$B%"%$%3%s2hA|$NI=<((B (@samp{riece-icon})
+@end itemize
+
+$B$?$H$($P?'IU$1$r$d$a$?$$$N$G$"$l$P!"0J2<$N9T$r(B @file{~/.riece/init} $B$KDI(B
+$B2C$7$^$9!'(B
 
 @example
 (setq riece-addons (delq 'riece-highlight riece-addons))
 @end example
 
-@section $B%-!<%o!<%I$KH?1~$7$F2;$rLD$i$7$?$$(B
+@section $BFCDj$NJ8;zNs$r<u?.$7$?$i2;$rLD$i$7$?$$(B
 @vindex riece-keyword-notify-functions
 
-XEmacs $B$G$O!"0J2<$N@_Dj$r(B @file{~/.riece/init.el} $B$K2C$($k$3$H$G!"(B"$B$[$2(B" 
-$B$d(B "$B$U$,(B" $B$KH?1~$7$F8z2L2;(B($B$3$NNc$G$O!"%+%C%3!<$NLD$-@<(B)$B$rLD$i$9$3$H$,$G(B
-$B$-$^$9!#(B
-
-@example
-(load-default-sounds)
-(setq riece-keywords '("$B$[$2(B" "$B$U$,(B"))
-(add-hook 'riece-keyword-notify-functions
-          (lambda (keyword message) (play-sound 'cuckoo)))
-@end example
-
-Emacs $B$N>l9g$O(B,$B0J2<$N@_Dj$r(B @file{~/.riece/init.el} $B$K2C$($k$3$H$G(B,
-"$B$[$2(B" $B$d(B "$B$U$,(B" $B$KH?1~$7$F2;$rLD$i$9$3$H$,$G$-$^$9!#(B
-
-@example
-(defun cuckoo ()
-  "play cuckoo.au"
-  (call-process "play" nil 0 t
-                ".../cuckoo.au"))
-  (setq riece-keywords '("$B$[$2(B" "$B$U$,(B"))
-  (add-hook 'riece-keyword-notify-functions
-            (lambda (keyword message) (cuckoo)))
-@end example
-
-$B8z2L2;$G$O$J$/%7%s%W%k$K%S!<%W2;$rLD$i$7$?$$>l9g$O!"0J2<$N@_Dj$r(B 
-@file{~/.riece/init.el} $B$K2C$($^$9!#(B
+$B0J2<$N@_Dj$r(B @file{~/.riece/init} $B$K2C$($^$9!#(B@samp{riece-keywords} $B%"%I(B
+$B%*%s$r;H$&$HFCDj$NJ8;zNs$r<u?.$7$?:]$NF0:n$r;XDj$G$-$^$9!#(B
 
 @example
 (setq riece-keywords '("$B$[$2(B" "$B$U$,(B"))
@@ -661,61 +617,86 @@ Emacs $B$N>l9g$O(B,$B0J2<$N@_Dj$r(B @file{~/.riece/init.el} $B$K2C$($k$3$H$
           (lambda (keyword message) (ding)))
 @end example
 
-@section SKK $B$r;H$C$F$$$F!"JQ49%b!<%I$N0u(B ($B"&(B) $B$rAw?.$7$?$/$J$$(B
+@section SKK $B$r;H$C$F$$$F!"JQ49Cf$N0u(B ($B"&(B) $B$rAw?.$7$F$7$^$&$3$H$,$"$k(B
 
-$B0J2<$N9T$r(B @file{~/.riece/init.el} $B$KDI2C$7$^$9!'(B
+$B0J2<$N9T$r(B @file{~/.riece/init} $B$KDI2C$7$^$9!#(B
 
 @example
 (add-to-list 'riece-addons 'riece-skk-kakutei)
 @end example
 
-@section $B%A%c%s%M%k$NHV9f$r8GDj$7$?$$(B
+@section $B%A%c%s%M%k0lMw$NJB$S=g$r8GDj$7$?$$(B
 @vindex riece-default-channel-binding
 
-$B0J2<$N9T$r(B @file{~/.riece/init.el} $B$KDI2C$7$^$9!'(B
+$B0J2<$N9T$r(B @file{~/.riece/init} $B$KDI2C$7$^$9!#(B
 
 @example
 (setq riece-default-channel-binding
      '("#Riece" "#emacsen" nil "#debianjp"))
 @end example
 
-1: #Riece, 2: #emacsen, 4: #debianjp $B$N$h$&$K3dEv$F$i$l$^$9!#(Bnil $B$O%G%U%)(B
-$B%k%H$G$O<+F03dEv$F$NBP>]$K$J$i$J$$$3$H0UL#$7!"?7$?$J%A%c%s%M%k$K;22C$7$?(B
-$B>l9g!"$=$N%A%c%s%M%k$,(B 3 $BHVL\$N%A%c%s%M%k$H$7$F07$o$l$^$9!#(B
+$B$3$N@_DjNc$G$O!"%A%c%s%M%k0lMw$NJB$S=g$O<!$N$h$&$K$J$j$^$9!#(B
 
-@section $B5/F0;~$K%Q%9%o!<%I$D$-$N%A%c%s%M%k$K;22C$7$?$$(B
+@enumerate
+@item
+#Riece
+@item
+#emacsen
+@item
+$B$J$7(B
+@item
+#debianjp
+@end enumerate
+
+3 $BHVL\$N%A%c%s%M%k$,6u@J$H$J$C$F$$$k$3$H$K$4Cm0U$/$@$5$$!#?7$?$J%A%c%s%M(B
+$B%k$K;22C$7$?>l9g!"$=$N%A%c%s%M%k$,(B 3 $BHVL\$N0LCV$K3dEv$F$i$l$^$9!#(B
+
+@section $B5/F0;~$K<+F0E*$K%A%c%s%M%k$K;22C$7$?$$(B
 @vindex riece-startup-channel-list
-@vindex riece-startup-server-list
 
-$B0J2<$N9T$r(B @file{~/.riece/init.el} $B$KDI2C$7$^$9!'(B
+$BJQ?t(B @samp{riece-startup-channel-list} $B$r@_Dj$7$^$9!#(B
 
 @example
 (setq riece-startup-channel-list
-     '(("#secret" "password") "#Riece"))
+     '("#Riece" "#public"))
 @end example
 
-$BJ#?t$N%5!<%P>e$N%A%c%s%M%k$K;22C$9$k$K$O!"(B
-@code{riece-startup-server-list} $B$bJ;$;$F@_Dj$9$kI,MW$,$"$j$^$9!#(B
+$B$3$N@_DjNc$O!"(B@samp{#Riece} $B$H(B @samp{#public} $B$K;22C$9$k$3$H$r0UL#$7$F$$(B
+$B$^$9!#%A%c%s%M%k$K;22C$9$k:]$K%Q%9%o!<%I$,I,MW$J>l9g$K$O<!$N$h$&$K@_Dj$7(B
+$B$^$9!#(B
 
-$BNc$H$7$F!"(B@code{riece-server} $B$H(B @code{riece-server-alist} $B$r0J2<$N$h$&(B
-$B$K@_Dj$7$?$H$7$^$9!#(B
+@example
+(setq riece-startup-channel-list
+     '("#Riece" "#public" ("#private" "password")))
+@end example
+
+$B5/F0;~$K!"J#?t$N(B IRC $B%5!<%P$N%A%c%s%M%k$K;22C$9$k>l9g$K$O!"(B
+$BJQ?t(B @samp{riece-startup-server-list} $B$bF1;~$K@_Dj$9$kI,MW$,$"$j$^$9!#(B
+
+@section $B5/F0;~$K<+F0E*$KJ#?t$N(B IRC $B%5!<%P$K@\B3$7$?$$(B
+@vindex riece-startup-server-list
+
+$BJQ?t(B @samp{riece-startup-server-list} $B$r@_Dj$7$^$9!#(B
 
 @example
 (setq riece-server "ircnet"
-      riece-server-alist '(("ircnet" :host "irc6.nara.wide.ad.jp")
+      riece-server-alist '(("ircnet" :host "irc.tokyo.wide.ad.jp")
                            ("freenode" :host "irc.ipv6.freenode.net")))
 @end example
 
-$B$3$N>l9g!"%G%U%)%k%H$G$O(B "ircnet" $B$@$1$K@\B3$7$^$9$,!"(B
-@code{riece-startup-server-list} $B$r0J2<$N$h$&$K@_Dj$9$k$3$H$G!"(B
+$B$3$N@_DjNc$G$O!"5/F0;~$K(B "ircnet" $B$K@\B3$7$^$9!#(B
+@samp{riece-startup-server-list} $B$r0J2<$N$h$&$K@_Dj$9$k$H!"(B
 "freenode" $B$K$b@\B3$9$k$h$&$K$J$j$^$9!#(B
 
 @example
 (setq riece-startup-server-list '("freenode"))
 @end example
 
-@section HTTP $B%W%m%-%71[$7$K(B IRC $B%5!<%P$K@\B3$7$?$$(B
-relay.el $B$H(B connect.c $B$r;H$&$H!"(B
+$B5/F0;~$K!"J#?t$N(B IRC $B%5!<%P$N%A%c%s%M%k$K;22C$9$k>l9g$K$O!"(B
+$BJQ?t(B @samp{riece-startup-channel-list} $B$bF1;~$K@_Dj$9$kI,MW$,$"$j$^$9!#(B
+
+@section HTTP $B%W%m%-%7$r2p$7$F(B IRC $B%5!<%P$K@\B3$7$?$$(B
+@file{relay.el} $B$H(B @file{connect.c} $B$r;H$&$H!"(B
 HTTP $B%W%m%-%7$r2p$7$F(B IRC $B%5!<%P$K@\B3$9$k$3$H$,$G$-$^$9!#(B
 
 @table @asis
@@ -726,8 +707,9 @@ HTTP $B%W%m%-%7$r2p$7$F(B IRC $B%5!<%P$K@\B3$9$k$3$H$,$G$-$^$9!#(B
 @uref{http://www.taiyo.co.jp/~gotoh/ssh/connect.html}
 @end table
 
-$B$?$H$($P!"(B"proxy.example.com:8080" $B7PM3$G(B irc.tokyo.wide.ad.jp $B$K@\B3$9(B
-$B$k>l9g$K$O!"0J2<$N9T$r(B @file{~/.riece/init.el} $B$KDI2C$7$^$9!'(B
+$B$?$H$($P!"(B@samp{proxy.example.com:8080} $B7PM3$G(B 
+@samp{irc.tokyo.wide.ad.jp} $B$K@\B3$9$k>l9g$K$O!"0J2<$N9T$r(B 
+@file{~/.riece/init} $B$KDI2C$7$^$9!#(B
 
 @example
 (require 'relay)
@@ -740,444 +722,31 @@ HTTP $B%W%m%-%7$r2p$7$F(B IRC $B%5!<%P$K@\B3$9$k$3$H$,$G$-$^$9!#(B
                                riece-server-alist))
 @end example
 
-@section IRC $B%m%0$r%U%!%$%k$KJ]B8$7$?$$(B
+@section $B2qOC$N%m%0$r%U%!%$%k$KJ]B8$7$?$$(B
 @vindex riece-log-directory-map
 
-$B0J2<$N9T$r(B @file{~/.riece/init.el} $B$KDI2C$7$^$9!'(B
+@samp{riece-log} $B%"%I%*%s$r;H$&$H!"2qOC$N%m%0$r%U%!%$%k$KJ]B8$7!":F5/F0(B
+$B;~$K;2>H$G$-$^$9!#(B@samp{riece-log} $B%"%I%*%s$OI8=`$GAH$_9~$^$l$F$$$^$9!#(B
 
-@example
-(add-to-list 'riece-addons 'riece-log)
-@end example
+$BDL>o$O(B @file{~/.riece/log} $B$N2<$K(B IRC $B%5!<%P$NL>A0!"%A%c%s%M%kL>$N%G%#%l(B
+$B%/%j$,:n@.$5$l!"$=$NCf$KF|$K$AKh$KJ,JL$5$l$FJ]B8$5$l$^$9!#(B
 
-$B%m%0%U%!%$%k$O%G%U%)%k%H$G$O(B @file{~/.riece/log} $B$N2<$K%5!<%PL>!"%A%c%s(B
-$B%M%kL>$N%G%#%l%/%j$,:n@.$5$l!"$=$NCf$KF|$K$AKh$KJ]B8$5$l$^$9!#$?$@$7%G%U%)(B
-$B%k%H$N%5!<%P$N>l9g$O!"%5!<%PL>$N%G%#%l%/%H%j$O>JN,$5$l$^$9!#(B
-
-US-ASCII $B0J30$N%G%#%l%/%H%jL>$,J8;z2=$1$9$k$H$$$&?M$O!"(B
+$B%G%#%l%/%H%jL>$,J8;z2=$1$9$k>l9g$K$O!"(B
 @code{file-name-coding-system} $B$NCM$rE,@Z$K@_Dj$9$k$+!"$"$k$$$O(B 
-@code{riece-log-directory-map} $B$G%A%c%s%M%kL>$HJ]B8@h$N%G%#%l%/%H%jL>$H(B
-$B$NBP1~%j%9%H$r0J2<$NNc$N$h$&$K!"(BUS-ASCII $B$N$_$r;HMQ$7$?%G%#%l%/%H%jL>$K(B
-$B$J$k$h$&$K@_Dj$9$k;v$G2sHr=PMh$^$9!'(B
+@code{riece-log-directory-map} $B$r;H$C$F%A%c%s%M%kL>$r(B US-ASCII $BJ8;zNs$K(B
+$BJQ49$9$kI,MW$,$"$j$^$9!#(B
 
 @example
 (setq riece-log-directory-map '(("#$B$j!<$9(B" . "riece")))
 @end example
 
-@node Development, Index, Tips, Top
-@chapter Development
+@section $B%&%#%s%I%&4V$r<+M3$K0\F0$7$?$$(B
 
-$B3+H/<TJg=8Cf!#(B
+GNU Emacs $B$KImB0$N(B @samp{windmove.el} $B$r;H$&$HJXMx$G$9!#>\:Y$O(B 
+@samp{windmove.el} $B$N%3%a%s%H$r;2>H$/$@$5$$!#(B@samp{windmove.el} $B$O(B 
+$B:n<T$N%Z!<%8(B (@uref{http://hovav.net/elisp/}) $B$+$i$b<hF@$G$-$^$9!#(B
 
-@menu
-* CVS::                         $B3+H/Cf$N%=!<%9$N<hF@(B
-* Debugging::                   $B%G%P%C%0$N$?$a$N@_Dj(B
-* Modules::                     $B9=@.%b%8%e!<%k$N@bL@(B
-* Namespace management::        
-* Signals::                     
-* Writing add-ons::             $B%"%I%*%s$N=q$-$+$?(B
-* Handler hooks::               
-@end menu
-
-@node CVS, Debugging, Development, Development
-@section CVS
-
-Riece $B$N3+H/$O(B CVS $B$rMxMQ$7$F9T$C$F$$$^$9!#(BCVS $B%5!<%P$+$i:G?7$N%9%J%C%W(B
-$B%7%g%C%H$r<hF@$9$k$K$O0J2<$N$h$&$K$7$^$9!#(B
-
-@enumerate
-@item
-CVS $B%5!<%P$X$N%m%0%$%s(B
-
-@example
-cvs -d :pserver:anonymous@@cvs.m17n.org:/cvs/root login
-CVS password: [CR] # NULL string
-@end example
-
-@item
-$B%b%8%e!<%k$N%A%'%C%/%"%&%H(B
-
-@example
-cvs -d :pserver:anonymous@@cvs.m17n.org:/cvs/root checkout riece
-@end example
-
-@item
-@file{configure} $B$N@8@.(B
-
-@example
-autoreconf -f -i -v
-@end example
-@end enumerate
-
-@node Debugging, Modules, CVS, Development
-@section Debugging
-
-@code{riece-debug} $B$r(B @code{t} $B$K@_Dj$9$k$H!"%G%P%C%0=PNO$,M-8z$K$J$j$^(B
-$B$9!#$^$?!"%5!<%P$+$i$N@8$N=PNO$,(B " *IRC*[<$B%5!<%PL>(B>]" $B%P%C%U%!$K>C$5$l$:(B
-$B$K;D$j$^$9!#(B
-@vindex riece-debug
-
-@node Modules, Namespace management, Debugging, Development
-@section Modules
-
-$B4pK\E*$K0MB84X78$N>e0L$K$"$k$b$N$+$i!'(B
-
-@table @samp
-@item riece-globals
-$BBg0hJQ?t$NDj5A(B 
-@item riece-options
-$B%f!<%6%*%W%7%g%s$NDj5A(B 
-@item riece-version
-$B%P!<%8%g%s$NDj5A(B 
-@item riece-coding
-$B%3!<%G%#%s%0%7%9%F%`4XO"$N4X?t$NDj5A(B 
-@item riece-complete
-$B%_%K%P%C%U%!$G$NJd40$r=u$1$k4X?t$NDj5A(B 
-@item riece-addon
-$B%"%I%*%s4IM}(B
-
-@item riece-mode
-channel/user $B$N%b!<%I4IM}(B
-@item riece-identity
-channel/user object $B$NBg0hI=5-$rA`:n$9$k4X?t$NDj5A(B 
-@item riece-channel
-channel object $B4XO"$NDj5A(B 
-@item riece-user
-user object $B4XO"$NDj5A(B 
-
-@item riece-misc
-$B;(B?$J4X?t$NDj5A(B
-@item riece-signal
-$B%7%0%J%k(B(@pxref{Signals})$B4IM}(B
-
-@item riece-layout
-$B%&%#%s%I%&%l%$%"%&%H4IM}(B
-@item riece-display
-$BI=<(MQ%P%C%U%!$N4IM}(B 
-@item riece-server
-IRC$B%5!<%P$H$N@\B34IM}(B 
-
-@item riece-naming
-$BL>A04IM}$N$?$a$N(B mediator $B$N$h$&$J$b$N(B 
-@item riece-message
-message object $B4XO"$NDj5A(B 
-
-@item riece-filter
-$B%W%m%;%9%U%#%k%?$N%(%s%H%j%]%$%s%H(B 
-@item riece-handle
-$BDL>o$N%a%C%;!<%8$N%O%s%I%i!#(Briece-filter $B$+$i8F$P$l$k(B 
-@item riece-000
-000$BHVBf$N(B numeric reply $B$N%O%s%I%i!#(Briece-filter $B$+$i8F$P$l$k(B 
-@item riece-200
-200$BHVBf$N(B numeric reply $B$N%O%s%I%i!#(Briece-filter $B$+$i8F$P$l$k(B 
-@item riece-300
-300$BHVBf$N(B numeric reply $B$N%O%s%I%i!#(Briece-filter $B$+$i8F$P$l$k(B 
-@item riece-400
-400$BHVBf$N(B numeric reply $B$N%O%s%I%i!#(Briece-filter $B$+$i8F$P$l$k(B 
-@item riece-500
-500$BHVBf$N(B numeric reply $B$N%O%s%I%i!#(Briece-filter $B$+$i8F$P$l$k(B 
-
-@item riece-commands
-$B%3%^%s%I$NDj5A(B 
-@item riece-irc
-IRC $B%W%m%H%3%k%$%s%?!<%U%'!<%9(B
-@item riece
-$B%(%s%H%j%]%$%s%H!#3F%P%C%U%!$N%b!<%IDj5A$J$I(B 
-@end table
-
-@node Namespace management, Signals, Modules, Development
-@section Namespace management
-
-Riece $B$OJ#?t$N%5!<%P$KF1;~$K@\B3$9$k$?$a!"%5!<%PKh$KJL!9$NL>A06u4V$r4IM}(B
-$B$7$F$$$^$9!#$3$NL>A06u4V$K$O!"%5!<%P$N%W%m%;%9$K7k$SIU$1$i$l$?%P%C%U%!$N(B
-$B%m!<%+%kJQ?t$r2p$7$F%"%/%;%9$7$^$9!#(B
-
-@subsection Obtaining server buffer
-$B%5!<%P$N%W%m%;%9$rF@$k$K$O!"$^$:$O$8$a$K%5!<%P$NL>A0$rF@$kI,MW$,$"$j(B
-$B$^$9!#%5!<%P$NL>A0$O0J2<$K5s$2$k$$$/$D$+$NJ}K!$G<hF@$G$-$^$9!#(B
-
-@enumerate
-@item
-@vindex riece-overrinding-server-name
-$BBg0hJQ?t(B @code{riece-overrinding-server-name} $B$NCM(B
-
-@item
-@vindex riece-server-name
-@code{riece-server-name} $B$,%+%l%s%H%P%C%U%!$N%m!<%+%kJQ?t$G$"$k$J$i$P!"(B
-$B4{$K%W%m%;%9$N%P%C%U%!$K$$$k$H$_$J$;$k$N$G!"(B@code{riece-server-name} $B$N(B
-$BCM$=$N$b$N(B
-
-@item
-@samp{riece-identity} $B%*%V%8%'%/%H$K7k$SIU$1$i$l$?%5!<%PL>(B($B8e=R(B)
-@end enumerate
-
-$B$3$&$7$FF@$?%5!<%PL>$G(B @code{riece-server-process} $B$r8F=P$7!"%5!<%P$N(B
-$B%W%m%;%9$r<hF@$7$^$9!#(B
-@findex riece-server-process
-
-@subsection Identity
-$BJ#?t$N%5!<%P$K7R$$$@>l9g!"%A%c%s%M%kL>$d%K%C%/$r(B($B%5!<%P$N%P%C%U%!>e$@(B
-$B$1$G$O$J$/(B)$BBg0hE*$K6hJL$9$kI,MW$,@8$8$^$9!#$3$N$h$&$JL>A0$rI=8=$9$k$N(B
-$B$,(B @samp{riece-identity} $B%*%V%8%'%/%H$G$9!#(B
-
-@samp{riece-identity} $B%*%V%8%'%/%H$O0J2<$N(B 2 $B$D$NMWAG$r$b$D%Y%/%?!<$G$9!#(B
-
-@table @samp
-@item prefix
-$B%5!<%P%m!<%+%k$JL>A0(B
-@item server
-$B%5!<%P$NL>A0(B
-@end table
-
-@samp{riece-identity} $B%*%V%8%'%/%H$KBP$9$kA`:n$K$O0J2<$N$h$&$J$b$N$,$"$j$^$9!#(B
-
-@defun riece-make-identity prefix &optional server
-@samp{riece-identity} $B%*%V%8%'%/%H$r:n@.$7$^$9!#(Bserver $B$,>JN,$5$l$?>l9g$K$O!"(B
-riece-find-server-name $B$r;H$C$F<hF@$7$?%5!<%PL>$r;H$$$^$9(B
-@end defun
-
-@defun riece-identity-prefix identity
-@samp{riece-identity} $B%*%V%8%'%/%H$+$i%5!<%P%m!<%+%k$JL>A0$r<h$j=P$7$^$9!#(B
-@end defun
-
-@defun riece-identity-server identity
-@samp{riece-identity} $B%*%V%8%'%/%H$+$i%5!<%P$NL>A0$r<h$j=P$7$^$9!#(B
-@end defun
-
-@defun riece-identity-equal ident1 ident2
-2 $B$D$N(B@samp{riece-identity} $B%*%V%8%'%/%H$,F1Ey$+D4$Y$^$9!#(B
-@end defun
-
-@defun riece-identity-equal-no-server ident1 ident2
-2 $B$D$N(B@samp{riece-identity} $B%*%V%8%'%/%H$N%5!<%P%m!<%+%k$JL>A0$,F1Ey$+(B
-$BD4$Y$^$9!#(B
-@end defun
-
-@defun riece-identity-member elt list
-@samp{riece-identity} $B%*%V%8%'%/%H(B @var{elt} $B$,(B @var{list} $B$K4^$^$l$k(B
-$B$+8!::$7$^$9!#(B
-@end defun
-
-@subsection Channel and user management
-@samp{riece-identity} $B%*%V%8%'%/%H$K$h$C$F<1JL$5$l$k(B IRC $B$N%A%c%s%M%k(B
-$B$H%f!<%6$O$=$l$>$l(B @samp{riece-channel} $B%*%V%8%'%/%H$H(B 
-@samp{riee-user} $B%*%V%8%'%/%H$K$h$jI=8=$5$l$^$9!#(B
-
-@subsubsection Channels
-@code{riece-channel} $B$O!"(BIRC $B$N%A%c%s%M%k$rI=$9%*%V%8%'%/%H$G$9!#0J2<$N(B
-$BMWAG$r;}$A$^$9!#(B
-
-@table @samp
-@item users
-$B;22C$7$F$$$k%f!<%6$NL>A0(B($B6I=jL>(B)$B$N%j%9%H(B 
-@item operators
-$B%*%Z%l!<%?8"8B$r$b$D%f!<%6$NL>A0$N%j%9%H(B 
-@item speakers
-$BH/8@8"$r$b$D%f!<%6$NL>A0$N%j%9%H(B 
-@item modes
-$B%A%c%s%M%k$N%b!<%I(B($BJ8;z$N%j%9%H(B) 
-@item banned
-@samp{MODE +b} $B$G;XDj$5$l$?%Q%?!<%s$N0lMw(B 
-@item invited
-@samp{MODE +I} $B$G;XDj$5$l$?%Q%?!<%s$N0lMw(B 
-@item uninvited
-@samp{MODE +e} $B$G;XDj$5$l$?%Q%?!<%s$N0lMw(B
-@end table
-
-@subsubsection Users
-@code{riece-user} $B$O!"(BIRC $B$K;22C$7$F$$$k%f!<%6$rI=$9%*%V%8%'%/%H$G$9!#0J(B
-$B2<$NMWAG$r;}$A$^$9!#(B
-
-@table @samp
-@item channels
-$B;22C$7$F$$$k%A%c%s%M%k$NL>A0(B($B6I=jL>(B)$B$N%j%9%H(B 
-@item user-at-host
-"<user>@@<host>" $B$N7A$GM?$($i$l$k%f!<%6$N>pJs(B 
-@item modes
-$B%f!<%6$N%b!<%I(B($BJ8;z$N%j%9%H(B) 
-@item away
-AWAY $BCf$+$I$&$+(B 
-@end table
-
-@subsubsection Mediator
-$B%A%c%s%M%k$H%f!<%6$N;22C!&N%C&$r4IM}$9$k$?$a$K!"(B @code{riece-naming} 
-$B$H$$$&>e0L$N%b%8%e!<%k$rMQ0U$7$F$$$^$9!#$3$l$O!"%G%6%$%s%Q%?!<%s$G$$$&(B
-$B$H$3$m$N(B Mediator $B%Q%?!<%s$KAjEv$9$k$b$N$G$9!#(B
-
-@code{riece-naming} $B$r2p$9$k$3$H$G!"A0=R$N%A%c%s%M%k!&%f!<%6%*%V%8%'%/%H(B
-$B$KD>@\<j$r?($l$k$3$H$J$/!"L>A06u4V$K0BA4$K%"%/%;%9$9$k$3$H$,$G$-$^$9!#(B
-
-$BDs6!$9$k<g$J4X?t$O0J2<$N(B 3 $B$D$G$9!#(B
-
-@defun riece-naming-assert-join user-name channel-name
-$B%f!<%6$,%A%c%s%M%k$K;22C$7$?$3$H$rI=L@$7$^$9(B
-@end defun
-
-@defun riece-naming-assert-part user-name channel-name
-$B%f!<%6$,%A%c%s%M%k$+$iN%C&$7$?$3$H$rI=L@$7$^$9(B 
-@end defun
-
-@defun riece-naming-assert-rename old-name new-name
-$B%f!<%6$NL>A0$,JQ99$5$l$?$3$H$rI=L@$7$^$9(B 
-@end defun
-
-@node Signals, Writing add-ons, Namespace management, Development
-@section Signals
-
-$B2hLL$N:FIA2h$r8zN(NI$/9T$&$?$a$K!"%$%Y%s%H$HIA2hBP>]$N%*%V%8%'%/%H(B($B%P%C(B
-$B%U%!$d!"%b!<%I%i%$%s$N0u(B @pxref{Indicators})$B$r7k$SIU$1$k%a%+%K%:%`$rMQ0U(B
-$B$7$F$$$^$9!#(B
-
-$B2?$i$+$N%$%Y%s%H$,H/@8$9$k$H!"%7%0%J%k$,Aw=P$5$l$^$9!#%7%0%J%k$N35G0$O!"(B
-Qt $B$d(B GTK+ $B$H$$$C$?(B GUI $B%D!<%k%-%C%H$KMQ0U$5$l$F$$$k$b$N$HF1MM$G$9!#(B
-
-$B%7%0%J%k$rAw=P$9$k$K$O!"(B@samp{riece-emit-signal} $B$r;H$$$^$9!#(B
-
-@defun riece-emit-signal signal-name &rest args
-@var{signal-name} $B$G;X<($5$l$k%7%0%J%k$r!"0z?t(B @var{args} $B$H$H$b$KAw=P$7$^$9(B
-@end defun
-
-$B%7%0%J%k$K1~Ez$9$k$K$O!"(B@samp{riece-connect-signal} $B$r;H$$$^$9!#(B
-
-@defun riece-connect-signal signal-name slot-function &optional filter-function handback
-@var{signal-name} $B$G;X<($5$l$k%7%0%J%k$K1~Ez$9$k4X?t(B @var{slot-function} 
-$B$r7k$SIU$1$^$9!#(B@var{slot-function} $B$K;XDj$5$l$?4X?t$O(B 2 $B$D$N0z?t$r<h$j$^(B
-$B$9!#Bh(B1$B$N0z?t$O$O%7%0%J%k$rI=$7$^$9!#$^$?!"Bh(B2$B$N0z?t$H$7$F!"(B
-@var{handback} $B0z?t$KM?$($i$l$?%*%V%8%'%/%H$,$=$N$^$^EO$5$l$^$9!#(B
-
-@var{filter-function} $B$O!"<u?.$7$?%7%0%J%k$K1~Ez$9$Y$-$+$I$&$+$rH=Dj$9$k(B
-$B4X?t$G$9!#$3$N4X?t$O0z?t$H$7$F%7%0%J%k%*%V%8%'%/%H$r<u$1<h$j!"(B@samp{nil}
-$B$^$?$O(B @samp{t} $B$rJV$9$3$H$,4|BT$5$l$^$9!#JV$jCM$,(B @samp{nil} $B$N>l9g$K$O!"(B
-@var{slot-function} $B$,8F$P$l$k$3$H$O$"$j$^$;$s!#(B
-@end defun
-
-$B%7%0%J%k%*%V%8%'%/%H$K%"%/%;%9$9$k$K$O!"0J2<$N4X?t$r;H$$$^$9!#(B
-
-@defun riece-signal-name
-$B%7%0%J%k$NL>A0(B($B%7%s%\%k(B)$B$rJV$7$^$9!#(B
-@end defun
-
-@defun riece-signal-args
-$B%7%0%J%kAw=P;~$KM?$($i$l$?0z?t$rJV$7$^$9!#(B
-@end defun
-
-$B8=:_!"0J2<$N%7%0%J%k$,I8=`$GEPO?$5$l$F$$$^$9!'(B
-
-@table @samp
-@item channel-list-changed
-$B;22C$7$F$$$k%A%c%s%M%k$N0lMw$NJQ2=(B
-@item user-list-changed
-$B%A%c%s%M%k$N;22C<T0lMw$NJQ2=(B
-($B0z?t$O%A%c%s%M%k$KAjEv$9$k(B @samp{riece-identity} $B%*%V%8%'%/%H(B)
-@item channel-switched
-$B8=:_$N%A%c%s%M%k$r0\F0(B
-@item user-joined-channel
-$B%f!<%6$,%A%c%s%M%k$K;22C(B
-($B0z?t$O!"%f!<%6$*$h$S%A%c%s%M%k$KAjEv$9$k(B @samp{riece-identity} $B%*%V%8%'%/%H(B)
-@item user-left-channel
-$B%f!<%6$,%A%c%s%M%k$+$iN%C&(B
-($B0z?t$O!"%f!<%6$*$h$S%A%c%s%M%k$KAjEv$9$k(B @samp{riece-identity} $B%*%V%8%'%/%H(B)
-@item user-renamed
-$B%f!<%6$,L>A0$rJQ99(B
-($B0z?t$O!"0JA0$H8=:_$NL>A0$KAjEv$9$k(B @samp{riece-identity} $B%*%V%8%'%/%H(B)
-@item user-away-changed
-$B%f!<%6$NN%@J>uBV$NJQ2=(B
-($B0z?t$O!"%f!<%6$KAjEv$9$k(B @samp{riece-identity} $B%*%V%8%'%/%H(B)
-@item user-operator-changed
-$B%f!<%6$N%*%Z%l!<%?>uBV$NJQ2=(B
-($B0z?t$O!"%f!<%6$KAjEv$9$k(B @samp{riece-identity} $B%*%V%8%'%/%H(B)
-@item channel-topic-changed
-$B%A%c%s%M%k$N%H%T%C%/$NJQ2=(B
-($B0z?t$O!"%A%c%s%M%k$KAjEv$9$k(B @samp{riece-identity} $B%*%V%8%'%/%H(B)
-@item channel-modes-changed
-$B%A%c%s%M%k$N%b!<%I$NJQ2=(B
-($B0z?t$O!"%A%c%s%M%k$KAjEv$9$k(B @samp{riece-identity} $B%*%V%8%'%/%H(B)
-@item channel-operators-changed
-$B%A%c%s%M%k$G%*%Z%l!<%?8"8B$r;}$D%f!<%6$N0lMw$NJQ2=(B
-($B0z?t$O!"%A%c%s%M%k$KAjEv$9$k(B @samp{riece-identity} $B%*%V%8%'%/%H(B)
-@item channel-speakers-changed
-$B%A%c%s%M%k$GH/8@8"$r;}$D%f!<%6$N0lMw$NJQ2=(B
-($B0z?t$O!"%A%c%s%M%k$KAjEv$9$k(B @samp{riece-identity} $B%*%V%8%'%/%H(B)
-@item buffer-freeze-changed
-$B%P%C%U%!$NE`7k>uBV$NJQ2=(B
-($B0z?t$O%P%C%U%!(B)
-@end table
-
-@node Writing add-ons, Handler hooks, Signals, Development
-@section Writing add-ons
-
-$B%"%I%*%s$N>r7o$rK~$?$9%b%8%e!<%k$O0J2<$N4X?t$rDs6!$7$^$9!#(B
-
-@table @samp
-@item <$B%b%8%e!<%kL>(B>-requires
-$B0MB8$9$kB>$N%"%I%*%s(B($B%7%s%\%k$N%j%9%H(B)$B$rJV$7$^$9(B($B%*%W%7%g%s(B)
-@item <$B%b%8%e!<%kL>(B>-insinuate
-$B=i4|2==hM}$r9T$$$^$9(B
-@end table
-
-$B$^$?!"%"%I%*%s$N@bL@$r!"JQ?t(B @samp{<$B%b%8%e!<%kL>(B>-description} $B$K@_Dj$9(B
-$B$k$3$H$b$G$-$^$9!#$3$NJ8;zNs$O(B @kbd{M-x riece-command-list-addons} $B$K$h(B
-$B$k%"%I%*%s$N0lMwI=<($K;H$o$l$^$9!#(B
-
-$BM-8z2=!&L58z2=$KBP1~$7$?%"%I%*%s$O!"JQ?t(B @samp{<$B%b%8%e!<%kL>(B>-enabled} 
-$B$K8=:_$N>uBV$rJ];}$7$^$9!#CM$,(B @samp{nil} $B$G$"$l$PL58z!"(B@samp{t} $B$G$"$l(B
-$B$PM-8z$G$9!#2C$($F!"0J2<$N4X?t$rDs6!$7$^$9!#(B
-
-@table @samp
-@item <$B%b%8%e!<%kL>(B>-enable
-$B%"%I%*%s$rM-8z$K$7$^$9(B
-@item <$B%b%8%e!<%kL>(B>-disable
-$B%"%I%*%s$rL58z$K$7$^$9(B
-@end table
-
-Riece $B$O5/F0;~$K0J2<$N=hM}$r9T$$$^$9!#(B
-
-@enumerate
-@item
-$BJQ?t(B @code{riece-addons} $B$KNs5s$5$l$?%b%8%e!<%k$rFI$_9~$`(B
-
-@item
-$B$=$l$>$l$N%b%8%e!<%k$KBP$7!"(B@samp{<$B%b%8%e!<%kL>(B>-requires} $B$,MQ0U$5$l$F$$$l$P8F$S=P$7$F0MB8%0%i%U$r:n$k(B
-
-@item
-$B0MB8%0%i%U$KBP$7$F%H%]%m%8%+%k%=!<%H(B (cf. tsort(1)) $B$r9T$&(B
-
-@item
-$BF@$i$l$?0MB8=g=x$K=>$C$F(B @samp{<$B%b%8%e!<%kL>(B>-insinuate} $B8F$S=P$9(B
-
-@item
-$B$b$7!"%"%I%*%s$,M-8z2=!&L58z2=$KBP1~$7$F$*$j!"L@<(E*$KL58z2=$5$l$F$$$J$1$l$P!"(B
-@samp{<$B%b%8%e!<%kL>(B>-enable}$B$r8F$S=P$9!#(B
-@end enumerate
-
-$B:n@.$7$?%"%I%*%s$O!"(B@code{load-path} $B$NDL$C$?%G%#%l%/%H%j!"$^$?$O(B 
-@code{riece-addon-directory} ($B%G%U%)%k%H$G$O(B @file{~/.riece/addons/}) $B$K(B
-$BCV$/$3$H$GAH$_9~$_2DG=$J>uBV$K$J$j$^$9!#(B
-@vindex riece-addon-directory
-
-@node Handler hooks,  , Writing add-ons, Development
-@section Handler hooks
-
-Riece $B$K$O!"%O%s%I%i%U%C%/$H8F$P$l$kFC<l$J%U%C%/$,$"$j$^$9!#$3$l$i$O(B IRC 
-$B$N%a%C%;!<%8$r<u$1<h$C$?A08e$G<B9T$5$l$k%U%C%/$G$9!#(B
-
-$B@bL@$N$?$a$K(B @samp{message} $B$r(B IRC $B$N%a%C%;!<%8L>(B(PRIVMSG $B$J$I(B)$B$rA4$F>.(B
-$BJ8;z$K$7$?$b$N$H$7$^$9!#(B
-
-@table @code
-@item riece-<message>-hook
-@samp{message} $B$,FO$$$?$H$-$K:G=i$K8F$P$l$k%U%C%/(B
-@item riece-after-<message>-hook
-@samp{message} $B$N=hM}$,=*$o$C$?8e$K8F$P$l$k%U%C%/(B
-@end table
-
-$B$3$3$G(B @code{riece-<message>-hook} $B$NJV$jCM$K$O0UL#$,$"$j!"Hs(B nil $B$rJV$9(B
-$B$b$N$,$"$l$P!"$=$N8e$N=hM}$r$*$3$J$$$^$;$s!#$^$?!"$=$N>l9g$K$O(B 
-@code{riece-after-<message>-hook} $B$b8F$S=P$5$l$^$;$s!#(B
-
-$B%U%C%/$N0z?t$O(B RFC2812 $B$N(B @samp{prefix} $B$H(B @samp{Parameters} $B$KAjEv$9$k(B 
-2 $B$D$N0z?t$,EO$j$^$9!#(B
-
-@node Index, Function Index, Development, Top
+@node Index, Function Index, Tips, Top
 @chapter Index
 @printindex cp
 

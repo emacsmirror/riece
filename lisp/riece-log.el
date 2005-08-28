@@ -1,4 +1,4 @@
-;;; riece-log.el --- saving irc logs add-on
+;;; riece-log.el --- Save IRC logs
 ;; Copyright (C) 2003 OHASHI Akira
 ;; Copyright (C) 2004 Daiki Ueno
 
@@ -25,10 +25,7 @@
 
 ;;; Commentary:
 
-;; This add-on saves irc logs for every channel.
-
-;; To use, add the following line to your ~/.riece/init.el:
-;; (add-to-list 'riece-addons 'riece-log)
+;;; NOTE: This is an add-on module for Riece.
 
 ;;; Code:
 
@@ -36,7 +33,8 @@
 (require 'riece-button)
 
 (defgroup riece-log nil
-  "Save irc log"
+  "Save IRC logs."
+  :prefix "riece-"
   :group 'riece)
 
 (defcustom riece-log-directory
@@ -71,11 +69,6 @@ If integer, flash back only this line numbers. t means all lines."
   :type 'symbol
   :group 'riece-log)
 
-(defcustom riece-log-open-directory-function 'find-file
-  "*Function for opening a directory."
-  :type 'function
-  :group 'riece-log)
-
 (defface riece-log-date-face
   '((((class color)
       (background dark))
@@ -93,17 +86,23 @@ If integer, flash back only this line numbers. t means all lines."
   "Lock file for riece-log.
 It is created if there is at least one instance of Emacs running riece-log.")
 
-(defvar riece-log-enabled nil)
+(defconst riece-log-file-name-regexp
+  (concat (riece-make-interval-regexp "[0-9]" 8) "\\.txt\\(\\.\\(.*\\)\\)?$"))
 
 (defconst riece-log-description
-  "Saving IRC logs")
+  "Save IRC logs.")
 
 (defun riece-log-display-message-function (message)
-  (if riece-log-enabled
-      (let ((file (riece-log-get-file (riece-message-target message)))
-	    (coding-system-for-write riece-log-coding-system)
-	    file-name-coding-system
-	    default-file-name-coding-system)
+  (if (get 'riece-log 'riece-addon-enabled)
+      (let* ((coding-system-for-write
+	      (if (featurep 'mule)
+		  (or riece-log-coding-system
+		      (car (get-language-info current-language-environment
+					      'coding-system)))))
+	     (file (riece-log-make-file-name (riece-message-target message)
+					     coding-system-for-write))
+	     file-name-coding-system
+	     default-file-name-coding-system)
 	(unless (file-directory-p (file-name-directory file))
 	  (make-directory (file-name-directory file) t))
 	(write-region (concat (format-time-string "%H:%M") " "
@@ -111,22 +110,32 @@ It is created if there is at least one instance of Emacs running riece-log.")
 		      nil file t 0
 		      riece-log-lock-file))))
 
-(defun riece-log-get-file (identity)
-  (expand-file-name
-   (concat (format-time-string "%Y%m%d") ".txt")
-   (riece-log-get-directory identity)))
+(defun riece-log-make-file-name (identity coding-system)
+  (expand-file-name (if (featurep 'mule)
+			(format "%s.txt.%s"
+				(format-time-string "%Y%m%d")
+				coding-system)
+		      (format "%s.txt"
+				(format-time-string "%Y%m%d")))
+		    (riece-log-directory identity)))
 
-(defun riece-log-get-files (identity)
-  (let ((directory (riece-log-get-directory identity)))
-    (if (file-directory-p directory)
-	(nreverse (sort (directory-files directory t
-			 (concat "^"
-				 (riece-make-interval-regexp "[0-9]" 8)
-				 "\\.txt$")
-			 t)
-		  #'string-lessp)))))
+(defun riece-log-list-files (identity time)
+  (let ((directory (riece-log-directory identity))
+	(time-prefix (format-time-string "%Y%m%d" (or time '(0 0))))
+	files)
+    (when (file-directory-p directory)
+      (setq files (nreverse (sort (directory-files
+				   directory t
+				   (concat "^" riece-log-file-name-regexp)
+				   t)
+				  #'string-lessp)))
+      (while (and files
+		  (string-lessp (file-name-nondirectory (car files))
+				time-prefix))
+	(setq files (cdr files)))
+      files)))
 
-(defun riece-log-get-directory (identity)
+(defun riece-log-directory (identity)
   (let ((prefix (riece-identity-canonicalize-prefix
 		 (riece-identity-prefix identity)))
 	(server (riece-identity-server identity))
@@ -175,42 +184,54 @@ It is created if there is at least one instance of Emacs running riece-log.")
 (defun riece-log-insert (identity lines)
   "Insert logs for IDENTITY at most LINES.
 If LINES is t, insert today's logs entirely."
-  (if (eq lines t)
-      (let* (file-name-coding-system
-	     default-file-name-coding-system
-	     (file (riece-log-get-file identity)))
-	(if (file-exists-p file)
-	    (insert-file-contents file)))
-    (let* (file-name-coding-system
-	   default-file-name-coding-system
-	   (files (riece-log-get-files identity))
-	   (lines (- lines))
-	   name date point)
-      (while (and (< lines 0) files)
-	(if (and (file-exists-p (car files))
-		 (string-match (concat (riece-make-interval-regexp "[0-9]" 8)
-				       "\\.txt$")
-			       (setq name (file-name-nondirectory
-					   (car files)))))
-	    (save-restriction
-	      (narrow-to-region (point) (point))
-	      (insert-file-contents (car files))
-	      (goto-char (point-max))
-	      (setq lines (forward-line lines))
-	      (delete-region (point-min) (point))
-	      (unless (equal name (format-time-string "%Y%m%d.txt"))
-		(setq date (concat " (" (substring name 0 4) "/"
-				   (substring name 4 6) "/"
-				   (substring name 6 8) ")"))
-		(while (not (eobp))
-		  (end-of-line)
-		  (setq point (point))
-		  (insert date)
-		  (put-text-property point (point)
-				     'riece-overlay-face 'riece-log-date-face)
-		  (forward-line))
-		(goto-char (point-min)))))
-	(setq files (cdr files))))))
+  (let* (file-name-coding-system
+	 default-file-name-coding-system
+	 (files (riece-log-list-files identity
+				      (if (eq lines t) (current-time))))
+	 name coding-system date point)
+    (while (and (or (eq lines t) (> lines 0)) files)
+      (save-restriction
+	(narrow-to-region (point) (point))
+	(if (and (string-match
+		  (concat "^" riece-log-file-name-regexp)
+		  (setq name (file-name-nondirectory (car files))))
+		 (match-beginning 2))
+	    (progn
+	      (setq coding-system
+		    (intern (substring name (match-beginning 2))))
+	      (if (featurep 'xemacs)
+		  (setq coding-system (find-coding-system coding-system))
+		(unless (coding-system-p coding-system)
+		  (setq coding-system nil)))
+	      (if coding-system
+		  (let ((coding-system-for-read coding-system))
+		    (insert-file-contents (car files)))
+		;;don't insert file contents if they use non
+		;;supported coding-system.
+		))
+	  ;;if the filename has no coding-system suffix, decode with
+	  ;;riece-log-coding-system.
+	  (let ((coding-system-for-read riece-log-coding-system))
+	    (insert-file-contents (car files))))
+	;;lines in the file contents are in reversed order.
+	(unless (eq lines t)
+	  (goto-char (point-max))
+	  (setq lines (- (forward-line (- lines))))
+	  (delete-region (point-min) (point)))
+	;;add (YYYY/MM/dd) suffix on each line left in the current buffer.
+	(unless (equal (substring name 0 8) (format-time-string "%Y%m%d"))
+	  (setq date (concat " (" (substring name 0 4) "/"
+			     (substring name 4 6) "/"
+			     (substring name 6 8) ")"))
+	  (while (not (eobp))
+	    (end-of-line)
+	    (setq point (point))
+	    (insert date)
+	    (put-text-property point (point)
+			       'riece-overlay-face 'riece-log-date-face)
+	    (forward-line))
+	  (goto-char (point-min))))
+      (setq files (cdr files)))))
 
 (defun riece-log-flashback (identity)
   (when riece-log-flashback
@@ -240,12 +261,11 @@ If LINES is t, insert today's logs entirely."
       (set-window-point (get-buffer-window (current-buffer))
 			(point)))))
 
-(defun riece-log-open-directory (&optional channel)
+(defun riece-log-dired (&optional channel)
   (interactive)
-  (let ((directory (riece-log-get-directory
-		    (or channel riece-current-channel))))
+  (let ((directory (riece-log-directory (or channel riece-current-channel))))
     (if (file-directory-p directory)
-	(funcall riece-log-open-directory-function directory)
+	(dired directory)
       (error "No log directory"))))
 
 (defun riece-log-requires ()
@@ -267,14 +287,19 @@ If LINES is t, insert today's logs entirely."
   (add-hook 'riece-channel-buffer-create-functions
 	    'riece-log-flashback))
 
+(defun riece-log-uninstall ()
+  (setq riece-log-lock-file nil)
+  (remove-hook 'riece-after-display-message-functions
+	       'riece-log-display-message-function)
+  (remove-hook 'riece-channel-buffer-create-functions
+	       'riece-log-flashback))
+
 (defvar riece-command-mode-map)
 (defun riece-log-enable ()
-  (define-key riece-command-mode-map "\C-cd" 'riece-log-open-directory)
-  (setq riece-log-enabled t))
+  (define-key riece-command-mode-map "\C-cd" 'riece-log-dired))
 
 (defun riece-log-disable ()
-  (define-key riece-command-mode-map "\C-cd" nil)
-  (setq riece-log-enabled nil))
+  (define-key riece-command-mode-map "\C-cd" nil))
 
 (provide 'riece-log)
 

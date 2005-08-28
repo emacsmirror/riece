@@ -29,18 +29,21 @@
 
 ;; User modifiable variables.
 (defgroup riece nil
-  "Riece specific customize group")
+  "Riece specific customize group.")
 
 (defgroup riece-options nil
-  "Riece user customizable variables"
+  "Riece user customizable variables."
   :prefix "riece-"
   :group 'riece)
 
 (defcustom riece-saved-forms
   '(riece-server-alist
     riece-channel-buffer-mode
+    riece-others-buffer-mode
     riece-user-list-buffer-mode
-    riece-layout)
+    riece-channel-list-buffer-mode
+    riece-layout
+    riece-addons)
   "Variables saved after each session is completed."
   :type 'string
   :group 'riece-options)
@@ -56,7 +59,7 @@
   :group 'riece-options)
 
 (defgroup riece-looks nil
-  "Related to look and feel"
+  "Look and feel."
   :prefix "riece-"
   :group 'riece)
 
@@ -74,13 +77,21 @@ See the document of the function `recenter'."
   :group 'riece-looks)
 
 (defcustom riece-directory (expand-file-name "~/.riece")
-  "Where to look for data files."
+  "Where to look for startup files."
   :type 'directory
   :group 'riece-options)
 
 (defcustom riece-addon-directory
   (expand-file-name "addons" riece-directory)
   "Where to look for add-on files."
+  :type 'directory
+  :group 'riece-options)
+
+(defcustom riece-data-directory
+  (if (fboundp 'locate-data-directory)
+      (locate-data-directory "riece")
+    (file-name-directory load-file-name))
+  "Where to look for data files."
   :type 'directory
   :group 'riece-options)
 
@@ -125,12 +136,12 @@ way is to put Riece variables on .emacs or file loaded from there."
   :group 'riece-options)
 
 (defgroup riece-server nil
-  "Server settings"
+  "Server settings."
   :prefix "riece-"
   :group 'riece)
 
 (defgroup riece-channel nil
-  "Channel settings"
+  "Channel settings."
   :prefix "riece-"
   :group 'riece)
 
@@ -226,7 +237,7 @@ way is to put Riece variables on .emacs or file loaded from there."
   :type 'boolean
   :group 'riece-server)
 
-(defcustom riece-quit-timeout 10
+(defcustom riece-quit-timeout 1
   "Quit timeout when there is no response from server."
   :type '(radio (integer :tag "Seconds")
 		(const nil))
@@ -239,6 +250,11 @@ way is to put Riece variables on .emacs or file loaded from there."
 
 (defcustom riece-channel-buffer-mode t
   "When non-nil, Riece will display a channel buffer."
+  :type 'boolean
+  :group 'riece-looks)
+
+(defcustom riece-others-buffer-mode t
+  "When non-nil, Riece will display an \"*Others*\" buffer."
   :type 'boolean
   :group 'riece-looks)
 
@@ -292,22 +308,6 @@ way is to put Riece variables on .emacs or file loaded from there."
 (defcustom riece-buffer-dispose-function #'kill-buffer
   "Function called after the buffer was disposed."
   :type 'function
-  :group 'riece-options)
-
-(defcustom riece-shrink-buffer-idle-time-delay 5
-  "Number of idle seconds to wait before shrinking channel buffers."
-  :type 'integer
-  :group 'riece-options)
-
-(defcustom riece-max-buffer-size nil
-  "Maximum size of channel buffers."
-  :type '(radio (integer :tag "Number of characters")
-		(const nil))
-  :group 'riece-options)
-
-(defcustom riece-shrink-buffer-remove-chars (/ riece-max-send-size 2)
-  "Number of chars removed when shrinking channel buffers."
-  :type 'integer
   :group 'riece-options)
 
 (defcustom riece-format-time-function #'current-time-string

@@ -1,3 +1,47 @@
+* Major changes in 2.0.0
+
+** Support uninstall, unload (dangerous) operations for add-ons.
+   Now you can fully customize riece-addons in the add-on listing
+   mode. (ueno)
+
+** New mechanism for executing Ruby programs.  To use it, see the
+   commentary section of riece-ruby.el. (ueno)
+
+** New add-on riece-eval-ruby.el, which regards user input prefixed by
+   ",ruby " as a Ruby program and sends the result to the current
+   channel. (ueno)
+
+** New add-on riece-shrink-buffer.el, which now takes care of periodic
+   buffer shrinking.  If you have set riece-max-buffer-size, you will
+   need to enable the riece-shrink-buffer add-on in the add-on listing
+   mode. (ueno)
+
+** Don't signal an error when a user is quitting, and who has joined a
+   channel where you left. (ueno)
+
+** When saving a log file, suffix the name of the coding-system used
+   onto the filename.  This will avoid mojibake even
+   riece-log-coding-system is not set. (ueno)
+
+** While traversing channel list with C-c g, offer channels in order
+   of precedence where they have newer unread messages. (ueno)
+
+** Allow "@" instead of " " as a separator of a channel name and an
+   IRC server name. (ueno)
+
+** Rewrite the Japanese manual (riece-ja.texi) for IRC & Emacs
+   newbies. (ueno)
+
+** Allow users to hide *Others* buffer. (ueno)
+
+** Use seperate buffer to store debugging output. (ueno)
+
+** Added new make rule for byte-compiling elisp files individually.
+   To use it, after configure, do "make compile-individually" in
+   lisp/.  (ueno)
+
+** Include a document for developers (doc/HACKING.ja) (ueno)
+
 * Major changes in 1.0.8
 
 ** Mitigate file locking scheme of riece-log. (ueno)

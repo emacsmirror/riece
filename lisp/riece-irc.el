@@ -97,9 +97,19 @@
 			   (if (rassq process riece-server-process-alist)
 			       (delete-process process)))
 			 process))
-  (riece-process-send-string process
-			     (if message
-				 (format "QUIT :%s\r\n" message)
-			       "QUIT\r\n")))
+  (let ((server-name (with-current-buffer (process-buffer process)
+		       riece-server-name)))
+    (if (equal server-name "")
+	(message "Sending QUIT...")
+      (message "Sending QUIT to \"%s\"..." server-name))
+    (riece-process-send-string process
+			       (if message
+				   (format "QUIT :%s\r\n" message)
+				 "QUIT\r\n"))
+    (if (equal server-name "")
+	(message "Sending QUIT...done")
+      (message "Sending QUIT to \"%s\"...done"))))
 
 (provide 'riece-irc)
+
+;;; riece-irc.el ends here

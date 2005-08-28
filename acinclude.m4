@@ -56,7 +56,7 @@ fi
 ])
 
 AC_DEFUN([AC_CHECK_EMACS_FLAVOR],
- [AC_MSG_CHECKING([what a flavor does $EMACS have])
+ [AC_MSG_CHECKING([what flavor does $EMACS have])
 
   dnl Ignore cache.
   unset EMACS_cv_SYS_flavor;

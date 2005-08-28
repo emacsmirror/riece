@@ -429,7 +429,14 @@ Local to the buffer in `riece-buffer-list'.")
     (current-buffer)))
 
 (defun riece-channel-buffer (identity)
-  (cdr (riece-identity-assoc identity riece-channel-buffer-alist)))
+  (let ((entry (riece-identity-assoc identity riece-channel-buffer-alist)))
+    (if entry
+	(if (buffer-live-p (cdr entry))
+	    (cdr entry)
+	  (if riece-debug
+	      (riece-debug
+	       (format "riece-channel-buffer: nonexistent buffer: %s"
+		       (riece-format-identity identity))))))))
 
 (defun riece-switch-to-channel (identity)
   (let ((last riece-current-channel)

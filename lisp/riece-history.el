@@ -1,4 +1,4 @@
-;;; riece-history.el --- channel history management add-on
+;;; riece-history.el --- manage history of channel shifting
 ;; Copyright (C) 1998-2003 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>
@@ -23,6 +23,8 @@
 
 ;;; Commentary:
 
+;; NOTE: This is an add-on module for Riece.
+
 ;; You can check recently visited channels via `C-c g' in the commands
 ;; buffer, by adding the following lines to ~/.riece/init.el:
 
@@ -33,13 +35,13 @@
 
 (require 'riece-options)
 (require 'riece-globals)
-(require 'riece-highlight)
 (require 'riece-identity)
 (require 'riece-signal)
 (require 'ring)
+(require 'riece-highlight)
 
 (defgroup riece-history nil
-  "Channel history"
+  "Manage history of channel shifting."
   :tag "History"
   :prefix "riece-"
   :group 'riece)
@@ -74,10 +76,8 @@
 
 (defvar riece-channel-history nil)
 
-(defvar riece-history-enabled nil)
-
 (defconst riece-history-description
-  "Keep track channel history")
+  "Manage history of channel shifting.")
 
 (defun riece-guess-channel-from-history ()
   (let ((length (ring-length riece-channel-history))
@@ -89,7 +89,7 @@
     (nreverse result)))
 
 (defun riece-history-format-identity-for-channel-list-buffer (index identity)
-  (if (and riece-history-enabled
+  (if (and (get 'riece-history 'riece-addon-enabled)
 	   (not (ring-empty-p riece-channel-history))
 	   (riece-identity-equal identity (ring-ref riece-channel-history 0)))
       (concat (format "%2d:+" index)
@@ -97,7 +97,7 @@
 
 (defun riece-history-format-identity-for-channel-list-indicator (index
 								 identity)
-  (if (and riece-history-enabled
+  (if (and (get 'riece-history 'riece-addon-enabled)
 	   (not (ring-empty-p riece-channel-history))
 	   (riece-identity-equal identity (ring-ref riece-channel-history 0)))
       (let ((string (riece-format-identity identity))
@@ -114,12 +114,18 @@
 ;;;   (if (memq 'riece-guess riece-addons)
 ;;;       '(riece-guess)))
 
+(defun riece-history-after-switch-to-channel-functions (last)
+  (if (and (get 'riece-history 'riece-addon-enabled) last
+	   (not (riece-identity-equal last riece-current-channel)))
+      (ring-insert riece-channel-history last)))
+
+(defun riece-history-requires ()
+  (if (memq 'riece-highlight riece-addons)
+      '(riece-highlight)))
+
 (defun riece-history-insinuate ()
   (add-hook 'riece-after-switch-to-channel-functions
-	    (lambda (last)
-	      (if (and riece-history-enabled last
-		       (not (riece-identity-equal last riece-current-channel)))
-		  (ring-insert riece-channel-history last))))
+	    'riece-history-after-switch-to-channel-functions)
   (add-hook 'riece-format-identity-for-channel-list-buffer-functions
 	    'riece-history-format-identity-for-channel-list-buffer)
   (add-hook 'riece-format-identity-for-channel-list-indicator-functions
@@ -133,15 +139,24 @@
 ;;;		'riece-guess-channel-from-history))
   )
 
+(defun riece-history-uninstall ()
+  (remove-hook 'riece-after-switch-to-channel-functions
+	       'riece-history-after-switch-to-channel-functions)
+  (remove-hook 'riece-format-identity-for-channel-list-buffer-functions
+	       'riece-history-format-identity-for-channel-list-buffer)
+  (remove-hook 'riece-format-identity-for-channel-list-indicator-functions
+	       'riece-history-format-identity-for-channel-list-indicator)
+  (setq riece-channel-list-mark-face-alist
+	(delq (assq ?+ riece-channel-list-mark-face-alist)
+	      riece-channel-list-mark-face-alist)))
+
 (defun riece-history-enable ()
   (setq riece-channel-history
 	(make-ring riece-channel-history-length))
-  (setq riece-history-enabled t)
   (riece-emit-signal 'channel-list-changed))
 
 (defun riece-history-disable ()
-  (setq riece-channel-history nil
-	riece-history-enabled nil)
+  (setq riece-channel-history nil)
   (riece-emit-signal 'channel-list-changed))
 
 (provide 'riece-history)

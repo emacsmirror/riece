@@ -62,12 +62,6 @@
     (riece-temp-buffer " *Temp*")
     (riece-debug-buffer " *Debug*")))
 
-(defvar riece-shrink-buffer-idle-timer nil
-  "Timer object to periodically shrink channel buffers.")
-
-(defvar riece-addons-insinuated nil
-  "Non nil if add-ons are already insinuated.")
-
 (defvar riece-select-keys
   `("#" riece-command-switch-to-channel-by-number
     "1" riece-command-switch-to-channel-by-number-1
@@ -166,6 +160,7 @@ If optional argument SAFE is nil, overwrite previous definitions."
     "f" riece-command-finger
     "\C-tf" riece-command-toggle-freeze
     "\C-to" riece-command-toggle-own-freeze
+    "\C-tO" riece-command-toggle-others-buffer-mode
     "\C-tu" riece-command-toggle-user-list-buffer-mode
     "\C-tc" riece-command-toggle-channel-buffer-mode
     "\C-tC" riece-command-toggle-channel-list-buffer-mode
@@ -281,33 +276,17 @@ If optional argument CONFIRM is non-nil, ask which IRC server to connect."
     (modify-frame-parameters (selected-frame)
 			     (list (cons 'riece-window-configuration
 					 (current-window-configuration))))
-    (unless riece-addons-insinuated
-      (setq riece-addons (riece-resolve-addons riece-addons))
-      (let ((pointer riece-addons))
-	(while pointer
-	  (riece-insinuate-addon (car pointer) riece-debug)
-	  (setq pointer (cdr pointer))))
-      (setq riece-addons-insinuated t))
+    (setq riece-addon-dependencies (riece-resolve-addons
+				    (copy-sequence riece-addons)))
+    (let ((pointer riece-addon-dependencies))
+      (while pointer
+	(riece-insinuate-addon (car (car pointer)) riece-debug)
+	(setq pointer (cdr pointer))))
     (if (or confirm (null riece-server))
 	(setq riece-server (completing-read "Server: " riece-server-alist)))
     (if (stringp riece-server)
 	(setq riece-server (riece-server-name-to-server riece-server)))
     (riece-create-buffers)
-    (if riece-max-buffer-size
-	(setq riece-shrink-buffer-idle-timer
-	      (riece-run-with-idle-timer
-	       riece-shrink-buffer-idle-time-delay t
-	       (lambda ()
-		 (let ((buffers riece-buffer-list))
-		   (while buffers
-		     (if (buffer-live-p (car buffers))
-			 (if (eq (derived-mode-class
-				  (with-current-buffer (car buffers)
-				    major-mode))
-				 'riece-dialogue-mode)
-			     (riece-shrink-buffer (car buffers)))
-		       (delq (car buffers) riece-buffer-list))
-		     (setq buffers (cdr buffers))))))))
     (switch-to-buffer riece-command-buffer)
     (riece-display-connect-signals)
     (riece-redisplay-buffers)
@@ -327,31 +306,14 @@ If optional argument CONFIRM is non-nil, ask which IRC server to connect."
 	  (unless (riece-server-opened server)
 	    (riece-command-open-server server))
 	  (setq channel-list (cdr channel-list))))
-      (let ((pointer riece-addons))
+      (let ((pointer riece-addon-dependencies))
 	(while pointer
-	  (unless (get (car pointer) 'riece-addon-default-disabled)
-	    (riece-enable-addon (car pointer) riece-debug))
+	  (unless (get (car (car pointer)) 'riece-addon-default-disabled)
+	    (riece-enable-addon (car (car pointer)) riece-debug))
 	  (setq pointer (cdr pointer))))
       (run-hooks 'riece-startup-hook)
       (message "%s" (substitute-command-keys
 		     "Type \\[describe-mode] for help")))))
-
-(defun riece-shrink-buffer (buffer)
-  (save-excursion
-    (set-buffer buffer)
-    (goto-char (point-min))
-    (while (> (buffer-size) riece-max-buffer-size)
-      (let* ((inhibit-read-only t)
-	     buffer-read-only
-	     (end (progn
-		    (goto-char riece-shrink-buffer-remove-chars)
-		    (beginning-of-line 2)
-		    (point)))
-	     (overlays (riece-overlays-in (point-min) end)))
-	(while overlays
-	  (riece-delete-overlay (car overlays))
-	  (setq overlays (cdr overlays)))
-	(delete-region (point-min) end)))))
 
 (defun riece-exit ()
   (if riece-save-variables-are-dirty
@@ -361,8 +323,6 @@ If optional argument CONFIRM is non-nil, ask which IRC server to connect."
 	     (buffer-live-p (car riece-buffer-list)))
 	(funcall riece-buffer-dispose-function (car riece-buffer-list)))
     (setq riece-buffer-list (cdr riece-buffer-list)))
-  (if riece-shrink-buffer-idle-timer
-      (riece-cancel-timer riece-shrink-buffer-idle-timer))
   (riece-clear-signal-slots)
   (setq riece-server nil
 	riece-current-channels nil
@@ -396,21 +356,24 @@ For a list of the generic commands type \\[riece-command-generic] ? RET.
   (make-local-variable 'truncate-partial-width-windows)
   (setq truncate-partial-width-windows nil)
 
+  (make-local-variable 'riece-mode-line-buffer-identification)
   (setq riece-away-indicator "-"
 	riece-operator-indicator "-"
 	riece-channel-status-indicator "-"
 	major-mode 'riece-command-mode
 	mode-name "Command"
+	riece-mode-line-buffer-identification
+	'("Riece: "
+	  riece-away-indicator
+	  riece-operator-indicator
+	  riece-channel-status-indicator
+	  " "
+	  riece-user-indicator
+	  " "
+	  riece-channel-indicator)
 	mode-line-buffer-identification
 	(riece-mode-line-buffer-identification
-	 '("Riece: "
-	   riece-away-indicator
-	   riece-operator-indicator
-	   riece-channel-status-indicator
-	   " "
-	   riece-user-indicator
-	   " "
-	   riece-channel-indicator))
+	 riece-mode-line-buffer-identification)
 	truncate-lines nil)
   (riece-simplify-mode-line-format)
   (use-local-map riece-command-mode-map)
@@ -439,21 +402,24 @@ Instead, these commands are available:
   (make-local-variable 'truncate-partial-width-windows)
   (setq truncate-partial-width-windows nil)
 
+  (make-local-variable 'riece-mode-line-buffer-identification)
   (setq riece-freeze riece-default-freeze
 	riece-away-indicator "-"
 	riece-operator-indicator "-"
 	riece-channel-status-indicator "-"
 	major-mode 'riece-dialogue-mode
 	mode-name "Dialogue"
+	riece-mode-line-buffer-identification
+	'("Riece: "
+	  riece-away-indicator
+	  riece-operator-indicator
+	  riece-freeze-indicator
+	  riece-channel-status-indicator
+	  " "
+	  riece-channel-list-indicator " ")
 	mode-line-buffer-identification
 	(riece-mode-line-buffer-identification
-	 '("Riece: "
-	   riece-away-indicator
-	   riece-operator-indicator
-	   riece-freeze-indicator
-	   riece-channel-status-indicator
-	   " "
-	   riece-channel-list-indicator " "))
+	 riece-mode-line-buffer-identification)
 	truncate-lines nil
 	buffer-read-only t)
   (riece-simplify-mode-line-format)
@@ -475,15 +441,18 @@ All normal editing commands are turned off.
 Instead, these commands are available:
 \\{riece-channel-mode-map}"
   (make-local-variable 'riece-channel-buffer-window-point)
-  (setq mode-line-buffer-identification
+  (make-local-variable 'riece-mode-line-buffer-identification)
+  (setq riece-mode-line-buffer-identification
+	'("Riece: "
+	  riece-away-indicator
+	  riece-operator-indicator
+	  riece-freeze-indicator
+	  riece-channel-status-indicator
+	  " "
+	  riece-long-channel-indicator)
+	mode-line-buffer-identification
 	(riece-mode-line-buffer-identification
-	 '("Riece: "
-	   riece-away-indicator
-	   riece-operator-indicator
-	   riece-freeze-indicator
-	   riece-channel-status-indicator
-	   " "
-	   riece-long-channel-indicator))))
+	 riece-mode-line-buffer-identification)))
 
 (defun riece-channel-list-mode ()
   "Major mode for displaying channel list.
@@ -496,10 +465,13 @@ All normal editing commands are turned off."
   (make-local-variable 'truncate-partial-width-windows)
   (setq truncate-partial-width-windows nil)
 
+  (make-local-variable 'riece-mode-line-buffer-identification)
   (setq major-mode 'riece-channel-list-mode
 	mode-name "Channels"
+	riece-mode-line-buffer-identification '("Riece: ")
 	mode-line-buffer-identification
-	(riece-mode-line-buffer-identification '("Riece: "))
+	(riece-mode-line-buffer-identification
+	 riece-mode-line-buffer-identification)
 	truncate-lines t
 	buffer-read-only t)
   (make-local-hook 'riece-update-buffer-functions)
@@ -521,11 +493,14 @@ Instead, these commands are available:
   (make-local-variable 'truncate-partial-width-windows)
   (setq truncate-partial-width-windows nil)
 
+  (make-local-variable 'riece-mode-line-buffer-identification)
   (setq major-mode 'riece-user-list-mode
 	mode-name "Users"
+	riece-mode-line-buffer-identification
+	'("Riece: " riece-long-channel-indicator " ")
 	mode-line-buffer-identification
 	(riece-mode-line-buffer-identification
-	 '("Riece: " riece-long-channel-indicator " "))
+	 riece-mode-line-buffer-identification)
 	truncate-lines t
 	buffer-read-only t)
   (if (boundp 'transient-mark-mode)

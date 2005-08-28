@@ -1,3 +1,42 @@
+* Riece 2.0.0 の主な変更点
+
+** アドオンの uninstall, unload (危険) に対応。
+   アドオン一覧モードで riece-addons のカスタマイズが可能 (ueno)
+
+** Ruby のプログラムを評価する機構の導入。
+   利用方法は riece-ruby.el 冒頭のコメントを参照 (ueno)
+
+** 新規アドオン riece-eval-ruby.el を導入。",ruby " に続いて任意の 
+   Ruby のプログラムを発言すると、評価結果をチャンネルに送信する (ueno)
+
+** 定期的にバッファを切り詰める機能をアドオンに分離
+   これまで riece-max-buffer-size を設定していた人は、
+   riece-shrink-buffer アドオンを有効にする必要があるので注意 (ueno)
+
+** 離脱したチャンネルに参加していたユーザが IRC をやめた場合に、エラー
+   が発生する不具合の修正 (ueno)
+
+** ログの保存時に、使用した coding-system の名前をファイル名に埋め込む
+   ようにした。これにより riece-log-coding-system を設定しなくても文字
+   化けが発生しにくくなった (ueno)
+
+** C-c g でチャンネルを移動する際に、新しい発言があったチャンネルから
+   辿るようにした (ueno)
+
+** チャンネル名とサーバ名の区切り文字列として " " 以外に "@" も許すよ
+   うにした (ueno)
+
+** 日本語マニュアル (riece-ja.texi) を初心者を対象に書き直した (ueno)
+
+** *Others* バッファを隠せるようにした (ueno)
+
+** デバッグ出力を専用のバッファに分離 (ueno)
+
+** elisp ファイルを１つずつ byte-compile する make ルールを設けた。
+   configure 後、lisp/ 以下で make compile-individually (ueno)
+
+** 開発者向けの文書 (doc/HACKING.ja) を同梱 (ueno)
+
 * Riece 1.0.8 の主な変更点
 
 ** riece-log のロックの緩和 (ueno)

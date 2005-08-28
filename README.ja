@@ -5,7 +5,7 @@ Riece は Emacs 向け IRC クライアントです。
 Riece には以下に挙げる特長があります:
 
 - 複数の IRC サーバに同時に接続可能
-- アドオンにより機能の追加や取り外しが可能
+- アドオンにより拡張機能の追加や取り外しが可能
 - 他の elisp パッケージに依存しないため、インストールが簡単
 - 設定が簡単で、前回起動時の設定を記録・復元する仕組みを提供
 - 段階的な操作説明書 (info 形式) が附属
@@ -20,29 +20,32 @@ doc/  - 文書ファイル
 
 * 必要なもの
 
-- Emacs 20.7 以上、または XEmacs 21.4 以上
-- Ruby 1.6 以上 (任意)
+- Emacs 20.7 以降、または XEmacs 21.4 以降
+- Ruby 1.8 以降 (任意)
 
 * インストール
 
 $ ./configure
 $ sudo make install
 
-XEmacs を使っていて、パッケージとしてインストールしたい場合には、
-"--with-xemacs" オプションを configure スクリプトに与えてください。
-また、"install" ターゲットの代わりに "install-package" を使ってください。
+~/.emacs 等に以下の一行を追加してください。
+
+  (autoload 'riece "riece" "Start Riece" t)
+
+XEmacs で使う場合には "--with-xemacs" オプションを configure スクリプ
+トに与えてください。また、"make install" の代わりに "make
+install-package" とすることでXEmacs のパッケージとしてインストールする
+ことができます。
+
+* マニュアル
+
+使い方は同梱のマニュアルに記載されています。
+マニュアルを読むには "M-x info" で以下のメニューを選択します。
+
+  * Riece-ja: (riece-ja).		     An IRC client for Emacsen
 
 * バグ報告
 
-バグ報告や、改善要求を書いたら、どうぞ Liece メーリングリストに送ってください。
-
-このメーリングリストは、将来の拡張や設定方法など、他の一般的な議論にも
-用いられます。Liece ML に参加するには、本文に
-
-     subscribe あなたの名前
-
-と書いたメールを
-
-     liece-ctl@unixuser.org
-
-まで送ってください。
+バグ報告は、Liece メーリングリスト (liece@unixuser.org) にお送りくださ
+い。Riece の実行中に "M-x riece-submit-bug-report" でバグ報告のテンプ
+レートを作成できます。

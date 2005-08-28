@@ -1,4 +1,4 @@
-;;; riece-ndcc.el --- elisp native DCC add-on
+;;; riece-ndcc.el --- DCC file sending protocol support (written in elisp)
 ;; Copyright (C) 1998-2003 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>
@@ -21,6 +21,10 @@
 ;; Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 ;; Boston, MA 02111-1307, USA.
 
+;;; Commentary:
+
+;; NOTE: This is an add-on module for Riece.
+
 ;;; Code:
 
 (require 'riece-globals)
@@ -29,7 +33,7 @@
 (require 'calc)
 
 (defgroup riece-ndcc nil
-  "Elisp native DCC implementation"
+  "DCC written in elisp."
   :prefix "riece-"
   :group 'riece)
 
@@ -44,10 +48,8 @@ Only used for sending files."
 (defvar riece-ndcc-request-user nil)
 (defvar riece-ndcc-request-size nil)
 
-(defvar riece-ndcc-enabled nil)
-
 (defconst riece-ndcc-description
-  "DCC file sending extension implemented with `make-network-process'")
+  "DCC file sending protocol support (written in elisp.)")
 
 (defun riece-ndcc-encode-address (address)
   (unless (string-match
@@ -192,7 +194,7 @@ Only used for sending files."
 
 (defun riece-handle-dcc-request (prefix target message)
   (let ((case-fold-search t))
-    (when (and riece-ndcc-enabled
+    (when (and (get 'riece-ndcc 'riece-addon-enabled)
 	       (string-match
 		"SEND \\([^ ]+\\) \\([^ ]+\\) \\([^ ]+\\) \\([^ ]+\\)"
 		message))
@@ -228,7 +230,12 @@ Only used for sending files."
 
 (defvar riece-dialogue-mode-map)
 (defun riece-ndcc-insinuate ()
+  (unless (fboundp 'make-network-process)
+    (error "This Emacs does not have make-network-process"))
   (add-hook 'riece-ctcp-dcc-request-hook 'riece-handle-dcc-request))
+
+(defun riece-ndcc-uninstall ()
+  (remove-hook 'riece-ctcp-dcc-request-hook 'riece-handle-dcc-request))
 
 (defun riece-ndcc-enable ()
   (define-key riece-dialogue-mode-map "\C-ds" 'riece-command-dcc-send)

@@ -1,4 +1,4 @@
-;;; riece-ctlseq.el --- highlight control sequences in channel buffers
+;;; riece-ctlseq.el --- mark up control sequences in IRC buffers
 ;; Copyright (C) 1998-2004 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>
@@ -24,8 +24,7 @@
 
 ;;; Commentary:
 
-;; To use, add the following line to your ~/.riece/init.el:
-;; (add-to-list 'riece-addons 'riece-ctlseq)
+;; NOTE: This is an add-on module for Riece.
 
 ;;; Code:
 
@@ -33,7 +32,8 @@
 (require 'riece-misc)
 
 (defgroup riece-ctlseq nil
-  "Highlight control sequences in IRC buffer."
+  "Mark up control sequences in IRC buffer."
+  :prefix "riece-"
   :group 'riece)
 
 (defcustom riece-ctlseq-colors
@@ -57,10 +57,8 @@
 (defvar riece-ctlseq-face-cache nil)
 (defvar riece-ctlseq-face-counter 0)
 
-(defvar riece-ctlseq-enabled nil)
-
-(defvar riece-ctlseq-description
-  "Highlight control sequences in IRC buffers")
+(defconst riece-ctlseq-description
+  "Mark up control sequences in IRC buffers.")
 
 (defun riece-ctlseq-compatible-attributes-p (this other)
   (let ((pointer this))
@@ -156,7 +154,7 @@
     attrs)))
 
 (defun riece-ctlseq-message-filter (message)
-  (if riece-ctlseq-enabled
+  (if (get 'riece-ctlseq 'riece-addon-enabled)
       (let ((start 0)
 	    (end (length (riece-message-text message)))
 	    attrs)
@@ -187,11 +185,14 @@
 (defun riece-ctlseq-insinuate ()
   (add-hook 'riece-message-filter-functions 'riece-ctlseq-message-filter))
 
+(defun riece-ctlseq-uninstall ()
+  (remove-hook 'riece-message-filter-functions 'riece-ctlseq-message-filter))
+
 (defun riece-ctlseq-enable ()
-  (setq riece-ctlseq-enabled t))
+  )
 
 (defun riece-ctlseq-disable ()
-  (setq riece-ctlseq-enabled nil))
+  )
 
 (provide 'riece-ctlseq)
 

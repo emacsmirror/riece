@@ -1,4 +1,4 @@
-;;; riece-foolproof.el --- channel miss killer
+;;; riece-foolproof.el --- prevent miss-operation in the command buffer
 ;; Copyright (C) 2004 TAKAHASHI Kaoru
 
 ;; Author: TAKAHASHI "beatmaria" Kaoru <kaoru@kaisei.org>
@@ -23,10 +23,7 @@
 
 ;;; Commentary:
 
-;; This add-on channel miss hold in check
-
-;; To use, add the following line to your ~/.riece/init.el:
-;; (add-to-list 'riece-addons 'riece-foolproof)
+;; NOTE: This is an add-on module for Riece.
 
 ;;; Code:
 
@@ -34,10 +31,8 @@
   (require 'riece-identity)
   (require 'riece-display))
 
-(defvar riece-foolproof-enabled nil)
-
 (defconst riece-foolproof-description
-  "Channel miss killer")
+  "Prevent miss-operation in the command buffer.")
 
 (defun riece-foolproof-get-channel-window (identity)
   (get-buffer-window
@@ -45,7 +40,7 @@
 	 identity riece-channel-buffer-alist))))
 
 (defun riece-foolproof-command-send-message-function ()
-  (when riece-foolproof-enabled
+  (when (get 'riece-foolproof 'riece-addon-enabled)
     (unless (or (not riece-channel-buffer-mode)
 		(riece-foolproof-get-channel-window
 		 riece-current-channel))
@@ -65,11 +60,15 @@
   (add-hook 'riece-command-send-message-hook
 	    'riece-foolproof-command-send-message-function))
 
+(defun riece-foolproof-uninstall ()
+  (remove-hook 'riece-command-send-message-hook
+	       'riece-foolproof-command-send-message-function))
+
 (defun riece-foolproof-enable ()
-  (setq riece-foolproof-enabled t))
+  )
 
 (defun riece-foolproof-disable ()
-  (setq riece-foolproof-enabled nil))
+  )
 
 (provide 'riece-foolproof)
 

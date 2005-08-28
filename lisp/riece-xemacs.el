@@ -137,6 +137,8 @@ If N is nil, all messages will be returned."
   (with-output-to-string
     (print-recent-messages n)))
 
+(defalias 'riece-remprop 'remprop)
+
 (provide 'riece-xemacs)
 
 ;;; riece-xemacs.el ends here

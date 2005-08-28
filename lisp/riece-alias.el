@@ -1,4 +1,4 @@
-;;; riece-alias.el --- define aliases of names
+;;; riece-alias.el --- define aliases for IRC names
 ;; Copyright (C) 1998-2003 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>
@@ -21,14 +21,15 @@
 ;; Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 ;; Boston, MA 02111-1307, USA.
 
+;;; Commentary:
+
+;; NOTE: This is an add-on module for Riece.
+
 ;; This add-on allows you to define aliases for IRC names.
 
-;; To use, add the following line to your ~/.riece/init.el:
-;; (add-to-list 'riece-addons 'riece-alias)
-
-;; For example, if you want to define an alias `#l' for `#Liece', you
+;; For example, if you want to define an alias `#r' for `#riece', you
 ;; can customize riece-alias-alist as follows:
-;; (setq riece-alias-alist '(("#Liece" . "#l")))
+;; (setq riece-alias-alist '(("#riece" . "#r")))
 
 ;;; Code:
 
@@ -36,7 +37,7 @@
 (require 'riece-signal)
 
 (defgroup riece-alias nil
-  "Define aliases of names"
+  "Aliases of channel/user names."
   :prefix "riece-"
   :group 'riece)
 
@@ -50,7 +51,7 @@
   :type 'boolean
   :group 'riece-alias)
 
-(defcustom riece-alias-alternate-separator nil
+(defcustom riece-alias-alternate-separator "@"
   "A string to separate prefix and server."
   :type '(choice (const nil) string)
   :group 'riece-alias)
@@ -60,10 +61,8 @@
   :type 'list
   :group 'riece-alias)
 
-(defvar riece-alias-enabled nil)
-
 (defconst riece-alias-description
-  "Define aliases of channel/user names")
+  "Define aliases for IRC names.")
 
 (defun riece-alias-abbrev-percent-hack (string)
   (if (string-match (concat "^#\\([^ ]+\\):"
@@ -166,14 +165,12 @@
 	#'riece-alias-abbrev-identity-string
 	riece-expand-identity-string-function
 	#'riece-alias-expand-identity-string)
-  (riece-emit-signal 'channel-list-changed)
-  (setq riece-alias-enabled t))
+  (riece-emit-signal 'channel-list-changed))
 
 (defun riece-alias-disable ()
   (setq riece-abbrev-identity-string-function nil
 	riece-expand-identity-string-function nil)
-  (riece-emit-signal 'channel-list-changed)
-  (setq riece-alias-enabled nil))
+  (riece-emit-signal 'channel-list-changed))
 
 (provide 'riece-alias)
 

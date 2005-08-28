@@ -24,28 +24,27 @@ doc/  - Documentation files.
 * Requirements
 
 - Emacs 20.7 or later / XEmacs 21.4 or later
-- Ruby 1.6 or later (optional)
+- Ruby 1.8 or later (optional)
 
 * Installation
 
 $ ./configure
 $ sudo make install
 
+Add the following line to your Emacs startup file such as ~/.emacs.
+
+  (autoload 'riece "riece" "Start Riece" t)
+
 If you are using XEmacs and want to install as a package, supply
 "--with-xemacs" option to the configure script and use
 "install-package" target instead of "install".
 
+* Manuals
+
+Info manuals are available after installation.  To read, start Emacs
+and type M-x info and select "Riece-en".
+
 * Bug reports
 
-If you write bug reports and/or suggestions for improvement, 
-please send them to the Liece Mailing List.
-
-This mailing list is also for other general discussions (about
-future enhancements, customization, etc). To join the Liece ML,
-send an e-mail to:
-
-     liece-ctl@unixuser.org
-
-with the message body, 
-
-     subscribe Your Name
+If you write a bug report, please send them to the Liece Mailing List
+(liece@unixuser.org).

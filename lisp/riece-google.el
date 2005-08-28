@@ -1,4 +1,4 @@
-;;; riece-google.el --- Interface to Google API
+;;; riece-google.el --- search keywords by Google
 ;; Copyright (C) 2005 OHASHI Akira
 
 ;; Author: OHASHI Akira <bg66@koka-in.org>
@@ -24,19 +24,16 @@
 
 ;;; Commentary:
 
-;; This add-on searches keywords by Google.
+;; NOTE: This is an add-on module for Riece.
 
 ;; Ruby code was stolen (and modified) from nadoka.
-
-;; To use, add the following line to your ~/.riece/init.el:
-;; (add-to-list 'riece-addons 'riece-google)
 
 ;;; Code:
 
 (require 'riece-message)
 
 (defgroup riece-google nil
-  "Interface to Google API."
+  "Search keywords by Google."
   :prefix "riece-"
   :group 'riece)
 
@@ -157,15 +154,13 @@ end
 (defconst riece-google-regexp
   "^go\\(o+\\)gle\\(:\\([a-z]+\\)\\)?>\\s-*\\(.*\\)")
 
-(defvar riece-google-enabled nil)
-
 (defconst riece-google-description
   "Search keywords by Google.")
 
 (defvar riece-google-target nil)
 
 (defun riece-google-display-message-function (message)
-  (when (and riece-google-enabled
+  (when (and (get 'riece-google 'riece-addon-enabled)
 	     (stringp riece-google-license-key)
 	     (string-match riece-google-regexp (riece-message-text message)))
     (let ((keywords (match-string 4 (riece-message-text message)))
@@ -237,11 +232,15 @@ end
   (add-hook 'riece-after-display-message-functions
 	    'riece-google-display-message-function))
 
+(defun riece-google-uninstall ()
+  (remove-hook 'riece-after-display-message-functions
+	       'riece-google-display-message-function))
+
 (defun riece-google-enable ()
-  (setq riece-google-enabled t))
+  )
 
 (defun riece-google-disable ()
-  (setq riece-google-enabled nil))
+  )
 
 (provide 'riece-google)
 

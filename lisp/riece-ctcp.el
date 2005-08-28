@@ -1,4 +1,4 @@
-;;; riece-ctcp.el --- CTCP add-on
+;;; riece-ctcp.el --- CTCP (Client To Client Protocol) support
 ;; Copyright (C) 1998-2003 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>
@@ -21,6 +21,10 @@
 ;; along with GNU Emacs; see the file COPYING.  If not, write to the
 ;; Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 ;; Boston, MA 02111-1307, USA.
+
+;;; Commentary:
+
+;; NOTE: This is an add-on module for Riece.
 
 ;;; Code:
 
@@ -50,13 +54,11 @@
 
 (defvar riece-dialogue-mode-map)
 
-(defvar riece-ctcp-enabled nil)
-
 (defconst riece-ctcp-description
-  "CTCP (Client To Client Protocol) support")
+  "CTCP (Client To Client Protocol) support.")
 
 (defun riece-handle-ctcp-request (prefix string)
-  (when (and riece-ctcp-enabled prefix string
+  (when (and (get 'riece-ctcp 'riece-addon-enabled) prefix string
 	     (riece-prefix-nickname prefix))
     (let* ((parameters (riece-split-parameters string))
 	   (targets (split-string (car parameters) ","))
@@ -73,16 +75,18 @@
 		  (after-hook
 		   (intern (concat "riece-ctcp-after-" request
 				   "-request-hook"))))
-	      (unless (riece-ignore-errors (symbol-name hook)
-			(run-hook-with-args-until-success
-			 hook prefix (car targets) message))
+	      (unless (riece-funcall-ignore-errors
+		       (symbol-name hook)
+		       #'run-hook-with-args-until-success
+		       hook prefix (car targets) message)
 		(if function
 		    (riece-funcall-ignore-errors (symbol-name function)
 						  function prefix (car targets)
 						  message))
-		(riece-ignore-errors (symbol-name after-hook)
-		  (run-hook-with-args-until-success
-		   after-hook prefix (car targets) message))))
+		(riece-funcall-ignore-errors (symbol-name after-hook)
+					     #'run-hook-with-args-until-success
+					     after-hook prefix (car targets)
+					     message)))
 	    t)))))
 
 (defun riece-handle-ctcp-version-request (prefix target string)
@@ -215,7 +219,7 @@
       "\n"))))
 
 (defun riece-handle-ctcp-response (prefix string)
-  (when (and riece-ctcp-enabled prefix string
+  (when (and (get 'riece-ctcp 'riece-addon-enabled) prefix string
 	     (riece-prefix-nickname prefix))
     (let* ((parameters (riece-split-parameters string))
 	   (targets (split-string (car parameters) ","))
@@ -231,16 +235,18 @@
 		  (after-hook
 		   (intern (concat "riece-ctcp-after-" response
 				   "-response-hook"))))
-	      (unless (riece-ignore-errors (symbol-name hook)
-			(run-hook-with-args-until-success
-			 hook prefix (car targets) message))
+	      (unless (riece-funcall-ignore-errors
+		       (symbol-name hook)
+		       #'run-hook-with-args-until-success
+		       hook prefix (car targets) message)
 		(if function
 		    (riece-funcall-ignore-errors
 		     (symbol-name function)
 		     function prefix (car targets) message))
-		(riece-ignore-errors (symbol-name after-hook)
-		  (run-hook-with-args-until-success
-		   after-hook prefix (car targets) message))))
+		(riece-funcall-ignore-errors (symbol-name after-hook)
+					     #'run-hook-with-args-until-success
+					     after-hook prefix (car targets)
+					     message)))
 	    t)))))
 
 (defun riece-handle-ctcp-version-response (prefix target string)
@@ -366,32 +372,40 @@
   (if (memq 'riece-highlight riece-addons)
       '(riece-highlight)))
 
+(defvar riece-ctcp-dialogue-font-lock-keywords
+  (list (concat "^" riece-time-prefix-regexp "\\("
+		(regexp-quote riece-ctcp-action-prefix)
+		".*\\)$")
+	1 riece-ctcp-action-face t t))
+
 (defun riece-ctcp-insinuate ()
   (add-hook 'riece-privmsg-hook 'riece-handle-ctcp-request)
   (add-hook 'riece-notice-hook 'riece-handle-ctcp-response)
   (if (memq 'riece-highlight riece-addons)
       (setq riece-dialogue-font-lock-keywords
-	    (cons (list (concat "^" riece-time-prefix-regexp "\\("
-				(regexp-quote riece-ctcp-action-prefix)
-				".*\\)$")
-			1 riece-ctcp-action-face t t)
+	    (cons riece-ctcp-dialogue-font-lock-keywords
 		  riece-dialogue-font-lock-keywords))))
+
+(defun riece-ctcp-uninstall ()
+  (remove-hook 'riece-privmsg-hook 'riece-handle-ctcp-request)
+  (remove-hook 'riece-notice-hook 'riece-handle-ctcp-response)
+  (setq riece-dialogue-font-lock-keywords
+	(delq riece-ctcp-dialogue-font-lock-keywords
+	      riece-dialogue-font-lock-keywords)))
 
 (defun riece-ctcp-enable ()
   (define-key riece-dialogue-mode-map "\C-cv" 'riece-command-ctcp-version)
   (define-key riece-dialogue-mode-map "\C-cp" 'riece-command-ctcp-ping)
   (define-key riece-dialogue-mode-map "\C-ca" 'riece-command-ctcp-action)
   (define-key riece-dialogue-mode-map "\C-cc" 'riece-command-ctcp-clientinfo)
-  (define-key riece-dialogue-mode-map "\C-ct" 'riece-command-ctcp-time)
-  (setq riece-ctcp-enabled t))
+  (define-key riece-dialogue-mode-map "\C-ct" 'riece-command-ctcp-time))
 
 (defun riece-ctcp-disable ()
   (define-key riece-dialogue-mode-map "\C-cv" nil)
   (define-key riece-dialogue-mode-map "\C-cp" nil)
   (define-key riece-dialogue-mode-map "\C-ca" nil)
   (define-key riece-dialogue-mode-map "\C-cc" nil)
-  (define-key riece-dialogue-mode-map "\C-ct" nil)
-  (setq riece-ctcp-enabled nil))
+  (define-key riece-dialogue-mode-map "\C-ct" nil))
 
 (provide 'riece-ctcp)
 

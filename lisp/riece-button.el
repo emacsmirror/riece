@@ -1,4 +1,4 @@
-;;; riece-button.el --- adding buttons in channel buffers
+;;; riece-button.el --- display useful buttons in IRC buffers
 ;; Copyright (C) 1998-2003 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>
@@ -24,8 +24,7 @@
 
 ;;; Commentary:
 
-;; To use, add the following line to your ~/.riece/init.el:
-;; (add-to-list 'riece-addons 'riece-button)
+;; NOTE: This is an add-on module for Riece.
 
 ;;; Code:
 
@@ -45,14 +44,12 @@
   '("User"
     ["Finger (WHOIS)" riece-user-button-finger]
     ["Start Private Conversation" riece-user-button-join-partner]
-    ["Give Channel Operator Privileges" riece-user-button-set-operators]
-    ["Allow To Speak" riece-user-button-set-speakers])
+    ["Set +o" riece-user-button-set-operators]
+    ["Set +v" riece-user-button-set-speakers])
   "Menu for user buttons.")
 
-(defvar riece-button-enabled nil)
-
 (defconst riece-button-description
-  "Display useful buttons in IRC buffers")
+  "Display useful buttons in IRC buffers.")
 
 (defvar help-echo-owns-message)
 (define-widget 'riece-identity-button 'push-button
@@ -207,7 +204,7 @@ This function is used as a callback for a channel button."
 
 (defvar riece-identity-button-map)
 (defun riece-button-add-identity-button (start end)
-  (if riece-button-enabled
+  (if (get 'riece-button 'riece-addon-enabled)
       (riece-scan-property-region
        'riece-identity
        start end
@@ -227,30 +224,70 @@ This function is used as a callback for a channel button."
 (defvar riece-channel-list-mode-map)
 (defvar riece-user-list-mode-map)
 (defvar riece-dialogue-mode-map)
+
+(defun riece-button-channel-list-mode-hook ()
+  (set-keymap-parent riece-channel-list-mode-map widget-keymap)
+  (set (make-local-variable 'riece-identity-button-map)
+       (riece-make-identity-button-map))
+  (add-hook 'riece-update-buffer-functions
+	    'riece-button-update-buffer t t))
+
+(defun riece-button-user-list-mode-hook ()
+  (set-keymap-parent riece-user-list-mode-map widget-keymap)
+  (set (make-local-variable 'riece-identity-button-map)
+       (riece-make-identity-button-map))
+  (add-hook 'riece-update-buffer-functions
+	    'riece-button-update-buffer t t))
+
+(defun riece-button-dialogue-mode-hook ()
+  (set-keymap-parent riece-dialogue-mode-map widget-keymap)
+  (set (make-local-variable 'riece-identity-button-map)
+       (riece-make-identity-button-map)))
+
 (defun riece-button-insinuate ()
+  (save-excursion
+    (when riece-channel-list-buffer
+      (set-buffer riece-channel-list-buffer)
+      (riece-button-channel-list-mode-hook))
+    (when riece-user-list-buffer
+      (set-buffer riece-user-list-buffer)
+      (riece-button-user-list-mode-hook))
+    (let ((buffers riece-buffer-list))
+      (while buffers
+	(set-buffer (car buffers))
+	(if (eq (derived-mode-class major-mode)
+		'riece-dialogue-mode)
+	    (riece-button-dialogue-mode-hook))
+	(setq buffers (cdr buffers)))))
   (add-hook 'riece-channel-list-mode-hook
-	    (lambda ()
-	      (set-keymap-parent riece-channel-list-mode-map widget-keymap)
-	      (set (make-local-variable 'riece-identity-button-map)
-		   (riece-make-identity-button-map))
-	      (add-hook 'riece-update-buffer-functions
-			'riece-button-update-buffer t t)))
+	    'riece-button-channel-list-mode-hook)
   (add-hook 'riece-user-list-mode-hook
-	    (lambda ()
-	      (set-keymap-parent riece-user-list-mode-map widget-keymap)
-	      (set (make-local-variable 'riece-identity-button-map)
-		   (riece-make-identity-button-map))
-	      (add-hook 'riece-update-buffer-functions
-			'riece-button-update-buffer t t)))
+	    'riece-button-user-list-mode-hook)
   (add-hook 'riece-dialogue-mode-hook
-	    (lambda ()
-	      (set-keymap-parent riece-dialogue-mode-map widget-keymap)
-	      (set (make-local-variable 'riece-identity-button-map)
-		   (riece-make-identity-button-map))))
+	    'riece-button-dialogue-mode-hook)
   (add-hook 'riece-after-insert-functions 'riece-button-add-identity-button))
 
+(defun riece-button-uninstall ()
+  (let ((buffers riece-buffer-list))
+    (save-excursion
+      (while buffers
+	(set-buffer (car buffers))
+	(remove-hook 'riece-update-buffer-functions
+		     'riece-button-update-buffer t)
+	(if (local-variable-p 'riece-identity-button-map
+			      (car buffers))
+	    (kill-local-variable 'riece-identity-button-map))
+	(setq buffers (cdr buffers)))))
+  (remove-hook 'riece-channel-list-mode-hook
+	       'riece-button-channel-list-mode-hook)
+  (remove-hook 'riece-user-list-mode-hook
+	       'riece-button-user-list-mode-hook)
+  (remove-hook 'riece-dialogue-mode-hook
+	       'riece-button-dialogue-mode-hook)
+  (remove-hook 'riece-after-insert-functions
+	       'riece-button-add-identity-button))
+
 (defun riece-button-enable ()
-  (setq riece-button-enabled t)
   (let ((pointer riece-buffer-list))
     (while pointer
       (with-current-buffer (car pointer)
@@ -263,7 +300,6 @@ This function is used as a callback for a channel button."
     (riece-emit-signal 'channel-list-changed)))
 
 (defun riece-button-disable ()
-  (setq riece-button-enabled nil)
   (save-excursion
     (let ((pointer riece-buffer-list))
       (while pointer

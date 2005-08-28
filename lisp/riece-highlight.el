@@ -22,6 +22,10 @@
 ;; Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 ;; Boston, MA 02111-1307, USA.
 
+;;; Commentary:
+
+;; NOTE: This is an add-on module for Riece.
+
 ;;; Code:
 
 (require 'riece-globals)
@@ -32,13 +36,13 @@
 (require 'derived)
 
 (defgroup riece-highlight nil
-  "Highlight IRC buffers"
+  "Decorate IRC buffers with faces and fonts."
   :tag "Highlight"
   :prefix "riece-"
   :group 'riece)
 
 (defgroup riece-highlight-faces nil
-  "Faces for highlight IRC buffers"
+  "Faces for highlight IRC buffers."
   :tag "Faces"
   :prefix "riece-highlight-"
   :group 'riece-highlight)
@@ -197,10 +201,8 @@
   (set-face-foreground 'riece-modeline-current-face
 		       (face-foreground 'riece-channel-list-current-face)))
 
-(defvar riece-highlight-enabled nil)
-
 (defconst riece-highlight-description
-  "Highlight IRC buffers")
+  "Highlight IRC buffers.")
 
 (defun riece-highlight-server-match (limit)
   (and (re-search-forward "(from [^)]+)$" limit t)
@@ -214,8 +216,8 @@
   (font-lock-set-defaults)
   (make-local-hook 'after-change-functions)
   (add-hook 'after-change-functions
-	    'riece-highlight-hide-prefix nil 'local)
-  (if riece-highlight-enabled
+	    'riece-highlight-hide-prefix nil t)
+  (if (get 'riece-highlight 'riece-addon-enabled)
       (font-lock-mode 1)))
 
 (defun riece-highlight-setup-channel-list ()
@@ -224,7 +226,7 @@
   ;; In XEmacs, auto-initialization of font-lock is not affective
   ;; when buffer-file-name is not set.
   (font-lock-set-defaults)
-  (if riece-highlight-enabled
+  (if (get 'riece-highlight 'riece-addon-enabled)
       (font-lock-mode 1)))
 
 (defun riece-highlight-hide-prefix (start end length)
@@ -234,7 +236,7 @@
 	(put-text-property (match-beginning 1) (match-end 1) 'invisible t))))
 
 (defun riece-highlight-put-overlay-faces (start end)
-  (if riece-highlight-enabled
+  (if (get 'riece-highlight 'riece-addon-enabled)
       (riece-scan-property-region
        'riece-overlay-face
        start end
@@ -245,7 +247,7 @@
 
 (defun riece-highlight-format-identity-for-channel-list-indicator (index
 								   identity)
-  (if (and riece-highlight-enabled
+  (if (and (get 'riece-highlight 'riece-addon-enabled)
 	   (riece-identity-equal identity riece-current-channel))
       (let ((string (riece-format-identity identity))
 	    (start 0))
@@ -260,12 +262,8 @@
 (defun riece-highlight-insinuate ()
   (put 'riece-channel-mode 'font-lock-defaults
        '(riece-dialogue-font-lock-keywords t))
-  (add-hook 'riece-channel-mode-hook
-	    'riece-highlight-setup-dialogue)
   (put 'riece-others-mode 'font-lock-defaults
        '(riece-dialogue-font-lock-keywords t))
-  (add-hook 'riece-others-mode-hook
-	    'riece-highlight-setup-dialogue)
   (put 'riece-dialogue-mode 'font-lock-defaults
        '(riece-dialogue-font-lock-keywords t))
   (add-hook 'riece-dialogue-mode-hook
@@ -279,6 +277,29 @@
   (add-hook 'riece-after-insert-functions
 	    'riece-highlight-put-overlay-faces))
 
+(defun riece-highlight-uninstall ()
+  (let ((buffers riece-buffer-list))
+    (save-excursion
+      (while buffers
+	(set-buffer (car buffers))
+	(if (eq (derived-mode-class major-mode)
+		'riece-dialogue-mode)
+	    (remove-hook 'after-change-functions
+			 'riece-highlight-hide-prefix t))
+	(setq buffers (cdr buffers)))))
+  (riece-remprop 'riece-channel-mode 'font-lock-defaults)
+  (riece-remprop 'riece-others-mode 'font-lock-defaults)
+  (riece-remprop 'riece-dialogue-mode 'font-lock-defaults)
+  (remove-hook 'riece-dialogue-mode-hook
+	       'riece-highlight-setup-dialogue)
+  (riece-remprop 'riece-channel-list-mode 'font-lock-defaults)
+  (remove-hook 'riece-channel-list-mode-hook
+	       'riece-highlight-setup-channel-list)
+  (remove-hook 'riece-format-identity-for-channel-list-indicator-functions
+	       'riece-highlight-format-identity-for-channel-list-indicator)
+  (remove-hook 'riece-after-insert-functions
+	       'riece-highlight-put-overlay-faces))
+
 (defun riece-highlight-enable ()
   (let ((buffers riece-buffer-list))
     (while buffers
@@ -288,8 +309,7 @@
 		'(riece-dialogue-mode riece-channel-list-mode))
 	  (with-current-buffer (car buffers)
 	    (font-lock-mode 1)))
-      (setq buffers (cdr buffers))))
-  (setq riece-highlight-enabled t))
+      (setq buffers (cdr buffers)))))
 
 (defun riece-highlight-disable ()
   (let ((buffers riece-buffer-list))
@@ -300,8 +320,7 @@
 		'(riece-dialogue-mode riece-channel-list-mode))
 	  (with-current-buffer (car buffers)
 	    (font-lock-mode 0)))
-      (setq buffers (cdr buffers))))
-  (setq riece-highlight-enabled nil))
+      (setq buffers (cdr buffers)))))
 
 (provide 'riece-highlight)
 

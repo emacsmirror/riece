@@ -1,3 +1,426 @@
+2005-08-27  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-addon.el (riece-uninstall-addon): Don't check the add-on
+	is enabled.
+	(riece-uninstall-addon): Don't use riece-remprop.
+	(riece-enable-addon): Put 'riece-addon-enabled property on the
+	add-on feature.
+	(riece-disable-addon): Ditto.
+	(riece-command-list-addons): Check 'riece-addon-enabled property
+	instead of riece-*-enabled variables.
+
+2005-08-27  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-options.el (riece-shrink-buffer-idle-time-delay):
+	Abolished; moved to riece-shrink-buffer.el.
+	(riece-max-buffer-size): Ditto.
+	(riece-shrink-buffer-remove-chars): Ditto.
+
+	* riece.el (riece-shrink-buffer-idle-timer): Abolished; moved to
+	riece-shrink-buffer.el.
+	(riece): Don't set riece-shrink-buffer-idle-timer here.
+	(riece-exit): Don't cancel riece-shrink-buffer-idle-timer here.
+
+	* riece-shrink-buffer.el: New add-on.
+	* riece-addon-modules.el (riece-addon-modules): Added
+	riece-shrink-buffer.
+	* Makefile.am (EXTRA_DIST): Added riece-shrink-buffer.el.
+
+2005-08-27  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-highlight.el (riece-highlight-uninstall): Use
+	riece-remprop instead of remprop.
+
+	* riece-addon.el (riece-uninstall-addon): Use riece-remprop
+	instead of remprop.
+
+	* riece-xemacs.el (riece-remprop): New alias.
+	* riece-emacs.el (riece-remprop): New function.
+
+	* COMPILE (riece-compile-modules): Add current directory to load-path.
+
+	* riece-history.el (riece-history-requires): New function.
+	* riece-addon.el (riece-insinuate-addon-1): Require add-on feature.
+
+2005-08-27  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-foolproof.el (riece-foolproof-description): Made it more
+	descriptive.
+
+	* riece-url.el (riece-url-uninstall): Call easy-menu-remove-item.
+
+	* riece-addon.el (riece-addon-list-mode-map): Bind
+	riece-command-unload-addon.
+	(riece-insinuate-addon-1): New function; renamed from
+	riece-insinuate-addon.
+	(riece-insinuate-addon): Use it; re-insinuate add-ons preceding to
+	the add-on.
+	(riece-addon-list-set-point): New function.
+	(riece-command-unload-addon): New command.
+
+2005-08-27  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-menu.el (riece-menu-uninstall): Call easy-menu-remove.
+
+	* riece-toolbar.el (riece-toolbar-original-toolbar) [XEmacs]: New
+	variable.
+	(riece-unset-toolbar): New function.
+	(riece-toolbar-uninstall): Call riece-unset-toolbar.
+	(riece-toolbar-command-mode-hook): Renamed from
+	riece-toolbar-insinuate-in-command-buffer.
+
+	* riece-icon.el (riece-icon-enable): Update
+	mode-line-buffer-identification here.
+	(riece-icon-disable): Ditto.
+
+2005-08-26  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-addon.el (riece-uninstall-addon): Update
+	riece-addon-dependencies.
+
+2005-08-26  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece.el (riece-command-mode): Set
+	riece-mode-line-buffer-identification.
+	(riece-dialogue-mode): Ditto.
+	(riece-channel-mode): Ditto.
+	(riece-channel-list-mode): Ditto.
+	(riece-user-list-mode): Ditto.
+	* riece-icon.el
+	(riece-icon-update-mode-line-buffer-identification): New function.
+	(riece-icon-insinuate): Use it.
+	(riece-icon-uninstall): Use it.
+	* riece-globals.el (riece-mode-line-buffer-identification): New
+	variable.
+
+2005-08-26  Daiki Ueno  <ueno@unixuser.org>
+
+	* Make add-ons uninstallable.
+
+	* riece-xface.el (riece-xface-user-list-mode-hook): New function.
+	(riece-xface-insinuate): Use it.
+	(riece-xface-uninstall): New function.
+	* riece-url.el (riece-url-command-mode-hook): New function.
+	(riece-url-insinuate): Use it.
+	(riece-url-uninstall): New function.
+	* riece-unread.el (riece-unread-uninstall): New function.
+	* riece-toolbar.el (riece-toolbar-uninstall): New function.
+	* riece-rdcc.el (riece-rdcc-uninstall): New function.
+	* riece-ndcc.el (riece-ndcc-uninstall): New function.
+	* riece-mini.el (riece-mini-uninstall): New function.
+	* riece-menu.el (riece-menu-uninstall): New function.
+	* riece-lsdb.el: New function.
+	* riece-log.el (riece-log-uninstall): New function.
+	* riece-keyword.el (riece-keyword-uninstall): New function.
+	* riece-keepalive.el (riece-keepalive-uninstall): New function.
+	* riece-kakasi.el (riece-kakasi-uninstall): New function.
+	* riece-ignore.el (riece-ignore-uninstall): New function.
+	* riece-icon.el (riece-icon-user-list-mode-hook): New function.
+	(riece-icon-channel-list-mode-hook): New function.
+	(riece-icon-original-mode-line-buffer-identification): New variable.
+	(riece-icon-insinuate): Use them.
+	(riece-icon-uninstall): New function.
+	* riece-history.el
+	(riece-history-after-switch-to-channel-functions): New function.
+	(riece-history-insinuate): Use it.
+	(riece-history-uninstall): New function.
+	* riece-highlight.el (riece-highlight-uninstall): New function.
+	* riece-hangman.el (riece-hangman-uninstall): New function.
+	* riece-google.el (riece-google-uninstall): New function.
+	* riece-foolproof.el (riece-foolproof-uninstall): New function.
+	* riece-eval.el (riece-eval-uninstall): New function.
+	* riece-eval-ruby.el (riece-eval-ruby-uninstall): New function.
+	* riece-doctor.el (riece-doctor-uninstall): New function.
+	* riece-ctlseq.el (riece-ctlseq-uninstall): New function.
+	* riece-ctcp.el (riece-ctcp-dialogue-font-lock-keywords): New variable.
+	(riece-ctcp-uninstall): New function.
+	* riece-button.el (riece-button-channel-list-mode-hook): New function.
+	* riece-biff.el (riece-biff-uninstall): New function.
+
+2005-08-26  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-options.el (riece-saved-forms): Added riece-addons.
+
+	* riece-addon.el: Require 'riece-addon-modules.
+	(riece-command-list-addons): List all available add-ons from
+	riece-addon-modules.
+	(riece-addon-list-mode-map): Bind riece-command-insinuate-addon
+	and riece-command-uninstall-addon.
+	(riece-insinuate-addon): Rebuild riece-addon-dependencies.
+	(riece-command-insinuate-addon): New command.
+	(riece-command-uninstall-addon): New command.
+
+	* COMPILE (riece-examine-modules): New function.
+	(riece-examine): Use it.
+	(riece-compile): Use it.
+	(riece-install): Use it.
+	(riece-compile-package): Use it.
+	(riece-install-package): Use it.
+
+	* Makefile.am (EXTRA_DIST): Added riece-addon-modules.el.
+
+	* riece-addon-modules.el: New file.
+
+2005-08-25  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-addon.el (riece-command-list-addons): Use
+	riece-addon-dependencies instead of riece-addons.
+	(riece-command-enable-addon): Ditto.
+	(riece-command-disable-addon): Ditto.
+	(riece-uninstall-addon): New function.
+
+2005-08-25  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece.el (riece): Don't override riece-addons setting.
+
+	* riece-globals.el (riece-addon-dependencies): New variable.
+
+	* riece-addon.el (riece-sort-addon-dependencies): Rename from
+	riece-resolve-addon-dependencies; return addon dependencies as an
+	alist, instead of returning a list of addons.
+
+2005-08-20  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-addon.el (riece-command-enable-addon): Redraw entire
+	add-on list.
+	(riece-command-disable-addon): Ditto.
+
+2005-08-17  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-filter.el (riece-handle-message): Use
+	riece-funcall-ignore-errors instead of riece-ignore-errors.
+
+	* riece-ctcp.el (riece-handle-ctcp-request): Use
+	riece-funcall-ignore-errors instead of riece-ignore-errors.
+	(riece-handle-ctcp-response): Ditto.
+
+2005-08-16  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-options.el (riece-data-directory): Use load-file-name.
+
+2005-08-15  TAKAHASHI Kaoru  <kaoru@kaisei.org>
+
+	* riece-options.el (riece-data-directory): Avoid compile time
+	error when locate-data-directory undefined.
+
+2005-08-15  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-options.el (riece-quit-timeout): Set default to 1.
+
+	* riece-irc.el (riece-irc-quit-server-process): Display message
+	before/after sending QUIT.
+
+2005-08-14  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece.el (riece-addons-insinuated): Abolished.
+	(riece): Don't check riece-addons-insinuated.
+
+	* riece-addon.el (riece-insinuate-addon): Put
+	'riece-addon-insinuated property on add-on feature.
+
+2005-08-13  Daiki Ueno  <ueno@unixuser.org>
+
+	* COMPILE (riece-install-package): Install *.xpm and *.rb in etc/riece.
+
+	* riece-async.el (riece-async-open-network-stream): Locate Ruby
+	script files in riece-data-directory.
+	* riece-toolbar.el (riece-make-toolbar-from-menu): Locate icon
+	files in riece-data-directory.
+	* riece-ruby.el (riece-ruby-execute): Locate Ruby script files in
+	riece-data-directory.
+	* riece-options.el (riece-data-directory): New user option.
+
+2005-08-12  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-ruby.el (riece-ruby-filter): Pass timestamp of output
+	event to output-handler.
+
+2005-08-12  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-button.el (riece-user-button-popup-menu): Simplified
+	menu item titles.
+
+	* COMPILE (riece-compile-module): New function.
+	(riece-examine): New function.
+
+	* Makefile.am (compile-individually): New rule.
+
+	* riece-log.el (riece-log-file-name-regexp): New constant.
+	(riece-log-get-file): Add 2nd argument coding-system.
+	(riece-log-get-files): Add 2nd argument time.
+	(riece-log-insert): Simplified; determine coding-system from
+	suffix of each log file.
+	(riece-log-dired): Renamed from riece-log-open-directory.
+	(riece-log-open-directory-function): Abolished.
+	(riece-log-make-file-name): Renamed from riece-log-get-file.
+	(riece-log-list-files): Renamed from riece-log-get-files.
+	(riece-log-directory): Renamed from riece-log-get-directory.
+
+	* Makefile.am (EXTRA_DIST): Added aproxy.rb.
+
+	* COMPILE (riece-scripts): Added "aproxy.rb".
+
+	* riece-async.el (riece-async-buffer-size): Renamed from
+	riece-async-max-buffer-size.
+	(riece-async-backup-file): New user option.
+	(riece-async-server-program): New variable.
+	(riece-async-server-program-arguments): New variable.
+	(riece-async-open-network-stream): Use aproxy.rb.
+
+	* aproxy.rb: New file.
+
+	* riece-ruby.el (riece-ruby-out-file): New user option.
+	(riece-ruby-err-file): New user option.
+	(riece-ruby-log-file): New user option..
+	(riece-ruby-server-program-arguments): New variable.
+	(riece-ruby-filter): Call output-handler within
+	riece-debug-with-backtrace; erase process output.
+	(riece-ruby-run-exit-handler): Call exit-handler within
+	riece-debug-with-backtrace.
+
+	* server.rb: Don't bind @err in execution environment;
+	added logging feature.
+
+2005-08-11  Daiki Ueno  <ueno@unixuser.org>
+
+	* server.rb: Connect $stdout and $stderr to StringIO objects.
+
+	* riece-async.el: Use riece-ruby (partially).
+
+	* riece-eval-ruby.el (riece-eval-ruby-prefix-regexp): New user option.
+	(riece-eval-ruby-exit-handler): Print "nil".
+
+2005-08-11  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-hangman.el (riece-hangman-hello-regexp): Changed regexp.
+	(riece-hangman-bye-regexp): Ditto.
+
+	* riece-doctor.el (riece-doctor-hello-regexp): Changed regexp.
+	(riece-doctor-bye-regexp): Ditto.
+
+	* riece-ruby.el: Moved add-on stuff to riece-eval-ruby.el.
+
+	* riece-eval-ruby.el: New add-on.
+	* COMPILE (riece-modules): Add riece-eval-ruby.
+	* Makefile.am (EXTRA_DIST): Add riece-eval-ruby.el.
+
+2005-08-11  Daiki Ueno  <ueno@unixuser.org>
+
+	* server.rb (Server::unescape): Fixed.
+
+	* riece-ruby.el: Implement add-on API.
+	(riece-ruby-filter): Fixed regexp; fixed argument order of
+	output-handler.
+	(riece-ruby-run-exit-handler): Remove exit-handler entry before
+	running it to avoid recursion; call riece-ruby-clear if
+	exit-handler is specified.
+	(riece-ruby-exit-handler): Don't call riece-ruby-clear.
+
+	* riece-rdcc.el: Use riece-ruby.
+
+2005-08-11  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-ruby.el (riece-ruby-property-alist): New variable
+	(riece-ruby-set-property): New function.
+	(riece-ruby-property): New function.
+	(riece-ruby-execute): Locate server.rb from load-path.
+
+	* Makefile.am (EXTRA_DIST): Added riece-ruby.el and server.rb.
+
+	* COMPILE (riece-modules): Added riece-ruby.
+	(riece-icons): Use filename instead of symbol.
+	(riece-scripts): New variable.
+	(riece-install-icons): Use filename instead of symbol.
+	(riece-install-scripts): New function.
+	(riece-install): Call riece-install-scripts.
+	(riece-install-package): Ditto.
+
+2005-08-11  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-ruby.el: Add docs for variables.
+	(riece-ruby-substitute-variables): Substitute multiple variables.
+	(riece-ruby-filter): Call output-handler/exit-handler with program
+	name.
+
+2005-08-11  Daiki Ueno  <ueno@unixuser.org>
+
+	* server.rb: Renamed from rubyserv.rb; s/RubyServ/Server/.
+	* riece-ruby.el (riece-ruby-server-program): Follow the filename
+	change.
+	(riece-ruby-set-output-handler): New function.
+
+2005-08-11  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-ruby.el: Fixed example.
+	(riece-ruby-server-program): New variable.
+	(riece-ruby-status-alist): New variable.
+	(riece-ruby-status): Abolished.
+	(riece-ruby-escaped-data): Renamed from riece-ruby-input.
+	(riece-ruby-reset-process-buffer): New function.
+	(riece-ruby-send-exit): New function.
+	(riece-ruby-filter): Call riece-ruby-run-exit-handler if the
+	program is exited.
+	(riece-ruby-run-exit-handler): New function.
+	(riece-ruby-execute): Don't expect program name.
+	(riece-ruby-clear): New function.
+	(riece-ruby-set-exit-handler): New function.
+
+	* rubyserv.rb (RubyServ::dispatch_eval): Don't expect program
+	name; eval under the binding of RubyServ::C.
+	(RubyServ::dispatch_poll): Don't clear @thr.
+	(RubyServ::dispatch_exit): New method.
+
+2005-08-10  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-ruby.el: New file.
+	* rubyserv.rb: Rewrite.
+
+2005-08-09  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-mini.el (riece-mini-message-no-log): Defined as a
+	function.
+	(riece-mini-requires): Fixed indent.
+
+2005-08-08  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece.el (riece-dialogue-mode-map): Bind
+	riece-command-toggle-others-buffer-mode.
+
+	* riece-commands.el (riece-command-toggle-others-buffer-mode): New
+	command.
+
+	* riece-layout.el (riece-configure-windows): Hide
+	riece-others-buffer if riece-others-buffer-mode is nil.
+
+	* riece-options.el (riece-saved-forms): Add
+	riece-others-buffer-mode and riece-channel-list-buffer-mode.
+	(riece-others-buffer-mode): New user option.
+
+2005-08-06  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-alias.el (riece-alias-alternate-separator): Set to "@".
+
+2005-07-28  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-debug.el: Don't bind unused variable; prepend time to
+	debug message.
+
+2005-07-19  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-unread.el (riece-guess-channel-from-unread): Return
+	reversed copy of riece-unread-channels.
+
+	* riece-server.el (riece-server-parse-string): Use
+	string-to-number instead of string-to-int.
+
+2005-07-07  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-display.el (riece-channel-buffer): Return nil when
+	channel-buffer is killed.
+
+	* riece-debug.el (riece-debug-1): New function.
+	(riece-debug): Always return nil.
+
 2005-06-04  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-server.el (riece-server-keyword-map): Add :coding-system-alist.

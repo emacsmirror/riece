@@ -1,4 +1,4 @@
-;;; riece-toolbar.el --- show toolbar icons
+;;; riece-toolbar.el --- display toolbar icons
 ;; Copyright (C) 1998-2004 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>
@@ -24,15 +24,14 @@
 
 ;;; Commentary:
 
-;; To use, add the following line to your ~/.riece/init.el:
-;; (add-to-list 'riece-addons 'riece-toolbar)
+;; NOTE: This is an add-on module for Riece.
 
 ;;; Code:
 
 (require 'riece-menu)
 
 (defconst riece-toolbar-description
-  "Show toolbar icons.")
+  "Display toolbar icons.")
 
 (defvar riece-toolbar-items
   '(riece-command-quit
@@ -62,14 +61,10 @@
 	    (let ((pointer items)
 		  toolbar
 		  file
-		  menu-item
-		  (riece-data-directory (locate-data-directory "riece")))
+		  menu-item)
 	      (while pointer
 		(setq file (locate-file (symbol-name (car pointer))
-					(if riece-data-directory
-					    (cons riece-data-directory
-						  load-path)
-					  load-path)
+					(cons riece-data-directory load-path)
 					'(".xpm" ".pbm" ".xbm"))
 		      menu-item (riece-toolbar-find-menu-item (car pointer)))
 		(if (and file (file-exists-p file))
@@ -84,10 +79,21 @@
 			      (symbol-name (car pointer)))))))
 		(setq pointer (cdr pointer)))
 	      toolbar))
+	  (defvar riece-toolbar-original-toolbar nil)
 	  (defun riece-set-toolbar (toolbar)
-	    (set-specifier default-toolbar toolbar (current-buffer))))
+	    (make-local-variable 'riece-toolbar-original-toolbar)
+	    (setq riece-toolbar-original-toolbar
+		  (specifier-specs default-toolbar (current-buffer)))
+	    (set-specifier default-toolbar toolbar (current-buffer)))
+	  (defun riece-unset-toolbar ()
+	    (if riece-toolbar-original-toolbar
+		(set-specifier default-toolbar riece-toolbar-original-toolbar
+			       (current-buffer))
+	      (remove-specifier default-toolbar (current-buffer)))
+	    (kill-local-variable 'riece-toolbar-original-toolbar)))
       (defalias 'riece-make-toolbar-from-menu 'ignore)
-      (defalias 'riece-set-toolbar 'ignore))
+      (defalias 'riece-set-toolbar 'ignore)
+      (defalias 'riece-unset-toolbar 'ignore))
   (defun riece-make-toolbar-from-menu (items menu-items map)
     (let ((pointer items)
 	  (tool-bar-map (make-sparse-keymap)))
@@ -99,10 +105,12 @@
       tool-bar-map))
   (defun riece-set-toolbar (toolbar)
     (make-local-variable 'tool-bar-map)
-    (setq tool-bar-map toolbar)))
+    (setq tool-bar-map toolbar))
+  (defun riece-unset-toolbar ()
+    (kill-local-variable 'tool-bar-map)))
 
 (defvar riece-command-mode-map)
-(defun riece-toolbar-insinuate-in-command-buffer ()
+(defun riece-toolbar-command-mode-hook ()
   (riece-set-toolbar
    (riece-make-toolbar-from-menu
     riece-toolbar-items
@@ -113,9 +121,18 @@
   '(riece-menu))
 
 (defun riece-toolbar-insinuate ()
+  (if riece-command-buffer
+      (with-current-buffer riece-command-buffer
+	(riece-toolbar-command-mode-hook)))
   (add-hook 'riece-command-mode-hook
-	    'riece-toolbar-insinuate-in-command-buffer
-	    t))
+	    'riece-toolbar-command-mode-hook t))
+
+(defun riece-toolbar-uninstall ()
+  (if riece-command-buffer
+      (with-current-buffer riece-command-buffer
+	(riece-unset-toolbar)))
+  (remove-hook 'riece-command-mode-hook
+	       'riece-toolbar-command-mode-hook))
 
 (provide 'riece-toolbar)
 

@@ -1,4 +1,4 @@
-;;; riece-keyword.el --- highlight keywords in channel buffers
+;;; riece-keyword.el --- detect keywords in IRC buffers
 ;; Copyright (C) 1998-2003 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>
@@ -24,15 +24,15 @@
 
 ;;; Commentary:
 
-;; To use, add the following line to your ~/.riece/init.el:
-;; (add-to-list 'riece-addons 'riece-keyword)
+;; NOTE: This is an add-on module for Riece.
 
 ;;; Code:
 
 (require 'riece-message)
 
 (defgroup riece-keyword nil
-  "Highlight keyword in IRC buffer."
+  "Detect keywords in IRC buffers."
+  :prefix "riece-"
   :group 'riece)
 
 (defcustom riece-keywords nil
@@ -66,15 +66,13 @@ and the matched message object."
   :group 'riece-highlight-faces)
 (defvar riece-keyword-face 'riece-keyword-face)
 
-(defvar riece-keyword-enabled nil)
-
 (defconst riece-keyword-description
-  "Highlight keywords in IRC buffers")
+  "Detect keywords in IRC buffers.")
 
 ;;; The old XEmacs package doesn't have autoload setting for regexp-opt.
 (autoload 'regexp-opt "regexp-opt")
 (defun riece-keyword-message-filter (message)
-  (if (and riece-keyword-enabled
+  (if (and (get 'riece-keyword 'riece-addon-enabled)
 	   riece-keywords
 	   ;; Ignore messages which belongs to myself.
 	   (not (riece-message-own-p message)))
@@ -115,11 +113,14 @@ and the matched message object."
 (defun riece-keyword-insinuate ()
   (add-hook 'riece-message-filter-functions 'riece-keyword-message-filter))
 
+(defun riece-keyword-uninstall ()
+  (remove-hook 'riece-message-filter-functions 'riece-keyword-message-filter))
+
 (defun riece-keyword-enable ()
-  (setq riece-keyword-enabled t))
+  )
 
 (defun riece-keyword-disable ()
-  (setq riece-keyword-enabled nil))
+  )
 
 (provide 'riece-keyword)
 

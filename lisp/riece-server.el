@@ -73,7 +73,7 @@ the `riece-server-keyword-map' variable."
 	  plist)
       (setq plist (cons `(:host ,host) plist))
       (unless (equal service "")
-	(setq plist (cons `(:service ,(string-to-int service)) plist)))
+	(setq plist (cons `(:service ,(string-to-number service)) plist)))
       (unless (equal password "")
 	(setq plist (cons `(:password ,(substring password 1)) plist)))
       (apply #'nconc plist))))

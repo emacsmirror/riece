@@ -1,4 +1,4 @@
-;;; riece-eval.el --- eval add-on
+;;; riece-eval.el --- evaluate input string as an elisp form
 ;; Copyright (C) 2005 OHASHI Akira
 
 ;; Author: OHASHI Akira <bg66@koka-in.org>
@@ -23,11 +23,7 @@
 
 ;;; Commentary:
 
-;; This add-on evaluates an input string as lisp object and sends a result
-;; as notice. Note the risky of this add-on.
-
-;; To use, add the following line to your ~/.riece/init.el:
-;; (add-to-list 'riece-addons 'riece-eval)
+;; NOTE: This is an add-on module for Riece.
 
 ;;; Code:
 
@@ -35,7 +31,7 @@
 (require 'riece-message)
 
 (defgroup riece-eval nil
-  "Evaluate an input string as lisp object."
+  "Evaluate an input string as an elisp form."
   :prefix "riece-"
   :group 'riece)
 
@@ -49,13 +45,11 @@
   :type 'boolean
   :group 'riece-eval)
 
-(defvar riece-eval-enabled nil)
-
 (defconst riece-eval-description
-  "Evaluate an input string as lisp object.")
+  "Evaluate an input string as an elisp form.")
 
 (defun riece-eval-display-message-function (message)
-  (when (and riece-eval-enabled
+  (when (and (get 'riece-eval 'riece-addon-enabled)
 	     (riece-message-own-p message)
 	     (string-match riece-eval-regexp (riece-message-text message)))
     (let* ((form (match-string 1 (riece-message-text message)))
@@ -91,11 +85,15 @@
   (add-hook 'riece-after-display-message-functions
 	    'riece-eval-display-message-function))
 
+(defun riece-eval-uninstall ()
+  (remove-hook 'riece-after-display-message-functions
+	       'riece-eval-display-message-function))
+
 (defun riece-eval-enable ()
-  (setq riece-eval-enabled t))
+  )
 
 (defun riece-eval-disable ()
-  (setq riece-eval-enabled nil))
+  )
 
 (provide 'riece-eval)
 

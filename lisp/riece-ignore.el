@@ -1,4 +1,4 @@
-;;; riece-ignore.el --- ignore user
+;;; riece-ignore.el --- ignore messages from some users
 ;; Copyright (C) 1998-2004 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>
@@ -24,8 +24,7 @@
 
 ;;; Commentary:
 
-;; To use, add the following line to your ~/.riece/init.el:
-;; (add-to-list 'riece-addons 'riece-ignore)
+;; NOTE: This is an add-on module for Riece.
 
 ;;; Code:
 
@@ -34,7 +33,8 @@
 (require 'riece-message)
 
 (defgroup riece-ignore nil
-  "Ignore messages in IRC buffers."
+  "Ignore messages from some users."
+  :prefix "riece-"
   :group 'riece)
 
 (defcustom riece-ignore-discard-message 'log
@@ -60,10 +60,8 @@ Otherwise, they are not removed from IRC buffers, but are hidden with
 
 (defvar riece-ignore-buffer nil)
 
-(defvar riece-ignore-enabled nil)
-
 (defconst riece-ignore-description
-  "Ignore users")
+  "Ignore messages from some users.")
 (defvar riece-ignored-user-list nil)
 
 (defun riece-ignore-user-rename-signal-function (signal handback)
@@ -103,7 +101,7 @@ Otherwise, they are not removed from IRC buffers, but are hidden with
 (eval-when-compile
   (autoload 'riece-dialogue-mode "riece"))
 (defun riece-ignore-message-filter (message)
-  (if (and riece-ignore-enabled
+  (if (and (get 'riece-ignore 'riece-addon-enabled)
 	   (riece-identity-member (riece-message-speaker message)
 				  riece-ignored-user-list))
       (if riece-ignore-discard-message
@@ -133,15 +131,17 @@ Otherwise, they are not removed from IRC buffers, but are hidden with
 	(mapcar #'riece-parse-identity riece-startup-ignored-user-list))
   (add-hook 'riece-message-filter-functions 'riece-ignore-message-filter))
 
+(defun riece-ignore-uninstall ()
+  (setq riece-ignored-user-list nil)
+  (remove-hook 'riece-message-filter-functions 'riece-ignore-message-filter))
+
 (defun riece-ignore-enable ()
   (define-key riece-command-mode-map
-    "\C-ck" 'riece-ignore-user)
-  (setq riece-ignore-enabled t))
+    "\C-ck" 'riece-ignore-user))
 
 (defun riece-ignore-disable ()
   (define-key riece-command-mode-map
-    "\C-ck" nil)
-  (setq riece-ignore-enabled nil))
+    "\C-ck" nil))
 
 (provide 'riece-ignore)
 

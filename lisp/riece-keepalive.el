@@ -24,12 +24,12 @@
 
 ;;; Commentary:
 
-;; To use, add the following line to your ~/.riece/init.el:
-;; (add-to-list 'riece-addons 'riece-keepalive)
+;; NOTE: This is an add-on module for Riece.
 
 ;;; Code:
 
 (require 'riece-options)
+(require 'riece-server)
 
 (defgroup riece-keepalive nil
   "Keep an IRC connection."
@@ -64,8 +64,12 @@
     (setq riece-keepalive-timer nil)))
 
 (defun riece-keepalive-insinuate ()
-  (add-hook 'riece-after-login-hook #'riece-keepalive-after-login-hook)
-  (add-hook 'riece-after-close-hook #'riece-keepalive-after-close-hook))
+  (add-hook 'riece-after-login-hook 'riece-keepalive-after-login-hook)
+  (add-hook 'riece-after-close-hook 'riece-keepalive-after-close-hook))
+
+(defun riece-keepalive-uninstall ()
+  (remove-hook 'riece-after-login-hook 'riece-keepalive-after-login-hook)
+  (remove-hook 'riece-after-close-hook 'riece-keepalive-after-close-hook))
 
 (provide 'riece-keepalive)
 

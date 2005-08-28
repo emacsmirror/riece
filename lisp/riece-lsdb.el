@@ -1,4 +1,4 @@
-;;; riece-lsdb.el --- interface to LSDB
+;;; riece-lsdb.el --- help register nicknames in LSDB rolodex program
 ;; Copyright (C) 1998-2003 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>
@@ -24,8 +24,7 @@
 
 ;;; Commentary:
 
-;; To use, add the following line to your ~/.riece/init.el:
-;; (add-to-list 'riece-addons 'riece-lsdb)
+;; NOTE: This is an add-on module for Riece.
 
 ;;; Code:
 
@@ -43,10 +42,8 @@
 
 (defvar riece-lsdb-cache nil)
 
-(defvar riece-lsdb-enabled nil)
-
 (defconst riece-lsdb-description
-  "Use LSDB (Lovely Sister Database)")
+  "Help register nicknames in LSDB rolodex program.")
 
 (defun riece-lsdb-update-cache (record)
   (let ((irc (cdr (assq 'irc record))))
@@ -117,6 +114,9 @@
 			  (list (cons 'irc (cons irc old)))))))
 
 (defvar riece-command-mode-map)
+(defvar lsdb-secondary-hash-tables)
+(defvar lsdb-after-update-record-functions)
+(defvar lsdb-after-delete-record-functions)
 (defun riece-lsdb-insinuate ()
   (require 'lsdb)
   (add-to-list 'lsdb-secondary-hash-tables
@@ -126,19 +126,25 @@
   (add-to-list 'lsdb-after-delete-record-functions
 	       'riece-lsdb-delete-cache))
 
+(defun riece-lsdb-uninstall ()
+  (setq lsdb-secondary-hash-tables
+	(delq 'riece-lsdb-cache lsdb-secondary-hash-tables)
+	lsdb-after-update-record-functions
+	(delq 'riece-lsdb-update-cache lsdb-after-update-record-functions)
+	lsdb-after-delete-record-functions
+	(delq 'riece-lsdb-delete-cache lsdb-after-delete-record-functions)))
+
 (defun riece-lsdb-enable ()
   (define-key riece-command-mode-map
     "\C-c\C-ll" 'riece-lsdb-display-records)
   (define-key riece-command-mode-map
-    "\C-c\C-la" 'riece-lsdb-add-user)
-  (setq riece-lsdb-enabled t))
+    "\C-c\C-la" 'riece-lsdb-add-user))
 
 (defun riece-lsdb-disable ()
   (define-key riece-command-mode-map
     "\C-c\C-ll" nil)
   (define-key riece-command-mode-map
-    "\C-c\C-la" nil)
-  (setq riece-lsdb-enabled nil))
+    "\C-c\C-la" nil))
 
 (provide 'riece-lsdb)
 

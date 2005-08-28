@@ -71,6 +71,8 @@
 (defvar riece-channel-obarray-size 103
   "The size of obarray used by riece on channelname space.")
 
+(defvar riece-addon-dependencies nil)
+
 ;;; Variables local to the server buffers:
 (defvar riece-server-name nil
   "The name of the server.
@@ -149,6 +151,7 @@ Local to the channel buffers.")
 Local to the channel buffers.")
 
 ;;; Modeline indicators:
+(defvar riece-mode-line-buffer-identification nil)
 (defvar riece-channel-indicator "None"
   "String displayed on the modeline to indicate the current channel.")
 (defvar riece-long-channel-indicator "None"

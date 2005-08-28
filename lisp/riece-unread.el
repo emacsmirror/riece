@@ -1,4 +1,4 @@
-;;; riece-unread.el --- "unread message mark" add-on
+;;; riece-unread.el --- mark channels where new messages arrived
 ;; Copyright (C) 1998-2003 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>
@@ -23,7 +23,9 @@
 
 ;;; Commentary:
 
-;; This add-on marks channels where new messages are arrived.
+;; NOTE: This is an add-on module for Riece.
+
+;; This add-on marks channels where new messages arrived.
 
 ;; You can check the unread channels via `C-c g' in the commands
 ;; buffer, by adding the following lines to ~/.riece/init.el:
@@ -36,11 +38,10 @@
 (require 'riece-message)
 (require 'riece-commands)
 (require 'riece-signal)
-
-(eval-when-compile (require 'riece-highlight))
+(require 'riece-highlight)
 
 (defgroup riece-unread nil
-  "Mark unread channels"
+  "Mark unread channels."
   :tag "Unread"
   :prefix "riece-"
   :group 'riece)
@@ -68,13 +69,11 @@
 
 (defvar riece-unread-channels nil)
 
-(defvar riece-unread-enabled nil)
-
 (defconst riece-unread-description
-  "Mark channels where \"unread\" messages arrived")
+  "Mark channels where new messages arrived.")
 
 (defun riece-unread-after-display-message-function (message)
-  (if riece-unread-enabled
+  (if (get 'riece-unread 'riece-addon-enabled)
       (let ((target (if (riece-message-private-p message)
 			(riece-message-speaker message)
 		      (riece-message-target message))))
@@ -86,20 +85,20 @@
 	  (riece-emit-signal 'channel-list-changed)))))
 
 (defun riece-unread-after-switch-to-channel-function (last)
-  (if riece-unread-enabled
+  (if (get 'riece-unread 'riece-addon-enabled)
       (setq riece-unread-channels
 	    (delq (car (riece-identity-member riece-current-channel
 					      riece-unread-channels))
 		  riece-unread-channels))))
 
 (defun riece-unread-format-identity-for-channel-list-buffer (index identity)
-  (if (and riece-unread-enabled
+  (if (and (get 'riece-unread 'riece-addon-enabled)
 	   (riece-identity-member identity riece-unread-channels))
       (concat (format "%2d:!" index)
 	      (riece-format-identity identity))))
 
 (defun riece-unread-format-identity-for-channel-list-indicator (index identity)
-  (if (and riece-unread-enabled
+  (if (and (get 'riece-unread 'riece-addon-enabled)
 	   (riece-identity-member identity riece-unread-channels))
       (let ((string (riece-format-identity identity))
 	    (start 0))
@@ -123,7 +122,7 @@
     (error "No unread channel!")))
 
 (defun riece-guess-channel-from-unread ()
-  riece-unread-channels)
+  (reverse riece-unread-channels))
 
 (defun riece-unread-requires ()
   (let (requires)
@@ -151,6 +150,23 @@
 ;;;		'riece-guess-channel-from-unread))
   )
 
+(defun riece-unread-uninstall ()
+  (remove-hook 'riece-after-display-message-functions
+	       'riece-unread-after-display-message-function)
+  (remove-hook 'riece-after-switch-to-channel-functions
+	       'riece-unread-after-switch-to-channel-function)
+  (remove-hook 'riece-format-identity-for-channel-list-buffer-functions
+	       'riece-unread-format-identity-for-channel-list-buffer)
+  (remove-hook 'riece-format-identity-for-channel-list-indicator-functions
+	       'riece-unread-format-identity-for-channel-list-indicator)
+  (setq riece-channel-list-mark-face-alist
+	(delq (assq ?! riece-channel-list-mark-face-alist)
+	      riece-channel-list-mark-face-alist))
+;;;  (if (memq 'riece-guess riece-addons)
+;;;      (add-hook 'riece-guess-channel-try-functions
+;;;		'riece-guess-channel-from-unread))
+  )
+
 (defvar riece-command-mode-map)
 (defvar riece-dialogue-mode-map)
 (defvar riece-channel-list-mode-map)
@@ -160,8 +176,7 @@
   (define-key riece-dialogue-mode-map
     "u" 'riece-unread-switch-to-channel)
   (define-key riece-channel-list-mode-map
-    "u" 'riece-unread-switch-to-channel)
-  (setq riece-unread-enabled t)
+    "u" 'riece-unread-switch-to-channel)  
   (riece-emit-signal 'channel-list-changed))
 
 (defun riece-unread-disable ()
@@ -171,8 +186,7 @@
     "u" nil)
   (define-key riece-channel-list-mode-map
     "u" nil)
-  (setq riece-unread-channels nil
-	riece-unread-enabled nil)
+  (setq riece-unread-channels nil)
   (riece-emit-signal 'channel-list-changed))
 
 (provide 'riece-unread)

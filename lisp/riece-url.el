@@ -1,4 +1,4 @@
-;;; riece-url.el --- URL collector add-on
+;;; riece-url.el --- collect URL in IRC buffers
 ;; Copyright (C) 1998-2003 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>
@@ -24,8 +24,7 @@
 
 ;;; Commentary:
 
-;; To use, add the following line to your ~/.riece/init.el:
-;; (add-to-list 'riece-addons 'riece-url)
+;; NOTE: This is an add-on module for Riece.
 
 ;;; Code:
 
@@ -37,6 +36,7 @@
 
 (defgroup riece-url nil
   "URL Browsing in IRC buffer."
+  :prefix "riece-"
   :group 'riece)
 
 (defcustom riece-url-regexp  "\\b\\(s?https?\\|ftp\\|file\\|gopher\\|news\\|telnet\\|wais\\|mailto\\):\\(//[-a-zA-Z0-9_.]+:[0-9]*\\)?[-a-zA-Z0-9_=?#$@~`%&*+|\\/.,;]*[-a-zA-Z0-9_=#$@~`%&*+|\\/;]"
@@ -59,10 +59,8 @@ This maps a string \"Bug#12345\" to a URL
 (defvar riece-urls nil
   "A list of URL which appears in Riece buffers.")
 
-(defvar riece-url-enabled nil)
-
 (defconst riece-url-description
-  "Collect URL in IRC buffers")
+  "Collect URL in IRC buffers.")
 
 (autoload 'widget-convert-button "wid-edit")
 
@@ -122,23 +120,31 @@ This maps a string \"Bug#12345\" to a URL
 	  (if (memq 'riece-menu riece-addons)
 	      '(riece-menu))))
 
+(defun riece-url-command-mode-hook ()
+  (easy-menu-add-item
+   nil (list (car riece-menu-items))
+   '("Open URL..." :filter riece-url-create-menu)))
+
 (defun riece-url-insinuate ()
   (add-hook 'riece-after-insert-functions 'riece-url-scan-region)
   (if (memq 'riece-menu riece-addons)
       (add-hook 'riece-command-mode-hook
-		(lambda ()
-		  (easy-menu-add-item
-		   nil (list (car riece-menu-items))
-		   '("Open URL..." :filter riece-url-create-menu)))
+		'riece-url-command-mode-hook
 		t)))
 
+(defun riece-url-uninstall ()
+  (easy-menu-remove-item
+   nil (list (car riece-menu-items))
+   "Open URL...")
+  (remove-hook 'riece-after-insert-functions 'riece-url-scan-region)
+  (remove-hook 'riece-command-mode-hook
+	       'riece-url-command-mode-hook))
+
 (defun riece-url-enable ()
-  (define-key riece-dialogue-mode-map "U" 'riece-command-browse-url)
-  (setq riece-url-enabled t))
+  (define-key riece-dialogue-mode-map "U" 'riece-command-browse-url))
 
 (defun riece-url-disable ()
-  (define-key riece-dialogue-mode-map "U" nil)
-  (setq riece-url-enabled nil))
+  (define-key riece-dialogue-mode-map "U" nil))
 
 (provide 'riece-url)
 

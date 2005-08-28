@@ -1,4 +1,4 @@
-;;; riece-doctor.el --- "become a psychotherapist" add-on
+;;; riece-doctor.el --- pretend to be a psychotherapist
 ;; Copyright (C) 1998-2003 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>
@@ -23,10 +23,7 @@
 
 ;;; Commentary:
 
-;; This add-on allows you to become a psychotherapist.
-
-;; To use, add the following line to your ~/.riece/init.el:
-;; (add-to-list 'riece-addons 'riece-doctor)
+;; NOTE: This is an add-on module for Riece.
 
 ;;; Code:
 
@@ -36,26 +33,24 @@
 (require 'riece-server)
 
 (defgroup riece-doctor nil
-  "Interface to doctor.el"
+  "Interface to doctor.el."
   :prefix "riece-"
   :group 'riece)
 
-(defcustom riece-doctor-hello-regexp "^, doctor"
+(defcustom riece-doctor-hello-regexp "^,doctor$"
   "Pattern of string patients start consultation."
   :type 'string
   :group 'riece-doctor)
 
-(defcustom riece-doctor-bye-regexp "^, bye doctor"
+(defcustom riece-doctor-bye-regexp "^,doctor bye$"
   "Pattern of string patients end consultation."
   :type 'string
   :group 'riece-doctor)
 
 (defvar riece-doctor-patients nil)
 
-(defvar riece-doctor-enabled nil)
-
 (defconst riece-doctor-description
-  "Allow users in channel to talk with the classic pseudo-AI")
+  "Pretend to be a psychotherapist.")
 
 (put 'riece-doctor 'riece-addon-default-disabled t)
 
@@ -76,7 +71,7 @@
   (riece-send-string (format "NOTICE %s :%s\r\n" target string)))
 
 (defun riece-doctor-after-privmsg-hook (prefix string)
-  (if riece-doctor-enabled
+  (if (get 'riece-doctor 'riece-addon-enabled)
       (let* ((user (riece-prefix-nickname prefix))
 	     (parameters (riece-split-parameters string))
 	     (targets (split-string (car parameters) ","))
@@ -129,11 +124,14 @@ Please, describe your problems."
 (defun riece-doctor-insinuate ()
   (add-hook 'riece-after-privmsg-hook 'riece-doctor-after-privmsg-hook))
 
+(defun riece-doctor-uninstall ()
+  (remove-hook 'riece-after-privmsg-hook 'riece-doctor-after-privmsg-hook))
+
 (defun riece-doctor-enable ()
-  (setq riece-doctor-enabled t))
+  )
 
 (defun riece-doctor-disable ()
-  (setq riece-doctor-enabled nil))
+  )
 
 (provide 'riece-doctor)
 

@@ -1,4 +1,4 @@
-;;; riece-menu.el --- define command menu on menubar
+;;; riece-menu.el --- setup Riece's command menus
 ;; Copyright (C) 1998-2003 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>
@@ -24,8 +24,7 @@
 
 ;;; Commentary:
 
-;; To use, add the following line to your ~/.riece/init.el:
-;; (add-to-list 'riece-addons 'riece-menu)
+;; NOTE: This is an add-on module for Riece.
 
 ;;; Code:
 
@@ -70,7 +69,7 @@
   "Menu used in command mode.")
 
 (defconst riece-menu-description
-  "Setup command menus on menubar")
+  "Setup Riece's command menus.")
 
 (defun riece-menu-create-layouts-menu (menu)
   (mapcar (lambda (entry)
@@ -103,14 +102,27 @@
 
 (defvar riece-command-mode-map)
 (defvar riece-menu)
+
+(defun riece-menu-command-mode-hook ()
+  (easy-menu-define riece-menu
+		    riece-command-mode-map
+		    "Riece Menu"
+		    riece-menu-items)
+  (easy-menu-add riece-menu))
+
 (defun riece-menu-insinuate ()
+  (if riece-command-buffer
+      (with-current-buffer riece-command-buffer
+	(riece-menu-command-mode-hook)))
   (add-hook 'riece-command-mode-hook
-	    (lambda ()
-	      (easy-menu-define riece-menu
-				riece-command-mode-map
-				"Riece Menu"
-				riece-menu-items)
-	      (easy-menu-add riece-menu))))
+	    'riece-menu-command-mode-hook))
+
+(defun riece-menu-uninstall ()
+  (if riece-command-buffer
+      (with-current-buffer riece-command-buffer
+	(easy-menu-remove riece-menu)))
+  (remove-hook 'riece-command-mode-hook
+	       'riece-menu-command-mode-hook))
 
 (provide 'riece-menu)
 
