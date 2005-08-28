@@ -70,9 +70,9 @@ specifying the coding systems for decoding and encoding respectively."
 (defun riece-decode-coding-string-1 (string coding-system)
   (let* ((decoded (decode-coding-string string coding-system))
 	 (length (length decoded)))
-    (put-text-property 0 length 'riece-coding-encoded-string
+    (put-text-property 0 length 'riece-decoded-encoded-string
 		       string decoded)
-    (put-text-property 0 length 'riece-coding-decoded-coding-system
+    (put-text-property 0 length 'riece-decoded-coding-system
 		       coding-system decoded)
     decoded))
 
@@ -95,11 +95,11 @@ specifying the coding systems for decoding and encoding respectively."
 ;; that decoding phase is delayed until the body of handler functions.
 (defun riece-decoded-coding-system (decoded)
   "Return the coding-system used for decoding DECODED."
-  (get-text-property 0 'riece-coding-decoded-coding-system decoded))
+  (get-text-property 0 'riece-decoded-coding-system decoded))
 
-(defun riece-encoded-string (decoded)
+(defun riece-decoded-encoded-string (decoded)
   "Return the string before decoding."
-  (get-text-property 0 'riece-coding-encoded-string decoded))
+  (get-text-property 0 'riece-decoded-encoded-string decoded))
 
 (defalias 'riece-decoded-string 'identity)
 
@@ -109,7 +109,7 @@ specifying the coding systems for decoding and encoding respectively."
     (if (and coding-system
 	     (not (eq (riece-decoded-coding-system string)
 		      coding-system)))
-	(riece-decode-coding-string-1 (riece-encoded-string decoded)
+	(riece-decode-coding-string-1 (riece-decoded-encoded-string decoded)
 				      coding-system)
       decoded)))
 
