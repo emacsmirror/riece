@@ -1,5 +1,8 @@
 2005-08-28  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-handle.el (riece-handle-privmsg-message): Use
+	riece-decoded-string & riece-decoded-string-for-identity.
+
 	* riece-coding.el (riece-coding-system-alist): New user option.
 	(riece-coding-system-for-prefix-server): New function.
 	(riece-encoded-string): New function.
