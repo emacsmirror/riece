@@ -81,7 +81,8 @@
 (defun riece-handle-privmsg-message (prefix string)
   (let* ((user (riece-prefix-nickname prefix))
 	 (parameters (riece-split-parameters (riece-decoded-string string)))
-	 (targets (split-string (car parameters) ",")))
+	 (targets (split-string (car parameters) ","))
+	 message)
     (setq parameters (riece-split-parameters
 		      (riece-decoded-string-for-identity
 		       string
