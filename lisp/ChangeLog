@@ -4,7 +4,7 @@
 	riece-decoded-string & riece-decoded-string-for-identity.
 
 	* riece-coding.el (riece-coding-system-alist): New user option.
-	(riece-coding-system-for-prefix-server): New function.
+	(riece-coding-system-for-identity): New function.
 	(riece-encoded-string): New function.
 	(riece-decoded-string): New alias.
 	(riece-decoded-string-for-identity): New function.

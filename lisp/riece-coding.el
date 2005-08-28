@@ -76,16 +76,16 @@ specifying the coding systems for decoding and encoding respectively."
 		       coding-system decoded)
     decoded))
 
-(defun riece-coding-system-for-prefix-server (prefix server)
+(defun riece-coding-system-for-identity (identity)
   (let ((alist riece-coding-system-alist)
-	identity)
+	matcher)
     (catch 'found
       (while alist
-	(setq identity (riece-parse-identity (car (car alist))))
-	(if (and (equal (riece-identity-server identity)
-			server)
-		 (equal (riece-identity-prefix identity)
-			prefix))
+	(setq matcher (riece-parse-identity (car (car alist))))
+	(if (and (equal (riece-identity-server matcher)
+			(riece-identity-server identity))
+		 (equal (riece-identity-prefix matcher)
+			(riece-identity-prefix identity)))
 	    (throw 'found (cdr (car alist))))
 	(setq alist (cdr alist))))))
 
@@ -106,9 +106,7 @@ specifying the coding systems for decoding and encoding respectively."
 
 (defun riece-decoded-string-for-identity (decoded identity)
   "Return the string decoded for IDENTITY."
-  (let ((coding-system (riece-coding-system-for-prefix-server
-			(riece-identity-prefix identity)
-			(riece-identity-server identity))))
+  (let ((coding-system (riece-coding-system-for-identity identity)))
     (if (and coding-system
 	     (not (eq (riece-decoded-coding-system string)
 		      coding-system)))
