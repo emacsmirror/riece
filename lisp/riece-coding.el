@@ -89,11 +89,10 @@ specifying the coding systems for decoding and encoding respectively."
 	    (throw 'found (cdr (car alist))))
 	(setq alist (cdr alist))))))
 
-;; The following functions are API used from handler functions.  For
-;; the meantime DECODED is actually a string (with some text
-;; properties).  In the future, however, the implementation _should_
-;; be changed so that decoding phase is delayed until the body of
-;; handler functions.
+;; The following functions are API used by handler functions.  For the
+;; meantime DECODED is actually a string (with some text properties).
+;; In the future, however, the implementation _should_ be changed so
+;; that decoding phase is delayed until the body of handler functions.
 (defun riece-decoded-coding-system (decoded)
   "Return the coding-system used for decoding DECODED."
   (get-text-property 0 'riece-coding-decoded-coding-system decoded))
