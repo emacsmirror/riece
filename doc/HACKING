@@ -384,28 +384,26 @@ Below is a list of signal names reserved.
 Elisp modules that satisfy add-on spec should provide the following
 functions.
 
-- <module-name>-requires
-  Return a list of names of other add-ons this add-on depends. (optional)
+- <module-name>-requires (optional)
+  Return a list of names of other add-ons this add-on depends.
 
 - <module-name>-insinuate
   Called on initialization of this module.
+
+- <module-name>-enable (optional)
+  Called when this add-on is enabled.
+
+- <module-name>-disable (optional)
+  Called when this add-on is disabled.
 
 It is recommended to set short explanation of the add-on to
 <module-name>-description variable which is displayed on add-on
 listing shown up by C-c ^ (M-x riece-command-list-addons).
 
-Add-ons that support enabling/disabling set the current status to
-<module-name>-enabled variable.  If this variable is nil, the add-on
-is regarded as currently disabled.  In addition, the add-on must
-provide the following two functions.
+To see the add-on's enabled/disabled status, get riece-addon-enabled
+property set on <module-name> symbol.
 
-- <module-name>-enable
-  Called to enable this add-on.
-
-- <module-name>-disable
-  Called to disable this add-on.
-
-Riece does the following process when startup.
+Riece does the following procedure on add-ons when startup.
 
 (1) Load add-ons listed in the riece-addons variable.
 
