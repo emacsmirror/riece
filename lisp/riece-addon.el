@@ -270,8 +270,8 @@
       (if verbose
 	  (message "Add-on %S is already enabled" addon))
     (let ((enable (intern-soft (concat (symbol-name addon) "-enable"))))
-      (if (or (null enable)
-	      (not (fboundp enable)))
+      (if (and enable
+	       (fboundp enable))
 	  (funcall enable))
       (put addon 'riece-addon-enabled t)
       (if verbose
@@ -284,8 +284,8 @@
       (if verbose
 	  (message "Add-on %S is already disabled" addon))
     (let ((disable (intern-soft (concat (symbol-name addon) "-disable"))))
-      (if (or (null disable)
-	      (not (fboundp disable)))
+      (if (and disable
+	       (fboundp disable))
 	  (funcall disable))
       (put addon 'riece-addon-enabled nil)
       (if verbose

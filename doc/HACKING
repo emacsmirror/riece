@@ -400,7 +400,7 @@ It is recommended to set short explanation of the add-on to
 <module-name>-description variable which is displayed on add-on
 listing shown up by C-c ^ (M-x riece-command-list-addons).
 
-To see the add-on's enabled/disabled status, look at riece-addon-enabled
+To see the add-on's enabled/disabled status, check riece-addon-enabled
 property set on <module-name> symbol.
 
 Riece does the following procedure on add-ons when startup.
