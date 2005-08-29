@@ -107,7 +107,7 @@
 				 "QUIT\r\n"))
     (if (equal server-name "")
 	(message "Sending QUIT...done")
-      (message "Sending QUIT to \"%s\"...done"))))
+      (message "Sending QUIT to \"%s\"...done" server-name))))
 
 (provide 'riece-irc)
 
