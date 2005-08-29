@@ -41,7 +41,7 @@
 ** elisp ファイルを１つずつ byte-compile する make ルールを設けた。
    configure 後、lisp/ 以下で make compile-individually (ueno)
 
-** 開発者向けの文書 (doc/HACKING.ja) を同梱 (ueno)
+** 開発者向けの文書 (doc/HACKING{,.ja}) を同梱 (ueno)
 
 * Riece 1.0.8 の主な変更点
 
