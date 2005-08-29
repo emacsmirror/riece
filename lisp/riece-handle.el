@@ -78,14 +78,14 @@
 				 (riece-format-identity new-identity t)))
 			  "\n"))))
 
-(defun riece-handle-privmsg-message (prefix string)
+(defun riece-handle-privmsg-message (prefix decoded)
   (let* ((user (riece-prefix-nickname prefix))
-	 (parameters (riece-split-parameters (riece-decoded-string string)))
+	 (parameters (riece-split-parameters (riece-decoded-string decoded)))
 	 (targets (split-string (car parameters) ","))
 	 message)
     (setq parameters (riece-split-parameters
 		      (riece-decoded-string-for-identity
-		       string
+		       decoded
 		       (riece-make-identity (car targets) riece-server-name)))
 	  message (nth 1 parameters))
     (riece-display-message
@@ -98,12 +98,17 @@
 			 (riece-identity-equal-no-server
 			  user riece-real-nickname)))))
 
-(defun riece-handle-notice-message (prefix string)
+(defun riece-handle-notice-message (prefix decoded)
   (let* ((user (if prefix
 		   (riece-prefix-nickname prefix)))
-	 (parameters (riece-split-parameters string))
+	 (parameters (riece-split-parameters (riece-decoded-string decoded)))
 	 (targets (split-string (car parameters) ","))
-	 (message (nth 1 parameters)))
+	 message)
+    (setq parameters (riece-split-parameters
+		      (riece-decoded-string-for-identity
+		       decoded
+		       (riece-make-identity (car targets) riece-server-name)))
+	  message (nth 1 parameters))
     (if user
 	(riece-display-message
 	 (riece-make-message (riece-make-identity user
@@ -158,18 +163,22 @@
 	  "\n")))
       (setq channels (cdr channels)))))
 
-(defun riece-handle-part-message (prefix string)
+(defun riece-handle-part-message (prefix decoded)
   (let* ((user (riece-prefix-nickname prefix))
-	 (parameters (riece-split-parameters string))
+	 (parameters (riece-split-parameters (riece-decoded-string decoded)))
 	 ;; RFC2812 3.2.2 doesn't recommend server to send part
 	 ;; messages which contain multiple targets.
 	 (channels (split-string (car parameters) ","))
-	 (message (nth 1 parameters))
 	 (user-identity (riece-make-identity user riece-server-name)))
     (while channels
       (let* ((channel-identity (riece-make-identity (car channels)
 						    riece-server-name))
-	     (buffer (riece-channel-buffer channel-identity)))
+	     (buffer (riece-channel-buffer channel-identity))
+	     message)
+	(setq parameters (riece-split-parameters
+			  (riece-decoded-string-for-identity decoded
+							     channel-identity))
+	      message (nth 1 parameters))
 	(riece-insert-change
 	 buffer
 	 (concat
@@ -195,15 +204,19 @@
       (riece-naming-assert-part user (car channels))
       (setq channels (cdr channels)))))
 
-(defun riece-handle-kick-message (prefix string)
+(defun riece-handle-kick-message (prefix decoded)
   (let* ((kicker (riece-prefix-nickname prefix))
-	 (parameters (riece-split-parameters string))
+	 (parameters (riece-split-parameters (riece-decoded-string decoded)))
 	 (channel (car parameters))
 	 (user (nth 1 parameters))
-	 (message (nth 2 parameters))
+	 message
 	 (kicker-identity (riece-make-identity kicker riece-server-name))
 	 (channel-identity (riece-make-identity channel riece-server-name))
 	 (user-identity (riece-make-identity user riece-server-name)))
+    (setq parameters (riece-split-parameters
+		      (riece-decoded-string-for-identity decoded
+							 channel-identity))
+	  message (nth 2 parameters))
     (riece-naming-assert-part user channel)
     (let ((buffer (riece-channel-buffer channel-identity)))
       (riece-insert-change
@@ -337,13 +350,17 @@
 	       (riece-format-identity channel-identity)))
       "\n"))))
 
-(defun riece-handle-topic-message (prefix string)
+(defun riece-handle-topic-message (prefix decoded)
   (let* ((user (riece-prefix-nickname prefix))
-	 (parameters (riece-split-parameters string))
+	 (parameters (riece-split-parameters (riece-decoded-string decoded)))
 	 (channel (car parameters))
-	 (topic (nth 1 parameters))
+	 topic
 	 (user-identity (riece-make-identity user riece-server-name))
 	 (channel-identity (riece-make-identity channel riece-server-name)))
+    (setq parameters (riece-split-parameters
+		      (riece-decoded-string-for-identity decoded
+							 channel-identity))
+	  topic (nth 1 parameters))
     (riece-channel-set-topic (riece-get-channel channel) topic)
     (riece-emit-signal 'channel-topic-changed
 		       channel-identity topic)

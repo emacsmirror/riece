@@ -76,19 +76,6 @@ specifying the coding systems for decoding and encoding respectively."
 		       coding-system decoded)
     decoded))
 
-(defun riece-coding-system-for-identity (identity)
-  (let ((alist riece-coding-system-alist)
-	matcher)
-    (catch 'found
-      (while alist
-	(setq matcher (riece-parse-identity (car (car alist))))
-	(if (and (equal (riece-identity-server matcher)
-			(riece-identity-server identity))
-		 (equal (riece-identity-prefix matcher)
-			(riece-identity-prefix identity)))
-	    (throw 'found (cdr (car alist))))
-	(setq alist (cdr alist))))))
-
 ;; The following functions are API used by handler functions.  For the
 ;; meantime DECODED is actually a string (with some text properties).
 ;; In the future, however, the implementation _should_ be changed so
@@ -102,16 +89,6 @@ specifying the coding systems for decoding and encoding respectively."
   (get-text-property 0 'riece-decoded-encoded-string decoded))
 
 (defalias 'riece-decoded-string 'identity)
-
-(defun riece-decoded-string-for-identity (decoded identity)
-  "Return the string decoded for IDENTITY."
-  (let ((coding-system (riece-coding-system-for-identity identity)))
-    (if (and coding-system
-	     (not (eq (riece-decoded-coding-system string)
-		      coding-system)))
-	(riece-decode-coding-string-1 (riece-decoded-encoded-string decoded)
-				      coding-system)
-      decoded)))
 
 (provide 'riece-coding)
 

@@ -184,6 +184,29 @@ The rest of arguments are the same as `completing-read'."
 ;;;      (error "Invalid channel name!"))
     identity))
 
+(defun riece-coding-system-for-identity (identity)
+  (let ((alist riece-coding-system-alist)
+	matcher)
+    (catch 'found
+      (while alist
+	(setq matcher (riece-parse-identity (car (car alist))))
+	(if (and (equal (riece-identity-server matcher)
+			(riece-identity-server identity))
+		 (equal (riece-identity-prefix matcher)
+			(riece-identity-prefix identity)))
+	    (throw 'found (cdr (car alist))))
+	(setq alist (cdr alist))))))
+
+(defun riece-decoded-string-for-identity (decoded identity)
+  "Return the string decoded for IDENTITY."
+  (let ((coding-system (riece-coding-system-for-identity identity)))
+    (if (and coding-system
+	     (not (eq (riece-decoded-coding-system decoded)
+		      coding-system)))
+	(riece-decode-coding-string-1 (riece-decoded-encoded-string decoded)
+				      coding-system)
+      decoded)))
+
 (provide 'riece-identity)
 
 ;;; riece-identity.el ends here

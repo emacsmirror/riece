@@ -1,3 +1,19 @@
+2005-08-29  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-identity.el (riece-coding-system-for-identity): Moved from
+	riece-coding.el.
+	(riece-decoded-string-for-identity): Ditto.
+
+	* riece-300.el (riece-handle-322-message): Decode message per
+	channel.
+	(riece-handle-set-topic): Ditto.
+
+	* riece-handle.el (riece-handle-notice-message): Decode message
+	per channel.
+	(riece-handle-part-message): Ditto.
+	(riece-handle-kick-message): Ditto.
+	(riece-handle-topic-message): Ditto.
+
 2005-08-28  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-handle.el (riece-handle-privmsg-message): Use
