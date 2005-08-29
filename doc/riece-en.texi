@@ -49,12 +49,14 @@ Free Documentation License".
 @node Top, Overview, (dir), (dir)
 @top Riece user's manual
 
-Riece is a program to participate in IRC (Internet Relay Chat) from Emacs.
+This manual documents Riece version @value{VERSION}. In addition to this
+manual, you may find useful information about Riece from Riece's official
+home page @uref{http://www.nongnu.org/riece/}.
 
 @menu
-* Overview::                    What's Riece?
-* Getting started::             
-* Basic usage::                 Let's talk with other people.
+* Overview::                    Read me first.
+* Getting started::             Let's talk with other people.
+* Basic usage::                 
 * Index::                       
 * Function Index::              
 * Variable Index::              
@@ -63,19 +65,18 @@ Riece is a program to participate in IRC (Internet Relay Chat) from Emacs.
 @node Overview, Getting started, Top, Top
 @chapter Overview
 
-Riece is a full rewrite of the predecessor product "Liece" (whose code
-has been unmaintainable for a long time), while providing a user
-interface (mostly) compatible with Liece.
+Riece is a user interface for IRC (Internet Relay Chat).  You should
+spell it with the first letter capitalized and pronounce it as /ri:s/.
 
-There are noteworthy improvements as compared with Liece:
+The features of Riece are as follows:
 
 @itemize @bullet
 @item
 Several IRC servers may be used at the same time.
 
 @item
-Essential features can be built upon the extension framework (called
-"add-on") capable of dependency tracking.
+Many features built upon the extension mechanism called add-on.
+Currently 30 such add-ons are available.
 
 @item
 Installation is easy.  Riece doesn't depend on other packages.
@@ -90,87 +91,68 @@ Step-by-step instructions are included.
 Mostly compliant with the latest IRC client protocol (RFC 2812).
 @end itemize
 
-For more details, please look at the following pages:
-
-@itemize @bullet
-@item http://www.nongnu.org/riece/
-@end itemize
-
 @node Getting started, Basic usage, Overview, Top
 @chapter Getting started
 
-@menu
-* Required Environments::       
-* Installation::                
-* Startup File::                
-@end menu
+To start Riece, follow the instruction below:
 
-@node Required Environments, Installation, Getting started, Getting started
-@section Required Environments
+@enumerate
+@item
+@kbd{M-x load-library riece}
 
-We checked this version working on the following environments.
+@item
+@kbd{M-x riece}
+@end enumerate
+
+In case that @samp{Cannot open load file: riece} is signalled in (1),
+you should probably have an installation problem.  If you installed
+Riece from source tarball, please read README again.  If you are
+trying to use a package distribution, check out the documentation.
+
+Once Riece started successfully, you will be asked the name of the IRC
+server to connect.  IRC servers publicly available are taken from the
+Web pages of IRC networks:
 
 @itemize @bullet
-@item Emacs 20.7 or later
-@item XEmacs 21.4 or later
+@item http://irc.kyoto-u.ac.jp
+@item http://freenode.net
 @end itemize
 
-@node Installation, Startup File, Required Environments, Getting started
-@section Installation
-
-The latest version of Riece can be obtained from
-@uref{http://wiliki.designflaw.org/riece.cgi}.  After unpacking the
-tarball, you can install with the following commands:
+You may see the following message:
 
 @example
-./configure
-make
-make install
+Nickname "ueno" already in use.  Choose a new one: 
 @end example
 
-If you want to install Riece as an XEmacs package, use the following
-commands instead of the above:
+In IRC, users are identified by @emph{nicknames}.  If the nickname you
+selected has already used by another person, you must select the new one.
+
+In IRC, users join the @emph{channels} to start multi user
+conversation.  To join a channel, type @kbd{C-c j}.  On IRCnet, there
+is a channel named @samp{#Riece} where you can do some tests to get
+experienced with Riece.
+
+After you joined a channel, the layout of windows are changed to the
+following:
 
 @example
-./configure --with-xemacs[=xemacs-21.4.17]
-make package
-make install-package
++-----+-----------------+
+|     |                 |
+|     |                 |
+| (1) |       (2)       |
+|     |                 |
+|     |                 |
++-----+-----------------+
+|     |       (4)       |
+|     +-----------------+
+| (3) |                 |
+|     |       (5)       |
+|     |                 |
++-----+-----------------+
 @end example
 
-If you do not so, it is necessery to add autoload setting to your Emacs
-startup file (probably @file{~/.emacs}) to be able to start Riece by
-typing @kbd{M-x riece}.
-
-@lisp
-(autoload 'riece "riece" "Start Riece" t)
-@end lisp
-
-@node Startup File,  , Installation, Getting started
-@section Startup file
-
-In this section we describe Riece's startup files.
-
-If you are attempting to use Riece by way of trial, nothing needed to be
-written in startup files.  Thus you can skip this section.
-
-Riece reads startup files under the directory pointed by the variable
-@code{riece-directory} (by default, it has @file{~/.riece/} as the
-value).  There are two kinds of startup files in the directory:
-
-@table @code
-@item riece-saved-variables-file
-@vindex riece-saved-variables-file
-Variables changed during the last session are automatically saved in this file.
-(by default, it is located at @file{~/.riece/save})
-@item riece-variables-file
-@vindex riece-variables-file
-Users can edit this file to configure their own settings (by default, it
-is located at @file{~/.riece/init})
-@end table
-
-At startup, Riece will first read @code{riece-saved-variables-file},
-and then @code{riece-variables-file}.  That is to say, automatically
-saved variables may be refered/modified by user configuration.
+You can send messages by entering messages in (4).  Messages from
+other persons are shown in (2).
 
 @node Basic usage, Index, Getting started, Top
 @chapter Basic usage
