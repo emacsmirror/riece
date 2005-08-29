@@ -10,7 +10,7 @@
 	* riece-globals.el (riece-coding-system-alist): Abolished.
 
 	* riece-commands.el (riece-command-topic): Pass the target
-	identity to as the 2nd argument of riece-send-string.
+	identity to riece-send-string.
 	(riece-command-kick): Ditto.
 	(riece-command-send-message): Ditto.
 	(riece-command-enter-message-to-user): Ditto.
