@@ -47,7 +47,7 @@
    To use it, after configure, do "make compile-individually" in
    lisp/.  (ueno)
 
-** Include a document for developers (doc/HACKING.ja) (ueno)
+** Include a document for developers (doc/HACKING{,.ja}) (ueno)
 
 * Major changes in 1.0.8
 
