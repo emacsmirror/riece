@@ -132,6 +132,7 @@
 	riece-log-directory-map
 	(riece-server-process-alist
 	 (list (cons "" (start-process "" (current-buffer) "true")))))
+    (put 'riece-log 'riece-addon-enabled t)
     (riece-log-display-message-function
      (riece-make-message
       (riece-make-identity "ueno" "")
@@ -140,7 +141,8 @@
 				   (make-char 'japanese-jisx0208 33 60)
 				   (make-char 'japanese-jisx0208 36 57))
 			   "")
-      "a b c\n" nil t)))
+      "a b c\n" nil t))
+    (put 'riece-log 'riece-addon-enabled nil))
   (let (file-name-coding-system
 	default-file-name-coding-system)
     (lunit-assert-2

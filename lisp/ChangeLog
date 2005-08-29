@@ -8,6 +8,9 @@
 	* test/test-riece-ruby.el (lunit-test-case-teardown): Rest
 	riece-ruby-output-handler-alist and riece-ruby-output-queue-alist.
 
+	* test/test-riece-log.el
+	(test-riece-log-display-message-function): Enable riece-log addon.
+
 	* riece-server.el (riece-server-keyword-map): Abolished
 	:coding-system-alist keyword.
 	(riece-send-string): Take the target identity as the 2nd argument.
