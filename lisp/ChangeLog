@@ -1,5 +1,10 @@
 2005-08-29  Daiki Ueno  <ueno@unixuser.org>
 
+	* Riece: Version 2.0.0 released.
+	* riece-version.el (riece-version-number): Bump up to 2.0.0.
+
+2005-08-29  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-server.el (riece-server-keyword-map): Abolished
 	:coding-system-alist keyword.
 	(riece-send-string): Take the target identity as the 2nd argument.
