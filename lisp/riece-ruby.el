@@ -243,7 +243,7 @@ Use `riece-ruby-set-property' to set this variable.")
 				       (format "%s-output-handler" name))
 				     (cdr handler-entry) name output time)
       (if entry
-	  (setcdr entry (cons output (cdr entry)))
+	  (setcdr entry (cons (cons output time) (cdr entry)))
 	(setq riece-ruby-output-queue-alist
 	      (cons (list name (cons output time))
 		    riece-ruby-output-queue-alist))))))

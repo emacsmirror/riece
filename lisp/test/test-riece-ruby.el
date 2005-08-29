@@ -3,6 +3,8 @@
 (luna-define-class test-riece-ruby (lunit-test-case))
 
 (luna-define-method lunit-test-case-teardown ((case test-riece-ruby))
+  (setq riece-ruby-output-handler-alist nil
+	riece-ruby-output-queue-alist nil)
   (riece-ruby-execute "exit!")
   (sleep-for 1))
 
