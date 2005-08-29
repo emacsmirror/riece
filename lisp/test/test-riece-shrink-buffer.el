@@ -1,8 +1,8 @@
-(require 'riece)
+(require 'riece-shrink-buffer)
 
-(luna-define-class test-riece (lunit-test-case))
+(luna-define-class test-riece-shrink-buffer (lunit-test-case))
 
-(luna-define-method test-riece-shrink-buffer ((case test-riece))
+(luna-define-method test-riece-shrink-buffer ((case test-riece-shrink-buffer))
   (let* ((riece-max-buffer-size 255)
 	 (riece-shrink-buffer-remove-chars 128)
 	 (line (concat (make-string 15 ? ) "\n"))
