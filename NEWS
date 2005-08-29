@@ -1,6 +1,6 @@
 * Major changes in 2.0.0
 
-** Support different coding-systems per channel (ueno)
+** You can use different coding-systems per channel (ueno)
    Example:
    (setq riece-coding-system-alist
 	 '(("#euc-jp" . euc-jp)
