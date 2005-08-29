@@ -162,8 +162,7 @@ the `riece-server-keyword-map' variable."
 	  (setq riece-send-size 0))
       (while (and (not (riece-queue-empty riece-send-queue))
 		  (<= riece-send-size riece-max-send-size))
-	(setq string (riece-encode-coding-string
-		      (riece-queue-dequeue riece-send-queue))
+	(setq string (riece-queue-dequeue riece-send-queue)
 	      length (length string))
 	(if (> length riece-max-send-size)
 	    (message "Long message (%d > %d)" length riece-max-send-size)
@@ -193,13 +192,21 @@ the `riece-server-keyword-map' variable."
 	  (if (riece-server-opened "")
 	      "")))))
 
-(defun riece-send-string (string)
-  (let* ((server-name (riece-current-server-name))
-	 (process (riece-server-process server-name)))
+(defun riece-send-string (string &optional identity)
+  (let* ((server-name (if identity
+			  (riece-identity-server identity)
+			(riece-current-server-name)))
+	 (process (riece-server-process server-name))
+	 coding-system)
     (unless process
       (error "%s" (substitute-command-keys
 		   "Type \\[riece-command-open-server] to open server.")))
-    (riece-process-send-string process string)))
+    (riece-process-send-string
+     process
+     (with-current-buffer (process-buffer process)
+       (if identity
+	   (riece-encode-coding-string-for-identity string identity)
+	 (riece-encode-coding-string string))))))
 
 (defun riece-open-server (server server-name)
   (let ((protocol (or (plist-get server :protocol)

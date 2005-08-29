@@ -1,5 +1,11 @@
 * Riece 2.0.0 の主な変更点
 
+** チャンネル毎にエンコーディングを指定できるようにした (ueno)
+   設定例：
+   (setq riece-channel-coding-system-alist
+	 '(("#euc-jp" . euc-jp)
+	   ("#utf-8 irc.freenode.net" . utf-8)))
+
 ** アドオンの uninstall, unload (危険) に対応。
    アドオン一覧モードで riece-addons のカスタマイズが可能 (ueno)
 
@@ -35,7 +41,7 @@
 ** elisp ファイルを１つずつ byte-compile する make ルールを設けた。
    configure 後、lisp/ 以下で make compile-individually (ueno)
 
-** 開発者向けの文書 (doc/HACKING.ja) を同梱 (ueno)
+** 開発者向けの文書 (doc/HACKING{,.ja}) を同梱 (ueno)
 
 * Riece 1.0.8 の主な変更点
 
