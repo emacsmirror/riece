@@ -27,6 +27,12 @@
 (require 'riece-globals)
 (require 'riece-coding)
 
+(defcustom riece-channel-coding-system-alist nil
+  "An alist mapping from channels to coding-systems."
+  :type '(repeat (cons (string :tag "Channel")
+		       (symbol :tag "Coding system")))
+  :group 'riece-coding)
+
 (defvar riece-abbrev-identity-string-function nil)
 (defvar riece-expand-identity-string-function nil)
 
@@ -185,7 +191,7 @@ The rest of arguments are the same as `completing-read'."
     identity))
 
 (defun riece-coding-system-for-identity (identity)
-  (let ((alist riece-coding-system-alist)
+  (let ((alist riece-channel-coding-system-alist)
 	matcher)
     (catch 'found
       (while alist
@@ -202,10 +208,21 @@ The rest of arguments are the same as `completing-read'."
   (let ((coding-system (riece-coding-system-for-identity identity)))
     (if (and coding-system
 	     (not (eq (riece-decoded-coding-system decoded)
-		      coding-system)))
+		      (if (consp coding-system)
+			  (car coding-system)
+			coding-system))))
 	(riece-decode-coding-string-1 (riece-decoded-encoded-string decoded)
 				      coding-system)
       decoded)))
+
+(defun riece-encode-coding-string-for-identity (string identity)
+  (let ((coding-system (riece-coding-system-for-identity identity)))
+    (if coding-system
+	(encode-coding-string string
+			      (if (consp coding-system)
+				  (cdr coding-system)
+				coding-system))
+      (riece-encode-coding-string string))))
 
 (provide 'riece-identity)
 

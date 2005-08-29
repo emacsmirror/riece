@@ -1,5 +1,24 @@
 2005-08-29  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-server.el (riece-server-keyword-map): Abolished
+	:coding-system-alist keyword.
+	(riece-send-string): Take the target identity as the 2nd argument.
+
+	* riece-identity.el (riece-channel-coding-system-alist): Renamed
+	from riece-coding-system-alist.
+
+	* riece-globals.el (riece-coding-system-alist): Abolished.
+
+	* riece-commands.el (riece-command-topic): Pass the target
+	identity to as the 2nd argument of riece-send-string.
+	(riece-command-kick): Ditto.
+	(riece-command-send-message): Ditto.
+	(riece-command-enter-message-to-user): Ditto.
+	(riece-command-join-channel): Ditto.
+	(riece-command-part-channel): Ditto.
+
+2005-08-29  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-identity.el (riece-coding-system-for-identity): Moved from
 	riece-coding.el.
 	(riece-decoded-string-for-identity): Ditto.

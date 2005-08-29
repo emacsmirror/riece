@@ -38,8 +38,7 @@
       (:username riece-username)
       (:password)
       (:function riece-default-open-connection-function)
-      (:coding riece-default-coding-system)
-      (:coding-system-alist))
+      (:coding riece-default-coding-system))
     "Mapping from keywords to default values.
 All keywords that can be used must be listed here."))
 
@@ -193,8 +192,10 @@ the `riece-server-keyword-map' variable."
 	  (if (riece-server-opened "")
 	      "")))))
 
-(defun riece-send-string (string &optional prefix)
-  (let* ((server-name (riece-current-server-name))
+(defun riece-send-string (string &optional identity)
+  (let* ((server-name (if identity
+			  (riece-identity-server identity)
+			(riece-current-server-name)))
 	 (process (riece-server-process server-name))
 	 coding-system)
     (unless process
@@ -202,14 +203,10 @@ the `riece-server-keyword-map' variable."
 		   "Type \\[riece-command-open-server] to open server.")))
     (riece-process-send-string
      process
-     (if (and prefix
-	      (setq coding-system
-		    (cdr (assoc prefix
-				(plist-get (riece-server-properties
-					    server-name)
-					   :coding-system-alist)))))
-	 (encode-coding-string string coding-system)
-       (riece-encode-coding-string string)))))
+     (with-current-buffer (process-buffer process)
+       (if identity
+	   (riece-encode-coding-string-for-identity string identity)
+	 (riece-encode-coding-string string))))))
 
 (defun riece-open-server (server server-name)
   (let ((protocol (or (plist-get server :protocol)
@@ -274,7 +271,6 @@ the `riece-server-keyword-map' variable."
     (make-local-variable 'riece-channel-obarray)
     (setq riece-channel-obarray (make-vector riece-channel-obarray-size 0))
     (make-local-variable 'riece-coding-system)
-    (make-local-variable 'riece-coding-system-alist)
     (buffer-disable-undo)
     (erase-buffer)))
 

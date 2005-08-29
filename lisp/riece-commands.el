@@ -194,7 +194,8 @@ the layout to the selected layout-name."
 				0)))))
   (riece-send-string (format "TOPIC %s :%s\r\n"
 			     (riece-identity-prefix riece-current-channel)
-			     topic)))
+			     topic)
+		     riece-current-channel))
 
 (defun riece-command-invite (user)
   (interactive
@@ -227,7 +228,8 @@ the layout to the selected layout-name."
 	       user message)
      (format "KICK %s %s\r\n"
 	     (riece-identity-prefix riece-current-channel)
-	     user))))
+	     user))
+   riece-current-channel))
 
 (defun riece-command-names (pattern)
   (interactive
@@ -386,7 +388,7 @@ the layout to the selected layout-name."
 	 (format "NOTICE %s :%s\r\n"
 		 (riece-identity-prefix riece-current-channel)
 		 message)
-	 (riece-identity-prefix riece-current-channel))
+	 riece-current-channel)
 	(riece-display-message
 	 (riece-make-message (riece-current-nickname) riece-current-channel
 			     message 'notice t)))
@@ -394,7 +396,7 @@ the layout to the selected layout-name."
      (format "PRIVMSG %s :%s\r\n"
 	     (riece-identity-prefix riece-current-channel)
 	     message)
-     (riece-identity-prefix riece-current-channel))
+     riece-current-channel)
     (riece-display-message
      (riece-make-message (riece-current-nickname) riece-current-channel
 			 message nil t))))
@@ -433,7 +435,8 @@ the layout to the selected layout-name."
 	       (riece-line-beginning-position)
 	       (riece-line-end-position))))
     (riece-send-string
-     (format "PRIVMSG %s :%s\r\n" (riece-identity-prefix user) text))
+     (format "PRIVMSG %s :%s\r\n" (riece-identity-prefix user) text)
+     user)
     (riece-display-message
      (riece-make-message (riece-current-nickname) user text nil t)))
   (let ((next-line-add-newlines t))
@@ -444,13 +447,13 @@ the layout to the selected layout-name."
     (unless process
       (error "%s" (substitute-command-keys
 		   "Type \\[riece-command-open-server] to open server.")))
-    (riece-process-send-string process
-			       (if key
-				   (format "JOIN %s :%s\r\n"
-					   (riece-identity-prefix target)
-					   key)
-				 (format "JOIN %s\r\n"
-					 (riece-identity-prefix target))))))
+    (riece-send-string (if key
+			   (format "JOIN %s :%s\r\n"
+				   (riece-identity-prefix target)
+				   key)
+			 (format "JOIN %s\r\n"
+				 (riece-identity-prefix target)))
+		       target)))
 
 (defun riece-command-join-partner (target)
   (let ((pointer (riece-identity-member target riece-current-channels)))
@@ -482,13 +485,13 @@ the layout to the selected layout-name."
 
 (defun riece-command-part-channel (target message)
   (let ((process (riece-server-process (riece-identity-server target))))
-    (riece-process-send-string process
-			       (if message
-				   (format "PART %s :%s\r\n"
-					   (riece-identity-prefix target)
-					   message)
-				 (format "PART %s\r\n"
-					 (riece-identity-prefix target))))))
+    (riece-send-string (if message
+			   (format "PART %s :%s\r\n"
+				   (riece-identity-prefix target)
+				   message)
+			 (format "PART %s\r\n"
+				 (riece-identity-prefix target)))
+		       target)))
 
 (defun riece-command-part (target &optional message)
   (interactive

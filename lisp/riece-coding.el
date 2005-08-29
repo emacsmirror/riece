@@ -44,12 +44,6 @@ specifying the coding systems for decoding and encoding respectively."
 		 (const nil :tag "No conversion"))
   :group 'riece-coding)
 
-(defcustom riece-coding-system-alist nil
-  "An alist mapping from identities to coding-systems."
-  :type '(repeat (cons (string :tag "Identity")
-		       (symbol :tag "Coding system")))
-  :group 'riece-coding)
-
 (defun riece-encode-coding-string (string)
   (if (and (local-variable-p 'riece-coding-system (current-buffer))
 	   riece-coding-system)		;should be nil on non-Mule environment
