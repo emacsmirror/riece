@@ -8,7 +8,7 @@
 	* test/test-riece-log.el
 	(test-riece-log-display-message-function): Enable riece-log addon.
 
-	* test/test-riece-ruby.el (lunit-test-case-teardown): Rest
+	* test/test-riece-ruby.el (lunit-test-case-teardown): Reset
 	riece-ruby-output-handler-alist and riece-ruby-output-queue-alist.
 
 	* riece-server.el (riece-server-keyword-map): Abolished
