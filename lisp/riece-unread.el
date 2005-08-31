@@ -128,6 +128,9 @@
   (let (requires)
     (if (memq 'riece-highlight riece-addons)
 	(setq requires (cons 'riece-highlight requires)))
+    ;; To override riece-history's channel mark in the channel list buffer.
+    (if (memq 'riece-history riece-addons)
+	(setq requires (cons 'riece-history requires)))
 ;;;    (if (memq 'riece-guess riece-addons)
 ;;;	(setq requires (cons 'riece-guess requires)))
     requires))
