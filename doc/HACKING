@@ -390,6 +390,9 @@ functions.
 - <module-name>-insinuate
   Called on initialization of this module.
 
+- <module-name>-uninstall (optional)
+  Called on uninstallation of this module.
+
 - <module-name>-enable (optional)
   Called when this add-on is enabled.
 
