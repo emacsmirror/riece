@@ -1,3 +1,13 @@
+2005-09-05  Daiki Ueno  <ueno@unixuser.org>
+
+	* Makefile.am (EXTRA_DIST): Added riece-xfaceb.el.
+	* riece-addon-modules.el (riece-addon-modules): Added riece-xfaceb.
+
+2005-09-03  Steve Youngs  <steve@sxemacs.org>
+
+	* riece-xfaceb.el: New file.  Display X-Face and colour Face
+	images in IRC buffer, getting the image data from BBDB records.
+
 2005-08-31  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-unread.el (riece-unread-requires): Require 'riece-history.

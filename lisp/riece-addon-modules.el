@@ -31,6 +31,7 @@
     (riece-unread . "Mark channels where new messages arrived.")
     (riece-url . "Collect URL in IRC buffers.")
     (riece-xface . "Display X-Face in IRC buffers.")
+    (riece-xfaceb . "Display X-Face & Colour Face images in IRC buffers \(BBDB\).")
     (riece-yank . "Enter the element of kill-ring.")))
 
 (provide 'riece-addon-modules)
