@@ -69,7 +69,7 @@
 		      (quit
 		       (if (equal server-name "")
 			   (message "Password: Quit")
-			 (message "Password for %s: " server-name))
+			 (message "Password for %s: Quit" server-name))
 		       'quit)))
 	    (setq riece-reconnect-with-password nil)))
       (if (eq password 'quit)
