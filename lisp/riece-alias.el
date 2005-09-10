@@ -138,7 +138,7 @@
       (setq string (riece-alias-abbrev-alternate-separator string)))
   (let ((alist riece-alias-alist))
     (while alist
-      (if (equal (car (car alist)) string)
+      (if (equal (downcase (car (car alist))) (downcase string))
 	  (setq string (cdr (car alist))
 		alist nil)
 	(setq alist (cdr alist)))))
@@ -147,7 +147,7 @@
 (defun riece-alias-expand-identity-string (string)
   (let ((alist riece-alias-alist))
     (while alist
-      (if (equal (cdr (car alist)) string)
+      (if (equal (downcase (cdr (car alist))) (downcase string))
 	  (setq string (car (car alist))
 		alist nil)
 	(setq alist (cdr alist)))))
