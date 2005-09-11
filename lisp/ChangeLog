@@ -1,3 +1,8 @@
+2005-09-11  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-addon.el (riece-command-list-addons): Adjust width of 2nd
+	column to the length of the longest add-on name.
+
 2005-09-10  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-alias.el (riece-alias-abbrev-identity-string): Compare car

@@ -321,7 +321,7 @@ All normal editing commands are turned off."
 	buffer-read-only
 	(pointer riece-addon-dependencies)
 	module-description-alist
-	description point)
+	description point longest)
     (while pointer
       (setq description (intern-soft (concat (symbol-name (car (car pointer)))
 					     "-description"))
@@ -342,13 +342,20 @@ All normal editing commands are turned off."
       (setq pointer (cdr pointer)))
     (erase-buffer)
     (riece-kill-all-overlays)
+    (setq pointer module-description-alist
+	  longest "")
+    (while pointer
+      (if (> (length (symbol-name (car (car pointer))))
+	     (length longest))
+	  (setq longest (symbol-name (car (car pointer)))))
+      (setq pointer (cdr pointer)))
     (setq pointer (sort module-description-alist
 			(lambda (entry1 entry2)
 			  (string-lessp (symbol-name (car entry1))
 					(symbol-name (car entry2))))))
     (while pointer
       (setq point (point))
-      (insert (format "%c %-15S %s\n"
+      (insert (format (format "%%c %%-%dS %%s\n" (length longest))
 		      (if (not (featurep (car (car pointer))))
 			  ? 
 			(if (not (get (car (car pointer))
