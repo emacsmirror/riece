@@ -60,7 +60,7 @@
 assumed that the file is in the same directory of this file.")
 
 (defvar riece-async-server-program-arguments
-  (list "-s" riece-async-buffer-size
+  (list "-s" (number-to-string riece-async-buffer-size)
 	"-b" riece-async-backup-file)
   "Command line arguments passed to `riece-async-server-program'.")
 
