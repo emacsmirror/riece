@@ -3,7 +3,7 @@
 @setfilename riece-en.info
 @settitle Riece -- An IRC client for Emacsen --
 @c %**end of header
-@set VERSION 2.0.0
+@set VERSION 2.0.1
 @c @documentlanguage en
 
 @dircategory GNU Emacs Lisp

@@ -1,3 +1,8 @@
+2005-09-29  Daiki Ueno  <ueno@unixuser.org>
+
+	* Riece: Version 2.0.1 released.
+	* configure.ac: Bump up version to 2.0.1.
+
 2005-09-11  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-addon.el (riece-command-list-addons): Adjust width of 2nd
