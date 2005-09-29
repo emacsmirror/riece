@@ -537,6 +537,7 @@ C-c g で以下の順序で移動できます。
 * For details of changes, see the file ChangeLog.
 
 Local variables:
+mode: text
 mode: outline
 paragraph-separate: "[  ]*$"
 coding: iso-2022-jp

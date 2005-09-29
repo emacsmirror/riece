@@ -538,6 +538,7 @@ NOTE: This release includes some fixes to long standing bugs in essential featur
 * For details of changes, see the file ChangeLog.
 
 Local variables:
+mode: text
 mode: outline
 paragraph-separate: "[  ]*$"
 end:
