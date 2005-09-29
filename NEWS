@@ -1,3 +1,11 @@
+* Major changes in 2.0.1
+
+** If there is a message in previously selected channel, Riece 2.0.0
+   doesn't treat it as an unread channel.  2.0.1 fixes it. (ueno)
+
+** New add-on riece-xfaceb.el, which displays X-Face/Colour Face in
+   IRC buffers. (Steve Youngs)
+
 * Major changes in 2.0.0
 
 ** Support multiple coding-systems on a server.
