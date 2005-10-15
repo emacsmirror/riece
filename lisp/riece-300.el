@@ -267,7 +267,7 @@
     (setq parameters (riece-split-parameters
 		      (riece-decoded-string-for-identity decoded
 							 channel-identity))
-	  topic (nth 1 parameters))
+	  topic (nth 2 parameters))
     (riece-channel-set-topic (riece-get-channel channel) topic)
     (riece-insert-info buffer (concat visible " users, topic: " topic "\n"))
     (riece-insert-info
