@@ -1,4 +1,4 @@
-;;; url-riece --- Adapting `riece' to `url-irc'
+;;; url-riece.el --- Adapting `riece' to `url-irc'
 ;; Copyright (C) 2004 Masatake YAMATO
 
 ;; Author: Masatake YAMATO <jet@gyve.org>
@@ -91,7 +91,7 @@ and PASSWORD. Just give nil to it."
 	(riece-command-join 
 	 (riece-parse-identity (if (string= server-name "")
 				   channel
-				 (format "%s %s" channel server)))))
+				 (format "%s %s" channel server-name)))))
       ;; Show the windows
       (riece)))))
 ; (url-irc-riece "localhost" nil "#mandara" "jetgx" nil)
