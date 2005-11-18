@@ -95,14 +95,19 @@
 (defalias 'riece-make-cache 'riece-cache-make-map)
 
 (defun riece-cache-contains (map key)
+  "Return t if MAP contains an entry whose key is KEY."
   (intern-soft key (riece-cache-map-hash-obarray map)))
 
 (defun riece-cache-get (map key)
+  "Return the value associated with KEY in MAP.
+If KEY is not associated in MAP, it returns nil."
   (let ((node (riece-cache-get-node map key)))
     (if node
 	(riece-cache-node-value node))))
 
 (defun riece-cache-get-node (map key)
+  "Return a node object associcated with KEY in MAP.
+If KEY is not associated in MAP, it returns nil."
   (let ((symbol (intern-soft key (riece-cache-map-hash-obarray map)))
 	previous next last node)
     (when symbol
@@ -123,6 +128,7 @@
       node)))
 
 (defun riece-cache-delete (map key)
+  "Remove an entry from MAP whose key is KEY."
   (let ((symbol (intern-soft key (riece-cache-map-hash-obarray map)))
 	previous next node)
     (when symbol
@@ -143,6 +149,7 @@
       (riece-cache-node-value node))))
 
 (defun riece-cache-set (map key value)
+  "Associate KEY with VALUE in MAP."
   (let ((node (riece-cache-get-node map key)))
     (if node
 	(riece-cache-node-set-value node value)
