@@ -163,10 +163,9 @@ If KEY is not associated in MAP, it returns nil."
 				       (1+ (riece-cache-map-hash-length map)))
       (unless (riece-cache-map-first map)
 	(riece-cache-map-set-first map node))
-      (if (riece-cache-map-last map)
-	  (progn
-	    (riece-cache-node-set-next (riece-cache-map-last map) node)
-	    (riece-cache-node-set-previous node (riece-cache-map-last map))))
+      (when (riece-cache-map-last map)
+	(riece-cache-node-set-next (riece-cache-map-last map) node)
+	(riece-cache-node-set-previous node (riece-cache-map-last map)))
       (riece-cache-map-set-last map node))))
 
 (provide 'riece-cache)
