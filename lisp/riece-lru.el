@@ -10,6 +10,10 @@
   "Return value of NODE."
   (aref node 1))
 
+(defun riece-lru-node-set-value (node value)
+  "Set value of NODE to VALUE."
+  (aset node 1 value))
+
 (defun riece-lru-node-next (node)
   "Return next of NODE."
   (aref node 3))
@@ -112,10 +116,9 @@
       (riece-lru-node-value node))))
 
 (defun riece-lru-set (map key value)
-  (let ((node (riece-lru-get-node map key))
-	symbol)
+  (let ((node (riece-lru-get-node map key)))
     (if node
-	(aset node 1 value)
+	(riece-lru-node-set-value node value)
       (if (>= (riece-lru-map-hash-length map)
 	      (riece-lru-map-max-length map))
 	  (riece-lru-delete map (riece-lru-node-key
