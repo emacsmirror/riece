@@ -1,5 +1,7 @@
 2005-11-18  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-lru.el: New file.
+
 	* riece-develop.el: New file.
 
 2005-10-27  Masatake YAMATO  <jet@gyve.org>
