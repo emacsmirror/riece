@@ -138,7 +138,8 @@
       (if (eq (riece-cache-map-first map) node)
 	  (riece-cache-map-set-first map next))
       (unintern symbol (riece-cache-map-hash-obarray map))
-      (riece-cache-map-set-hash-length map (1- (riece-cache-map-hash-length map)))
+      (riece-cache-map-set-hash-length map
+				       (1- (riece-cache-map-hash-length map)))
       (riece-cache-node-value node))))
 
 (defun riece-cache-set (map key value)
