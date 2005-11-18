@@ -39,7 +39,7 @@ sStruct: ")
 					 optional-attributes " "))))
     (setq strings (list (format "\
 \(defun %smake-%s (%s)
-  \"Make a %s%s object.\"
+  \"Make %s%s object.\"
   (vector %s))"
 				prefix struct arglist
 				prefix struct
