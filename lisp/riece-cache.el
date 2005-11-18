@@ -1,4 +1,4 @@
-;;; riece-cache.el --- LRU cache management
+;;; riece-cache.el --- LRU based cache management
 ;; Copyright (C) 1998-2005 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>
@@ -149,9 +149,10 @@
 	      (riece-cache-map-max-length map))
 	  (riece-cache-delete map (riece-cache-node-key
 				 (riece-cache-map-first map))))
-      (setq node (riece-cache-make-node key value (riece-cache-map-last map) nil))
+      (setq node (riece-cache-make-node key value (riece-cache-map-last map)))
       (set (intern key (riece-cache-map-hash-obarray map)) node)
-      (riece-cache-map-set-hash-length map (1+ (riece-cache-map-hash-length map)))
+      (riece-cache-map-set-hash-length map
+				       (1+ (riece-cache-map-hash-length map)))
       (unless (riece-cache-map-first map)
 	(riece-cache-map-set-first map node))
       (if (riece-cache-map-last map)
