@@ -1,9 +1,6 @@
 (defun riece-insert-struct-template (prefix struct)
   (interactive "sPrefix: 
 sStruct: ")
-  (if (and prefix
-	   (not (string-match "-\\'" prefix)))
-      (setq prefix (concat prefix "-")))
   (let (attributes
 	optional-attributes
 	name
@@ -11,6 +8,9 @@ sStruct: ")
 	arglist
 	strings
 	(index 0))
+    (if (and prefix
+	     (not (string-match "-\\'" prefix)))
+	(setq prefix (concat prefix "-")))
     (catch 'finish
       (while t
 	(setq name (read-from-minibuffer "Attribute: "))
