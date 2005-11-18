@@ -1,3 +1,7 @@
+2005-11-18  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-develop.el: New file.
+
 2005-10-27  Masatake YAMATO  <jet@gyve.org>
 
 	* url-riece.el (url-irc-riece): Use `server-name'
