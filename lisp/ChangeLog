@@ -1,5 +1,9 @@
 2005-11-18  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-cache.el: Renamed from riece-lru.el.
+
+2005-11-18  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-user.el: Require 'riece-lru.
 	(riece-find-user): Increase priority of given username in
 	riece-user-lru.

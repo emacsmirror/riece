@@ -14,7 +14,7 @@
 		riece-addon-modules
 		riece-addon
 		riece-ruby
-		riece-lru
+		riece-cache
 
 		riece-mode
 		;; riece-identity -+-> riece-channel

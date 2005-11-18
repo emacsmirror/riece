@@ -29,7 +29,7 @@
 (require 'riece-coding)			;riece-default-coding-system
 (require 'riece-identity)
 (require 'riece-compat)
-(require 'riece-lru)
+(require 'riece-cache)
 
 (eval-and-compile
   (defvar riece-server-keyword-map
@@ -272,8 +272,8 @@ the `riece-server-keyword-map' variable."
     (make-local-variable 'riece-channel-obarray)
     (setq riece-channel-obarray (make-vector riece-channel-obarray-size 0))
     (make-local-variable 'riece-coding-system)
-    (make-local-variable 'riece-user-lru)
-    (setq riece-user-lru (riece-make-lru riece-user-lru-max-size))
+    (make-local-variable 'riece-user-cache)
+    (setq riece-user-cache (riece-make-cache riece-user-cache-max-size))
     (buffer-disable-undo)
     (erase-buffer)))
 

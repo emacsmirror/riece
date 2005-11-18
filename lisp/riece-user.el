@@ -25,27 +25,27 @@
 
 (require 'riece-identity)
 (require 'riece-mode)
-(require 'riece-lru)
+(require 'riece-cache)
 
 ;;; User object:
 (defun riece-find-user (name)
   "Get a user object named NAME from the server buffer."
-  (riece-lru-get riece-user-lru name)
+  (riece-cache-get riece-user-cache name)
   (let ((symbol (intern-soft (riece-identity-canonicalize-prefix name)
 			     riece-user-obarray)))
     (if symbol
 	(symbol-value symbol))))
 
 (defun riece-forget-user (name)
-  (riece-lru-delete riece-user-lru name)
+  (riece-cache-delete riece-user-cache name)
   (let ((symbol (intern-soft (riece-identity-canonicalize-prefix name))))
     (when symbol
       (makunbound symbol)
       (unintern (symbol-name symbol) riece-user-obarray))))
 
 (defun riece-rename-user (old-name new-name)
-  (riece-lru-delete riece-user-lru old-name)
-  (riece-lru-set riece-user-lru new-name new-name)
+  (riece-cache-delete riece-user-cache old-name)
+  (riece-cache-set riece-user-cache new-name new-name)
   (unless (equal (riece-identity-canonicalize-prefix old-name)
 		 (riece-identity-canonicalize-prefix new-name))
     (let ((symbol (intern-soft (riece-identity-canonicalize-prefix old-name)
@@ -68,7 +68,7 @@ away status, respectively."
 			     riece-user-obarray)))
      (if symbol
 	 (symbol-value symbol)
-       (riece-lru-set riece-user-lru name name)
+       (riece-cache-set riece-user-cache name name)
        (set (intern (riece-identity-canonicalize-prefix name)
 		    riece-user-obarray)
 	    (riece-make-user nil nil nil nil nil)))))
