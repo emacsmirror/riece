@@ -1,5 +1,23 @@
 2005-11-18  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-user.el: Require 'riece-lru.
+	(riece-find-user): Increase priority of given username in
+	riece-user-lru.
+	(riece-forget-user): Remove given username from riece-user-lru.
+	(riece-rename-user): Rename given username in riece-user-lru.
+	(riece-get-user): Register given username in riece-user-lru (if
+	is being added to riece-user-obarray.)
+
+	* riece-server.el: Require 'riece-lru.
+	(riece-reset-process-buffer): Initialize riece-user-lru.
+
+	* riece-options.el (riece-user-lru-max-size): New user option.
+	* riece-misc.el: Require 'riece-lru.
+	(riece-get-users-on-server): Get usernames from riece-user-lru.
+
+	* riece-globals.el (riece-user-lru): New variable.
+	* COMPILE (riece-modules): Added riece-lru.
+
 	* riece-lru.el: New file.
 
 	* riece-develop.el: New file.

@@ -248,6 +248,11 @@ way is to put Riece variables on .emacs or file loaded from there."
   :type 'function
   :group 'riece-server)
 
+(defcustom riece-user-lru-max-size 512
+  "Maximum size of LRU cache of usernames."
+  :type 'integer
+  :group 'riece-server)
+
 (defcustom riece-channel-buffer-mode t
   "When non-nil, Riece will display a channel buffer."
   :type 'boolean

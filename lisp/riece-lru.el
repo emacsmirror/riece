@@ -74,12 +74,11 @@
 
 (defun riece-lru-get-node (map key)
   (let ((symbol (intern-soft key (riece-lru-map-hash-obarray map)))
-	previous next first last node)
+	previous next last node)
     (when symbol
       (setq node (symbol-value symbol)
 	    previous (riece-lru-node-previous node)
 	    next (riece-lru-node-next node)
-	    first (riece-lru-map-first map)
 	    last (riece-lru-map-last map))
       (if previous
 	  (riece-lru-node-set-next previous next))
@@ -131,3 +130,5 @@
 	    (riece-lru-node-set-next (riece-lru-map-last map) node)
 	    (riece-lru-node-set-previous node (riece-lru-map-last map))))
       (riece-lru-map-set-last map node))))
+
+(provide 'riece-lru)

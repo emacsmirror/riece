@@ -32,6 +32,7 @@
 (require 'riece-server)
 (require 'riece-user)
 (require 'riece-mode)
+(require 'riece-lru)
 
 (defun riece-get-buffer-create (name &optional init-major-mode)
   (let ((buffer (get-buffer name)))
@@ -221,7 +222,7 @@
 	 (setq identities
 	       (cons (riece-make-identity (symbol-name user) server-name)
 		     identities)))
-       riece-user-obarray)
+       (riece-lru-map-hash-obarray riece-user-lru))
       identities)))
 
 (defun riece-get-channels-on-server (server-name)
