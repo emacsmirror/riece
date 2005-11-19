@@ -222,7 +222,7 @@
 	 (setq identities
 	       (cons (riece-make-identity (symbol-name user) server-name)
 		     identities)))
-       (riece-cache-map-hash-obarray riece-user-cache))
+       (riece-cache-hash-obarray riece-user-cache))
       identities)))
 
 (defun riece-get-channels-on-server (server-name)
@@ -233,7 +233,7 @@
 	 (setq identities
 	       (cons (riece-make-identity (symbol-name channel) server-name)
 		     identities)))
-       (riece-cache-map-hash-obarray riece-channel-cache))
+       (riece-cache-hash-obarray riece-channel-cache))
       identities)))
 
 (defun riece-get-identities-on-server (server-name)

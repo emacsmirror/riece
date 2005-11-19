@@ -56,65 +56,63 @@
   "Set previous of NODE to PREVIOUS."
   (aset node 2 previous))
 
-(defun riece-cache-make-map (max-length)
-  "Make riece-cache-map object."
+(defun riece-make-cache (max-length)
+  "Make riece-cache object."
   (vector max-length (make-vector (* max-length 2) 0) 0 nil nil))
 
-(defun riece-cache-map-max-length (map)
-  "Return max-length of MAP."
-  (aref map 0))
+(defun riece-cache-max-length (cache)
+  "Return max-length of CACHE."
+  (aref cache 0))
 
-(defun riece-cache-map-hash-obarray (map)
-  "Return hash-obarray of MAP."
-  (aref map 1))
+(defun riece-cache-hash-obarray (cache)
+  "Return hash-obarray of CACHE."
+  (aref cache 1))
 
-(defun riece-cache-map-hash-length (map)
-  "Return hash-length of MAP."
-  (aref map 2))
+(defun riece-cache-hash-length (cache)
+  "Return hash-length of CACHE."
+  (aref cache 2))
 
-(defun riece-cache-map-set-hash-length (map hash-length)
-  "Set hash-length of MAP to HASH-LENGTH."
-  (aset map 2 hash-length))
+(defun riece-cache-set-hash-length (cache hash-length)
+  "Set hash-length of CACHE to HASH-LENGTH."
+  (aset cache 2 hash-length))
 
-(defun riece-cache-map-first (map)
-  "Return first of MAP."
-  (aref map 3))
+(defun riece-cache-first (cache)
+  "Return first of CACHE."
+  (aref cache 3))
 
-(defun riece-cache-map-set-first (map first)
-  "Set first of MAP to FIRST."
-  (aset map 3 first))
+(defun riece-cache-set-first (cache first)
+  "Set first of CACHE to FIRST."
+  (aset cache 3 first))
 
-(defun riece-cache-map-last (map)
-  "Return last of MAP."
-  (aref map 4))
+(defun riece-cache-last (cache)
+  "Return last of CACHE."
+  (aref cache 4))
 
-(defun riece-cache-map-set-last (map last)
-  "Set last of MAP to LAST."
-  (aset map 4 last))
+(defun riece-cache-set-last (cache last)
+  "Set last of CACHE to LAST."
+  (aset cache 4 last))
 
-(defalias 'riece-make-cache 'riece-cache-make-map)
+(defun riece-cache-contains (cache key)
+  "Return t if CACHE contains an entry whose key is KEY."
+  (intern-soft key (riece-cache-hash-obarray cache)))
 
-(defun riece-cache-contains (map key)
-  "Return t if MAP contains an entry whose key is KEY."
-  (intern-soft key (riece-cache-map-hash-obarray map)))
-
-(defun riece-cache-get (map key)
-  "Return the value associated with KEY in MAP.
-If KEY is not associated in MAP, it returns nil."
-  (let ((node (riece-cache-get-node map key)))
+(defun riece-cache-get (cache key)
+  "Return the value associated with KEY in CACHE.
+If KEY is not associated in CACHE, it returns nil."
+  (let ((node (riece-cache-get-node cache key)))
     (if node
 	(riece-cache-node-value node))))
 
-(defun riece-cache-get-node (map key)
-  "Return a node object associcated with KEY in MAP.
-If KEY is not associated in MAP, it returns nil."
-  (let ((symbol (intern-soft key (riece-cache-map-hash-obarray map)))
+(defun riece-cache-get-node (cache key)
+  "Return a node object associcated with KEY in CACHE.
+If KEY is not associated in CACHE, it returns nil."
+  (let ((symbol (intern-soft key (riece-cache-hash-obarray cache)))
 	previous next last node)
     (when symbol
       (setq node (symbol-value symbol)
 	    previous (riece-cache-node-previous node)
 	    next (riece-cache-node-next node)
-	    last (riece-cache-map-last map))
+	    last (riece-cache-last cache))
       (if previous
 	  (riece-cache-node-set-next previous next))
       (if next
@@ -122,14 +120,14 @@ If KEY is not associated in MAP, it returns nil."
       (riece-cache-node-set-next node nil)
       (riece-cache-node-set-previous node last)
       (riece-cache-node-set-next last node)
-      (riece-cache-map-set-last map node)
-      (if (and (eq node (riece-cache-map-first map)) next)
-	  (riece-cache-map-set-first map next))
+      (riece-cache-set-last cache node)
+      (if (and (eq node (riece-cache-first cache)) next)
+	  (riece-cache-set-first cache next))
       node)))
 
-(defun riece-cache-delete (map key)
-  "Remove an entry from MAP whose key is KEY."
-  (let ((symbol (intern-soft key (riece-cache-map-hash-obarray map)))
+(defun riece-cache-delete (cache key)
+  "Remove an entry from CACHE whose key is KEY."
+  (let ((symbol (intern-soft key (riece-cache-hash-obarray cache)))
 	previous next node)
     (when symbol
       (setq node (symbol-value symbol)
@@ -139,34 +137,34 @@ If KEY is not associated in MAP, it returns nil."
 	  (riece-cache-node-set-next previous next))
       (if next
 	  (riece-cache-node-set-previous next previous))
-      (if (eq (riece-cache-map-last map) node)
-	  (riece-cache-map-set-last map previous))
-      (if (eq (riece-cache-map-first map) node)
-	  (riece-cache-map-set-first map next))
-      (unintern symbol (riece-cache-map-hash-obarray map))
-      (riece-cache-map-set-hash-length map
-				       (1- (riece-cache-map-hash-length map)))
+      (if (eq (riece-cache-last cache) node)
+	  (riece-cache-set-last cache previous))
+      (if (eq (riece-cache-first cache) node)
+	  (riece-cache-set-first cache next))
+      (unintern symbol (riece-cache-hash-obarray cache))
+      (riece-cache-set-hash-length cache
+				       (1- (riece-cache-hash-length cache)))
       (riece-cache-node-value node))))
 
-(defun riece-cache-set (map key value)
-  "Associate KEY with VALUE in MAP."
-  (let ((node (riece-cache-get-node map key)))
+(defun riece-cache-set (cache key value)
+  "Associate KEY with VALUE in CACHE."
+  (let ((node (riece-cache-get-node cache key)))
     (if node
 	(riece-cache-node-set-value node value)
-      (if (>= (riece-cache-map-hash-length map)
-	      (riece-cache-map-max-length map))
-	  (riece-cache-delete map (riece-cache-node-key
-				 (riece-cache-map-first map))))
-      (setq node (riece-cache-make-node key value (riece-cache-map-last map)))
-      (set (intern key (riece-cache-map-hash-obarray map)) node)
-      (riece-cache-map-set-hash-length map
-				       (1+ (riece-cache-map-hash-length map)))
-      (unless (riece-cache-map-first map)
-	(riece-cache-map-set-first map node))
-      (when (riece-cache-map-last map)
-	(riece-cache-node-set-next (riece-cache-map-last map) node)
-	(riece-cache-node-set-previous node (riece-cache-map-last map)))
-      (riece-cache-map-set-last map node))))
+      (if (>= (riece-cache-hash-length cache)
+	      (riece-cache-max-length cache))
+	  (riece-cache-delete cache (riece-cache-node-key
+				 (riece-cache-first cache))))
+      (setq node (riece-cache-make-node key value (riece-cache-last cache)))
+      (set (intern key (riece-cache-hash-obarray cache)) node)
+      (riece-cache-set-hash-length cache
+				       (1+ (riece-cache-hash-length cache)))
+      (unless (riece-cache-first cache)
+	(riece-cache-set-first cache node))
+      (when (riece-cache-last cache)
+	(riece-cache-node-set-next (riece-cache-last cache) node)
+	(riece-cache-node-set-previous node (riece-cache-last cache)))
+      (riece-cache-set-last cache node))))
 
 (provide 'riece-cache)
 
