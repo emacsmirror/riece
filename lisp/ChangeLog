@@ -1,5 +1,8 @@
 2005-11-19  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-commands.el (riece-command-part-channel): Signal an error
+	if TARGET server has not opened.
+
 	* riece-channel.el: Require 'riece-cache.
 	(riece-find-channel): Increase priority of given channel name in
 	riece-channel-cache.

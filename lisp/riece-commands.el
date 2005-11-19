@@ -485,6 +485,9 @@ the layout to the selected layout-name."
 
 (defun riece-command-part-channel (target message)
   (let ((process (riece-server-process (riece-identity-server target))))
+    (unless process
+      (error "%s" (substitute-command-keys
+		   "Type \\[riece-command-open-server] to open server.")))
     (riece-send-string (if message
 			   (format "PART %s :%s\r\n"
 				   (riece-identity-prefix target)
