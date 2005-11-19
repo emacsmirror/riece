@@ -197,8 +197,7 @@ the `riece-server-keyword-map' variable."
   (let* ((server-name (if identity
 			  (riece-identity-server identity)
 			(riece-current-server-name)))
-	 (process (riece-server-process server-name))
-	 coding-system)
+	 (process (riece-server-process server-name)))
     (unless process
       (error "%s" (substitute-command-keys
 		   "Type \\[riece-command-open-server] to open server.")))
