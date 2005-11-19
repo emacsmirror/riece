@@ -1,3 +1,20 @@
+2005-11-19  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-channel.el: Require 'riece-cache.
+	(riece-find-channel): Increase priority of given channel name in
+	riece-channel-cache.
+	(riece-forget-channel): Remove given channel name from
+	riece-channel-cache.
+	(riece-get-channel): Register given channel name in
+	riece-channel-cache (if it is being added to riece-channel-obarray.)
+	* riece-server.el (riece-reset-process-buffer): Initialize
+	riece-channel-cache.
+	* riece-options.el (riece-channel-cache-max-size): New user
+	option.
+	* riece-misc.el (riece-get-channels-on-server): Get channel names
+	from riece-channel-cache.
+	* riece-globals.el (riece-channel-cache): New variable.
+
 2005-11-18  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-cache.el: Renamed from riece-lru.el.
@@ -10,18 +27,14 @@
 	(riece-forget-user): Remove given username from riece-user-lru.
 	(riece-rename-user): Rename given username in riece-user-lru.
 	(riece-get-user): Register given username in riece-user-lru (if
-	is being added to riece-user-obarray.)
-
+	it is being added to riece-user-obarray.)
 	* riece-server.el: Require 'riece-lru.
 	(riece-reset-process-buffer): Initialize riece-user-lru.
-
 	* riece-options.el (riece-user-lru-max-size): New user option.
 	* riece-misc.el: Require 'riece-lru.
 	(riece-get-users-on-server): Get usernames from riece-user-lru.
-
 	* riece-globals.el (riece-user-lru): New variable.
 	* COMPILE (riece-modules): Added riece-lru.
-
 	* riece-lru.el: New file.
 
 	* riece-develop.el: New file.

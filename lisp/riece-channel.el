@@ -28,16 +28,19 @@
 (require 'riece-globals)
 (require 'riece-identity)
 (require 'riece-mode)
+(require 'riece-cache)
 
 ;;; Channel object:
 (defun riece-find-channel (name)
   "Get a channel object named NAME from the server buffer."
+  (riece-cache-get riece-channel-cache name)
   (let ((symbol (intern-soft (riece-identity-canonicalize-prefix name)
 			     riece-channel-obarray)))
     (if symbol
 	(symbol-value symbol))))
 
 (defun riece-forget-channel (name)
+  (riece-cache-delete riece-channel-cache name)
   (let ((symbol (intern-soft (riece-identity-canonicalize-prefix name)
 			     riece-channel-obarray)))
     (when symbol
@@ -55,7 +58,10 @@ respectively."
   (let ((symbol (intern-soft (riece-identity-canonicalize-prefix name)
 			     riece-channel-obarray)))
     (if symbol
-	(symbol-value symbol)
+	(progn
+	  (riece-cache-get riece-channel-cache name)
+	  (symbol-value symbol))
+      (riece-cache-set riece-channel-cache name name)
       (set (intern (riece-identity-canonicalize-prefix name)
 		   riece-channel-obarray)
 	   (riece-make-channel nil nil nil nil nil nil nil)))))

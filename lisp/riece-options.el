@@ -253,6 +253,11 @@ way is to put Riece variables on .emacs or file loaded from there."
   :type 'integer
   :group 'riece-server)
 
+(defcustom riece-channel-cache-max-size 512
+  "Maximum size of cache of channel names."
+  :type 'integer
+  :group 'riece-server)
+
 (defcustom riece-channel-buffer-mode t
   "When non-nil, Riece will display a channel buffer."
   :type 'boolean

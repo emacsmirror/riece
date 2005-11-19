@@ -67,7 +67,9 @@ away status, respectively."
   (let ((symbol (intern-soft (riece-identity-canonicalize-prefix name)
 			     riece-user-obarray)))
      (if symbol
-	 (symbol-value symbol)
+	 (progn
+	   (riece-cache-get riece-user-cache name)
+	   (symbol-value symbol))
        (riece-cache-set riece-user-cache name name)
        (set (intern (riece-identity-canonicalize-prefix name)
 		    riece-user-obarray)

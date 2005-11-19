@@ -272,6 +272,8 @@ the `riece-server-keyword-map' variable."
     (make-local-variable 'riece-channel-obarray)
     (setq riece-channel-obarray (make-vector riece-channel-obarray-size 0))
     (make-local-variable 'riece-coding-system)
+    (make-local-variable 'riece-channel-cache)
+    (setq riece-channel-cache (riece-make-cache riece-channel-cache-max-size))
     (make-local-variable 'riece-user-cache)
     (setq riece-user-cache (riece-make-cache riece-user-cache-max-size))
     (buffer-disable-undo)
