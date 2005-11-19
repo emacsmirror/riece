@@ -1,5 +1,7 @@
 2005-11-19  Daiki Ueno  <ueno@unixuser.org>
 
+	* Makefile.am (EXTRA_DIST): Added riece-cache.el.
+
 	* riece-commands.el (riece-command-part-channel): Signal an error
 	if TARGET server has not opened.
 

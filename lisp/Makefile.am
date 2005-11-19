@@ -2,7 +2,7 @@ SUBDIRS = test
 
 EXTRA_DIST = COMPILE ChangeLog ChangeLog.Liece \
 	riece-000.el riece-200.el riece-300.el riece-400.el riece-500.el \
-	riece-addon-modules.el riece-addon.el riece-channel.el \
+	riece-addon-modules.el riece-addon.el riece-cache.el riece-channel.el \
 	riece-coding.el riece-commands.el riece-compat.el riece-complete.el \
 	riece-debug.el riece-display.el riece-emacs.el riece-filter.el \
 	riece-globals.el riece-handle.el riece-highlight.el riece-identity.el \
