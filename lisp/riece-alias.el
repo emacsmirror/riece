@@ -51,7 +51,7 @@
   :type 'boolean
   :group 'riece-alias)
 
-(defcustom riece-alias-alternate-separator "@"
+(defcustom riece-alias-alternate-separator "%"
   "A string to separate prefix and server."
   :type '(choice (const nil) string)
   :group 'riece-alias)

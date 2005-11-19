@@ -5,6 +5,9 @@
 
 2005-11-19  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-alias.el (riece-alias-alternate-separator): Changed from
+	"@" -> "%".
+
 	* test/test-riece-cache.el: New test cases.
 	* test/Makefile.am (EXTRA_DIST): Added test-riece-cache.el.
 
