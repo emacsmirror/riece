@@ -1,5 +1,10 @@
 2005-11-19  Daiki Ueno  <ueno@unixuser.org>
 
+	* Riece: Version 2.0.2 released.
+	* configure.ac: Bump up version to 2.0.2.
+
+2005-11-19  Daiki Ueno  <ueno@unixuser.org>
+
 	* test/test-riece-cache.el: New test cases.
 	* test/Makefile.am (EXTRA_DIST): Added test-riece-cache.el.
 
