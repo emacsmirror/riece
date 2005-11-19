@@ -1,3 +1,11 @@
+* Major changes in 2.0.2
+
+** Fixed C-c l (riece-command-list) behavior.  It didn't display
+   channel TOPIC correctly. (ueno)
+
+** Don't alter case of user/channel names when completing user
+   input. (ueno)
+
 * Major changes in 2.0.1
 
 ** If there is a message in previously selected channel, Riece 2.0.0
