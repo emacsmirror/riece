@@ -6,6 +6,9 @@
 ** Don't alter case of user/channel names when completing user
    input. (ueno)
 
+** Changed default value of alternate separator of a channel name and an
+   IRC server name to "%". (ueno)
+
 * Major changes in 2.0.1
 
 ** If there is a message in previously selected channel, Riece 2.0.0
