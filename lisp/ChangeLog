@@ -1,5 +1,8 @@
 2005-11-19  Daiki Ueno  <ueno@unixuser.org>
 
+	* test/test-riece-cache.el: New test cases.
+	* test/Makefile.am (EXTRA_DIST): Added test-riece-cache.el.
+
 	* Makefile.am (EXTRA_DIST): Added riece-cache.el.
 
 	* riece-commands.el (riece-command-part-channel): Signal an error
