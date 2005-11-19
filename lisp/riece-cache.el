@@ -1,4 +1,4 @@
-;;; riece-cache.el --- LRU based cache management
+;;; riece-cache.el --- LRU cache
 ;; Copyright (C) 1998-2005 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>

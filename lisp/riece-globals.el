@@ -131,8 +131,8 @@ Local to the server buffers.")
 (defvar riece-coding-system nil
   "Coding system for process I/O.
 Local to the server buffers.")
-(defvar riece-user-lru nil
-  "LRU cache of usernames.
+(defvar riece-user-cache nil
+  "Cache of usernames.
 Local to the server buffers.")
 
 ;;; Variables local to the channel buffers:
