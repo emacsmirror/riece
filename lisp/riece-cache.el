@@ -143,7 +143,7 @@ If KEY is not associated in CACHE, it returns nil."
 	  (riece-cache-set-first cache next))
       (unintern symbol (riece-cache-hash-obarray cache))
       (riece-cache-set-hash-length cache
-				       (1- (riece-cache-hash-length cache)))
+				   (1- (riece-cache-hash-length cache)))
       (riece-cache-node-value node))))
 
 (defun riece-cache-set (cache key value)
@@ -154,11 +154,11 @@ If KEY is not associated in CACHE, it returns nil."
       (if (>= (riece-cache-hash-length cache)
 	      (riece-cache-max-length cache))
 	  (riece-cache-delete cache (riece-cache-node-key
-				 (riece-cache-first cache))))
+				     (riece-cache-first cache))))
       (setq node (riece-cache-make-node key value (riece-cache-last cache)))
       (set (intern key (riece-cache-hash-obarray cache)) node)
       (riece-cache-set-hash-length cache
-				       (1+ (riece-cache-hash-length cache)))
+				   (1+ (riece-cache-hash-length cache)))
       (unless (riece-cache-first cache)
 	(riece-cache-set-first cache node))
       (when (riece-cache-last cache)
