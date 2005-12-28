@@ -414,7 +414,7 @@ IRC コマンドを直接送ります(@code{riece-command-raw})
 @samp{foo} という名前の IRC サーバのホスト名は @samp{irc.example.com} で、使用する文字コードは Shift_JIS
 
 @item
-@samp{bar} という名前の IRC サーバのホスト名は @samp{irc.example.com} で、このサーバではニックネーム @samp{baz} を使う
+@samp{bar} という名前の IRC サーバのホスト名は @samp{irc.example.net} で、このサーバではニックネーム @samp{baz} を使う
 @end itemize
 
 指定できるキーワードの一覧は以下の通りです。
