@@ -1,3 +1,8 @@
+2005-12-29  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-alias.el (riece-alias-alternate-separator): Reverted the
+	default value.
+
 2005-11-19  Daiki Ueno  <ueno@unixuser.org>
 
 	* Riece: Version 2.0.2 released.
