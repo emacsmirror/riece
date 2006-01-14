@@ -1,3 +1,8 @@
+2006-01-14  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-display.el (riece-part-channel): Emit
+	'channel-list-changed signal.
+
 2005-12-29  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-alias.el (riece-alias-alternate-separator): Reverted the

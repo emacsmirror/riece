@@ -483,10 +483,12 @@ Local to the buffer in `riece-buffer-list'.")
 
 (defun riece-part-channel (identity)
   (let ((pointer (riece-identity-member identity riece-current-channels)))
-    (if pointer
-	(setcar pointer nil))
+    (unless pointer
+      (error "No such channel!"))
+    (setcar pointer nil)
     (if (riece-identity-equal identity riece-current-channel)
-	(riece-switch-to-nearest-channel pointer))
+	(riece-switch-to-nearest-channel pointer)
+      (riece-emit-signal 'channel-list-changed))
     (funcall riece-buffer-dispose-function (riece-channel-buffer identity))))
 
 (defun riece-redisplay-buffers (&optional force)
