@@ -60,7 +60,7 @@
     (riece-channel-list-buffer "*Channels*" riece-channel-list-mode)
     (riece-user-list-buffer " *Users*" riece-user-list-mode)
     (riece-temp-buffer " *Temp*")
-    (riece-debug-buffer " *Debug*")))
+    (riece-debug-buffer "*Debug*")))
 
 (defvar riece-select-keys
   `("#" riece-command-switch-to-channel-by-number
@@ -247,7 +247,7 @@ If optional argument SAFE is nil, overwrite previous definitions."
 (defvar print-quoted)
 (defvar print-escape-multibyte)
 (defun riece-save-variables-files ()
-  "Save current settings to `riece-variables-file'."
+  "Save current settings to `riece-saved-variables-file'."
   (with-temp-file riece-saved-variables-file
     (let ((print-quoted t)
 	  (print-readably t)

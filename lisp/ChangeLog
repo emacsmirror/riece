@@ -1,3 +1,8 @@
+2006-04-03  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece.el (riece-buffer-alist): " *Debug*" -> "*Debug*".
+	(riece-save-variables-files): Fixed a typo in the docstring.
+
 2006-01-14  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-display.el (riece-part-channel): Emit
