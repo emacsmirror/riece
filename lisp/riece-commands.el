@@ -205,7 +205,7 @@ the layout to the selected layout-name."
 	    "Invite user: "
 	    (riece-get-users-on-server (riece-current-server-name))
 	    nil nil nil nil nil t))))
-  (riece-send-string (format "INVITE %s %s\r\n"
+  (riece-send-string (format "INVITE %s :%s\r\n"
 			     (riece-identity-prefix user)
 			     (riece-identity-prefix riece-current-channel))))
 

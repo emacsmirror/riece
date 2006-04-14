@@ -1,3 +1,11 @@
+2006-04-13  Steve Youngs  <steve@sxemacs.org>
+
+	* riece-commands.el (riece-command-invite): Add missing `:' to
+	string sent to server.
+
+	* riece-300.el (riece-handle-341-message): swap values for
+	`channel' and `user'.
+
 2006-04-03  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece.el (riece-buffer-alist): " *Debug*" -> "*Debug*".

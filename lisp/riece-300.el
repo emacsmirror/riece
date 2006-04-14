@@ -338,8 +338,8 @@
 
 (defun riece-handle-341-message (prefix number name string)
   (if (string-match "^\\([^ ]+\\) " string)
-      (let* ((channel (match-string 1 string))
-	     (user (substring string (match-end 0)))
+      (let* ((channel (substring string (match-end 0)))
+	     (user (match-string 1 string))
 	     (channel-identity (riece-make-identity channel riece-server-name))
 	     (buffer (riece-channel-buffer channel-identity)))
 	(riece-insert-info buffer (concat "Inviting " user "\n"))
