@@ -21,7 +21,7 @@
 
 (defun riece-epg-passphrase-callback-function (key-id identity)
   (if (eq key-id 'SYM)
-      (let ((entry (assoc identity riece-epg-passphrase-alist))
+      (let ((entry (riece-identity-assoc identity riece-epg-passphrase-alist))
 	    passphrase)
 	(or (copy-sequence (cdr entry))
 	    (progn
@@ -53,8 +53,8 @@
     (condition-case error
 	(setq string (epg-encrypt-string context string nil))
       (error
-       (if (setq entry (assoc riece-current-channel
-			      riece-epg-passphrase-alist))
+       (if (setq entry (riece-identity-assoc riece-current-channel
+					     riece-epg-passphrase-alist))
 	   (setcdr entry nil))
        (signal (car error) (cdr error))))
     (riece-command-send-message
@@ -81,8 +81,9 @@
 	      (setq string (epg-decrypt-string context
 					       (base64-decode-string string)))
 	    (error
-	     (if (setq entry (assoc (riece-message-target message)
-				    riece-epg-passphrase-alist))
+	     (if (setq entry (riece-identity-assoc
+			      (riece-message-target message)
+			      riece-epg-passphrase-alist))
 		 (setcdr entry nil))
 	     (message "%s" (cdr error))))
 	  (riece-message-set-text
