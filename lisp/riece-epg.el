@@ -1,3 +1,28 @@
+;;; riece-epg.el --- Encrypt/decrypt messages add-on
+;; Copyright (C) 2006 Daiki Ueno
+
+;; Author: Daiki Ueno <ueno@unixuser.org>
+;; Keywords: IRC, riece
+
+;; This file is part of Riece.
+
+;; This program is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation; either version 2, or (at your option)
+;; any later version.
+
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the
+;; GNU General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with GNU Emacs; see the file COPYING.  If not, write to the
+;; Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+;; Boston, MA 02110-1301, USA.
+
+;;; Code:
+
 (require 'riece-message)
 (require 'riece-identity)
 
@@ -40,9 +65,9 @@
     (error
      (let ((entry (riece-identity-assoc identity riece-epg-passphrase-alist)))
        (if entry
-	   (setq riece-epg-passphrase-alist (delq entry
-						  riece-epg-passphrase-alist)))
-       (signal (car error) (cdr error))))))
+	   (setq riece-epg-passphrase-alist
+		 (delq entry riece-epg-passphrase-alist))))
+     (signal (car error) (cdr error)))))
   
 (defun riece-command-enter-encrypted-message ()
   "Encrypt the current line send send it to the current channel."
@@ -68,6 +93,28 @@
      nil)
     (let ((next-line-add-newlines t))
       (next-line 1))))
+
+(defun riece-command-change-passphrase (identity passphrase)
+  "Change PASSPHRASE associated with IDENTITY."
+  (interactive
+   (let ((identity
+	  (riece-completing-read-identity
+	   "Channel/user: "
+	   riece-current-channels nil t nil nil
+	   (riece-format-identity riece-current-channel))))
+     (list identity
+	   (read-passwd (format "Passphrase for %s"
+				(riece-format-identity identity))))))
+  (let ((entry (riece-identity-assoc identity riece-epg-passphrase-alist)))
+    (if (equal passphrase "")
+	(if entry
+	    (setq riece-epg-passphrase-alist
+		  (delq entry riece-epg-passphrase-alist)))
+      (if entry
+	  (setcdr entry passphrase)
+	(setq riece-epg-passphrase-alist
+	      (cons (cons identity passphrase)
+		    riece-epg-passphrase-alist))))))
 
 (defun riece-epg-message-filter (message)
   (if (get 'riece-epg 'riece-addon-enabled)
@@ -112,11 +159,15 @@
 (defvar riece-command-mode-map)
 (defun riece-epg-enable ()
   (define-key riece-command-mode-map
-    "\C-ce" 'riece-command-enter-encrypted-message))
+    "\C-ce" 'riece-command-enter-encrypted-message)
+  (define-key riece-command-mode-map
+    "\C-c\C-ec" 'riece-command-change-passphrase))
 
 (defun riece-epg-disable ()
   (define-key riece-command-mode-map
-    "\C-ce" nil))
+    "\C-ce" nil)
+  (define-key riece-command-mode-map
+    "\C-c\C-ec" nil))
 
 (provide 'riece-epg)
 
