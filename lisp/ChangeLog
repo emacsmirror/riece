@@ -1,3 +1,9 @@
+2006-04-25  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-epg.el: New add-on.
+	* riece-addon-modules.el (riece-addon-modules): Added riece-epg.
+	* Makefile.am (EXTRA_DIST): Added riece-epg.el.
+
 2006-04-13  Steve Youngs  <steve@sxemacs.org>
 
 	* riece-commands.el (riece-command-invite): Add missing `:' to

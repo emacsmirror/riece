@@ -17,7 +17,7 @@ EXTRA_DIST = COMPILE ChangeLog ChangeLog.Liece \
 	riece-ctlseq.el riece-ignore.el riece-hangman.el riece-biff.el \
 	riece-kakasi.el riece-foolproof.el riece-yank.el riece-toolbar.el \
 	riece-eval.el riece-google.el riece-keepalive.el riece-eval-ruby.el \
-	riece-shrink-buffer.el riece-xfaceb.el url-riece.el \
+	riece-shrink-buffer.el riece-xfaceb.el riece-epg.el url-riece.el \
 	riece-command-previous-channel.xpm riece-command-next-channel.xpm \
 	riece-submit-bug-report.xpm \
 	server.rb aproxy.rb

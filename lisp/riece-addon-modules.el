@@ -6,6 +6,7 @@
     (riece-ctcp . "CTCP (Client To Client Protocol) support.")
     (riece-ctlseq . "Mark up control sequences in IRC buffers.")
     (riece-doctor . "Pretend to be a psychotherapist.")
+    (riece-epg . "Encrypt/decrypt messages.")
     (riece-eval-ruby . "Evaluate input string as a Ruby program.")
     (riece-eval . "Evaluate an input string as an elisp form.")
     (riece-foolproof . "Prevent miss-operation in the command buffer.")
