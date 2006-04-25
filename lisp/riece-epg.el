@@ -1,5 +1,5 @@
 (require 'riece-message)
-(require 'riece-coding)
+(require 'riece-identity)
 
 (autoload 'epg-make-context "epg")
 (autoload 'epg-decrypt-string "epg")
@@ -38,11 +38,14 @@
   "Encrypt the current line send send it to the current channel."
   (interactive)
   (let ((context (epg-make-context))
-	(string (riece-encode-coding-string
-		 (buffer-substring
-		  (riece-line-beginning-position)
-		  (riece-line-end-position))))
+	(string (buffer-substring
+		 (riece-line-beginning-position)
+		 (riece-line-end-position)))
 	entry)
+    (riece-with-server-buffer (riece-identity-server riece-current-channel)
+      (setq string (riece-encode-coding-string-for-identity
+		    string
+		    riece-current-channel)))
     (epg-context-set-passphrase-callback
      context
      (cons #'riece-epg-passphrase-callback-function
@@ -66,6 +69,9 @@
 			  (riece-message-text message))
 	(let ((context (epg-make-context))
 	      (string (match-string 1 (riece-message-text message)))
+	      (coding-system (or (riece-coding-system-for-identity
+				  (riece-message-target message))
+				 riece-default-coding-system))
 	      entry)
 	  (epg-context-set-passphrase-callback
 	   context
@@ -79,8 +85,12 @@
 				    riece-epg-passphrase-alist))
 		 (setcdr entry nil))
 	     (message "%s" (cdr error))))
-	  (riece-message-set-text message
-				  (riece-decode-coding-string string)))))
+	  (riece-message-set-text
+	   message
+	   (decode-coding-string string
+				 (if (consp coding-system)
+				     (car coding-system)
+				   coding-system))))))
   message)
 
 (defun riece-epg-insinuate ()
