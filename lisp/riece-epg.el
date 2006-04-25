@@ -78,20 +78,22 @@
 	   (cons #'riece-epg-passphrase-callback-function
 		 (riece-message-target message)))
 	  (condition-case error
-	      (setq string (epg-decrypt-string context
-					       (base64-decode-string string)))
+	      (riece-message-set-text
+	       message
+	       (concat
+		"[OpenPGP Decrypted:"
+		(decode-coding-string
+		 (epg-decrypt-string context (base64-decode-string string))
+		 (if (consp coding-system)
+		     (car coding-system)
+		   coding-system))
+		"]"))
 	    (error
 	     (if (setq entry (riece-identity-assoc
 			      (riece-message-target message)
 			      riece-epg-passphrase-alist))
 		 (setcdr entry nil))
-	     (message "%s" (cdr error))))
-	  (riece-message-set-text
-	   message
-	   (decode-coding-string string
-				 (if (consp coding-system)
-				     (car coding-system)
-				   coding-system))))))
+	     (message "%s" (cdr error)))))))
   message)
 
 (defun riece-epg-insinuate ()
