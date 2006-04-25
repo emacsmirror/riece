@@ -65,16 +65,17 @@
       (when (string-match "\\`\\[OpenPGP Encrypted:\\(.*\\)]"
 			  (riece-message-text message))
 	(let ((context (epg-make-context))
-	      (string (riece-decode-coding-string
-		       (base64-decode-string
-			(match-string 1 (riece-message-text message)))))
+	      (string (match-string 1 (riece-message-text message)))
 	      entry)
 	  (epg-context-set-passphrase-callback
 	   context
 	   (cons #'riece-epg-passphrase-callback-function
 		 (riece-message-target message)))
 	  (condition-case error
-	      (setq string (epg-decrypt-string context string))
+	      (setq string (epg-decrypt-string
+			    context
+			    (riece-decode-coding-string
+			     (base64-decode-string string))))
 	    (error
 	     (if (setq entry (assoc (riece-message-target message)
 				    riece-epg-passphrase-alist))
