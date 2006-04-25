@@ -34,6 +34,16 @@
 	      passphrase)))
     (epg-passphrase-callback-function key-id nil)))
 
+(defun riece-epg-funcall-clear-passphrase (identity function &rest args)
+  (condition-case error
+      (apply function args)
+    (error
+     (let ((entry (riece-identity-assoc identity riece-epg-passphrase-alist)))
+       (if entry
+	   (setq riece-epg-passphrase-alist (delq entry
+						  riece-epg-passphrase-alist)))
+       (signal (car error) (cdr error))))))
+  
 (defun riece-command-enter-encrypted-message ()
   "Encrypt the current line send send it to the current channel."
   (interactive)
@@ -50,22 +60,18 @@
      context
      (cons #'riece-epg-passphrase-callback-function
 	   riece-current-channel))
-    (condition-case error
-	(setq string (epg-encrypt-string context string nil))
-      (error
-       (if (setq entry (riece-identity-assoc riece-current-channel
-					     riece-epg-passphrase-alist))
-	   (setcdr entry nil))
-       (signal (car error) (cdr error))))
+    (setq string (riece-epg-funcall-clear-passphrase riece-current-channel
+						     #'epg-encrypt-string
+						     context string nil))
     (riece-command-send-message
-     (concat "[OpenPGP Encrypted:" (base64-encode-string string t) "]")
+     (concat "[encrypted:" (base64-encode-string string t) "]")
      nil)
     (let ((next-line-add-newlines t))
       (next-line 1))))
 
 (defun riece-epg-message-filter (message)
   (if (get 'riece-epg 'riece-addon-enabled)
-      (when (string-match "\\`\\[OpenPGP Encrypted:\\(.*\\)]"
+      (when (string-match "\\`\\[encrypted:\\(.*\\)]"
 			  (riece-message-text message))
 	(let ((context (epg-make-context))
 	      (string (match-string 1 (riece-message-text message)))
@@ -78,24 +84,23 @@
 	   (cons #'riece-epg-passphrase-callback-function
 		 (riece-message-target message)))
 	  (condition-case error
-	      (riece-message-set-text
-	       message
-	       (concat
-		"[OpenPGP Decrypted:"
-		(riece-with-server-buffer
-		    (riece-identity-server (riece-message-target message))
-		  (decode-coding-string
-		   (epg-decrypt-string context (base64-decode-string string))
-		   (if (consp coding-system)
-		       (car coding-system)
-		     coding-system)))
-		"]"))
-	    (error
-	     (if (setq entry (riece-identity-assoc
-			      (riece-message-target message)
-			      riece-epg-passphrase-alist))
-		 (setcdr entry nil))
-	     (message "%s" (cdr error)))))))
+	      (progn
+		(setq string (base64-decode-string string))
+		(riece-message-set-text
+		 message
+		 (concat
+		  "[decrypted:"
+		  (riece-with-server-buffer
+		      (riece-identity-server (riece-message-target message))
+		    (decode-coding-string
+		     (riece-epg-funcall-clear-passphrase
+		      (riece-message-target message)
+		      #'epg-decrypt-string context string)
+		     (if (consp coding-system)
+			 (car coding-system)
+		       coding-system)))
+		  "]")))
+	    (error (message "%s" (cdr error)))))))
   message)
 
 (defun riece-epg-insinuate ()
