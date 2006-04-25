@@ -74,14 +74,14 @@
 	  (condition-case error
 	      (setq string (epg-decrypt-string
 			    context
-			    (riece-decode-coding-string
-			     (base64-decode-string string))))
+			    (base64-decode-string string)))
 	    (error
 	     (if (setq entry (assoc (riece-message-target message)
 				    riece-epg-passphrase-alist))
 		 (setcdr entry nil))
 	     (message "%s" (cdr error))))
-	  (riece-message-set-text message string))))
+	  (riece-message-set-text message
+				  (riece-decode-coding-string string)))))
   message)
 
 (defun riece-epg-insinuate ()
