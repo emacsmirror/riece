@@ -103,7 +103,7 @@
 	   riece-current-channels nil t nil nil
 	   (riece-format-identity riece-current-channel))))
      (list identity
-	   (read-passwd (format "Passphrase for %s"
+	   (read-passwd (format "Passphrase for %s: "
 				(riece-format-identity identity))))))
   (let ((entry (riece-identity-assoc identity riece-epg-passphrase-alist)))
     (if (equal passphrase "")
