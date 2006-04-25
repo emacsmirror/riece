@@ -72,9 +72,8 @@
 	   (cons #'riece-epg-passphrase-callback-function
 		 (riece-message-target message)))
 	  (condition-case error
-	      (setq string (epg-decrypt-string
-			    context
-			    (base64-decode-string string)))
+	      (setq string (epg-decrypt-string context
+					       (base64-decode-string string)))
 	    (error
 	     (if (setq entry (assoc (riece-message-target message)
 				    riece-epg-passphrase-alist))
