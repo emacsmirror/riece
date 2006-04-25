@@ -39,9 +39,9 @@
   (interactive)
   (let ((context (epg-make-context))
 	(string (riece-encode-coding-string
-		       (buffer-substring
-			(riece-line-beginning-position)
-			(riece-line-end-position))))
+		 (buffer-substring
+		  (riece-line-beginning-position)
+		  (riece-line-end-position))))
 	entry)
     (epg-context-set-passphrase-callback
      context
