@@ -82,11 +82,13 @@
 	       message
 	       (concat
 		"[OpenPGP Decrypted:"
-		(decode-coding-string
-		 (epg-decrypt-string context (base64-decode-string string))
-		 (if (consp coding-system)
-		     (car coding-system)
-		   coding-system))
+		(riece-with-server-buffer
+		    (riece-identity-server (riece-message-target message))
+		  (decode-coding-string
+		   (epg-decrypt-string context (base64-decode-string string))
+		   (if (consp coding-system)
+		       (car coding-system)
+		     coding-system)))
 		"]"))
 	    (error
 	     (if (setq entry (riece-identity-assoc
