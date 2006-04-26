@@ -29,6 +29,12 @@
 
 (eval-when-compile (require 'riece))
 
+(defvar skk-mode)
+(defvar skk-henkan-mode)
+(defvar skk-henkan-on)
+(defvar skk-egg-like-newline)
+(autoload 'skk-kakutei "skk")
+
 (defconst riece-skk-kakutei-description
   "Remove SKK's preedit mark before sending messages.")
 
