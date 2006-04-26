@@ -108,7 +108,7 @@
 	      t)))
     (riece-display-message
      (riece-make-message (riece-current-nickname) riece-current-channel
-			 string nil t))
+			 (concat "[decrypted:" string "]") nil t))
     (let ((next-line-add-newlines t))
       (next-line 1))))
 
