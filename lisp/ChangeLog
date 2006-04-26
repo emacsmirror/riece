@@ -1,5 +1,7 @@
 2006-04-26  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-commands.el (riece-command-save-variables): New command.
+
 	* riece-epg.el
 	(riece-epg-passphrase-callback-function-for-decrypt): New
 	function.

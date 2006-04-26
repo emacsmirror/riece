@@ -735,6 +735,15 @@ If prefix argument ARG is non-nil, toggle frozen status."
     (message "")
     (call-interactively command)))
 
+(eval-when-compile
+  (autoload 'riece-save-variables-files "riece"))
+(defun riece-command-save-variables ()
+  "Save `riece-variables-file'."
+  (interactive)
+  (if (or riece-save-variables-are-dirty
+	  (y-or-n-p "No changes made.  Save anyway? "))
+      (riece-save-variables-files)))
+
 (provide 'riece-commands)
 
 ;;; riece-commands.el ends here

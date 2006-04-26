@@ -179,6 +179,7 @@ If optional argument SAFE is nil, overwrite previous definitions."
     "p" riece-command-enter-message-to-user
     "q" riece-command-quit
     "r" riece-command-configure-windows
+    "s" riece-command-save-variables
     "x" riece-command-copy-region
     "t" riece-command-topic
     "w" riece-command-who

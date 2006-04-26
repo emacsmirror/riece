@@ -105,6 +105,9 @@
   :type '(repeat (list string))
   :group 'riece-addon-list)
 
+(eval-when-compile
+  (autoload 'riece-command-save-variables "riece-commands"))
+
 (defvar riece-addon-list-mode-map
   (let ((keymap (make-sparse-keymap)))
     (define-key keymap "+" 'riece-command-enable-addon)
@@ -117,6 +120,7 @@
     (define-key keymap " " 'scroll-up)
     (define-key keymap [delete] 'scroll-down)
     (define-key keymap "q" 'bury-buffer)
+    (define-key keymap "s" 'riece-command-save-variables)
     keymap))
 
 (defun riece-load-and-build-addon-dependencies (addons)
