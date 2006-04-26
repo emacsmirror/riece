@@ -26,6 +26,7 @@
 (require 'riece-message)
 (require 'riece-identity)
 
+(autoload 'widget-convert-button "wid-edit")
 (autoload 'epg-make-context "epg")
 (autoload 'epg-decrypt-string "epg")
 (autoload 'epg-encrypt-string "epg")
@@ -63,8 +64,7 @@
 (defun riece-epg-passphrase-callback-function-for-decrypt (context key-id
 								   identity)
   (if (eq key-id 'SYM)
-      (let ((entry (riece-identity-assoc identity riece-epg-passphrase-alist))
-	    passphrase)
+      (let ((entry (riece-identity-assoc identity riece-epg-passphrase-alist)))
 	(if (cdr entry)
 	    (copy-sequence (cdr entry))
 	  (epg-cancel context)))
@@ -85,8 +85,7 @@
   (interactive)
   (let ((context (epg-make-context))
 	(string (buffer-substring (riece-line-beginning-position)
-				  (riece-line-end-position)))
-	entry)
+				  (riece-line-end-position))))
     (epg-context-set-passphrase-callback
      context
      (cons #'riece-epg-passphrase-callback-function
@@ -154,8 +153,7 @@
       (when (string-match "\\`\\[encrypted:\\(.*\\)]"
 			  (riece-message-text message))
 	(let ((context (epg-make-context))
-	      (string (match-string 1 (riece-message-text message)))
-	      entry)
+	      (string (match-string 1 (riece-message-text message))))
 	  (epg-context-set-passphrase-callback
 	   context
 	   (cons #'riece-epg-passphrase-callback-function-for-decrypt
