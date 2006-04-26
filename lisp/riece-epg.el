@@ -44,7 +44,7 @@
 
 (defvar riece-epg-passphrase-alist nil)
 
-(defun riece-epg-passphrase-callback-function (key-id identity)
+(defun riece-epg-passphrase-callback-function (context key-id identity)
   (if (eq key-id 'SYM)
       (let ((entry (riece-identity-assoc identity riece-epg-passphrase-alist))
 	    passphrase)
@@ -54,19 +54,21 @@
 		(setq entry (list identity)
 		      riece-epg-passphrase-alist (cons entry
 						 riece-epg-passphrase-alist)))
-	      (setq passphrase (epg-passphrase-callback-function key-id nil))
+	      (setq passphrase (epg-passphrase-callback-function context
+								 key-id nil))
 	      (setcdr entry (copy-sequence passphrase))
 	      passphrase)))
-    (epg-passphrase-callback-function key-id nil)))
+    (epg-passphrase-callback-function context key-id nil)))
 
-(defun riece-epg-passphrase-callback-function-for-decrypt (key-id identity)
+(defun riece-epg-passphrase-callback-function-for-decrypt (context key-id
+								   identity)
   (if (eq key-id 'SYM)
       (let ((entry (riece-identity-assoc identity riece-epg-passphrase-alist))
 	    passphrase)
 	(if (cdr entry)
 	    (copy-sequence (cdr entry))
-	  (epg-cancel epg-context)))
-    (epg-passphrase-callback-function key-id nil)))
+	  (epg-cancel context)))
+    (epg-passphrase-callback-function context key-id nil)))
 
 (defun riece-epg-funcall-clear-passphrase (identity function &rest args)
   (condition-case error
