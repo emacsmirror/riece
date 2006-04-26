@@ -173,7 +173,8 @@
 	      'riece-epg-encryption-target (riece-message-target message)
 	      (riece-message-text message))
 	     (if riece-debug
-		 (message "Couldn't decrypt: %s" (cdr error))))))))
+		 (message "Couldn't decrypt: %s" (cdr error))
+	       (message "Couldn't decrypt")))))))
   message)
 
 (defun riece-epg-add-encrypted-button (start end)
