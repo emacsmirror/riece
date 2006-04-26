@@ -1,5 +1,8 @@
 2006-04-26  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-xfaceb.el: Don't enclose autoloads with ignore-errors;
+	autoloads should not report errors.
+
 	* riece-commands.el (riece-command-save-variables): New command.
 
 	* riece-epg.el

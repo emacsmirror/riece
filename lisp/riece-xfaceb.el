@@ -50,9 +50,8 @@
 (require 'riece-globals)
 (require 'riece-display)
 
-(ignore-errors
-  (autoload 'bbdb-records "bbdb")
-  (autoload 'bbdb-record-getprop "bbdb"))
+(autoload 'bbdb-records "bbdb")
+(autoload 'bbdb-record-getprop "bbdb")
 
 (defconst riece-xfaceb-description
   "Display X-Face & Colour Face images in IRC buffers \(BBDB\).")
