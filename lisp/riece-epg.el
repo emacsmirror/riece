@@ -59,6 +59,15 @@
 	      passphrase)))
     (epg-passphrase-callback-function key-id nil)))
 
+(defun riece-epg-passphrase-callback-function-for-decrypt (key-id identity)
+  (if (eq key-id 'SYM)
+      (let ((entry (riece-identity-assoc identity riece-epg-passphrase-alist))
+	    passphrase)
+	(if (cdr entry)
+	    (copy-sequence (cdr entry))
+	  (epg-cancel epg-context)))
+    (epg-passphrase-callback-function key-id nil)))
+
 (defun riece-epg-funcall-clear-passphrase (identity function &rest args)
   (condition-case error
       (apply function args)
@@ -94,8 +103,8 @@
     (let ((next-line-add-newlines t))
       (next-line 1))))
 
-(defun riece-command-change-passphrase (identity passphrase)
-  "Change PASSPHRASE associated with IDENTITY."
+(defun riece-command-set-passphrase (identity passphrase)
+  "Set PASSPHRASE associated with IDENTITY."
   (interactive
    (let ((identity
 	  (riece-completing-read-identity
@@ -116,52 +125,99 @@
 	      (cons (cons identity passphrase)
 		    riece-epg-passphrase-alist))))))
 
+(defun riece-epg-decrypt-string-for-identity (context cipher target)
+  (let ((coding-system
+	 (or (riece-coding-system-for-identity target)
+	     riece-default-coding-system)))
+    (riece-with-server-buffer (riece-identity-server target)
+      (decode-coding-string
+       (riece-epg-funcall-clear-passphrase
+	target
+	#'epg-decrypt-string
+	context
+	(base64-decode-string cipher))
+       (if (consp coding-system)
+	   (car coding-system)
+	 coding-system)))))
+
 (defun riece-epg-message-filter (message)
   (if (get 'riece-epg 'riece-addon-enabled)
       (when (string-match "\\`\\[encrypted:\\(.*\\)]"
 			  (riece-message-text message))
 	(let ((context (epg-make-context))
 	      (string (match-string 1 (riece-message-text message)))
-	      (coding-system (or (riece-coding-system-for-identity
-				  (riece-message-target message))
-				 riece-default-coding-system))
 	      entry)
 	  (epg-context-set-passphrase-callback
 	   context
-	   (cons #'riece-epg-passphrase-callback-function
-		 (riece-message-target message)))
+	   (cons #'riece-epg-passphrase-callback-function-for-decrypt
+		 riece-current-channel))
 	  (condition-case error
 	      (progn
-		(setq string (base64-decode-string string))
 		(riece-message-set-text
 		 message
 		 (concat
 		  "[decrypted:"
-		  (riece-with-server-buffer
-		      (riece-identity-server (riece-message-target message))
-		    (decode-coding-string
-		     (riece-epg-funcall-clear-passphrase
-		      (riece-message-target message)
-		      #'epg-decrypt-string context string)
-		     (if (consp coding-system)
-			 (car coding-system)
-		       coding-system)))
+		  (riece-epg-decrypt-string-for-identity
+		   context string (riece-message-target message))
 		  "]")))
-	    (error (message "%s" (cdr error)))))))
+	    (error
+	     (riece-put-text-property-nonsticky
+	      0 (length (riece-message-text message))
+	      'riece-epg-encryption-target (riece-message-target message)
+	      (riece-message-text message))
+	     (message "%s" (cdr error)))))))
   message)
 
+(defun riece-epg-add-encrypted-button (start end)
+  (if (and (get 'riece-button 'riece-addon-enabled)
+	   (get 'riece-epg 'riece-addon-enabled))
+      (riece-scan-property-region
+       'riece-epg-encryption-target
+       start end
+       (lambda (start end)
+	 (let ((inhibit-read-only t)
+	       buffer-read-only)
+	   (widget-convert-button
+	    'link start end
+	    :help-echo "Click to decrypt"
+	    :notify #'riece-epg-encrypted-button-notify
+	    (get-text-property start 'riece-epg-encryption-target)))))))
+
+(defun riece-epg-encrypted-button-notify (widget &rest ignore)
+  (let* ((from (marker-position (widget-get widget :from)))
+	 (to (marker-position (widget-get widget :to)))
+	 (target (widget-get widget :value))
+	 (cipher (buffer-substring from to))
+	 (inhibit-read-only t)
+	 buffer-read-only
+	 plain)
+    (when (string-match "\\`\\[encrypted:\\(.*\\)]" cipher)
+      (setq plain (riece-epg-decrypt-string-for-identity
+		   (epg-make-context) (match-string 1 cipher) target))
+      (widget-delete widget)
+      (delete-region from to)
+      (save-excursion
+	(goto-char from)
+	(insert "[decrypted:" plain "]")))))
+
+(defun riece-epg-requires ()
+  (if (memq 'riece-button riece-addons)
+      '(riece-button)))
+
 (defun riece-epg-insinuate ()
-  (add-hook 'riece-message-filter-functions 'riece-epg-message-filter))
+  (add-hook 'riece-message-filter-functions 'riece-epg-message-filter)
+  (add-hook 'riece-after-insert-functions 'riece-epg-add-encrypted-button))
 
 (defun riece-epg-uninstall ()
-  (remove-hook 'riece-message-filter-functions 'riece-epg-message-filter))
+  (remove-hook 'riece-message-filter-functions 'riece-epg-message-filter)
+  (remove-hook 'riece-after-insert-functions 'riece-epg-add-encrypted-button))
 
 (defvar riece-command-mode-map)
 (defun riece-epg-enable ()
   (define-key riece-command-mode-map
     "\C-ce" 'riece-command-enter-encrypted-message)
   (define-key riece-command-mode-map
-    "\C-c\C-ec" 'riece-command-change-passphrase))
+    "\C-c\C-ec" 'riece-command-set-passphrase))
 
 (defun riece-epg-disable ()
   (define-key riece-command-mode-map

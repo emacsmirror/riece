@@ -1,3 +1,14 @@
+2006-04-26  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-epg.el
+	(riece-epg-passphrase-callback-function-for-decrypt): New
+	function.
+	(riece-command-set-passphrase): Renamed.
+	(riece-epg-message-filter): Don't query passphrase; if decryption
+	fails add button to try again.
+	(riece-epg-add-encrypted-button): New function.
+	(riece-epg-encrypted-button-notify): New function.
+
 2006-04-25  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-epg.el: New add-on.
