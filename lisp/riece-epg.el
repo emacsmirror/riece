@@ -81,27 +81,34 @@
      (signal (car error) (cdr error)))))
   
 (defun riece-command-enter-encrypted-message ()
-  "Encrypt the current line send send it to the current channel."
+  "Encrypt the current line and send it to the current channel."
   (interactive)
   (let ((context (epg-make-context))
-	(string (buffer-substring
-		 (riece-line-beginning-position)
-		 (riece-line-end-position)))
+	(string (buffer-substring (riece-line-beginning-position)
+				  (riece-line-end-position)))
 	entry)
-    (riece-with-server-buffer (riece-identity-server riece-current-channel)
-      (setq string (riece-encode-coding-string-for-identity
-		    string
-		    riece-current-channel)))
     (epg-context-set-passphrase-callback
      context
      (cons #'riece-epg-passphrase-callback-function
 	   riece-current-channel))
-    (setq string (riece-epg-funcall-clear-passphrase riece-current-channel
-						     #'epg-encrypt-string
-						     context string nil))
-    (riece-command-send-message
-     (concat "[encrypted:" (base64-encode-string string t) "]")
-     nil)
+    (riece-send-string
+     (format "PRIVMSG %s :[encrypted:%s]\r\n"
+	     (riece-identity-prefix riece-current-channel)
+	     (base64-encode-string
+	      (riece-epg-funcall-clear-passphrase
+	       riece-current-channel
+	       #'epg-encrypt-string
+	       context
+	       (riece-with-server-buffer
+		   (riece-identity-server riece-current-channel)
+		 (riece-encode-coding-string-for-identity
+		  string
+		  riece-current-channel))
+	       nil)
+	      t)))
+    (riece-display-message
+     (riece-make-message (riece-current-nickname) riece-current-channel
+			 string nil t))
     (let ((next-line-add-newlines t))
       (next-line 1))))
 
@@ -157,11 +164,9 @@
 	      (progn
 		(riece-message-set-text
 		 message
-		 (concat
-		  "[decrypted:"
-		  (riece-epg-decrypt-string-for-identity
-		   context string (riece-message-target message))
-		  "]")))
+		 (format "[decrypted:%s]"
+			 (riece-epg-decrypt-string-for-identity
+			  context string (riece-message-target message)))))
 	    (error
 	     (riece-put-text-property-nonsticky
 	      0 (length (riece-message-text message))
