@@ -722,7 +722,10 @@ If prefix argument ARG is non-nil, toggle frozen status."
 	 (if current-prefix-arg
 	     (read-string "Message: ")
 	   riece-quit-message)))
-  (riece-quit-server-process (riece-server-process server-name) message))
+  (let ((process (riece-server-process server-name)))
+    (unless process
+      (error "%s is not opened" server-name))
+    (riece-quit-server-process process message)))
 
 (defun riece-command-universal-server-name-argument ()
   (interactive)
