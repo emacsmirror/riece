@@ -211,6 +211,11 @@ way is to put Riece variables on .emacs or file loaded from there."
   :group 'riece-server)
 
 (defcustom riece-username nil
+  "Your login name."
+  :type 'string
+  :group 'riece-server)
+
+(defcustom riece-realname nil
   "Your user name."
   :type 'string
   :group 'riece-server)
