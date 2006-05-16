@@ -79,8 +79,9 @@
 				       (format "PASS %s\r\n" password)))
 	(riece-process-send-string process
 				   (format "USER %s * * :%s\r\n"
-					   (user-real-login-name)
 					   (or username
+					       (user-real-login-name))
+					   (or realname
 					       "No information given")))
 	(riece-process-send-string process (format "NICK %s\r\n" nickname))
 	(with-current-buffer (process-buffer process)

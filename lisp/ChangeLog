@@ -1,3 +1,11 @@
+2006-05-16  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-irc.el (riece-irc-open-server): Changed the meaning of
+	riece-username.  i.e. now riece-username represents the user's
+	login name and riece-realname is the replacement of the former
+	riece-username.
+	* riece-server.el (riece-server-keyword-map): New keyword :realname.
+
 2006-05-06  Yoichi NAKAYAMA  <yoichi@geiin.org>
 
 	* riece-commands.el (riece-command-close-server): Cause error

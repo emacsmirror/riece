@@ -36,6 +36,7 @@
     '((:host)
       (:service 6667)
       (:nickname riece-nickname)
+      (:realname riece-realname)
       (:username riece-username)
       (:password)
       (:function riece-default-open-connection-function)
