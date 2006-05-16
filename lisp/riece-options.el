@@ -254,7 +254,7 @@ way is to put Riece variables on .emacs or file loaded from there."
   :group 'riece-server)
 
 (defcustom riece-user-cache-max-size 512
-  "Maximum size of cache of usernames."
+  "Maximum size of cache of user names."
   :type 'integer
   :group 'riece-server)
 

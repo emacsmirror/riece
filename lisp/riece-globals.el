@@ -66,10 +66,10 @@
   "If non-nil, attempt to reconnect with password.")
 
 (defvar riece-user-obarray-size 1327
-  "The size of obarray used by riece on username space.")
+  "The size of obarray used by riece on user name space.")
 
 (defvar riece-channel-obarray-size 103
-  "The size of obarray used by riece on channelname space.")
+  "The size of obarray used by riece on channel name space.")
 
 (defvar riece-addon-dependencies nil)
 
@@ -135,7 +135,7 @@ Local to the server buffers.")
   "Cache of channel names.
 Local to the server buffers.")
 (defvar riece-user-cache nil
-  "Cache of usernames.
+  "Cache of user names.
 Local to the server buffers.")
 
 ;;; Variables local to the channel buffers:
