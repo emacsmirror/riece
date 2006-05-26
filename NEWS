@@ -1,3 +1,20 @@
+* Major changes in 3.0.0
+
+** Changed the meaning of riece-username.  If you set this option, you
+   will need to set riece-realname instead. (ueno)
+
+** Cause an error if a user requests to close already closed server. (yoichi)
+
+** New add-on riece-epg.el, which enables secure conversation using
+   GnuPG. (ueno)
+
+** Fixed a couple of bugs in inviting users. (Steve Youngs)
+
+** Fixed a redisplay bug when a user leaves a channel. (ueno)
+
+** Reverted the default value of riece-alias-alternate-separator to
+   "@". (ueno)
+
 * Major changes in 2.0.2
 
 ** Fixed C-c l (riece-command-list) behavior.  It didn't display
