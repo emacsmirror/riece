@@ -251,10 +251,11 @@
 	     (entry (riece-identity-assoc channel riece-353-message-alist t)))
 	(if entry
 	    (setcdr entry
-		    (concat (cdr entry) " "
-			    (substring string (match-end 0))))
+		    (concat (cdr entry)
+			    (substring string (match-end 0)) " "))
 	  (setq riece-353-message-alist
-		(cons (cons channel (substring string (match-end 0)))
+		(cons (cons channel
+			    (concat (substring string (match-end 0)) " "))
 		      riece-353-message-alist))))))
 
 (defun riece-handle-322-message (prefix number name decoded)
