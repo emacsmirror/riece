@@ -30,8 +30,6 @@
 (require 'riece-globals)
 (require 'riece-options)
 
-(require 'calc)
-
 (defgroup riece-ndcc nil
   "DCC written in elisp."
   :prefix "riece-"
@@ -56,23 +54,25 @@ Only used for sending files."
 	   "^\\([0-9]+\\)\\.\\([0-9]+\\)\\.\\([0-9]+\\)\\.\\([0-9]+\\)$"
 	   address)
     (error "% is not an IP address" address))
-  (let ((calc-number-radix 10))
-    (calc-eval (format "%s * (2 ** 24) + %s * (2 **16) + %s * (2 ** 8) + %s"
-		       (match-string 1 address)
-		       (match-string 2 address)
-		       (match-string 3 address)
-		       (match-string 4 address)))))
+  (let ((string (number-to-string
+		 (+ (* (float (string-to-number (match-string 1 address)))
+		       16777216)
+		    (* (float (string-to-number (match-string 2 address)))
+		       65536)
+		    (* (float (string-to-number (match-string 3 address)))
+		       256)
+		    (float (string-to-number (match-string 4 address)))))))
+    (if (string-match "\\." string)
+	(substring string 0 (match-beginning 0))
+      string)))
 
 (defun riece-ndcc-decode-address (address)
-  (format "%d.%d.%d.%d"
-	  (floor (string-to-number
-		  (calc-eval (format "(%s / (2 ** 24)) %% 256" address))))
-	  (floor (string-to-number
-		  (calc-eval (format "(%s / (2 ** 16)) %% 256" address))))
-	  (floor (string-to-number
-		  (calc-eval (format "(%s / (2 ** 8)) %% 256" address))))
-	  (floor (string-to-number
-		  (calc-eval (format "%s %% 256" address))))))
+  (let ((float-address (string-to-number (concat address ".0"))))
+    (format "%d.%d.%d.%d"
+	    (floor (mod (/ float-address 16777216) 256))
+	    (floor (mod (/ float-address 65536) 256))
+	    (floor (mod (/ float-address 256) 256))
+	    (floor (mod float-address 256)))))
 
 (defun riece-ndcc-server-sentinel (process status)
   (when (string-match "^open from " status)
