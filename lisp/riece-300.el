@@ -251,7 +251,7 @@
 	     (entry (riece-identity-assoc channel riece-353-message-alist t)))
 	(if entry
 	    (setcdr entry
-		    (concat (cdr entry)
+		    (concat (cdr entry) " "
 			    (substring string (match-end 0))))
 	  (setq riece-353-message-alist
 		(cons (cons channel (substring string (match-end 0)))
@@ -438,7 +438,7 @@
 	    (setq riece-353-message-alist
 		  (delq entry riece-353-message-alist)))
 	(while (string-match
-		(concat "\\([@+]\\)?\\([^ ]+\\) *")
+		(concat "\\([@+]\\)?\\([^ ]+\\) +")
 		string start)
 	  (put-text-property (match-beginning 2) (match-end 2)
 			     'riece-identity
