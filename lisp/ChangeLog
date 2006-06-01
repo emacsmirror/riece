@@ -1,7 +1,7 @@
 2006-06-01  Daiki Ueno  <ueno@unixuser.org>
 
-	* riece-300.el (riece-handle-353-message): Separate the previous
-	353 line by " ".
+	* riece-300.el (riece-handle-353-message): Append " " to every 353
+	line before inserting it to riece-353-message-alist.
 
 2006-05-29  Daiki Ueno  <ueno@unixuser.org>
 
