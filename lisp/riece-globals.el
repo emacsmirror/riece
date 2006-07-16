@@ -113,6 +113,9 @@ Local to the server buffers.")
 (defvar riece-read-point nil
   "Point at the last input was seen.
 Local to the server buffers.")
+(defvar riece-filter-running nil
+  "Lock of the process filter; non-nil indicates the process filter is running.
+Local to the server buffers.")
 (defvar riece-send-queue nil
   "Send queue for avoiding client flood.
 Local to the server buffers.")

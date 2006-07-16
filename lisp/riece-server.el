@@ -261,6 +261,7 @@ the `riece-server-keyword-map' variable."
     (make-local-variable 'riece-server-name)
     (make-local-variable 'riece-read-point)
     (setq riece-read-point (point-min))
+    (make-local-variable 'riece-filter-running)
     (make-local-variable 'riece-send-queue)
     (setq riece-send-queue (riece-make-queue))
     (make-local-variable 'riece-send-size)

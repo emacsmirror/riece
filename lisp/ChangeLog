@@ -1,3 +1,14 @@
+2006-07-16  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece.el (riece-save-variables-files): Place ";;; Do not edit
+	this file!" at the beginning of ~/.riece/save.
+
+	* riece-server.el (riece-reset-process-buffer): Make
+	riece-filter-running local to the server buffer.
+	* riece-filter.el (riece-filter): Allow only a message handler to
+	run at a time.
+	* riece-globals.el (riece-filter-running): New variable.
+
 2006-06-01  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-ndcc.el: Don't use calc.

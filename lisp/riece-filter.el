@@ -76,31 +76,39 @@
     (set-buffer (process-buffer process))
     (goto-char (point-max))
     (insert input)
-    (goto-char riece-read-point)
-    (beginning-of-line)
-    (while (looking-at ".*\n")	;the input line is finished
-      (save-excursion
-	(if (looking-at
-	     ":\\([^ ]+\\) +\\([0-5][0-9][0-9]\\) +\\([^ ]+\\) +\\(.*\\)")
-	    (riece-handle-numeric-reply
-	     (match-string 1)		;prefix
-	     (string-to-number (match-string 2)) ;number
-	     (match-string 3)		;name
-	     (riece-chomp-string (match-string 4))) ;reply string
-	  (if (looking-at "\\(:\\([^ ]+\\) +\\)?\\([^ ]+\\) +\\(.*\\)")
-	      (riece-handle-message
-	       (match-string 2)		;optional prefix
-	       (match-string 3)		;command
-	       (riece-chomp-string (match-string 4))) ;params & trailing
-	    (if riece-debug
-		(message "Weird message from server: %s"
-			 (buffer-substring (point) (progn
-						     (end-of-line)
-						     (point))))))))
-      (forward-line))
-    (unless riece-debug
-      (delete-region (point-min) (point)))
-    (setq riece-read-point (point))))
+    (unless riece-filter-running
+      (unwind-protect
+	  (progn
+	    (setq riece-filter-running t)
+	    (goto-char riece-read-point)
+	    (beginning-of-line)
+	    (while (looking-at ".*\n")	;the input line is finished
+	      (save-excursion
+		(if (looking-at
+		     ":\\([^ ]+\\) +\\([0-5][0-9][0-9]\\) +\\([^ ]+\\)\
+ +\\(.*\\)")
+		    (riece-handle-numeric-reply
+		     (match-string 1)		;prefix
+		     (string-to-number (match-string 2)) ;number
+		     (match-string 3)		;name
+		     (riece-chomp-string (match-string 4))) ;reply string
+		  (if (looking-at "\\(:\\([^ ]+\\) +\\)?\\([^ ]+\\) +\\(.*\\)")
+		      (riece-handle-message
+		       (match-string 2)	;optional prefix
+		       (match-string 3)	;command
+		       (riece-chomp-string (match-string 4))
+					;params & trailing
+		       )
+		    (if riece-debug
+			(message "Weird message from server: %s"
+				 (buffer-substring (point) (progn
+							     (end-of-line)
+							     (point))))))))
+	      (forward-line))
+	    (unless riece-debug
+	      (delete-region (point-min) (point)))
+	    (setq riece-read-point (point)))
+	(setq riece-filter-running nil)))))
 
 (eval-when-compile
   (autoload 'riece-exit "riece"))
