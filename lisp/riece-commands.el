@@ -443,17 +443,16 @@ the layout to the selected layout-name."
     (next-line 1)))
 
 (defun riece-command-join-channel (target key)
-  (let ((process (riece-server-process (riece-identity-server target))))
-    (unless process
-      (error "%s" (substitute-command-keys
-		   "Type \\[riece-command-open-server] to open server.")))
-    (riece-send-string (if key
-			   (format "JOIN %s :%s\r\n"
-				   (riece-identity-prefix target)
-				   key)
-			 (format "JOIN %s\r\n"
-				 (riece-identity-prefix target)))
-		       target)))
+  (unless (riece-server-opened (riece-identity-server target))
+    (error "%s" (substitute-command-keys
+		 "Type \\[riece-command-open-server] to open server.")))
+  (riece-send-string (if key
+			 (format "JOIN %s :%s\r\n"
+				 (riece-identity-prefix target)
+				 key)
+		       (format "JOIN %s\r\n"
+			       (riece-identity-prefix target)))
+		     target))
 
 (defun riece-command-join-partner (target)
   (let ((pointer (riece-identity-member target riece-current-channels)))
@@ -484,17 +483,16 @@ the layout to the selected layout-name."
 	(riece-command-join-partner target)))))
 
 (defun riece-command-part-channel (target message)
-  (let ((process (riece-server-process (riece-identity-server target))))
-    (unless process
-      (error "%s" (substitute-command-keys
-		   "Type \\[riece-command-open-server] to open server.")))
-    (riece-send-string (if message
-			   (format "PART %s :%s\r\n"
-				   (riece-identity-prefix target)
-				   message)
-			 (format "PART %s\r\n"
-				 (riece-identity-prefix target)))
-		       target)))
+  (unless (riece-server-opened (riece-identity-server target))
+    (error "%s" (substitute-command-keys
+		 "Type \\[riece-command-open-server] to open server.")))
+  (riece-send-string (if message
+			 (format "PART %s :%s\r\n"
+				 (riece-identity-prefix target)
+				 message)
+		       (format "PART %s\r\n"
+			       (riece-identity-prefix target)))
+		     target))
 
 (defun riece-command-part (target &optional message)
   (interactive

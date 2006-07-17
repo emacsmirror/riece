@@ -1,3 +1,9 @@
+2006-07-17  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-commands.el (riece-command-join-channel): Simplified by
+	using riece-server-opened.
+	(riece-command-part-channel): Ditto.
+
 2006-07-16  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece.el (riece-save-variables-files): Place ";;; Do not edit
