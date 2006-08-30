@@ -38,7 +38,7 @@ class AProxy
     trap('STOP', 'IGNORE')
     trap('TSTP', 'IGNORE')
     socket = TCPSocket.new(@host, @port)
-    @out.write("NOTICE CONNECTED #{$$}\r\n")
+    $stdout.write("NOTICE CONNECTED #{$$}\r\n")
     wfds_in = []
     buf = ''
     loop do
