@@ -1,5 +1,10 @@
 2006-08-30  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-layout.el (riece-layout-alist): Added
+	riece-configure-windows-spiral.
+	(riece-configure-windows-spiral): New window layout.  Written by
+	URABE Shyouhei <root@mput.dip.jp>.
+
 	* riece-options.el (riece-addons): Enable riece-shrink-buffer by
 	default.
 

@@ -45,6 +45,7 @@
     ("bottom-right" riece-configure-windows right bottom)
     ("bottom-left" riece-configure-windows left bottom)
     ("top" riece-configure-windows-top)
+    ("spiral" riece-configure-windows-spiral)
     ("default" . "middle-right"))
   "An alist mapping the names to layout functions.
 An element of this alist is either in the following forms:
@@ -249,6 +250,52 @@ PLIST accept :command-height, :user-list-width, and :channel-list-width."
     (riece-set-window-points)
     (select-window (or (get-buffer-window buffer)
 		       (get-buffer-window riece-command-buffer)))))
+
+;; +---+-------------------+---+
+;; | c | channel           | u |
+;; | h |                   | s |
+;; | a |                   | e |
+;; | n |-------------------+ r |   | +---+
+;; | n | command           | s |   | |   |
+;; | e +-------------------+---+   | +-> |
+;; | l | others                |   +-----+
+;; | s |                       |
+;; +---+-----------------------+
+(defun riece-configure-windows-spiral ()
+  "spiral placement of windows"
+;;  (interactive)
+  (let ((command-height 4)
+        (users-width    15)
+        (channels-width 30)
+        (buffer         (window-buffer)))
+    (when (eq (selected-window) (minibuffer-window)) (other-window 1))
+    (delete-other-windows)
+
+    ;; (1) create channels window
+    (let ((rest (split-window (selected-window) channels-width t)))
+      (set-window-buffer (selected-window) riece-channel-list-buffer)
+      (select-window rest))
+
+    ;; (2) create others window
+    (set-window-buffer (split-window (selected-window)
+                                     (+ (/ (window-height) 2)
+                                        command-height))
+                       riece-others-buffer)
+
+    ;; (3) create users window
+    (set-window-buffer (split-window (selected-window)
+                                     (- (window-width) users-width) t)
+                       riece-user-list-buffer)
+  
+    ;; (4) create current channel window
+    (let ((rest (split-window (selected-window)
+                              (- (window-height) command-height))))
+      (set-window-buffer rest riece-command-buffer)
+      (set-window-buffer (selected-window) riece-channel-buffer))
+
+    (riece-set-window-points)
+    (select-window (or (get-buffer-window buffer)
+                       (get-buffer-window riece-command-buffer)))))
 
 (provide 'riece-layout)
 
