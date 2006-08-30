@@ -1,5 +1,8 @@
 2006-08-30  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-options.el (riece-addons): Enable riece-shrink-buffer by
+	default.
+
 	* aproxy.rb (AProxy::start): Fixed a typo (@out -> $stdout).
 
 2006-07-29  Daiki Ueno  <ueno@unixuser.org>
