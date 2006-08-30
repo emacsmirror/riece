@@ -1,3 +1,7 @@
+2006-08-30  Daiki Ueno  <ueno@unixuser.org>
+
+	* aproxy.rb (AProxy::start): Fixed a typo (@out -> $stdout).
+
 2006-07-29  Daiki Ueno  <ueno@unixuser.org>
 
 	* Riece: Version 3.1.0 released.
