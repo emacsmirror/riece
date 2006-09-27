@@ -14,7 +14,7 @@
 @ifinfo
 This file describes Riece.
 
-Copyright (C) 2003,2004,2005 Daiki Ueno.
+Copyright (C) 2003,2004,2005,2006 Daiki Ueno.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.1 or
@@ -33,7 +33,7 @@ Free Documentation License".
 @page
 
 @vskip 0pt plus 1filll
-Copyright @copyright{} 2003,2004,2005 Daiki Ueno.
+Copyright @copyright{} 2003,2004,2005,2006 Daiki Ueno.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.1 or
@@ -443,13 +443,22 @@ IRC コマンドを直接送ります(@code{riece-command-raw})
 
 既に特定のサーバに接続している状態で、別のサーバに接続するには @kbd{C-c O} (@code{riece-command-open-server}) を使います。
 
-別のサーバ上のチャンネルに参加するには、@kbd{C-c j} (@code{riece-command-join})でチャンネル名にサーバ名を続けます。
+別のサーバ上のチャンネルに参加するには、@kbd{C-c j}
+(@code{riece-command-join})でチャンネル名に @samp{@@} に続いてサーバ名を
+続けます。
 
-たとえば、サーバ @samp{irc.freenode.net} 上の @samp{#Riece} は次のように表記します。
+たとえば、サーバ @samp{irc.freenode.net} 上の @samp{#Riece} は次のよう
+に表記します。
 
 @example
 #Riece@@irc.freenode.net
 @end example
+
+チャンネル名とサーバの区切り文字 @samp{@@} は
+変数 @code{riece-alias-alternate-separator} で変更できます。
+
+または、空白文字でも代用できます。この時には、@kbd{C-q SPC} と入力する
+必要があります。
 
 複数の接続を操作するコマンドを以下にまとめます。
 
@@ -476,79 +485,83 @@ Riece では、ユーザが新たな機能を追加し、自由に取り外しできるよう、アドオ
 現在、以下のモジュールがアドオンとして実装されています：
 
 @table @samp
-@item riece-highlight
-バッファの色付け
-@item riece-ctcp
-CTCP (Client To Client Protocol)
-@item riece-url
-会話に現れた URL の収集
-@item riece-unread
-発言のあったチャンネルに@samp{!}マークをつける
-@item riece-rdcc
-DCC (Direct Client to Client protocol) によるファイル転送
-(Ruby による実装)
-@item riece-ndcc
-DCC (Direct Client to Client protocol) によるファイル転送
-(Emacs 21.3 の make-network-process による実装)
-@item riece-mini
-ミニバッファのみで IRC をする
-@item riece-log
-会話のログの収集
-@item riece-doctor
-doctor.el と連携して精神科医になりすます
 @item riece-alias
 チャンネル名やニックネームの別名を定義
-@item riece-skk-kakutei
-SKK 使用時に変換モードの印を発言から取り除く
-@item riece-foolproof
-チャンネルミスを防ぐ
-@item riece-guess
-色々な方法で移動先のチャンネルを推測
-@item riece-history
-チャンネル移動の履歴管理
-@item riece-button
-ボタンやポップアップメニューの表示
-@item riece-keyword
-キーワードの強調表示
-@item riece-menu
-メニューバーにメニューを登録
 @item riece-async
 Emacs が busy or suspend 状態になることに備え、
 PING に応答する local proxy 経由で IRC サーバに接続
+@item riece-biff
+他のバッファにいる時に発言があるとモードラインに印 ("[R]") を表示
+@item riece-button
+ボタンやポップアップメニューの表示
+@item riece-ctcp
+CTCP (Client To Client Protocol)
+@item riece-ctlseq
+コントロールシーケンス (^B など) による強調表示
+@item riece-doctor
+doctor.el と連携して精神科医になりすます
+@item riece-epg
+EasyPG @uref{http://www.easypg.org} による会話の暗号化
+@item riece-eval-ruby
+入力された文字列を Ruby の式として評価
+@item riece-eval
+入力された文字列を Emacs Lisp の式として評価
+@item riece-foolproof
+チャンネルミスを防ぐ
+@item riece-google
+キーワードを Google で検索
+@item riece-guess
+色々な方法で移動先のチャンネルを推測
+@item reice-hangman
+チャンネル内で hangman(6) で遊ぶ
+@item riece-highlight
+バッファの色付け
+@item riece-history
+チャンネル移動の履歴管理
+@item riece-icon
+バッファ中にアイコンを表示
+@item riece-ignore
+指定したユーザの発言を無視
+@item riece-kakasi
+日本語の通らない端末で、日本語をローマ字で表示
+@item riece-keepalive
+IRC サーバとの接続を保持
+@item riece-keyword
+キーワードの強調表示
+@item riece-log
+会話のログをファイルに保存
 @item riece-lsdb
 アドレス帳 LSDB (Lovely Sister Database)
 @uref{http://lsdb.sourceforge.jp} と連携
-@item riece-xface
-ユーザリストバッファにユーザの X-Face を表示
-@item riece-ctlseq
-コントロールシーケンス (^B など) による強調表示
-@item riece-ignore
-指定したユーザの発言を無視
-@item reice-hangman
-チャンネル内で hangman(6) で遊ぶ
-@item riece-biff
-他のバッファにいる時に発言があるとモードラインに印 ("[R]") を表示
-@item riece-kakasi
-日本語の通らない端末で、日本語をローマ字で表示
-@item riece-yank
-@kbd{C-c y} で kill-ring から文字列を送信
+@item riece-menu
+メニューバーにメニューを登録
+@item riece-mini
+ミニバッファのみで IRC をする
+@item riece-ndcc
+DCC (Direct Client to Client protocol) によるファイル転送
+(Emacs 22 でのみ動作)
+@item riece-rdcc
+DCC (Direct Client to Client protocol) によるファイル転送
+@item riece-shrink-buffer
+メモリ確保のため、バッファを定期的に切り詰める
+@item riece-skk-kakutei
+SKK 使用時に変換モードの印を発言から取り除く
 @item riece-toolbar
 ツールバーを表示
-@item riece-eval
-入力された文字列を lisp オブジェクトとして評価
-@item riece-google
-キーワードを Google で検索
-@item riece-keepalive
-IRC サーバとの接続を保持
-@item riece-eval-ruby
-入力された文字列を Ruby の式として評価
+@item riece-unread
+発言のあったチャンネルに@samp{!}マークをつける
+@item riece-url
+会話に現れた URL の収集
+@item riece-xface
+ユーザリストバッファにユーザの X-Face を表示
+@item riece-xfaceb
+ユーザリストバッファにユーザの X-Face を表示
+(BBDB @uref{http://bbdb.sourceforge.net} が必要)
+@item riece-yank
+@kbd{C-c y} で kill-ring から文字列を送信
 @end table
 
-これらのうち、@samp{riece-highlight} と @samp{riece-ctcp}、
-@samp{riece-url}、 @samp{riece-unread}、 @samp{riece-guess}、
-@samp{riece-history}、 @samp{riece-button}、@samp{riece-menu}、
-@samp{riece-ignore}、@samp{riece-log}、@samp{riece-alias}、
-@samp{riece-ctlseq}、@samp{riece-keyword} は標準で組み込まれています。
+これらのうちの多くは標準で組み込まれています。
 
 アドオンを組み込むには @code{riece-addons} を設定します。たとえば 
 @samp{riece-alias} を組み込む場合には、@file{~/.riece/init} に以下のよ
@@ -556,7 +569,7 @@ IRC サーバとの接続を保持
 @vindex riece-addons
 
 @example
-(add-to-list 'riece-addons 'riece-keyword)
+(add-to-list 'riece-addons 'riece-mini)
 @end example
 
 @node Tips, Index, Advanced usage, Top
@@ -670,9 +683,6 @@ IRC サーバとの接続を保持
      '("#Riece" "#public" ("#private" "password")))
 @end example
 
-起動時に、複数の IRC サーバのチャンネルに参加する場合には、
-変数 @samp{riece-startup-server-list} も同時に設定する必要があります。
-
 @section 起動時に自動的に複数の IRC サーバに接続したい
 @vindex riece-startup-server-list
 
@@ -684,16 +694,13 @@ IRC サーバとの接続を保持
                            ("freenode" :host "irc.ipv6.freenode.net")))
 @end example
 
-この設定例では、起動時に "ircnet" に接続します。
+この設定例では、起動時に接続するのは "ircnet" だけです。
 @samp{riece-startup-server-list} を以下のように設定すると、
 "freenode" にも接続するようになります。
 
 @example
 (setq riece-startup-server-list '("freenode"))
 @end example
-
-起動時に、複数の IRC サーバのチャンネルに参加する場合には、
-変数 @samp{riece-startup-channel-list} も同時に設定する必要があります。
 
 @section HTTP プロキシを介して IRC サーバに接続したい
 @file{relay.el} と @file{connect.c} を使うと、
