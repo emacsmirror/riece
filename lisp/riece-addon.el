@@ -388,6 +388,7 @@ Useful keys:
    `\\[riece-command-insinuate-addon]' to insinuate the current add-on.
    `\\[riece-command-uninstall-addon]' to uninstall the current add-on.
    `\\[riece-command-unload-addon]' to unload the current add-on.
+   `\\[riece-command-save-variables]' to save the current setting.
 "))
     (goto-char (point-min))
     (pop-to-buffer (current-buffer))
@@ -418,6 +419,7 @@ Useful keys:
 			      (and enabled
 				   (null (symbol-value enabled)))))
 			  t)))))
+  (riece-command-insinuate-addon addon)
   (riece-enable-addon addon t)
   (when (eq major-mode 'riece-addon-list-mode)
     (riece-command-list-addons)
