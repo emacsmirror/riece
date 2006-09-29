@@ -1,3 +1,28 @@
+* Riece 3.1.0 の主な変更点
+
+** メッセージハンドラの再入禁止にした (ueno)
+
+** riece-ndcc.el が calc に依存しないようにした (ueno)
+
+** 353 ハンドラのバグの修正 (ueno)
+
+* Riece 3.0.0 の主な変更点
+
+** 変数 riece-username の意味を変更 (ueno)
+   この変数を設定しているユーザは、riece-realname に変数名を変更する必
+   要がある。
+
+** 切断済みのサーバを再度切断しようとした場合に、エラーになるようにし
+   た (yoichi)
+
+** 新規アドオン riece-epg.el を導入。GnuPG を使った安全な会話が可能 (ueno)
+
+** ユーザを招待 (invite) する際のバグを 2 つ修正 (Steve Youngs)
+
+** ユーザがチャンネルを離脱した場面での、再描画のバグを修正 (ueno)
+
+** riece-alias-alternate-separator のデフォルト値を "@" に戻した (ueno)
+
 * Riece 2.0.2 の主な変更点
 
 ** C-c l (riece-command-list) で、チャンネルのトピックの代わりに参加者
