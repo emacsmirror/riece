@@ -1,3 +1,11 @@
+* Major changes in 3.1.1
+
+** riece-async works again. (ueno)
+
+** riece-shrink-buffer is now enabled by default. (ueno)
+
+** New window layout "spiral". (URABE Shyouhei)
+
 * Major changes in 3.1.0
 
 ** Prevent reentrace of message handlers.  This might fix some long

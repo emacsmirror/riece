@@ -1,3 +1,11 @@
+* Riece 3.1.1 の主な変更点
+
+** riece-async を再び動作するようにした (ueno)
+
+** riece-shrink-buffer をデフォルトで有効にした (ueno)
+
+** 新規ウィンドウレイアウト "spiral" を追加 (URABE Shyouhei)
+
 * Riece 3.1.0 の主な変更点
 
 ** メッセージハンドラの再入禁止にした (ueno)
