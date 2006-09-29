@@ -48,7 +48,7 @@ string, be sure to use a valid format, see RFC 2616."
 
 (defconst riece-product-name "Riece")
 
-(defconst riece-version-number "3.1.0"
+(defconst riece-version-number "3.1.1"
   "Version number for this version of Riece.")
 
 (defconst riece-version (format "Riece v%s" riece-version-number)
