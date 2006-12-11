@@ -308,43 +308,19 @@ AC_SUBST(USE_FONTS)
 AC_DEFUN([AC_EXAMINE_PACKAGEDIR],
  [dnl Examine PACKAGEDIR.
   AC_EMACS_LISP(PACKAGEDIR,
-    (let ((prefix \"${prefix}\")\
-	  (dirs (append\
-		 (cond ((boundp (quote early-package-hierarchies))\
-			(append (if early-package-load-path\
-				    early-package-hierarchies)\
-				(if late-package-load-path\
-				    late-package-hierarchies)\
-				(if last-package-load-path\
-				    last-package-hierarchies)))\
-		       ((boundp (quote early-packages))\
-			(append (if early-package-load-path\
-				    early-packages)\
-				(if late-package-load-path\
-				    late-packages)\
-				(if last-package-load-path\
-				    last-packages))))\
-		 (if (and (boundp (quote configure-package-path))\
-			  (listp configure-package-path))\
-		     (delete \"\" configure-package-path))))\
-	  package-dir)\
-      (while (and dirs (not package-dir))\
-	(if (file-directory-p (car dirs))\
-	    (setq package-dir (car dirs)\
-		  dirs (cdr dirs))))\
-      (if package-dir\
-	  (progn\
-	    (if (string-match \"/\$\" package-dir)\
-		(setq package-dir (substring package-dir 0\
-					     (match-beginning 0))))\
-	    (if (and prefix\
-		     (progn\
-		       (setq prefix (file-name-as-directory prefix))\
-		       (eq 0 (string-match (regexp-quote prefix)\
-					   package-dir))))\
-		(replace-match \"\$(prefix)/\" nil nil package-dir)\
-	      package-dir))\
-	\"\")),
+    (let (package-dir)\
+      (if (boundp (quote early-packages))\
+	  (let ((dirs (delq nil (append (if early-package-load-path\
+					    early-packages)\
+					(if late-package-load-path\
+					    late-packages)\
+					(if last-package-load-path\
+					    last-packages)))))\
+	    (while (and dirs (not package-dir))\
+	      (if (file-directory-p (car dirs))\
+		  (setq package-dir (car dirs)\
+			dirs (cdr dirs))))))\
+      (or package-dir \"\")),
     "noecho")])
 
 AC_DEFUN([AC_PATH_PACKAGEDIR],
