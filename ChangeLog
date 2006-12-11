@@ -1,3 +1,9 @@
+2006-12-11  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* acinclude.m4 (AC_EXAMINE_PACKAGEDIR): Check for
+	(early|late|last)-package-hierarchies and configure-package-path
+	as well as (early|late|last)-packages.
+
 2006-09-29  Daiki Ueno  <ueno@unixuser.org>
 
 	* Riece: Version 3.1.1 released.
