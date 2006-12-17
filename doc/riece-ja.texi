@@ -3,7 +3,7 @@
 @setfilename riece-ja.info
 @settitle Riece -- An IRC client for Emacsen --
 @c %**end of header
-@include version.texi
+@include version-ja.texi
 @c @documentlanguage ja
 
 @dircategory GNU Emacs Lisp
