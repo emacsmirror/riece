@@ -11,6 +11,7 @@ AM_CONDITIONAL(XEMACS, test ${EMACS_FLAVOR} = xemacs)
 
 AC_CONFIG_FILES([Makefile
 lisp/Makefile
+lisp/riece-package-info.el
 lisp/test/Makefile
 doc/Makefile])
 AC_OUTPUT

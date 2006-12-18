@@ -23,6 +23,7 @@ EXTRA_DIST = COMPILE ChangeLog ChangeLog.Liece \
 	server.rb aproxy.rb
 
 CLEANFILES = auto-autoloads.el custom-load.el *.elc
+DISTCLEANFILES = riece-package-info.el
 FLAGS ?= -batch -q -no-site-file
 
 all: elc

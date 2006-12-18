@@ -1,4 +1,4 @@
-;;; riece-version.el --- version information about Riece
+;;; riece-version.el --- version information handling
 ;; Copyright (C) 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003
 ;;        Free Software Foundation, Inc.
 ;; Copyright (C) 1998-2003 Daiki Ueno
@@ -26,6 +26,8 @@
 
 ;;; Code:
 
+(require 'riece-package-info)
+
 ;; NOTE: Most part of this file is copied from Gnus.
 
 (defcustom riece-user-agent 'emacs-riece-type
@@ -46,12 +48,8 @@ string, be sure to use a valid format, see RFC 2616."
 	  (item :tag "Show only Riece version" riece)
 	  (string :tag "Other")))
 
-(defconst riece-product-name "Riece")
-
-(defconst riece-version-number "3.1.1"
-  "Version number for this version of Riece.")
-
-(defconst riece-version (format "Riece v%s" riece-version-number)
+(defconst riece-version (format "%s v%s" riece-package-name
+				riece-version-number)
   "Version string for this version of Riece.")
 
 (eval-when-compile
@@ -63,7 +61,7 @@ string, be sure to use a valid format, see RFC 2616."
   "Stringified Riece version and Emacs version.
 See the variable `riece-user-agent'."
   (let* ((riece-v
-	  (concat riece-product-name "/"
+	  (concat riece-package-name "/"
 		  (prin1-to-string riece-version-number t)))
 	 (system-v
 	  (cond
