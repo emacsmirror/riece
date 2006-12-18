@@ -3,3 +3,4 @@ Makefile
 auto-autoloads.el
 custom-load.el
 lunit-report.xml
+riece-package-info.el

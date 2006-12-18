@@ -2,3 +2,6 @@ Makefile.in
 Makefile
 texinfo.tex
 *.info*
+mdate-sh
+stamp*
+vers*.texi
