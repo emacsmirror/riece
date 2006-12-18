@@ -8,6 +8,7 @@
 	      '(riece-globals
 		riece-options
 		riece-debug
+		riece-package-info
 		riece-version
 		riece-coding
 		riece-complete
