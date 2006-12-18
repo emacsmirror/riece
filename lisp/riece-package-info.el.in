@@ -22,7 +22,8 @@
 
 ;;; Code:
 
-(defconst riece-package-name "@PACKAGE@")
+;;(defconst riece-package-name "@PACKAGE@")
+(defconst riece-package-name "Riece")
 
 (defconst riece-version-number "@VERSION@"
   "Version number for this version of Riece.")
