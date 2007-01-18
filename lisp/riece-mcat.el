@@ -38,7 +38,7 @@
     (while pointer
       (if (equal (car pointer)
 		 (nth 1 pointer))
-	  (setcdr pointer (nth 2 pointer))
+	  (setcdr pointer (nthcdr 2 pointer))
 	(unless (assoc (car pointer) alist)
 	  (setq alist (cons (list (car pointer)) alist))))
       (setq pointer (cdr pointer)))
