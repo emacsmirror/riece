@@ -12,6 +12,7 @@
 		riece-version
 		riece-coding
 		riece-complete
+		riece-mcat
 		riece-addon-modules
 		riece-addon
 		riece-ruby
@@ -48,7 +49,8 @@
 
 		riece-commands
 		riece-irc
-		riece))))
+		riece
+		riece-mcat-japanese))))
 
 (defvar riece-icons
   '("riece-command-quit.xpm"

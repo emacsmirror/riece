@@ -6,9 +6,11 @@ EXTRA_DIST = COMPILE ChangeLog ChangeLog.Liece \
 	riece-coding.el riece-commands.el riece-compat.el riece-complete.el \
 	riece-debug.el riece-display.el riece-emacs.el riece-filter.el \
 	riece-globals.el riece-handle.el riece-highlight.el riece-identity.el \
-	riece-message.el riece-misc.el riece-mode.el riece-naming.el \
-	riece-options.el riece-ruby.el riece-server.el riece-signal.el \
-	riece-user.el riece-version.el riece-xemacs.el riece-irc.el riece.el \
+	riece-mcat.el riece-message.el riece-misc.el riece-mode.el \
+	riece-naming.el riece-options.el riece-ruby.el riece-server.el \
+	riece-signal.el riece-user.el riece-version.el riece-xemacs.el \
+	riece-irc.el riece.el \
+	riece-mcat-japanese.el \
 	riece-ctcp.el riece-url.el riece-unread.el riece-ndcc.el \
 	riece-rdcc.el riece-log.el riece-mini.el riece-doctor.el \
 	riece-alias.el riece-layout.el riece-skk-kakutei.el riece-guess.el \

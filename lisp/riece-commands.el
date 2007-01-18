@@ -32,6 +32,7 @@
 (require 'riece-misc)
 (require 'riece-identity)
 (require 'riece-message)
+(require 'riece-mcat)
 
 (autoload 'derived-mode-class "derived")
 
@@ -633,7 +634,7 @@ If prefix argument ARG is non-nil, toggle frozen status."
       (progn
 	(message "No server process")
 	(ding))
-    (if (y-or-n-p "Really quit IRC? ")
+    (if (y-or-n-p (riece-mcat "Really quit IRC? "))
 	(let ((message
 	       (if arg
 		   (read-string "Message: ")
