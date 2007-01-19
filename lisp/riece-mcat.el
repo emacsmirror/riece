@@ -61,7 +61,7 @@
 	(insert "(" (prin1-to-string (car (car alist))) " . "
 		(prin1-to-string (cdr (car alist))) ")")
 	(if (cdr alist)
-	    (insert "\n   "))
+	    (insert "\n    "))
 	(setq alist (cdr alist)))
       (insert "))")
       (save-buffer))))
