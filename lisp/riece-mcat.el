@@ -25,6 +25,7 @@
 (require 'pp)
 
 (defun riece-mcat (string)
+  "Translate STRING in the current language environment."
   (let ((feature (get-language-info current-language-environment
 				    'riece-mcat-feature)))
     (if feature
@@ -70,22 +71,24 @@
 	  (setq message-list (cdr message-list))))
       alist)))
 
-(defun riece-mcat-update (files mcat-file mcat-alist)
+(defun riece-mcat-update (files mcat-file mcat-alist-symbol)
+  "Update MCAT-FILE."
   (let ((pp-escape-newlines t)
 	alist)
     (save-excursion
       (set-buffer (find-file-noselect mcat-file))
       (goto-char (point-min))
       (if (re-search-forward (concat "^\\s-*(\\(defvar\\|defconst\\)\\s-+"
-				     (regexp-quote (symbol-name mcat-alist)))
+				     (regexp-quote (symbol-name
+						    mcat-alist-symbol)))
 			     nil t)
 	  (progn
 	    (goto-char (match-beginning 0))
 	    (save-excursion
 	      (eval (read (current-buffer))))
 	    (delete-region (point) (progn (forward-sexp) (point))))
-	(set mcat-alist nil))
-      (setq alist (riece-mcat-extract files (symbol-value mcat-alist)))
+	(set mcat-alist-symbol nil))
+      (setq alist (riece-mcat-extract files (symbol-value mcat-alist-symbol)))
       (insert "(defconst " (symbol-name mcat-alist) "\n  '(")
       (while alist
 	(insert "(" (pp-to-string (car (car alist))) " . "
