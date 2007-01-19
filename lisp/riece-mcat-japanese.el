@@ -1,6 +1,25 @@
 ;;; -*- coding: iso-2022-jp -*-
 
 (defconst riece-mcat-japanese-alist
-  '(("Really quit IRC? " . "本当にIRCをやめますか? ")))
+  '(("Sending QUIT...done" . "QUIT を送信しています...完了")
+    ("Sending QUIT..." . "QUIT を送信しています...")
+    ("Sending QUIT to \"%s\"...done" . "\"%s\" に QUIT を送信しています...完了")
+    ("Sending QUIT to \"%s\"..." . "\"%s\" に QUIT を送信しています...")
+    ("Password: Quit" . "パスワード: 中止")
+    ("Password: " . "パスワード: ")
+    ("Password for %s: Quit" . "%s のパスワード: 中止")
+    ("Password for %s: " . "%s のパスワード: ")
+    ("Logging in to IRC server..." . "IRC サーバにログインしています...")
+    ("Logging in to %s..." . "%s にログインしています...")
+    ("Connecting to IRC server...failed: %S" . "IRC サーバに接続しています...失敗: %S")
+    ("Connecting to IRC server...done" . "IRC サーバに接続しています...完了")
+    ("Connecting to IRC server..." . "IRC サーバに接続しています...")
+    ("Connecting to %s...failed: %S" . "%s に接続しています...失敗: %S")
+    ("Connecting to %s...done" . "%s に接続しています...完了")
+    ("Connecting to %s..." . "%s に接続しています...")
+    ("Logging in to IRC server...done" . "IRC サーバにログインしています...完了")
+    ("Logging in to %s...done" . "%s にログインしています...完了")
+    ("Already registered" . "登録済みです")
+    ("Really quit IRC? " . "本当にIRCをやめますか? ")))
 
 (provide 'riece-mcat-japanese)

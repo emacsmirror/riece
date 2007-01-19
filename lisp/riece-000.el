@@ -38,7 +38,7 @@
 (defun riece-handle-001-message (prefix number name string)
   "RPL_WELCOME \"Welcome to the Internet Relay Network <nick>!<user>@<host>\""
   (if riece-real-server-name
-      (error "Already registered"))
+      (error (riece-mcat "Already registered")))
   (setq riece-real-server-name prefix
 	riece-real-nickname name
 	riece-real-userhost nil)
@@ -50,8 +50,8 @@
    (list riece-dialogue-buffer riece-others-buffer)
    (concat (substring string 1) "\n"))
   (if (equal riece-server-name "")
-      (message "Logging in to IRC server...done")
-    (message "Logging in to %s...done" riece-server-name))
+      (message (riece-mcat "Logging in to IRC server...done"))
+    (message (riece-mcat "Logging in to %s...done") riece-server-name))
   (let ((channel-list riece-startup-channel-list)
 	entry identity)
     (while channel-list

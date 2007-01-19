@@ -26,6 +26,7 @@
 
 (require 'riece-filter)
 (require 'riece-server)
+(require 'riece-mcat)
 
 (defun riece-irc-open-server (server server-name)
   (riece-server-keyword-bind server
@@ -34,8 +35,8 @@
 	  (coding-system-for-write 'binary)
 	  process)
       (if (equal server-name "")
-	  (message "Connecting to IRC server...")
-	(message "Connecting to %s..." server-name))
+	  (message (riece-mcat "Connecting to IRC server..."))
+	(message (riece-mcat "Connecting to %s...") server-name))
       (condition-case error
 	  (setq process
 		(funcall function (riece-server-process-name server-name)
@@ -43,33 +44,37 @@
 			 host service))
 	(error
 	 (if (equal server-name "")
-	     (message "Connecting to IRC server...failed: %S" error)
-	   (message "Connecting to %s...failed: %S" server-name error))
+	     (message (riece-mcat "Connecting to IRC server...failed: %S")
+		      error)
+	   (message (riece-mcat "Connecting to %s...failed: %S") server-name
+		    error))
 	 (signal (car error) (cdr error))))
       (if (equal server-name "")
-	  (message "Connecting to IRC server...done")
-	(message "Connecting to %s...done" server-name))
+	  (message (riece-mcat "Connecting to IRC server...done"))
+	(message (riece-mcat "Connecting to %s...done") server-name))
       (riece-reset-process-buffer process)
       (with-current-buffer (process-buffer process)
 	(setq riece-server-name server-name))
       (set-process-sentinel process 'riece-sentinel)
       (set-process-filter process 'riece-filter)
       (if (equal server-name "")
-	  (message "Logging in to IRC server...")
-	(message "Logging in to %s..." server-name))
+	  (message (riece-mcat "Logging in to IRC server..."))
+	(message (riece-mcat "Logging in to %s...") server-name))
       (if riece-reconnect-with-password	;password incorrect or not set.
 	  (unwind-protect
 	      (setq password
 		    (condition-case nil
 			(let (inhibit-quit)
 			  (if (equal server-name "")
-			      (riece-read-passwd "Password: ")
-			    (riece-read-passwd (format "Password for %s: "
-						       server-name))))
+			      (riece-read-passwd (riece-mcat "Password: "))
+			    (riece-read-passwd
+			     (format (riece-mcat "Password for %s: ")
+				     server-name))))
 		      (quit
 		       (if (equal server-name "")
-			   (message "Password: Quit")
-			 (message "Password for %s: Quit" server-name))
+			   (message (riece-mcat "Password: Quit"))
+			 (message (riece-mcat "Password for %s: Quit")
+				  server-name))
 		       'quit)))
 	    (setq riece-reconnect-with-password nil)))
       (if (eq password 'quit)
@@ -100,15 +105,15 @@
   (let ((server-name (with-current-buffer (process-buffer process)
 		       riece-server-name)))
     (if (equal server-name "")
-	(message "Sending QUIT...")
-      (message "Sending QUIT to \"%s\"..." server-name))
+	(message (riece-mcat "Sending QUIT..."))
+      (message (riece-mcat "Sending QUIT to \"%s\"...") server-name))
     (riece-process-send-string process
 			       (if message
 				   (format "QUIT :%s\r\n" message)
 				 "QUIT\r\n"))
     (if (equal server-name "")
-	(message "Sending QUIT...done")
-      (message "Sending QUIT to \"%s\"...done" server-name))))
+	(message (riece-mcat "Sending QUIT...done"))
+      (message (riece-mcat "Sending QUIT to \"%s\"...done") server-name))))
 
 (provide 'riece-irc)
 
