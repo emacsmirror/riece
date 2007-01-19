@@ -22,7 +22,7 @@
 
 ;;; Commentary:
 
-;; To update riece-mcat-japanese-alist, type `make update-mcat'.
+;; To update riece-mcat-japanese-alist, do `make update-mcat'.
 
 ;;; Code:
 
