@@ -49,13 +49,16 @@
     (save-excursion
       (set-buffer (find-file-noselect mcat-file))
       (goto-char (point-min))
-      (re-search-forward (concat "^\\s-*(\\(defvar\\|defconst\\)\\s-+"
-				 (regexp-quote (symbol-name mcat-alist))))
-      (goto-char (match-beginning 0))
-      (save-excursion
-	(eval (read (current-buffer))))
+      (if (re-search-forward (concat "^\\s-*(\\(defvar\\|defconst\\)\\s-+"
+				     (regexp-quote (symbol-name mcat-alist)))
+			     nil t)
+	  (progn
+	    (goto-char (match-beginning 0))
+	    (save-excursion
+	      (eval (read (current-buffer))))
+	    (delete-region (point) (progn (forward-sexp) (point))))
+	(set mcat-alist nil))
       (setq alist (riece-mcat-extract files (symbol-value mcat-alist)))
-      (delete-region (point) (progn (forward-sexp) (point)))
       (insert "(defconst " (symbol-name mcat-alist) "\n  '(")
       (while alist
 	(insert "(" (prin1-to-string (car (car alist))) " . "
