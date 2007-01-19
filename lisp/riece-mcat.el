@@ -22,17 +22,19 @@
 
 ;;; Code:
 
-(defvar riece-mcat-alist
-  '(("Japanese" . riece-mcat-japanese)))
+(require 'pp)
 
 (defun riece-mcat (string)
-  (let ((entry (assoc current-language-environment riece-mcat-alist)))
-    (when entry
-      (require (cdr entry))
-      (or (cdr (assoc string (symbol-value (intern
-					    (concat (symbol-name (cdr entry))
-						    "-alist")))))
-	  string))))
+  (let ((feature (get-language-info current-language-environment
+				    'riece-mcat-feature)))
+    (if feature
+	(progn
+	  (require feature)
+	  (or (cdr (assoc string
+			  (symbol-value
+			   (intern (concat (symbol-name feature) "-alist")))))
+	      string))
+      string)))
 
 (defun riece-mcat-extract-from-form (form)
   (if (and form (listp form) (listp (cdr form)))
@@ -69,7 +71,8 @@
       alist)))
 
 (defun riece-mcat-update (files mcat-file mcat-alist)
-  (let (alist)
+  (let ((pp-escape-newlines t)
+	alist)
     (save-excursion
       (set-buffer (find-file-noselect mcat-file))
       (goto-char (point-min))
@@ -85,13 +88,21 @@
       (setq alist (riece-mcat-extract files (symbol-value mcat-alist)))
       (insert "(defconst " (symbol-name mcat-alist) "\n  '(")
       (while alist
-	(insert "(" (prin1-to-string (car (car alist))) " . "
-		(prin1-to-string (cdr (car alist))) ")")
+	(insert "(" (pp-to-string (car (car alist))) " . "
+		(pp-to-string (cdr (car alist))) ")")
 	(if (cdr alist)
 	    (insert "\n    "))
 	(setq alist (cdr alist)))
       (insert "))")
       (save-buffer))))
+
+(defconst riece-mcat-description "Translate messages")
+
+(defun riece-mcat-insinuate ()
+  (set-language-info "Japanese" 'riece-mcat-feature 'riece-mcat-japanese))
+
+(defun riece-mcat-uninstall ()
+  (set-language-info "Japanese" 'riece-mcat-feature nil))
 
 (provide 'riece-mcat)
 

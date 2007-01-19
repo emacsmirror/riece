@@ -22,6 +22,7 @@
     (riece-keyword . "Detect keywords in IRC buffers.")
     (riece-log . "Save IRC logs.")
     (riece-lsdb . "Help register nicknames in LSDB rolodex program.")
+    (riece-mcat . "Translate messages.")
     (riece-menu . "Setup Riece's command menus.")
     (riece-mini . "Use Riece only on the minibuffer.")
     ;;(riece-ndcc . "DCC file sending protocol support (written in elisp.)")

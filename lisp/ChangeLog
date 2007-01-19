@@ -1,5 +1,14 @@
 2007-01-19  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-options.el (riece-addons): Insinuate riece-mcat by default.
+	* riece-addon-modules.el (riece-addon-modules): Add riece-mcat.
+	* riece-mcat.el: Implement add-on interface.
+	(riece-mcat-description): New constant.
+	(riece-mcat-insinuate): New function.
+	(riece-mcat-uninstall): New function.
+
+2007-01-19  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-mcat.el (riece-mcat-update): New function.
 	* Makefile.am (update-mcat): New target.
 	* COMPILE (riece-modules): Moved riece-mcat-japanese.el to

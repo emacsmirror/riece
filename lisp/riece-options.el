@@ -131,7 +131,8 @@ way is to put Riece variables on .emacs or file loaded from there."
 			  riece-alias
 			  riece-ctlseq
 			  riece-keyword
-			  riece-shrink-buffer)
+			  riece-shrink-buffer
+			  riece-mcat)
   "Add-ons insinuated into Riece."
   :type '(repeat symbol)
   :group 'riece-options)
