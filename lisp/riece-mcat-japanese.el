@@ -20,6 +20,6 @@
     ("Logging in to IRC server...done" . "IRC サーバにログインしています...完了")
     ("Logging in to %s...done" . "%s にログインしています...完了")
     ("Already registered" . "登録済みです")
-    ("Really quit IRC? " . "本当にIRCをやめますか? ")))
+    ("Really quit IRC? " . "本当に IRC をやめますか? ")))
 
 (provide 'riece-mcat-japanese)
