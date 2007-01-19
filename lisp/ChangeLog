@@ -1,3 +1,13 @@
+2007-01-19  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-mcat.el (riece-mcat-update): New function.
+	* Makefile.am (update-mcat): New target.
+	* COMPILE (riece-modules): Moved riece-mcat-japanese.el to
+	riece-mcat-modules.
+	(riece-mcat-modules): New variable.
+	(riece-examine-modules): Append riece-mcat-modules.
+	(riece-update-mcat): New function.
+
 2007-01-18  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-mcat.el: New file.

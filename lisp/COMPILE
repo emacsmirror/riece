@@ -49,8 +49,10 @@
 
 		riece-commands
 		riece-irc
-		riece
-		riece-mcat-japanese))))
+		riece))))
+
+(defvar riece-mcat-modules
+  '(riece-mcat-japanese))
 
 (defvar riece-icons
   '("riece-command-quit.xpm"
@@ -147,12 +149,31 @@
 
 (defun riece-examine-modules ()
   (let ((load-path (cons nil load-path)))
+    (require 'riece-mcat)
     (require 'riece-addon-modules)
     (append riece-modules
+	    riece-mcat-modules
 	    (mapcar #'car riece-addon-modules))))
 
 (defun riece-examine ()
   (princ (mapconcat #'symbol-name (riece-examine-modules) " ")))
+
+(defun riece-update-mcat ()
+  (let ((modules (riece-examine-modules))
+	(pointer riece-mcat-modules)
+	files)
+    (while pointer
+      (setq modules (delq (car pointer) modules)
+	    pointer (cdr pointer)))
+    (setq files (mapcar (lambda (module)
+			  (concat (symbol-name module) ".el"))
+			modules)
+	  pointer riece-mcat-modules)
+    (while pointer
+      (riece-mcat-update files (concat (symbol-name (car pointer)) ".el")
+			 (intern (concat (symbol-name (car pointer))
+					 "-alist")))
+      (setq pointer (cdr pointer)))))
 
 (defun riece-compile ()
   (riece-compile-modules (riece-examine-modules)))

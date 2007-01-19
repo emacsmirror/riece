@@ -53,3 +53,6 @@ compile-individually:
 		$(EMACS) $(FLAGS) -l COMPILE \
 			-f riece-compile-module $$i; \
 	done
+
+update-mcat:
+	$(EMACS) $(FLAGS) -l COMPILE -f riece-update-mcat
