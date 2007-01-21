@@ -63,12 +63,9 @@
 	(setq files (cdr files)))
       (setq message-list (sort message-list #'string-lessp))
       (while message-list
-	(if (equal (car message-list)
-		   (nth 1 message-list))
-	    (setq message-list (nthcdr 2 message-list))
-	  (unless (assoc (car message-list) alist)
-	    (setq alist (cons (list (car message-list)) alist)))
-	  (setq message-list (cdr message-list))))
+	(unless (assoc (car message-list) alist)
+	  (setq alist (cons (list (car message-list)) alist)))
+	(setq message-list (cdr message-list)))
       alist)))
 
 (defun riece-mcat-update (files mcat-file mcat-alist-symbol)
