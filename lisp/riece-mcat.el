@@ -89,7 +89,7 @@
 	    (delete-region (point) (progn (forward-sexp) (point))))
 	(set mcat-alist-symbol nil))
       (setq alist (riece-mcat-extract files (symbol-value mcat-alist-symbol)))
-      (insert "(defconst " (symbol-name mcat-alist) "\n  '(")
+      (insert "(defconst " (symbol-name mcat-alist-symbol) "\n  '(")
       (while alist
 	(insert "(" (pp-to-string (car (car alist))) " . "
 		(pp-to-string (cdr (car alist))) ")")
