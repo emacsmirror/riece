@@ -145,7 +145,7 @@
 	     (buffer (riece-channel-buffer channel-identity)))
 	(riece-insert-change
 	 buffer
-	 (format "%s (%s) has joined %s\n"
+	 (format (riece-mcat "%s (%s) has joined %s\n")
 		 (riece-format-identity user-identity t)
 		 (riece-user-get-user-at-host user)
 		 (riece-format-identity channel-identity t)))
@@ -156,7 +156,7 @@
 	   riece-dialogue-buffer)
 	 (concat
 	  (riece-concat-server-name
-	   (format "%s (%s) has joined %s"
+	   (format (riece-mcat "%s (%s) has joined %s")
 		   (riece-format-identity user-identity t)
 		   (riece-user-get-user-at-host user)
 		   (riece-format-identity channel-identity t)))
@@ -183,7 +183,7 @@
 	 buffer
 	 (concat
 	  (riece-concat-message
-	   (format "%s has left %s"
+	   (format (riece-mcat "%s has left %s")
 		   (riece-format-identity user-identity t)
 		   (riece-format-identity channel-identity t))
 	   message)
@@ -196,7 +196,7 @@
 	 (concat
 	  (riece-concat-server-name
 	   (riece-concat-message
-	    (format "%s has left %s"
+	    (format (riece-mcat "%s has left %s")
 		    (riece-format-identity user-identity t)
 		    (riece-format-identity channel-identity t))
 	    message))
@@ -223,7 +223,7 @@
        buffer
        (concat
 	(riece-concat-message
-	 (format "%s kicked %s out from %s"
+	 (format (riece-mcat "%s kicked %s out from %s")
 		 (riece-format-identity kicker-identity t)
 		 (riece-format-identity user-identity t)
 		 (riece-format-identity channel-identity t))
@@ -237,7 +237,7 @@
        (concat
 	(riece-concat-server-name
 	 (riece-concat-message
-	  (format "%s kicked %s out from %s\n"
+	  (format (riece-mcat "%s kicked %s out from %s\n")
 		 (riece-format-identity kicker-identity t)
 		 (riece-format-identity user-identity t)
 		 (riece-format-identity channel-identity t))
@@ -268,7 +268,7 @@
        buffers
        (concat
 	(riece-concat-message
-	 (format "%s has left IRC"
+	 (format (riece-mcat "%s has left IRC")
 		 (riece-format-identity user-identity t))
 	 message)
 	"\n"))
@@ -280,7 +280,7 @@
        (concat
 	(riece-concat-server-name
 	 (riece-concat-message
-	  (format "%s has left IRC"
+	  (format (riece-mcat "%s has left IRC")
 		  (riece-format-identity user-identity t))
 	  message))
 	"\n")))))
@@ -311,7 +311,7 @@
        buffers
        (concat
 	(riece-concat-message
-	 (format "%s killed %s"
+	 (format (riece-mcat "%s killed %s")
 		 (riece-format-identity killer-identity t)
 		 (riece-format-identity user-identity t))
 	 message)
@@ -324,7 +324,7 @@
        (concat
 	(riece-concat-server-name
 	 (riece-concat-message
-	  (format "%s killed %s"
+	  (format (riece-mcat "%s killed %s")
 		 (riece-format-identity killer-identity t)
 		 (riece-format-identity user-identity t))
 	  message))
@@ -342,7 +342,7 @@
      (list riece-dialogue-buffer riece-others-buffer)
      (concat
       (riece-concat-server-name
-       (format "%s invites %s to %s"
+       (format (riece-mcat "%s invites %s to %s")
 	       (riece-format-identity (riece-make-identity
 				       user riece-server-name))
 	       (riece-format-identity (riece-make-identity
@@ -367,7 +367,7 @@
     (let ((buffer (riece-channel-buffer channel-identity)))
       (riece-insert-change
        buffer
-       (format "Topic by %s: %s\n"
+       (format (riece-mcat "Topic by %s: %s\n")
 	       (riece-format-identity user-identity t)
 	       topic))
       (riece-insert-change
@@ -377,7 +377,7 @@
 	 riece-dialogue-buffer)
        (concat
 	(riece-concat-server-name
-	 (format "Topic on %s by %s: %s"
+	 (format (riece-mcat "Topic on %s by %s: %s")
 		 (riece-format-identity channel-identity t)
 		 (riece-format-identity user-identity t)
 		 topic))
@@ -397,7 +397,7 @@
 	     (buffer (riece-channel-buffer channel-identity)))
 	(riece-insert-change
 	 buffer
-	 (format "Mode by %s: %s\n"
+	 (format (riece-mcat "Mode by %s: %s\n")
 		 (riece-format-identity user-identity t)
 		 string))
 	(riece-insert-change
@@ -407,7 +407,7 @@
 	   riece-dialogue-buffer)
 	 (concat
 	  (riece-concat-server-name
-	   (format "Mode on %s by %s: %s"
+	   (format (riece-mcat "Mode on %s by %s: %s")
 		   (riece-format-identity channel-identity t)
 		   (riece-format-identity user-identity t)
 		   string))

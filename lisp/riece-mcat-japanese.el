@@ -27,7 +27,19 @@
 ;;; Code:
 
 (defconst riece-mcat-japanese-alist
-  '(("Sending QUIT...done" . "QUIT を送信しています...完了")
+  '(("%s killed %s" . "%s が %s を殺しました")
+    ("%s has left IRC" . "%s が IRC を離れました")
+    ("%s has left %s" . "%s が %s を離れました")
+    ("Topic on %s by %s: %s" . "%s のトピックが %s により設定されました: %s")
+    ("Topic by %s: %s\n" . "%s によるトピック設定: %s\n")
+    ("Mode on %s by %s: %s" . "%s のモードが %s により設定されました: %s")
+    ("Mode by %s: %s\n" . "%s によるモード設定: %s\n")
+    ("%s invites %s to %s" . "%s が %s を %s に招待しています")
+    ("%s kicked %s out from %s\n" . "%s が %s を %s から蹴り出しました\n")
+    ("%s kicked %s out from %s" . "%s が %s を %s から蹴り出しました")
+    ("%s (%s) has joined %s\n" . "%s (%s) が %s に参加しました")
+    ("%s (%s) has joined %s" . "%s (%s) が %s に参加しました")
+    ("Sending QUIT...done" . "QUIT を送信しています...完了")
     ("Sending QUIT..." . "QUIT を送信しています...")
     ("Sending QUIT to \"%s\"...done" . "\"%s\" に QUIT を送信しています...完了")
     ("Sending QUIT to \"%s\"..." . "\"%s\" に QUIT を送信しています...")
