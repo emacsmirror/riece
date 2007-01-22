@@ -87,7 +87,8 @@
 	    (delete-region (point) (progn (forward-sexp) (point))))
 	(set mcat-alist-symbol nil))
       (setq alist (mapcar (lambda (message)
-			    (or (assoc message (symbol-name mcat-alist-symbol))
+			    (or (assoc message
+				       (symbol-value mcat-alist-symbol))
 				(list message)))
 			  (riece-mcat-extract files)))
       (insert "(defconst " (symbol-name mcat-alist-symbol) "\n  '(")
