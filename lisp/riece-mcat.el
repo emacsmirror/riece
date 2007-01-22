@@ -46,7 +46,7 @@
 
 (defun riece-mcat-extract (files)
   (save-excursion
-    (let (message-list alist)
+    (let (message-list)
       (while files
 	(with-temp-buffer
 	  (insert-file-contents (car files))
@@ -61,12 +61,13 @@
 			 (riece-mcat-extract-from-form
 			  (read (current-buffer)))))))
 	(setq files (cdr files)))
-      (setq message-list (sort message-list #'string-lessp))
-      (while message-list
-	(unless (assoc (car message-list) alist)
-	  (setq alist (cons (list (car message-list)) alist)))
-	(setq message-list (cdr message-list)))
-      alist)))
+      (setq message-list (sort message-list #'string-lessp)
+	    pointer message-list)
+      (while pointer
+	(if (member (car pointer) (cdr pointer))
+	    (setcar pointer nil))
+	(setq pointer (cdr pointer)))
+      (delq nil message-list))))
 
 (defun riece-mcat-update (files mcat-file mcat-alist-symbol)
   "Update MCAT-FILE."
@@ -85,7 +86,10 @@
 	      (eval (read (current-buffer))))
 	    (delete-region (point) (progn (forward-sexp) (point))))
 	(set mcat-alist-symbol nil))
-      (setq alist (riece-mcat-extract files))
+      (setq alist (mapcar (lambda (message)
+			    (or (assoc message (symbol-name mcat-alist-symbol))
+				(list message)))
+			  (riece-mcat-extract files)))
       (insert "(defconst " (symbol-name mcat-alist-symbol) "\n  '(")
       (while alist
 	(insert "(" (pp-to-string (car (car alist))) " . "
