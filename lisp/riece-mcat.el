@@ -44,9 +44,9 @@
 	(delq nil (apply #'nconc
 			 (mapcar #'riece-mcat-extract-from-form form))))))
 
-(defun riece-mcat-extract (files alist)
+(defun riece-mcat-extract (files)
   (save-excursion
-    (let (message-list)
+    (let (message-list alist)
       (while files
 	(with-temp-buffer
 	  (insert-file-contents (car files))
@@ -85,7 +85,7 @@
 	      (eval (read (current-buffer))))
 	    (delete-region (point) (progn (forward-sexp) (point))))
 	(set mcat-alist-symbol nil))
-      (setq alist (riece-mcat-extract files (symbol-value mcat-alist-symbol)))
+      (setq alist (riece-mcat-extract files))
       (insert "(defconst " (symbol-name mcat-alist-symbol) "\n  '(")
       (while alist
 	(insert "(" (pp-to-string (car (car alist))) " . "
