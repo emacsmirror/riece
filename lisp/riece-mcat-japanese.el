@@ -27,7 +27,8 @@
 ;;; Code:
 
 (defconst riece-mcat-japanese-alist
-  '(("%d users on %s: " . "%d 人が %s にいます: ")
+  '(("%S: switch to %s; down-mouse-3: more options" . "%S: %s に移動: down-mouse-3: その他のオプション")
+    ("%d users on %s: " . "%d 人が %s にいます: ")
     ("%d users: " . "%d 人: ")
     ("%s (%s) has joined %s" . "%s (%s) が %s に参加しました")
     ("%s (%s) has joined %s\n" . "%s (%s) が %s に参加しました\n")
@@ -118,6 +119,7 @@
     ("Topic on %s by %s: %s" . "%s のトピックが %s により設定されました: %s")
     ("Topic: " . "トピック: ")
     ("Type \\[describe-mode] for help" . "ヘルプを見るには \\[describe-mode]")
+    ("Type \\[riece-command-join] to join the channel" . "チャンネルに参加するには \\[riece-command-join]")
     ("Unset +o for users" . "-o するユーザ")
     ("Unset +v for users" . "-v するユーザ")
     ("WHO pattern: " . "WHO のパターン: ")

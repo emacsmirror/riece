@@ -61,7 +61,7 @@
     ;; wid-edit (XEmacs only).
     (if (boundp 'help-echo-owns-message)
 	(setq help-echo-owns-message t))
-    (format "%S: switch to %s; down-mouse-3: more options"
+    (format (riece-mcat "%S: switch to %s; down-mouse-3: more options")
 	    (aref riece-mouse-2 0)
 	    ;; XEmacs will get a single widget arg; Emacs 21 will get
 	    ;; window, overlay, position.
@@ -78,7 +78,8 @@ This function is used as a callback for a channel button."
     (if (riece-identity-member channel riece-current-channels)
 	(riece-command-switch-to-channel channel)
       (message "%s" (substitute-command-keys
-		     "Type \\[riece-command-join] to join the channel")))))
+		     (riece-mcat
+		      "Type \\[riece-command-join] to join the channel"))))))
 
 (defun riece-identity-button-click (event)
   "Call widget-button-click and select the last selected window."
