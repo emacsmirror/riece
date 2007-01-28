@@ -43,7 +43,7 @@
     ("%s is running on %s: %s" . "%s が %s で動いています: %s")
     ("%s kicked %s out from %s" . "%s が %s を %s から蹴り出しました")
     ("%s kicked %s out from %s\n" . "%s が %s を %s から蹴り出しました\n")
-    ("%s killed %s" . "%s が %s を殺しました")
+    ("%s killed %s" . "%s が %s を KILL しました")
     ("%s users, topic: %s\n" . "%s 人、トピック: %s\n")
     ("%s: %s users, topic: %s" . "%s: %s 人、トピック: %s\n")
     ("Already registered" . "登録済みです")
