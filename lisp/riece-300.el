@@ -293,7 +293,7 @@
 	(let* ((channel-identity (riece-make-identity channel
 						      riece-server-name))
 	       (buffer (riece-channel-buffer channel-identity)))
-	  (riece-insert-info buffer (format (riece-mcat "Mode: ") mode-string
+	  (riece-insert-info buffer (concat (riece-mcat "Mode: ") mode-string
 					    "\n"))
 	  (riece-insert-info
 	   (if (and riece-channel-buffer-mode
