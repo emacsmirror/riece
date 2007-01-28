@@ -33,6 +33,7 @@
 (require 'riece-identity)
 (require 'riece-ctcp)			;for riece-ctcp-additional-clientinfo
 (require 'riece-ruby)
+(require 'riece-mcat)
 
 (defgroup riece-rdcc nil
   "DCC written in Ruby."
@@ -124,22 +125,22 @@ end
   (riece-ruby-set-output-handler name #'riece-rdcc-output-handler-2))
 
 (defun riece-rdcc-output-handler-2 (name output time)
-  (message "Sending %s...(%s/%d)"
+  (message (riece-mcat "Sending %s...(%s/%d)")
 	   (riece-ruby-property name 'riece-rdcc-request-file)
 	   (string-to-number output)
 	   (riece-ruby-property name 'riece-rdcc-request-size)))
 
 (defun riece-rdcc-exit-handler (name)
-  (message "Sending %s...done"
+  (message (riece-mcat "Sending %s...done")
 	   (riece-ruby-property name 'riece-rdcc-request-file)))
 
 (defun riece-command-dcc-send (user file)
   (interactive
    (let ((completion-ignore-case t))
      (list (riece-completing-read-identity
-	    "User: "
+	    (riece-mcat "User: ")
 	    (riece-get-users-on-server (riece-current-server-name)))
-	   (expand-file-name (read-file-name "File: ")))))
+	   (expand-file-name (read-file-name (riece-mcat "File: "))))))
   (let ((name (riece-ruby-execute
 	       (riece-ruby-substitute-variables
 		riece-rdcc-send-program
@@ -176,7 +177,7 @@ end
 	     (logand (lsh riece-rdcc-received-size -16) 255)
 	     (logand (lsh riece-rdcc-received-size -8) 255)
 	     (logand riece-rdcc-received-size 255)))
-    (message "Receiving %s from %s...(%s/%s)"
+    (message (riece-mcat "Receiving %s from %s...(%s/%s)")
 	     (file-name-nondirectory riece-rdcc-request-file)
 	     riece-rdcc-request-user
 	     (riece-rdcc-format-size riece-rdcc-received-size)
@@ -189,7 +190,7 @@ end
     (set-buffer (process-buffer process))
     (unless (= riece-rdcc-received-size riece-rdcc-request-size)
       (error "Premature end of file"))
-    (message "Receiving %s from %s...done"
+    (message (riece-mcat "Receiving %s from %s...done")
 	     (file-name-nondirectory riece-rdcc-request-file)
 	     riece-rdcc-request-user)
     (condition-case nil
@@ -224,7 +225,7 @@ end
 		 (let ((requests riece-rdcc-requests)
 		       (index 1))
 		   (while requests
-		     (princ (format "%2d: %s %s (%d bytes)\n"
+		     (princ (format (riece-mcat "%2d: %s %s (%d bytes)\n")
 				    index
 				    (car (car requests))
 				    (nth 1 (car requests))
@@ -246,8 +247,8 @@ end
        (list request
 	     (expand-file-name
 	      (read-file-name
-	       (concat "Save as (default "
-		       (file-name-nondirectory default-name) ") ")
+	       (format (riece-mcat "Save as (default %s) ")
+		       (file-name-nondirectory default-name))
 	       (file-name-directory default-name)
 	       default-name))))))
   (let* ((temp-file (expand-file-name
@@ -323,7 +324,8 @@ end
 		 (with-current-buffer (window-buffer (selected-window))
 		   (substitute-command-keys
 		    (format
-		     "Type \\[riece-command-dcc-receive] to receive"
+		     (riece-mcat
+		      "Type \\[riece-command-dcc-receive] to receive")
 		     user))))
 	(riece-insert-change buffer (format "DCC SEND from %s: %s (%s)\n"
 					    user file
