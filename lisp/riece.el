@@ -286,7 +286,8 @@ If optional argument CONFIRM is non-nil, ask which IRC server to connect."
 	(riece-insinuate-addon (car (car pointer)) riece-debug)
 	(setq pointer (cdr pointer))))
     (if (or confirm (null riece-server))
-	(setq riece-server (completing-read "Server: " riece-server-alist)))
+	(setq riece-server (completing-read (riece-mcat "Server: ")
+					    riece-server-alist)))
     (if (stringp riece-server)
 	(setq riece-server (riece-server-name-to-server riece-server)))
     (riece-create-buffers)
@@ -316,7 +317,7 @@ If optional argument CONFIRM is non-nil, ask which IRC server to connect."
 	  (setq pointer (cdr pointer))))
       (run-hooks 'riece-startup-hook)
       (message "%s" (substitute-command-keys
-		     "Type \\[describe-mode] for help")))))
+		     (riece-mcat "Type \\[describe-mode] for help"))))))
 
 (defun riece-exit ()
   (if riece-save-variables-are-dirty
@@ -333,8 +334,8 @@ If optional argument CONFIRM is non-nil, ask which IRC server to connect."
 	riece-channel-buffer nil
 	riece-channel-buffer-alist nil
 	riece-user-indicator nil
-	riece-long-channel-indicator "None"
-	riece-channel-list-indicator "No channel"
+	riece-long-channel-indicator (riece-mcat "None")
+	riece-channel-list-indicator (riece-mcat "No channel")
 	riece-away-indicator "-"
 	riece-operator-indicator "-"
 	riece-channel-status-indicator "-"

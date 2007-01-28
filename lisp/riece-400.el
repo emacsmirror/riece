@@ -26,6 +26,7 @@
 
 (require 'riece-globals)
 (require 'riece-misc)
+(require 'riece-mcat)
 
 (eval-when-compile
   (autoload 'riece-default-handle-numeric-reply "riece-handle"))
@@ -44,7 +45,7 @@
   "ERR_ERRONEUSNICKNAME	\"<nick> :Erroneous nickname\"."
   (let ((nickname
 	 (riece-handle-read-string
-	  (format "Erroneous nickname \"%s\".  Choose a new one: "
+	  (format (riece-mcat "Erroneous nickname \"%s\".  Choose a new one: ")
 		  (car (riece-split-parameters string))))))
     (if nickname
 	(riece-send-string (format "NICK %s\r\n" nickname)))))
@@ -53,14 +54,14 @@
   "ERR_NICKNAMEINUSE \"<nick> :Nickname is already in use\"."
   (let ((nickname
 	 (riece-handle-read-string
-	  (format "Nickname \"%s\" already in use.  Choose a new one: "
+	  (format (riece-mcat "Nickname \"%s\" already in use.  Choose a new one: ")
 		  (car (riece-split-parameters string))))))
     (if nickname
 	(riece-send-string (format "NICK %s\r\n" nickname)))))
 
 (defun riece-handle-464-message (prefix number name string)
   "ERR_PASSWDMISMATCH \":Password incorrect\"."
-  (message "Password incorrect from %s." prefix)
+  (message (riece-mcat "Password incorrect from %s.") prefix)
   (setq riece-reconnect-with-password t))
 
 (defun riece-handle-475-message (prefix number name string)
@@ -69,15 +70,14 @@
 	 (channel-identity (riece-make-identity (car parameters)
 						riece-server-name))
 	 key)
-    (message "%s: %s" (car parameters) (nth 1 parameters))
     (setq key
 	  (condition-case nil
 	      (let (inhibit-quit)
 		(riece-read-passwd
-		 (format "Key for %s: "
+		 (format (riece-mcat "Key for %s: ")
 			 (riece-format-identity channel-identity t))))
 	    (quit
-	     (message "Key for %s: Quit"
+	     (message (riece-mcat "Key for %s: Quit")
 		      (riece-format-identity channel-identity t))
 	     'quit)))
     (unless (eq key 'quit)

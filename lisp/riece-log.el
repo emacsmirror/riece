@@ -31,6 +31,7 @@
 
 (require 'riece-message)
 (require 'riece-button)
+(require 'riece-mcat)
 
 (defgroup riece-log nil
   "Save IRC logs."
@@ -237,8 +238,9 @@ If LINES is t, insert today's logs entirely."
   (when riece-log-flashback
     (riece-insert-info (current-buffer)
 		       (if (eq riece-log-flashback t)
-			   "Recent messages of the day:\n"
-			 (format "Recent messages up to %d lines:\n"
+			   (riece-mcat "Recent messages of the day:\n")
+			 (format (riece-mcat
+				  "Recent messages up to %d lines:\n")
 				 riece-log-flashback)))
     (let (buffer-read-only
 	  (point (goto-char (point-max))))

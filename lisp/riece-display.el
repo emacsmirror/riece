@@ -29,6 +29,7 @@
 (require 'riece-misc)
 (require 'riece-layout)
 (require 'riece-signal)
+(require 'riece-mcat)
 
 (autoload 'derived-mode-class "derived")
 
@@ -280,7 +281,7 @@ Local to the buffer in `riece-buffer-list'.")
   (setq riece-channel-indicator
 	(if riece-current-channel
 	    (riece-format-identity riece-current-channel)
-	  "None")))
+	  (riece-mcat "None"))))
 
 (defun riece-update-long-channel-indicator ()
   (setq riece-long-channel-indicator
@@ -292,7 +293,7 @@ Local to the buffer in `riece-buffer-list'.")
 		  riece-current-channel
 		  (riece-format-identity riece-current-channel)))
 	      (riece-format-identity riece-current-channel))
-	  "None")))
+	  (riece-mcat "None"))))
 
 (defun riece-format-identity-for-channel-list-indicator (index identity)
   (or (run-hook-with-args-until-success
@@ -330,7 +331,7 @@ Local to the buffer in `riece-buffer-list'.")
 	  (setq pointer (cdr (cdr pointer))))
 	(setq riece-channel-list-indicator
 	      (riece-normalize-modeline-string riece-channel-list-indicator)))
-    (setq riece-channel-list-indicator "No channel")))
+    (setq riece-channel-list-indicator (riece-mcat "No channel"))))
 
 (defun riece-update-status-indicators ()
   (let ((server-name (riece-current-server-name)))
@@ -421,10 +422,9 @@ Local to the buffer in `riece-buffer-list'.")
       (riece-channel-mode)
       (let (buffer-read-only)
 	(riece-insert-info (current-buffer)
-			   (concat "Created on "
+			   (format (riece-mcat "Created on %s\n")
 				   (funcall riece-format-time-function
-					    (current-time))
-				   "\n"))
+					    (current-time))))
 	(run-hook-with-args 'riece-channel-buffer-create-functions identity)))
     (current-buffer)))
 
