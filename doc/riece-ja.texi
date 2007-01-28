@@ -477,12 +477,64 @@ IRC コマンドを直接送ります(@code{riece-command-raw})
 @node Add-ons,  , Connecting to multiple servers, Advanced usage
 @section Add-ons
 
-Riece では、ユーザが新たな機能を追加し、自由に取り外しできるよう、アドオ
-ンと呼ばれる機構を用意しています。アドオンは通常の elisp モジュールを拡
-張したもので、ロードの順番だけではなく、初期化処理の依存関係も記述するこ
-とができます。
+Riece では、雑多な機能を選択的に利用できるよう、アドオンと呼ばれる機構
+を用意しています。アドオンは通常の elisp モジュールを拡張したもので、
+安全な取り外しや、アドオン間の初期化処理の依存関係などの面倒をみます。
 
-現在、以下のモジュールがアドオンとして実装されています：
+@menu
+* Add-on browser::              アドオンの一覧表示
+* Available add-ons::           アドオンの一覧
+@end menu
+
+@node Add-on browser
+@comment  node-name,  next,  previous,  up
+@subsection Add-on browser
+
+Riece の動作中に、アドオンを一覧表示するにはコマンドバッファで 
+@kbd{C-c ^} とします。すると、次のように表示されます。
+
+@example
++ riece-alias         Define aliases for IRC names.
+  riece-async         Connect to IRC server via async proxy.
+  riece-biff          Be notified if messages arrives.
++ riece-button        Display useful buttons in IRC buffers.
++ riece-ctcp          CTCP (Client To Client Protocol) support.
++ riece-ctlseq        Mark up control sequences in IRC buffers.
+@end example
+
+各行の左端のマークはアドオンの状態を表わしています。@samp{+} は動作中
+のアドオン、空白は読み込まれていないアドオンです。ここで、riece-button 
+の動作を一旦停止したい場合、四行目の先頭で @kbd{-} とします。すると、
+先頭のマークが @samp{+} から @samp{-} に変化します。
+
+@example
++ riece-alias         Define aliases for IRC names.
+  riece-async         Connect to IRC server via async proxy.
+  riece-biff          Be notified if messages arrives.
+- riece-button        Display useful buttons in IRC buffers.
++ riece-ctcp          CTCP (Client To Client Protocol) support.
++ riece-ctlseq        Mark up control sequences in IRC buffers.
+@end example
+
+さらに、@samp{u} とすると、riece-button をアドオンの設定から外します。
+この状態で、@samp{s} または @samp{M-x riece-command-save-variables} と
+すると、設定を保存します。
+
+@file{~/.riece/init} でアドオンを組み込むには @code{riece-addons} を設
+定します。たとえば @samp{riece-alias} を組み込む場合には、以下のように
+記述します。
+@vindex riece-addons
+
+@example
+(add-to-list 'riece-addons 'riece-mini)
+@end example
+
+@node Available add-ons
+@comment  node-name,  next,  previous,  up
+@subsection Available add-ons
+
+現在、利用可能なアドオンは次の通りです。これらのうちの多くは標準で組み
+込まれています。
 
 @table @samp
 @item riece-alias
@@ -533,6 +585,8 @@ IRC サーバとの接続を保持
 @item riece-lsdb
 アドレス帳 LSDB (Lovely Sister Database)
 @uref{http://lsdb.sourceforge.jp} と連携
+@item riece-mcat
+メッセージカタログ
 @item riece-menu
 メニューバーにメニューを登録
 @item riece-mini
@@ -560,17 +614,6 @@ SKK 使用時に変換モードの印を発言から取り除く
 @item riece-yank
 @kbd{C-c y} で kill-ring から文字列を送信
 @end table
-
-これらのうちの多くは標準で組み込まれています。
-
-アドオンを組み込むには @code{riece-addons} を設定します。たとえば 
-@samp{riece-alias} を組み込む場合には、@file{~/.riece/init} に以下のよ
-うに記述します。
-@vindex riece-addons
-
-@example
-(add-to-list 'riece-addons 'riece-mini)
-@end example
 
 @node Tips, Index, Advanced usage, Top
 @comment  node-name,  next,  previous,  up
