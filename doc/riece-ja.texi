@@ -483,15 +483,14 @@ Riece では、雑多な機能を選択的に利用できるよう、アドオンと呼ばれる機構
 
 @menu
 * Add-on browser::              アドオンの一覧表示
-* Available add-ons::           アドオンの一覧
+* Available add-ons::           標準添付のアドオンの紹介
 @end menu
 
-@node Add-on browser
-@comment  node-name,  next,  previous,  up
+@node Add-on browser, Available add-ons, Add-ons, Add-ons
 @subsection Add-on browser
 
-Riece の動作中に、アドオンを一覧表示するにはコマンドバッファで 
-@kbd{C-c ^} とします。すると、次のように表示されます。
+Riece の動作中にアドオンの一覧を眺めるにはアドオンブラウザを使うと便利です。
+コマンドバッファで @kbd{C-c ^} とすると、次のように表示されます。
 
 @example
 + riece-alias         Define aliases for IRC names.
@@ -503,9 +502,11 @@ Riece の動作中に、アドオンを一覧表示するにはコマンドバッファで
 @end example
 
 各行の左端のマークはアドオンの状態を表わしています。@samp{+} は動作中
-のアドオン、空白は読み込まれていないアドオンです。ここで、riece-button 
-の動作を一旦停止したい場合、四行目の先頭で @kbd{-} とします。すると、
-先頭のマークが @samp{+} から @samp{-} に変化します。
+のアドオン、空白は読み込まれていないアドオンです。
+
+ここで、riece-button の動作を一旦停止したい場合、四行目の先頭で 
+@kbd{-} とします。すると、先頭のマークが @samp{+} から @samp{-} に変化
+します。
 
 @example
 + riece-alias         Define aliases for IRC names.
@@ -529,12 +530,11 @@ Riece の動作中に、アドオンを一覧表示するにはコマンドバッファで
 (add-to-list 'riece-addons 'riece-mini)
 @end example
 
-@node Available add-ons
-@comment  node-name,  next,  previous,  up
+@node Available add-ons,  , Add-on browser, Add-ons
 @subsection Available add-ons
 
-現在、利用可能なアドオンは次の通りです。これらのうちの多くは標準で組み
-込まれています。
+利用可能なアドオンは次の通りです。これらのうちの多くは標準で組み込まれ
+ています。
 
 @table @samp
 @item riece-alias
@@ -565,7 +565,7 @@ EasyPG @uref{http://www.easypg.org} による会話の暗号化
 @item riece-guess
 色々な方法で移動先のチャンネルを推測
 @item reice-hangman
-チャンネル内で hangman(6) で遊ぶ
+チャンネル内で hangman で遊ぶ
 @item riece-highlight
 バッファの色付け
 @item riece-history
