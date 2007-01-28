@@ -107,7 +107,7 @@
 	      t)))
     (riece-display-message
      (riece-make-message (riece-current-nickname) riece-current-channel
-			 (concat "[decrypted:" string "]") nil t))
+			 (concat "[encrypted:" string "]") nil t))
     (let ((next-line-add-newlines t))
       (next-line 1))))
 
@@ -162,7 +162,7 @@
 	      (progn
 		(riece-message-set-text
 		 message
-		 (format "[decrypted:%s]"
+		 (format "[encrypted:%s]"
 			 (riece-epg-decrypt-string-for-identity
 			  context string (riece-message-target message)))))
 	    (error
@@ -205,7 +205,7 @@
       (delete-region from to)
       (save-excursion
 	(goto-char from)
-	(insert "[decrypted:" plain "]")))))
+	(insert "[encrypted:" plain "]")))))
 
 (defun riece-epg-requires ()
   (if (memq 'riece-button riece-addons)
