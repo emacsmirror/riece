@@ -27,7 +27,7 @@
 ;;; Code:
 
 (defconst riece-mcat-japanese-alist
-  '(("%S: switch to %s; down-mouse-3: more options" . "%S: %s に移動: down-mouse-3: その他のオプション")
+  '(("%S: switch to %s; down-mouse-3: more options" . "%S: %s に移動; down-mouse-3: その他のオプション")
     ("%d users on %s: " . "%d 人が %s にいます: ")
     ("%d users: " . "%d 人: ")
     ("%s (%s) has joined %s" . "%s (%s) が %s に参加しました")
