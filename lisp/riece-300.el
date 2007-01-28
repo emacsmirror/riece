@@ -68,7 +68,7 @@
 	      (riece-concat-server-name
 	       (riece-concat-user-status
 		status
-		(format "%s is (%s)"
+		(format (riece-mcat "%s is (%s)")
 			(riece-format-identity
 			 (riece-make-identity user riece-server-name)
 			 t)
@@ -81,7 +81,7 @@
    (list riece-dialogue-buffer riece-others-buffer)
    (concat
     (riece-concat-server-name
-     (concat "Online: "
+     (concat (riece-mcat "Online: ")
 	     (mapconcat
 	      (lambda (user)
 		(riece-format-identity
@@ -106,7 +106,7 @@
 	 (list riece-dialogue-buffer riece-others-buffer)
 	 (concat
 	  (riece-concat-server-name
-	   (format "%s is away: %s"
+	   (format (riece-mcat "%s is away: %s")
 		   (riece-format-identity
 		    (riece-make-identity user riece-server-name)
 		    t)
@@ -139,7 +139,7 @@
 	 (list riece-dialogue-buffer riece-others-buffer)
 	 (concat
 	  (riece-concat-server-name
-	   (format "%s is %s (%s)"
+	   (format (riece-mcat "%s is %s (%s)")
 		   (riece-format-identity
 		    (riece-make-identity user riece-server-name)
 		    t)
@@ -155,7 +155,7 @@
        (list riece-dialogue-buffer riece-others-buffer)
        (concat
 	(riece-concat-server-name
-	 (format "on via server %s: %s"
+	 (format (riece-mcat "on via server %s: %s")
 		 (match-string 2 string)
 		 (substring string (match-end 0))))
 	"\n"))))
@@ -167,10 +167,10 @@
 	 (list riece-dialogue-buffer riece-others-buffer)
 	 (concat
 	  (riece-concat-server-name
-	   (concat (riece-format-identity
+	   (format "%s is an IRC operator"
+		   (riece-format-identity
 		    (riece-make-identity user riece-server-name)
-		    t)
-		   " is an IRC operator"))
+		    t)))
 	  "\n")))))
 
 (defun riece-handle-317-message (prefix number name string)
@@ -179,15 +179,16 @@
        string)
       (let* ((user (match-string 1 string))
 	     (seconds (string-to-number (match-string 2 string)))
-	     (units (list (cons (/ seconds 60 60 24) "days")
-			  (cons (mod (/ seconds 60 60) 24) "hours")
-			  (cons (mod (/ seconds 60) 60) "minutes")
-			  (cons (mod seconds 60) "seconds"))))
+	     (units (list (cons (/ seconds 60 60 24) (riece-mcat "days"))
+			  (cons (mod (/ seconds 60 60) 24)
+				(riece-mcat "hours"))
+			  (cons (mod (/ seconds 60) 60) (riece-mcat "minutes"))
+			  (cons (mod seconds 60) (riece-mcat "seconds")))))
 	(riece-insert-info
 	 (list riece-dialogue-buffer riece-others-buffer)
 	 (concat
 	  (riece-concat-server-name
-	   (format "%s is %s idle"
+	   (format (riece-mcat "%s is %s idle")
 		   (riece-format-identity
 		    (riece-make-identity user riece-server-name)
 		    t)
@@ -236,7 +237,7 @@
        (list riece-dialogue-buffer riece-others-buffer)
        (concat
 	(riece-concat-server-name
-	 (format "%s is running on %s: %s"
+	 (format (riece-mcat "%s is running on %s: %s")
 		 (match-string 1 string)
 		 (match-string 2 string)
 		 (substring string (match-end 0))))
@@ -270,7 +271,8 @@
 							 channel-identity))
 	  topic (nth 2 parameters))
     (riece-channel-set-topic (riece-get-channel channel) topic)
-    (riece-insert-info buffer (concat visible " users, topic: " topic "\n"))
+    (riece-insert-info buffer (format (riece-mcat "%s users, topic: %s\n")
+				      visible topic))
     (riece-insert-info
      (if (and riece-channel-buffer-mode
 	      (not (eq buffer riece-channel-buffer)))
@@ -278,7 +280,7 @@
        riece-dialogue-buffer)
      (concat
       (riece-concat-server-name
-       (format "%s: %s users, topic: %s"
+       (format (riece-mcat "%s: %s users, topic: %s")
 	       (riece-format-identity channel-identity t) visible topic))
       "\n"))))
 
@@ -291,7 +293,8 @@
 	(let* ((channel-identity (riece-make-identity channel
 						      riece-server-name))
 	       (buffer (riece-channel-buffer channel-identity)))
-	  (riece-insert-info buffer (concat "Mode: " mode-string "\n"))
+	  (riece-insert-info buffer (format (riece-mcat "Mode: ") mode-string
+					    "\n"))
 	  (riece-insert-info
 	   (if (and riece-channel-buffer-mode
 		    (not (eq buffer riece-channel-buffer)))
@@ -299,7 +302,7 @@
 	     riece-dialogue-buffer)
 	   (concat
 	    (riece-concat-server-name
-	     (format "Mode for %s: %s"
+	     (format (riece-mcat "Mode for %s: %s")
 		     (riece-format-identity channel-identity t)
 		     mode-string))
 	    "\n"))))))
@@ -317,7 +320,7 @@
 							   channel-identity))
 	    topic (nth 1 parameters))
       (riece-channel-set-topic (riece-get-channel channel) topic)
-      (riece-insert-info buffer (concat "Topic: " topic "\n"))
+      (riece-insert-info buffer (concat (riece-mcat "Topic: ") topic "\n"))
       (riece-insert-info
        (if (and riece-channel-buffer-mode
 		(not (eq buffer riece-channel-buffer)))
@@ -325,7 +328,7 @@
 	 riece-dialogue-buffer)
        (concat
 	(riece-concat-server-name
-	 (format "Topic for %s: %s"
+	 (format (riece-mcat "Topic for %s: %s")
 		 (riece-format-identity channel-identity t)
 		 topic))
 	"\n")))
@@ -343,7 +346,7 @@
 	     (user (match-string 1 string))
 	     (channel-identity (riece-make-identity channel riece-server-name))
 	     (buffer (riece-channel-buffer channel-identity)))
-	(riece-insert-info buffer (concat "Inviting " user "\n"))
+	(riece-insert-info buffer (format (riece-mcat "Inviting %s\n") user))
 	(riece-insert-info
 	 (if (and riece-channel-buffer-mode
 		  (not (eq buffer riece-channel-buffer)))
@@ -351,7 +354,7 @@
 	   riece-dialogue-buffer)
 	 (concat
 	  (riece-concat-server-name
-	   (format "Inviting %s to %s" user
+	   (format (riece-mcat "Inviting %s to %s") user
 		   (riece-format-identity channel-identity t)))
 	  "\n")))))
 
@@ -458,7 +461,8 @@
 	(riece-naming-assert-channel-users users channel)
 	(riece-insert-info
 	 buffer
-	 (concat (format "%d users: " (length users)) string "\n"))
+	 (concat (format (riece-mcat "%d users: ") (length users)) string
+		 "\n"))
 	(riece-insert-info
 	 (if (and riece-channel-buffer-mode
 		  (not (eq buffer riece-channel-buffer)))
@@ -466,7 +470,7 @@
 	   riece-dialogue-buffer)
 	 (concat
 	  (riece-concat-server-name
-	   (concat (format "%d users on %s: "
+	   (concat (format (riece-mcat "%d users on %s: ")
 			   (length users)
 			   (riece-format-identity channel-identity t))
 		   string))
