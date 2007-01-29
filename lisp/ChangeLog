@@ -1,5 +1,9 @@
 2007-01-29  Daiki Ueno  <ueno@unixuser.org>
 
+	* Riece: Version 3.1.2 released.
+
+2007-01-29  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-ctcp.el (riece-handle-ctcp-ping-request): Removed useless
 	argument for `format'.
 	* riece-mcat.el (riece-mcat-extract): New local variable `pointer'.

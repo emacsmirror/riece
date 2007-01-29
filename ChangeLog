@@ -1,3 +1,8 @@
+2007-01-29  Daiki Ueno  <ueno@unixuser.org>
+
+	* Riece: Version 3.1.2 released.
+	* configure.ac: Bump up version to 3.1.2.
+
 2006-12-18  Daiki Ueno  <ueno@unixuser.org>
 
 	* configure.ac: Generate lisp/riece-package-info.el.
