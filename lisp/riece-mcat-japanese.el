@@ -27,7 +27,7 @@
 ;;; Code:
 
 (defconst riece-mcat-japanese-alist
-  '(("\nSymbols in the leftmost column:\n\n   +     The add-on is enabled.\n   -     The add-on is disabled.\n   ?     The add-on is not insinuated.\n         The add-on is not loaded.\n" . "\n左端のシンボル:\n\n   +     有効なアドオン\n   -     無効なアドオン\n   ?     設定に組み込まれていないアドオン\n         ロードされていないアドオン\n")
+  '(("\nSymbols in the leftmost column:\n\n   +     The add-on is enabled.\n   -     The add-on is disabled.\n   ?     The add-on is not insinuated.\n         The add-on is not loaded.\n" . "\n左端のシンボル:\n\n   +     有効なアドオン\n   -     無効なアドオン\n   ?     組み込まれていないアドオン\n         ロードされていないアドオン\n")
     ("\nUseful keys:\n\n   `\\[riece-command-enable-addon]' to enable the current add-on.\n   `\\[riece-command-disable-addon]' to disable the current add-on.\n   `\\[riece-command-insinuate-addon]' to insinuate the current add-on.\n   `\\[riece-command-uninstall-addon]' to uninstall the current add-on.\n   `\\[riece-command-unload-addon]' to unload the current add-on.\n   `\\[riece-command-save-variables]' to save the current setting.\n" . "\n便利なキー:\n\n   `\\[riece-command-enable-addon]' アドオンを有効化\n   `\\[riece-command-disable-addon]' アドオンを無効化\n   `\\[riece-command-insinuate-addon]' アドオンを組み込み\n   `\\[riece-command-uninstall-addon]' アドオンの除外\n   `\\[riece-command-unload-addon]' アドオンをアンロード\n   `\\[riece-command-save-variables]' 設定を保存\n")
     ("%2d: %s %s (%d bytes)\n" . "%2d: %s %s (%d バイト)\n")
     ("%S: switch to %s; down-mouse-3: more options" . "%S: %s に移動; down-mouse-3: その他のオプション")
