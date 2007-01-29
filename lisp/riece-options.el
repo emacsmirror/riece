@@ -29,7 +29,9 @@
 
 ;; User modifiable variables.
 (defgroup riece nil
-  "Riece specific customize group.")
+  "Riece specific customize group."
+  :prefix "riece-"
+  :group 'applications)
 
 (defgroup riece-options nil
   "Riece user customizable variables."

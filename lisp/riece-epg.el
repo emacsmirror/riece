@@ -32,6 +32,7 @@
 (autoload 'epg-encrypt-string "epg")
 (autoload 'epg-passphrase-callback-function "epg")
 (autoload 'epg-context-set-passphrase-callback "epg")
+(autoload 'epg-cancel "epg")
 
 (eval-when-compile
   (autoload 'riece-command-send-message "riece-commands"))

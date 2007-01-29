@@ -46,7 +46,7 @@
 
 (defun riece-mcat-extract (files)
   (save-excursion
-    (let (message-list)
+    (let (message-list pointer)
       (while files
 	(with-temp-buffer
 	  (insert-file-contents (car files))

@@ -118,7 +118,7 @@
     (riece-send-string
      (if string
 	 (format "NOTICE %s :\1PING %s\1\r\n" user string)
-       (format "NOTICE %s :\1PING\1\r\n" user string)))
+       (format "NOTICE %s :\1PING\1\r\n" user)))
     (riece-insert-change buffer (format "CTCP PING from %s\n" user))
     (riece-insert-change
      (if (and riece-channel-buffer-mode

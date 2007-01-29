@@ -1,3 +1,11 @@
+2007-01-29  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-ctcp.el (riece-handle-ctcp-ping-request): Removed useless
+	argument for `format'.
+	* riece-mcat.el (riece-mcat-extract): New local variable `pointer'.
+	* riece-epg.el (epg-cancel): Autoload.
+	* riece-options.el (riece): Specify :group.
+
 2007-01-28  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-coding.el (riece--encode-coding-string): New alias.
