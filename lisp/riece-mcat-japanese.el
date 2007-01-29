@@ -141,7 +141,7 @@
     ("Sending QUIT to \"%s\"...done" . "\"%s\" に QUIT を送信しています...完了")
     ("Sending QUIT..." . "QUIT を送信しています...")
     ("Sending QUIT...done" . "QUIT を送信しています...完了")
-    ("Server: " . "サーバ")
+    ("Server: " . "サーバ: ")
     ("Set +o for users" . "+o するユーザ")
     ("Set +v for users" . "+v するユーザ")
     ("Set topic: " . "新しいトピック: ")
