@@ -2,8 +2,6 @@
 
 ** Message catalog. (ueno)
 
-** Support XEmacs compiled with --with-mule=no --with-file-coding=no. (ueno)
-
 * Major changes in 3.1.1
 
 ** riece-async works again. (ueno)
