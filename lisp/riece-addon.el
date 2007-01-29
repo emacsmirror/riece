@@ -29,6 +29,7 @@
 (require 'riece-compat)
 (require 'riece-misc)
 (require 'riece-addon-modules)
+(require 'riece-mcat)
 
 (defgroup riece-addon-list nil
   "Add-on listing."
@@ -205,12 +206,12 @@
 (defun riece-insinuate-addon-1 (addon verbose)
   (if (get addon 'riece-addon-insinuated)
       (if verbose
-	  (message "Add-on %S is already insinuated" addon))
+	  (message (riece-mcat "Add-on %S is already insinuated") addon))
     (require addon)
     (funcall (intern (concat (symbol-name addon) "-insinuate")))
     (put addon 'riece-addon-insinuated t)
     (if verbose
-	(message "Add-on %S is insinuated" addon))
+	(message (riece-mcat "Add-on %S is insinuated") addon))
     (unless (get addon 'riece-addon-default-disabled)
       (riece-enable-addon addon t))))
 
@@ -232,7 +233,8 @@
     (setq addons (nreverse addons))
     (if (and (> (length addons) 1)
 	     (eq verbose 'ask)
-	     (not (y-or-n-p (format "%s will be insinuated.  Continue? "
+	     (not (y-or-n-p (format (riece-mcat
+				     "%s will be insinuated.  Continue? ")
 				    (mapconcat #'symbol-name addons ", ")))))
 	(error "Insinuate operation was cancelled"))
     (while addons
@@ -242,7 +244,7 @@
 (defun riece-uninstall-addon (addon &optional verbose)
   (if (not (get addon 'riece-addon-insinuated))
       (if verbose
-	  (message "Add-on %S is not insinuated" addon))
+	  (message (riece-mcat "Add-on %S is not insinuated") addon))
     (let ((entry (assq addon riece-addon-dependencies))
 	  (uninstall (intern-soft (concat (symbol-name addon) "-uninstall"))))
       (if entry
@@ -265,35 +267,35 @@
 		  (riece-resolve-addons
 		   (delq addon (mapcar #'car riece-addon-dependencies))))))
       (if verbose
-	  (message "Add-on %S is uninstalled" addon)))))
+	  (message (riece-mcat "Add-on %S is uninstalled") addon)))))
 
 (defun riece-enable-addon (addon &optional verbose)
   (unless (get addon 'riece-addon-insinuated)
     (error "Add-on %S is not insinuated" addon))
   (if (get addon 'riece-addon-enabled)
       (if verbose
-	  (message "Add-on %S is already enabled" addon))
+	  (message (riece-mcat "Add-on %S is already enabled") addon))
     (let ((enable (intern-soft (concat (symbol-name addon) "-enable"))))
       (if (and enable
 	       (fboundp enable))
 	  (funcall enable))
       (put addon 'riece-addon-enabled t)
       (if verbose
-	  (message "Add-on %S enabled" addon)))))
+	  (message (riece-mcat "Add-on %S enabled") addon)))))
 
 (defun riece-disable-addon (addon &optional verbose)
   (unless (get addon 'riece-addon-insinuated)
     (error "Add-on %S is not insinuated" addon))
   (if (not (get addon 'riece-addon-enabled))
       (if verbose
-	  (message "Add-on %S is already disabled" addon))
+	  (message (riece-mcat "Add-on %S is already disabled") addon))
     (let ((disable (intern-soft (concat (symbol-name addon) "-disable"))))
       (if (and disable
 	       (fboundp disable))
 	  (funcall disable))
       (put addon 'riece-addon-enabled nil)
       (if verbose
-	  (message "Add-on %S disabled" addon)))))
+	  (message (riece-mcat "Add-on %S disabled") addon)))))
 
 (put 'riece-addon-list-mode 'font-lock-defaults
      '(riece-addon-list-font-lock-keywords t))
@@ -334,7 +336,7 @@ All normal editing commands are turned off."
 			(if (and description
 				 (boundp description))
 			    (symbol-value description)
-			  "(no description)"))
+			  (riece-mcat "(no description)")))
 		  module-description-alist)
 	    pointer (cdr pointer)))
     (setq pointer riece-addon-modules)
@@ -372,15 +374,15 @@ All normal editing commands are turned off."
 		      (cdr (car pointer))))
       (put-text-property point (point) 'riece-addon (car (car pointer)))
       (setq pointer (cdr pointer)))
-    (insert "
+    (insert (riece-mcat "
 Symbols in the leftmost column:
 
    +     The add-on is enabled.
    -     The add-on is disabled.
    ?     The add-on is not insinuated.
          The add-on is not loaded.
-")
-    (insert (substitute-command-keys "
+"))
+    (insert (substitute-command-keys (riece-mcat "
 Useful keys:
 
    `\\[riece-command-enable-addon]' to enable the current add-on.
@@ -389,7 +391,7 @@ Useful keys:
    `\\[riece-command-uninstall-addon]' to uninstall the current add-on.
    `\\[riece-command-unload-addon]' to unload the current add-on.
    `\\[riece-command-save-variables]' to save the current setting.
-"))
+")))
     (goto-char (point-min))
     (pop-to-buffer (current-buffer))
     (delete-other-windows)))
@@ -408,7 +410,7 @@ Useful keys:
     (or (if (eq major-mode 'riece-addon-list-mode)
 	    (get-text-property (point) 'riece-addon))
 	(intern-soft
-	 (completing-read "Add-on: "
+	 (completing-read (riece-mcat "Add-on: ")
 			  (mapcar (lambda (dependency)
 				    (list (symbol-name (car dependency))))
 				  riece-addon-dependencies)
@@ -431,7 +433,7 @@ Useful keys:
     (or (if (eq major-mode 'riece-addon-list-mode)
 	    (get-text-property (point) 'riece-addon))
 	(intern-soft
-	 (completing-read "Add-on: "
+	 (completing-read (riece-mcat "Add-on: ")
 			  (mapcar (lambda (dependency)
 				    (list (symbol-name (car dependency))))
 				  riece-addon-dependencies)
@@ -453,7 +455,7 @@ Useful keys:
     (or (if (eq major-mode 'riece-addon-list-mode)
 	    (get-text-property (point) 'riece-addon))
 	(intern-soft
-	 (completing-read "Add-on: "
+	 (completing-read (riece-mcat "Add-on: ")
 			  (mapcar (lambda (dependency)
 				    (list (symbol-name (car dependency))))
 				  riece-addon-modules)
@@ -471,7 +473,7 @@ Useful keys:
     (or (if (eq major-mode 'riece-addon-list-mode)
 	    (get-text-property (point) 'riece-addon))
 	(intern-soft
-	 (completing-read "Add-on: "
+	 (completing-read (riece-mcat "Add-on: ")
 			  (mapcar (lambda (dependency)
 				    (list (symbol-name (car dependency))))
 				  riece-addon-dependencies)
@@ -489,7 +491,7 @@ Useful keys:
     (or (if (eq major-mode 'riece-addon-list-mode)
 	    (get-text-property (point) 'riece-addon))
 	(intern-soft
-	 (completing-read "Add-on: "
+	 (completing-read (riece-mcat "Add-on: ")
 			  (mapcar (lambda (dependency)
 				    (list (symbol-name (car dependency))))
 				  riece-addon-dependencies)
@@ -498,9 +500,9 @@ Useful keys:
 			  t)))))
   (riece-uninstall-addon addon t)
   (if (get addon 'riece-addon-not-unloadable)
-      (message "Add-on %S is not allowed to unload" addon)
+      (message (riece-mcat "Add-on %S is not allowed to unload") addon)
     (unload-feature addon)
-    (message "Add-on %S is unloaded" addon))
+    (message (riece-mcat "Add-on %S is unloaded") addon))
   (when (eq major-mode 'riece-addon-list-mode)
     (riece-command-list-addons)
     (riece-addon-list-set-point addon)))
