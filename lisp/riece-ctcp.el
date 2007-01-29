@@ -33,6 +33,7 @@
 (require 'riece-highlight)
 (require 'riece-display)
 (require 'riece-debug)
+(require 'riece-mcat)
 
 (defface riece-ctcp-action-face
   '((((class color)
@@ -104,7 +105,7 @@
        riece-dialogue-buffer)
      (concat
       (riece-concat-server-name
-       (format "CTCP VERSION from %s (%s) to %s"
+       (format (riece-mcat "CTCP VERSION from %s (%s) to %s")
 	       user
 	       (riece-strip-user-at-host (riece-prefix-user-at-host prefix))
 	       (riece-format-identity target-identity t)))
@@ -127,7 +128,7 @@
        riece-dialogue-buffer)
      (concat
       (riece-concat-server-name
-       (format "CTCP PING from %s (%s) to %s"
+       (format (riece-mcat "CTCP PING from %s (%s) to %s")
 	       user
 	       (riece-strip-user-at-host (riece-prefix-user-at-host prefix))
 	       (riece-format-identity target-identity t)))
@@ -163,7 +164,7 @@
        riece-dialogue-buffer)
      (concat
       (riece-concat-server-name
-       (format "CTCP CLIENTINFO from %s (%s) to %s"
+       (format (riece-mcat "CTCP CLIENTINFO from %s (%s) to %s")
 	       user
 	       (riece-strip-user-at-host (riece-prefix-user-at-host prefix))
 	       (riece-format-identity target-identity t)))
@@ -204,7 +205,8 @@
 	 (time (format-time-string "%c")))
     (riece-send-string
      (format "NOTICE %s :\1TIME %s\1\r\n" user time))
-    (riece-insert-change buffer (format "CTCP TIME from %s\n" user))
+    (riece-insert-change buffer (format (riece-mcat "CTCP TIME from %s\n")
+					user))
     (riece-insert-change
      (if (and riece-channel-buffer-mode
 	      (not (eq buffer riece-channel-buffer)))
@@ -212,7 +214,7 @@
        riece-dialogue-buffer)
      (concat
       (riece-concat-server-name
-       (format "CTCP TIME from %s (%s) to %s"
+       (format (riece-mcat "CTCP TIME from %s (%s) to %s")
 	       user
 	       (riece-strip-user-at-host (riece-prefix-user-at-host prefix))
 	       (riece-format-identity target-identity t)))
@@ -254,7 +256,7 @@
    (list riece-dialogue-buffer riece-others-buffer)
    (concat
     (riece-concat-server-name
-     (format "CTCP VERSION for %s (%s) = %s"
+     (format (riece-mcat "CTCP VERSION for %s (%s) = %s")
 	     (riece-prefix-nickname prefix)
 	     (riece-strip-user-at-host (riece-prefix-user-at-host prefix))
 	     string))
@@ -268,7 +270,7 @@
      (list riece-dialogue-buffer riece-others-buffer)
      (concat
       (riece-concat-server-name
-       (format "CTCP PING for %s (%s) = %d sec"
+       (format (riece-mcat "CTCP PING for %s (%s) = %d sec")
 	       (riece-prefix-nickname prefix)
 	       (riece-strip-user-at-host (riece-prefix-user-at-host prefix))
 	       elapsed))
@@ -279,7 +281,7 @@
    (list riece-dialogue-buffer riece-others-buffer)
    (concat
     (riece-concat-server-name
-     (format "CTCP CLIENTINFO for %s (%s) = %s"
+     (format (riece-mcat "CTCP CLIENTINFO for %s (%s) = %s")
 	     (riece-prefix-nickname prefix)
 	     (riece-strip-user-at-host (riece-prefix-user-at-host prefix))
 	     string))
@@ -290,7 +292,7 @@
    (list riece-dialogue-buffer riece-others-buffer)
    (concat
     (riece-concat-server-name
-     (format "CTCP TIME for %s (%s) = %s"
+     (format (riece-mcat "CTCP TIME for %s (%s) = %s")
 	     (riece-prefix-nickname prefix)
 	     (riece-strip-user-at-host (riece-prefix-user-at-host prefix))
 	     string))
@@ -299,7 +301,7 @@
 (defun riece-command-ctcp-version (target)
   (interactive
    (list (riece-completing-read-identity
-	  "Channel/User: "
+	  (riece-mcat "Channel/User: ")
 	  (riece-get-identities-on-server (riece-current-server-name)))))
   (riece-send-string (format "PRIVMSG %s :\1VERSION\1\r\n"
 			     (riece-identity-prefix target))))
@@ -307,7 +309,7 @@
 (defun riece-command-ctcp-ping (target)
   (interactive
    (list (riece-completing-read-identity
-	  "Channel/User: "
+	  (riece-mcat "Channel/User: ")
 	  (riece-get-identities-on-server (riece-current-server-name)))))
   (riece-send-string (format "PRIVMSG %s :\1PING\1\r\n"
 			     (riece-identity-prefix target)))
@@ -316,7 +318,7 @@
 (defun riece-command-ctcp-clientinfo (target)
   (interactive
    (list (riece-completing-read-identity
-	  "Channel/User: "
+	  (riece-mcat "Channel/User: ")
 	  (riece-get-identities-on-server (riece-current-server-name)))))
   (riece-send-string (format "PRIVMSG %s :\1CLIENTINFO\1\r\n"
 			     (riece-identity-prefix target))))
@@ -325,7 +327,7 @@
   (interactive
    (list (if current-prefix-arg
 	     (riece-completing-read-identity
-	      "Channel/User: "
+	      (riece-mcat "Channel/User: ")
 	      (riece-get-identities-on-server (riece-current-server-name)))
 	   riece-current-channel)
 	 (let (message)
@@ -333,8 +335,9 @@
 	   (setq message (buffer-substring (point)
 					   (progn (end-of-line) (point))))
 	   (if (equal message "")
-	       (read-string "Action: ")
-	     (prog1 (read-from-minibuffer "Action: " (cons message 0))
+	       (read-string (riece-mcat "Action: "))
+	     (prog1 (read-from-minibuffer (riece-mcat "Action: ")
+					  (cons message 0))
 	       (let ((next-line-add-newlines t))
 		 (next-line 1)))))))
   (if (equal action "")
@@ -363,7 +366,7 @@
 (defun riece-command-ctcp-time (target)
   (interactive
    (list (riece-completing-read-identity
-	  "Channel/User: "
+	  (riece-mcat "Channel/User: ")
 	  (riece-get-identities-on-server (riece-current-server-name)))))
   (riece-send-string (format "PRIVMSG %s :\1TIME\1\r\n"
 			     (riece-identity-prefix target))))
