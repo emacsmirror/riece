@@ -44,20 +44,12 @@ specifying the coding systems for decoding and encoding respectively."
 		 (const nil :tag "No conversion"))
   :group 'riece-coding)
 
-(if (fboundp 'encode-coding-string)
-    (defalias 'riece--encode-coding-string 'encode-coding-string)
-  (defalias 'riece--encode-coding-string 'identity))
-
-(if (fboundp 'decode-coding-string)
-    (defalias 'riece--decode-coding-string 'decode-coding-string)
-  (defalias 'riece--decode-coding-string 'identity))
-
 (defun riece-encode-coding-string (string)
   (if (and (local-variable-p 'riece-coding-system (current-buffer))
 	   riece-coding-system)		;should be nil on non-Mule environment
-      (if (consp riece-coding-system)
-	  (riece--encode-coding-string string (cdr riece-coding-system))
-	(riece--encode-coding-string string riece-coding-system))
+      (encode-coding-string string (if (consp riece-coding-system)
+				       (cdr riece-coding-system)
+				     riece-coding-system))
     string))
 
 (defun riece-decode-coding-string (string)
@@ -70,7 +62,7 @@ specifying the coding systems for decoding and encoding respectively."
     string))
 
 (defun riece-decode-coding-string-1 (string coding-system)
-  (let* ((decoded (riece--decode-coding-string string coding-system))
+  (let* ((decoded (decode-coding-string string coding-system))
 	 (length (length decoded)))
     (put-text-property 0 length 'riece-decoded-encoded-string
 		       string decoded)

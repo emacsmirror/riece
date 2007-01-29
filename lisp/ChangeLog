@@ -6,11 +6,6 @@
 	* riece-epg.el (epg-cancel): Autoload.
 	* riece-options.el (riece): Specify :group.
 
-2007-01-28  Daiki Ueno  <ueno@unixuser.org>
-
-	* riece-coding.el (riece--encode-coding-string): New alias.
-	(riece--decode-coding-string): New alias.
-
 2007-01-22  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-mcat.el (riece-mcat-extract): Abolished ALIST arg.
