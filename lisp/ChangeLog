@@ -1,3 +1,8 @@
+2007-02-12  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-handle.el (riece-handle-notice-message): Don't check the
+	scope of the message if riece-real-nickname is nil.
+
 2007-01-29  Daiki Ueno  <ueno@unixuser.org>
 
 	* Riece: Version 3.1.2 released.

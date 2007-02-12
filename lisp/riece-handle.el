@@ -116,8 +116,9 @@
 			     (riece-make-identity (car targets)
 						  riece-server-name)
 			     message 'notice
-			     (riece-identity-equal-no-server
-			      user riece-real-nickname)))
+			     (if riece-real-nickname
+				 (riece-identity-equal-no-server
+				  user riece-real-nickname))))
       ;; message from server
       (riece-insert-notice
        (list riece-dialogue-buffer riece-others-buffer)
