@@ -1,3 +1,10 @@
+2007-04-16  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-rdcc.el (riece-rdcc-server-address): Accept a cons cell to
+	specify the sending port.
+	(riece-rdcc-send-program): Bind `port'.
+	(riece-command-dcc-send): Extract port from riece-rdcc-server-address.
+
 2007-02-12  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-handle.el (riece-handle-notice-message): Don't check the

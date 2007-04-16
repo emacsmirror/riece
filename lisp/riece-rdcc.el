@@ -43,19 +43,21 @@
 (defcustom riece-rdcc-server-address nil
   "Local address of the DCC server.
 Only used for sending files."
-  :type 'string
+  :type '(choice (string :tag "Address")
+		 (cons (string :tag "Address") (integer :tag "Port")))
   :group 'riece-rdcc)
 
 (defcustom riece-rdcc-send-program
   '("\
 require 'socket'
 address = " address "
+port = " port "
 unless address
   sock = UDPSocket.new
   sock.connect('164.46.176.4', 7)		# www.unixuser.org/echo
   address = sock.getsockname[4 .. 7].unpack('CCCC').join('.')
 end
-server = TCPServer.new(address, 0)
+server = TCPServer.new(address, port)
 output(\"#{server.addr[3].split(/\\./).collect{|c| c.to_i}.pack('CCCC').unpack('N')[0]} #{server.addr[1]}\")
 session = server.accept
 if session
@@ -146,9 +148,18 @@ end
 		riece-rdcc-send-program
 		(list (cons 'address
 			    (if riece-rdcc-server-address
-				(concat "'" riece-rdcc-server-address
-					"'")
+				(if (consp riece-rdcc-server-address)
+				    (concat "'" (car riece-rdcc-server-address)
+					    "'")
+				  (concat "'" riece-rdcc-server-address
+					  "'"))
 			      "nil"))
+		      (cons 'port
+			    (if (and riece-rdcc-server-address
+				     (consp riece-rdcc-server-address))
+				(number-to-string
+				 (cdr riece-rdcc-server-address))
+			      "0"))
 		      (cons 'file
 			    (concat "'" file "'"))
 		      (cons 'block-size
