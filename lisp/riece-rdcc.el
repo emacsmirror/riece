@@ -43,8 +43,13 @@
 (defcustom riece-rdcc-server-address nil
   "Local address of the DCC server.
 Only used for sending files."
-  :type '(choice (string :tag "Address")
-		 (cons (string :tag "Address") (integer :tag "Port")))
+  :type 'string
+  :group 'riece-rdcc)
+
+(defcustom riece-rdcc-server-port nil
+  "Local address of the DCC server.
+Only used for sending files."
+  :type 'integer
   :group 'riece-rdcc)
 
 (defcustom riece-rdcc-send-program
@@ -148,17 +153,12 @@ end
 		riece-rdcc-send-program
 		(list (cons 'address
 			    (if riece-rdcc-server-address
-				(if (consp riece-rdcc-server-address)
-				    (concat "'" (car riece-rdcc-server-address)
-					    "'")
-				  (concat "'" riece-rdcc-server-address
-					  "'"))
+				(concat "'" riece-rdcc-server-address
+					  "'")
 			      "nil"))
 		      (cons 'port
-			    (if (and riece-rdcc-server-address
-				     (consp riece-rdcc-server-address))
-				(number-to-string
-				 (cdr riece-rdcc-server-address))
+			    (if riece-rdcc-server-port
+				(number-to-string riece-rdcc-server-port)
 			      "0"))
 		      (cons 'file
 			    (concat "'" file "'"))
