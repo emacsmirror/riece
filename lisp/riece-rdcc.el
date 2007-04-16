@@ -47,7 +47,7 @@ Only used for sending files."
   :group 'riece-rdcc)
 
 (defcustom riece-rdcc-server-port nil
-  "Local address of the DCC server.
+  "Local port of the DCC server.
 Only used for sending files."
   :type 'integer
   :group 'riece-rdcc)
