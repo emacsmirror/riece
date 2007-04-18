@@ -1,3 +1,14 @@
+2007-04-18  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-ctcp.el (riece-ctcp-action-format-message): New function.
+	(riece-handle-ctcp-action-request): Use it.
+	(riece-command-ctcp-action): Use it.
+
+	* riece-message.el (riece-message-format-function-alist): New user
+	option.
+	(riece-display-message-1): Pick a format function from
+	riece-message-format-function-alist.
+
 2007-04-16  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-rdcc.el (riece-rdcc-server-port): New user option.

@@ -64,6 +64,11 @@
   :type 'function
   :group 'riece-message)
 
+(defcustom riece-message-format-function-alist nil
+  "Alist mapping message types to format functions."
+  :type 'list
+  :group 'riece-message)
+
 (defun riece-message-make-open-bracket (message)
   "Make `open-bracket' string for MESSAGE."
   (if (eq (riece-message-type message) 'notice)
@@ -164,6 +169,10 @@ Normally they are *Dialogue* and/or *Others*."
 
 (defun riece-display-message-1 (message)
   (let ((buffer (riece-message-buffer message))
+	(format-message-function
+	 (or (cdr (assq (riece-message-type message)
+			riece-message-format-function-alist))
+	     #'riece-format-message))
 	parent-buffers)
     (when (and buffer
 	       (riece-message-own-p message)
@@ -172,8 +181,8 @@ Normally they are *Dialogue* and/or *Others*."
 	(setq riece-freeze nil))
       (riece-emit-signal 'buffer-freeze-changed buffer nil))
     (setq parent-buffers (riece-message-parent-buffers message buffer))
-    (riece-insert buffer (riece-format-message message))
-    (riece-insert parent-buffers (riece-format-message message t))
+    (riece-insert buffer (funcall format-message-function message))
+    (riece-insert parent-buffers (funcall format-message-function message t))
     (with-current-buffer buffer
       (run-hook-with-args 'riece-after-display-message-functions message))))
 
@@ -192,7 +201,7 @@ Normally they are *Dialogue* and/or *Others*."
 Arguments are appropriate to the sender, the receiver, and text
 content, respectively.
 Optional 4th argument TYPE specifies the type of the message.
-Currently possible values are `action' and `notice'.
+Currently possible values are `nil' or `notice'.
 Optional 5th argument is the flag to indicate that this message is not
 from the network."
   (vector speaker target text type own-p))

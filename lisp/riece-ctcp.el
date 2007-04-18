@@ -170,32 +170,35 @@
 	       (riece-format-identity target-identity t)))
       "\n"))))
 
+(defun riece-ctcp-action-format-message (message &optional global)
+  (riece-with-server-buffer (riece-identity-server
+			     (riece-message-speaker message))
+    (concat
+     (if global
+	 (riece-concat-server-name
+	  (concat riece-ctcp-action-prefix
+		  (riece-format-identity (riece-message-target message) t) ": "
+		  (riece-identity-prefix (riece-message-speaker message)) " "
+		  (riece-message-text message)))
+       (concat riece-ctcp-action-prefix
+	       (riece-identity-prefix (riece-message-speaker message)) " "
+	       (riece-message-text message)))
+     "\n")))
+
 (defun riece-handle-ctcp-action-request (prefix target string)
   (let ((buffer (if (riece-channel-p target)
 		    (riece-channel-buffer (riece-make-identity
 					   target riece-server-name))))
 	(user (riece-prefix-nickname prefix)))
-    (riece-insert buffer (concat riece-ctcp-action-prefix
-				 (riece-format-identity
-				  (riece-make-identity user riece-server-name)
-				  t)
-				 " " string
-				 "\n"))
-    (riece-insert
-     (if (and riece-channel-buffer-mode
-	      (not (eq buffer riece-channel-buffer)))
-	 (list riece-dialogue-buffer riece-others-buffer)
-       riece-dialogue-buffer)
-     (concat (riece-concat-server-name
-	      (concat riece-ctcp-action-prefix
-		      (riece-format-identity
-		       (riece-make-identity target riece-server-name)
-		       t)
-		      ": "
-		      (riece-format-identity
-		       (riece-make-identity user riece-server-name)
-		       t)
-		      " " string)) "\n"))))
+    (riece-display-message
+     (riece-make-message (riece-make-identity user
+					      riece-server-name)
+			 (riece-make-identity target
+					      riece-server-name)
+			 string
+			 'action
+			 (riece-identity-equal-no-server
+			  user riece-real-nickname)))))
 
 (defun riece-handle-ctcp-time-request (prefix target string)
   (let* ((target-identity (riece-make-identity target riece-server-name))
@@ -345,23 +348,8 @@
   (riece-send-string (format "PRIVMSG %s :\1ACTION %s\1\r\n"
 			     (riece-identity-prefix target)
 			     action))
-  (let ((buffer (riece-channel-buffer target)))
-    (riece-insert
-     buffer
-     (concat riece-ctcp-action-prefix
-	     (riece-identity-prefix (riece-current-nickname)) " " action "\n"))
-    (riece-insert
-     (if (and riece-channel-buffer-mode
-	      (not (eq buffer riece-channel-buffer)))
-	 (list riece-dialogue-buffer riece-others-buffer)
-       riece-dialogue-buffer)
-     (concat
-      (riece-with-server-buffer (riece-identity-server target)
-	(riece-concat-server-name
-	 (concat riece-ctcp-action-prefix
-		 (riece-format-identity target t) ": "
-		 (riece-identity-prefix (riece-current-nickname)) " " action)))
-      "\n"))))
+  (riece-display-message
+   (riece-make-message (riece-current-nickname) target action 'action t)))
 
 (defun riece-command-ctcp-time (target)
   (interactive
@@ -387,7 +375,11 @@
   (if (memq 'riece-highlight riece-addons)
       (setq riece-dialogue-font-lock-keywords
 	    (cons riece-ctcp-dialogue-font-lock-keywords
-		  riece-dialogue-font-lock-keywords))))
+		  riece-dialogue-font-lock-keywords)))
+  (unless (assq 'action riece-message-format-function-alist)
+    (setq riece-message-format-function-alist
+	  (cons (cons 'action #'riece-ctcp-action-format-message)
+		riece-message-format-function-alist))))
 
 (defun riece-ctcp-uninstall ()
   (remove-hook 'riece-privmsg-hook 'riece-handle-ctcp-request)
