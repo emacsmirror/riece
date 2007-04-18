@@ -30,6 +30,7 @@
     (riece-shrink-buffer . "Free old IRC messages to save memory usage.")
     (riece-skk-kakutei . "Remove SKK's preedit mark before sending messages.")
     (riece-toolbar . "Display toolbar icons.")
+    (riece-twitter . "Send your status to Twitter.")
     (riece-unread . "Mark channels where new messages arrived.")
     (riece-url . "Collect URL in IRC buffers.")
     (riece-xface . "Display X-Face in IRC buffers.")
