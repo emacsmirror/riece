@@ -1,3 +1,5 @@
+(require 'riece-message)
+
 (defvar riece-twitter-credential nil)
 
 (defun riece-twitter-message-filter (message)

@@ -27,6 +27,7 @@
 (require 'riece-globals)
 (require 'riece-misc)
 (require 'riece-mcat)
+(require 'riece-commands)
 
 (eval-when-compile
   (autoload 'riece-default-handle-numeric-reply "riece-handle"))

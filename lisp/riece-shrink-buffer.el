@@ -29,6 +29,7 @@
 ;;; Code:
 
 (require 'riece-globals)
+(require 'derived)
 
 (defgroup riece-shrink-buffer nil
   "Free old IRC messages to save memory usage."

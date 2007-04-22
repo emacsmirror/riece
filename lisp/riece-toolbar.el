@@ -54,60 +54,61 @@
 	(setq pointer (cdr pointer))))
     item))
 
-(if (featurep 'xemacs)
-    (if (featurep 'toolbar)
-	(progn
-	  (defun riece-make-toolbar-from-menu (items menu-items map)
-	    (let ((pointer items)
-		  toolbar
-		  file
-		  menu-item)
-	      (while pointer
-		(setq file (locate-file (symbol-name (car pointer))
-					(cons riece-data-directory load-path)
-					'(".xpm" ".pbm" ".xbm"))
-		      menu-item (riece-toolbar-find-menu-item (car pointer)))
-		(if (and file (file-exists-p file))
-		    (setq toolbar
-			  (toolbar-add-item
-			   toolbar
-			   (toolbar-new-button
-			    file
-			    (car pointer)
-			    (if menu-item
-				(aref menu-item 0)
-			      (symbol-name (car pointer)))))))
-		(setq pointer (cdr pointer)))
-	      toolbar))
-	  (defvar riece-toolbar-original-toolbar nil)
-	  (defun riece-set-toolbar (toolbar)
-	    (make-local-variable 'riece-toolbar-original-toolbar)
-	    (setq riece-toolbar-original-toolbar
-		  (specifier-specs default-toolbar (current-buffer)))
-	    (set-specifier default-toolbar toolbar (current-buffer)))
-	  (defun riece-unset-toolbar ()
-	    (if riece-toolbar-original-toolbar
-		(set-specifier default-toolbar riece-toolbar-original-toolbar
-			       (current-buffer))
-	      (remove-specifier default-toolbar (current-buffer)))
-	    (kill-local-variable 'riece-toolbar-original-toolbar)))
-      (defalias 'riece-make-toolbar-from-menu 'ignore)
-      (defalias 'riece-set-toolbar 'ignore)
-      (defalias 'riece-unset-toolbar 'ignore))
-  (defun riece-make-toolbar-from-menu (items menu-items map)
-    (let ((pointer items)
-	  (tool-bar-map (make-sparse-keymap)))
-      (while pointer
-	(tool-bar-add-item-from-menu (car pointer)
-				     (symbol-name (car pointer))
-				     map)
-	(setq pointer (cdr pointer)))
-      tool-bar-map))
-  (defun riece-set-toolbar (toolbar)
-    (make-local-variable 'tool-bar-map)
-    (setq tool-bar-map toolbar))
-  (defun riece-unset-toolbar ()
-    (kill-local-variable 'tool-bar-map)))
+(eval-and-compile
+  (if (featurep 'xemacs)
+      (if (featurep 'toolbar)
+	  (progn
+	    (defun riece-make-toolbar-from-menu (items menu-items map)
+	      (let ((pointer items)
+		    toolbar
+		    file
+		    menu-item)
+		(while pointer
+		  (setq file (locate-file (symbol-name (car pointer))
+					  (cons riece-data-directory load-path)
+					  '(".xpm" ".pbm" ".xbm"))
+			menu-item (riece-toolbar-find-menu-item (car pointer)))
+		  (if (and file (file-exists-p file))
+		      (setq toolbar
+			    (toolbar-add-item
+			     toolbar
+			     (toolbar-new-button
+			      file
+			      (car pointer)
+			      (if menu-item
+				  (aref menu-item 0)
+				(symbol-name (car pointer)))))))
+		  (setq pointer (cdr pointer)))
+		toolbar))
+	    (defvar riece-toolbar-original-toolbar nil)
+	    (defun riece-set-toolbar (toolbar)
+	      (make-local-variable 'riece-toolbar-original-toolbar)
+	      (setq riece-toolbar-original-toolbar
+		    (specifier-specs default-toolbar (current-buffer)))
+	      (set-specifier default-toolbar toolbar (current-buffer)))
+	    (defun riece-unset-toolbar ()
+	      (if riece-toolbar-original-toolbar
+		  (set-specifier default-toolbar riece-toolbar-original-toolbar
+				 (current-buffer))
+		(remove-specifier default-toolbar (current-buffer)))
+	      (kill-local-variable 'riece-toolbar-original-toolbar)))
+	(defalias 'riece-make-toolbar-from-menu 'ignore)
+	(defalias 'riece-set-toolbar 'ignore)
+	(defalias 'riece-unset-toolbar 'ignore))
+    (defun riece-make-toolbar-from-menu (items menu-items map)
+      (let ((pointer items)
+	    (tool-bar-map (make-sparse-keymap)))
+	(while pointer
+	  (tool-bar-add-item-from-menu (car pointer)
+				       (symbol-name (car pointer))
+				       map)
+	  (setq pointer (cdr pointer)))
+	tool-bar-map))
+    (defun riece-set-toolbar (toolbar)
+      (make-local-variable 'tool-bar-map)
+      (setq tool-bar-map toolbar))
+    (defun riece-unset-toolbar ()
+      (kill-local-variable 'tool-bar-map))))
 
 (defvar riece-command-mode-map)
 (defun riece-toolbar-command-mode-hook ()

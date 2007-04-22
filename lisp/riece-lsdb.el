@@ -29,6 +29,7 @@
 ;;; Code:
 
 (require 'riece-identity)
+(require 'riece-misc)
 
 (eval-when-compile
   (autoload 'lsdb-maybe-load-hash-tables "lsdb")

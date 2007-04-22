@@ -34,6 +34,7 @@
 (require 'riece-display)
 (require 'riece-debug)
 (require 'riece-mcat)
+(require 'riece-message)
 
 (defface riece-ctcp-action-face
   '((((class color)
