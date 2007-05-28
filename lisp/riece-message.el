@@ -168,10 +168,10 @@ Normally they are *Dialogue* and/or *Others*."
        "\n"))))
 
 (defun riece-format-message (message &optional global)
-  (apply (or (cdr (assq (riece-message-type message)
-			riece-message-format-function-alist))
-	     #'riece-format-message-1)
-	 message global))
+  (funcall (or (cdr (assq (riece-message-type message)
+			  riece-message-format-function-alist))
+	       #'riece-format-message-1)
+	   message global))
 
 (defun riece-display-message-1 (message)
   (let ((buffer (riece-message-buffer message))
