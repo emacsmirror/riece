@@ -106,14 +106,10 @@ It is created if there is at least one instance of Emacs running riece-log.")
 	     default-file-name-coding-system)
 	(unless (file-directory-p (file-name-directory file))
 	  (make-directory (file-name-directory file) t))
-	(let ((format-message-function
-	       (or (cdr (assq (riece-message-type message)
-			      riece-message-format-function-alist))
-		   #'riece-format-message)))
-	  (write-region (concat (format-time-string "%H:%M") " "
-				(funcall format-message-function message))
-			nil file t 0
-			riece-log-lock-file)))))
+	(write-region (concat (format-time-string "%H:%M") " "
+			      (riece-format-message message))
+		      nil file t 0
+		      riece-log-lock-file))))
 
 (defun riece-log-make-file-name (identity coding-system)
   (expand-file-name (if (featurep 'mule)

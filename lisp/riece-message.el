@@ -147,7 +147,7 @@ Normally they are *Dialogue* and/or *Others*."
 	(list riece-dialogue-buffer riece-others-buffer)
       riece-dialogue-buffer)))
 
-(defun riece-format-message (message &optional global)
+(defun riece-format-message-1 (message &optional global)
   (let ((open-bracket
 	 (funcall riece-message-make-open-bracket-function message))
 	(close-bracket
@@ -167,12 +167,14 @@ Normally they are *Dialogue* and/or *Others*."
 		 " " (riece-message-text message)))
        "\n"))))
 
+(defun riece-format-message (message &optional global)
+  (apply (or (cdr (assq (riece-message-type message)
+			riece-message-format-function-alist))
+	     #'riece-format-message-1)
+	 message global))
+
 (defun riece-display-message-1 (message)
   (let ((buffer (riece-message-buffer message))
-	(format-message-function
-	 (or (cdr (assq (riece-message-type message)
-			riece-message-format-function-alist))
-	     #'riece-format-message))
 	parent-buffers)
     (when (and buffer
 	       (riece-message-own-p message)
@@ -181,8 +183,8 @@ Normally they are *Dialogue* and/or *Others*."
 	(setq riece-freeze nil))
       (riece-emit-signal 'buffer-freeze-changed buffer nil))
     (setq parent-buffers (riece-message-parent-buffers message buffer))
-    (riece-insert buffer (funcall format-message-function message))
-    (riece-insert parent-buffers (funcall format-message-function message t))
+    (riece-insert buffer (riece-format-message message))
+    (riece-insert parent-buffers (riece-format-message message t))
     (with-current-buffer buffer
       (run-hook-with-args 'riece-after-display-message-functions message))))
 

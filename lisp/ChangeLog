@@ -1,3 +1,13 @@
+2007-05-28  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-log.el (riece-log-display-message-function): Just call
+	riece-format-message.
+
+	* riece-message.el (riece-format-message-1): Renamed from
+	riece-format-message.
+	(riece-format-message): Pick a function from
+	riece-message-format-function-alist.
+
 2007-04-24  OHASHI Akira  <bg66@koka-in.org>
 
 	* riece-log.el (riece-log-display-message-function): Use
