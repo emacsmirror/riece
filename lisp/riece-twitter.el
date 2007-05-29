@@ -38,7 +38,7 @@
   :group 'riece-twitter
   :type 'string)
 
-(defcustom riece-twitter-cache-credential nil
+(defcustom riece-twitter-cache-credential t
   "If non-nil, cache your credential on Twitter."
   :group 'riece-twitter
   :type 'boolean)
