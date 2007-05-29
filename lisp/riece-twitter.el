@@ -44,15 +44,15 @@
   :type 'boolean)
 
 (defun riece-twitter-message-filter (message)
-  (let ((credential
-	 (or riece-twitter-credential
-	     (concat (read-string "Twitter username: ") ":"
-		     (read-passwd "Twitter password: ")))))
-    (if (and riece-twitter-cache-credential
-	     (not (eq credential riece-twitter-credential)))
-	(setq riece-twitter-credential credential))
-    (if (and (riece-message-own-p message)
-	     (eq 'action (riece-message-type message)))
+  (if (and (riece-message-own-p message)
+	   (eq 'action (riece-message-type message)))
+      (let ((credential
+	     (or riece-twitter-credential
+		 (concat (read-string "Twitter username: ") ":"
+			 (read-passwd "Twitter password: ")))))
+	(if (and riece-twitter-cache-credential
+		 (not (eq credential riece-twitter-credential)))
+	    (setq riece-twitter-credential credential))
 	(start-process
 	 "curl" nil "curl"
 	 "-H" "X-Twitter-Client: Riece"
