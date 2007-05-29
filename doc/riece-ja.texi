@@ -620,6 +620,8 @@ DCC (Direct Client to Client protocol) によるファイル転送
 SKK 使用時に変換モードの印を発言から取り除く
 @item riece-toolbar
 ツールバーを表示
+@item riece-twitter
+CTCP ACTION (@kbd{C-c C-c a}) と同時に Twitter に状態を送信
 @item riece-unread
 発言のあったチャンネルに@samp{!}マークをつける
 @item riece-url
