@@ -2,6 +2,8 @@
 
 ** 新規アドオン riece-twitter (ueno)
 
+** riece-rdcc で送信元のポート番号を指定できるようにした (ueno)
+
 * Riece 3.1.2 の主な変更点
 
 ** メッセージカタログ (ueno)
