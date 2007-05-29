@@ -1,3 +1,8 @@
+2007-05-29  Daiki Ueno  <ueno@unixuser.org>
+
+	* Riece: Version 4.0.0 released.
+	* configure.ac: Bump up version to 4.0.0.
+
 2007-01-29  Daiki Ueno  <ueno@unixuser.org>
 
 	* Riece: Version 3.1.2 released.
