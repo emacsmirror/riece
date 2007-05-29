@@ -1,3 +1,9 @@
+2007-05-29  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-twitter.el (riece-twitter-credential): Define with defcustom.
+	(riece-twitter-cache-credential): New user option.
+	(riece-twitter-message-filter): Ask Twitter username and password.
+
 2007-05-28  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-log.el (riece-log-display-message-function): Just call
