@@ -114,7 +114,7 @@ server to connect.  IRC servers publicly available are taken from the
 Web pages of IRC networks:
 
 @itemize @bullet
-@item http://irc.kyoto-u.ac.jp
+@item http://www.ircnet.jp
 @item http://freenode.net
 @end itemize
 

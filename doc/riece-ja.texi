@@ -103,7 +103,7 @@ Riece を起動すると、IRC サーバの名前を聞かれます。公共に利用可能な I
 サーバの一覧は Web ページなどから得ることができます。
 
 @itemize @bullet
-@item http://irc.kyoto-u.ac.jp
+@item http://www.ircnet.jp
 @item http://freenode.net
 @end itemize
 
