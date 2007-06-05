@@ -1,3 +1,8 @@
+2007-06-05  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-twitter.el (riece-twitter-message-filter): Send a "source"
+	parameter.
+
 2007-05-29  Daiki Ueno  <ueno@unixuser.org>
 
 	* Riece: Version 4.0.0 released.

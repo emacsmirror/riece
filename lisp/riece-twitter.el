@@ -59,6 +59,7 @@
 	 "-H" (concat "X-Twitter-Client-Version: " riece-version-number)
 	 "-H" "X-Twitter-Client-URL: http://riece.nongnu.org/twitter.xml"
 	 "-u" credential
+	 "-d" "source=riece"
 	 "-d" (concat "status="
 		      (riece-twitter-escape-string
 		       (encode-coding-string (riece-message-text message)
