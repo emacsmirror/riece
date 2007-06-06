@@ -59,7 +59,13 @@
 
 (defun riece-twitter-update (status)
   "Update your status."
-  (interactive "sStatus: ")
+  (interactive
+   (progn
+     (unless riece-twitter-credential
+       (error "%s"
+	      (substitute-command-keys
+	       "\\[riece-twitter-set-credential] to set your credential")))
+     (list (read-string "Status: "))))
   (message "Sending to Twitter...")
   (let ((process
 	 (start-process
@@ -67,7 +73,7 @@
 	  "-H" "X-Twitter-Client: Riece"
 	  "-H" (concat "X-Twitter-Client-Version: " riece-version-number)
 	  "-H" "X-Twitter-Client-URL: http://riece.nongnu.org/twitter.xml"
-	  "-u" credential
+	  "-u" riece-twitter-credential
 	  "-d" "source=riece"
 	  "-d" (concat "status="
 		       (riece-twitter-escape-string
