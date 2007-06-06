@@ -38,10 +38,11 @@
   :group 'riece-twitter
   :type 'string)
 
-(if (fboundp 'clear-string)
-    (defalias 'riece-twitter-clear-string 'clear-string)
-  (defun riece-twitter-clear-string (string)
-    (fillarray string ?\x0)))
+(eval-and-compile
+  (if (fboundp 'clear-string)
+      (defalias 'riece-twitter-clear-string 'clear-string)
+    (defun riece-twitter-clear-string (string)
+      (fillarray string ?\0))))
 
 (defun riece-twitter-set-credential (credential)
   "Set your credential used to login to Twitter."
