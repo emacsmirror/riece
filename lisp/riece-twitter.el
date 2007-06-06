@@ -50,11 +50,11 @@
    (let ((username (read-string "Username: "))
 	 password)
      (unwind-protect
-	 (setq password (read-passwd "Password: "))
+	 (list (concat username ":"
+		       (setq password (read-passwd "Password: "))))
        (if password
 	   (riece-twitter-clear-string password))
-       (setq password nil))
-     (list (concat username ":" password))))
+       (setq password nil))))
   (setq riece-twitter-credential credential))
 
 (defun riece-twitter-update (status)
