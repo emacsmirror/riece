@@ -60,18 +60,27 @@
 (defun riece-twitter-update (status)
   "Update your status."
   (interactive "sStatus: ")
-  (start-process
-	 "curl" nil "curl"
-	 "-H" "X-Twitter-Client: Riece"
-	 "-H" (concat "X-Twitter-Client-Version: " riece-version-number)
-	 "-H" "X-Twitter-Client-URL: http://riece.nongnu.org/twitter.xml"
-	 "-u" credential
-	 "-d" "source=riece"
-	 "-d" (concat "status="
-		      (riece-twitter-escape-string
-		       (encode-coding-string status 'utf-8)))
-	 "-s"
-	 "http://twitter.com/statuses/update.json"))
+  (message "Sending to Twitter...")
+  (let ((process
+	 (start-process
+	  "curl" nil "curl"
+	  "-H" "X-Twitter-Client: Riece"
+	  "-H" (concat "X-Twitter-Client-Version: " riece-version-number)
+	  "-H" "X-Twitter-Client-URL: http://riece.nongnu.org/twitter.xml"
+	  "-u" credential
+	  "-d" "source=riece"
+	  "-d" (concat "status="
+		       (riece-twitter-escape-string
+			(encode-coding-string status 'utf-8)))
+	  "-s"
+	  "http://twitter.com/statuses/update.json")))
+    (set-process-sentinel process #'riece-twitter-sentinel)))
+
+(defun riece-twitter-sentinel (process status)
+  (if (equal status "finished\n")
+      (message "Sending to Twitter...done")
+    (message "Sending to Twitter...failed: %s"
+	     (substring status 0 (1- (length status))))))
 
 (defun riece-twitter-message-filter (message)
   (if (and (riece-message-own-p message)

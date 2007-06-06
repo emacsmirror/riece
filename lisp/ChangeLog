@@ -3,6 +3,7 @@
 	* riece-twitter.el (riece-twitter-set-credential): New command.
 	(riece-twitter-update): New command.
 	(riece-twitter-message-filter): Use it.
+	(riece-twitter-sentinel): New function.
 
 2007-06-05  Daiki Ueno  <ueno@unixuser.org>
 
