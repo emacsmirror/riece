@@ -1,3 +1,9 @@
+2007-06-06  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-twitter.el (riece-twitter-set-credential): New command.
+	(riece-twitter-update): New command.
+	(riece-twitter-message-filter): Use it.
+
 2007-06-05  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-twitter.el (riece-twitter-message-filter): Send a "source"

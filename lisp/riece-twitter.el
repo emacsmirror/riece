@@ -38,22 +38,28 @@
   :group 'riece-twitter
   :type 'string)
 
-(defcustom riece-twitter-cache-credential t
-  "If non-nil, cache your credential on Twitter."
-  :group 'riece-twitter
-  :type 'boolean)
+(if (fboundp 'clear-string)
+    (defalias 'riece-twitter-clear-string 'clear-string)
+  (defun riece-twitter-clear-string (string)
+    (fillarray string ?\x0)))
 
-(defun riece-twitter-message-filter (message)
-  (if (and (riece-message-own-p message)
-	   (eq 'action (riece-message-type message)))
-      (let ((credential
-	     (or riece-twitter-credential
-		 (concat (read-string "Twitter username: ") ":"
-			 (read-passwd "Twitter password: ")))))
-	(if (and riece-twitter-cache-credential
-		 (not (eq credential riece-twitter-credential)))
-	    (setq riece-twitter-credential credential))
-	(start-process
+(defun riece-twitter-set-credential (credential)
+  "Set your credential used to login to Twitter."
+  (interactive
+   (let ((username (read-string "Username: "))
+	 password)
+     (unwind-protect
+	 (setq password (read-passwd "Password: "))
+       (if password
+	   (riece-twitter-clear-string password))
+       (setq password nil))
+     (list (concat username ":" password))))
+  (setq riece-twitter-credential credential))
+
+(defun riece-twitter-update (status)
+  "Update your status."
+  (interactive "sStatus: ")
+  (start-process
 	 "curl" nil "curl"
 	 "-H" "X-Twitter-Client: Riece"
 	 "-H" (concat "X-Twitter-Client-Version: " riece-version-number)
@@ -62,10 +68,18 @@
 	 "-d" "source=riece"
 	 "-d" (concat "status="
 		      (riece-twitter-escape-string
-		       (encode-coding-string (riece-message-text message)
-					     'utf-8)))
+		       (encode-coding-string status 'utf-8)))
 	 "-s"
-	 "http://twitter.com/statuses/update.json")))
+	 "http://twitter.com/statuses/update.json"))
+
+(defun riece-twitter-message-filter (message)
+  (if (and (riece-message-own-p message)
+	   (eq 'action (riece-message-type message)))
+      (if riece-twitter-credential
+	  (riece-twitter-update (riece-message-text message))
+	(message "%s"
+		 (substitute-command-keys
+		  "\\[riece-twitter-set-credential] to set your credential"))))
   message)
 
 (defun riece-twitter-escape-string (string)
