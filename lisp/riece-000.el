@@ -52,6 +52,7 @@
   (if (equal riece-server-name "")
       (message (riece-mcat "Logging in to IRC server...done"))
     (message (riece-mcat "Logging in to %s...done") riece-server-name))
+  (run-hooks 'riece-after-login-hook)
   (let ((channel-list riece-startup-channel-list)
 	entry identity)
     (while channel-list
@@ -61,8 +62,7 @@
 		  (setq identity (riece-parse-identity (car entry))))
 		 riece-server-name)
 	  (riece-command-join-channel identity (nth 1 entry)))
-      (setq channel-list (cdr channel-list))))
-  (run-hooks 'riece-after-login-hook))
+      (setq channel-list (cdr channel-list)))))
 
 (defun riece-handle-004-message (prefix number name string)
   "RPL_MYINFO \"<umodes> <chnlmodes>\""

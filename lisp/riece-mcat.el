@@ -26,8 +26,9 @@
 
 (defun riece-mcat (string)
   "Translate STRING in the current language environment."
-  (let ((feature (get-language-info current-language-environment
-				    'riece-mcat-feature)))
+  (let ((feature (if (featurep 'mule)
+		     (get-language-info current-language-environment
+					'riece-mcat-feature))))
     (if feature
 	(progn
 	  (require feature)

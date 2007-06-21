@@ -1,3 +1,11 @@
+2007-06-21  Nikita Danilov <nikita@clusterfs.com>
+
+	* riece-000.el (riece-handle-001-message): Run
+	riece-after-login-hook before joining in startup channels.
+
+	* riece-mcat.el (riece-mcat): Don't load localized messages if
+	mule is off.
+
 2007-06-06  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-twitter.el (riece-twitter-set-credential): New command.
