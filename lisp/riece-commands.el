@@ -236,23 +236,22 @@ the layout to the selected layout-name."
 
 (defun riece-command-kick-with-ban (user pattern &optional message)
   (interactive
-   (let ((completion-ignore-case t)
-	 users patterns)
+   (let ((completion-ignore-case t))
      (riece-check-channel-commands-are-usable t)
      (riece-with-server-buffer (riece-identity-server riece-current-channel)
-       (setq users (riece-channel-get-users (riece-identity-prefix
-					     riece-current-channel))
-	     patterns (mapcar
-		       (lambda (user)
-			 (list (concat (car user) "!"
-				       (riece-user-get-user-at-host
-					(car user)))))
-		       users)))
-     (list
-      (completing-read (riece-mcat "Kick user: ") users)
-      (completing-read (riece-mcat "Ban pattern: ") patterns)
-      (if current-prefix-arg
-	  (read-string "Message: ")))))
+       (list
+	(completing-read (riece-mcat "Kick user: ")
+			 (riece-channel-get-users (riece-identity-prefix
+						   riece-current-channel)))
+	(completing-read (riece-mcat "Ban pattern: ")
+			 (mapcar
+			  (lambda (user)
+			    (list (concat (car user) "!"
+					  (riece-user-get-user-at-host
+					   (car user)))))
+			  users))
+	(if current-prefix-arg
+	    (read-string "Message: "))))))
   (riece-send-string (format "MODE %s :+b %s\r\n"
 			     (riece-identity-prefix riece-current-channel)
 			     pattern)
