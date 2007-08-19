@@ -64,6 +64,7 @@
     ("Add-on: " . "アドオン: ")
     ("Already registered" . "登録済みです")
     ("Away message: " . "離席のメッセージ: ")
+    ("Ban pattern: " . "立入禁止パターン: ")
     ("Beginning of buffer" . "バッファの先頭です")
     ("CTCP CLIENTINFO for %s (%s) = %s" . "%s (%s) の CTCP CLIENTINFO = %s")
     ("CTCP CLIENTINFO from %s (%s) to %s" . "%s (%s) が %s に CTCP CLIENTINFO")

@@ -1,3 +1,7 @@
+2007-08-19  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-commands.el (riece-command-kick-with-ban): New command.
+
 2007-06-21  Nikita Danilov <nikita@clusterfs.com>
 
 	* riece-000.el (riece-handle-001-message): Run
