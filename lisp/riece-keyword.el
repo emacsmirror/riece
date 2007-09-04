@@ -44,7 +44,7 @@
 
 (defcustom riece-notify-keyword-functions nil
   "Functions used to notify keyword match."
-  :type '(list function)
+  :type '(repeat function)
   :group 'riece-keyword)
 
 (make-obsolete-variable 'riece-notify-keyword-functions
@@ -54,7 +54,7 @@
   "Functions used to notify keyword match.
 Two arguments are passed to each function: the keyword used to match
 and the matched message object."
-  :type '(list function)
+  :type '(repeat function)
   :group 'riece-keyword)
 
 (defface riece-keyword-face

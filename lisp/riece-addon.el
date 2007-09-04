@@ -94,7 +94,7 @@
     (?? . riece-addon-list-uninstalled-face)
     (?  . riece-addon-list-unloaded-face))
   "An alist mapping marks on riece-addon-list-buffer to faces."
-  :type 'list
+  :type '(repeat (cons character symbol))
   :group 'riece-addon-list)
 
 (defcustom riece-addon-list-font-lock-keywords

@@ -81,14 +81,14 @@ if session
 end
 ")
   "Ruby program to send file with DCC."
-  :type 'list
+  :type 'sexp
   :group 'riece-rdcc)
 
 (defcustom riece-rdcc-decode-address-program
   '("\"#{" address " >> 24 & 0xFF}.#{" address " >> 16 & 0xFF}.#{"
     address " >> 8 & 0xFF}.#{" address " & 0xFF}\"")
   "Ruby program to numeric IP address."
-  :type 'list
+  :type 'sexp
   :group 'riece-rdcc)
 
 (defcustom riece-rdcc-save-directory nil

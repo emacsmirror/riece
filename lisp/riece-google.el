@@ -136,7 +136,7 @@ rescue Exception => e
 end
 ")
   "Ruby program for searching by Google."
-  :type 'list
+  :type 'sexp
   :group 'riece-google)
 
 (defcustom riece-google-license-key nil

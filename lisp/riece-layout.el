@@ -57,7 +57,11 @@ In the first form, NAME is a string which specifies the layout
 setting, and CONFIGURE-FUNCTION is a function which does window
 splitting, etc.  PARAMETERS are collected and passed to CONFIGURE-FUNCTION.
 In the second form, NAME1 is an alias for NAME2."
-  :type 'list
+  :type '(repeat (choice (list :tag "Layout"
+                               (string :tag "Name")
+                               (function :tag "Configure function")
+                               (repeat :tag "Parameters" :inline t symbol))
+                         (cons :tag "Alias" string string)))
   :group 'riece-layout)
 
 (defun riece-redraw-layout (&optional force)

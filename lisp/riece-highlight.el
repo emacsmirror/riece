@@ -181,7 +181,7 @@
 (defcustom riece-channel-list-mark-face-alist
   '((?* . riece-channel-list-current-face))
   "An alist mapping marks on riece-channel-list-buffer to faces."
-  :type 'list
+  :type '(repeat (cons character symbol))
   :group 'riece-highlight)
 
 (defcustom riece-channel-list-font-lock-keywords

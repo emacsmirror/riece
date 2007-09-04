@@ -1,3 +1,15 @@
+2007-09-04  Didier Verna  <didier@xemacs.org>
+
+        * riece-addon.el (riece-addon-list-mark-face-alist): Fix misuse of
+        the list widget type.
+        * riece-google.el (riece-google-program): Ditto.
+        * riece-highlight.el (riece-channel-list-mark-face-alist): Ditto.
+        * riece-keyword.el (riece-notify-keyword-functions)
+        (riece-keyword-notify-functions): Ditto.
+        * riece-layout.el (riece-layout-alist): Ditto.
+        * riece-rdcc.el (riece-rdcc-send-program)
+        (riece-rdcc-decode-address-program): Ditto.
+
 2007-08-19  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-commands.el (riece-command-kick-with-ban): New command.
