@@ -1,3 +1,7 @@
+2007-10-12  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-twitter.el (riece-twitter-update): Don't send extra headers.
+
 2007-09-04  Didier Verna  <didier@xemacs.org>
 
         * riece-addon.el (riece-addon-list-mark-face-alist): Fix misuse of
