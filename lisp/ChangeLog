@@ -1,3 +1,8 @@
+2007-10-13  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-twitter.el (riece-twitter-update): Don't send extra
+	headers only if it is called interactively.
+
 2007-10-12  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-twitter.el (riece-twitter-update): Don't send extra headers.

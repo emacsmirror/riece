@@ -67,19 +67,24 @@
 	       "\\[riece-twitter-set-credential] to set your credential")))
      (list (read-string "Status: "))))
   (message "Sending to Twitter...")
-  (let ((process
-	 (start-process
-	  "curl" nil "curl"
-;;	  "-H" "X-Twitter-Client: Riece"
-;;	  "-H" (concat "X-Twitter-Client-Version: " riece-version-number)
-;;	  "-H" "X-Twitter-Client-URL: http://riece.nongnu.org/twitter.xml"
-	  "-u" riece-twitter-credential
-;;	  "-d" "source=riece"
-	  "-d" (concat "status="
-		       (riece-twitter-escape-string
-			(encode-coding-string status 'utf-8)))
-	  "-s"
-	  "http://twitter.com/statuses/update.json")))
+  (let* ((args
+	  (list "-u" riece-twitter-credential
+		"-d" (concat "status="
+			     (riece-twitter-escape-string
+			      (encode-coding-string status 'utf-8)))
+		"-s"
+		"http://twitter.com/statuses/update.json"))
+	 (process
+	  (apply #'start-process
+		 "curl" nil "curl"
+		 (if (interactive-p)
+		     args
+		   (append args
+			   (list "-H" "X-Twitter-Client: Riece"
+				 "-H" (concat "X-Twitter-Client-Version: "
+					      riece-version-number)
+				 "-H" "X-Twitter-Client-URL: http://riece.nongnu.org/twitter.xml"
+				 "-d" "source=riece"))))))
     (set-process-sentinel process #'riece-twitter-sentinel)))
 
 (defun riece-twitter-sentinel (process status)
