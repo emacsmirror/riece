@@ -1,7 +1,7 @@
-AC_INIT
+AC_INIT([riece], [4.0.0], [liece@unixuser.org])
 AC_CONFIG_SRCDIR([configure.ac])
 AC_PREREQ(2.59)
-AM_INIT_AUTOMAKE(riece, 4.0.0)
+AM_INIT_AUTOMAKE
 
 AC_CHECK_EMACS
 AC_PATH_LISPDIR
