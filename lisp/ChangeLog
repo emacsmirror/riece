@@ -1,3 +1,7 @@
+2007-12-21  OHASHI Akira  <bg66@koka-in.org>
+
+	* riece-mini.el (riece-mini-send-message): Use riece-format-identity.
+
 2007-10-13  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-twitter.el (riece-twitter-update): Don't send extra

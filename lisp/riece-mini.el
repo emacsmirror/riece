@@ -104,7 +104,8 @@ If twice (C-u C-u), then ask the channel."
 	     "Channel/User: " riece-current-channels nil t))
 	   (arg (or riece-mini-last-channel riece-current-channel))
 	   (t riece-current-channel)))
-	 (message (read-string (format "Message to %s: " target))))
+	 (message (read-string (format "Message to %s: "
+				       (riece-format-identity target)))))
     (unless (equal message "")
       (riece-switch-to-channel target)
       (riece-send-string
