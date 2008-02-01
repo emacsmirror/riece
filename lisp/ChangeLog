@@ -1,3 +1,10 @@
+2008-02-01  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece.el (riece-save-variables-files): Display message
+	before/after saving files.
+	* riece-mcat-japanese.el (riece-mcat-japanese-alist): Translate
+	these mesasges for riece-save-variables-files.
+
 2007-12-21  OHASHI Akira  <bg66@koka-in.org>
 
 	* riece-mini.el (riece-mini-send-message): Use riece-format-identity.

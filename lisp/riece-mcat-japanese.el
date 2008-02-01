@@ -136,6 +136,8 @@
     ("Recent messages of the day:\n" . "最近のメッセージ (今日中):\n")
     ("Recent messages up to %d lines:\n" . "最近のメッセージ (%d 行まで):\n")
     ("Save as (default %s) " . "保存先 (既定値 %s) ")
+    ("Saving %s..." . "%s を保存しています...")
+    ("Saving %s...done" . "%s を保存しています...完了")
     ("Sending %s...(%s/%d)" . "%s を送信中...(%s/%d)")
     ("Sending %s...done" . "%s を送信中...完了")
     ("Sending QUIT to \"%s\"..." . "\"%s\" に QUIT を送信しています...")
