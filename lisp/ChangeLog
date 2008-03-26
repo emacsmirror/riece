@@ -1,3 +1,9 @@
+2008-03-26  Takeru Naito <takeru.naito@gmail.com>
+
+	* riece-keyword.el (riece-keyword-message-filter): Don't match to
+	empty string if riece-keywords is nil, or it only contains regexp
+	matchers.
+
 2008-02-01  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece.el (riece-save-variables-files): Display message

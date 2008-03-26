@@ -86,7 +86,8 @@ and the matched message object."
 				 (setq keywords (cons matcher keywords)))
 			      matcher))
 			  riece-keywords))
-	       (list (cons (regexp-opt keywords) 0))))
+	       (if keywords
+		   (list (cons (regexp-opt keywords) 0)))))
 	     index)
 	(while alist
 	  (setq index 0)
