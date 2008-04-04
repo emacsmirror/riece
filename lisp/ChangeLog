@@ -1,4 +1,9 @@
-2008-03-26  Takeru Naito <takeru.naito@gmail.com>
+2008-04-04  春日 玄 KASUGA Toru  <kasuga.toru@jp.fujitsu.com>
+
+	* riece-irc.el (riece-irc-open-server): Encode realname when
+	issueing a USER command.
+
+2008-03-26  Takeru Naito  <takeru.naito@gmail.com>
 
 	* riece-keyword.el (riece-keyword-message-filter): Don't match to
 	empty string if riece-keywords is nil, or it only contains regexp

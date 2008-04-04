@@ -86,7 +86,8 @@
 				   (format "USER %s * * :%s\r\n"
 					   (or username
 					       (user-real-login-name))
-					   (or realname
+					   (or (encode-coding-string realname
+								     coding)
 					       "No information given")))
 	(riece-process-send-string process (format "NICK %s\r\n" nickname))
 	(with-current-buffer (process-buffer process)
