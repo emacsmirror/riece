@@ -87,9 +87,10 @@
 				   (format "USER %s * * :%s\r\n"
 					   (or username
 					       (user-real-login-name))
-					   (or (encode-coding-string realname
-								     coding)
-					       "No information given")))
+					   (encode-coding-string
+					    (or realname
+						"No information given")
+					    coding)))
 	(with-current-buffer (process-buffer process)
 	  (setq riece-last-nickname riece-real-nickname
 		riece-nick-accepted 'sent
