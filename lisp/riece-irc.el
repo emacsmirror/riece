@@ -86,7 +86,10 @@
 	(unless realname
 	  (setq realname (riece-mcat "No information given")))
 	(if coding
-	    (setq realname (encode-coding-string realname coding)))
+	    (setq realname (encode-coding-string realname
+						 (if (consp coding)
+						     (cdr coding)
+						   coding))))
 	(riece-process-send-string process
 				   (format "USER %s * * :%s\r\n"
 					   (or username
