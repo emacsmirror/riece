@@ -1,3 +1,9 @@
+2008-04-15  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-irc.el (riece-irc-open-server): Send NICK before USER,
+	following the recommendation in "3.1 Connection Registration" of
+	RFC2812.
+
 2008-04-04  春日 玄 KASUGA Toru  <kasuga.toru@jp.fujitsu.com>
 
 	* riece-irc.el (riece-irc-open-server): Encode realname when
