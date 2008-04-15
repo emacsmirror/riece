@@ -30,6 +30,7 @@
 (require 'riece-identity)
 (require 'riece-compat)
 (require 'riece-cache)
+(require 'riece-debug)
 
 (eval-and-compile
   (defvar riece-server-keyword-map
@@ -222,9 +223,8 @@ the `riece-server-keyword-map' variable."
 					"-open-server")))
     (unless function
       (error "\"%S\" is not supported" protocol))
-    (condition-case nil
-	(setq process (funcall function server server-name))
-      (error))
+    (setq process (riece-funcall-ignore-errors (symbol-name function)
+					       function server server-name))
     (when process
       (with-current-buffer (process-buffer process)
 	(make-local-variable 'riece-protocol)

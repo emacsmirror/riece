@@ -83,14 +83,15 @@
 	    (riece-process-send-string process
 				       (format "PASS %s\r\n" password)))
 	(riece-process-send-string process (format "NICK %s\r\n" nickname))
+	(unless realname
+	  (setq realname (riece-mcat "No information given")))
+	(if coding
+	    (setq realname (encode-coding-string realname coding)))
 	(riece-process-send-string process
 				   (format "USER %s * * :%s\r\n"
 					   (or username
 					       (user-real-login-name))
-					   (encode-coding-string
-					    (or realname
-						"No information given")
-					    coding)))
+					   realname))
 	(with-current-buffer (process-buffer process)
 	  (setq riece-last-nickname riece-real-nickname
 		riece-nick-accepted 'sent
