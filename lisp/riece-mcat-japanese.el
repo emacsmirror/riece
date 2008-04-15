@@ -116,6 +116,7 @@
     ("Nickname \"%s\" already in use.  Choose a new one: " . "ニックネーム \"%s\" は既に使用されています。新しいニックネーム: ")
     ("No changes made.  Save anyway? " . "変更がありませんが、保存しますか? ")
     ("No channel" . "チャンネルなし")
+    ("No information given" . "情報がありません")
     ("No server process" . "サーバのプロセスがありません")
     ("No text to send" . "送信するテキストがありません")
     ("None" . "なし")

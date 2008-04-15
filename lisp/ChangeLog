@@ -1,5 +1,8 @@
 2008-04-15  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-mcat-japanese.el (riece-mcat-japanese-alist): Translate
+	"No information given".
+
 	* riece-server.el (riece-open-server): Record errors for debug.
 
 	* riece-irc.el (riece-irc-open-server): Send NICK before USER,
