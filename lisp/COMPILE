@@ -60,8 +60,7 @@
     "riece-command-configure-windows.xpm"
     "riece-command-list-addons.xpm"
     "riece-command-join.xpm"
-    "riece-command-part.xpm"
-    "riece-command-quit.xpm"))
+    "riece-command-part.xpm"))
 
 (defvar riece-scripts
   '("server.rb"
