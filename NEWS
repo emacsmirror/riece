@@ -1,6 +1,6 @@
 * Major changes in 5.0.0
 
-** Use GNOME stock icons for toolbar. (ueno)
+** Use stock icons for toolbar. (ueno)
 
 ** Follow the procedure recommended in RFC2812 when making a
    connection to the server.  This change is needed for some IRC
