@@ -209,7 +209,7 @@
     ("Set topic: " . "新しいトピック: ")
     ("Setup Riece's command menus." . "メニューバーの利用")
     ("Submit Bug Report" . "バグを報告")
-    ("Switch To Channel" . "チャンネルを移動")
+    ("Switch To Channel" . "チャンネルに移動")
     ("Switch to channel/user: " . "移動先のチャンネルまたはユーザ: ")
     ("Switch to number: " . "移動先の番号: ")
     ("Toggle..." . "トグル...")
