@@ -48,6 +48,7 @@
    (list (riece-mcat "Servers")
 	 :filter 'riece-menu-create-servers-menu)
    "----"
+   (vector (riece-mcat "Redraw Layout") 'riece-command-configure-windows t)
    (list (riece-mcat "Change Window Layout...")
 	 :filter 'riece-menu-create-layouts-menu)
    (list (riece-mcat "Toggle...")

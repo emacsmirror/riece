@@ -1,7 +1,8 @@
 2008-05-27  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-menu.el (riece-menu-items): Define with defcustom; use
-	riece-mcat to translate menu labels.
+	riece-mcat to translate menu labels; bind
+	riece-command-configure-windows.
 	(riece-menu-requires): Depend on riece-mcat.
 	(riece-menu-insinuate): Re-evaluate riece-menu-items.
 

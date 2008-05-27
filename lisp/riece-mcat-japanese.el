@@ -157,6 +157,7 @@
     ("Receiving %s from %s...done" . "%s を %s から受信中...完了")
     ("Recent messages of the day:\n" . "最近のメッセージ (今日中):\n")
     ("Recent messages up to %d lines:\n" . "最近のメッセージ (%d 行まで):\n")
+    ("Redraw Layout" . "画面の再描画")
     ("Save as (default %s) " . "保存先 (既定値 %s) ")
     ("Saving %s..." . "%s を保存しています...")
     ("Saving %s...done" . "%s を保存しています...完了")
