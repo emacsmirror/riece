@@ -94,16 +94,20 @@
 	  riece-layout-alist))
 
 (defun riece-menu-create-channels-menu (menu)
-  (mapcar (lambda (channel)
-	    (list (riece-format-identity channel)
-		  (vector (riece-mcat "Switch To Channel")
-			  (list 'riece-command-switch-to-channel channel) t)
-		  (vector (riece-mcat "Part Channel")
-			  (list 'riece-command-part channel) t)
-		  (vector (riece-mcat "List Channel")
-			  (list 'riece-command-list
-				(riece-identity-prefix channel)) t)))
-	  riece-current-channels))
+  (delq nil
+	(mapcar (lambda (channel)
+		  (if channel
+		      (list (riece-format-identity channel)
+			    (vector (riece-mcat "Switch To Channel")
+				    (list 'riece-command-switch-to-channel
+					  channel)
+				    t)
+			    (vector (riece-mcat "Part Channel")
+				    (list 'riece-command-part channel) t)
+			    (vector (riece-mcat "List Channel")
+				    (list 'riece-command-list
+					  (riece-identity-prefix channel)) t))))
+		riece-current-channels)))
 
 (defun riece-menu-create-servers-menu (menu)
   (mapcar (lambda (entry)

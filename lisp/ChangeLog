@@ -1,5 +1,10 @@
 2008-05-27  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-menu.el (riece-menu-create-channels-menu): Remove
+	placeholder channels.
+
+2008-05-27  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-addon-modules.el (riece-addon-modules): Translate add-on
 	description.
 
