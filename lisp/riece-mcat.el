@@ -104,7 +104,7 @@
       (insert "))")
       (save-buffer))))
 
-(defconst riece-mcat-description "Translate messages")
+(defconst riece-mcat-description "Translate messages.")
 
 (defun riece-mcat-insinuate ()
   (set-language-info "Japanese" 'riece-mcat-feature 'riece-mcat-japanese))
