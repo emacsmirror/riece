@@ -335,7 +335,7 @@ All normal editing commands are turned off."
 	    (cons (cons (car (car pointer))
 			(if (and description
 				 (boundp description))
-			    (symbol-value description)
+			    (riece-mcat (symbol-value description))
 			  (riece-mcat "(no description)")))
 		  module-description-alist)
 	    pointer (cdr pointer)))
@@ -344,7 +344,8 @@ All normal editing commands are turned off."
       (unless (assq (car (car pointer))
 		    module-description-alist)
 	(setq module-description-alist
-	      (cons (car pointer) module-description-alist)))
+	      (cons (cons (car (car pointer)) (riece-mcat (cdr (car pointer))))
+		    module-description-alist)))
       (setq pointer (cdr pointer)))
     (erase-buffer)
     (riece-kill-all-overlays)

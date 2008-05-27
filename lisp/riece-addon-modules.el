@@ -1,40 +1,80 @@
+(require 'riece-mcat)
+
 (defconst riece-addon-modules
-  '((riece-alias . "Define aliases for IRC names.")
-    (riece-async . "Connect to IRC server via async proxy.")
-    (riece-biff . "Be notified if messages arrives.")
-    (riece-button . "Display useful buttons in IRC buffers.")
-    (riece-ctcp . "CTCP (Client To Client Protocol) support.")
-    (riece-ctlseq . "Mark up control sequences in IRC buffers.")
-    (riece-doctor . "Pretend to be a psychotherapist.")
-    (riece-epg . "Encrypt/decrypt messages.")
-    (riece-eval-ruby . "Evaluate input string as a Ruby program.")
-    (riece-eval . "Evaluate an input string as an elisp form.")
-    (riece-foolproof . "Prevent miss-operation in the command buffer.")
-    (riece-google . "Search keywords by Google.")
-    (riece-guess . "Guess the next channel, using multiple methods.")
-    (riece-hangman . "Allow channel members to play the hangman game.")
-    (riece-highlight . "Highlight IRC buffers.")
-    (riece-history . "Manage history of channel shifting.")
-    (riece-icon . "Display icons in IRC buffers.")
-    (riece-ignore . "Ignore messages from some users.")
-    (riece-kakasi . "Convert Japanese to roman string by KAKASI.")
-    (riece-keepalive . "Keep an IRC connection.")
-    (riece-keyword . "Detect keywords in IRC buffers.")
-    (riece-log . "Save IRC logs.")
-    (riece-lsdb . "Help register nicknames in LSDB rolodex program.")
-    (riece-mcat . "Translate messages.")
-    (riece-menu . "Setup Riece's command menus.")
-    (riece-mini . "Use Riece only on the minibuffer.")
-    ;;(riece-ndcc . "DCC file sending protocol support (written in elisp.)")
-    (riece-rdcc . "DCC file sending protocol support (written in Ruby.)")
-    (riece-shrink-buffer . "Free old IRC messages to save memory usage.")
-    (riece-skk-kakutei . "Remove SKK's preedit mark before sending messages.")
-    (riece-toolbar . "Display toolbar icons.")
-    (riece-twitter . "Send your status to Twitter.")
-    (riece-unread . "Mark channels where new messages arrived.")
-    (riece-url . "Collect URL in IRC buffers.")
-    (riece-xface . "Display X-Face in IRC buffers.")
-    (riece-xfaceb . "Display X-Face & Colour Face images in IRC buffers \(BBDB\).")
-    (riece-yank . "Enter the element of kill-ring.")))
+  (list
+   (cons 'riece-alias
+	 (riece-mcat "Define aliases for IRC names."))
+   (cons 'riece-async
+	 (riece-mcat "Connect to IRC server via async proxy."))
+   (cons 'riece-biff
+	 (riece-mcat "Be notified if messages arrives."))
+   (cons 'riece-button
+	 (riece-mcat "Display useful buttons in IRC buffers."))
+   (cons 'riece-ctcp
+	 (riece-mcat "CTCP (Client To Client Protocol) support."))
+   (cons 'riece-ctlseq
+	 (riece-mcat "Mark up control sequences in IRC buffers."))
+   (cons 'riece-doctor
+	 (riece-mcat "Pretend to be a psychotherapist."))
+   (cons 'riece-epg
+	 (riece-mcat "Encrypt/decrypt messages."))
+   (cons 'riece-eval-ruby
+	 (riece-mcat "Evaluate input string as a Ruby program."))
+   (cons 'riece-eval
+	 (riece-mcat "Evaluate an input string as an elisp form."))
+   (cons 'riece-foolproof
+	 (riece-mcat "Prevent miss-operation in the command buffer."))
+   (cons 'riece-google
+	 (riece-mcat "Search keywords by Google."))
+   (cons 'riece-guess
+	 (riece-mcat "Guess the next channel, using multiple methods."))
+   (cons 'riece-hangman
+	 (riece-mcat "Allow channel members to play the hangman game."))
+   (cons 'riece-highlight
+	 (riece-mcat "Highlight IRC buffers."))
+   (cons 'riece-history
+	 (riece-mcat "Manage history of channel shifting."))
+   (cons 'riece-icon
+	 (riece-mcat "Display icons in IRC buffers."))
+   (cons 'riece-ignore
+	 (riece-mcat "Ignore messages from some users."))
+   (cons 'riece-kakasi
+	 (riece-mcat "Convert Japanese to roman string by KAKASI."))
+   (cons 'riece-keepalive
+	 (riece-mcat "Keep an IRC connection."))
+   (cons 'riece-keyword
+	 (riece-mcat "Detect keywords in IRC buffers."))
+   (cons 'riece-log
+	 (riece-mcat "Save IRC logs."))
+   (cons 'riece-lsdb
+	 (riece-mcat "Help register nicknames in LSDB rolodex program."))
+   (cons 'riece-mcat
+	 (riece-mcat "Translate messages."))
+   (cons 'riece-menu
+	 (riece-mcat "Setup Riece's command menus."))
+   (cons 'riece-mini
+	 (riece-mcat "Use Riece only on the minibuffer."))
+;;;    (cons 'riece-ndcc
+;;; 	 (riece-mcat "DCC file sending protocol support (written in elisp.)"))
+   (cons 'riece-rdcc
+	 (riece-mcat "DCC file sending protocol support (written in Ruby.)"))
+   (cons 'riece-shrink-buffer
+	 (riece-mcat "Free old IRC messages to save memory usage."))
+   (cons 'riece-skk-kakutei
+	 (riece-mcat "Remove SKK's preedit mark before sending messages."))
+   (cons 'riece-toolbar
+	 (riece-mcat "Display toolbar icons."))
+   (cons 'riece-twitter
+	 (riece-mcat "Send your status to Twitter."))
+   (cons 'riece-unread
+	 (riece-mcat "Mark channels where new messages arrived."))
+   (cons 'riece-url
+	 (riece-mcat "Collect URL in IRC buffers."))
+   (cons 'riece-xface
+	 (riece-mcat "Display X-Face in IRC buffers."))
+   (cons 'riece-xfaceb
+	 (riece-mcat "Display X-Face & Colour Face images in IRC buffers \(BBDB\)."))
+   (cons 'riece-yank
+	 (riece-mcat "Enter the element of kill-ring."))))
 
 (provide 'riece-addon-modules)

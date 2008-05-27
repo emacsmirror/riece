@@ -40,7 +40,9 @@
 
 (defun riece-mcat-extract-from-form (form)
   (if (and form (listp form) (listp (cdr form)))
-      (if (eq (car form) 'riece-mcat)
+      (if (and (= (length form) 2)
+	       (eq (car form) 'riece-mcat)
+	       (stringp (car (cdr form))))
 	  (cdr form)
 	(delq nil (apply #'nconc
 			 (mapcar #'riece-mcat-extract-from-form form))))))

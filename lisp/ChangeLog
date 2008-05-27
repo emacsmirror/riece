@@ -1,5 +1,8 @@
 2008-05-27  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-addon-modules.el (riece-addon-modules): Translate add-on
+	description.
+
 	* riece-menu.el (riece-menu-items): Define with defcustom; use
 	riece-mcat to translate menu labels; bind
 	riece-command-configure-windows.
