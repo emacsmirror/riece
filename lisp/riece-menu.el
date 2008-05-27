@@ -130,7 +130,12 @@
 
 (defun riece-menu-insinuate ()
   (if (fboundp 'custom-reevaluate-setting)
-      (custom-reevaluate-setting 'riece-menu-items))
+      (custom-reevaluate-setting 'riece-menu-items)
+    ;; We could emulate custom-reevaluate-setting by manually eval the
+    ;; 'standard-value property of 'riece-menu-items.  In that case
+    ;; (i.e. XEmacs 21.4), however, there is no way to render
+    ;; non-ASCII labels in the menu, so give up here.
+    )
   (if riece-command-buffer
       (with-current-buffer riece-command-buffer
 	(riece-menu-command-mode-hook)))
