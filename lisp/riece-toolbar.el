@@ -24,14 +24,14 @@
 
 ;;; Commentary:
 
-;; Image files are taken from GNOME stock icons:
-;; riece-command-next-channel.xpm	stock_next.png
-;; riece-command-previous-channel.xpm	stock_previous.png
-;; riece-command-configure-windows.xpm	stock_refresh.png
-;; riece-command-list-addons		stock_styles.png
-;; riece-command-join			stock_people.png
-;; riece-command-part			stock_calc-cancel.png
-;; riece-command-quit			stock_exit.png
+;; Image files are taken from stock icons:
+
+;; riece-command-next-channel.xpm	gtk-go-forward
+;; riece-command-previous-channel.xpm	gtk-go-back
+;; riece-command-configure-windows.xpm	gtk-refresh
+;; riece-command-list-addons		gtk-preferences
+;; riece-command-join			gtk-new
+;; riece-command-part			gtk-close
 
 ;; NOTE: This is an add-on module for Riece.
 
@@ -43,13 +43,12 @@
   "Display toolbar icons.")
 
 (defvar riece-toolbar-items
-  '(riece-command-previous-channel
-    riece-command-next-channel
-    riece-command-configure-windows
-    riece-command-list-addons
-    riece-command-join
-    riece-command-part
-    riece-command-quit))
+  '((riece-command-previous-channel . "left-arrow")
+    (riece-command-next-channel . "right-arrow")
+    (riece-command-configure-windows . "refresh")
+    (riece-command-join . "new")
+    (riece-command-part . "close")
+    (riece-command-list-addons . "preferences")))
 
 (defun riece-toolbar-find-menu-item (command)
   (let ((pointer riece-menu-items)
@@ -73,20 +72,21 @@
 		    file
 		    menu-item)
 		(while pointer
-		  (setq file (locate-file (symbol-name (car pointer))
+		  (setq file (locate-file (symbol-name (car (car pointer)))
 					  (cons riece-data-directory load-path)
 					  '(".xpm" ".pbm" ".xbm"))
-			menu-item (riece-toolbar-find-menu-item (car pointer)))
+			menu-item (riece-toolbar-find-menu-item
+				   (car (car pointer))))
 		  (if (and file (file-exists-p file))
 		      (setq toolbar
 			    (toolbar-add-item
 			     toolbar
 			     (toolbar-new-button
 			      file
-			      (car pointer)
+			      (car (car pointer))
 			      (if menu-item
 				  (aref menu-item 0)
-				(symbol-name (car pointer)))))))
+				(symbol-name (car (car pointer))))))))
 		  (setq pointer (cdr pointer)))
 		toolbar))
 	    (defvar riece-toolbar-original-toolbar nil)
@@ -108,8 +108,8 @@
       (let ((pointer items)
 	    (tool-bar-map (make-sparse-keymap)))
 	(while pointer
-	  (tool-bar-add-item-from-menu (car pointer)
-				       (symbol-name (car pointer))
+	  (tool-bar-add-item-from-menu (car (car pointer))
+				       (cdr (car pointer))
 				       map)
 	  (setq pointer (cdr pointer)))
 	tool-bar-map))
