@@ -1,4 +1,4 @@
-;;; riece-menu.el --- setup Riece's command menus
+;;; riece-menu.el --- setup menus
 ;; Copyright (C) 1998-2003 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>
@@ -33,40 +33,54 @@
 (require 'riece-identity)
 (require 'riece-layout)
 (require 'riece-server)
+(require 'riece-mcat)
 
-(defvar riece-menu-items
-  `("Riece"
-    ["Version" riece-version t]
-    ["Submit Bug Report" riece-submit-bug-report t]
-    "----"
-    ("Change Window Layout..." :filter riece-menu-create-layouts-menu)
-    ["Toggle Freeze Channel Buffer"
-     riece-command-toggle-freeze t]
-    ["Toggle Freeze Channel Buffer Until Next Message"
-     riece-command-toggle-own-freeze t]
-    ["Toggle Display Channel Buffer"
-     riece-command-toggle-channel-buffer-mode t]
-    ["Toggle Display Channel List Buffer"
-     riece-command-toggle-channel-list-buffer-mode t]
-    ["Toggle Display User List Buffer"
-     riece-command-toggle-user-list-buffer-mode t]
-    "----"
-    ["Join Channel" riece-command-join t]
-    ["Change Nickname" riece-command-change-nickname t]
-    ["Mark As Away" riece-command-toggle-away t]
-    ["Quit IRC" riece-command-quit t]
-    "----"
-    ["Part Channel" riece-command-part riece-current-channel]
-    ["Set Channel Topic" riece-command-topic riece-current-channel]
-    ["Kick User" riece-command-kick riece-current-channel]
-    ["Invite User" riece-command-invite riece-current-channel]
-    "----"
-    ["Next Channel" riece-command-next-channel riece-current-channels]
-    ["Previous Channel" riece-command-previous-channel riece-current-channels]
-    "----"
-    ("Channels" :filter riece-menu-create-channels-menu)
-    ("Servers" :filter riece-menu-create-servers-menu))
-  "Menu used in command mode.")
+(defcustom riece-menu-items
+  (list
+   "Riece"
+   (vector (riece-mcat "Next Channel") 'riece-command-next-channel
+	   'riece-current-channels)
+   (vector (riece-mcat "Previous Channel") 'riece-command-previous-channel
+	   'riece-current-channels)
+   "----"
+   (list (riece-mcat "Channels")
+	 :filter 'riece-menu-create-channels-menu)
+   (list (riece-mcat "Servers")
+	 :filter 'riece-menu-create-servers-menu)
+   "----"
+   (list (riece-mcat "Change Window Layout...")
+	 :filter 'riece-menu-create-layouts-menu)
+   (list (riece-mcat "Toggle...")
+	 (vector (riece-mcat "Freeze Channel Buffer")
+		 'riece-command-toggle-freeze t)
+	 (vector (riece-mcat "Freeze Channel Buffer Until Next Message")
+		 'riece-command-toggle-own-freeze t)
+	 (vector (riece-mcat "Display Channel Buffer")
+		 'riece-command-toggle-channel-buffer-mode t)
+	 (vector (riece-mcat "Display Channel List Buffer")
+		 'riece-command-toggle-channel-list-buffer-mode t)
+	 (vector (riece-mcat "Display User List Buffer")
+		 'riece-command-toggle-user-list-buffer-mode t))
+   "----"
+   (vector (riece-mcat "Join Channel") 'riece-command-join t)
+   (vector (riece-mcat "Part Channel") 'riece-command-part
+	   'riece-current-channel)
+   (vector (riece-mcat "Set Channel Topic") 'riece-command-topic
+	   'riece-current-channel)
+   (vector (riece-mcat "Kick User") 'riece-command-kick
+	   'riece-current-channel)
+   (vector (riece-mcat "Invite User") 'riece-command-invite
+	   'riece-current-channel)
+   "----"
+   (vector (riece-mcat "Version") 'riece-version t)
+   (vector (riece-mcat "Submit Bug Report") 'riece-submit-bug-report t)
+   "----"
+   (vector (riece-mcat "Mark As Away") 'riece-command-toggle-away t)
+   (vector (riece-mcat "Change Nickname") 'riece-command-change-nickname t)
+   (vector (riece-mcat "Quit IRC") 'riece-command-quit t))
+  "Menu used in command mode."
+  :type 'sexp
+  :group 'riece-options)
 
 (defconst riece-menu-description
   "Setup Riece's command menus.")
@@ -80,11 +94,11 @@
 (defun riece-menu-create-channels-menu (menu)
   (mapcar (lambda (channel)
 	    (list (riece-format-identity channel)
-		  (vector "Switch To Channel"
+		  (vector (riece-mcat "Switch To Channel")
 			  (list 'riece-command-switch-to-channel channel) t)
-		  (vector "Part Channel"
+		  (vector (riece-mcat "Part Channel")
 			  (list 'riece-command-part channel) t)
-		  (vector "List Channel"
+		  (vector (riece-mcat "List Channel")
 			  (list 'riece-command-list
 				(riece-identity-prefix channel)) t)))
 	  riece-current-channels))
@@ -92,10 +106,10 @@
 (defun riece-menu-create-servers-menu (menu)
   (mapcar (lambda (entry)
 	    (list (car entry)
-		  (vector "Open Server"
+		  (vector (riece-mcat "Open Server")
 			  (list 'riece-command-open-server (car entry))
 			  (not (riece-server-opened (car entry))))
-		  (vector "Close Server"
+		  (vector (riece-mcat "Close Server")
 			  (list 'riece-command-close-server (car entry))
 			  (riece-server-opened (car entry)))))
 	  riece-server-alist))
@@ -110,7 +124,12 @@
 		    riece-menu-items)
   (easy-menu-add riece-menu))
 
+(defun riece-menu-requires ()
+  (if (memq 'riece-mcat riece-addons)
+      '(riece-mcat)))
+
 (defun riece-menu-insinuate ()
+  (custom-reevaluate-setting 'riece-menu-items)
   (if riece-command-buffer
       (with-current-buffer riece-command-buffer
 	(riece-menu-command-mode-hook)))
