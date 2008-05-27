@@ -118,7 +118,7 @@
     ("Logging in to %s...done" . "%s にログインしています...完了")
     ("Logging in to IRC server..." . "IRC サーバにログインしています...")
     ("Logging in to IRC server...done" . "IRC サーバにログインしています...完了")
-    ("Manage Add-ons" . nil)
+    ("Manage Add-ons" . "アドオンの管理")
     ("Mark As Away" . "離席状態にする")
     ("Message to user: " . "ユーザへのメッセージ: ")
     ("Message: " . "メッセージ")
