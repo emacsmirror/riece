@@ -1,5 +1,8 @@
 2008-05-27  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-display.el (riece-update-status-indicators): Don't update
+	riece-user-indicator if riece-real-nickname is not fixed.
+
 	* COMPILE (riece-icons): Re-order filenames.
 	* Makefile.am (EXTRA_DIST): Add new toolbar icons.
 
