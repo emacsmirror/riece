@@ -28,7 +28,7 @@
 ;; riece-command-next-channel.xpm	stock_next.png
 ;; riece-command-previous-channel.xpm	stock_previous.png
 ;; riece-command-configure-windows.xpm	stock_refresh.png
-;; riece-command-change-layout		stock_styles.png
+;; riece-command-list-addons		stock_styles.png
 ;; riece-command-join			stock_people.png
 ;; riece-command-part			stock_calc-cancel.png
 ;; riece-command-quit			stock_exit.png
@@ -46,7 +46,7 @@
   '(riece-command-previous-channel
     riece-command-next-channel
     riece-command-configure-windows
-    riece-command-change-layout
+    riece-command-list-addons
     riece-command-join
     riece-command-part
     riece-command-quit))

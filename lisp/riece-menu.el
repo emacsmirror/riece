@@ -73,6 +73,7 @@
    (vector (riece-mcat "Invite User") 'riece-command-invite
 	   'riece-current-channel)
    "----"
+   (vector (riece-mcat "Manage Add-ons") 'riece-command-list-addons t)
    (vector (riece-mcat "Version") 'riece-version t)
    (vector (riece-mcat "Submit Bug Report") 'riece-submit-bug-report t)
    "----"

@@ -1,5 +1,5 @@
 /* XPM */
-static char *riece_command_change_layout[] = {
+static char *riece_command_list_addons[] = {
 /* columns rows colors chars-per-pixel */
 "24 24 193 2",
 "   c black",
