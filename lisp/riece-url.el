@@ -125,7 +125,10 @@ This maps a string \"Bug#12345\" to a URL
 (defun riece-url-command-mode-hook ()
   (easy-menu-add-item
    nil (list (car riece-menu-items))
-   (list (riece-mcat "Open URL...") :filter 'riece-url-create-menu)))
+   (list (if (featurep 'xemacs)
+	     "Open URL..."
+	   (riece-mcat "Open URL..."))
+	 :filter 'riece-url-create-menu)))
 
 (defun riece-url-insinuate ()
   (add-hook 'riece-after-insert-functions 'riece-url-scan-region)
@@ -137,7 +140,9 @@ This maps a string \"Bug#12345\" to a URL
 (defun riece-url-uninstall ()
   (easy-menu-remove-item
    nil (list (car riece-menu-items))
-   (riece-mcat "Open URL..."))
+   (if (featurep 'xemacs)
+       "Open URL..."
+     (riece-mcat "Open URL...")))
   (remove-hook 'riece-after-insert-functions 'riece-url-scan-region)
   (remove-hook 'riece-command-mode-hook
 	       'riece-url-command-mode-hook))
