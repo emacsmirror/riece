@@ -24,6 +24,15 @@
 
 ;;; Commentary:
 
+;; Image files are taken from GNOME stock icons:
+;; riece-command-next-channel.xpm	stock_next.png
+;; riece-command-previous-channel.xpm	stock_previous.png
+;; riece-command-configure-windows.xpm	stock_refresh.png
+;; riece-command-change-layout		stock_styles.png
+;; riece-command-join			stock_people.png
+;; riece-command-part			stock_calc-cancel.png
+;; riece-command-quit			stock_exit.png
+
 ;; NOTE: This is an add-on module for Riece.
 
 ;;; Code:
@@ -34,13 +43,13 @@
   "Display toolbar icons.")
 
 (defvar riece-toolbar-items
-  '(riece-command-quit
+  '(riece-command-previous-channel
+    riece-command-next-channel
+    riece-command-configure-windows
+    riece-command-change-layout
     riece-command-join
     riece-command-part
-    riece-command-previous-channel
-    riece-command-next-channel
-    riece-command-change-layout
-    riece-submit-bug-report))
+    riece-command-quit))
 
 (defun riece-toolbar-find-menu-item (command)
   (let ((pointer riece-menu-items)

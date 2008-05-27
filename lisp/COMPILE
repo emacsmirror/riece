@@ -55,13 +55,13 @@
   '(riece-mcat-japanese))
 
 (defvar riece-icons
-  '("riece-command-quit.xpm"
+  '("riece-command-previous-channel.xpm"
+    "riece-command-next-channel.xpm"
+    "riece-command-configure-windows.xpm"
+    "riece-command-change-layout.xpm"
     "riece-command-join.xpm"
     "riece-command-part.xpm"
-    "riece-command-previous-channel.xpm"
-    "riece-command-next-channel.xpm"
-    "riece-command-change-layout.xpm"
-    "riece-submit-bug-report.xpm"))
+    "riece-command-quit.xpm"))
 
 (defvar riece-scripts
   '("server.rb"

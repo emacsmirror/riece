@@ -1,3 +1,14 @@
+2008-05-27  Daiki Ueno  <ueno@unixuser.org>
+
+	* COMPILE (riece-icons): Re-order filenames.
+	* Makefile.am (EXTRA_DIST): Add new toolbar icons.
+
+	* riece-command-change-layout.xpm:
+	* riece-command-configure-windows.xpm:
+	* riece-command-join.xpm:
+	* riece-command-part.xpm:
+	* riece-command-quit.xpm: New toolbar icons.
+
 2008-04-15  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-mcat-japanese.el (riece-mcat-japanese-alist): Translate

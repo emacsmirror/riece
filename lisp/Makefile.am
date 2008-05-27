@@ -22,7 +22,8 @@ EXTRA_DIST = COMPILE ChangeLog ChangeLog.Liece \
 	riece-shrink-buffer.el riece-xfaceb.el riece-epg.el riece-twitter.el \
 	url-riece.el \
 	riece-command-previous-channel.xpm riece-command-next-channel.xpm \
-	riece-submit-bug-report.xpm \
+	riece-command-configure-windows.xpm riece-command-change-layout.xpm \
+	riece-command-join.xpm riece-command-part.xpm riece-command-quit.xpm \
 	server.rb aproxy.rb
 
 CLEANFILES = auto-autoloads.el custom-load.el *.elc
