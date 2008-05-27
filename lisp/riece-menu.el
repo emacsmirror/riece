@@ -129,7 +129,8 @@
       '(riece-mcat)))
 
 (defun riece-menu-insinuate ()
-  (custom-reevaluate-setting 'riece-menu-items)
+  (if (fboundp 'custom-reevaluate-setting)
+      (custom-reevaluate-setting 'riece-menu-items))
   (if riece-command-buffer
       (with-current-buffer riece-command-buffer
 	(riece-menu-command-mode-hook)))
