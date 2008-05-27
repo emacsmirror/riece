@@ -2,12 +2,13 @@
 
 ** Use GNOME stock icons for toolbar. (ueno)
 
-** Improved familiarity with RFC2812 when making a connection to the
-   server. (ueno)
+** Follow the procedure recommended in RFC2812 when making a
+   connection to the server.  This change is needed for some IRC
+   servers including TwitterIrcGateway. (ueno)
 
 ** Allow non-ASCII realname. (KASUGA Toru)
 
-** Fix a corner case of riece-keywords settings. (Takeru Naito)
+** Fixed a corner case of riece-keywords settings. (Takeru Naito)
 
 * Major changes in 4.0.0
 
