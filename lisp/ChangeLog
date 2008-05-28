@@ -1,5 +1,8 @@
 2008-05-28  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece.el (riece-save-variables-files): Generate
+	custom-set-variables instead of a list of setq.
+
 	* riece-options.el (riece-server-alist): Simplify custom-type.
 	* riece-coding.el: Move defcustom to riece-options; require
 	'riece-options.

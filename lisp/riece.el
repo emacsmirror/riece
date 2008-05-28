@@ -259,12 +259,14 @@ If optional argument SAFE is nil, overwrite previous definitions."
 	  print-level
 	  print-length
 	  (variables riece-saved-forms))
+      (insert "(custom-set-variables\n")
       (while variables
-	(prin1 `(setq ,(car variables)
-		      ',(symbol-value (car variables)))
+	(insert " '")
+	(prin1 `(,(car variables) ,(symbol-value (car variables)))
 	       (current-buffer))
 	(insert "\n")
-	(setq variables (cdr variables)))))
+	(setq variables (cdr variables)))
+      (insert ")")))
   (message (riece-mcat "Saving %s...done") riece-saved-variables-file)
   (setq riece-save-variables-are-dirty nil))
 
