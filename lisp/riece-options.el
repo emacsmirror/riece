@@ -149,43 +149,77 @@ way is to put Riece variables on .emacs or file loaded from there."
   :prefix "riece-"
   :group 'riece)
 
-(define-widget 'riece-service-spec 'radio
-  "Edit service spec entries"
-  :convert-widget 'riece-service-spec-convert)
+(defgroup riece-coding nil
+  "Coding system."
+  :tag "Coding"
+  :prefix "riece-"
+  :group 'riece)
 
-(defun riece-service-spec-convert (widget)
-  (widget-put widget :args '((integer :tag "Port Number")
-			     (string :tag "Name")))
-  widget)
-
-(define-widget 'riece-server-spec 'repeat
-  "Edit server spec entries"
-  :match (lambda (widget value)
-	   (eval `(and ,@(mapcar
-			  (lambda (entry)
-			    (or (stringp (cdr entry))
-				(listp (cdr entry))))
-			  value))))
-  :convert-widget 'riece-server-spec-convert)
-
-(defun riece-server-spec-convert (widget)
-  (let* ((host '(const :format "" :value :host))
-	 (service '(const :format "" :value :service))
-	 (host
-	  `(group :inline t ,host (string :tag "Host")))
-	 (service
-	  `(group :inline t ,service riece-service-spec))
-	 (spec
-	  `(cons (string :tag "Name")
-		 (radio (string :tag "Host")
-			(list ,host ,service))))
-	 (args (list spec)))
-    (widget-put widget :args args)
-    widget))
+(defcustom riece-default-coding-system
+  (if (featurep 'mule)
+      (cons 'ctext 'iso-2022-jp-2))
+  "Coding system for process I/O.
+The value is a coding system, or a cons cell (DECODING . ENCODING)
+specifying the coding systems for decoding and encoding respectively."
+  :type '(choice (symbol :tag "Coding system")
+		 (cons (symbol :tag "Input coding system")
+		       (symbol :tag "Output coding system"))
+		 (const nil :tag "No conversion"))
+  :group 'riece-coding)
 
 (defcustom riece-server-alist nil
   "An alist mapping server names to plist."
-  :type 'riece-server-spec
+  :type '(repeat
+	  (group
+	   (string :tag "Server")
+	   (list :inline t :tag "Host"
+		 :format "%{%t%}: %v"
+		 (const :tag "" :value :host)
+		 string)
+	   (repeat :inline t :tag "Options"
+		   (choice :inline t :value nil
+			   (list :inline t :tag "Port"
+				 :format "%{%t%}: %v"
+				 (const :tag "" :value :service)
+				 (choice (const :tag "Default" 6667)
+					 string))
+			   (list :inline t :tag "Nickname"
+				 :format "%{%t%}: %v"
+				 (const :tag "" :value :nickname)
+				 (choice (const :tag "Default" riece-nickname)
+					 string))
+			   (list :inline t :tag "Realname"
+				 :format "%{%t%}: %v"
+				 (const :tag "" :value :realname)
+				 (choice (const :tag "Default" riece-realname)
+					 string))
+			   (list :inline t :tag "Username"
+				 :format "%{%t%}: %v"
+				 (const :tag "" :value :host)
+				 (choice (const :tag "Default" riece-username)
+					 string))
+			   (list :inline t :tag "Password"
+				 :format "%{%t%}: %v"
+				 (const :tag "" :value :host)
+				 string)
+			   (list :inline t :tag "Function"
+				 :format "%{%t%}: %v"
+				 (const :tag "" :value :host)
+				 (choice
+				  (const :tag "Default"
+					 riece-default-open-connection-function)
+				  function))
+			   (list :inline t :tag "Coding system"
+				 :format "%{%t%}: %v"
+				 (const :tag "" :value :host)
+				 (choice
+				  (const :tag "Default"
+					 riece-default-coding-system)
+				  (choice
+				   (symbol :tag "Coding system")
+				   (cons (symbol :tag "Input coding system")
+					 (symbol :tag "Output coding system"))
+				   (const nil :tag "No conversion"))))))))
   :group 'riece-server)
 
 (defcustom riece-server (getenv "IRCSERVER")

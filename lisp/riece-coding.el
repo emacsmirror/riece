@@ -25,24 +25,7 @@
 ;;; Code:
 
 (require 'riece-globals)
-
-(defgroup riece-coding nil
-  "Coding system."
-  :tag "Coding"
-  :prefix "riece-"
-  :group 'riece)
-
-(defcustom riece-default-coding-system
-  (if (featurep 'mule)
-      (cons 'ctext 'iso-2022-jp-2))
-  "Coding system for process I/O.
-The value is a coding system, or a cons cell (DECODING . ENCODING)
-specifying the coding systems for decoding and encoding respectively."
-  :type '(choice (symbol :tag "Coding system")
-		 (cons (symbol :tag "Input coding system")
-		       (symbol :tag "Output coding system"))
-		 (const nil :tag "No conversion"))
-  :group 'riece-coding)
+(require 'riece-options)
 
 (defun riece-encode-coding-string (string)
   (if (and (local-variable-p 'riece-coding-system (current-buffer))

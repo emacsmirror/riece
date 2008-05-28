@@ -1,3 +1,9 @@
+2008-05-28  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-options.el (riece-server-alist): Simplify custom-type.
+	* riece-coding.el: Move defcustom to riece-options; require
+	'riece-options.
+
 2008-05-27  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-menu.el (riece-menu-create-channels-menu): Remove
