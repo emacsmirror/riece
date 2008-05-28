@@ -1,5 +1,7 @@
 * Major changes in 5.0.0
 
+** Use Custom to saved settings. (ueno)
+
 ** Use stock icons for toolbar. (ueno)
 
 ** Follow the procedure recommended in RFC2812 when making a
@@ -8,7 +10,7 @@
 
 ** Allow non-ASCII realname. (KASUGA Toru)
 
-** Fixed a corner case of riece-keywords settings. (Takeru Naito)
+** Fixed a corner case bug of riece-keywords settings. (Takeru Naito)
 
 * Major changes in 4.0.0
 
