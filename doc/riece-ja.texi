@@ -14,7 +14,7 @@
 @ifinfo
 This file describes Riece.
 
-Copyright (C) 2003,2004,2005,2006 Daiki Ueno.
+Copyright (C) 2003,2004,2005,2006,2007,2008 Daiki Ueno.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.1 or
@@ -364,57 +364,65 @@ IRC コマンドを直接送ります(@code{riece-command-raw})
 @menu
 * Startup File::                設定ファイル
 * Server settings::             サーバの詳細設定
-* Connecting to multiple servers::  同時に複数のサーバに接続するには
+* Multiple servers::            複数のサーバに接続するには
 * Add-ons::                     アドオンとは
 @end menu
 
 @node Startup File, Server settings, Advanced usage, Advanced usage
 @section Startup file
 
-この章では、設定ファイルについて解説します。Riece の設定は Emacs の設定
-ファイルに書いても良いですが、Riece に固有の設定はなるべく 
-@file{~/.riece/init} に書くことを勧めます。
+Riece の設定は Emacs の設定ファイルに書いても良いですが、Riece に固有の
+設定はなるべく @file{~/.riece/init} に書くことを推奨します。
 
-また、Riece を使い始めると @file{~/.riece/save} というファイルが作成され
-ます。このファイルには前回起動時の設定の一部(ウィンドウ構成等)が自動的に
-保存されます。
+また、Riece を起動して終了すると @file{~/.riece/save} というファイルが
+作成されます。このファイルには前回起動時の設定の一部が自動的に保存され
+ます。
 
 起動時には、最初に @file{~/.riece/save} を、次に @file{~/.riece/init}を
 読み込みます。つまり、前回起動時に @file{~/.riece/save} に保存された内容
 は、@file{~/.riece/init} の内容で上書きされます。
 
-@node Server settings, Connecting to multiple servers, Startup File, Advanced usage
+@node Server settings, Multiple servers, Startup File, Advanced usage
 @section Server settings
 
-起動時に接続する IRC サーバの名前は変数 @code{riece-server} で指定します。
+起動時に接続する IRC サーバは変数 @code{riece-server} で指定します。
 @vindex riece-server
 
-@code{riece-server} の形式は次の通りです。
-@example
-<サーバのホスト名>:<ポート番号>[:<パスワード>]
-@end example
+@code{riece-server} は文字列で、その形式は次のいずれかです。
 
-@code{riece-server-alist} を設定すると、より複雑な指定が可能になります。
+@enumerate
+@item
+@code{IRC サーバのホスト名}
+
+@item
+@code{IRC サーバのホスト名:ポート番号}
+
+@item
+@code{IRC サーバのホスト名:ポート番号:パスワード}
+
+@item
+詳細設定の名前
+@end enumerate
+
+4. の場合には、@code{riece-server} の値をキーに
+@code{riece-server-alist} を検索します。@code{riece-server-alist} は次
+のような形式の連想配列です。
 @vindex riece-server-alist
-
-以下の例を考えます。
 
 @example
 (setq riece-server-alist
       '(("foo" :host "irc.example.com" :coding shift_jis)
         ("bar" :host "irc.example.net" :nickname "baz")))
-
-(setq riece-server "foo")
 @end example
 
 この設定の意味は以下の通りです。
 
 @itemize
 @item
-@samp{foo} という名前の IRC サーバのホスト名は @samp{irc.example.com} で、使用する文字コードは Shift_JIS
+@samp{foo} という名前の設定では、IRC サーバのホスト名に @samp{irc.example.com}、使用する文字コードに Shift_JIS を使う
 
 @item
-@samp{bar} という名前の IRC サーバのホスト名は @samp{irc.example.net} で、このサーバではニックネーム @samp{baz} を使う
+@samp{bar} という名前の設定では、IRC サーバのホスト名は @samp{irc.example.net}、このサーバではニックネーム @samp{baz} を使う
 @end itemize
 
 指定できるキーワードの一覧は以下の通りです。
@@ -423,21 +431,28 @@ IRC コマンドを直接送ります(@code{riece-command-raw})
 @item :host
 サーバのホスト名または IP アドレス
 @item :service
-サーバのサービス名またはポート番号
+サーバのサービス名またはポート番号 (既定値は @code{6667})
 @item :nickname
-接続時のニックネーム
+接続時のニックネーム (既定値は変数 @code{user-real-login-name} の値)
 @item :username
-接続時のユーザネーム
+接続時のユーザネーム (既定値は変数 @code{user-full-name} の値)
 @item :password
 接続時のパスワード
 @item :function
-接続用関数
+接続用関数 (既定値は @code{open-network-stream})
 @item :coding
-文字コード
+文字コード (既定値は @code{riece-default-coding-system} の値)
 @end table
 
-@node Connecting to multiple servers, Add-ons, Server settings, Advanced usage
-@section Connecting to multiple servers
+@code{riece-server-alist} を対話的に設定するには次のコマンドを使うと便利です。
+
+@example
+M-x load-library riece
+M-x customize-variable riece-server-alist
+@end example
+
+@node Multiple servers, Add-ons, Server settings, Advanced usage
+@section Multiple servers
 
 同時に複数のサーバに接続する手順を以下に示します。
 
@@ -474,7 +489,7 @@ IRC コマンドを直接送ります(@code{riece-command-raw})
 特定のサーバに対して、続くコマンドを発行します(@code{riece-command-universal-server-name-argument})
 @end table
 
-@node Add-ons,  , Connecting to multiple servers, Advanced usage
+@node Add-ons,  , Multiple servers, Advanced usage
 @section Add-ons
 
 Riece では、雑多な機能を選択的に利用できるよう、アドオンと呼ばれる機構
