@@ -238,12 +238,21 @@ If optional argument SAFE is nil, overwrite previous definitions."
   (let ((files (if file
 		   (setq riece-variables-file file
 			 riece-variables-files (list file))
-		 riece-variables-files)))
+		 riece-variables-files))
+	(variables riece-saved-forms))
     (while files
       (condition-case nil
 	  (load (expand-file-name (car files)))
 	(file-error nil))
-      (setq files (cdr files)))))
+      (setq files (cdr files)))
+    (while variables
+      (if (fboundp 'custom-reevaluate-setting)
+	  (custom-reevaluate-setting (car variables))
+	(funcall (or (get (car variables) 'custom-set) 'set-default)
+		 (car variables)
+		 (eval (car (or (get (car variables) 'saved-value)
+				(get (car variables) 'standard-value))))))
+      (setq variables (cdr variables)))))
 
 (defvar print-quoted)
 (defvar print-escape-multibyte)
@@ -262,7 +271,7 @@ If optional argument SAFE is nil, overwrite previous definitions."
       (insert "(custom-set-variables\n")
       (while variables
 	(insert " '")
-	(prin1 `(,(car variables) ,(symbol-value (car variables)))
+	(prin1 `(,(car variables) ',(symbol-value (car variables)))
 	       (current-buffer))
 	(insert "\n")
 	(setq variables (cdr variables)))
