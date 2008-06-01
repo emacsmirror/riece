@@ -1,3 +1,15 @@
+* Riece 5.0.0 の主な変更点
+
+** 設定の保存に Custom を使うようにした (ueno)
+
+** ツールバーのアイコンに Gtk+ の標準アイコンを使うようにした (ueno)
+
+** 接続時に RFC2812 推奨の手順にしたがうようにした (ueno)
+
+** リアルネームの設定に非 ASCII 文字が使えるようになった (KASUGA Toru)
+
+** riece-keywords の設定上のバグを修正 (Takeru Naito)
+
 * Riece 4.0.0 の主な変更点
 
 ** 新規アドオン riece-twitter (ueno)
