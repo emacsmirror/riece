@@ -195,23 +195,23 @@ specifying the coding systems for decoding and encoding respectively."
 					 string))
 			   (list :inline t :tag "Username"
 				 :format "%{%t%}: %v"
-				 (const :tag "" :value :host)
+				 (const :tag "" :value :username)
 				 (choice (const :tag "Default" riece-username)
 					 string))
 			   (list :inline t :tag "Password"
 				 :format "%{%t%}: %v"
-				 (const :tag "" :value :host)
+				 (const :tag "" :value :password)
 				 string)
 			   (list :inline t :tag "Function"
 				 :format "%{%t%}: %v"
-				 (const :tag "" :value :host)
+				 (const :tag "" :value :function)
 				 (choice
 				  (const :tag "Default"
 					 riece-default-open-connection-function)
 				  function))
 			   (list :inline t :tag "Coding system"
 				 :format "%{%t%}: %v"
-				 (const :tag "" :value :host)
+				 (const :tag "" :value :coding)
 				 (choice
 				  (const :tag "Default"
 					 riece-default-coding-system)

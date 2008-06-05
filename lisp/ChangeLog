@@ -1,3 +1,8 @@
+2008-06-05  TAKAHASHI Kaoru  <kaoru@kaisei.org>
+
+	* riece-options.el (riece-server-alist): Fix :value for username,
+	password, function and coding-system.
+
 2008-06-02  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece.el (riece-read-variables-files): Re-evaluate custom settings.
