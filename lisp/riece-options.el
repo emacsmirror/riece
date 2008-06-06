@@ -182,6 +182,7 @@ specifying the coding systems for decoding and encoding respectively."
 				 :format "%{%t%}: %v"
 				 (const :tag "" :value :service)
 				 (choice (const :tag "Default" 6667)
+					 integer
 					 string))
 			   (list :inline t :tag "Nickname"
 				 :format "%{%t%}: %v"

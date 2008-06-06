@@ -1,3 +1,8 @@
+2008-06-07  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-options.el (riece-server-alist): Accept an integer for
+	:service.
+
 2008-06-06  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-compat.el (riece-make-local-hook): New alias.
