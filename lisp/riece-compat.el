@@ -79,8 +79,8 @@
 (if (fboundp 'set-process-query-on-exit-flag)
     (defalias 'riece-set-process-query-on-exit-flag
       'set-process-query-on-exit-flag)
-  (defun riece-set-process-query-on-exit-flag (process flag)
-    (process-kill-without-query process (not flag))))
+  (defalias 'riece-set-process-query-on-exit-flag
+    process-kill-without-query))
 
 (provide 'riece-compat)
 
