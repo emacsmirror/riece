@@ -80,7 +80,7 @@
     (defalias 'riece-set-process-query-on-exit-flag
       'set-process-query-on-exit-flag)
   (defalias 'riece-set-process-query-on-exit-flag
-    process-kill-without-query))
+    'process-kill-without-query))
 
 (provide 'riece-compat)
 
