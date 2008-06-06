@@ -31,8 +31,6 @@
 (require 'riece-addon)
 (require 'riece-signal)
 
-(autoload 'derived-mode-class "derived")
-
 (defvar riece-channel-list-mode-map (make-sparse-keymap))
 (defvar riece-user-list-mode-map (make-sparse-keymap))
 
@@ -399,9 +397,12 @@ For a list of the generic commands type \\[riece-command-generic] ? RET.
     (setq riece-command-mode-syntax-table
 	  (copy-syntax-table (syntax-table)))
     (set-syntax-table riece-command-mode-syntax-table)
-    (mapcar
-     (lambda (c) (modify-syntax-entry c "w"))
-     "^[]{}'`"))
+    (let* ((chars "^[]{}'`")
+	   (length (length chars))
+	   (index 0))
+      (while (< index length)
+	(modify-syntax-entry (aref chars index) "w")
+	(setq index (1+ index)))))
 
   (run-hooks 'riece-command-mode-hook))
 
@@ -491,7 +492,7 @@ All normal editing commands are turned off."
 	 riece-mode-line-buffer-identification)
 	truncate-lines t
 	buffer-read-only t)
-  (make-local-hook 'riece-update-buffer-functions)
+  (riece-make-local-hook 'riece-update-buffer-functions)
   (add-hook 'riece-update-buffer-functions
 	    'riece-update-channel-list-buffer nil t)
   (use-local-map riece-channel-list-mode-map)
@@ -522,7 +523,7 @@ Instead, these commands are available:
 	buffer-read-only t)
   (if (boundp 'transient-mark-mode)
       (set (make-local-variable 'transient-mark-mode) t))
-  (make-local-hook 'riece-update-buffer-functions)
+  (riece-make-local-hook 'riece-update-buffer-functions)
   (add-hook 'riece-update-buffer-functions
 	    'riece-update-user-list-buffer nil t)
   (use-local-map riece-user-list-mode-map)

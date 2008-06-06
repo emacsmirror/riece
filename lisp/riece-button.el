@@ -256,8 +256,7 @@ This function is used as a callback for a channel button."
     (let ((buffers riece-buffer-list))
       (while buffers
 	(set-buffer (car buffers))
-	(if (eq (derived-mode-class major-mode)
-		'riece-dialogue-mode)
+	(if (riece-derived-mode-p 'riece-dialogue-mode)
 	    (riece-button-dialogue-mode-hook))
 	(setq buffers (cdr buffers)))))
   (add-hook 'riece-channel-list-mode-hook
@@ -292,8 +291,7 @@ This function is used as a callback for a channel button."
   (let ((pointer riece-buffer-list))
     (while pointer
       (with-current-buffer (car pointer)
-	(if (eq (derived-mode-class major-mode)
-		'riece-dialogue-mode)
+	(if (riece-derived-mode-p 'riece-dialogue-mode)
 	    (riece-button-update-buffer)))
       (setq pointer (cdr pointer)))
     (if riece-current-channel

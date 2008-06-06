@@ -34,8 +34,6 @@
 (require 'riece-message)
 (require 'riece-mcat)
 
-(autoload 'derived-mode-class "derived")
-
 ;;; Channel movement:
 (defun riece-command-switch-to-channel (channel)
   (interactive (list (riece-completing-read-identity
@@ -445,8 +443,8 @@ the layout to the selected layout-name."
 			       (riece-line-beginning-position)
 			       (riece-line-end-position))
 			      nil)
-  (let ((next-line-add-newlines t))
-    (next-line 1)))
+  (if (> (forward-line) 0)
+      (insert "\n")))
 
 (defun riece-command-enter-message-as-notice ()
   "Send the current line to the current channel as NOTICE."
@@ -455,8 +453,8 @@ the layout to the selected layout-name."
 			       (riece-line-beginning-position)
 			       (riece-line-end-position))
 			      t)
-  (let ((next-line-add-newlines t))
-    (next-line 1)))
+  (if (> (forward-line) 0)
+      (insert "\n")))
 
 (defun riece-command-enter-message-to-user (user)
   "Send the current line to USER."
@@ -476,8 +474,8 @@ the layout to the selected layout-name."
      user)
     (riece-display-message
      (riece-make-message (riece-current-nickname) user text nil t)))
-  (let ((next-line-add-newlines t))
-    (next-line 1)))
+  (if (> (forward-line) 0)
+      (insert "\n")))
 
 (defun riece-command-join-channel (target key)
   (unless (riece-server-opened (riece-identity-server target))
@@ -629,8 +627,7 @@ the layout to the selected layout-name."
   "Prevent automatic scrolling of the dialogue window.
 If prefix argument ARG is non-nil, toggle frozen status."
   (interactive "P")
-  (with-current-buffer (if (eq (derived-mode-class major-mode)
-			       'riece-dialogue-mode)
+  (with-current-buffer (if (riece-derived-mode-p 'riece-dialogue-mode)
 			   (current-buffer)
 			 (if (and riece-channel-buffer-mode
 				  riece-channel-buffer)
@@ -647,8 +644,7 @@ If prefix argument ARG is non-nil, toggle frozen status."
 The difference from `riece-command-freeze' is that your messages are hidden.
 If prefix argument ARG is non-nil, toggle frozen status."
   (interactive "P")
-  (with-current-buffer (if (eq (derived-mode-class major-mode)
-			       'riece-dialogue-mode)
+  (with-current-buffer (if (riece-derived-mode-p 'riece-dialogue-mode)
 			   (current-buffer)
 			 (if (and riece-channel-buffer-mode
 				  riece-channel-buffer)

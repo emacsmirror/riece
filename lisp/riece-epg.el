@@ -109,8 +109,8 @@
     (riece-display-message
      (riece-make-message (riece-current-nickname) riece-current-channel
 			 (concat "[encrypted:" string "]") nil t))
-    (let ((next-line-add-newlines t))
-      (next-line 1))))
+    (if (> (forward-line) 0)
+	(insert "\n"))))
 
 (defun riece-command-set-passphrase (identity passphrase)
   "Set PASSPHRASE associated with IDENTITY."

@@ -214,7 +214,7 @@
   ;; In XEmacs, auto-initialization of font-lock is not affective
   ;; when buffer-file-name is not set.
   (font-lock-set-defaults)
-  (make-local-hook 'after-change-functions)
+  (riece-make-local-hook 'after-change-functions)
   (add-hook 'after-change-functions
 	    'riece-highlight-hide-prefix nil t)
   (if (get 'riece-highlight 'riece-addon-enabled)
@@ -282,8 +282,7 @@
     (save-excursion
       (while buffers
 	(set-buffer (car buffers))
-	(if (eq (derived-mode-class major-mode)
-		'riece-dialogue-mode)
+	(if (riece-derived-mode-p 'riece-dialogue-mode)
 	    (remove-hook 'after-change-functions
 			 'riece-highlight-hide-prefix t))
 	(setq buffers (cdr buffers)))))
@@ -303,10 +302,9 @@
 (defun riece-highlight-enable ()
   (let ((buffers riece-buffer-list))
     (while buffers
-      (if (memq (derived-mode-class
-	       (with-current-buffer (car buffers)
-		 major-mode))
-		'(riece-dialogue-mode riece-channel-list-mode))
+      (if (with-current-buffer (car buffers)
+	    (riece-derived-mode-p 'riece-dialogue-mode
+				  'riece-channel-list-mode))
 	  (with-current-buffer (car buffers)
 	    (font-lock-mode 1)))
       (setq buffers (cdr buffers)))))
@@ -314,10 +312,9 @@
 (defun riece-highlight-disable ()
   (let ((buffers riece-buffer-list))
     (while buffers
-      (if (memq (derived-mode-class
-	       (with-current-buffer (car buffers)
-		 major-mode))
-		'(riece-dialogue-mode riece-channel-list-mode))
+      (if (with-current-buffer (car buffers)
+	    (riece-derived-mode-p 'riece-dialogue-mode
+				  'riece-channel-list-mode))
 	  (with-current-buffer (car buffers)
 	    (font-lock-mode 0)))
       (setq buffers (cdr buffers)))))

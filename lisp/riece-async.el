@@ -84,7 +84,7 @@ assumed that the file is in the same directory of this file.")
 			(not (looking-at (format "NOTICE CONNECTED %d"
 						 (process-id process))))))
 	    (accept-process-output process))))
-    (process-kill-without-query process)
+    (riece-set-process-query-on-exit-flag process nil)
     process))
 
 (defun riece-async-insinuate ()

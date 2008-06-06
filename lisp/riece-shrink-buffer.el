@@ -62,10 +62,8 @@
     (while buffers
       (if (and (get 'riece-shrink-buffer 'riece-addon-enabled)
 	       (buffer-live-p (car buffers))
-	       (eq (derived-mode-class
-		    (with-current-buffer (car buffers)
-		      major-mode))
-		   'riece-dialogue-mode))
+	       (with-current-buffer (car buffers)
+		 (riece-derived-mode-p 'riece-dialogue-mode)))
 	  (riece-shrink-buffer (car buffers)))
       (setq buffers (cdr buffers)))))
 

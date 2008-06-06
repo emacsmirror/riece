@@ -1,3 +1,9 @@
+2008-06-06  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-compat.el (riece-make-local-hook): New alias.
+	(riece-derived-mode-p): New alias.
+	(riece-set-process-query-on-exit-flag): New alias.
+
 2008-06-05  TAKAHASHI Kaoru  <kaoru@kaisei.org>
 
 	* riece-options.el (riece-server-alist): Fix :value for username,

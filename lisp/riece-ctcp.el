@@ -342,8 +342,8 @@
 	       (read-string (riece-mcat "Action: "))
 	     (prog1 (read-from-minibuffer (riece-mcat "Action: ")
 					  (cons message 0))
-	       (let ((next-line-add-newlines t))
-		 (next-line 1)))))))
+	       (if (> (forward-line) 0)
+		   (insert "\n")))))))
   (if (equal action "")
       (error "No action"))
   (riece-send-string (format "PRIVMSG %s :\1ACTION %s\1\r\n"

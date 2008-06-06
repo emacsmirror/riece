@@ -265,7 +265,7 @@ Return a string name assigned by the server."
 		   (expand-file-name riece-ruby-server-program
 				     riece-data-directory)
 		   riece-ruby-server-program-arguments))
-      (process-kill-without-query riece-ruby-process)
+      (riece-set-process-query-on-exit-flag riece-ruby-process nil)
       (set-process-filter riece-ruby-process #'riece-ruby-filter)
       (set-process-sentinel riece-ruby-process #'riece-ruby-sentinel)))
   (save-excursion

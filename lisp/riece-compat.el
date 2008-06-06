@@ -66,6 +66,22 @@
 			  (make-list (- max min) (concat regexp "?"))))
 	       "")))
 
+(if (get 'make-local-hook 'byte-obsolete-info)
+    (defalias 'riece-make-local-hook 'ignore)
+  (defalias 'riece-make-local-hook 'make-local-hook))
+
+(autoload 'derived-mode-class "derived")
+(if (fboundp 'derived-mode-p)
+    (defalias 'riece-derived-mode-p 'derived-mode-p)
+  (defun riece-derived-mode-p (&rest modes)
+    (memq (derived-mode-class major-mode) modes)))
+
+(if (fboundp 'set-process-query-on-exit-flag)
+    (defalias 'riece-set-process-query-on-exit-flag
+      'set-process-query-on-exit-flag)
+  (defun riece-set-process-query-on-exit-flag (process flag)
+    (process-kill-without-query process (not flag))))
+
 (provide 'riece-compat)
 
 ;;; riece-compat.el ends here
