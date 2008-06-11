@@ -46,6 +46,7 @@
     ("bottom-left" riece-configure-windows left bottom)
     ("top" riece-configure-windows-top)
     ("spiral" riece-configure-windows-spiral)
+    ("one-window" riece-configure-windows-one-window)
     ("default" . "middle-right"))
   "An alist mapping the names to layout functions.
 An element of this alist is either in the following forms:
@@ -300,6 +301,13 @@ PLIST accept :command-height, :user-list-width, and :channel-list-width."
     (riece-set-window-points)
     (select-window (or (get-buffer-window buffer)
                        (get-buffer-window riece-command-buffer)))))
+
+(defun riece-configure-windows-one-window ()
+  ;; Can't expand minibuffer to full frame.
+  (if (eq (selected-window) (minibuffer-window))
+      (other-window 1))
+  (delete-other-windows)
+  (set-window-buffer (selected-window) riece-dialogue-buffer))
 
 (provide 'riece-layout)
 

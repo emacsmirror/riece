@@ -65,11 +65,6 @@
   :prefix "riece-"
   :group 'riece)
 
-(defcustom riece-use-full-window t
-  "If non-nil, whole Emacs window is used to display dialogue."
-  :type 'boolean
-  :group 'riece-looks)
-
 (defcustom riece-window-center-line -2
   "Line number of center point in window when scrolling.
 If nil, erases the entire frame and then redraws with point in the

@@ -1,3 +1,9 @@
+2008-06-11  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-options.el (riece-use-full-window): Abolish unused option.
+	* riece-layout.el (riece-layout-alist): New layout "one-window".
+	(riece-configure-windows-one-window): New function.
+
 2008-06-07  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-options.el (riece-server-alist): Accept an integer for
