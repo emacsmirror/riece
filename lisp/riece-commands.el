@@ -443,8 +443,10 @@ the layout to the selected layout-name."
 			       (riece-line-beginning-position)
 			       (riece-line-end-position))
 			      nil)
-  (if (> (forward-line) 0)
-      (insert "\n")))
+  (forward-line 1)
+  (when (eobp)
+    (insert "\n")))
+
 
 (defun riece-command-enter-message-as-notice ()
   "Send the current line to the current channel as NOTICE."
@@ -453,8 +455,9 @@ the layout to the selected layout-name."
 			       (riece-line-beginning-position)
 			       (riece-line-end-position))
 			      t)
-  (if (> (forward-line) 0)
-      (insert "\n")))
+  (forward-line 1)
+  (when (eobp)
+    (insert "\n")))
 
 (defun riece-command-enter-message-to-user (user)
   "Send the current line to USER."
@@ -474,8 +477,9 @@ the layout to the selected layout-name."
      user)
     (riece-display-message
      (riece-make-message (riece-current-nickname) user text nil t)))
-  (if (> (forward-line) 0)
-      (insert "\n")))
+  (forward-line 1)
+  (when (eobp)
+    (insert "\n")))
 
 (defun riece-command-join-channel (target key)
   (unless (riece-server-opened (riece-identity-server target))
