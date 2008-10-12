@@ -1,3 +1,8 @@
+2008-10-13  OHASHI Akira  <bg66@koka-in.org>
+
+	* riece-mini.el (riece-mini-show-backlog): Fix for multibyte
+	characters.
+
 2008-09-08  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-notify.el: New add-on.

@@ -123,7 +123,7 @@ If twice (C-u C-u), then ask the channel."
     (let ((height (1+ riece-mini-backlog-size)))
       (mapc #'(lambda (string)
 		(setq height (+ height
-				(/ (length string) (window-width)))))
+				(/ (string-width string) (window-width)))))
 	    riece-mini-backlog-history)
       (let ((max-mini-window-height height)
 	    (resize-mini-windows t))
