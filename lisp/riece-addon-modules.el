@@ -14,6 +14,8 @@
 	 (riece-mcat "CTCP (Client To Client Protocol) support."))
    (cons 'riece-ctlseq
 	 (riece-mcat "Mark up control sequences in IRC buffers."))
+   (cons 'riece-desktop-notify
+	 (riece-mcat "Display notification to desktop."))
    (cons 'riece-doctor
 	 (riece-mcat "Pretend to be a psychotherapist."))
    (cons 'riece-epg

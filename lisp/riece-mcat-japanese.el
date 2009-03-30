@@ -107,6 +107,7 @@
     ("Display X-Face & Colour Face images in IRC buffers (BBDB)." . "X-Face や色付きの Face 画像を表示 (BBDB 利用)")
     ("Display X-Face in IRC buffers." . "X-Face や色付き Face 画像を表示 (LSDB 利用)")
     ("Display icons in IRC buffers." . "アイコンを表示")
+    ("Display notification to desktop." . "デスクトップに通知")
     ("Display toolbar icons." . "ツールバーのアイコンを表示")
     ("Display useful buttons in IRC buffers." . "ボタンを表示")
     ("Encrypt/decrypt messages." . "メッセージの暗号化・復号")
