@@ -91,19 +91,21 @@ and the matched message object."
 	     index)
 	(while alist
 	  (setq index 0)
-	  (while (string-match (car (car alist))
-			       (riece-message-text message) index)
+	  (while (and (< index (length (riece-message-text message)))
+		      (string-match (car (car alist))
+				    (riece-message-text message) index))
 	    (put-text-property (match-beginning (cdr (car alist)))
 			       (match-end (cdr (car alist)))
 			       'riece-overlay-face riece-keyword-face
 			       (riece-message-text message))
-	    (run-hook-with-args 'riece-notify-keyword-functions
-				(match-string (cdr (car alist))
-					      (riece-message-text message)))
-	    (run-hook-with-args 'riece-keyword-notify-functions
-				(cdr (car alist))
-				message)
-	    (setq index (match-end (cdr (car alist)))))
+	    (save-match-data
+	      (run-hook-with-args 'riece-notify-keyword-functions
+				  (match-string (cdr (car alist))
+						(riece-message-text message)))
+	      (run-hook-with-args 'riece-keyword-notify-functions
+				  (cdr (car alist))
+				  message))
+	    (setq index (1+ (match-end (cdr (car alist))))))
 	  (setq alist (cdr alist)))))
   message)
 
