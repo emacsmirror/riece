@@ -3,7 +3,7 @@
 This document is for Riece developers or those who are interested in
 becoming a developer.
 
-The main topic explained here is about development process and the
+The main topics explained here are the development process and the
 internals.
 
 Even though this document describes how to build the source code from
@@ -12,29 +12,29 @@ the instruction on the Web page--that is, pointless complaints about
 development versions are _unwelcome_ to us.
 
 If you are a beginning user, who just wants to try the "newer" product
-from the CVS, abandon such a bad idea and stick on the released
-version.
+from the CVS, abandon the bad idea and stick on the released version.
 
 * Development process
 
-** Bug report
+** Reporting bugs
 
-You can create a template of a bug report by clicking the "bug" button
-in a toolbar, or M-x riece-submit-bug-report.  You need to set
-riece-debug to t when preparing a bug report.
-
-** Debug output
+You can create a template of a bug report by `M-x
+riece-submit-bug-report'.  This command assumes that riece-debug is t.
 
 If riece-debug is t, "*Debug*" buffer will have debugging information.
 Also, interactions with IRC servers will be written to "
 *IRC*<IRC-server-name>" buffers.  Note that these buffers have a name
 starting with a whitespace character (" ").
 
-** Joining the development
+** Contributing code
 
-To join the development, send us a patch or an add-on.
+If you write an add-on or a patch, send it to us.  If it is useful, we
+may incorporate it into the development source code.
 
-** CVS
+** Getting the development source code
+
+Again, use the released version if you are a beginning user and not
+willing to become a developer.
 
 The development of Riece uses CVS.  The latest development version is
 available from cvs.m17n.org.  The instructions to obtain and build the
