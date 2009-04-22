@@ -7,20 +7,14 @@ about development versions are _unwelcome_ to us.  If you are a
 beginning user, who just wants to try the product, check out the
 released version.
 
-(0) logging in to anonymous CVS server.
-
-  % cvs -d :pserver:anonymous@cvs.m17n.org:/cvs/root login
-
-  CVS password: [CR] # NULL string
-
 (1) checkout modules
 
   % cvs -d :pserver:anonymous@cvs.m17n.org:/cvs/root checkout riece
 
-Specify revision tag in front of the module name.
+You can specify a revision tag in front of the module name.
 
 (2) bootstrapping
 
   % autoreconf -f -i
 
-You will need newer versions of autoconf & automake.
+Note that "autoreconf" is not "autoconf".

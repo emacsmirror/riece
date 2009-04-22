@@ -1,3 +1,4 @@
+AUTOMAKE_OPTIONS = -Wno-portability
 EXTRA_DIST = texinfo.tex infohack.el ptexinfmt.el irchat-copyright.el \
 	HACKING HACKING.ja
 
