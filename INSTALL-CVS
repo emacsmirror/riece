@@ -1,12 +1,11 @@
-Development of Riece uses CVS, Concurrent Versions System.
-Latest developing version is available at CVS.
+The development of Riece uses CVS, Concurrent Versions System.
+The latest development version is available from cvs.m17n.org.
 
-However, you must notice that it is intentional that we don't include
-this file in the tarball and don't put the repository address on the
-Web site.  That is, pointless complaints about development versions
-are _unwelcome_ for us.  If you are a beginning user, who just wants
-to try the product (where on earth did you get this version?), check
-the released version.
+However, you should notice that it is intentional that we don't put
+the repository address on the Web site.  That is, pointless complaints
+about development versions are _unwelcome_ to us.  If you are a
+beginning user, who just wants to try the product, check out the
+released version.
 
 (0) logging in to anonymous CVS server.
 
