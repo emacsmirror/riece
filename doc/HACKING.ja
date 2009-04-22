@@ -28,23 +28,17 @@ M-x riece-submit-bug-report で作成してください。また、バグ報告の作成の
 Riece の開発には CVS を利用しています。公開 CVS サーバから最新版のソー
 スコードを取得するには以下のようにします。
 
-CVS 版のソースコードは、あくまで開発途上のものであり、利用は個人の責任
-でお願いします。CVS 版に関するバグ報告は受け付けません。
-
-(1) CVS サーバへのログイン
-
-    cvs -d :pserver:anonymous@cvs.m17n.org:/cvs/root login
-    CVS password: [CR] # NULL string
-
-(2) モジュールのチェックアウト
+(1) モジュールのチェックアウト
 
     cvs -d :pserver:anonymous@cvs.m17n.org:/cvs/root checkout riece
 
-(3) configure スクリプトの生成
+モジュール名の前にタグを指定できます。
+
+(2) configure スクリプトの生成
 
     autoreconf -f -i -v
 
-この作業には最新の GNU Automake が必要かもしれません。
+"autoreconf" は "autoconf" ではないことに注意してください。
 
 * 内部構造
 

@@ -1,23 +1,23 @@
 -*- mode: text -*-
 
-This document is for Riece developers.  The information necessary for
-Riece development is explained (i.e. its development process and the
-internals.)
+This document is for Riece developers or those who are interested in
+becoming a developer.  The main topic explained here is about
+development process and the internals.
 
 * Development process
 
 ** Bug report
 
 You can create a template of a bug report by clicking the "bug" button
-in a toolbar, or M-x riece-submit-bug-report.  It is necessary to set
-riece-debug to t before preparing a bug report.
+in a toolbar, or M-x riece-submit-bug-report.  You need to set
+riece-debug to t when preparing a bug report.
 
 ** Debug output
 
-If the riece-debug variable is set to t, Riece begins to collect
-debugging information in *Debug* buffer.  Interactions with IRC
-servers are stored in " *IRC*<IRC-server-name>" buffers.  Note that
-these buffers have names starting with a whitespace character (" ").
+If riece-debug is t, "*Debug*" buffer will have debugging information.
+Also, interactions with IRC servers will be written to "
+*IRC*<IRC-server-name>" buffers.  Note that these buffers have a name
+starting with a whitespace character (" ").
 
 ** Joining the development
 
@@ -25,25 +25,21 @@ To join the development, send us a patch or an add-on.
 
 ** CVS
 
-Development of Riece uses CVS.  Latest developing version is available
-at CVS.  Please note that the version from CVS may NOT be reliable,
-and you can only use it at your own risk.  We may ignore bug reports
-for that version.  The instruction to access the CVS server is below.
+The development of Riece uses CVS.  The latest development version is
+available from cvs.m17n.org.  The instructions to obtain and build the
+source from the CVS are below.
 
-(1) logging in to anonymous CVS server
-
-    cvs -d :pserver:anonymous@cvs.m17n.org:/cvs/root login
-    CVS password: [CR] # NULL string
-
-(2) checkout modules
+(1) checkout modules
 
     cvs -d :pserver:anonymous@cvs.m17n.org:/cvs/root checkout riece
 
-(3) generate configure script
+You can specify a tag in front of the module name.
+
+(2) generate configure script
 
     autoreconf -f -i -v
 
-You will need newer version of GNU Automake.
+Note that "autoreconf" is not "autoconf".
 
 * Internals
 
