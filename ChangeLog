@@ -1,3 +1,8 @@
+2009-04-22  Daiki Ueno  <ueno@unixuser.org>
+
+	* Makefile.am (EXTRA_DIST): Remove INSTALL-CVS.
+	* INSTALL-CVS: Remove; see doc/HACKING instead.
+
 2008-05-30  Daiki Ueno  <ueno@unixuser.org>
 
 	* Riece: Version 5.0.0 released.

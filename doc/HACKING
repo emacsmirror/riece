@@ -1,8 +1,19 @@
 -*- mode: text -*-
 
 This document is for Riece developers or those who are interested in
-becoming a developer.  The main topic explained here is about
-development process and the internals.
+becoming a developer.
+
+The main topic explained here is about development process and the
+internals.
+
+Even though this document describes how to build the source code from
+the CVS, you should notice that it is intentional that we don't put
+the instruction on the Web page--that is, pointless complaints about
+development versions are _unwelcome_ to us.
+
+If you are a beginning user, who just wants to try the "newer" product
+from the CVS, abandon such a bad idea and stick on the released
+version.
 
 * Development process
 

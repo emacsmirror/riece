@@ -1,5 +1,5 @@
 SUBDIRS = lisp doc
-EXTRA_DIST = INSTALL-CVS README.ja NEWS.ja
+EXTRA_DIST = README.ja NEWS.ja
 AUTOMAKE_OPTIONS = no-dependencies
 
 if XEMACS
