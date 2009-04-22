@@ -1,3 +1,10 @@
+2009-04-22  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-addon-modules.el (riece-addon-modules): Don't mention
+	riece-notify.
+	* Makefile.am (EXTRA_DIST): Remove riece-notify.el.
+	* riece-notify.el: Remove; use riece-desktop-notify.el.
+
 2009-03-30  OHASHI Akira  <bg66@koka-in.org>
 
 	* riece-desktop-notify.el: New add-on.

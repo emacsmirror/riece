@@ -20,7 +20,7 @@ EXTRA_DIST = COMPILE ChangeLog ChangeLog.Liece \
 	riece-kakasi.el riece-foolproof.el riece-yank.el riece-toolbar.el \
 	riece-eval.el riece-google.el riece-keepalive.el riece-eval-ruby.el \
 	riece-shrink-buffer.el riece-xfaceb.el riece-epg.el riece-twitter.el \
-	riece-notify.el riece-desktop-notify.el \
+	riece-desktop-notify.el \
 	url-riece.el \
 	riece-command-previous-channel.xpm riece-command-next-channel.xpm \
 	riece-command-configure-windows.xpm riece-command-list-addons.xpm \

@@ -58,8 +58,6 @@
 	 (riece-mcat "Use Riece only on the minibuffer."))
 ;;;    (cons 'riece-ndcc
 ;;; 	 (riece-mcat "DCC file sending protocol support (written in elisp.)"))
-;;;    (cons 'riece-notify
-;;; 	 (riece-mcat "Display notification on status area."))
    (cons 'riece-rdcc
 	 (riece-mcat "DCC file sending protocol support (written in Ruby.)"))
    (cons 'riece-shrink-buffer
