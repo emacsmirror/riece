@@ -541,100 +541,10 @@ Instead, these commands are available:
 	  (funcall (nth 2 (car alist))))
 	(setq alist (cdr alist))))))
 
-(defvar reporter-prompt-for-summary-p)
-(defun riece-submit-bug-report (&optional recent-messages recent-keys)
+(defun riece-submit-bug-report ()
   "Submit via mail a bug report on Riece."
-  ;; This strange form ensures that (recent-keys) is the value before
-  ;; the bug subject string is read.
-  (interactive (list (riece-recent-messages 20) (recent-keys)))
-  (message "Querying server version...")
-  (let ((pointer riece-server-process-alist)
-	nickname)
-    (while pointer
-      (when (riece-server-process-opened (cdr (car pointer)))
-	(process-send-string (cdr (car pointer)) "VERSION\r\n")
-	(if (setq nickname
-		  (with-current-buffer (process-buffer (cdr (car pointer)))
-		    riece-real-nickname))
-	    (process-send-string
-	     (cdr (car pointer))
-	     (format "PRIVMSG %s :\1VERSION\1\r\n" nickname))))
-      (setq pointer (cdr pointer))))
-  (sit-for 3)
-  (message "Querying server version...done")
-  (require 'reporter)
-  (let ((reporter-prompt-for-summary-p t))
-    (unless riece-debug
-      (error "Please turn on riece-debug and restart Riece."))
-    (reporter-submit-bug-report
-     "liece@unixuser.org"
-     (riece-version)
-     '(riece-debug)
-     nil
-     nil
-     "This bug report will be sent to the Riece Development Team,
-not to your local site managers!!
-
-Please write in Japanese or English, because the Riece maintainers do
-not have translators to read other languages for them.
-
-Please describe as succinctly as possible:
-\t- What happened.
-\t- What you thought should have happened.
-\t- Precisely what you were doing at the time.
-
-Also include a reliable recipe for triggering the bug, as well as
-any lisp back-traces that you may have.
-\(setq stack-trace-on-error t\), or \(setq debug-on-error t\) if you
-are familiar with the debugger, to get a lisp back-trace.")
-    (delete-other-windows)
-    (save-excursion
-      (goto-char (point-max))
-      (insert
-       "\nAdd-on state:\n"
-       "------------\n"
-       (save-window-excursion
-	 (save-excursion
-	   (riece-command-list-addons)
-	   (search-forward "\n\n")
-	   (buffer-substring (point-min) (point)))))
-      (insert "Recent messages from servers:\n"
-	      "--------------------------")
-      (let ((pointer riece-server-process-alist))
-	(while pointer
-	  (insert "\n- \"" (car (car pointer)) "\", \n"
-		  (format "%S" (if (equal (car (car pointer)) "")
-				   riece-server
-				 (cdr (assoc (car (car pointer))
-					     riece-server-alist))))
-		  "\n"
-		  (if (riece-server-process-opened (cdr (car pointer)))
-		      (save-excursion
-			(set-buffer (process-buffer (cdr (car pointer))))
-			(goto-char (point-max))
-			(beginning-of-line -60)
-			(buffer-substring (point) (point-max)))
-		    "(closed server)"))
-	  (setq pointer (cdr pointer))))
-      (insert "\n\nRecent debug messages:\n"
-	      "-----------------------------------\n"
-	      (with-current-buffer riece-debug-buffer
-		(buffer-string)))
-      ;; Insert recent keystrokes.
-      (insert "\n\nRecent keystrokes:\n"
-	      "-----------------\n\n")
-      (let ((before-keys (point)))
-	(insert (key-description recent-keys))
-	(save-restriction
-	  (narrow-to-region before-keys (point))
-	  (goto-char before-keys)
-	  (while (progn (move-to-column 50) (not (eobp)))
-	    (search-forward " " nil t)
-	    (insert "\n"))))
-      ;; Insert recent minibuffer messages.
-      (insert "\n\nRecent messages (most recent first):\n"
-	      "-----------------------------------\n"
-	      recent-messages))))
+  (interactive)
+  (browse-url "https://savannah.nongnu.org/bugs/?group=riece"))
 
 (provide 'riece)
 
