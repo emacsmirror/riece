@@ -43,8 +43,3 @@ If you are using XEmacs and want to install as a package, supply
 
 Info manuals are available after installation.  To read, start Emacs
 and type M-x info and select "Riece-en".
-
-* Bug reports
-
-If you write a bug report, please send them to the Liece Mailing List
-(liece@unixuser.org).
