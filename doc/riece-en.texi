@@ -14,7 +14,7 @@
 @ifinfo
 This file describes Riece.
 
-Copyright (C) 2003,2004,2005 Daiki Ueno.
+Copyright (C) 2003,2004,2005,2006,2007,2008,2009 Daiki Ueno.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.1 or
@@ -55,7 +55,7 @@ home page @uref{http://www.nongnu.org/riece/}.
 
 @menu
 * Overview::                    Read me first.
-* Getting started::             Let's talk with other people.
+* Getting started::             Let's start chatting with other people.
 * Basic usage::                 
 * Index::                       
 * Function Index::              

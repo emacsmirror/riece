@@ -1,3 +1,7 @@
+2009-05-30  Daiki Ueno  <ueno@unixuser.org>
+
+	* Riece: Version 6.0.0 released.
+
 2009-04-23  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece.el (riece-submit-bug-report): Just visit the tracker URL.

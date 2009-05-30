@@ -2,6 +2,8 @@
 
 ** New add-on riece-desktop-notify. (bg66)
 
+** Fix Custom-based setting mechanism.
+
 * Major changes in 5.0.0
 
 ** Use Custom for saved settings. (ueno)

@@ -2,6 +2,8 @@
 
 ** 新規アドオン riece-desktop-notify (bg66)
 
+** Custom を利用した設定保存機構の修正
+
 * Riece 5.0.0 の主な変更点
 
 ** 設定の保存に Custom を使うようにした (ueno)

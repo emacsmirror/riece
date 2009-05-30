@@ -1,4 +1,4 @@
-AC_INIT([riece], [5.0.0], [liece@unixuser.org])
+AC_INIT([riece], [6.0.0], [liece@unixuser.org])
 AC_CONFIG_SRCDIR([configure.ac])
 AC_PREREQ(2.59)
 AM_INIT_AUTOMAKE

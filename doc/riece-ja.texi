@@ -14,7 +14,7 @@
 @ifinfo
 This file describes Riece.
 
-Copyright (C) 2003,2004,2005,2006,2007,2008 Daiki Ueno.
+Copyright (C) 2003,2004,2005,2006,2007,2008,2009 Daiki Ueno.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.1 or
@@ -583,6 +583,8 @@ PING に応答する local proxy 経由で IRC サーバに接続
 CTCP (Client To Client Protocol)
 @item riece-ctlseq
 コントロールシーケンス (^B など) による強調表示
+@item riece-desktop-notify
+メッセージの到着をデスクトップに通知
 @item riece-doctor
 doctor.el と連携して精神科医になりすます
 @item riece-epg
