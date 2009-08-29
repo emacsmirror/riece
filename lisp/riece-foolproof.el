@@ -1,7 +1,7 @@
 ;;; riece-foolproof.el --- prevent miss-operation in the command buffer
 ;; Copyright (C) 2004 TAKAHASHI Kaoru
 
-;; Author: TAKAHASHI "beatmaria" Kaoru <kaoru@kaisei.org>
+;; Author: TAKAHASHI Kaoru <kaoru@kaisei.org>
 ;; Keywords: IRC, riece
 
 ;; This file is part of Riece.

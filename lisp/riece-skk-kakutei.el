@@ -1,7 +1,7 @@
 ;;; riece-skk-kakutei.el --- remove SKK's preedit mark before sending messages
 ;; Copyright (C) 2003 TAKAHASHI Kaoru
 
-;; Author: TAKAHASHI "beatmaria" Kaoru <kaoru@kaisei.org>
+;; Author: TAKAHASHI Kaoru <kaoru@kaisei.org>
 ;; Keywords: IRC, riece
 
 ;; This file is part of Riece.

@@ -2,7 +2,7 @@
 ;; Copyright (C) 1998-2003 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>
-;;	TAKAHASHI "beatmaria" Kaoru <kaoru@kaisei.org>
+;;	TAKAHASHI Kaoru <kaoru@kaisei.org>
 ;; Keywords: IRC, riece
 
 ;; This file is part of Riece.
