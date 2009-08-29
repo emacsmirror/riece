@@ -1,3 +1,9 @@
+2009-08-28  TAKAHASHI Kaoru  <kaoru@kaisei.org>
+
+	* riece-addon.el (riece-command-insinuate-addon)
+	(riece-command-uninstall-addon, riece-command-unload-addon): Fix
+	"Wrong type argument" error on not riece-addon-list-mode.
+
 2009-07-26  TAKAHASHI Kaoru  <kaoru@kaisei.org>
 
 	* riece-skk-kakutei.el: Fix Author header.
