@@ -2,6 +2,8 @@
 
 ** Revert to use setq instead of Custom for saved settings. (ueno)
 
+** Add-on management commands can now be usable from the Command buffer. (kaoru)
+
 * Major changes in 6.0.0
 
 ** New add-on riece-desktop-notify. (bg66)
