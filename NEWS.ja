@@ -1,3 +1,7 @@
+* Riece 6.1.0 の主な変更点
+
+** 設定の保存に Custom を使うのをやめた (ueno)
+
 * Riece 6.0.0 の主な変更点
 
 ** 新規アドオン riece-desktop-notify (bg66)
