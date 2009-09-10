@@ -1,5 +1,7 @@
 2009-09-10  Daiki Ueno  <ueno@unixuser.org>
 
+	* Riece: Version 6.1.0 released.
+
 	* riece.el (riece-read-variables-files)
 	(riece-save-variables-files): Revert to use setq instead of
 	custom-set-variables.  Fixes #27384.
