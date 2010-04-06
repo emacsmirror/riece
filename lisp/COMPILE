@@ -189,7 +189,10 @@
   (riece-install-scripts
    riece-scripts
    (expand-file-name "riece" (car command-line-args-left))
-   (riece-install-just-print-p)))
+   (riece-install-just-print-p))
+  ;; Workaround for an XEmacs 21.5 bug ("xemacs -batch -f <func> <arg1>"
+  ;; attempts to open <arg1> as a file after <func>).
+  (setq command-line-args-left (cdr command-line-args-left)))
 
 (defun riece-compile-package ()
   (setq autoload-package-name "riece")

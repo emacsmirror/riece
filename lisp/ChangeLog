@@ -1,3 +1,7 @@
+2010-04-07  Daiki Ueno  <ueno@unixuser.org>
+
+	* COMPILE (riece-install): Add workaround for XEmacs 21.5.
+
 2009-09-10  Daiki Ueno  <ueno@unixuser.org>
 
 	* Riece: Version 6.1.0 released.
