@@ -1,10 +1,11 @@
-\input texinfo                  @c -*- mode: texinfo; coding: iso-2022-jp -*-
+\input texinfo                  @c -*- mode: texinfo; coding: utf-8 -*-
 @c %**start of header
 @setfilename riece-ja.info
 @settitle Riece -- An IRC client for Emacsen --
 @c %**end of header
 @include version-ja.texi
 @c @documentlanguage ja
+@c @documentencoding utf-8
 
 @dircategory GNU Emacs Lisp
 @direntry
@@ -14,7 +15,7 @@
 @ifinfo
 This file describes Riece.
 
-Copyright (C) 2003,2004,2005,2006,2007,2008,2009 Daiki Ueno.
+Copyright (C) 2003,2004,2005,2006,2007,2008,2009,2010 Daiki Ueno.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.1 or
@@ -49,16 +50,16 @@ Free Documentation License".
 @node Top, Overview, (dir), (dir)
 @top Riece user's manual
 
-$B$3$N%^%K%e%"%k$G$O!"(BRiece $B%P!<%8%g%s(B @value{VERSION} $B$K$D$$$F2r@b$7$^$9!#(B
-$B$3$N%^%K%e%"%k$G07$&HO0O$r1[$($?>pJs$O(B Riece $B$N8x<0%[!<%`%Z!<%8(B 
-@uref{http://www.nongnu.org/riece/} $B$+$iF@$i$l$k$+$b$7$l$^$;$s!#(B
+このマニュアルでは、Riece バージョン @value{VERSION} について解説します。
+このマニュアルで扱う範囲を越えた情報は Riece の公式ホームページ 
+@uref{http://www.nongnu.org/riece/} から得られるかもしれません。
 
 @menu
-* Overview::                    $B$O$8$a$KFI$s$G$M(B
-* Getting started::             IRC $B%5!<%P$K@\B3$7$F2qOC$7$F$_$h$&(B
-* Basic usage::                 $B4pK\E*$J;H$$J}(B
-* Advanced usage::              $B?J$s$@;H$$J}(B
-* Tips::                        $BJXMx$J@_Dj(B
+* Overview::                    はじめに読んでね
+* Getting started::             IRC サーバに接続して会話してみよう
+* Basic usage::                 基本的な使い方
+* Advanced usage::              進んだ使い方
+* Tips::                        便利な設定
 * Index::                       
 * Function Index::              
 * Variable Index::              
@@ -67,24 +68,24 @@ Free Documentation License".
 @node Overview, Getting started, Top, Top
 @chapter Overview
 
-Riece $B$O(B IRC (Internet Relay Chat) $B$N@$3&$G%A%c%C%H$r3Z$7$`$?$a$N%f!<%6(B
-$B%$%s%?!<%U%'!<%9$G$9!#(BRiece $B$O!V$j!<$9!W$HFI$_$^$9!#(B
+Riece は IRC (Internet Relay Chat) の世界でチャットを楽しむためのユーザ
+インターフェースです。Riece は「りーす」と読みます。
 
-Riece $B$N<g$JFCD9$O0J2<$NDL$j$G$9!#(B
+Riece の主な特長は以下の通りです。
 
 @itemize @bullet
-@item $BJ#?t$N(B IRC $B%5!<%P$KF1;~$K@\B32DG=(B
-@item $B%"%I%*%s$K$h$j5!G=$NDI2C$d<h$j30$7$,MF0W(B
-@item $BB>$N(B elisp $B%Q%C%1!<%8$K0MB8$7$J$$$?$a!"%$%s%9%H!<%k$,4JC1(B
-@item $B@_Dj$,4JC1$G!"A02s5/F0;~$N@_Dj$r5-O?!&I|85$9$k;EAH$_$rDs6!(B
-@item $BCJ3,E*$JA`:n@bL@=q$,ImB0(B
-@item $B:G?7$N(B IRC $B$N%/%i%$%"%s%H%W%m%H%3%k(B (RFC2812) $B$K=`5r(B
+@item 複数の IRC サーバに同時に接続可能
+@item アドオンにより機能の追加や取り外しが容易
+@item 他の elisp パッケージに依存しないため、インストールが簡単
+@item 設定が簡単で、前回起動時の設定を記録・復元する仕組みを提供
+@item 段階的な操作説明書が附属
+@item 最新の IRC のクライアントプロトコル (RFC2812) に準拠
 @end itemize
 
 @node Getting started, Basic usage, Overview, Top
 @chapter Getting started
 
-Riece $B$r5/F0$9$k<j=g$O<!$NDL$j$G$9!#(B
+Riece を起動する手順は次の通りです。
 
 @enumerate
 @item
@@ -94,38 +95,38 @@ Riece $B$r5/F0$9$k<j=g$O<!$NDL$j$G$9!#(B
 @kbd{M-x riece}
 @end enumerate
 
-$B$b$7(B (1) $B$G(B @samp{Cannot open load file: riece} $B$N%(%i!<$,H/@8$9$k>l9g$K(B
-$B$O%$%s%9%H!<%k$K<:GT$7$F$$$^$9!#<+J,$G%=!<%9$+$i%$%s%9%H!<%k$7$?>l9g$K$O(B 
-README $B$r$b$&0lEYFI$_D>$7$F$/$@$5$$!#(BOS$B!&%G%#%9%H%j%S%e!<%7%g%s$N%Q%C%1!<(B
-$B%8$+$i%$%s%9%H!<%k$7$?>l9g$K$O!"%Q%C%1!<%8$K4^$^$l$kJ8=q$r$43NG'$/$@$5$$!#(B
+もし (1) で @samp{Cannot open load file: riece} のエラーが発生する場合に
+はインストールに失敗しています。自分でソースからインストールした場合には 
+README をもう一度読み直してください。OS・ディストリビューションのパッケー
+ジからインストールした場合には、パッケージに含まれる文書をご確認ください。
 
-Riece $B$r5/F0$9$k$H!"(BIRC $B%5!<%P$NL>A0$rJ9$+$l$^$9!#8x6&$KMxMQ2DG=$J(B IRC 
-$B%5!<%P$N0lMw$O(B Web $B%Z!<%8$J$I$+$iF@$k$3$H$,$G$-$^$9!#(B
+Riece を起動すると、IRC サーバの名前を聞かれます。公共に利用可能な IRC 
+サーバの一覧は Web ページなどから得ることができます。
 
 @itemize @bullet
 @item http://www.ircnet.jp
 @item http://freenode.net
 @end itemize
 
-$B$^$?!"0J2<$N$h$&$J%a%C%;!<%8$,I=<($5$l$k$+$b$7$l$^$;$s!#(B
+また、以下のようなメッセージが表示されるかもしれません。
 
 @example
 Nickname "ueno" already in use.  Choose a new one: 
 @end example
 
-IRC $B$G$O!";22C<T$rI=$9$N$K(B@emph{$B%K%C%/%M!<%`(B}$B$H8F$P$l$kC;$$8F>N$,;H$o$l(B
-$B$^$9!#$b$74uK>$N%K%C%/%M!<%`$,B>$NC/$+$K;HMQ$5$l$F$$$k>l9g!"JL$N%K%C%/%M!<(B
-$B%`$rA*$VI,MW$,$"$j$^$9!#(B
+IRC では、参加者を表すのに@emph{ニックネーム}と呼ばれる短い呼称が使われ
+ます。もし希望のニックネームが他の誰かに使用されている場合、別のニックネー
+ムを選ぶ必要があります。
 
-IRC $B%5!<%P$K@\B3$G$-$?$i!"<!$O2qOC$r$7$F$_$^$7$g$&!#(BIRC $B$G$O(B@emph{$B%A%c%s%M%k(B}
-$B$H8F$P$l$k2>A[E*$J2q5D<<$K;22C$7$F2qOC$r9T$J$$$^$9!#%A%c%s%M%k$KF~$k$K$O(B 
-@kbd{C-c j} $B$H%?%$%W$7$^$9!#;22C$9$k%A%c%s%M%kL>$r?R$M$i$l$?$i!"E,@Z$J%A%c(B
-$B%s%M%kL>$rF~NO$7$^$7$g$&!#(BIRCnet $B$K$O(B @samp{#Riece} $B$H$$$&%A%c%s%M%k$,$"(B
-$B$k$N$G!"%F%9%H$r$7$?$$>l9g$K$O<+M3$K$*;H$$$/$@$5$$!#(B
+IRC サーバに接続できたら、次は会話をしてみましょう。IRC では@emph{チャンネル}
+と呼ばれる仮想的な会議室に参加して会話を行ないます。チャンネルに入るには 
+@kbd{C-c j} とタイプします。参加するチャンネル名を尋ねられたら、適切なチャ
+ンネル名を入力しましょう。IRCnet には @samp{#Riece} というチャンネルがあ
+るので、テストをしたい場合には自由にお使いください。
 
-$B%A%c%s%M%k$KF~$k$H!"2<$N?^$K<($9$h$&$J(B 5 $B$D$N%&%#%s%I%&(B
-@footnote{$B$^$.$i$o$7$$$G$9$,!"(BEmacs $B$N@$3&$G$O%P%C%U%!$rI=<($9$kNN0h$r%&%#(B
-$B%s%I%&$H8F$S$^$9!#(B}$B$+$i$J$k2hLL$K@Z$jBX$o$j$^$9!#(B
+チャンネルに入ると、下の図に示すような 5 つのウィンドウ
+@footnote{まぎらわしいですが、Emacs の世界ではバッファを表示する領域をウィ
+ンドウと呼びます。}からなる画面に切り替わります。
 
 @example
 +-----+-----------------+
@@ -143,16 +144,16 @@ IRC $B%5!<%P$K@\B3$G$-$?$i!"<!$O2qOC$r$7$F$_$^$7$g$&!#(BIRC $B$G$O(B@emph{$
 +-----+-----------------+
 @end example
 
-(4) $B$N%&%#%s%I%&$KI=<($5$l$k%P%C%U%!$KJ8>O$rF~NO$7$F%j%?!<%s%-!<$r2!$9$H(B
-$BH/8@$G$-$^$9!#B>$N;22C<T$NH/8@$O(B (2) $B$N%&%#%s%I%&$KI=<($5$l$^$9!#(B
+(4) のウィンドウに表示されるバッファに文章を入力してリターンキーを押すと
+発言できます。他の参加者の発言は (2) のウィンドウに表示されます。
 
 @node Basic usage, Advanced usage, Getting started, Top
 @chapter Basic usage
 
 @menu
-* Windows::                     $B2hLL9=@.(B
-* Indicators::                  $B<+J,$N>uBV$NI=<((B
-* Commands::                    $B%3%^%s%I$N0lMw(B
+* Windows::                     画面構成
+* Indicators::                  自分の状態の表示
+* Commands::                    コマンドの一覧
 @end menu
 
 @node Windows, Indicators, Basic usage, Basic usage
@@ -174,239 +175,239 @@ IRC $B%5!<%P$K@\B3$G$-$?$i!"<!$O2qOC$r$7$F$_$^$7$g$&!#(BIRC $B$G$O(B@emph{$
 +-----+-----------------+
 @end example
 
-$B3F%&%#%s%I%&$KI=<($5$l$k%P%C%U%!$NLr3d$O0J2<$NDL$j$G$9!#(B
+各ウィンドウに表示されるバッファの役割は以下の通りです。
 
 @enumerate
 @item
-$B%f!<%6%j%9%H%P%C%U%!(B (@samp{ *Users*})$B!#%A%c%s%M%k$K;22C$7$F$$$k%f!<(B
-$B%6$N%K%C%/%M!<%`$N0lMw$,I=<($5$l$^$9!#(B
+ユーザリストバッファ (@samp{ *Users*})。チャンネルに参加しているユー
+ザのニックネームの一覧が表示されます。
 
 @item
-$B%A%c%s%M%k%P%C%U%!(B (@samp{ *Channel:XXX*})$B!#%A%c%s%M%kFb$N2qOC$,I=<($5$l(B
-$B$^$9!#(B
+チャンネルバッファ (@samp{ *Channel:XXX*})。チャンネル内の会話が表示され
+ます。
 
 @item
-$B%A%c%s%M%k%j%9%H%P%C%U%!(B (@samp{ *Channels*})$B!#<+J,$,;22C$7$F$$$k%A%c%s%M(B
-$B%k$N0lMw$,I=<($5$l$^$9!#(B
+チャンネルリストバッファ (@samp{ *Channels*})。自分が参加しているチャンネ
+ルの一覧が表示されます。
 
 @item
-$B%3%^%s%I%P%C%U%!(B (@samp{*Command*})$B!#J8>O$d%3%^%s%I$rAw?.$9$k$?$a$K;H$$(B
-$B$^$9!#(B
+コマンドバッファ (@samp{*Command*})。文章やコマンドを送信するために使い
+ます。
 
 @item
-$B%"%6!<%:%P%C%U%!(B (@samp{ *Others*})$B!#8=:_A*BrCf$N%A%c%s%M%k0J30$N2qOC$,N.(B
-$B$l$^$9!#(B
+アザーズバッファ (@samp{ *Others*})。現在選択中のチャンネル以外の会話が流
+れます。
 @end enumerate
 
 @node Indicators, Commands, Windows, Basic usage
 @section Indicators
 
-$B%b!<%I%i%$%s$N:8C<$K$O!"8=:_$N<+J,$N>uBV$r<($90u$,I=<($5$l$^$9!#(B
-@footnote{$B$b$72hA|$rI=<($G$-$k(B Emacs $B$r$*;H$$$J$i!":8C<$K(B "R" $B$N%"%$%3%s(B
-$B$,I=<($5$l$^$9!#(B}
+モードラインの左端には、現在の自分の状態を示す印が表示されます。
+@footnote{もし画像を表示できる Emacs をお使いなら、左端に "R" のアイコン
+が表示されます。}
 
 @example
 Riece: ---- ueno #Riece [n]
 @end example
 
-$B$3$3$G!"(B@samp{----} $B$NItJ,$K$O:8$+$i=g$K0J2<$N0UL#$,$"$j$^$9!#(B
+ここで、@samp{----} の部分には左から順に以下の意味があります。
 
 @enumerate
 @item
-$BN%@J>uBV(B ($BN%@J$7$F$$$l$P(B @samp{A})
+離席状態 (離席していれば @samp{A})
 
 @item
-IRC $B%*%Z%l!<%?>uBV(B (IRC $B%M%C%H%o!<%/$N4IM}<T8"8B$r;}$C$F$$$l$P(B @samp{O})
+IRC オペレータ状態 (IRC ネットワークの管理者権限を持っていれば @samp{O})
 
 @item
-$B%&%#%s%I%&$N<+F0%9%/%m!<%k$N6X;_(B ($B40A4$K6X;_$7$F$$$l$P(B @samp{F}$B!"<+J,$N(B
-$B<!2s$NH/8@$^$G6X;_$7$F$$$k$N$G$"$l$P(B @samp{f})
+ウィンドウの自動スクロールの禁止 (完全に禁止していれば @samp{F}、自分の
+次回の発言まで禁止しているのであれば @samp{f})
 
 @item
-$B%A%c%s%M%k%*%Z%l!<%?>uBV(B ($B%A%c%s%M%k$N4IM}<T8"8B$r;}$C$F$$$l$P(B @samp{@@})
+チャンネルオペレータ状態 (チャンネルの管理者権限を持っていれば @samp{@@})
 @end enumerate
 
 @node Commands,  , Indicators, Basic usage
 @section Commands
 
-@ref{Basic usage}$B$GJ8>O$rF~NO$7$?%P%C%U%!$O%3%^%s%I%P%C%U%!$H8F$P$l$^$9!#(B
-$B%3%^%s%I%P%C%U%!$+$i$OJ8>O$rAw?.$9$k0J30$K!"MM!9$J%3%^%s%I$rH/9T$9$k$3$H(B
-$B$,$G$-$^$9!#0J2<$K0lIt$r5s$2$^$9!#(B
+@ref{Basic usage}で文章を入力したバッファはコマンドバッファと呼ばれます。
+コマンドバッファからは文章を送信する以外に、様々なコマンドを発行すること
+ができます。以下に一部を挙げます。
 
-$B:G=i$O$J$+$J$+3P$($K$/$$$G$9$,!"(B@kbd{C-h b}
- (@kbd{M-x describe-bindings}) $B$G;HMQ2DG=$J%-!<A`:n$N0lMw$,I=<($5$l$k$N(B
-$B$G>/$7$:$D3P$($F$$$/$HNI$$$G$7$g$&!#(B
+最初はなかなか覚えにくいですが、@kbd{C-h b}
+ (@kbd{M-x describe-bindings}) で使用可能なキー操作の一覧が表示されるの
+で少しずつ覚えていくと良いでしょう。
 
 @subsection IRC commands
 @table @kbd
 @item RET
 @findex riece-command-enter-message
-$BJ8>O$rAw$j$^$9(B(@code{riece-command-enter-message})
+文章を送ります(@code{riece-command-enter-message})
 @item C-RET
 @findex riece-command-enter-message-as-notice
-$BJ8>O$r(B NOTICE $B$H$7$FAw$j$^$9(B(@code{riece-command-enter-message-as-notice})
+文章を NOTICE として送ります(@code{riece-command-enter-message-as-notice})
 @item C-c j
 @findex riece-command-join
-$B%A%c%s%M%k$K;22C$7$^$9(B(@code{riece-command-join})
+チャンネルに参加します(@code{riece-command-join})
 @item C-c C-p
 @findex riece-command-part
-$B%A%c%s%M%k$+$iN%C&$7$^$9(B(@code{riece-command-part})
+チャンネルから離脱します(@code{riece-command-part})
 @item C-c p
 @findex riece-command-enter-message-to-user
-$B08@h$r;XDj$7$F8=:_$N9T$rAw$j$^$9(B(@code{riece-command-enter-message-to-user})
+宛先を指定して現在の行を送ります(@code{riece-command-enter-message-to-user})
 @item C-c q
 @findex riece-command-quit
-IRC $B$r$d$a$^$9(B(@code{riece-command-quit})
+IRC をやめます(@code{riece-command-quit})
 @item C-c n
 @findex riece-command-change-nickname
-$B<+J,$N%K%C%/%M!<%`$rJQ99$7$^$9(B(@code{riece-command-change-nickname})
+自分のニックネームを変更します(@code{riece-command-change-nickname})
 @item C-c f
 @findex riece-command-finger
-$B%f!<%6$N>pJs$rD4$Y$^$9(B(@code{riece-command-finger})
+ユーザの情報を調べます(@code{riece-command-finger})
 @item C-c C-k
 @findex riece-command-kick
-$B%f!<%6$r%A%c%s%M%k$+$i=3$j=P$7$^$9(B(@code{riece-command-kick})
+ユーザをチャンネルから蹴り出します(@code{riece-command-kick})
 @item C-c i
 @findex riece-command-invite
-$B%f!<%6$r%A%c%s%M%k$K>7BT$7$^$9(B(@code{riece-command-invite})
+ユーザをチャンネルに招待します(@code{riece-command-invite})
 @item C-c l
 @findex riece-command-list
-$B%Q%?!<%s$KBP$7$F(B LIST $B$rH/9T$7$^$9(B(@code{riece-command-list})
+パターンに対して LIST を発行します(@code{riece-command-list})
 @item C-c C-n
 @findex riece-command-names
-$B%Q%?!<%s$KBP$7$F(B NAMES $B$rH/9T$7$^$9(B(@code{riece-command-names})
+パターンに対して NAMES を発行します(@code{riece-command-names})
 @item C-c w
 @findex riece-command-who
-$B%Q%?!<%s$KBP$7$F(B WHO $B$rH/9T$7$^$9(B(@code{riece-command-who})
+パターンに対して WHO を発行します(@code{riece-command-who})
 @item C-c t
 @findex riece-command-topic
-$B%A%c%s%M%k$N%H%T%C%/$r@_Dj$7$^$9(B(@code{riece-command-topic})
+チャンネルのトピックを設定します(@code{riece-command-topic})
 @item C-c C-m
 @findex riece-command-change-mode
-$B%A%c%s%M%k$N%b!<%I$r@_Dj$7$^$9(B(@code{riece-command-change-mode})
+チャンネルのモードを設定します(@code{riece-command-change-mode})
 @item C-c o
 @findex riece-command-set-operators
-$B%f!<%6$K%A%c%s%M%k$N4IM}<T8"8B$rM?$($^$9!#(B@kbd{C-u C-c o} $B$G$O5U$K!"%f!<%6$+$i%A%c%s%M%k$N4IM}<T8"8B$rC%$$$^$9(B(@code{riece-command-set-operators})
+ユーザにチャンネルの管理者権限を与えます。@kbd{C-u C-c o} では逆に、ユーザからチャンネルの管理者権限を奪います(@code{riece-command-set-operators})
 @item C-c v
 @findex riece-command-set-speakers
-$B%f!<%6$K%A%c%s%M%k$G$NH/8@8"$rM?$($^$9!#(B@kbd{C-u C-c v} $B$G$O5U$K!"%f!<%6$+$i%A%c%s%M%k$G$NH/8@8"$rC%$$$^$9(B(@code{riece-command-set-speakers})
+ユーザにチャンネルでの発言権を与えます。@kbd{C-u C-c v} では逆に、ユーザからチャンネルでの発言権を奪います(@code{riece-command-set-speakers})
 @item C-c V
 @findex riece-version
-Riece $B$N%P!<%8%g%s$rI=<($7$^$9!#(B(@kbd{C-u C-c V}) $B$G!"$h$j>\:Y$J>pJs$rI=<($7$^$9!#(B
+Riece のバージョンを表示します。(@kbd{C-u C-c V}) で、より詳細な情報を表示します。
 @item C-c /
 @findex riece-command-raw
-IRC $B%3%^%s%I$rD>@\Aw$j$^$9(B(@code{riece-command-raw})
+IRC コマンドを直接送ります(@code{riece-command-raw})
 @end table
 
 @subsection Window manipulating commands
 @table @kbd
 @item C-c r
 @findex riece-command-configure-windows
-$B%U%l!<%`A4BN$r:FIA2h$7$^$9(B(@code{riece-command-configure-windows})
-@item C-c C-j $B$^$?$O(B C-c >
+フレーム全体を再描画します(@code{riece-command-configure-windows})
+@item C-c C-j または C-c >
 @findex riece-command-next-channel
-$B%A%c%s%M%k0lMw$G<!$N%A%c%s%M%k$rA*Br$7$^$9(B(@code{riece-command-next-channel})
+チャンネル一覧で次のチャンネルを選択します(@code{riece-command-next-channel})
 @item C-c <
 @findex riece-command-previous-channel
-$B%A%c%s%M%k0lMw$GA0$N%A%c%s%M%k$rA*Br$7$^$9(B(@code{riece-command-previous-channel})
+チャンネル一覧で前のチャンネルを選択します(@code{riece-command-previous-channel})
 @item C-c ^
 @findex riece-command-list-addons
-$B%"%I%*%s$N0lMw$rI=<($7$^$9(B(@code{riece-command-list-addons})
-@item C-c $B?t;z(B
+アドオンの一覧を表示します(@code{riece-command-list-addons})
+@item C-c 数字
 @findex riece-command-switch-to-channel-by-number
-$B%A%c%s%M%k0lMw$G(B @var{n}$BHVL\$N%A%c%s%M%k$rA*Br$7$^$9(B(@code{riece-command-switch-to-channel-by-number})
-@item C-c C-c $B?t;z(B
+チャンネル一覧で @var{n}番目のチャンネルを選択します(@code{riece-command-switch-to-channel-by-number})
+@item C-c C-c 数字
 @findex riece-command-switch-to-channel-by-number
-$B%A%c%s%M%k0lMw$G(B @var{n} + 10$BHVL\$N%A%c%s%M%k$rA*Br$7$^$9(B(@code{riece-command-switch-to-channel-by-number})
+チャンネル一覧で @var{n} + 10番目のチャンネルを選択します(@code{riece-command-switch-to-channel-by-number})
 @item C-c Home
 @findex riece-command-beginning-of-buffer
-$B%A%c%s%M%k%P%C%U%!!"$^$?$O%@%$%"%m%0%P%C%U%!$r>eC<$^$G%9%/%m!<%k$7$^$9(B(@code{riece-command-beginning-of-buffer})
+チャンネルバッファ、またはダイアログバッファを上端までスクロールします(@code{riece-command-beginning-of-buffer})
 @item C-c $
 @findex riece-command-end-of-buffer
-$B%A%c%s%M%k%P%C%U%!!"$^$?$O%@%$%"%m%0%P%C%U%!$r2<C<$^$G%9%/%m!<%k$7$^$9(B(@code{riece-command-end-of-buffer})
+チャンネルバッファ、またはダイアログバッファを下端までスクロールします(@code{riece-command-end-of-buffer})
 @item C-c SPC
 @findex riece-command-scroll-up
-$B%A%c%s%M%k%P%C%U%!!"$^$?$O%@%$%"%m%0%P%C%U%!$r>eJ}8~$K%9%/%m!<%k$7$^$9(B(@code{riece-command-scroll-up})
+チャンネルバッファ、またはダイアログバッファを上方向にスクロールします(@code{riece-command-scroll-up})
 @item C-c DEL
 @findex riece-command-scroll-down
-$B%A%c%s%M%k%P%C%U%!!"$^$?$O%@%$%"%m%0%P%C%U%!$r2<J}8~$K%9%/%m!<%k$7$^$9(B(@code{riece-command-scroll-down})
+チャンネルバッファ、またはダイアログバッファを下方向にスクロールします(@code{riece-command-scroll-down})
 @end table
 
 @subsection Status toggle commands
 @table @kbd
 @item C-c C-t c
 @findex riece-command-toggle-channel-buffer-mode
-$B%A%c%s%M%k%P%C%U%!$NI=<(!&HsI=<($r@Z$jBX$($^$9(B(@code{riece-command-toggle-channel-buffer-mode})
+チャンネルバッファの表示・非表示を切り替えます(@code{riece-command-toggle-channel-buffer-mode})
 @item C-c C-t C
 @findex riece-command-toggle-channel-list-buffer-mode
-$B%A%c%s%M%k%j%9%H%P%C%U%!$NI=<(!&HsI=<($r@Z$jBX$($^$9(B(@code{riece-command-toggle-channel-list-buffer-mode})
+チャンネルリストバッファの表示・非表示を切り替えます(@code{riece-command-toggle-channel-list-buffer-mode})
 @item C-c C-t u
 @findex riece-command-toggle-user-list-buffer-mode
-$B%f!<%6%j%9%H%P%C%U%!$NI=<(!&HsI=<($r@Z$jBX$($^$9(B(@code{riece-command-toggle-user-list-buffer-mode})
+ユーザリストバッファの表示・非表示を切り替えます(@code{riece-command-toggle-user-list-buffer-mode})
 @item C-c C-t f
 @findex riece-command-toggle-freeze
-$B%A%c%s%M%k%P%C%U%!!"$^$?$O%@%$%"%m%0%P%C%U%!$N<+F0%9%/%m!<%k$r6X;_$7$^(B
-$B$9(B(@code{riece-command-toggle-freeze})
+チャンネルバッファ、またはダイアログバッファの自動スクロールを禁止しま
+す(@code{riece-command-toggle-freeze})
 @item C-c C-t o
 @findex riece-command-toggle-own-freeze
-$B%A%c%s%M%k%P%C%U%!!"$^$?$O%@%$%"%m%0%P%C%U%!$r!"<+J,$,H/8@$9$k$^$G!"<+F0(B
-$B%9%/%m!<%k$r6X;_$7$^$9(B(@code{riece-command-toggle-own-freeze})
+チャンネルバッファ、またはダイアログバッファを、自分が発言するまで、自動
+スクロールを禁止します(@code{riece-command-toggle-own-freeze})
 @item C-c C-t a
 @findex riece-command-toggle-away
-$B<+J,$NN%@J>uBV$r@Z$jBX$($^$9(B(@code{riece-command-toggle-away})
+自分の離席状態を切り替えます(@code{riece-command-toggle-away})
 @end table
 
 @node Advanced usage, Tips, Basic usage, Top
 @chapter Advanced usage
 
-$B$3$N>O$G$O!"$b$C$H?J$s$@;H$$J}$r2r@b$7$^$9!#(B
+この章では、もっと進んだ使い方を解説します。
 
 @menu
-* Startup File::                $B@_Dj%U%!%$%k(B
-* Server settings::             $B%5!<%P$N>\:Y@_Dj(B
-* Multiple servers::            $BJ#?t$N%5!<%P$K@\B3$9$k$K$O(B
-* Add-ons::                     $B%"%I%*%s$H$O(B
+* Startup File::                設定ファイル
+* Server settings::             サーバの詳細設定
+* Multiple servers::            複数のサーバに接続するには
+* Add-ons::                     アドオンとは
 @end menu
 
 @node Startup File, Server settings, Advanced usage, Advanced usage
 @section Startup file
 
-Riece $B$N@_Dj$O(B Emacs $B$N@_Dj%U%!%$%k$K=q$$$F$bNI$$$G$9$,!"(BRiece $B$K8GM-$N(B
-$B@_Dj$O$J$k$Y$/(B @file{~/.riece/init} $B$K=q$/$3$H$r?d>)$7$^$9!#(B
+Riece の設定は Emacs の設定ファイルに書いても良いですが、Riece に固有の
+設定はなるべく @file{~/.riece/init} に書くことを推奨します。
 
-$B$^$?!"(BRiece $B$r5/F0$7$F=*N;$9$k$H(B @file{~/.riece/save} $B$H$$$&%U%!%$%k$,(B
-$B:n@.$5$l$^$9!#$3$N%U%!%$%k$K$OA02s5/F0;~$N@_Dj$N0lIt$,<+F0E*$KJ]B8$5$l(B
-$B$^$9!#(B
+また、Riece を起動して終了すると @file{~/.riece/save} というファイルが
+作成されます。このファイルには前回起動時の設定の一部が自動的に保存され
+ます。
 
-$B5/F0;~$K$O!":G=i$K(B @file{~/.riece/save} $B$r!"<!$K(B @file{~/.riece/init}$B$r(B
-$BFI$_9~$_$^$9!#$D$^$j!"A02s5/F0;~$K(B @file{~/.riece/save} $B$KJ]B8$5$l$?FbMF(B
-$B$O!"(B@file{~/.riece/init} $B$NFbMF$G>e=q$-$5$l$^$9!#(B
+起動時には、最初に @file{~/.riece/save} を、次に @file{~/.riece/init}を
+読み込みます。つまり、前回起動時に @file{~/.riece/save} に保存された内容
+は、@file{~/.riece/init} の内容で上書きされます。
 
 @node Server settings, Multiple servers, Startup File, Advanced usage
 @section Server settings
 
-$B5/F0;~$K@\B3$9$k(B IRC $B%5!<%P$OJQ?t(B @code{riece-server} $B$G;XDj$7$^$9!#(B
+起動時に接続する IRC サーバは変数 @code{riece-server} で指定します。
 @vindex riece-server
 
-@code{riece-server} $B$OJ8;zNs$G!"$=$N7A<0$O<!$N$$$:$l$+$G$9!#(B
+@code{riece-server} は文字列で、その形式は次のいずれかです。
 
 @enumerate
 @item
-@code{IRC $B%5!<%P$N%[%9%HL>(B}
+@code{IRC サーバのホスト名}
 
 @item
-@code{IRC $B%5!<%P$N%[%9%HL>(B:$B%]!<%HHV9f(B}
+@code{IRC サーバのホスト名:ポート番号}
 
 @item
-@code{IRC $B%5!<%P$N%[%9%HL>(B:$B%]!<%HHV9f(B:$B%Q%9%o!<%I(B}
+@code{IRC サーバのホスト名:ポート番号:パスワード}
 
 @item
-$B>\:Y@_Dj$NL>A0(B
+詳細設定の名前
 @end enumerate
 
-4. $B$N>l9g$K$O!"(B@code{riece-server} $B$NCM$r%-!<$K(B
-@code{riece-server-alist} $B$r8!:w$7$^$9!#(B@code{riece-server-alist} $B$O<!(B
-$B$N$h$&$J7A<0$NO"A[G[Ns$G$9!#(B
+4. の場合には、@code{riece-server} の値をキーに
+@code{riece-server-alist} を検索します。@code{riece-server-alist} は次
+のような形式の連想配列です。
 @vindex riece-server-alist
 
 @example
@@ -415,36 +416,36 @@ Riece $B$N@_Dj$O(B Emacs $B$N@_Dj%U%!%$%k$K=q$$$F$bNI$$$G$9$,!"(BRiece $B$K
         ("bar" :host "irc.example.net" :nickname "baz")))
 @end example
 
-$B$3$N@_Dj$N0UL#$O0J2<$NDL$j$G$9!#(B
+この設定の意味は以下の通りです。
 
 @itemize
 @item
-@samp{foo} $B$H$$$&L>A0$N@_Dj$G$O!"(BIRC $B%5!<%P$N%[%9%HL>$K(B @samp{irc.example.com}$B!";HMQ$9$kJ8;z%3!<%I$K(B Shift_JIS $B$r;H$&(B
+@samp{foo} という名前の設定では、IRC サーバのホスト名に @samp{irc.example.com}、使用する文字コードに Shift_JIS を使う
 
 @item
-@samp{bar} $B$H$$$&L>A0$N@_Dj$G$O!"(BIRC $B%5!<%P$N%[%9%HL>$O(B @samp{irc.example.net}$B!"$3$N%5!<%P$G$O%K%C%/%M!<%`(B @samp{baz} $B$r;H$&(B
+@samp{bar} という名前の設定では、IRC サーバのホスト名は @samp{irc.example.net}、このサーバではニックネーム @samp{baz} を使う
 @end itemize
 
-$B;XDj$G$-$k%-!<%o!<%I$N0lMw$O0J2<$NDL$j$G$9!#(B
+指定できるキーワードの一覧は以下の通りです。
 
 @table @code
 @item :host
-$B%5!<%P$N%[%9%HL>$^$?$O(B IP $B%"%I%l%9(B
+サーバのホスト名または IP アドレス
 @item :service
-$B%5!<%P$N%5!<%S%9L>$^$?$O%]!<%HHV9f(B ($B4{DjCM$O(B @code{6667})
+サーバのサービス名またはポート番号 (既定値は @code{6667})
 @item :nickname
-$B@\B3;~$N%K%C%/%M!<%`(B ($B4{DjCM$OJQ?t(B @code{user-real-login-name} $B$NCM(B)
+接続時のニックネーム (既定値は変数 @code{user-real-login-name} の値)
 @item :username
-$B@\B3;~$N%f!<%6%M!<%`(B ($B4{DjCM$OJQ?t(B @code{user-full-name} $B$NCM(B)
+接続時のユーザネーム (既定値は変数 @code{user-full-name} の値)
 @item :password
-$B@\B3;~$N%Q%9%o!<%I(B
+接続時のパスワード
 @item :function
-$B@\B3MQ4X?t(B ($B4{DjCM$O(B @code{open-network-stream})
+接続用関数 (既定値は @code{open-network-stream})
 @item :coding
-$BJ8;z%3!<%I(B ($B4{DjCM$O(B @code{riece-default-coding-system} $B$NCM(B)
+文字コード (既定値は @code{riece-default-coding-system} の値)
 @end table
 
-@code{riece-server-alist} $B$rBPOCE*$K@_Dj$9$k$K$O<!$N%3%^%s%I$r;H$&$HJXMx$G$9!#(B
+@code{riece-server-alist} を対話的に設定するには次のコマンドを使うと便利です。
 
 @example
 M-x load-library riece
@@ -454,75 +455,75 @@ M-x customize-variable riece-server-alist
 @node Multiple servers, Add-ons, Server settings, Advanced usage
 @section Multiple servers
 
-$BF1;~$KJ#?t$N%5!<%P$K@\B3$9$k<j=g$r0J2<$K<($7$^$9!#(B
+同時に複数のサーバに接続する手順を以下に示します。
 
-$B4{$KFCDj$N%5!<%P$K@\B3$7$F$$$k>uBV$G!"JL$N%5!<%P$K@\B3$9$k$K$O(B @kbd{C-c O} (@code{riece-command-open-server}) $B$r;H$$$^$9!#(B
+既に特定のサーバに接続している状態で、別のサーバに接続するには @kbd{C-c O} (@code{riece-command-open-server}) を使います。
 
-$BJL$N%5!<%P>e$N%A%c%s%M%k$K;22C$9$k$K$O!"(B@kbd{C-c j}
-(@code{riece-command-join})$B$G%A%c%s%M%kL>$K(B @samp{@@} $B$KB3$$$F%5!<%PL>$r(B
-$BB3$1$^$9!#(B
+別のサーバ上のチャンネルに参加するには、@kbd{C-c j}
+(@code{riece-command-join})でチャンネル名に @samp{@@} に続いてサーバ名を
+続けます。
 
-$B$?$H$($P!"%5!<%P(B @samp{irc.freenode.net} $B>e$N(B @samp{#Riece} $B$O<!$N$h$&(B
-$B$KI=5-$7$^$9!#(B
+たとえば、サーバ @samp{irc.freenode.net} 上の @samp{#Riece} は次のよう
+に表記します。
 
 @example
 #Riece@@irc.freenode.net
 @end example
 
-$B%A%c%s%M%kL>$H%5!<%P$N6h@Z$jJ8;z(B @samp{@@} $B$O(B
-$BJQ?t(B @code{riece-alias-alternate-separator} $B$GJQ99$G$-$^$9!#(B
+チャンネル名とサーバの区切り文字 @samp{@@} は
+変数 @code{riece-alias-alternate-separator} で変更できます。
 
-$B$^$?$O!"6uGrJ8;z$G$bBeMQ$G$-$^$9!#$3$N;~$K$O!"(B@kbd{C-q SPC} $B$HF~NO$9$k(B
-$BI,MW$,$"$j$^$9!#(B
+または、空白文字でも代用できます。この時には、@kbd{C-q SPC} と入力する
+必要があります。
 
-$BJ#?t$N@\B3$rA`:n$9$k%3%^%s%I$r0J2<$K$^$H$a$^$9!#(B
+複数の接続を操作するコマンドを以下にまとめます。
 
 @table @kbd
 @item C-c O
 @findex riece-command-open-server
-$BJL$N%5!<%P$K@\B3$7$^$9(B(@code{riece-command-open-server})
+別のサーバに接続します(@code{riece-command-open-server})
 @item C-c C
 @findex riece-command-close-server
-$B%5!<%P$H$N@\B3$r@ZCG$7$^$9(B(@code{riece-command-close-server})
+サーバとの接続を切断します(@code{riece-command-close-server})
 @item C-c M
 @findex riece-command-universal-server-name-argument
-$BFCDj$N%5!<%P$KBP$7$F!"B3$/%3%^%s%I$rH/9T$7$^$9(B(@code{riece-command-universal-server-name-argument})
+特定のサーバに対して、続くコマンドを発行します(@code{riece-command-universal-server-name-argument})
 @end table
 
 @node Add-ons,  , Multiple servers, Advanced usage
 @section Add-ons
 
-Riece $B$G$O!";(B?$J5!G=$rA*BrE*$KMxMQ$G$-$k$h$&!"%"%I%*%s$H8F$P$l$k5!9=(B
-$B$rMQ0U$7$F$$$^$9!#%"%I%*%s$ODL>o$N(B elisp $B%b%8%e!<%k$r3HD%$7$?$b$N$G!"(B
-$B0BA4$J<h$j30$7$d!"%"%I%*%s4V$N=i4|2==hM}$N0MB84X78$J$I$NLLE]$r$_$^$9!#(B
+Riece では、雑多な機能を選択的に利用できるよう、アドオンと呼ばれる機構
+を用意しています。アドオンは通常の elisp モジュールを拡張したもので、
+安全な取り外しや、アドオン間の初期化処理の依存関係などの面倒をみます。
 
-$B%"%I%*%s$K$O<!$N;M<oN`$N>uBV$,$"$j$^$9!#(B
+アドオンには次の四種類の状態があります。
 
 @table @asis
 @item unloaded
-$BFI$_9~$_A0!#%"%I%*%s$N(B elisp $B%b%8%e!<%k$,FI$_9~$^$l$F$$$J$$>uBV(B
+読み込み前。アドオンの elisp モジュールが読み込まれていない状態
 
 @item insinuated
-$BAH$_9~$_:Q$_!#%"%I%*%s$N(B elisp $B%b%8%e!<%k$,FI$_9~$^$l!"=i4|2==hM}$,40N;$7$?>uBV(B
+組み込み済み。アドオンの elisp モジュールが読み込まれ、初期化処理が完了した状態
 
 @item enabled
-$BM-8z!#%"%I%*%s$,F0:nCf(B
+有効。アドオンが動作中
 
 @item disabled
-$BL58z!#%"%I%*%s$NF0:n$,Dd;_Cf(B
+無効。アドオンの動作が停止中
 
 @end table
 
 @menu
-* Add-on browser::              $B%"%I%*%s$N0lMwI=<((B
-* Available add-ons::           $BI8=`E:IU$N%"%I%*%s$N>R2p(B
+* Add-on browser::              アドオンの一覧表示
+* Available add-ons::           標準添付のアドオンの紹介
 @end menu
 
 @node Add-on browser, Available add-ons, Add-ons, Add-ons
 @subsection Add-on browser
 
-Riece $B$NF0:nCf$K%"%I%*%s$N0lMw$rD/$a$k$K$O%"%I%*%s%V%i%&%6$r;H$&$HJXMx$G$9!#(B
-$B%3%^%s%I%P%C%U%!$G(B @kbd{C-c ^} $B$H$9$k$H!"<!$N$h$&$KI=<($5$l$^$9!#(B
+Riece の動作中にアドオンの一覧を眺めるにはアドオンブラウザを使うと便利です。
+コマンドバッファで @kbd{C-c ^} とすると、次のように表示されます。
 
 @example
 + riece-alias         Define aliases for IRC names.
@@ -533,11 +534,11 @@ Riece $B$NF0:nCf$K%"%I%*%s$N0lMw$rD/$a$k$K$O%"%I%*%s%V%i%&%6$r;H$&$HJXMx$G$9!#
 + riece-ctlseq        Mark up control sequences in IRC buffers.
 @end example
 
-$B3F9T$N:8C<$N%^!<%/$O%"%I%*%s$N>uBV$rI=$o$7$F$$$^$9!#(B@samp{+} $B$OAH9~$^(B
-$B$l$FM-8z$J%"%I%*%s!"6uGr$O%m!<%I$5$l$F$$$J$$%"%I%*%s$G$9!#(B
+各行の左端のマークはアドオンの状態を表わしています。@samp{+} は組込ま
+れて有効なアドオン、空白はロードされていないアドオンです。
 
-$B$3$3$G!"(Briece-button $B$rL58z$K$7$?$$>l9g!";M9TL\$N@hF,$G(B @kbd{-} $B$H$7$^(B
-$B$9!#$9$k$H!"@hF,$N%^!<%/$,(B @samp{+} $B$+$i(B @samp{-} $B$KJQ2=$7$^$9!#(B
+ここで、riece-button を無効にしたい場合、四行目の先頭で @kbd{-} としま
+す。すると、先頭のマークが @samp{+} から @samp{-} に変化します。
 
 @example
 + riece-alias         Define aliases for IRC names.
@@ -548,15 +549,15 @@ Riece $B$NF0:nCf$K%"%I%*%s$N0lMw$rD/$a$k$K$O%"%I%*%s%V%i%&%6$r;H$&$HJXMx$G$9!#
 + riece-ctlseq        Mark up control sequences in IRC buffers.
 @end example
 
-$B$5$i$K!"(B@samp{u} $B$H$9$k$H!"(Briece-button $B$r%"%I%*%s$N@_Dj$+$i=|30$7$^$9!#(B
-$B$5$i$K!"(B@samp{U} $B$H$9$k$H!"(Briece-button $B$r40A4$K%"%s%m!<%I$7$^$9!#(B
+さらに、@samp{u} とすると、riece-button をアドオンの設定から除外します。
+さらに、@samp{U} とすると、riece-button を完全にアンロードします。
 
-$B$3$N>uBV$G!"(B@samp{s} $B$^$?$O(B @samp{M-x riece-command-save-variables} $B$H(B
-$B$9$k$H!"@_Dj$rJ]B8$7$^$9!#(B
+この状態で、@samp{s} または @samp{M-x riece-command-save-variables} と
+すると、設定を保存します。
 
-@file{~/.riece/init} $B$G%"%I%*%s$rAH$_9~$`$K$O(B @code{riece-addons} $B$r@_(B
-$BDj$7$^$9!#$?$H$($P(B @samp{riece-alias} $B$rAH$_9~$`>l9g$K$O!"0J2<$N$h$&$K(B
-$B5-=R$7$^$9!#(B
+@file{~/.riece/init} でアドオンを組み込むには @code{riece-addons} を設
+定します。たとえば @samp{riece-alias} を組み込む場合には、以下のように
+記述します。
 @vindex riece-addons
 
 @example
@@ -566,169 +567,169 @@ Riece $B$NF0:nCf$K%"%I%*%s$N0lMw$rD/$a$k$K$O%"%I%*%s%V%i%&%6$r;H$&$HJXMx$G$9!#
 @node Available add-ons,  , Add-on browser, Add-ons
 @subsection Available add-ons
 
-$BMxMQ2DG=$J%"%I%*%s$O<!$NDL$j$G$9!#$3$l$i$N$&$A$NB?$/$OI8=`$GAH$_9~$^$l(B
-$B$F$$$^$9!#(B
+利用可能なアドオンは次の通りです。これらのうちの多くは標準で組み込まれ
+ています。
 
 @table @samp
 @item riece-alias
-$B%A%c%s%M%kL>$d%K%C%/%M!<%`$NJLL>$rDj5A(B
+チャンネル名やニックネームの別名を定義
 @item riece-async
-Emacs $B$,(B busy or suspend $B>uBV$K$J$k$3$H$KHw$(!"(B
-PING $B$K1~Ez$9$k(B local proxy $B7PM3$G(B IRC $B%5!<%P$K@\B3(B
+Emacs が busy or suspend 状態になることに備え、
+PING に応答する local proxy 経由で IRC サーバに接続
 @item riece-biff
-$BB>$N%P%C%U%!$K$$$k;~$KH/8@$,$"$k$H%b!<%I%i%$%s$K0u(B ("[R]") $B$rI=<((B
+他のバッファにいる時に発言があるとモードラインに印 ("[R]") を表示
 @item riece-button
-$B%\%?%s$d%]%C%W%"%C%W%a%K%e!<$NI=<((B
+ボタンやポップアップメニューの表示
 @item riece-ctcp
 CTCP (Client To Client Protocol)
 @item riece-ctlseq
-$B%3%s%H%m!<%k%7!<%1%s%9(B (^B $B$J$I(B) $B$K$h$k6/D4I=<((B
+コントロールシーケンス (^B など) による強調表示
 @item riece-desktop-notify
-$B%a%C%;!<%8$NE~Ce$r%G%9%/%H%C%W$KDLCN(B
+メッセージの到着をデスクトップに通知
 @item riece-doctor
-doctor.el $B$HO"7H$7$F@:?@2J0e$K$J$j$9$^$9(B
+doctor.el と連携して精神科医になりすます
 @item riece-epg
-EasyPG @uref{http://www.easypg.org} $B$K$h$k2qOC$N0E9f2=(B
+EasyPG @uref{http://www.easypg.org} による会話の暗号化
 @item riece-eval-ruby
-$BF~NO$5$l$?J8;zNs$r(B Ruby $B$N<0$H$7$FI>2A(B
+入力された文字列を Ruby の式として評価
 @item riece-eval
-$BF~NO$5$l$?J8;zNs$r(B Emacs Lisp $B$N<0$H$7$FI>2A(B
+入力された文字列を Emacs Lisp の式として評価
 @item riece-foolproof
-$B%A%c%s%M%k%_%9$rKI$0(B
+チャンネルミスを防ぐ
 @item riece-google
-$B%-!<%o!<%I$r(B Google $B$G8!:w(B
+キーワードを Google で検索
 @item riece-guess
-$B?'!9$JJ}K!$G0\F0@h$N%A%c%s%M%k$r?dB,(B
+色々な方法で移動先のチャンネルを推測
 @item reice-hangman
-$B%A%c%s%M%kFb$G(B hangman $B$GM7$V(B
+チャンネル内で hangman で遊ぶ
 @item riece-highlight
-$B%P%C%U%!$N?'IU$1(B
+バッファの色付け
 @item riece-history
-$B%A%c%s%M%k0\F0$NMzNr4IM}(B
+チャンネル移動の履歴管理
 @item riece-icon
-$B%P%C%U%!Cf$K%"%$%3%s$rI=<((B
+バッファ中にアイコンを表示
 @item riece-ignore
-$B;XDj$7$?%f!<%6$NH/8@$rL5;k(B
+指定したユーザの発言を無視
 @item riece-kakasi
-$BF|K\8l$NDL$i$J$$C<Kv$G!"F|K\8l$r%m!<%^;z$GI=<((B
+日本語の通らない端末で、日本語をローマ字で表示
 @item riece-keepalive
-IRC $B%5!<%P$H$N@\B3$rJ];}(B
+IRC サーバとの接続を保持
 @item riece-keyword
-$B%-!<%o!<%I$N6/D4I=<((B
+キーワードの強調表示
 @item riece-log
-$B2qOC$N%m%0$r%U%!%$%k$KJ]B8(B
+会話のログをファイルに保存
 @item riece-lsdb
-$B%"%I%l%9D"(B LSDB (Lovely Sister Database)
-@uref{http://lsdb.sourceforge.jp} $B$HO"7H(B
+アドレス帳 LSDB (Lovely Sister Database)
+@uref{http://lsdb.sourceforge.jp} と連携
 @item riece-mcat
-$B%a%C%;!<%8%+%?%m%0(B
+メッセージカタログ
 @item riece-menu
-$B%a%K%e!<%P!<$K%a%K%e!<$rEPO?(B
+メニューバーにメニューを登録
 @item riece-mini
-$B%_%K%P%C%U%!$N$_$G(B IRC $B$r$9$k(B
+ミニバッファのみで IRC をする
 @item riece-ndcc
-DCC (Direct Client to Client protocol) $B$K$h$k%U%!%$%kE>Aw(B
-(Emacs 22 $B$G$N$_F0:n(B)
+DCC (Direct Client to Client protocol) によるファイル転送
+(Emacs 22 でのみ動作)
 @item riece-rdcc
-DCC (Direct Client to Client protocol) $B$K$h$k%U%!%$%kE>Aw(B
+DCC (Direct Client to Client protocol) によるファイル転送
 @item riece-shrink-buffer
-$B%a%b%j3NJ]$N$?$a!"%P%C%U%!$rDj4|E*$K@Z$j5M$a$k(B
+メモリ確保のため、バッファを定期的に切り詰める
 @item riece-skk-kakutei
-SKK $B;HMQ;~$KJQ49%b!<%I$N0u$rH/8@$+$i<h$j=|$/(B
+SKK 使用時に変換モードの印を発言から取り除く
 @item riece-toolbar
-$B%D!<%k%P!<$rI=<((B
+ツールバーを表示
 @item riece-twitter
-CTCP ACTION (@kbd{C-c C-c a}) $B$HF1;~$K(B Twitter $B$K>uBV$rAw?.(B
+CTCP ACTION (@kbd{C-c C-c a}) と同時に Twitter に状態を送信
 @item riece-unread
-$BH/8@$N$"$C$?%A%c%s%M%k$K(B@samp{!}$B%^!<%/$r$D$1$k(B
+発言のあったチャンネルに@samp{!}マークをつける
 @item riece-url
-$B2qOC$K8=$l$?(B URL $B$N<}=8(B
+会話に現れた URL の収集
 @item riece-xface
-$B%f!<%6%j%9%H%P%C%U%!$K%f!<%6$N(B X-Face $B$rI=<((B
+ユーザリストバッファにユーザの X-Face を表示
 @item riece-xfaceb
-$B%f!<%6%j%9%H%P%C%U%!$K%f!<%6$N(B X-Face $B$rI=<((B
-(BBDB @uref{http://bbdb.sourceforge.net} $B$,I,MW(B)
+ユーザリストバッファにユーザの X-Face を表示
+(BBDB @uref{http://bbdb.sourceforge.net} が必要)
 @item riece-yank
-@kbd{C-c y} $B$G(B kill-ring $B$+$iJ8;zNs$rAw?.(B
+@kbd{C-c y} で kill-ring から文字列を送信
 @end table
 
 @node Tips, Index, Advanced usage, Top
 @comment  node-name,  next,  previous,  up
 @chapter Tips
 
-$B$3$N>O$G$O!"$h$/J9$+$l$k<ALd$KBP$9$kEz$($HJXMx$J@_DjNc$r>R2p$7$^$9!#(B
+この章では、よく聞かれる質問に対する答えと便利な設定例を紹介します。
 
-@section $BD>A0$KA*Br$7$F$$$?%A%c%s%M%k$K0\F0$7$?$$(B
+@section 直前に選択していたチャンネルに移動したい
 @vindex riece-guess-channel-try-functions
 
-$B0J2<$N9T$r(B @file{~/.riece/init} $B$KDI2C$9$k$3$H$G!"(B@kbd{C-c g} $B$GMzNr$rC)(B
-$B$j$D$D0\F0$G$-$^$9!#(B@samp{riece-guess} $B%"%I%*%s$O!"%A%c%s%M%kA*Br$NMzNr(B
-$B$dL$FI%a%C%;!<%8$NM-L5$J$I$+$i<!$KA*Br$9$k%A%c%s%M%k$r?dB,$7$F$/$l$k%"%I(B
-$B%*%s$G!"I8=`$GAH$_9~$^$l$F$$$^$9!#(B
+以下の行を @file{~/.riece/init} に追加することで、@kbd{C-c g} で履歴を辿
+りつつ移動できます。@samp{riece-guess} アドオンは、チャンネル選択の履歴
+や未読メッセージの有無などから次に選択するチャンネルを推測してくれるアド
+オンで、標準で組み込まれています。
 
 @example
 (add-hook 'riece-guess-channel-try-functions
           'riece-guess-channel-from-history)
 @end example
 
-@section $BH/8@$,$"$k$H%P%C%U%!$,%9%/%m!<%k$9$k$N$r;_$a$?$$(B
+@section 発言があるとバッファがスクロールするのを止めたい
 
-@kbd{C-c C-t f} $B$G$9!#(B@emph{t}oggle @emph{f}reeze $B$H3P$($k$HNI$$$G$7$g$&!#(B
+@kbd{C-c C-t f} です。@emph{t}oggle @emph{f}reeze と覚えると良いでしょう。
 
-@section $BAu>~$rM^@)$7$?$$(B
+@section 装飾を抑制したい
 
-@code{riece-addons} $B$+$iAu>~$N$?$a$N%"%I%*%s$r=|30$7$^$9!#(B
-$BDL>oM-8z$K$J$C$F$$$kAu>~$N$?$a$N%"%I%*%s$O<!$NDL$j$G$9!#(B
+@code{riece-addons} から装飾のためのアドオンを除外します。
+通常有効になっている装飾のためのアドオンは次の通りです。
 
 @itemize
 @item
-$B?'IU$1(B (@samp{riece-highlight})
+色付け (@samp{riece-highlight})
 
 @item
-$B%\%?%sI=<((B (@samp{riece-button})
+ボタン表示 (@samp{riece-button})
 
 @item
-$B%"%$%3%s2hA|$NI=<((B (@samp{riece-icon})
+アイコン画像の表示 (@samp{riece-icon})
 @end itemize
 
-$B$?$H$($P?'IU$1$r$d$a$?$$$N$G$"$l$P!"0J2<$N9T$r(B @file{~/.riece/init} $B$KDI(B
-$B2C$7$^$9!'(B
+たとえば色付けをやめたいのであれば、以下の行を @file{~/.riece/init} に追
+加します：
 
 @example
 (setq riece-addons (delq 'riece-highlight riece-addons))
 @end example
 
-@section $BFCDj$NJ8;zNs$r<u?.$7$?$i2;$rLD$i$7$?$$(B
+@section 特定の文字列を受信したら音を鳴らしたい
 @vindex riece-keyword-notify-functions
 
-$B0J2<$N@_Dj$r(B @file{~/.riece/init} $B$K2C$($^$9!#(B@samp{riece-keywords} $B%"%I(B
-$B%*%s$r;H$&$HFCDj$NJ8;zNs$r<u?.$7$?:]$NF0:n$r;XDj$G$-$^$9!#(B
+以下の設定を @file{~/.riece/init} に加えます。@samp{riece-keywords} アド
+オンを使うと特定の文字列を受信した際の動作を指定できます。
 
 @example
-(setq riece-keywords '("$B$[$2(B" "$B$U$,(B"))
+(setq riece-keywords '("ほげ" "ふが"))
 (add-hook 'riece-keyword-notify-functions
           (lambda (keyword message) (ding)))
 @end example
 
-@section SKK $B$r;H$C$F$$$F!"JQ49Cf$N0u(B ($B"&(B) $B$rAw?.$7$F$7$^$&$3$H$,$"$k(B
+@section SKK を使っていて、変換中の印 (▽) を送信してしまうことがある
 
-$B0J2<$N9T$r(B @file{~/.riece/init} $B$KDI2C$7$^$9!#(B
+以下の行を @file{~/.riece/init} に追加します。
 
 @example
 (add-to-list 'riece-addons 'riece-skk-kakutei)
 @end example
 
-@section $B%A%c%s%M%k0lMw$NJB$S=g$r8GDj$7$?$$(B
+@section チャンネル一覧の並び順を固定したい
 @vindex riece-default-channel-binding
 
-$B0J2<$N9T$r(B @file{~/.riece/init} $B$KDI2C$7$^$9!#(B
+以下の行を @file{~/.riece/init} に追加します。
 
 @example
 (setq riece-default-channel-binding
      '("#Riece" "#emacsen" nil "#debianjp"))
 @end example
 
-$B$3$N@_DjNc$G$O!"%A%c%s%M%k0lMw$NJB$S=g$O<!$N$h$&$K$J$j$^$9!#(B
+この設定例では、チャンネル一覧の並び順は次のようになります。
 
 @enumerate
 @item
@@ -736,37 +737,37 @@ CTCP ACTION (@kbd{C-c C-c a}) $B$HF1;~$K(B Twitter $B$K>uBV$rAw?.(B
 @item
 #emacsen
 @item
-$B$J$7(B
+なし
 @item
 #debianjp
 @end enumerate
 
-3 $BHVL\$N%A%c%s%M%k$,6u@J$H$J$C$F$$$k$3$H$K$4Cm0U$/$@$5$$!#?7$?$J%A%c%s%M(B
-$B%k$K;22C$7$?>l9g!"$=$N%A%c%s%M%k$,(B 3 $BHVL\$N0LCV$K3dEv$F$i$l$^$9!#(B
+3 番目のチャンネルが空席となっていることにご注意ください。新たなチャンネ
+ルに参加した場合、そのチャンネルが 3 番目の位置に割当てられます。
 
-@section $B5/F0;~$K<+F0E*$K%A%c%s%M%k$K;22C$7$?$$(B
+@section 起動時に自動的にチャンネルに参加したい
 @vindex riece-startup-channel-list
 
-$BJQ?t(B @samp{riece-startup-channel-list} $B$r@_Dj$7$^$9!#(B
+変数 @samp{riece-startup-channel-list} を設定します。
 
 @example
 (setq riece-startup-channel-list
      '("#Riece" "#public"))
 @end example
 
-$B$3$N@_DjNc$O!"(B@samp{#Riece} $B$H(B @samp{#public} $B$K;22C$9$k$3$H$r0UL#$7$F$$(B
-$B$^$9!#%A%c%s%M%k$K;22C$9$k:]$K%Q%9%o!<%I$,I,MW$J>l9g$K$O<!$N$h$&$K@_Dj$7(B
-$B$^$9!#(B
+この設定例は、@samp{#Riece} と @samp{#public} に参加することを意味してい
+ます。チャンネルに参加する際にパスワードが必要な場合には次のように設定し
+ます。
 
 @example
 (setq riece-startup-channel-list
      '("#Riece" "#public" ("#private" "password")))
 @end example
 
-@section $B5/F0;~$K<+F0E*$KJ#?t$N(B IRC $B%5!<%P$K@\B3$7$?$$(B
+@section 起動時に自動的に複数の IRC サーバに接続したい
 @vindex riece-startup-server-list
 
-$BJQ?t(B @samp{riece-startup-server-list} $B$r@_Dj$7$^$9!#(B
+変数 @samp{riece-startup-server-list} を設定します。
 
 @example
 (setq riece-server "ircnet"
@@ -774,17 +775,17 @@ CTCP ACTION (@kbd{C-c C-c a}) $B$HF1;~$K(B Twitter $B$K>uBV$rAw?.(B
                            ("freenode" :host "irc.ipv6.freenode.net")))
 @end example
 
-$B$3$N@_DjNc$G$O!"5/F0;~$K@\B3$9$k$N$O(B "ircnet" $B$@$1$G$9!#(B
-@samp{riece-startup-server-list} $B$r0J2<$N$h$&$K@_Dj$9$k$H!"(B
-"freenode" $B$K$b@\B3$9$k$h$&$K$J$j$^$9!#(B
+この設定例では、起動時に接続するのは "ircnet" だけです。
+@samp{riece-startup-server-list} を以下のように設定すると、
+"freenode" にも接続するようになります。
 
 @example
 (setq riece-startup-server-list '("freenode"))
 @end example
 
-@section HTTP $B%W%m%-%7$r2p$7$F(B IRC $B%5!<%P$K@\B3$7$?$$(B
-@file{relay.el} $B$H(B @file{connect.c} $B$r;H$&$H!"(B
-HTTP $B%W%m%-%7$r2p$7$F(B IRC $B%5!<%P$K@\B3$9$k$3$H$,$G$-$^$9!#(B
+@section HTTP プロキシを介して IRC サーバに接続したい
+@file{relay.el} と @file{connect.c} を使うと、
+HTTP プロキシを介して IRC サーバに接続することができます。
 
 @table @asis
 @item relay.el
@@ -794,9 +795,9 @@ HTTP $B%W%m%-%7$r2p$7$F(B IRC $B%5!<%P$K@\B3$9$k$3$H$,$G$-$^$9!#(B
 @uref{http://www.taiyo.co.jp/~gotoh/ssh/connect.html}
 @end table
 
-$B$?$H$($P!"(B@samp{proxy.example.com:8080} $B7PM3$G(B 
-@samp{irc.tokyo.wide.ad.jp} $B$K@\B3$9$k>l9g$K$O!"0J2<$N9T$r(B 
-@file{~/.riece/init} $B$KDI2C$7$^$9!#(B
+たとえば、@samp{proxy.example.com:8080} 経由で 
+@samp{irc.tokyo.wide.ad.jp} に接続する場合には、以下の行を 
+@file{~/.riece/init} に追加します。
 
 @example
 (require 'relay)
@@ -809,29 +810,29 @@ HTTP $B%W%m%-%7$r2p$7$F(B IRC $B%5!<%P$K@\B3$9$k$3$H$,$G$-$^$9!#(B
                                riece-server-alist))
 @end example
 
-@section $B2qOC$N%m%0$r%U%!%$%k$KJ]B8$7$?$$(B
+@section 会話のログをファイルに保存したい
 @vindex riece-log-directory-map
 
-@samp{riece-log} $B%"%I%*%s$r;H$&$H!"2qOC$N%m%0$r%U%!%$%k$KJ]B8$7!":F5/F0(B
-$B;~$K;2>H$G$-$^$9!#(B@samp{riece-log} $B%"%I%*%s$OI8=`$GAH$_9~$^$l$F$$$^$9!#(B
+@samp{riece-log} アドオンを使うと、会話のログをファイルに保存し、再起動
+時に参照できます。@samp{riece-log} アドオンは標準で組み込まれています。
 
-$BDL>o$O(B @file{~/.riece/log} $B$N2<$K(B IRC $B%5!<%P$NL>A0!"%A%c%s%M%kL>$N%G%#%l(B
-$B%/%j$,:n@.$5$l!"$=$NCf$KF|$K$AKh$KJ,JL$5$l$FJ]B8$5$l$^$9!#(B
+通常は @file{~/.riece/log} の下に IRC サーバの名前、チャンネル名のディレ
+クリが作成され、その中に日にち毎に分別されて保存されます。
 
-$B%G%#%l%/%H%jL>$,J8;z2=$1$9$k>l9g$K$O!"(B
-@code{file-name-coding-system} $B$NCM$rE,@Z$K@_Dj$9$k$+!"$"$k$$$O(B 
-@code{riece-log-directory-map} $B$r;H$C$F%A%c%s%M%kL>$r(B US-ASCII $BJ8;zNs$K(B
-$BJQ49$9$kI,MW$,$"$j$^$9!#(B
+ディレクトリ名が文字化けする場合には、
+@code{file-name-coding-system} の値を適切に設定するか、あるいは 
+@code{riece-log-directory-map} を使ってチャンネル名を US-ASCII 文字列に
+変換する必要があります。
 
 @example
-(setq riece-log-directory-map '(("#$B$j!<$9(B" . "riece")))
+(setq riece-log-directory-map '(("#りーす" . "riece")))
 @end example
 
-@section $B%&%#%s%I%&4V$r<+M3$K0\F0$7$?$$(B
+@section ウィンドウ間を自由に移動したい
 
-GNU Emacs $B$KImB0$N(B @samp{windmove.el} $B$r;H$&$HJXMx$G$9!#>\:Y$O(B 
-@samp{windmove.el} $B$N%3%a%s%H$r;2>H$/$@$5$$!#(B@samp{windmove.el} $B$O(B 
-$B:n<T$N%Z!<%8(B (@uref{http://hovav.net/elisp/}) $B$+$i$b<hF@$G$-$^$9!#(B
+GNU Emacs に附属の @samp{windmove.el} を使うと便利です。詳細は 
+@samp{windmove.el} のコメントを参照ください。@samp{windmove.el} は 
+作者のページ (@uref{http://hovav.net/elisp/}) からも取得できます。
 
 @node Index, Function Index, Tips, Top
 @chapter Index

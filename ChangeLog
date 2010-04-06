@@ -1,3 +1,8 @@
+2010-04-07  Daiki Ueno  <ueno@unixuser.org>
+
+	* NEWS.ja, README.ja, doc/riece-ja.texi: Change the encoding to
+	UTF-8.
+
 2009-09-10  Daiki Ueno  <ueno@unixuser.org>
 
 	* Riece: Version 6.1.0 released.

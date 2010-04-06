@@ -1,624 +1,624 @@
-* Riece 6.1.0 $B$N<g$JJQ99E@(B
+* Riece 6.1.0 の主な変更点
 
-** $B@_Dj$NJ]B8$K(B Custom $B$r;H$&$N$r$d$a$?(B (ueno)
+** 設定の保存に Custom を使うのをやめた (ueno)
 
-** $B%"%I%*%s4IM}MQ$N%3%^%s%I$r(B Command $B%P%C%U%!$G$b<B9T$G$-$k$h$&$K$7$?(B (kaoru)
+** アドオン管理用のコマンドを Command バッファでも実行できるようにした (kaoru)
 
-* Riece 6.0.0 $B$N<g$JJQ99E@(B
+* Riece 6.0.0 の主な変更点
 
-** $B?75,%"%I%*%s(B riece-desktop-notify (bg66)
+** 新規アドオン riece-desktop-notify (bg66)
 
-** Custom $B$rMxMQ$7$?@_DjJ]B85!9=$N=$@5(B
+** Custom を利用した設定保存機構の修正
 
-* Riece 5.0.0 $B$N<g$JJQ99E@(B
+* Riece 5.0.0 の主な変更点
 
-** $B@_Dj$NJ]B8$K(B Custom $B$r;H$&$h$&$K$7$?(B (ueno)
+** 設定の保存に Custom を使うようにした (ueno)
 
-** $B%D!<%k%P!<$N%"%$%3%s$K(B Gtk+ $B$NI8=`%"%$%3%s$r;H$&$h$&$K$7$?(B (ueno)
+** ツールバーのアイコンに Gtk+ の標準アイコンを使うようにした (ueno)
 
-** $B@\B3;~$K(B RFC2812 $B?d>)$N<j=g$K$7$?$,$&$h$&$K$7$?(B (ueno)
+** 接続時に RFC2812 推奨の手順にしたがうようにした (ueno)
 
-** $B%j%"%k%M!<%`$N@_Dj$KHs(B ASCII $BJ8;z$,;H$($k$h$&$K$J$C$?(B (KASUGA Toru)
+** リアルネームの設定に非 ASCII 文字が使えるようになった (KASUGA Toru)
 
-** riece-keywords $B$N@_Dj>e$N%P%0$r=$@5(B (Takeru Naito)
+** riece-keywords の設定上のバグを修正 (Takeru Naito)
 
-* Riece 4.0.0 $B$N<g$JJQ99E@(B
+* Riece 4.0.0 の主な変更点
 
-** $B?75,%"%I%*%s(B riece-twitter (ueno)
+** 新規アドオン riece-twitter (ueno)
 
-** riece-rdcc $B$GAw?.85$N%]!<%HHV9f$r;XDj$G$-$k$h$&$K$7$?(B (ueno)
+** riece-rdcc で送信元のポート番号を指定できるようにした (ueno)
 
-* Riece 3.1.2 $B$N<g$JJQ99E@(B
+* Riece 3.1.2 の主な変更点
 
-** $B%a%C%;!<%8%+%?%m%0(B (ueno)
+** メッセージカタログ (ueno)
 
-* Riece 3.1.1 $B$N<g$JJQ99E@(B
+* Riece 3.1.1 の主な変更点
 
-** riece-async $B$r:F$SF0:n$9$k$h$&$K$7$?(B (ueno)
+** riece-async を再び動作するようにした (ueno)
 
-** riece-shrink-buffer $B$r%G%U%)%k%H$GM-8z$K$7$?(B (ueno)
+** riece-shrink-buffer をデフォルトで有効にした (ueno)
 
-** $B?75,%&%#%s%I%&%l%$%"%&%H(B "spiral" $B$rDI2C(B (URABE Shyouhei)
+** 新規ウィンドウレイアウト "spiral" を追加 (URABE Shyouhei)
 
-* Riece 3.1.0 $B$N<g$JJQ99E@(B
+* Riece 3.1.0 の主な変更点
 
-** $B%a%C%;!<%8%O%s%I%i$N:FF~6X;_$K$7$?(B (ueno)
+** メッセージハンドラの再入禁止にした (ueno)
 
-** riece-ndcc.el $B$,(B calc $B$K0MB8$7$J$$$h$&$K$7$?(B (ueno)
+** riece-ndcc.el が calc に依存しないようにした (ueno)
 
-** 353 $B%O%s%I%i$N%P%0$N=$@5(B (ueno)
+** 353 ハンドラのバグの修正 (ueno)
 
-* Riece 3.0.0 $B$N<g$JJQ99E@(B
+* Riece 3.0.0 の主な変更点
 
-** $BJQ?t(B riece-username $B$N0UL#$rJQ99(B (ueno)
-   $B$3$NJQ?t$r@_Dj$7$F$$$k%f!<%6$O!"(Briece-realname $B$KJQ?tL>$rJQ99$9$kI,(B
-   $BMW$,$"$k!#(B
+** 変数 riece-username の意味を変更 (ueno)
+   この変数を設定しているユーザは、riece-realname に変数名を変更する必
+   要がある。
 
-** $B@ZCG:Q$_$N%5!<%P$r:FEY@ZCG$7$h$&$H$7$?>l9g$K!"%(%i!<$K$J$k$h$&$K$7(B
-   $B$?(B (yoichi)
+** 切断済みのサーバを再度切断しようとした場合に、エラーになるようにし
+   た (yoichi)
 
-** $B?75,%"%I%*%s(B riece-epg.el $B$rF3F~!#(BGnuPG $B$r;H$C$?0BA4$J2qOC$,2DG=(B (ueno)
+** 新規アドオン riece-epg.el を導入。GnuPG を使った安全な会話が可能 (ueno)
 
-** $B%f!<%6$r>7BT(B (invite) $B$9$k:]$N%P%0$r(B 2 $B$D=$@5(B (Steve Youngs)
+** ユーザを招待 (invite) する際のバグを 2 つ修正 (Steve Youngs)
 
-** $B%f!<%6$,%A%c%s%M%k$rN%C&$7$?>lLL$G$N!":FIA2h$N%P%0$r=$@5(B (ueno)
+** ユーザがチャンネルを離脱した場面での、再描画のバグを修正 (ueno)
 
-** riece-alias-alternate-separator $B$N%G%U%)%k%HCM$r(B "@" $B$KLa$7$?(B (ueno)
+** riece-alias-alternate-separator のデフォルト値を "@" に戻した (ueno)
 
-* Riece 2.0.2 $B$N<g$JJQ99E@(B
+* Riece 2.0.2 の主な変更点
 
-** C-c l (riece-command-list) $B$G!"%A%c%s%M%k$N%H%T%C%/$NBe$o$j$K;22C<T(B
-   $B?t$,I=<($5$l$k%P%0$r=$@5(B (ueno)
+** C-c l (riece-command-list) で、チャンネルのトピックの代わりに参加者
+   数が表示されるバグを修正 (ueno)
 
-** $B%K%C%/%M!<%`$d%A%c%s%M%kL>$NJd408uJd$NI=<($GBgJ8;z>.J8;z$rJ]B8$9$k(B
-   $B$h$&$K$7$?(B (ueno)
+** ニックネームやチャンネル名の補完候補の表示で大文字小文字を保存する
+   ようにした (ueno)
 
-** $B%A%c%s%M%kL>$H%5!<%PL>$N6h@Z$jJ8;zNs$N%G%U%)%k%HCM$r(B "@" $B$+$i(B "%" 
-   $B$KJQ99(B (ueno)
+** チャンネル名とサーバ名の区切り文字列のデフォルト値を "@" から "%" 
+   に変更 (ueno)
 
-* Riece 2.0.1 $B$N<g$JJQ99E@(B
+* Riece 2.0.1 の主な変更点
 
-** $BD>A0$KA*Br$7$F$$$?%A%c%s%M%k$KL$FI%a%C%;!<%8$,$"$k>l9g$K(B unread $B%^!<(B
-   $B%/$,I=<($5$l$J$$IT6q9g$N=$@5(B (ueno)
+** 直前に選択していたチャンネルに未読メッセージがある場合に unread マー
+   クが表示されない不具合の修正 (ueno)
 
-** $B?75,%"%I%*%s(B riece-xfaceb.el $B$rF3F~!#(BBBDB $B$+$i(B X-Face/Face $B$r8!:w$7!"(B
-   $B%f!<%60lMw$KI=<($9$k(B (Steve Youngs)
+** 新規アドオン riece-xfaceb.el を導入。BBDB から X-Face/Face を検索し、
+   ユーザ一覧に表示する (Steve Youngs)
 
-* Riece 2.0.0 $B$N<g$JJQ99E@(B
+* Riece 2.0.0 の主な変更点
 
-** $B%A%c%s%M%kKh$K%(%s%3!<%G%#%s%0$r;XDj$G$-$k$h$&$K$7$?(B (ueno)
-   $B@_DjNc!'(B
+** チャンネル毎にエンコーディングを指定できるようにした (ueno)
+   設定例：
    (setq riece-channel-coding-system-alist
 	 '(("#euc-jp" . euc-jp)
 	   ("#utf-8 irc.freenode.net" . utf-8)))
 
-** $B%"%I%*%s$N(B uninstall, unload ($B4m81(B) $B$KBP1~!#(B
-   $B%"%I%*%s0lMw%b!<%I$G(B riece-addons $B$N%+%9%?%^%$%:$,2DG=(B (ueno)
+** アドオンの uninstall, unload (危険) に対応。
+   アドオン一覧モードで riece-addons のカスタマイズが可能 (ueno)
 
-** Ruby $B$N%W%m%0%i%`$rI>2A$9$k5!9=$NF3F~!#(B
-   $BMxMQJ}K!$O(B riece-ruby.el $BKAF,$N%3%a%s%H$r;2>H(B (ueno)
+** Ruby のプログラムを評価する機構の導入。
+   利用方法は riece-ruby.el 冒頭のコメントを参照 (ueno)
 
-** $B?75,%"%I%*%s(B riece-eval-ruby.el $B$rF3F~!#(B",ruby " $B$KB3$$$FG$0U$N(B 
-   Ruby $B$N%W%m%0%i%`$rH/8@$9$k$H!"I>2A7k2L$r%A%c%s%M%k$KAw?.$9$k(B (ueno)
+** 新規アドオン riece-eval-ruby.el を導入。",ruby " に続いて任意の 
+   Ruby のプログラムを発言すると、評価結果をチャンネルに送信する (ueno)
 
-** $BDj4|E*$K%P%C%U%!$r@Z$j5M$a$k5!G=$r%"%I%*%s$KJ,N%(B
-   $B$3$l$^$G(B riece-max-buffer-size $B$r@_Dj$7$F$$$??M$O!"(B
-   riece-shrink-buffer $B%"%I%*%s$rM-8z$K$9$kI,MW$,$"$k$N$GCm0U(B (ueno)
+** 定期的にバッファを切り詰める機能をアドオンに分離
+   これまで riece-max-buffer-size を設定していた人は、
+   riece-shrink-buffer アドオンを有効にする必要があるので注意 (ueno)
 
-** $BN%C&$7$?%A%c%s%M%k$K;22C$7$F$$$?%f!<%6$,(B IRC $B$r$d$a$?>l9g$K!"%(%i!<(B
-   $B$,H/@8$9$kIT6q9g$N=$@5(B (ueno)
+** 離脱したチャンネルに参加していたユーザが IRC をやめた場合に、エラー
+   が発生する不具合の修正 (ueno)
 
-** $B%m%0$NJ]B8;~$K!";HMQ$7$?(B coding-system $B$NL>A0$r%U%!%$%kL>$KKd$a9~$`(B
-   $B$h$&$K$7$?!#$3$l$K$h$j(B riece-log-coding-system $B$r@_Dj$7$J$/$F$bJ8;z(B
-   $B2=$1$,H/@8$7$K$/$/$J$C$?(B (ueno)
+** ログの保存時に、使用した coding-system の名前をファイル名に埋め込む
+   ようにした。これにより riece-log-coding-system を設定しなくても文字
+   化けが発生しにくくなった (ueno)
 
-** C-c g $B$G%A%c%s%M%k$r0\F0$9$k:]$K!"?7$7$$H/8@$,$"$C$?%A%c%s%M%k$+$i(B
-   $BC)$k$h$&$K$7$?(B (ueno)
+** C-c g でチャンネルを移動する際に、新しい発言があったチャンネルから
+   辿るようにした (ueno)
 
-** $B%A%c%s%M%kL>$H%5!<%PL>$N6h@Z$jJ8;zNs$H$7$F(B " " $B0J30$K(B "@" $B$b5v$9$h(B
-   $B$&$K$7$?(B (ueno)
+** チャンネル名とサーバ名の区切り文字列として " " 以外に "@" も許すよ
+   うにした (ueno)
 
-** $BF|K\8l%^%K%e%"%k(B (riece-ja.texi) $B$r=i?4<T$rBP>]$K=q$-D>$7$?(B (ueno)
+** 日本語マニュアル (riece-ja.texi) を初心者を対象に書き直した (ueno)
 
-** *Others* $B%P%C%U%!$r1#$;$k$h$&$K$7$?(B (ueno)
+** *Others* バッファを隠せるようにした (ueno)
 
-** $B%G%P%C%0=PNO$r@lMQ$N%P%C%U%!$KJ,N%(B (ueno)
+** デバッグ出力を専用のバッファに分離 (ueno)
 
-** elisp $B%U%!%$%k$r#1$D$:$D(B byte-compile $B$9$k(B make $B%k!<%k$r@_$1$?!#(B
-   configure $B8e!"(Blisp/ $B0J2<$G(B make compile-individually (ueno)
+** elisp ファイルを１つずつ byte-compile する make ルールを設けた。
+   configure 後、lisp/ 以下で make compile-individually (ueno)
 
-** $B3+H/<T8~$1$NJ8=q(B (doc/HACKING{,.ja}) $B$rF1:-(B (ueno)
+** 開発者向けの文書 (doc/HACKING{,.ja}) を同梱 (ueno)
 
-* Riece 1.0.8 $B$N<g$JJQ99E@(B
+* Riece 1.0.8 の主な変更点
 
-** riece-log $B$N%m%C%/$N4KOB(B (ueno)
+** riece-log のロックの緩和 (ueno)
 
-** RPL_WHOISIDLE $B$NIC?t$rF|;~J,IC7A<0$GI=<((B (ueno)
+** RPL_WHOISIDLE の秒数を日時分秒形式で表示 (ueno)
 
-** riece-obarray $B$r(B riece-channel-obarray, riece-user-obarray $B$KJ,N%(B
+** riece-obarray を riece-channel-obarray, riece-user-obarray に分離
    (kaoru)
 
-** $B$$$/$D$+$N8D=j$G%A%c%s%M%kL>$NBgJ8;z>.J8;z$,6hJL$5$l$k%P%0$X$NBP1~(B (ueno)
+** いくつかの個所でチャンネル名の大文字小文字が区別されるバグへの対応 (ueno)
 
-** SXEmacs $B$N%P!<%8%g%sI=5-$KBP1~(B (Steve Youngs)
+** SXEmacs のバージョン表記に対応 (Steve Youngs)
 
-** CTCP TIME $B$KBP1~(B (Steve Youngs)
+** CTCP TIME に対応 (Steve Youngs)
 
-** ~/.riece/addons $B0J2<$N%G%#%l%/%H%j$rFI$_9~$^$J$$$h$&$K$7$?(B (kaoru)
+** ~/.riece/addons 以下のディレクトリを読み込まないようにした (kaoru)
 
-** riece-command-part $B$,%(%i!<$K$J$k%P%0$N=$@5(B (yoichi)
+** riece-command-part がエラーになるバグの修正 (yoichi)
 
-** ~/.riece/addons $B%G%#%l%/%H%j$,$J$$$H5/F0;~$K%(%i!<$K$J$k%P%0$N=$@5(B (ueno)
+** ~/.riece/addons ディレクトリがないと起動時にエラーになるバグの修正 (ueno)
 
-* Riece 1.0.7 $B$N<g$JJQ99E@(B
+* Riece 1.0.7 の主な変更点
 
-** $B?75,%"%I%*%s(B riece-toolbar (ueno)
-   riece-toolbar $B$O%D!<%k%P!<$K%"%$%3%s$rI=<($7$^$9!#8=;~E@$G$OA4$F$N(B
-   $B%"%$%3%s$,4^$^$l$F$$$k$o$1$G$O$"$j$^$;$s!#(B
+** 新規アドオン riece-toolbar (ueno)
+   riece-toolbar はツールバーにアイコンを表示します。現時点では全ての
+   アイコンが含まれているわけではありません。
 
-** $B?75,%"%I%*%s(B riece-keepalive (ueno)
-   riece-keepalive $B$O<+H/E*$K%5!<%P$K(B PING $B%a%C%;!<%8$rAw$k$3$H$G(B IRC
-   $B$N%3%M%/%7%g%s$r;}B3$5$;$^$9!#(B
+** 新規アドオン riece-keepalive (ueno)
+   riece-keepalive は自発的にサーバに PING メッセージを送ることで IRC
+   のコネクションを持続させます。
 
-** $B?75,%"%I%*%s(B riece-google (bg66)
-   riece-google $B$O(B Google $B$G$N8!:w7k2L$r%A%c%s%M%k$KAw$j$^$9!#(B
+** 新規アドオン riece-google (bg66)
+   riece-google は Google での検索結果をチャンネルに送ります。
 
-** $B?75,%"%I%*%s(B riece-eval (bg66)
-   riece-eval $B$O(B elisp $B$N<0$NI>2A7k2L$r%A%c%s%M%k$KAw$j$^$9!#(B
+** 新規アドオン riece-eval (bg66)
+   riece-eval は elisp の式の評価結果をチャンネルに送ります。
 
-** $B$$$/$D$+$N%"%I%*%s$r%G%U%)%k%H$GM-8z2=(B (ueno)
-   riece-log, riece-alias, riece-ctlseq, riece-keyword $B$,:#2s$+$i%G%U%)(B
-   $B%k%H$GM-8z$K$J$j$^$9!#(B
+** いくつかのアドオンをデフォルトで有効化 (ueno)
+   riece-log, riece-alias, riece-ctlseq, riece-keyword が今回からデフォ
+   ルトで有効になります。
 
-** $B?75,%3%^%s%I(B riece-command-suspend-resume (ueno)
-   riece-command-suspend-resume $B$O8=:_$N%&%#%s%I%&9=@.$rJ]B8!&:F8=$7$^$9!#(B
+** 新規コマンド riece-command-suspend-resume (ueno)
+   riece-command-suspend-resume は現在のウィンドウ構成を保存・再現します。
 
-** $B%\%?%s%&%#%8%'%C%H%/%j%C%/;~$N%+!<%=%k0\F0$NM^;_(B (ueno)
+** ボタンウィジェットクリック時のカーソル移動の抑止 (ueno)
 
-** $B%b!<%I%i%$%s$N%$%s%8%1!<%?$r(B face $B$GAu>~(B (ueno)
+** モードラインのインジケータを face で装飾 (ueno)
 
-** NAMES $B%j%W%i%$$K4^$^$l$k%f!<%6?t$r?t$($k$h$&$K$J$j$^$7$?(B (ueno)
+** NAMES リプライに含まれるユーザ数を数えるようになりました (ueno)
 
-** $B?75,%f!<%6%*%W%7%g%s(B riece-part-message (ueno)
+** 新規ユーザオプション riece-part-message (ueno)
 
-** riece-addon-directory $B0J2<$KCV$+$l$?%"%I%*%s$r<+F0E*$KM-8z2=(B (ueno)
+** riece-addon-directory 以下に置かれたアドオンを自動的に有効化 (ueno)
 
-** riece-buffer-dispose-function $B$N%G%U%)%k%HCM$,:#2s$+$i(B kill-buffer
-   $B$K$J$j$^$7$?(B (ueno)
+** riece-buffer-dispose-function のデフォルト値が今回から kill-buffer
+   になりました (ueno)
 
-** process-filter $BFb$G%(%i!<$,H/@8$7$?>l9g!"(Bbacktrace $B$r9T$J$&$h$&$K$J(B
-   $B$j$^$7$?(B (ueno)
+** process-filter 内でエラーが発生した場合、backtrace を行なうようにな
+   りました (ueno)
 
-** $BI,MW$K1~$8$F%A%c%s%M%k%-!<$rLd$$9g$o$;$k$h$&$K$7$^$7$?(B (ueno)
+** 必要に応じてチャンネルキーを問い合わせるようにしました (ueno)
 
-** $B%P%C%U%!$N<+F0E*$J@Z$j5M$a$r%G%U%)%k%H$G$OL58z2=(B (ueno)
+** バッファの自動的な切り詰めをデフォルトでは無効化 (ueno)
 
-** riece-log $B$N$?$a$N?7$7$$%G%#%l%/%H%j9=@.(B (ueno)
+** riece-log のための新しいディレクトリ構成 (ueno)
 
-** user-renamed signal-filter $B$N%P%0$r=$@5(B (kaoru)
+** user-renamed signal-filter のバグを修正 (kaoru)
 
-** riece-command-enable-addon $B$H(B riece-command-disable-addon $B$N%P%0$N(B
-   $B=$@5(B (yoichi)
+** riece-command-enable-addon と riece-command-disable-addon のバグの
+   修正 (yoichi)
 
-* Riece 1.0.6 $B$N<g$JJQ99E@(B
+* Riece 1.0.6 の主な変更点
 
-** CVS $BHG(B GNU Emacs $B$KF1:-$5$l$?(B url $B%Q%C%1!<%8$N(B irc: $B%9%-!<%^BP1~$N(B
-   $B%P%C%/%(%s%I$H$7$F(B Riece $B$r;HMQ$G$-$k$h$&$K$9$k%W%m%0%i%`(B url-riece $B$r(B
-   $BF1:-(B ($BBgOB$5$s(B)
+** CVS 版 GNU Emacs に同梱された url パッケージの irc: スキーマ対応の
+   バックエンドとして Riece を使用できるようにするプログラム url-riece を
+   同梱 (大和さん)
 
-** "Bug#12345" $B$N$h$&$JJ8;zNs$r(B URL $B$K%^%C%W$9$k%*%W%7%g%s(B
-   riece-url-regexp-alist $B$r?7@_(B (Liece $B$+$i%P%C%/%]!<%H(B) (ueno)
+** "Bug#12345" のような文字列を URL にマップするオプション
+   riece-url-regexp-alist を新設 (Liece からバックポート) (ueno)
 
-** $B%b!<%I%i%$%s$K<+?H$N%A%c%s%M%k%*%Z%l!<%?$N0u(B(@, +)$B$rI=<($9$k$h$&$K(B
-   $B$7$?(B (ueno, thanks to k-to $B$5$s(B)
+** モードラインに自身のチャンネルオペレータの印(@, +)を表示するように
+   した (ueno, thanks to k-to さん)
 
-** $B%P%C%U%!$r@Z$j5M$a$k:]$K!"0l9T$:$D$G$O$J$/J#?t9T0lEY$K:o=|$9$k$h$&(B
-   $B$K$7$?(B (riece-shrink-buffer-remove-lines $B%*%W%7%g%s$G@_Dj2DG=(B) (ueno,
-   thanks to ysjj $B$5$s(B)
+** バッファを切り詰める際に、一行ずつではなく複数行一度に削除するよう
+   にした (riece-shrink-buffer-remove-lines オプションで設定可能) (ueno,
+   thanks to ysjj さん)
 
-** riece-alias-alist $B$,>e<j$/F0$$$F$$$J$+$C$?IT6q9g$N=$@5(B (ueno)
+** riece-alias-alist が上手く動いていなかった不具合の修正 (ueno)
 
-** 1.0.4 $B0J9_!"(BGNU Emacs $B$G!"%a%C%;!<%8Aw?.;~$N%U%m!<@)8f$,>e<j$/F0$$(B
-   $B$F$$$J$+$C$?IT6q9g$N=$@5(B (ueno)
+** 1.0.4 以降、GNU Emacs で、メッセージ送信時のフロー制御が上手く動い
+   ていなかった不具合の修正 (ueno)
 
-** $B%P%0Js9pMQ$N%3%^%s%I(B riece-submit-bug-report $B$r?7@_(B (ueno)
+** バグ報告用のコマンド riece-submit-bug-report を新設 (ueno)
 
-** nadoka $B$d(B Tiarra $B$J$I$N(B IRC proxy $B$,!"(BIRC $B%5!<%P<BAu$NEAE}$K1h$o$J(B
-   $B$$%a%C%;!<%8$rJV$9$3$H$X$NBP=h(B (ueno, thanks to k-to $B$5$s(B)
+** nadoka や Tiarra などの IRC proxy が、IRC サーバ実装の伝統に沿わな
+   いメッセージを返すことへの対処 (ueno, thanks to k-to さん)
 
-** C-c # $B?t;z$G;XDj$7$?HV9f$N%A%c%s%M%k$K0\F0$G$-$k$h$&$K$7$?(B (ueno,
-   thanks to ysjj $B$5$s(B)
+** C-c # 数字で指定した番号のチャンネルに移動できるようにした (ueno,
+   thanks to ysjj さん)
 
-** riece-yank $B$G!"A0CV0z?t$r;XDj$9$k$3$H$K$h$j!"%a%C%;!<%8$r(B NOTICE $B$H(B
-   $B$7$FAw?.$G$-$k$h$&$K$7$?(B (bg66)
+** riece-yank で、前置引数を指定することにより、メッセージを NOTICE と
+   して送信できるようにした (bg66)
 
-* Riece 1.0.5 $B$N<g$JJQ99E@(B
+* Riece 1.0.5 の主な変更点
 
-** $B%f%K%C%H%F%9%H$rDI2C!#(B(ueno)
+** ユニットテストを追加。(ueno)
 
-** $BJ#?t%5!<%P@\B3;~$K!"%A%c%s%M%kL>$H%5!<%PL>$N6h@Z$j$K6uGr0J30$NJ8;z(B
-   $BNs$r;H$($k$h$&$K$7$?!#(B(ueno)
+** 複数サーバ接続時に、チャンネル名とサーバ名の区切りに空白以外の文字
+   列を使えるようにした。(ueno)
 
-   riece-alias-alternate-separator == "@" $B$N;~$NJQ495,B'$O0J2<$NDL$j!'(B
+   riece-alias-alternate-separator == "@" の時の変換規則は以下の通り：
 
    "#riece" -> "#riece"
    "#riece localhost" -> "#riece@localhost"
    "#ch@nnel" -> "#ch@@nnel"
    "#ch@nnel localhost" -> "#ch@@nnel@localhost"
 
-** DCC $B$,B>$N%/%i%$%"%s%H$H$N4V$G$&$^$/F0$+$J$$IT6q9g$N=$@5!#(B(ueno)
+** DCC が他のクライアントとの間でうまく動かない不具合の修正。(ueno)
 
-** kill-ring $B$+$iJ8;zNs$rAw?.$9$k%"%I%*%s(B riece-yank $B$rDI2C!#(B(by $BBgOB$5$s(B)
+** kill-ring から文字列を送信するアドオン riece-yank を追加。(by 大和さん)
 
-** $B1Q8l$NJ8=q$rDI2C!#(B(ueno)
+** 英語の文書を追加。(ueno)
 
-* Riece 1.0.4 $B$N<g$JJQ99E@(B
+* Riece 1.0.4 の主な変更点
 
-** $BBgNL$N%a%C%;!<%8$rAw$k>l9g$K!"%U%m!<@)8f$r9T$&$h$&$K$7$?!#(B(ueno)
+** 大量のメッセージを送る場合に、フロー制御を行うようにした。(ueno)
 
-** $B5/F0;~$KJ#?t%5!<%P>e$N%A%c%s%M%k$K;22C$9$k@_Dj$G!"(B
-   riece-startup-server-list $B$N@_Dj$r>JN,2DG=$K$7$?!#(B(ueno)
+** 起動時に複数サーバ上のチャンネルに参加する設定で、
+   riece-startup-server-list の設定を省略可能にした。(ueno)
 
-** riece-mini $B;HMQ;~$K2a5n$N%a%C%;!<%8$r1\Mw$9$k5!G=$r@_$1$?!#(B(bg66)
+** riece-mini 使用時に過去のメッセージを閲覧する機能を設けた。(bg66)
 
-* Riece 1.0.3 $B$N<g$JJQ99E@(B
+* Riece 1.0.3 の主な変更点
 
-** NAMES $BH/9T;~$K!V$$$J$$$O$:$N%f!<%6!W$r%f!<%60lMw$+$i=|30$9$k$h$&$K(B
-   $B$7$?(B (Thanks to $B;32<$5$s(B)
+** NAMES 発行時に「いないはずのユーザ」をユーザ一覧から除外するように
+   した (Thanks to 山下さん)
 
-** $B9T$N@^$jJV$7$r3F%P%C%U%!$N(B truncate-lines $B$NCM$G%+%9%?%^%$%:$G$-$k(B
-   $B$h$&$K$7$?(B(Thanks to $B;32<$5$s(B)
+** 行の折り返しを各バッファの truncate-lines の値でカスタマイズできる
+   ようにした(Thanks to 山下さん)
 
-** $B%A%c%s%M%k%P%C%U%!$N%9%/%m!<%kF0:n$r@)8f$9$k%*%W%7%g%s(B
-   riece-window-center-line $B$rDI2C(B
+** チャンネルバッファのスクロール動作を制御するオプション
+   riece-window-center-line を追加
 
-** $B%3%^%s%I%P%C%U%!$G$NJd40$NIT6q9g$r=$@5(B (Thanks to $B;32<$5$s(B)
+** コマンドバッファでの補完の不具合を修正 (Thanks to 山下さん)
 
-** $B0lBP0l$N2qOC$G!"Aj<j$,(B quit $B$7$?>l9g!"%A%c%s%M%k0lMw$+$i=|30$9$k$h(B
-   $B$&$K$7$?(B (Thanks to  $B?9K\$5$s(B)
+** 一対一の会話で、相手が quit した場合、チャンネル一覧から除外するよ
+   うにした (Thanks to  森本さん)
 
-** $B%G%U%)%k%H$N(B IRC $B%5!<%P$X$N@\B3;~$K%(%i!<$,=P$?>l9g$K$O!"B(:B$K=*N;(B
-   $B$9$k$h$&$K$7$?(B(Thanks to k-to $B$5$s(B)
+** デフォルトの IRC サーバへの接続時にエラーが出た場合には、即座に終了
+   するようにした(Thanks to k-to さん)
 
-* Riece 1.0.2 $B$N<g$JJQ99E@(B
+* Riece 1.0.2 の主な変更点
 
-** riece-url $B;HMQ;~$K%a%K%e!<%P!<$N%a%K%e!<$,GK2u$5$l$kIT6q9g$N=$@5(B
+** riece-url 使用時にメニューバーのメニューが破壊される不具合の修正
 
-** Jabber $BBP1~$K8~$1!"%W%m%H%3%k%$%s%?!<%U%'!<%9$rJ,$1$?(B
+** Jabber 対応に向け、プロトコルインターフェースを分けた
 
-** $B$=$NB>!";(B?$J=$@5(B
+** その他、雑多な修正
 
-* Riece 1.0.1 $B$N<g$JJQ99E@(B
+* Riece 1.0.1 の主な変更点
 
-** XEmacs $B$G!"%b!<%I%i%$%s$KI=<($5$l$k%A%c%s%M%k$NGX7J?'$r%b!<%I%i%$%s(B
-   $B$N?'$K$"$o$;$?(B
+** XEmacs で、モードラインに表示されるチャンネルの背景色をモードライン
+   の色にあわせた
 
-** $B%A%c%s%M%k$N%b!<%IJQ99;~$K!"%b!<%I;XDj$N@hF,$K(B ":" $B$rIU$1$FAw$C$F$$(B
-   $B$?IT6q9g$N=$@5(B
-   (Thanks to $B$d$^$@$5$s(B)
+** チャンネルのモード変更時に、モード指定の先頭に ":" を付けて送ってい
+   た不具合の修正
+   (Thanks to やまださん)
 
-** $B%A%c%s%M%k%_%9$rKI$0%"%I%*%s(B riece-foolproof $B$rDI2C(B (by $B9b66$5$s(B)
+** チャンネルミスを防ぐアドオン riece-foolproof を追加 (by 高橋さん)
 
-** $B%A%c%s%M%k%P%C%U%!$N%b!<%I%i%$%s$KI=<($5$l$kMWAG$N=gHV$rJQ99(B (by $B9b66$5$s(B)
+** チャンネルバッファのモードラインに表示される要素の順番を変更 (by 高橋さん)
 
-** NOTICE $B$GH/8@$7$?;~$NI=<($rJQ99(B (by $B9b66$5$s(B)
+** NOTICE で発言した時の表示を変更 (by 高橋さん)
 
-** $B:F5/F0;~$K%7%0%J%k4X?t$rFs=E$KEPO?$7$F$$$?IT6q9g$N=$@5(B
+** 再起動時にシグナル関数を二重に登録していた不具合の修正
 
-** C-c Home $B$G%A%c%s%M%k%P%C%U%!$N@hF,$K%+!<%=%k$r0\F0$9$k%3%^%s%I$rDI2C(B
+** C-c Home でチャンネルバッファの先頭にカーソルを移動するコマンドを追加
 
-** $B%U%j!<%:>uBV$N%A%c%s%M%k$G$O!"%A%c%s%M%k$r0\F0$7$F$b%A%c%s%M%k%P%C(B
-   $B%U%!$N%+!<%=%k0LCV$rJ]$D$h$&$K$7$?(B
+** フリーズ状態のチャンネルでは、チャンネルを移動してもチャンネルバッ
+   ファのカーソル位置を保つようにした
 
-** CVS $BHG$N(B Emacs $B$G!"0z?t$J$7$N(B current-word $B$,(B nil $B$rJV$9$h$&$K$J$C$?$?$a!"(B
-   riece-command-complete-user $B$,%(%i!<$K$J$kIT6q9g$N=$@5(B (by $BCf;3$5$s(B)
+** CVS 版の Emacs で、引数なしの current-word が nil を返すようになったため、
+   riece-command-complete-user がエラーになる不具合の修正 (by 中山さん)
 
-** riece-hangman $B$NMp?tH/@8%m%8%C%/$N=$@5(B (by $B9b66$5$s(B)
+** riece-hangman の乱数発生ロジックの修正 (by 高橋さん)
 
-** $B6u9T$N>e$G!"(BC-c p $B$G%a%C%;!<%8$rAw$m$&$H$7$?>l9g!"%(%i!<$rDLCN$9$k(B
-   $B$h$&$K$7$?(B
+** 空行の上で、C-c p でメッセージを送ろうとした場合、エラーを通知する
+   ようにした
 
-** riece-ignore $B;HMQ;~$K!"@_Dj%U%!%$%k$GL5;k$9$k%f!<%6$r;XDj$G$-$k$h$&!"(B
-   $B%*%W%7%g%s(B riece-startup-ignored-user-list $B$r?7@_(B
+** riece-ignore 使用時に、設定ファイルで無視するユーザを指定できるよう、
+   オプション riece-startup-ignored-user-list を新設
 
-** riece-rdcc $B;HMQ;~$K!"%U%!%$%kL>$K6uGr$,F~$C$?%U%!%$%k$rAw<u?.$G$-$k(B
-   $B$h$&$K$7$?(B
+** riece-rdcc 使用時に、ファイル名に空白が入ったファイルを送受信できる
+   ようにした
 
-* Riece 1.0.0 $B$N<g$JJQ99E@(B
+* Riece 1.0.0 の主な変更点
 
-** $B%"%I%*%s$N0lMwI=<(%b!<%I$rDI2C$7!"<B9T;~$K%"%I%*%s$rM-8z2=!&L58z2=(B
-   $B$G$-$k$h$&$K$7$?(B (C-c ^)
+** アドオンの一覧表示モードを追加し、実行時にアドオンを有効化・無効化
+   できるようにした (C-c ^)
 
-** GNU Emacs $B$G!"%Q%9%o!<%IF~NOCf$K(B Quit (C-g) $B$G$-$J$$IT6q9g$N=$@5(B
+** GNU Emacs で、パスワード入力中に Quit (C-g) できない不具合の修正
 
-** $B%A%c%s%M%kFb$G(B hangman(6) $B$GM7$V%"%I%*%s(B riece-hangman $B$rDI2C(B
+** チャンネル内で hangman(6) で遊ぶアドオン riece-hangman を追加
 
-** $B%W%m%;%9$,0l$D$b$J$$>l9g$K(B C-c q $B$7$?>l9g$N%a%C%;!<%8$rJQ99(B
+** プロセスが一つもない場合に C-c q した場合のメッセージを変更
 
-** $B%f!<%6$rL5;k$9$k%"%I%*%s(B riece-ignore $B$rDI2C(B
+** ユーザを無視するアドオン riece-ignore を追加
 
-** 9 $BJ8;z0J>e$N%K%C%/%M!<%`$b<u$1IU$1$k$h$&$K$7$?(B
+** 9 文字以上のニックネームも受け付けるようにした
 
-** $B:F5/F0$7$?:]$K!"%"%I%*%s$rFs=E$KAH$_9~$^$J$$$h$&$K$7$?(B
+** 再起動した際に、アドオンを二重に組み込まないようにした
 
-** $BB>$N%P%C%U%!$K$$$k;~$KH/8@$,$"$k$H%b!<%I%i%$%s$K0u(B ("[R]") $B$rI=<($9(B
-   $B$k%"%I%*%s(B riece-biff $B$rDI2C(B (by $BBg66$5$s(B)
+** 他のバッファにいる時に発言があるとモードラインに印 ("[R]") を表示す
+   るアドオン riece-biff を追加 (by 大橋さん)
 
-** $BF|K\8l$NDL$i$J$$C<Kv$G!"F|K\8l$r%m!<%^;z$GI=<($9$k%"%I%*%s(B
-   riece-kakasi $B$rDI2C(B
+** 日本語の通らない端末で、日本語をローマ字で表示するアドオン
+   riece-kakasi を追加
 
-** $B%3%^%s%I%W%m%s%W%H$K%"%/%7%g%s$r<($9J8;zNs$rDI2C(B (suggested by $B;32<$5$s(B)
+** コマンドプロンプトにアクションを示す文字列を追加 (suggested by 山下さん)
 
-* Riece 0.2.2 $B$N<g$JJQ99E@(B
+* Riece 0.2.2 の主な変更点
 
-** ^B, ^V, ^_ $B$J$I$N%3%s%H%m!<%k%7!<%1%s%9$K$h$kJ8;zNs$N6/D4$KBP1~(B
-   (riece-ctlseq $B%"%I%*%s$rDI2C(B)
+** ^B, ^V, ^_ などのコントロールシーケンスによる文字列の強調に対応
+   (riece-ctlseq アドオンを追加)
 
-** $B%W%j%V$,L$FI07$$$5$l$J$$IT6q9g$N=$@5(B
+** プリブが未読扱いされない不具合の修正
 
-** $B%A%c%s%M%k%P%C%U%!!"(B*Others* $B%P%C%U%!$rFHN)$K(B freeze $B$G$-$k$h$&$K$7(B
-   $B$?!#(B($B3F%P%C%U%!$G(B C-t C-f $B$G%H%0%k(B)
+** チャンネルバッファ、*Others* バッファを独立に freeze できるようにし
+   た。(各バッファで C-t C-f でトグル)
 
-** riece-log $B$G!"%m%0$NJ]B8@h%G%#%l%/%H%j$r(B canonicalize $B$7$?%A%c%s%M(B
-   $B%kL>$+$i5a$a$k$h$&$K$7$?!#(B(by $BBg66$5$s(B)
+** riece-log で、ログの保存先ディレクトリを canonicalize したチャンネ
+   ル名から求めるようにした。(by 大橋さん)
 
-* Riece 0.2.0 $B$N<g$JJQ99E@(B
+* Riece 0.2.0 の主な変更点
 
-** Qt $B$d(B GTK+ $B$HF1MM$N%7%0%J%k$rF3F~$7!"ItJ,E*$K:FIA2h$9$k$h$&$K$7$?!#(B
+** Qt や GTK+ と同様のシグナルを導入し、部分的に再描画するようにした。
 
-** C-c C-n $B$G!"%A%c%s%M%k%P%C%U%!$K$bL>A0$N0lMw$rI=<($9$k$h$&$K$7$?!#(B
+** C-c C-n で、チャンネルバッファにも名前の一覧を表示するようにした。
 
-** riece-lsdb $B;HMQ;~$NIT6q9g$N=$@5(B (by $BCf;3$5$s(B)
+** riece-lsdb 使用時の不具合の修正 (by 中山さん)
 
-* Riece 0.1.8 $B$N<g$JJQ99E@(B
+* Riece 0.1.8 の主な変更点
 
-** LSDB $B$HO"7H$9$k%"%I%*%s(B riece-lsdb $B$rDI2C(B
+** LSDB と連携するアドオン riece-lsdb を追加
 
-** $B%f!<%60lMw$K(B X-Face $B$rI=<($9$k%"%I%*%s(B riece-xface $B$rDI2C(B ($BMW(B LSDB)$B!%(B
-$B%9%/%j!<%s%7%g%C%H!'(B
+** ユーザ一覧に X-Face を表示するアドオン riece-xface を追加 (要 LSDB)．
+スクリーンショット：
 http://wiliki.designflaw.org/riece-xface.png
 
-** $B%A%c%s%M%kL>$NBgJ8;z>.J8;z$,6hJL$5$l$F$7$^$&%P%0$r=$@5(B
+** チャンネル名の大文字小文字が区別されてしまうバグを修正
 
-** IRC proxy $B$KB>$N%/%i%$%"%s%H$H0l=o$K@\B3$7$F$$$k>l9g$G$b!$<+J,$NH/(B
-   $B8@$r$-$A$s$H07$&$h$&$K$7$?(B (by $B9b66$5$s(B)
+** IRC proxy に他のクライアントと一緒に接続している場合でも，自分の発
+   言をきちんと扱うようにした (by 高橋さん)
 
-* Riece 0.1.7 $B$N<g$JJQ99E@(B
+* Riece 0.1.7 の主な変更点
 
-** Emacs $B$,(B busy or suspend $B>uBV$K$J$k$3$H$KHw$(!"(B
-   PING $B$K1~Ez$9$k(B local proxy $B7PM3$G(B IRC $B%5!<%P$K@\B3$9$k%"%I%*%s(B
-   riece-async $B$rDI2C(B
+** Emacs が busy or suspend 状態になることに備え、
+   PING に応答する local proxy 経由で IRC サーバに接続するアドオン
+   riece-async を追加
 
-** riece-away-message $B$,;XDj$5$l$?>l9g$K(B AWAY $B>uBV$N%H%0%k$K<:GT$9$k%P(B
-   $B%0$r=$@5(B (Thanks to $BF#B<$5$s(B)
+** riece-away-message が指定された場合に AWAY 状態のトグルに失敗するバ
+   グを修正 (Thanks to 藤村さん)
 
-** GNU Emacs $B$G!"%m!<%I;~$K(B standard-syntax-table $B$rJQ99$7$F$7$^$&%P%0$r=$@5(B
-   (Thanks to Hori $B$5$s(B)
+** GNU Emacs で、ロード時に standard-syntax-table を変更してしまうバグを修正
+   (Thanks to Hori さん)
 
-** riece-startup-channel-list $B$K2C$(!"(Briece-startup-server-list $B$r;XDj(B
-   $B$9$k$3$H$G!"5/F0;~$KJ#?t$N%5!<%P>e$N%A%c%s%M%k$K;22C$G$-$k$h$&$K$7$?(B
+** riece-startup-channel-list に加え、riece-startup-server-list を指定
+   することで、起動時に複数のサーバ上のチャンネルに参加できるようにした
 
-** riece-log $B;HMQ;~$K%m%0%U%!%$%k$N(B coding system $B$r;XDj$9$k%*%W%7%g%s(B
-   riece-log-coding-system $B$rDI2C(B
+** riece-log 使用時にログファイルの coding system を指定するオプション
+   riece-log-coding-system を追加
 
-** riece-keyword $B;HMQ;~$K;XDj$7$?%-!<%o!<%I$NH/8@$,$"$C$?;~$K8F$P$l$k(B
-   riece-keyword-notify-functions $B$rDI2C!#4{B8$N(B
-   riece-notify-keyword-functions($B$J$s$FJ6$i$o$7$$L>A0(B!) $B$NBe$o$j$K$3$A$i(B
-   $B$r;HMQ$7$F$/$@$5$$(B
+** riece-keyword 使用時に指定したキーワードの発言があった時に呼ばれる
+   riece-keyword-notify-functions を追加。既存の
+   riece-notify-keyword-functions(なんて紛らわしい名前!) の代わりにこちら
+   を使用してください
 
-** riece-log $B;HMQ;~$K(B riece-log-flashback $B$,%O%$%i%$%H$d%\%?%s$bI|85$9(B
-   $B$k$h$&$K$7$?(B
+** riece-log 使用時に riece-log-flashback がハイライトやボタンも復元す
+   るようにした
 
-** riece-{unread,mini} $B$r(B NOTICE $B$d(B CTCP ACTION $B$K$OH?1~$7$J$$$h$&$K$7$?(B
+** riece-{unread,mini} を NOTICE や CTCP ACTION には反応しないようにした
 
-* Riece 0.1.6 $B$N<g$JJQ99E@(B
+* Riece 0.1.6 の主な変更点
 
-** Emacs 20.7 $B$G$&$^$/F0:n$7$J$$IT6q9g$N=$@5!#(B
+** Emacs 20.7 でうまく動作しない不具合の修正。
 
-** XEmacs 21.1 $B$G%3%s%Q%$%k$K<:GT$9$kIT6q9g$N=$@5(B($BF0:n$OL5J]>Z(B)$B!#(B
+** XEmacs 21.1 でコンパイルに失敗する不具合の修正(動作は無保証)。
 
-** riece-rdcc $B$G!"5pBg$J%U%!%$%k$r<u?.$7$F$b%a%b%j$r?)$o$J$$$h$&$K$7$?!#(B
+** riece-rdcc で、巨大なファイルを受信してもメモリを食わないようにした。
 
-** riece-gather-channel-modes == t $B$N>l9g!"%A%c%s%M%k;22C;~$K%A%c%s%M(B
-   $B%k$N%b!<%I$rD4$Y$k$h$&$K$7$?!#(B
+** riece-gather-channel-modes == t の場合、チャンネル参加時にチャンネ
+   ルのモードを調べるようにした。
 
-** $B%A%c%s%M%k%P%C%U%!$N%5%$%:$r@Z$j5M$a$k%?%$%_%s%0$r=$@5!#(B
+** チャンネルバッファのサイズを切り詰めるタイミングを修正。
 
-** $B%A%c%s%M%k0\F0;~$K!"%P%C%U%!$,<+F0E*$K%9%/%m!<%k$7$J$$IT6q9g$N=$@5!#(B
+** チャンネル移動時に、バッファが自動的にスクロールしない不具合の修正。
 
-** riece-log $B$G!"(Briece-log-directory-map $B$K%5!<%PL>IU$-$N%A%c%s%M%k$r(B
-   $B;XDj$G$-$k$h$&$K$7$?!#(B(by $BBg66$5$s(B)
+** riece-log で、riece-log-directory-map にサーバ名付きのチャンネルを
+   指定できるようにした。(by 大橋さん)
 
-* Riece 0.1.5 $B$N<g$JJQ99E@(B
+* Riece 0.1.5 の主な変更点
 
-** $B%G%U%)%k%H$GMxMQ2DG=$J%&%#%s%I%&%l%$%"%&%H$K!"(B
-   {top,middle,bottom}-{left,right} $B$rDI2C!#(B
+** デフォルトで利用可能なウィンドウレイアウトに、
+   {top,middle,bottom}-{left,right} を追加。
 
-** $BA*BrCf$N%&%#%s%I%&%l%$%"%&%H$rJ]B8$9$k$h$&$K$7$?!#(B
+** 選択中のウィンドウレイアウトを保存するようにした。
 
-** $B%"%$%3%s$rI=<($9$k%"%I%*%s(B (riece-icon) $B$rDI2C!#(B
-   ([http://wiliki.designflaw.org/riecess1.png $B%9%/%j!<%s%7%g%C%H(B])
+** アイコンを表示するアドオン (riece-icon) を追加。
+   ([http://wiliki.designflaw.org/riecess1.png スクリーンショット])
 
-** $B%f!<%6%j%9%H$N:FIA2h$N9bB.2=!#(B
+** ユーザリストの再描画の高速化。
 
-** CTCP ACTION $B$N2~NI!#(B(Thanks to knu $B$5$s(B)
+** CTCP ACTION の改良。(Thanks to knu さん)
 
-** riece-rdcc $B$r;H$C$F(B DCC $B$N%U%!%$%kE>Aw$r;O$a$k:]$K!"$?$^$K8G$^$k%P%0$r=$@5!#(B
+** riece-rdcc を使って DCC のファイル転送を始める際に、たまに固まるバグを修正。
 
-** $B4{$K(B Riece $B$,5/F0$7$?>uBV$G$b$&0lEY5/F0$7$?>l9g!"%(%i!<$rDLCN$9$k$N(B
-   $B$G$O$J$/!"(Briece-command-configure-windows $B$r8F$V$h$&$K$7$?(B (Thanks
-   to $BBg66$5$s(B)
+** 既に Riece が起動した状態でもう一度起動した場合、エラーを通知するの
+   ではなく、riece-command-configure-windows を呼ぶようにした (Thanks
+   to 大橋さん)
 
-** C-c o (riece-command-set-operators) $B$H(B C-c v
-   (riece-command-set-speakers) $B$G!"(B3 $B?M0J>e$N%f!<%6$rBP>]$K$7$?>l9g$N%P(B
-   $B%0$r=$@5!#(B
+** C-c o (riece-command-set-operators) と C-c v
+   (riece-command-set-speakers) で、3 人以上のユーザを対象にした場合のバ
+   グを修正。
 
-** $B%P%C%U%!$N%5%$%:$,(B riece-max-buffer-size $B$r1[$($?>l9g!"<+F0E*$K@Z$j(B
-   $B5M$a$k$h$&$K$7$?!#(B
+** バッファのサイズが riece-max-buffer-size を越えた場合、自動的に切り
+   詰めるようにした。
 
-* Riece 0.1.4 $B$N<g$JJQ99E@(B
+* Riece 0.1.4 の主な変更点
 
-** $B%A%c%s%M%k%P%C%U%!$G(B riece-command-names $B$N%-!<%P%$%s%I$r(B C-n $B$+$i(B
-   N $B$KJQ99!#(B(thanks to $B9b66$5$s(B)
+** チャンネルバッファで riece-command-names のキーバインドを C-n から
+   N に変更。(thanks to 高橋さん)
 
-** C-c C-t a (riece-command-toggle-away) $B$,%(%i!<$K$J$k%P%0$r=$@5!#(B
-   (thanks to $BA0ED$5$s(B)
+** C-c C-t a (riece-command-toggle-away) がエラーになるバグを修正。
+   (thanks to 前田さん)
 
-** Riece $B$N%P%C%U%!$rA*Br$7$F$$$J$$;~$K$O!":FIA2h$r9T$o$J$$$h$&$K$7$?!#(B
+** Riece のバッファを選択していない時には、再描画を行わないようにした。
 
-** $BF1L>$N%P%C%U%!$,(B Riece $B0J30$N%W%m%0%i%`$K;H$o$l$F$$$k;~!"(B
-   generate-new-buffer $B$G?7$7$$%P%C%U%!$r:n@.$7$FMxMQ$9$k$h$&$K$7$?!#(B
+** 同名のバッファが Riece 以外のプログラムに使われている時、
+   generate-new-buffer で新しいバッファを作成して利用するようにした。
 
-** ! $B$G=i$^$k%A%c%s%M%k$r:n@.$G$-$J$$%P%0$r=$@5!#(B
+** ! で初まるチャンネルを作成できないバグを修正。
 
-** riece-keyword $B;HMQ;~$K!"<+J,$NH/8@$K4^$^$l$k%-!<%o!<%I$KH?1~$7$J$$(B
-   $B$h$&$K$7$?!#(B
+** riece-keyword 使用時に、自分の発言に含まれるキーワードに反応しない
+   ようにした。
 
-** $B$R$H$D$b%A%c%s%M%k$KF~$C$F$$$J$$;~!"%A%c%s%M%kFb$G$N$_M-8z$J%3%^%s(B
-   $B%I$r<B9T$9$k$H%(%i!<$r=P$9$h$&$K$7$?!#(B
+** ひとつもチャンネルに入っていない時、チャンネル内でのみ有効なコマン
+   ドを実行するとエラーを出すようにした。
 
-** $B%a%K%e!<%P!<$K%a%K%e!<$rDI2C$9$k%"%I%*%s(B (riece-menu) $B$r?7@_!#(B
+** メニューバーにメニューを追加するアドオン (riece-menu) を新設。
 
-* Riece 0.1.3 $B$N<g$JJQ99E@(B
+* Riece 0.1.3 の主な変更点
 
-** PRIVMSG $B$d(B NOTICE $B$N<u?.;~$K!$%A%c%s%M%kL>$NBgJ8;z>.J8;z$r6hJL$7$J(B
-   $B$$$h$&$K$7$?!#(B
+** PRIVMSG や NOTICE の受信時に，チャンネル名の大文字小文字を区別しな
+   いようにした。
 
-** riece-history $B;HMQ;~$K!$%R%9%H%j$N@hF,$K$"$k%A%c%s%M%k$K(B "+" $B%^!<%/(B
-   $B$r$D$1$k$h$&$K$7$?!#(B
+** riece-history 使用時に，ヒストリの先頭にあるチャンネルに "+" マーク
+   をつけるようにした。
 
-** $B%\%?%s$H%]%C%W%"%C%W%a%K%e!<$rI=<($9$k%"%I%*%s(B (riece-button) $B$rDI2C!#(B
+** ボタンとポップアップメニューを表示するアドオン (riece-button) を追加。
 
-** $B%-!<%o!<%I$r8!=P$9$k%"%I%*%s(B (riece-keyword) $B$rDI2C!#(B
+** キーワードを検出するアドオン (riece-keyword) を追加。
 
-   XEmacs $B$r$*;H$$$J$i!$0J2<$N@_Dj$r(B ~/.riece/init.el $B$K2C$($k$3$H$G!$(B
-   "$B$[$2(B" $B$d(B "$B$U$,(B" $B$KH?1~$7$F2;$rLD$i$9$3$H$,$G$-$^$9!%(B
+   XEmacs をお使いなら，以下の設定を ~/.riece/init.el に加えることで，
+   "ほげ" や "ふが" に反応して音を鳴らすことができます．
 
    (load-default-sounds)
-   (setq riece-keywords '("$B$[$2(B" "$B$U$,(B"))
+   (setq riece-keywords '("ほげ" "ふが"))
    (add-hook 'riece-notify-keyword-functions
 	     (lambda (keyword) (play-sound 'cuckoo)))
 
-* Riece 0.1.2 $B$N<g$JJQ99E@(B
+* Riece 0.1.2 の主な変更点
 
-** $B%Q%9%o!<%IIU$-$N%A%c%s%M%k$K(B JOIN $B$G$-$J$$%P%0$r=$@5(B
+** パスワード付きのチャンネルに JOIN できないバグを修正
 
-** riece-startup-channel-list $B$rI|3h(B
+** riece-startup-channel-list を復活
 
-** riece-rdcc-save-directory $B$r?7@_(B
+** riece-rdcc-save-directory を新設
 
-** $B%Q%9%o!<%IF~NO$rCfCG$G$-$J$$%P%0$r=$@5(B
+** パスワード入力を中断できないバグを修正
 
-** INVITE $B%O%s%I%i$N%P%0$r=$@5(B
+** INVITE ハンドラのバグを修正
 
-** INVITE $B$5$l$?8e$K(B JOIN $B$9$k>l9g!"%G%U%)%k%H$N%A%c%s%M%kL>$r;H$&$h$&$K$7$?!#(B
+** INVITE された後に JOIN する場合、デフォルトのチャンネル名を使うようにした。
 
-** JOIN $B$N%?%$%_%s%0$K$h$j(B riece-channel-list-indicator $B$,99?7$5$l$J$$(B
-   $B%P%0$r=$@5(B
+** JOIN のタイミングにより riece-channel-list-indicator が更新されない
+   バグを修正
 
-* Riece 0.1.1 $B$N<g$JJQ99E@(B
+* Riece 0.1.1 の主な変更点
 
-** $B$$$/$D$+$N%"%I%*%s$r%G%U%)%k%H$GFI$_9~$`$h$&$K$7$?(B
+** いくつかのアドオンをデフォルトで読み込むようにした
 
-** riece-default-channel-binding $B$,8z$+$J$$%P%0$r<#$7$?(B
+** riece-default-channel-binding が効かないバグを治した
 
-** *Channels* $B%P%C%U%!$G!"8=:_$$$k%A%c%s%M%kL>$NF,$K%^!<%/(B "*" $B$rIU$1$k(B
-  $B$h$&$K$7$?(B
+** *Channels* バッファで、現在いるチャンネル名の頭にマーク "*" を付ける
+  ようにした
 
-** riece-debug == nil $B$N>l9g!"@ZCG;~$N%a%C%;!<%8$r4JN,2=$7$?(B
+** riece-debug == nil の場合、切断時のメッセージを簡略化した
 
-** $B%A%c%s%M%k0\F0$NMzNr$r4IM}$9$k%"%I%*%s(B riece-history $B$rDI2C(B
+** チャンネル移動の履歴を管理するアドオン riece-history を追加
 
-** $B0\F0@h$N%A%c%s%M%k$r?dB,$9$k%"%I%*%s(B riece-guess $B$rDI2C(B
+** 移動先のチャンネルを推測するアドオン riece-guess を追加
 
 Tips:
 
-~/.riece/init.el $B$K0J2<$N$h$&$K;XDj$9$k$H!"(B
+~/.riece/init.el に以下のように指定すると、
 
   (setq riece-guess-channel-try-functions
         '(riece-guess-channel-from-unread
           riece-guess-channel-from-history))
 
-C-c g $B$G0J2<$N=g=x$G0\F0$G$-$^$9!#(B
+C-c g で以下の順序で移動できます。
 
-# $BL$FI$N%a%C%;!<%8$N$"$k%A%c%s%M%k(B
-# $B:G6aK,$l$?%A%c%s%M%k(B
-# $B$=$l0J30(B
+# 未読のメッセージのあるチャンネル
+# 最近訪れたチャンネル
+# それ以外
 
-* Riece 0.1.0 $B$N<g$JJQ99E@(B
+* Riece 0.1.0 の主な変更点
 
-** $B%A%c%s%M%k$NFbItI=8=$rJ8;zNs$+$i%Y%/%?!<$K$h$kI=8=$KJQ99$7$?(B
+** チャンネルの内部表現を文字列からベクターによる表現に変更した
 
-** $B%W%m%;%94IM}$r$^$H$b$K$7$?(B
+** プロセス管理をまともにした
 
-*** $B%W%m%;%9L>$G%5!<%P$r<1JL$9$k$h$&$KJQ99$7$?(B
+*** プロセス名でサーバを識別するように変更した
 
-*** $B@\B3!&@ZCG$N=hM}$r(B riece-server.el $B$K$^$H$a$?(B
+*** 接続・切断の処理を riece-server.el にまとめた
 
-*** QUIT $B$rEj$2$F$b1~Ez$,$J$$>l9g!"6/@)E*$K@ZCG$9$k$h$&$K$7$?(B
+*** QUIT を投げても応答がない場合、強制的に切断するようにした
 
-** M-x doctor $B$HO"7H$9$k%"%I%*%s$rDI2C(B
+** M-x doctor と連携するアドオンを追加
 
-** $BH/8@$K(B SKK $B$NJQ49Cf$N0u"&$,:.$6$i$J$$$h$&$K$9$k%"%I%*%s$rDI2C(B (by $B9b66$5$s(B)
+** 発言に SKK の変換中の印▽が混ざらないようにするアドオンを追加 (by 高橋さん)
 
-** $B%&%#%s%I%&%l%$%"%&%H$rJQ99$G$-$k$h$&$K$7$?(B (C-c t l)
+** ウィンドウレイアウトを変更できるようにした (C-c t l)
 
-** Liece $B$N(B "top" $B%9%?%$%k$K;w$?%&%#%s%I%&%l%$%"%&%H$rDI2C(B (by $B9b66$5$s(B)
+** Liece の "top" スタイルに似たウィンドウレイアウトを追加 (by 高橋さん)
 
-* Riece 0.0.4 $B$N<g$JJQ99E@(B
+* Riece 0.0.4 の主な変更点
 
-** $B%_%K%P%C%U%!$@$1$G(B IRC $B$9$k%"%I%*%s(B riece-mini $B$rDI2C(B (by $BBg66$5$s(B)
+** ミニバッファだけで IRC するアドオン riece-mini を追加 (by 大橋さん)
 
-** $B%m%0<}=8%"%I%*%s(B riece-log $B$rDI2C(B (by $BBg66$5$s(B)
+** ログ収集アドオン riece-log を追加 (by 大橋さん)
 
 ** riece-command-next-channel (C-c >), riece-command-previous-channel
-   (C-c <) $B$G%A%c%s%M%k$r$0$k$0$k0\F0$G$-$k$h$&$K$7$?(B (by $BCf;3$5$s(B)
+   (C-c <) でチャンネルをぐるぐる移動できるようにした (by 中山さん)
 
-** riece-unread $B%"%I%*%s;HMQ;~$KH/8@$N$"$C$?%A%c%s%M%k$K(B C-c C-u $B$G0\(B
-   $BF0$G$-$k$h$&$K$7$?(B (by $BBg66$5$s(B)
+** riece-unread アドオン使用時に発言のあったチャンネルに C-c C-u で移
+   動できるようにした (by 大橋さん)
 
-** IRC $B%a%C%;!<%8$K=>$C$F%$%s%8%1!<%?$r99?7$9$k$h$&$K$7$?(B
+** IRC メッセージに従ってインジケータを更新するようにした
 
-** ptexinfmt.el $B$r(B APEL free $B$J$b$N$KCV$-49$($?(B (Thanks to $B;32,$5$s(B)
+** ptexinfmt.el を APEL free なものに置き換えた (Thanks to 山岡さん)
 
-* Riece 0.0.3 $B$N<g$JJQ99E@(B
+* Riece 0.0.3 の主な変更点
 
-** $B%Q%9%o!<%I$,I,MW$J%5!<%P$KFs$D0J>e@\B3$G$-$J$$%P%0$N=$@5(B (Thanks to
-   $BCf;3$5$s(B)
+** パスワードが必要なサーバに二つ以上接続できないバグの修正 (Thanks to
+   中山さん)
 
-** $B%K%C%/$NBgJ8;z>.J8;z$@$1$rJQ99$9$k$H0l4S@-$,<:$o$l$kLdBj$r=$@5(B
+** ニックの大文字小文字だけを変更すると一貫性が失われる問題を修正
 
-** $B%O%s%I%i%U%C%/$GH/@8$7$?%(%i!<$rJaB*(B
+** ハンドラフックで発生したエラーを捕捉
 
-** DCC $B$K$h$k%U%!%$%kE>Aw$KBP1~(B (riece-ndcc.el, riece-rdcc.el)
+** DCC によるファイル転送に対応 (riece-ndcc.el, riece-rdcc.el)
 
-** $BH/8@$N$"$C$?%A%c%s%M%k$K(B "!" $B%^!<%/$r$D$1$k%"%I%*%s$NDI2C(B (riece-unread.el)
+** 発言のあったチャンネルに "!" マークをつけるアドオンの追加 (riece-unread.el)
 
-** $BF|K\8l$N%^%K%e%"%k$NDI2C(B
+** 日本語のマニュアルの追加
 
-* Riece 0.0.2 $B$N<g$JJQ99E@(B
+* Riece 0.0.2 の主な変更点
 
-** APEL $B$N4X?t(B (pop, push) $B$NB`<#(B
+** APEL の関数 (pop, push) の退治
 
-** "depcomp" $B$,F1:-$5$l$J$$LdBj$N=$@5(B (autoreconf $B$N%P%0(B?)
+** "depcomp" が同梱されない問題の修正 (autoreconf のバグ?)
 
-** Windows $B4D6-$G%S%k%I$G$-$J$$IT6q9g$N=$@5(B (Thanks to $BBg66$5$s(B)
+** Windows 環境でビルドできない不具合の修正 (Thanks to 大橋さん)
 
-** $B%K%C%/JQ99;~$K0l4S@-$,<:$o$l$kLdBj$N=$@5(B
+** ニック変更時に一貫性が失われる問題の修正
 
-** C-c C-t u (M-x riece-command-toggle-user-list-mode) $B$NIT6q9g$N=$@5(B
+** C-c C-t u (M-x riece-command-toggle-user-list-mode) の不具合の修正
 
-** $B%"%I%*%s$NF3F~(B
+** アドオンの導入
 
-** CTCP $B$KItJ,E*$KBP1~(B (VERSION $B$H(B PING $B$N$_(B)
+** CTCP に部分的に対応 (VERSION と PING のみ)
 
-** font-lock $B%b%8%e!<%k(B (riece-highlight) $B$N%"%I%*%s2=(B
+** font-lock モジュール (riece-highlight) のアドオン化
 
-** URL $B<}=85!G=$N%"%I%*%s2=(B
+** URL 収集機能のアドオン化
 
-* Riece 0.0.1 $B$N<g$JJQ99E@(B
+* Riece 0.0.1 の主な変更点
 
-** $B:G=i$N%j%j!<%9(B
+** 最初のリリース
 
 * For details of changes, see the file ChangeLog.
 
