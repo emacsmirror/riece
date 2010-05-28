@@ -1,3 +1,11 @@
+2010-05-28  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-globals.el (riece-mode-line-buffer-identification)
+	(riece-channel-indicator, riece-long-channel-indicator)
+	(riece-channel-list-indicator, riece-user-indicator)
+	(riece-away-indicator, riece-operator-indicator)
+	(riece-channel-status-indicator): Mark as risky-local-variable.
+
 2010-04-07  Daiki Ueno  <ueno@unixuser.org>
 
 	* COMPILE (riece-install): Add workaround for XEmacs 21.5.

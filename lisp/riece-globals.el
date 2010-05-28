@@ -158,26 +158,34 @@ Local to the channel buffers.")
 
 ;;; Modeline indicators:
 (defvar riece-mode-line-buffer-identification nil)
+(put 'riece-mode-line-buffer-identification 'risky-local-variable t)
 (defvar riece-channel-indicator "None"
   "String displayed on the modeline to indicate the current channel.")
+(put 'riece-channel-indicator 'risky-local-variable t)
 (defvar riece-long-channel-indicator "None"
   "String displayed on the modeline to indicate the current channel.
 Generally, this string will contain more information than
 riece-channel-indicator.")
+(put 'riece-long-channel-indicator 'risky-local-variable t)
 (defvar riece-channel-list-indicator "No channel"
   "String displayed on the modeline to show the joined channels.")
+(put 'riece-channel-list-indicator 'risky-local-variable t)
 (defvar riece-user-indicator nil
   "String displayed on the modeline to show the current nickname.")
+(put 'riece-user-indicator 'risky-local-variable t)
 
 (defvar riece-away-indicator "-"
   "String displayed on the modeline to allow the user to tell if the
 user is away.")
+(put 'riece-away-indicator 'risky-local-variable t)
 (defvar riece-operator-indicator "-"
   "String displayed on the modeline to allow the user to tell if the
 user is an operator.")
+(put 'riece-operator-indicator 'risky-local-variable t)
 (defvar riece-channel-status-indicator "-"
   "String displayed on the modeline to allow the user to tell if the
 user's status on the current channel.")
+(put 'riece-channel-status-indicator 'risky-local-variable t)
 
 ;;; Buffers:
 (defvar riece-command-buffer nil
