@@ -1,3 +1,11 @@
+2010-05-29  Daiki Ueno  <ueno@unixuser.org>
+
+	* Riece: Version 7.0.0 released.
+	* configure.ac: Bump to 7.0.0.
+
+	* NEWS: Add entry for 7.0.0.
+	* NEWS.ja: Ditto.
+
 2010-04-07  Daiki Ueno  <ueno@unixuser.org>
 
 	* NEWS.ja, README.ja, doc/riece-ja.texi: Change the encoding to

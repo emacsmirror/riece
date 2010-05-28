@@ -1,3 +1,11 @@
+* Major changes in 7.0.0
+
+** Mailing list address changed to riece-discuss@nongnu.org.
+
+** Fix build for XEmacs 21.5. (ueno)
+
+** Fix coloring riece-channel-list-indicator on mode-line. (ueno)
+
 * Major changes in 6.1.0
 
 ** Revert to use setq instead of Custom for saved settings. (ueno)
@@ -560,7 +568,7 @@ NOTE: This release includes some fixes to long standing bugs in essential featur
 
 ** Window configuration can be easily switched by hitting C-c t l.
 
-** New add-on: riece-skk-kakutei.el avoids $B"&(B being included in
+** New add-on: riece-skk-kakutei.el avoids ▽ being included in
   spoken text, when you are using SKK. (by Takahashi-san)
 
 ** New predefined layout which emulates "top" window-style as in Liece.

@@ -1,3 +1,11 @@
+* Riece 7.0.0 の主な変更点
+
+** メーリングリストのアドレスを riece-discuss@nongnu.org に変更
+
+** XEmacs 21.5 でのビルドを修正 (ueno)
+
+** モードライン上での riece-channel-list-indicator の色付けの修正 (ueno)
+
 * Riece 6.1.0 の主な変更点
 
 ** 設定の保存に Custom を使うのをやめた (ueno)
@@ -626,5 +634,5 @@ Local variables:
 mode: text
 mode: outline
 paragraph-separate: "[  ]*$"
-coding: iso-2022-jp
+coding: utf-8
 end:
