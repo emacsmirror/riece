@@ -29,8 +29,7 @@
 
 (defun riece-debug-1 (message detail)
   (message "riece-debug: %s" message)
-  (save-excursion
-    (set-buffer riece-debug-buffer)
+  (with-current-buffer riece-debug-buffer
     (goto-char (point-max))
     (let ((time (format-time-string "%Y-%m-%d:%H:%M:%S")))
       (if detail
@@ -45,8 +44,7 @@ If the optional 2nd argument DETAIL is specified, it is stored into
 
 (defun riece-debug-reset-standard-output ()
   "Reset `riece-temp-buffer' to be used as `standard-output'."
-  (save-excursion
-    (set-buffer riece-temp-buffer)
+  (with-current-buffer riece-temp-buffer
     (buffer-disable-undo)
     (erase-buffer)))
 
@@ -72,8 +70,7 @@ backtrace to standard-output."
 	 ,@body)
      (error
       (if riece-debug
-	  (save-excursion
-	    (set-buffer riece-temp-buffer)
+	  (with-current-buffer riece-temp-buffer
 	    (goto-char (point-min))
 	    (if (re-search-forward "^  signal(" nil t)
 		(delete-region (point-min) (match-beginning 0)))

@@ -1,3 +1,9 @@
+2010-09-01  TAKAHASHI Kaoru  <kaoru@kaisei.org>
+
+	* riece-debug.el (riece-debug-1)
+	(riece-debug-reset-standard-output, riece-ignore-errors): Suppress
+	byte-compile warnings; `save-excursion' defeated by `set-buffer'.
+
 2010-05-28  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-globals.el (riece-mode-line-buffer-identification)
