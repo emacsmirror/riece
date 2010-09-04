@@ -142,8 +142,7 @@ Use `riece-ruby-set-property' to set this variable.")
     data))
 
 (defun riece-ruby-reset-process-buffer ()
-  (save-excursion
-    (set-buffer (process-buffer riece-ruby-process))
+  (with-current-buffer (process-buffer riece-ruby-process)
     (buffer-disable-undo)
     (make-local-variable 'riece-ruby-response)
     (setq riece-ruby-response nil)
@@ -180,8 +179,7 @@ Use `riece-ruby-set-property' to set this variable.")
 		       (concat "EXIT " name "\r\n")))
 
 (defun riece-ruby-filter (process input)
-  (save-excursion
-    (set-buffer (process-buffer process))
+  (with-current-buffer (process-buffer process)
     (goto-char (point-max))
     (insert input)
     (goto-char (point-min))
@@ -268,8 +266,7 @@ Return a string name assigned by the server."
       (riece-set-process-query-on-exit-flag riece-ruby-process nil)
       (set-process-filter riece-ruby-process #'riece-ruby-filter)
       (set-process-sentinel riece-ruby-process #'riece-ruby-sentinel)))
-  (save-excursion
-    (set-buffer (process-buffer riece-ruby-process))
+  (with-current-buffer (process-buffer riece-ruby-process)
     (riece-ruby-reset-process-buffer)
     (make-local-variable 'riece-ruby-lock)
     (setq riece-ruby-lock t)
@@ -287,8 +284,7 @@ The car is protocol response line which looks like:
   \(ERR 103 \"Not implemented\").
 The cadr is data from the server, that is, the result of the program.
 The caddr is status from the server."
-  (save-excursion
-    (set-buffer (process-buffer riece-ruby-process))
+  (with-current-buffer (process-buffer riece-ruby-process)
     (riece-ruby-reset-process-buffer)
     (make-local-variable 'riece-ruby-lock)
     (setq riece-ruby-lock t)
@@ -303,8 +299,7 @@ The caddr is status from the server."
   "Clear a result of program execution distinguished by NAME.
 Note that riece-ruby-clear is automatically called iff an exit-handler
 is specified.  Otherwise, it should be called explicitly."
-  (save-excursion
-    (set-buffer (process-buffer riece-ruby-process))
+  (with-current-buffer (process-buffer riece-ruby-process)
     (riece-ruby-reset-process-buffer)
     (make-local-variable 'riece-ruby-lock)
     (setq riece-ruby-lock t)
