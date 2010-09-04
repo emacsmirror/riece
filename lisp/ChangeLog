@@ -1,5 +1,8 @@
 2010-09-04  TAKAHASHI Kaoru  <kaoru@kaisei.org>
 
+	* riece-mcat.el (riece-mcat-update): Suppress byte-compile
+	warnings; `save-excursion' defeated by `set-buffer'.
+
 	* riece-shrink-buffer.el (riece-shrink-buffer): Suppress
 	byte-compile warnings; `save-excursion' defeated by `set-buffer'.
 

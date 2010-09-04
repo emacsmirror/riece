@@ -76,8 +76,7 @@
   "Update MCAT-FILE."
   (let ((pp-escape-newlines t)
 	alist)
-    (save-excursion
-      (set-buffer (find-file-noselect mcat-file))
+    (with-current-buffer (find-file-noselect mcat-file)
       (goto-char (point-min))
       (if (re-search-forward (concat "^\\s-*(\\(defvar\\|defconst\\)\\s-+"
 				     (regexp-quote (symbol-name
