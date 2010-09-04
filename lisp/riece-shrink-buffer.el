@@ -68,8 +68,7 @@
       (setq buffers (cdr buffers)))))
 
 (defun riece-shrink-buffer (buffer)
-  (save-excursion
-    (set-buffer buffer)
+  (with-current-buffer buffer
     (goto-char (point-min))
     (while (> (buffer-size) riece-max-buffer-size)
       (let* ((inhibit-read-only t)

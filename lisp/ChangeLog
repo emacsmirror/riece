@@ -1,5 +1,8 @@
 2010-09-04  TAKAHASHI Kaoru  <kaoru@kaisei.org>
 
+	* riece-shrink-buffer.el (riece-shrink-buffer): Suppress
+	byte-compile warnings; `save-excursion' defeated by `set-buffer'.
+
 	* riece-ruby.el (riece-ruby-reset-process-buffer)
 	(riece-ruby-execute, riece-ruby-filter)
 	(riece-ruby-inspect): Suppress byte-compile warnings;
