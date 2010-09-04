@@ -1,3 +1,8 @@
+2010-09-04  TAKAHASHI Kaoru  <kaoru@kaisei.org>
+
+	* riece-doctor.el (riece-doctor-after-privmsg-hook): Suppress
+	byte-compile warnings; `save-excursion' defeated by `set-buffer'.
+
 2010-09-01  TAKAHASHI Kaoru  <kaoru@kaisei.org>
 
 	* riece-debug.el (riece-debug-1)

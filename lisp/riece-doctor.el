@@ -81,9 +81,8 @@
 		(riece-doctor-reply
 		 (car targets)
 		 (format "%s: You are already talking with me." user))
-	      (save-excursion
-		(set-buffer (get-buffer-create
-			     (riece-doctor-buffer-name user)))
+	      (with-current-buffer (get-buffer-create
+				    (riece-doctor-buffer-name user))
 		(erase-buffer)
 		(doctor-mode))
 	      (setq riece-doctor-patients (cons user riece-doctor-patients))
@@ -105,8 +104,7 @@ Please, describe your problems."
 		   (format "%s: Good bye." user))))
 	    (if (riece-identity-member user riece-doctor-patients t)
 		(let (string)
-		  (save-excursion
-		    (set-buffer (get-buffer (riece-doctor-buffer-name user)))
+		  (with-current-buffer (riece-doctor-buffer-name user)
 		    (goto-char (point-max))
 		    (insert message "\n")
 		    (let ((point (point)))
