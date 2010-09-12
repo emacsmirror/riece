@@ -72,8 +72,7 @@
     string))
 
 (defun riece-filter (process input)
-  (save-excursion
-    (set-buffer (process-buffer process))
+  (with-current-buffer (process-buffer process)
     (goto-char (point-max))
     (insert input)
     (unless riece-filter-running

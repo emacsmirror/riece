@@ -1,5 +1,8 @@
 2010-09-12  TAKAHASHI Kaoru  <kaoru@kaisei.org>
 
+	* riece-filter.el (riece-filter): Suppress byte-compile warnings;
+	`save-excursion' defeated by `set-buffer'.
+
 	* riece.el (riece-create-buffers): Suppress byte-compile
 	warnings; `save-excursion' defeated by `set-buffer'.
 
