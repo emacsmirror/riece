@@ -521,9 +521,8 @@ Instead, these commands are available:
 (defun riece-create-buffers ()
   (let ((alist riece-buffer-alist))
     (while alist
-      (save-excursion
-	(set-buffer (apply #'riece-get-buffer-create
-			   (cdr (car alist))))
+      (with-current-buffer (apply #'riece-get-buffer-create
+				  (cdr (car alist)))
 	(set (car (car alist)) (current-buffer))
 	(unless (or (null (nth 2 (car alist)))
 		    (eq major-mode (nth 2 (car alist))))
