@@ -66,8 +66,7 @@
     (setq buffers (list buffers)))
   (while buffers
     (run-hooks 'riece-before-insert-functions)
-    (save-excursion
-      (set-buffer (car buffers))
+    (with-current-buffer (car buffers)
       (let ((inhibit-read-only t)
 	    buffer-read-only
 	    (start (goto-char (point-max)))

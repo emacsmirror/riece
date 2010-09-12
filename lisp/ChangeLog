@@ -1,5 +1,8 @@
 2010-09-12  TAKAHASHI Kaoru  <kaoru@kaisei.org>
 
+	* riece-misc.el (riece-insert): Suppress byte-compile warnings;
+	`save-excursion' defeated by `set-buffer'.
+
 	* riece-keepalive.el (riece-keepalive-after-login-hook): Suppress
 	byte-compile warnings; `save-excursion' defeated by `set-buffer'.
 
