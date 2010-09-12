@@ -173,8 +173,7 @@ end
     (riece-ruby-set-exit-handler name #'riece-rdcc-exit-handler)))
 
 (defun riece-rdcc-filter (process input)
-  (save-excursion
-    (set-buffer (process-buffer process))
+  (with-current-buffer (process-buffer process)
     (erase-buffer)
     (insert input)
     (let ((coding-system-for-write 'binary)
@@ -197,8 +196,7 @@ end
 	(set-process-filter process nil))))
 
 (defun riece-rdcc-sentinel (process status)
-  (save-excursion
-    (set-buffer (process-buffer process))
+  (with-current-buffer (process-buffer process)
     (unless (= riece-rdcc-received-size riece-rdcc-request-size)
       (error "Premature end of file"))
     (message (riece-mcat "Receiving %s from %s...done")

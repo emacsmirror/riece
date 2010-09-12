@@ -1,5 +1,8 @@
 2010-09-12  TAKAHASHI Kaoru  <kaoru@kaisei.org>
 
+	* riece-rdcc.el (riece-rdcc-filter, riece-rdcc-sentinel): Suppress
+	byte-compile warnings; `save-excursion' defeated by `set-buffer'.
+
 	* riece-misc.el (riece-insert): Suppress byte-compile warnings;
 	`save-excursion' defeated by `set-buffer'.
 
