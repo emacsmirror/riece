@@ -112,8 +112,7 @@ Otherwise, they are not removed from IRC buffers, but are hidden with
 					  riece-ignore-buffer-name
 					  'riece-dialogue-mode))
 		(riece-dialogue-mode)))
-	    (save-excursion
-	      (set-buffer riece-ignore-buffer)
+	    (with-current-buffer riece-ignore-buffer
 	      (goto-char (point-max))
 	      (let ((inhibit-read-only t)
 		    buffer-read-only)
