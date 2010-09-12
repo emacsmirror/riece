@@ -53,8 +53,7 @@
 	  (riece-run-at-time
 	   riece-keepalive-ping-repeat riece-keepalive-ping-repeat
 	   (lambda (buffer)
-	     (save-excursion
-	       (set-buffer buffer)
+	     (with-current-buffer buffer
 	       (riece-send-string "PING riece-keepalive\r\n")))
 	   (current-buffer)))))
 
