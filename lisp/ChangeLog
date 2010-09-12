@@ -1,5 +1,9 @@
 2010-09-12  TAKAHASHI Kaoru  <kaoru@kaisei.org>
 
+	* riece-button.el (riece-identity-button-popup-menu)
+	(riece-identity-button-click): Suppress byte-compile warnings;
+	`save-excursion' defeated by `set-buffer'.
+
 	* riece-async.el (riece-async-open-network-stream): Suppress
 	byte-compile warnings; `save-excursion' defeated by `set-buffer'.
 
