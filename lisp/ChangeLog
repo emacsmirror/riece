@@ -1,5 +1,8 @@
 2010-09-12  TAKAHASHI Kaoru  <kaoru@kaisei.org>
 
+	* riece-server.el (riece-reset-process-buffer): Suppress
+	byte-compile warnings; `save-excursion' defeated by `set-buffer'.
+
 	* riece-filter.el (riece-filter): Suppress byte-compile warnings;
 	`save-excursion' defeated by `set-buffer'.
 

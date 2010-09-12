@@ -243,8 +243,7 @@ the `riece-server-keyword-map' variable."
 	(funcall function process message))))
 
 (defun riece-reset-process-buffer (process)
-  (save-excursion
-    (set-buffer (process-buffer process))
+  (with-current-buffer (process-buffer process)
     (if (fboundp 'set-buffer-multibyte)
 	(set-buffer-multibyte nil))
     (kill-all-local-variables)
