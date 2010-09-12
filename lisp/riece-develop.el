@@ -1,6 +1,5 @@
 (defun riece-insert-struct-template (prefix struct)
-  (interactive "sPrefix: 
-sStruct: ")
+  (interactive "sPrefix: \nsStruct: ")
   (let (attributes
 	optional-attributes
 	name
