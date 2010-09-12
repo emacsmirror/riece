@@ -52,15 +52,13 @@ Local to the buffer in `riece-buffer-list'.")
   (riece-connect-signal
    'channel-list-changed
    (lambda (signal handback)
-     (save-excursion
-       (set-buffer riece-channel-list-buffer)
+     (with-current-buffer riece-channel-list-buffer
        (run-hooks 'riece-update-buffer-functions))
      (riece-update-channel-list-indicator)))
   (riece-connect-signal
    'user-list-changed
    (lambda (signal handback)
-     (save-excursion
-       (set-buffer riece-user-list-buffer)
+     (with-current-buffer riece-user-list-buffer
        (run-hooks 'riece-update-buffer-functions)))
    (lambda (signal)
      (and riece-current-channel
@@ -392,8 +390,7 @@ Local to the buffer in `riece-buffer-list'.")
     (setq buffers riece-buffer-list))
   (while buffers
     (if (buffer-live-p (car buffers))
-	(save-excursion
-	  (set-buffer (car buffers))
+	(with-current-buffer (car buffers)
 	  (run-hooks 'riece-update-buffer-functions)))
     (setq buffers (cdr buffers)))
   (run-hooks 'riece-update-indicator-functions)
