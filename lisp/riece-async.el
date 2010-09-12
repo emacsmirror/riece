@@ -76,8 +76,7 @@ assumed that the file is in the same directory of this file.")
 				   riece-data-directory)
 		 riece-async-server-program-arguments)))
     (if buffer
-	(save-excursion
-	  (set-buffer (process-buffer process))
+	(with-current-buffer (process-buffer process)
 	  (while (and (eq (process-status process) 'run)
 		      (progn
 			(goto-char (point-min))

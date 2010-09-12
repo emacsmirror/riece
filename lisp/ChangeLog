@@ -1,3 +1,8 @@
+2010-09-12  TAKAHASHI Kaoru  <kaoru@kaisei.org>
+
+	* riece-async.el (riece-async-open-network-stream): Suppress
+	byte-compile warnings; `save-excursion' defeated by `set-buffer'.
+
 2010-09-04  TAKAHASHI Kaoru  <kaoru@kaisei.org>
 
 	* riece-mcat.el (riece-mcat-update): Suppress byte-compile
