@@ -96,14 +96,12 @@ The wordlist is read from `riece-hangman-words-file'."
   (unless (and riece-hangman-words-buffer
 	       (buffer-name riece-hangman-words-buffer))
     (setq riece-hangman-words-buffer (generate-new-buffer " *riece-hangman*"))
-    (save-excursion
-      (set-buffer riece-hangman-words-buffer)
+    (with-current-buffer riece-hangman-words-buffer
       (buffer-disable-undo)
       (insert-file-contents riece-hangman-words-file)
       (let ((case-fold-search nil))
 	(delete-non-matching-lines "^[a-z][a-z][a-z][a-z][a-z][a-z]+"))))
-  (save-excursion
-    (set-buffer riece-hangman-words-buffer)
+  (with-current-buffer riece-hangman-words-buffer
     (goto-char (1+ (random (buffer-size))))
     (if (eobp)
 	(beginning-of-line -1)
