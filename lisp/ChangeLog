@@ -1,5 +1,8 @@
 2010-09-12  TAKAHASHI Kaoru  <kaoru@kaisei.org>
 
+	* riece-kakasi.el (riece-kakasi-convert-string): Suppress
+	byte-compile warnings; `save-excursion' defeated by `set-buffer'.
+
 	* riece-ignore.el (riece-ignore-message-filter): Suppress
 	byte-compile warnings; `save-excursion' defeated by `set-buffer'.
 

@@ -37,8 +37,7 @@
 
 (defun riece-kakasi-convert-string (string)
   (process-send-string riece-kakasi-process (concat string "\n"))
-  (save-excursion
-    (set-buffer (process-buffer riece-kakasi-process))
+  (with-current-buffer (process-buffer riece-kakasi-process)
     (while (progn
 	     (goto-char (point-min))
 	     (not (search-forward "\n" nil t)))
