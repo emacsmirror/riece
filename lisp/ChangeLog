@@ -1,3 +1,8 @@
+2010-10-14  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-compat.el (riece-make-local-hook): Check if
+	make-local-hook exists.  Thanks to Makoto Fujiwara.
+
 2010-09-12  TAKAHASHI Kaoru  <kaoru@kaisei.org>
 
 	* riece-develop.el (riece-insert-struct-template): Use "\n"

@@ -66,7 +66,8 @@
 			  (make-list (- max min) (concat regexp "?"))))
 	       "")))
 
-(if (get 'make-local-hook 'byte-obsolete-info)
+(if (or (not (fboundp 'make-local-hook))
+	(get 'make-local-hook 'byte-obsolete-info))
     (defalias 'riece-make-local-hook 'ignore)
   (defalias 'riece-make-local-hook 'make-local-hook))
 
