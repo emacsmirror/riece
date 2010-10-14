@@ -12,7 +12,6 @@
 		riece-version
 		riece-coding
 		riece-complete
-		riece-mcat
 		riece-addon-modules
 		riece-addon
 		riece-ruby
@@ -54,6 +53,9 @@
 (defvar riece-mcat-modules
   '(riece-mcat-japanese))
 
+(defvar riece-generated-modules
+  '(riece-package-info))
+
 (defvar riece-icons
   '("riece-command-previous-channel.xpm"
     "riece-command-next-channel.xpm"
@@ -66,15 +68,24 @@
   '("server.rb"
     "aproxy.rb"))
 
-(defun riece-compile-modules (modules)
-  (let ((load-path (cons nil load-path))
+(defun riece-byte-compile-dest-file-function (filename)
+  (expand-file-name
+   (concat (file-name-nondirectory filename) "c")))
+
+(defun riece-compile-modules (modules srcdir)
+  (let ((load-path (cons nil (cons srcdir load-path)))
 	error-modules)
     (while modules
       (let ((source (expand-file-name
-		     (concat (symbol-name (car modules)) ".el"))))
-	(if (file-newer-than-file-p source (concat source "c"))
+		     (concat (symbol-name (car modules)) ".el")
+		     srcdir))
+	    (binary (expand-file-name
+		     (concat (symbol-name (car modules)) ".elc"))))
+	(if (file-newer-than-file-p source binary)
 	    (condition-case error
-		(byte-compile-file source)
+		(let ((byte-compile-dest-file-function
+		       #'riece-byte-compile-dest-file-function))
+		  (byte-compile-file source))
 	      (error
 	       (setq error-modules (cons (car modules) error-modules))))))
       (setq modules (cdr modules)))
@@ -96,47 +107,57 @@
       (if (file-newer-than-file-p source (concat source "c"))
 	  (byte-compile-file source)))))
 
-(defun riece-install-modules (modules dest just-print)
-  (unless (or just-print (file-exists-p dest))
-    (make-directory dest t))
+(defun riece-install-modules (modules srcdir lispdir just-print)
+  (unless (or just-print (file-exists-p lispdir))
+    (make-directory lispdir t))
+  ;; Workaround for "make distcheck"
+  (set-file-modes lispdir 493)
   (while modules
     (let ((name (symbol-name (car modules))))
-      (princ (format "%s.el -> %s\n" name dest))
+      (princ (format "%s.el -> %s\n" name lispdir))
       (unless just-print
-	(copy-file (expand-file-name (concat name ".el"))
-		   (expand-file-name (concat name ".el") dest)
+	(copy-file (expand-file-name
+		    (concat name ".el")
+		    (if (memq (car modules) riece-generated-modules)
+			nil
+		      srcdir))
+		   (expand-file-name (concat name ".el") lispdir)
 		   t t))
-      (princ (format "%s.elc -> %s\n" name dest))
+      (princ (format "%s.elc -> %s\n" name lispdir))
       (unless just-print
 	(if (file-exists-p (expand-file-name (concat name ".elc")))
 	    (copy-file (expand-file-name (concat name ".elc"))
-		       (expand-file-name (concat name ".elc") dest)
+		       (expand-file-name (concat name ".elc") lispdir)
 		       t t)
 	  (princ (format "(%s was not successfully compiled, ignored)\n"
 			 name)))))
     (setq modules (cdr modules))))
 
-(defun riece-install-icons (icons dest just-print)
-  (unless (or just-print (file-exists-p dest))
-    (make-directory dest t))
+(defun riece-install-icons (icons srcdir lispdir just-print)
+  (unless (or just-print (file-exists-p lispdir))
+    (make-directory lispdir t))
+  ;; Workaround for "make distcheck"
+  (set-file-modes lispdir 493)
   (while icons
-    (when (file-exists-p (expand-file-name (car icons)))
-      (princ (format "%s -> %s\n" (car icons) dest))
+    (when (file-exists-p (expand-file-name (car icons) srcdir))
+      (princ (format "%s -> %s\n" (car icons) lispdir))
       (unless just-print
-	(copy-file (expand-file-name (car icons))
-		   (expand-file-name (car icons) dest)
+	(copy-file (expand-file-name (car icons) srcdir)
+		   (expand-file-name (car icons) lispdir)
 		   t t)))
     (setq icons (cdr icons))))
 
-(defun riece-install-scripts (scripts dest just-print)
-  (unless (or just-print (file-exists-p dest))
-    (make-directory dest t))
+(defun riece-install-scripts (scripts srcdir lispdir just-print)
+  (unless (or just-print (file-exists-p lispdir))
+    (make-directory lispdir t))
+  ;; Workaround for "make distcheck"
+  (set-file-modes lispdir 493)
   (while scripts
-    (when (file-exists-p (expand-file-name (car scripts)))
-      (princ (format "%s -> %s\n" (car scripts) dest))
+    (when (file-exists-p (expand-file-name (car scripts) srcdir))
+      (princ (format "%s -> %s\n" (car scripts) lispdir))
       (unless just-print
-	(copy-file (expand-file-name (car scripts))
-		   (expand-file-name (car scripts) dest)
+	(copy-file (expand-file-name (car scripts) srcdir)
+		   (expand-file-name (car scripts) lispdir)
 		   t t)))
     (setq scripts (cdr scripts))))
 
@@ -146,8 +167,8 @@
     (if flag
 	(string-match "^\\(\\(--[^ ]+ \\)+-\\|[^ =-]\\)*n" flag))))
 
-(defun riece-examine-modules ()
-  (let ((load-path (cons nil load-path)))
+(defun riece-examine-modules (srcdir)
+  (let ((load-path (cons nil (cons srcdir load-path))))
     (require 'riece-mcat)
     (require 'riece-addon-modules)
     (append riece-modules
@@ -175,24 +196,41 @@
       (setq pointer (cdr pointer)))))
 
 (defun riece-compile ()
-  (riece-compile-modules (riece-examine-modules)))
+  (let ((srcdir (car command-line-args-left)))
+    (riece-compile-modules (riece-examine-modules srcdir) srcdir)))
 
 (defun riece-install ()
-  (riece-install-modules
-   (riece-examine-modules)
-   (expand-file-name "riece" (car command-line-args-left))
-   (riece-install-just-print-p))
-  (riece-install-icons
-   riece-icons
-   (expand-file-name "riece" (car command-line-args-left))
-   (riece-install-just-print-p))
-  (riece-install-scripts
-   riece-scripts
-   (expand-file-name "riece" (car command-line-args-left))
-   (riece-install-just-print-p))
-  ;; Workaround for an XEmacs 21.5 bug ("xemacs -batch -f <func> <arg1>"
-  ;; attempts to open <arg1> as a file after <func>).
-  (setq command-line-args-left (cdr command-line-args-left)))
+  (let ((srcdir (car command-line-args-left))
+	(lispdir (nth 1 command-line-args-left)))
+    (riece-install-modules
+     (riece-examine-modules srcdir)
+     srcdir
+     (expand-file-name "riece" lispdir)
+     (riece-install-just-print-p))
+    (riece-install-icons
+     riece-icons
+     srcdir
+     (expand-file-name "riece" lispdir)
+     (riece-install-just-print-p))
+    (riece-install-scripts
+     riece-scripts
+     srcdir
+     (expand-file-name "riece" lispdir)
+     (riece-install-just-print-p))
+    ;; Workaround for an XEmacs 21.5 bug ("xemacs -batch -f <func> <arg1>"
+    ;; attempts to open <arg1> as a file after <func>).
+    (setq command-line-args-left (nthcdr 2 command-line-args-left))))
+
+(defun riece-uninstall ()
+  (let ((files (directory-files (expand-file-name "riece"
+						  (car command-line-args-left))
+				t "\\.\\(elc?\\|rb\\|xpm\\)$")))
+    (while files
+      (delete-file (car files))
+      (setq files (cdr files)))
+    ;; Workaround for an XEmacs 21.5 bug ("xemacs -batch -f <func> <arg1>"
+    ;; attempts to open <arg1> as a file after <func>).
+    (setq command-line-args-left (cdr command-line-args-left))))
 
 (defun riece-compile-package ()
   (setq autoload-package-name "riece")
@@ -220,9 +258,12 @@
    (riece-install-just-print-p)))
 
 (defun riece-test ()
-  (let ((load-path (cons (expand-file-name "test") (cons nil load-path)))
-	(files (directory-files "test" t "^test-.*\\.el$"))
-        suite)
+  (let* ((srcdir (car command-line-args-left))
+	 (load-path (cons (expand-file-name "test" srcdir)
+			  (cons srcdir (cons nil load-path))))
+	 (files (directory-files (expand-file-name "test" srcdir) t
+				 "^test-.*\\.el$"))
+	 suite)
     (require 'lunit-report)
     (setq suite (lunit-make-test-suite))
     (while files
@@ -234,4 +275,4 @@
 	  (intern (file-name-sans-extension
 		   (file-name-nondirectory (car files)))))))
       (setq files (cdr files)))
-    (lunit-report suite (car command-line-args-left))))
+    (lunit-report suite (nth 1 command-line-args-left))))

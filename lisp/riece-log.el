@@ -102,8 +102,7 @@ It is created if there is at least one instance of Emacs running riece-log.")
 					      'coding-system)))))
 	     (file (riece-log-make-file-name (riece-message-target message)
 					     coding-system-for-write))
-	     file-name-coding-system
-	     default-file-name-coding-system)
+	     (file-name-coding-system 'no-conversion))
 	(unless (file-directory-p (file-name-directory file))
 	  (make-directory (file-name-directory file) t))
 	(write-region (concat (format-time-string "%H:%M") " "
@@ -185,8 +184,7 @@ It is created if there is at least one instance of Emacs running riece-log.")
 (defun riece-log-insert (identity lines)
   "Insert logs for IDENTITY at most LINES.
 If LINES is t, insert today's logs entirely."
-  (let* (file-name-coding-system
-	 default-file-name-coding-system
+  (let* ((file-name-coding-system 'no-conversion)
 	 (files (riece-log-list-files identity
 				      (if (eq lines t) (current-time))))
 	 name coding-system date point)

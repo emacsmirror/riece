@@ -3,8 +3,7 @@
 (luna-define-class test-riece-log (lunit-test-case))
 
 (defun test-riece-log-delete-directory (directory)
-  (let (file-name-coding-system
-	default-file-name-coding-system
+  (let ((file-name-coding-system 'no-conversion)
 	 (files (directory-files directory t nil t)))
     (while files
       (if (file-directory-p (car files))
@@ -143,8 +142,7 @@
 			   "")
       "a b c\n" nil t))
     (put 'riece-log 'riece-addon-enabled nil))
-  (let (file-name-coding-system
-	default-file-name-coding-system)
+  (let ((file-name-coding-system 'no-conversion))
     (lunit-assert-2
      case
      (file-directory-p

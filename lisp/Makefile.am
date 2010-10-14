@@ -27,35 +27,43 @@ EXTRA_DIST = COMPILE ChangeLog ChangeLog.Liece \
 	riece-command-join.xpm riece-command-part.xpm \
 	server.rb aproxy.rb
 
-CLEANFILES = auto-autoloads.el custom-load.el *.elc
+CLEANFILES = auto-autoloads.el custom-load.el *.elc lunit-report.xml
 DISTCLEANFILES = riece-package-info.el
 FLAGS ?= -batch -q -no-site-file
 
 all: elc
 
 elc:
-	$(EMACS) $(FLAGS) -l COMPILE -f riece-compile
+	$(EMACS) $(FLAGS) -l $(srcdir)/COMPILE -f riece-compile \
+		$(srcdir)
 
 install: elc
-	$(EMACS) $(FLAGS) -l COMPILE -f riece-install $(lispdir) # $(MAKE)
+	$(EMACS) $(FLAGS) -l $(srcdir)/COMPILE -f riece-install \
+		$(srcdir) $(lispdir) # $(MAKE)
+
+uninstall:
+	$(EMACS) $(FLAGS) -l $(srcdir)/COMPILE -f riece-uninstall \
+		$(lispdir)
 
 package:
-	$(XEMACS) $(FLAGS) -l COMPILE -f riece-compile-package
+	$(XEMACS) $(FLAGS) -l $(srcdir)/COMPILE -f riece-compile-package
 
 install-package: package
-	$(XEMACS) $(FLAGS) -l COMPILE -f riece-install-package \
+	$(XEMACS) $(FLAGS) -l $(srcdir)/COMPILE -f riece-install-package \
 		$(PACKAGEDIR) # $(MAKE)
 
 check-local:
-	$(EMACS) $(FLAGS) -l COMPILE -f riece-test lunit-report.xml
+	$(EMACS) $(FLAGS) -l $(srcdir)/COMPILE -f riece-test \
+		$(srcdir) lunit-report.xml
 
 compile-individually:
-	@for i in `$(EMACS) $(FLAGS) -l COMPILE -f riece-examine`; do \
-		echo $(EMACS) $(FLAGS) -l COMPILE \
+	@for i in `$(EMACS) $(FLAGS) -l $(srcdir)/COMPILE -f riece-examine`; \
+	do \
+		echo $(EMACS) $(FLAGS) -l $(srcdir)/COMPILE \
 			-f riece-compile-module $$i; \
-		$(EMACS) $(FLAGS) -l COMPILE \
+		$(EMACS) $(FLAGS) -l $(srcdir)/COMPILE \
 			-f riece-compile-module $$i; \
 	done
 
 update-mcat:
-	$(EMACS) $(FLAGS) -l COMPILE -f riece-update-mcat
+	$(EMACS) $(FLAGS) -l $(srcdir)/COMPILE -f riece-update-mcat
