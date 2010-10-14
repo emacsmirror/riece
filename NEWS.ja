@@ -1,3 +1,11 @@
+* Riece 7.0.1 の主な変更点
+
+** Emacs 24 でのビルドエラーの修正 (ueno)
+   make-local-hook が定義されない場合に対応
+
+** Emacs 24 でのコンパイル時の警告の抑制 (kaoru)
+   警告 "`save-excursion' defeated by `set-buffer'" を抑制
+
 * Riece 7.0.0 の主な変更点
 
 ** メーリングリストのアドレスを riece-discuss@nongnu.org に変更

@@ -1,3 +1,13 @@
+* Major changes in 7.0.1
+
+** Fix compilation error on Emacs 24. (ueno)
+   Emacs 24 does not have make-local-hook.
+
+** Suppress byte-compile warnings. (kaoru)
+   Suppress "`save-excursion' defeated by `set-buffer'".
+
+** Support "make distcheck". (ueno)
+
 * Major changes in 7.0.0
 
 ** Mailing list address changed to riece-discuss@nongnu.org.

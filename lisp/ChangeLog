@@ -1,5 +1,17 @@
 2010-10-14  Daiki Ueno  <ueno@unixuser.org>
 
+	* COMPILE: Support "make distcheck".
+	* Makefile.am: Support "make distcheck".
+
+	* test/test-riece-log.el (test-riece-log-delete-directory)
+	(test-riece-log-display-message-function): Don't bind
+	default-file-name-coding-system.
+
+	* riece-log.el (riece-log-display-message-function)
+	(riece-log-insert): Don't bind default-file-name-coding-system.
+
+2010-10-14  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-compat.el (riece-make-local-hook): Check if
 	make-local-hook exists.  Thanks to Makoto Fujiwara.
 
