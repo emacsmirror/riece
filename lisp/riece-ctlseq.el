@@ -60,6 +60,9 @@
 (defconst riece-ctlseq-description
   "Mark up control sequences in IRC buffers.")
 
+(defconst riece-ctlseq-regexp
+  "[\x2\xF\x16\x1F]\\|\x3\\([0-9]+\\)?\\(,[0-9]+\\)?")
+
 (defun riece-ctlseq-compatible-attributes-p (this other)
   (let ((pointer this))
     (catch 'mismatched
@@ -132,51 +135,72 @@
 		    riece-ctlseq-face-cache))
 	(car riece-ctlseq-face-cache)))))
 
-(defun riece-ctlseq-update-attributes (tag attrs)
-  (cond
-   ((eq (aref tag 0) ?\x2)		;^B
-    (plist-put attrs 'bold (not (plist-get attrs 'bold))))
-   ((eq (aref tag 0) ?\xF))		;^O
-   ((eq (aref tag 0) ?\x16)		;^V
-    (plist-put attrs 'inverse-video (not (plist-get attrs 'inverse-video))))
-   ((eq (aref tag 0) ?\x1F)		;^_
-    (plist-put attrs 'underline (not (plist-get attrs 'underline))))
-   ((string-match "\x3\\([0-9]+\\)?\\(,[0-9]+\\)?" tag)	;^C<fg>,<bg>
-    (if (match-beginning 1)
-	(setq attrs (plist-put attrs 'foreground
-			       (nth (string-to-number (match-string 1 tag))
-				    riece-ctlseq-colors))))
-    (if (match-beginning 2)
-	(setq attrs (plist-put attrs 'background
-			       (nth (string-to-number
-				     (substring (match-string 2 tag) 1))
-				    riece-ctlseq-colors))))
-    attrs)))
+(defun riece-ctlseq-update-attribute (tag attrs)
+  (let ((attrs (copy-sequence attrs)))
+    (cond
+     ((eq (aref tag 0) ?\x2)		;^B
+      (setq attrs (plist-put attrs 'bold (not (plist-get attrs 'bold)))))
+     ((eq (aref tag 0) ?\xF)		;^O
+      (setq attrs nil))
+     ((eq (aref tag 0) ?\x16)		;^V
+      (setq attrs (plist-put attrs 'inverse-video
+			     (not (plist-get attrs 'inverse-video)))))
+     ((eq (aref tag 0) ?\x1F)		;^_
+      (setq attrs (plist-put attrs 'underline
+			     (not (plist-get attrs 'underline)))))
+     ((string-match "\x3\\([0-9]+\\)?\\(,[0-9]+\\)?" tag) ;^C<fg>,<bg>
+      (if (match-beginning 1)
+	  (setq attrs (plist-put attrs 'foreground
+				 (nth (string-to-number (match-string 1 tag))
+				      riece-ctlseq-colors))))
+      (if (match-beginning 2)
+	  (setq attrs (plist-put attrs 'background
+				 (nth (string-to-number
+				       (substring (match-string 2 tag) 1))
+				      riece-ctlseq-colors))))))
+    attrs))
+
+(defun riece-ctlseq-update-attributes (tags attrs)
+  (let ((start 0))
+    (while (string-match riece-ctlseq-regexp tags start)
+      (setq start (match-end 0)
+	    attrs (riece-ctlseq-update-attribute (match-string 0 tags) attrs)))
+    attrs))
+
+(defun riece-ctlseq-put-attributes (string start end attrs)
+  (when (and (> end start) attrs)
+    (put-text-property start end
+		       'riece-ctlseq-attributes (copy-sequence attrs)
+		       (riece-message-text message))
+    (put-text-property start end
+		       'riece-overlay-face
+		       (riece-ctlseq-face-from-cache attrs)
+		       (riece-message-text message))))
 
 (defun riece-ctlseq-message-filter (message)
   (if (get 'riece-ctlseq 'riece-addon-enabled)
       (let ((start 0)
 	    (end (length (riece-message-text message)))
-	    attrs)
-	(while (string-match
-		"[\x2\xF\x16\x1F]\\|\x3\\([0-9]+\\)?\\(,[0-9]+\\)?"
-		(riece-message-text message) start)
+	    tags-start tags-end attrs)
+	(while (string-match (concat "\\(" riece-ctlseq-regexp "\\)+")
+			     (riece-message-text message) start)
 	  (if riece-ctlseq-hide-controls
 	      (put-text-property (match-beginning 0) (match-end 0)
 				 'invisible 'riece-ctlseq
 				 (riece-message-text message)))
-	  (if attrs
-	      (put-text-property start (match-beginning 0)
-				 'riece-ctlseq-attributes (copy-sequence attrs)
-				 (riece-message-text message)))
-	  (setq start (match-end 0)
-		attrs (riece-ctlseq-update-attributes
-		       (match-string 0 (riece-message-text message)) attrs)))
-	(if (and (< start end) attrs)
-	    (put-text-property start end
-			       'riece-overlay-face
-			       (riece-ctlseq-face-from-cache attrs)
-			       (riece-message-text message)))))
+	  (setq tags-start (match-beginning 0)
+		tags-end (match-end 0))
+	  (riece-ctlseq-put-attributes (riece-message-text message)
+				       start tags-start
+				       attrs)
+	  (setq attrs (riece-ctlseq-update-attributes
+		       (substring (riece-message-text message)
+				  tags-start tags-end)
+		       attrs)
+		start tags-end))
+	(riece-ctlseq-put-attributes (riece-message-text message)
+				     start end
+				     attrs)))
   message)
 
 (defun riece-ctlseq-requires ()

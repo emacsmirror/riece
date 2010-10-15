@@ -1,3 +1,11 @@
+2010-10-15  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-ctlseq.el (riece-ctlseq-regexp): New constant.
+	(riece-ctlseq-update-attribute): Rename from
+	riece-ctlseq-update-attributes.
+	(riece-ctlseq-put-attributes): New function.
+	(riece-ctlseq-message-filter): Rewrite the parsing logic.
+
 2010-10-14  Daiki Ueno  <ueno@unixuser.org>
 
 	* COMPILE: Support "make distcheck".
