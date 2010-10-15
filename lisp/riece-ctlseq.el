@@ -177,11 +177,11 @@ To set up colors compatible with X-Chat and mIRC, do:
   (when (and (> end start) attrs)
     (put-text-property start end
 		       'riece-ctlseq-attributes (copy-sequence attrs)
-		       (riece-message-text message))
+		       string)
     (put-text-property start end
 		       'riece-overlay-face
 		       (riece-ctlseq-face-from-cache attrs)
-		       (riece-message-text message))))
+		       string)))
 
 (defun riece-ctlseq-message-filter (message)
   (if (get 'riece-ctlseq 'riece-addon-enabled)

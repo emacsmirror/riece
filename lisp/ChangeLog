@@ -1,5 +1,9 @@
 2010-10-15  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-ctlseq.el (riece-ctlseq-put-attributes): Fix typo.
+
+2010-10-15  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-ctlseq.el (riece-ctlseq-colors): Add an example setting to
 	the doc.
 	(riece-ctlseq-regexp, riece-ctlseq-update-attribute): Make
