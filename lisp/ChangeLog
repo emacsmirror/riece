@@ -1,5 +1,13 @@
 2010-10-15  Daiki Ueno  <ueno@unixuser.org>
 
+	* riece-ctlseq.el (riece-ctlseq-colors): Add an example setting to
+	the doc.
+	(riece-ctlseq-regexp, riece-ctlseq-update-attribute): Make
+	"^C<fg>[,<bg>]" matching robuster.
+	Thanks to Akira TAGOH.
+
+2010-10-15  Daiki Ueno  <ueno@unixuser.org>
+
 	* riece-ctlseq.el (riece-ctlseq-regexp): New constant.
 	(riece-ctlseq-update-attribute): Rename from
 	riece-ctlseq-update-attributes.

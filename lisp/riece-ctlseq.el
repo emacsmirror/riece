@@ -40,7 +40,14 @@
   '("white" "black" "red" "orange" "yellow" "LightGreen" "DarkOliveGreen"
     "cyan4" "turquoise" "blue" "black" "black" "black" "black" "black"
     "DarkBlue" "purple1" "purple2" "purple3" "magenta")
-  "List of colors can be used with ^C<fg>,<bg>."
+  "List of colors can be used with ^C<fg>,<bg>.
+
+To set up colors compatible with X-Chat and mIRC, do:
+\(setq riece-ctlseq-colors '(\"#cecece\" \"black\" \"#0000cc\" \"#00cc00\"
+			    \"#dd0000\" \"#aa0000\" \"#bb00bb\" \"#ffaa00\"
+                            \"#eedd22\" \"#33de55\" \"#00cccc\" \"#33eeff\"
+			    \"#0000ff\" \"#ee22ee\" \"#777777\" \"#999999\"))
+"
   :group 'riece-ctlseq
   :type '(repeat (string :tag "Color")))
 
@@ -61,7 +68,7 @@
   "Mark up control sequences in IRC buffers.")
 
 (defconst riece-ctlseq-regexp
-  "[\x2\xF\x16\x1F]\\|\x3\\([0-9]+\\)?\\(,[0-9]+\\)?")
+  "[\x2\xF\x16\x1F]\\|\x3\\([0-9][0-9]?\\)\\(,[0-9][0-9]?\\)?")
 
 (defun riece-ctlseq-compatible-attributes-p (this other)
   (let ((pointer this))
@@ -148,15 +155,14 @@
      ((eq (aref tag 0) ?\x1F)		;^_
       (setq attrs (plist-put attrs 'underline
 			     (not (plist-get attrs 'underline)))))
-     ((string-match "\x3\\([0-9]+\\)?\\(,[0-9]+\\)?" tag) ;^C<fg>,<bg>
-      (if (match-beginning 1)
-	  (setq attrs (plist-put attrs 'foreground
-				 (nth (string-to-number (match-string 1 tag))
-				      riece-ctlseq-colors))))
-      (if (match-beginning 2)
+     ((eq (aref tag 0) ?\x3)		;^C<fg>[,<bg>]
+      (setq attrs (plist-put attrs 'foreground
+			     (nth (string-to-number (substring tag 1))
+				  riece-ctlseq-colors)))
+      (if (string-match "," tag)
 	  (setq attrs (plist-put attrs 'background
 				 (nth (string-to-number
-				       (substring (match-string 2 tag) 1))
+				       (substring tag (match-end 0)))
 				      riece-ctlseq-colors))))))
     attrs))
 
