@@ -111,7 +111,7 @@ It is created if there is at least one instance of Emacs running riece-log.")
 		      riece-log-lock-file))))
 
 (defun riece-log-make-file-name (identity coding-system)
-  (expand-file-name (if (featurep 'mule)
+  (expand-file-name (if (and (featurep 'mule) coding-system)
 			(format "%s.txt.%s"
 				(format-time-string "%Y%m%d")
 				coding-system)

@@ -1,3 +1,8 @@
+2010-12-10  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-log.el (riece-log-make-file-name): Don't append
+	coding-system name to the filename when coding-system is nil.
+
 2010-10-15  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-ctlseq.el (riece-ctlseq-put-attributes): Fix typo.
