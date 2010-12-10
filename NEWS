@@ -1,3 +1,12 @@
+* Major changes in 7.0.2
+
+** Fix bug of reading IRC logs (ueno)
+   If coding-system was not specified when writing log to file, Riece
+   added extra ".nil" to the filename.  That causes erronous behavior
+   on reading the logs back.
+
+** Fix control sequence parsing (ueno)
+
 * Major changes in 7.0.1
 
 ** Fix compilation error on Emacs 24. (ueno)

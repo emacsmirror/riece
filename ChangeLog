@@ -1,3 +1,11 @@
+2010-12-10  Daiki Ueno  <ueno@unixuser.org>
+
+	* Riece: Version 7.0.2 released.
+	* configure.ac: Bump to 7.0.2.
+
+	* NEWS: Add entry for 7.0.2.
+	* NEWS.ja: Ditto.
+
 2010-05-29  Daiki Ueno  <ueno@unixuser.org>
 
 	* Riece: Version 7.0.0 released.
