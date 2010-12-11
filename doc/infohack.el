@@ -29,7 +29,9 @@
 ;      (features (cons 'w3-forms (copy-sequence features))))
 ;  ;; Adjust `load-path' for APEL.
 ;  (load-file "dgnushack.el"))
-(load-file (expand-file-name "ptexinfmt.el" "./"))
+(load-file (expand-file-name "ptexinfmt.el"
+			     (car command-line-args-left)))
+(setq command-line-args-left (cdr command-line-args-left))
 
 (defun infohack-remove-unsupported ()
   (goto-char (point-min))

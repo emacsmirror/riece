@@ -10,5 +10,7 @@ package: all
 install-package: package
 	$(MAKE) infodir=$(PACKAGEDIR)/info install
 
-%.info: %.texi
-	$(EMACS) -batch -q -no-site-file -l ./infohack.el -f batch-makeinfo $<
+SUFFIXES = .texi .info
+.texi.info:
+	$(EMACS) -batch -q -no-site-file -l $(srcdir)/infohack.el $(srcdir) \
+		-f batch-makeinfo $<
