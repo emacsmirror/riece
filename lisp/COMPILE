@@ -179,9 +179,10 @@
   (princ (mapconcat #'symbol-name (riece-examine-modules) " ")))
 
 (defun riece-update-mcat ()
-  (let ((modules (riece-examine-modules))
-	(pointer riece-mcat-modules)
-	files)
+  (let* ((srcdir (car command-line-args-left))
+	 (modules (riece-examine-modules srcdir))
+	 (pointer riece-mcat-modules)
+	 files)
     (while pointer
       (setq modules (delq (car pointer) modules)
 	    pointer (cdr pointer)))

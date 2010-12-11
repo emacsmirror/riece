@@ -66,4 +66,5 @@ compile-individually:
 	done
 
 update-mcat:
-	$(EMACS) $(FLAGS) -l $(srcdir)/COMPILE -f riece-update-mcat
+	$(EMACS) $(FLAGS) -l $(srcdir)/COMPILE -f riece-update-mcat \
+		$(srcdir)
