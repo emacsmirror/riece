@@ -1,3 +1,8 @@
+2010-12-14  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-misc.el (riece-insert): Make sure to save current point,
+	when the currently selected buffer is frozen.
+
 2010-12-11  TAKAHASHI Kaoru  <kaoru@kaisei.org>
 
 	* COMPILE (riece-update-mcat): Fix "Wrong number of arguments"
