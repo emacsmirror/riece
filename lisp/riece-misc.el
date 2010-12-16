@@ -69,11 +69,15 @@
     (with-current-buffer (car buffers)
       (let ((inhibit-read-only t)
 	    buffer-read-only
-	    (start (goto-char (point-max)))
+	    start
 	    window
 	    point)
-	(insert (format-time-string "%H:%M") " " string)
-	(setq point (point))
+	;; Save the current for the case when (car buffers) is the
+	;; currently selected buffer.
+	(save-excursion
+	  (setq start (goto-char (point-max)))
+	  (insert (format-time-string "%H:%M") " " string)
+	  (setq point (point)))
 	(if (and (not (riece-frozen (current-buffer)))
 		 (setq window (get-buffer-window (current-buffer)))
 		 (not (pos-visible-in-window-p point window)))
@@ -83,7 +87,7 @@
 		(select-window window)
 		(goto-char point)	;select-window changes current point
 		(recenter riece-window-center-line))))
-	(run-hook-with-args 'riece-after-insert-functions start (point))))
+	(run-hook-with-args 'riece-after-insert-functions start point)))
     (setq buffers (cdr buffers))))
 
 (defun riece-insert-change (buffer message)
