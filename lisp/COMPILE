@@ -176,7 +176,9 @@
 	    (mapcar #'car riece-addon-modules))))
 
 (defun riece-examine ()
-  (princ (mapconcat #'symbol-name (riece-examine-modules) " ")))
+  (princ (mapconcat #'symbol-name
+		    (riece-examine-modules (car command-line-args-left))
+		    " ")))
 
 (defun riece-update-mcat ()
   (let* ((srcdir (car command-line-args-left))
@@ -234,29 +236,40 @@
     (setq command-line-args-left (cdr command-line-args-left))))
 
 (defun riece-compile-package ()
-  (setq autoload-package-name "riece")
-  (add-to-list 'command-line-args-left ".")
-  (batch-update-directory)
-  (add-to-list 'command-line-args-left ".")
-  (Custom-make-dependencies)
-  (riece-compile-modules
-   (append (riece-examine-modules)
-	   '(auto-autoloads custom-load))))
+  (let ((srcdir (car command-line-args-left)))
+    (setq command-line-args-left (cdr command-line-args-left))
+    (if (fboundp 'batch-update-directory-autoloads)
+	(let ((command-line-args-left (list srcdir "riece")))
+	  (batch-update-directory-autoloads))
+      (let ((command-line-args-left (list srcdir)))
+	(setq autoload-package-name "riece")
+	(batch-update-autoloads)))
+    (let ((command-line-args-left (list srcdir)))
+      (Custom-make-dependencies))
+    (riece-compile-modules
+     (append (riece-examine-modules srcdir)
+	     '(auto-autoloads custom-load))
+     srcdir)))
 
 (defun riece-install-package ()
-  (riece-install-modules
-   (append (riece-examine-modules)
-	   '(auto-autoloads custom-load))
-   (expand-file-name "lisp/riece" (car command-line-args-left))
-   (riece-install-just-print-p))
-  (riece-install-icons
-   riece-icons
-   (expand-file-name "etc/riece" (car command-line-args-left))
-   (riece-install-just-print-p))
-  (riece-install-scripts
-   riece-scripts
-   (expand-file-name "etc/riece" (car command-line-args-left))
-   (riece-install-just-print-p)))
+  (let ((srcdir (car command-line-args-left)))
+    (setq command-line-args-left (cdr command-line-args-left))
+    (riece-install-modules
+     (append (riece-examine-modules srcdir)
+	     '(auto-autoloads custom-load))
+     srcdir
+     (expand-file-name "lisp/riece" (car command-line-args-left))
+     (riece-install-just-print-p))
+    (riece-install-icons
+     riece-icons
+     srcdir
+     (expand-file-name "etc/riece" (car command-line-args-left))
+     (riece-install-just-print-p))
+    (riece-install-scripts
+     riece-scripts
+     srcdir
+     (expand-file-name "etc/riece" (car command-line-args-left))
+     (riece-install-just-print-p))))
 
 (defun riece-test ()
   (let* ((srcdir (car command-line-args-left))

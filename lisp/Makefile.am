@@ -46,11 +46,12 @@ uninstall:
 		$(lispdir)
 
 package:
-	$(XEMACS) $(FLAGS) -l $(srcdir)/COMPILE -f riece-compile-package
+	$(XEMACS) $(FLAGS) -l $(srcdir)/COMPILE -f riece-compile-package \
+		$(srcdir)
 
 install-package: package
 	$(XEMACS) $(FLAGS) -l $(srcdir)/COMPILE -f riece-install-package \
-		$(PACKAGEDIR) # $(MAKE)
+		$(srcdir) $(PACKAGEDIR) # $(MAKE)
 
 check-local:
 	$(EMACS) $(FLAGS) -l $(srcdir)/COMPILE -f riece-test \

@@ -1,3 +1,9 @@
+2010-12-20  Daiki Ueno  <ueno@unixuser.org>
+
+	* COMPILE (riece-examine): Supply srcdir to riece-examine-modules.
+	(riece-compile-package): Ditto.
+	(riece-install-package): Ditto.
+
 2010-12-16  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-shrink-buffer.el (riece-shrink-buffer): Make sure not to
