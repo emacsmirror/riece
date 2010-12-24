@@ -239,7 +239,7 @@
   (let ((srcdir (car command-line-args-left)))
     (setq command-line-args-left (cdr command-line-args-left))
     (if (fboundp 'batch-update-directory-autoloads)
-	(let ((command-line-args-left (list srcdir "riece")))
+	(let ((command-line-args-left (list "riece" srcdir)))
 	  (batch-update-directory-autoloads))
       (let ((command-line-args-left (list srcdir)))
 	(setq autoload-package-name "riece")
