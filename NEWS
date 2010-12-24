@@ -1,3 +1,14 @@
+* Major changes in 7.0.3
+
+** Fix freeze behavior when the cursor is on a channel buffer (ueno)
+   riece-shrink-buffer had a bug which moves the cursor to the top or
+   bottom of buffer even when the buffer is frozen.
+
+** Fix out-of-tree build (kaoru, ueno)
+   There were some code not passing srcdir correctly.
+
+** Remove old-style backquotes for Emacs 24 (ueno)
+
 * Major changes in 7.0.2
 
 ** Fix bug of reading IRC logs (ueno)
