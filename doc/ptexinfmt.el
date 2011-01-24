@@ -3,7 +3,7 @@
 ;; Copyright (C) 1985, 1986, 1988, 1990, 1991, 1992, 1993,
 ;;               1994, 1995, 1996, 1997 Free Software Foundation, Inc.
 ;; Copyright (C) 1999 Yoshiki Hayashi <yoshiki@xemacs.org>
-;; Copyright (C) 2000, 2001, 2002 TAKAHASHI Kaoru <kaoru@kaisei.org>
+;; Copyright (C) 2000 TAKAHASHI Kaoru <kaoru@kaisei.org>
 
 ;; Author: TAKAHASHI Kaoru <kaoru@kaisei.org>
 ;;	Yoshiki Hayashi <yoshiki@xemacs.org>
@@ -36,9 +36,30 @@
 
 ;; Modified by Yamaoka not to use APEL functions.
 
+;; Unimplemented command:
+;;  @abbr{ABBREVIATION}
+;;  @float ... @end float, @caption{TEXT}, @shortcaption{TEXT}, @listoffloats
+;;  @deftypecv[x]
+;;  @headitem
+;;  @comma{}
+;;  @quotation (optional arguments)
+;;  @acronym{ACRONYM[, MEANING]} (optional argument)
+;;  @dofirstparagraphindent
+;;  @indent
+;;  @verbatiminclude FILENAME
+;;  @\
+;;  @definfoenclose phoo,//,\\
+;;  @deftypeivar CLASS DATA-TYPE VARIABLE-NAME
+;;  @deftypeop CATEGORY CLASS DATA-TYPE NAME ARGUMENTS...
+;;  @allowcodebreaks false
+;;  @thischapternum
+;;  @quotedblleft @quotedblright
+;;  @quoteleft @quoteright  @quotedblbase @quotesinglbase
+;;  @guillemetleft @guillemetright @guilsinglleft @guilsinglright.
+;;  @clicksequence, @click, @clickstyle, @arrow
+
 ;;; Code:
 
-(require 'backquote)
 (require 'texinfmt)
 
 ;;; Broken
@@ -53,15 +74,15 @@ This is last argument in `ptexinfmt-broken-facility'.")
 DOCSTRING will be printed if ASSERTION is nil and
 `ptexinfmt-disable-broken-notice-flag' is nil."
   `(let ((facility ',facility)
-	   (docstring ,docstring)
-	   (assertion (eval ',assertion)))
-       (put facility 'broken (not assertion))
-       (if assertion
+	 (docstring ,docstring)
+	 (assertion (eval ',assertion)))
+     (put facility 'broken (not assertion))
+     (if assertion
+	 nil
+       (put facility 'broken-docstring docstring)
+       (if ptexinfmt-disable-broken-notice-flag
 	   nil
-	 (put facility 'broken-docstring docstring)
-	 (if ptexinfmt-disable-broken-notice-flag
-	     nil
-	   (message "BROKEN FACILITY DETECTED: %s" docstring)))))
+	 (message "BROKEN FACILITY DETECTED: %s" docstring)))))
 
 (put 'ptexinfmt-defun-if-broken 'lisp-indent-function 'defun)
 (defmacro ptexinfmt-defun-if-broken (&rest args)
@@ -70,9 +91,9 @@ DOCSTRING will be printed if ASSERTION is nil and
     (setq args (cdr args))
     `(prog1
 	 ,name
-	 (if (get ,name 'broken)
-	     (defalias ,name
-	       (function (lambda ,@args)))))))
+       (if (get ,name 'broken)
+	   (defalias ,name
+	     (function (lambda ,@args)))))))
 
 (put 'ptexinfmt-defun-if-void 'lisp-indent-function 'defun)
 (defmacro ptexinfmt-defun-if-void (&rest args)
@@ -81,10 +102,10 @@ DOCSTRING will be printed if ASSERTION is nil and
     (setq args (cdr args))
     `(prog1
 	 ,name
-	 (if (fboundp ,name)
-	     nil
-	   (defalias ,name
-	     (function (lambda ,@args)))))))
+       (if (fboundp ,name)
+	   nil
+	 (defalias ,name
+	   (function (lambda ,@args)))))))
 
 (put 'ptexinfmt-defvar-if-void 'lisp-indent-function 'defun)
 (defmacro ptexinfmt-defvar-if-void (&rest args)
@@ -93,9 +114,9 @@ DOCSTRING will be printed if ASSERTION is nil and
     (setq args (cdr args))
     `(prog1
 	 (defvar ,name)
-	 (if (boundp ',name)
-	     nil
-	   (defvar ,name ,@args)))))
+       (if (boundp ',name)
+	   nil
+	 (defvar ,name ,@args)))))
 
 ;; sort -fd
 (ptexinfmt-broken-facility texinfo-format-printindex
@@ -107,7 +128,7 @@ DOCSTRING will be printed if ASSERTION is nil and
       nil
     t))
 
-;; @var
+;; @var{METASYNTACTIC-VARIABLE}
 (ptexinfmt-broken-facility texinfo-format-var
   "Don't perse @var argument."
   (condition-case nil
@@ -119,7 +140,8 @@ DOCSTRING will be printed if ASSERTION is nil and
 	  t))
     (error nil)))
 
-;; @xref
+;; @xref{NODE-NAME[, CROSS-REFERENCE-NAME, TITLE-OR-TOPIC,
+;;     INFO-FILE-NAME, PRINTED-MANUAL-TITLE]}.
 (ptexinfmt-broken-facility texinfo-format-xref
   "Can't format @xref, 1st argument is empty."
   (condition-case nil
@@ -131,7 +153,7 @@ DOCSTRING will be printed if ASSERTION is nil and
 	  t))
     (error nil)))
 
-;; @uref
+;; @uref{URL[, TEXT][, REPLACEMENT]}
 (ptexinfmt-broken-facility texinfo-format-uref
   "Parse twice @uref argument."
   (condition-case nil
@@ -148,15 +170,18 @@ DOCSTRING will be printed if ASSERTION is nil and
   "`texinfo-multitable-widths' unsupport wide-char."
   (if (fboundp 'texinfo-multitable-widths)
       (with-temp-buffer
-	(let ((str "幅広文字"))
+	(let ((str (string (make-char 'japanese-jisx0208 73 125)
+			   (make-char 'japanese-jisx0208 57 45)
+			   (make-char 'japanese-jisx0208 74 56)
+			   (make-char 'japanese-jisx0208 59 122))))
 	  (texinfo-mode)
 	  (insert (format " {%s}\n" str))
 	  (goto-char (point-min))
 	  (if (= (car (texinfo-multitable-widths)) (length str))
-	      nil
-	    t)))
+	      t
+	    nil)))
     ;; function definition is void
-    t))
+    nil))
 
 (ptexinfmt-broken-facility texinfo-multitable-item
   "`texinfo-multitable-item' unsupport wide-char."
@@ -177,6 +202,7 @@ DOCSTRING will be printed if ASSERTION is nil and
 (put 'afourwide 'texinfo-format 'texinfo-discard-line)
 (put 'afivepaper 'texinfo-format 'texinfo-discard-line)
 (put 'pagesizes 'texinfo-format 'texinfo-discard-line-with-args)
+(put 'fonttextsize 'texinfo-format 'texinfo-discard-line-with-args)
 
 ;; style
 (put 'setchapternewpage 'texinfo-format 'texinfo-discard-line-with-args)
@@ -186,6 +212,7 @@ DOCSTRING will be printed if ASSERTION is nil and
 (put 'setcontentsaftertitlepage 'texinfo-format 'texinfo-discard-line)
 (put 'setshortcontentsaftertitlepage 'texinfo-format 'texinfo-discard-line)
 (put 'novalidate 'texinfo-format 'texinfo-discard-line-with-args)
+(put 'frenchspacing 'texinfo-format 'texinfo-discard-line-with-args)
 
 ;; head & foot
 (put 'headings 'texinfo-format 'texinfo-discard-line-with-args)
@@ -200,6 +227,12 @@ DOCSTRING will be printed if ASSERTION is nil and
 (put 'page 'texinfo-format 'texinfo-discard-line)
 (put 'hyphenation 'texinfo-format 'texinfo-discard-command-and-arg)
 
+;; @slanted{TEXT} (makeinfo 4.8 or later)
+(put 'slanted 'texinfo-format 'texinfo-format-noop)
+
+;; @sansserif{TEXT} (makeinfo 4.8 or later)
+(put 'sansserif 'texinfo-format 'texinfo-format-noop)
+
 ;; @tie{} (makeinfo 4.3 or later)
 (put 'tie 'texinfo-format 'texinfo-format-tie)
 (ptexinfmt-defun-if-void texinfo-format-tie ()
@@ -208,7 +241,7 @@ DOCSTRING will be printed if ASSERTION is nil and
 
 
 ;;; Directory File
-;; @direcategory
+;; @direcategory DIRPART
 (put 'dircategory 'texinfo-format 'texinfo-format-dircategory)
 (ptexinfmt-defun-if-void texinfo-format-dircategory ()
   (let ((str (texinfo-parse-arg-discard)))
@@ -218,7 +251,7 @@ DOCSTRING will be printed if ASSERTION is nil and
 		     (point)))
     (insert "INFO-DIR-SECTION " str "\n")))
 
-;; @direntry
+;; @direntry ... @end direntry
 (put 'direntry 'texinfo-format 'texinfo-format-direntry)
 (ptexinfmt-defun-if-void texinfo-format-direntry ()
   (texinfo-push-stack 'direntry nil)
@@ -263,6 +296,9 @@ DOCSTRING will be printed if ASSERTION is nil and
 (put 'ifnotplaintext 'texinfo-format 'texinfo-discard-line)
 (put 'ifnotplaintext 'texinfo-end 'texinfo-discard-command)
 
+;; @ifnotdocbook ... @end ifnotdocbook (makeinfo 4.7 or later)
+(put 'ifnotdocbook 'texinfo-format 'texinfo-discard-line)
+(put 'ifnotdocbook 'texinfo-end 'texinfo-discard-command)
 
 ;; @ifnotinfo ... @end ifnotinfo (makeinfo 3.11 or later)
 (put 'ifnotinfo 'texinfo-format 'texinfo-format-ifnotinfo)
@@ -276,6 +312,13 @@ DOCSTRING will be printed if ASSERTION is nil and
 (ptexinfmt-defun-if-void texinfo-format-html ()
   (delete-region texinfo-command-start
 		 (progn (re-search-forward "@end html[ \t]*\n")
+			(point))))
+
+;; @docbook ... @end docbook (makeinfo 4.7 or later)
+(put 'docbook 'texinfo-format 'texinfo-format-docbook)
+(ptexinfmt-defun-if-void texinfo-format-docbook ()
+  (delete-region texinfo-command-start
+		 (progn (re-search-forward "@end docbook[ \t]*\n")
 			(point))))
 
 ;; @ifhtml ... @end ifhtml (makeinfo 3.8 or later)
@@ -292,23 +335,37 @@ DOCSTRING will be printed if ASSERTION is nil and
 		 (progn (re-search-forward "@end ifplaintext[ \t]*\n")
 			(point))))
 
+;; @ifdocbook ... @end ifdocbook (makeinfo 4.7 or later)
+(put 'ifdocbook 'texinfo-format 'texinfo-format-ifdocbook)
+(ptexinfmt-defun-if-void texinfo-format-ifdocbook ()
+  (delete-region texinfo-command-start
+		 (progn (re-search-forward "@end ifdocbook[ \t]*\n")
+			(point))))
 
 
 ;;; Marking
-;; @url, @env, @command
-(put 'url 'texinfo-format 'texinfo-format-code)
+;; @env{ENVIRONMENT-VARIABLE}
 (put 'env 'texinfo-format 'texinfo-format-code)
+
+;; @command{COMMAND-NAME}
 (put 'command 'texinfo-format 'texinfo-format-code)
 
-;; @acronym
+;; @indicateurl{INDICATEURL}
+(put 'indicateurl 'texinfo-format 'texinfo-format-code)
+
+;; @url{URL[, DISPLAYED-TEXT][, REPLACEMENT}
+(put 'url 'texinfo-format 'texinfo-format-uref)	; Texinfo 4.7
+
+;; @acronym{ACRONYM}
 (put 'acronym 'texinfo-format 'texinfo-format-var)
 
+;; @var{METASYNTACTIC-VARIABLE}
 (ptexinfmt-defun-if-broken texinfo-format-var ()
   (let ((arg (texinfo-parse-expanded-arg)))
     (texinfo-discard-command)
     (insert (upcase arg))))
 
-;; @key
+;; @key{KEY-NAME}
 (put 'key 'texinfo-format 'texinfo-format-key)
 (ptexinfmt-defun-if-void texinfo-format-key ()
   (insert (texinfo-parse-arg-discard))
@@ -326,7 +383,7 @@ Insert < ... > around EMAIL-ADDRESS."
 	(insert (nth 1 args) " <" (nth 0 args) ">")
       (insert "<" (nth 0 args) ">"))))
 
-;; @option
+;; @option{OPTION-NAME}
 (put 'option 'texinfo-format 'texinfo-format-option)
 (ptexinfmt-defun-if-void texinfo-format-option ()
   "Insert ` ... ' around arg unless inside a table; in that case, no quotes."
@@ -355,18 +412,48 @@ For example, @verb\{|@|\} results in @ and
       (error "Not found: @verb start brace"))
     (delete-region texinfo-command-start (+ 2 texinfo-command-end))
     (search-forward  delimiter))
-  (delete-backward-char 1)
+  (delete-char -1)
   (unless (looking-at "}")
     (error "Not found: @verb end brace"))
   (delete-char 1))
 
 
+;; @LaTeX{}
+(put 'LaTeX 'texinfo-format 'texinfo-format-LaTeX)
+(ptexinfmt-defun-if-void texinfo-format-LaTeX ()
+  (texinfo-parse-arg-discard)
+  (insert "LaTeX"))
+
+;; @registeredsymbol{}
+(put 'registeredsymbol 'texinfo-format 'texinfo-format-registeredsymbol)
+(ptexinfmt-defun-if-void texinfo-format-registeredsymbol ()
+  (texinfo-parse-arg-discard)
+  (insert "(R)"))
+
 ;;; Accents and Special characters
+;; @euro{}	==>	Euro
+(put 'euro 'texinfo-format 'texinfo-format-euro)
+(ptexinfmt-defun-if-void texinfo-format-euro ()
+  (texinfo-parse-arg-discard)
+  (insert "Euro "))
+
 ;; @pounds{}	==>	#	Pounds Sterling
 (put 'pounds 'texinfo-format 'texinfo-format-pounds)
 (ptexinfmt-defun-if-void texinfo-format-pounds ()
   (texinfo-parse-arg-discard)
   (insert "#"))
+
+;; @ordf{}	==>	a	Spanish feminine
+(put 'ordf 'texinfo-format 'texinfo-format-ordf)
+(ptexinfmt-defun-if-void texinfo-format-ordf ()
+  (texinfo-parse-arg-discard)
+  (insert "a"))
+
+;; @ordm{}	==>	o	Spanish masculine
+(put 'ordm 'texinfo-format 'texinfo-format-ordm)
+(ptexinfmt-defun-if-void texinfo-format-ordm ()
+  (texinfo-parse-arg-discard)
+  (insert "o"))
 
 ;; @OE{}	==>	OE	French-OE-ligature
 (put 'OE 'texinfo-format 'texinfo-format-French-OE-ligature)
@@ -528,9 +615,28 @@ For example, @verb\{|@|\} results in @ and
 (ptexinfmt-defun-if-void texinfo-format-\/ ()
   (texinfo-discard-command))
 
+;; @textdegree{}
+(put 'textdegree 'texinfo-format 'texinfo-format-textdegree)
+(ptexinfmt-defun-if-void texinfo-format-textdegree ()
+  (insert "o" (texinfo-parse-arg-discard))
+  (goto-char texinfo-command-start))
+
+;; @geq{}
+(put 'geq 'texinfo-format 'texinfo-format-geq)
+(ptexinfmt-defun-if-void texinfo-format-geq ()
+  (insert ">=" (texinfo-parse-arg-discard))
+  (goto-char texinfo-command-start))
+
+;; @leq{}
+(put 'leq 'texinfo-format 'texinfo-format-leq)
+(ptexinfmt-defun-if-void texinfo-format-leq ()
+  (insert "<=" (texinfo-parse-arg-discard))
+  (goto-char texinfo-command-start))
+
 
 ;;; Cross References
-;; @ref, @xref
+;; @ref{NODE-NAME, ...}
+;; @xref{NODE-NAME, ...}
 (put 'ref 'texinfo-format 'texinfo-format-xref)
 
 (ptexinfmt-defun-if-broken texinfo-format-xref ()
@@ -559,7 +665,7 @@ otherwise, insert URL-TITLE followed by URL in parentheses."
 	(insert  (nth 1 args) " (" (nth 0 args) ")")
       (insert "`" (nth 0 args) "'"))))
 
-;; @inforef
+;; @inforef{NODE-NAME, CROSS-REFERENCE-NAME, INFO-FILE-NAME}
 (put 'inforef 'texinfo-format 'texinfo-format-inforef)
 (ptexinfmt-defun-if-void texinfo-format-inforef ()
   (let ((args (texinfo-format-parse-args)))
@@ -569,7 +675,7 @@ otherwise, insert URL-TITLE followed by URL in parentheses."
       (insert "*Note " "(" (nth 2 args) ")" (car args) "::"))))
 
 
-;; @anchor
+;; @anchor{NAME}
 ;; don't emulation
 ;; If support @anchor for Mule 2.3, We must fix informat.el and info.el:
 ;;  - Info-tagify suport @anthor-*-refill.
@@ -626,14 +732,6 @@ otherwise, insert URL-TITLE followed by URL in parentheses."
     (goto-char (+ (point) (cadr (insert-file-contents filename))))
     (message "Reading included file: %s...done" filename)))
 
-;; @hyphenation command discards an argument within braces
-(put 'hyphenation 'texinfo-format 'texinfo-discard-command-and-arg)
-(ptexinfmt-defun-if-void texinfo-discard-command-and-arg ()
-  "Discard both @-command and its argument in braces."
-  (goto-char texinfo-command-end)
-  (forward-list 1)
-  (setq texinfo-command-end (point))
-  (delete-region texinfo-command-start texinfo-command-end))
 
 
 ;;; @multitable ... @end multitable
@@ -886,6 +984,40 @@ This command is executed when texinfmt sees @item inside @multitable."
     (if (memq system-type '(vax-vms windows-nt ms-dos))
 	(texinfo-sort-region opoint (point))
       (shell-command-on-region opoint (point) "sort -fd" 1))))
+
+
+;; @copying ... @end copying
+;; that Emacs 21.4 and lesser and XEmacs don't support.
+(if (fboundp 'texinfo-copying)
+    nil
+  (defvar texinfo-copying-text ""
+    "Text of the copyright notice and copying permissions.")
+
+  (defun texinfo-copying ()
+    "Copy the copyright notice and copying permissions from the Texinfo file,
+as indicated by the @copying ... @end copying command;
+insert the text with the @insertcopying command."
+    (let ((beg (progn (beginning-of-line) (point)))
+	  (end  (progn (re-search-forward "^@end copying[ \t]*\n") (point))))
+      (setq texinfo-copying-text
+	    (buffer-substring-no-properties
+	     (save-excursion (goto-char beg) (forward-line 1) (point))
+	     (save-excursion (goto-char end) (forward-line -1) (point))))
+      (delete-region beg end)))
+
+  (defun texinfo-insertcopying ()
+    "Insert the copyright notice and copying permissions from the Texinfo file,
+which are indicated by the @copying ... @end copying command."
+    (insert (concat "\n" texinfo-copying-text)))
+
+  (defadvice texinfo-format-scan (before expand-@copying-section activate)
+    "Extract @copying and replace @insertcopying with it."
+    (goto-char (point-min))
+    (when (search-forward "@copying" nil t)
+      (texinfo-copying))
+    (while (search-forward "@insertcopying" nil t)
+      (delete-region (match-beginning 0) (match-end 0))
+      (texinfo-insertcopying))))
 
 (provide 'ptexinfmt)
 
