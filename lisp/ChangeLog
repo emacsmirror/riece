@@ -1,3 +1,9 @@
+2011-01-25  TAKAHASHI Kaoru  <kaoru@kaisei.org>
+
+	* riece-ignore.el: Add newline at end of file.
+	* riece-keyword.el: Ditto.
+	* riece-mode.el: Ditto.
+
 2010-12-20  Daiki Ueno  <ueno@unixuser.org>
 
 	* COMPILE (riece-examine): Supply srcdir to riece-examine-modules.
