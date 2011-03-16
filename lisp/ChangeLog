@@ -1,3 +1,8 @@
+2011-03-16  Daiki Ueno  <ueno@unixuser.org>
+
+	* COMPILE (riece-compile-module, riece-update-mcat)
+	(riece-compile): Add workaround for XEmacs 21.5.
+
 2011-01-25  TAKAHASHI Kaoru  <kaoru@kaisei.org>
 
 	* riece-ignore.el: Add newline at end of file.

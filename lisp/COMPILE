@@ -105,7 +105,10 @@
     (let ((source (expand-file-name
 		   (concat (car command-line-args-left) ".el"))))
       (if (file-newer-than-file-p source (concat source "c"))
-	  (byte-compile-file source)))))
+	  (byte-compile-file source))))
+  ;; Workaround for an XEmacs 21.5 bug ("xemacs -batch -f <func> <arg1>"
+  ;; attempts to open <arg1> as a file after <func>).
+  (setq command-line-args-left (cdr command-line-args-left)))
 
 (defun riece-install-modules (modules srcdir lispdir just-print)
   (unless (or just-print (file-exists-p lispdir))
@@ -196,11 +199,18 @@
       (riece-mcat-update files (concat (symbol-name (car pointer)) ".el")
 			 (intern (concat (symbol-name (car pointer))
 					 "-alist")))
-      (setq pointer (cdr pointer)))))
+      (setq pointer (cdr pointer))))
+  ;; Workaround for an XEmacs 21.5 bug ("xemacs -batch -f <func> <arg1>"
+  ;; attempts to open <arg1> as a file after <func>).
+  (setq command-line-args-left (cdr command-line-args-left)))
 
 (defun riece-compile ()
   (let ((srcdir (car command-line-args-left)))
-    (riece-compile-modules (riece-examine-modules srcdir) srcdir)))
+    (setq command-line-args-left (cdr command-line-args-left))
+    (riece-compile-modules (riece-examine-modules srcdir) srcdir))
+  ;; Workaround for an XEmacs 21.5 bug ("xemacs -batch -f <func> <arg1>"
+  ;; attempts to open <arg1> as a file after <func>).
+  (setq command-line-args-left (cdr command-line-args-left)))
 
 (defun riece-install ()
   (let ((srcdir (car command-line-args-left))
