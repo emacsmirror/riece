@@ -40,7 +40,27 @@
   :prefix "riece-"
   :group 'riece)
 
-(defcustom riece-url-regexp  "\\b\\(s?https?\\|ftp\\|file\\|gopher\\|news\\|telnet\\|wais\\|mailto\\):\\(//[-a-zA-Z0-9_.]+:[0-9]*\\)?[-a-zA-Z0-9_=?#$@~`%&*+|\\/.,;]*[-a-zA-Z0-9_=#$@~`%&*+|\\/;]"
+;; the default value was copied from gnus-button-url-regexp
+(defcustom riece-url-regexp
+  (concat
+   "\\b\\(\\(www\\.\\|\\(s?https?\\|ftp\\|file\\|gopher\\|"
+   "nntp\\|news\\|telnet\\|wais\\|mailto\\|info\\):\\)"
+   "\\(//[-a-z0-9_.]+:[0-9]*\\)?"
+   (if (string-match "[[:digit:]]" "1") ;; Support POSIX?
+       (let ((chars "-a-z0-9_=#$@~%&*+\\/[:word:]")
+	     (punct "!?:;.,"))
+	 (concat
+	  "\\(?:"
+	  ;; Match paired parentheses, e.g. in Wikipedia URLs:
+	  ;; http://thread.gmane.org/47B4E3B2.3050402@gmail.com
+	  "[" chars punct "]+" "(" "[" chars punct "]+" "[" chars "]*)" "[" chars "]*"
+	  "\\|"
+	  "[" chars punct     "]+" "[" chars "]"
+	  "\\)"))
+     (concat ;; XEmacs 21.4 doesn't support POSIX.
+      "\\([-a-z0-9_=!?#$@~%&*+\\/:;.,]\\|\\w\\)+"
+      "\\([-a-z0-9_=#$@~%&*+\\/]\\|\\w\\)"))
+   "\\)")
   "Regular expression that matches URLs."
   :group 'riece-url
   :type 'regexp)

@@ -1,3 +1,7 @@
+2011-03-25  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-url.el (riece-url-regexp): Update the default value.
+
 2011-03-16  Daiki Ueno  <ueno@unixuser.org>
 
 	* COMPILE (riece-compile-module, riece-update-mcat)
