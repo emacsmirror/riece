@@ -1,4 +1,4 @@
-;;; riece-cache.el --- LRU cache
+;;; riece-cache.el --- LRU cache -*- lexical-binding: t -*-
 ;; Copyright (C) 1998-2005 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>

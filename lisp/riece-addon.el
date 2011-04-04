@@ -1,4 +1,4 @@
-;;; riece-addon.el --- add-on management
+;;; riece-addon.el --- add-on management -*- lexical-binding: t -*-
 ;; Copyright (C) 1998-2004 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>

@@ -1,4 +1,4 @@
-;;; riece-alias.el --- define aliases for IRC names
+;;; riece-alias.el --- define aliases for IRC names -*- lexical-binding: t -*-
 ;; Copyright (C) 1998-2003 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>

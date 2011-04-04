@@ -1,4 +1,4 @@
-;;; riece-xemacs.el --- XEmacs specific functions
+;;; riece-xemacs.el --- XEmacs specific functions -*- lexical-binding: t -*-
 ;; Copyright (C) 1998-2003 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>

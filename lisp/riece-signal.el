@@ -1,4 +1,4 @@
-;;; riece-signal.el --- "signal-slot" abstraction for routing display events
+;;; riece-signal.el --- "signal-slot" abstraction for routing display events -*- lexical-binding: t -*-
 ;; Copyright (C) 1998-2003 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>

@@ -1,4 +1,4 @@
-;;; riece-handle.el --- basic message handlers
+;;; riece-handle.el --- basic message handlers -*- lexical-binding: t -*-
 ;; Copyright (C) 1998-2003 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>
@@ -37,7 +37,7 @@
 (require 'riece-500)
 
 (defun riece-default-handle-numeric-reply
-  (client-prefix prefix number name string)
+  (client-prefix _prefix _number _name string)
   (riece-insert
    (list riece-dialogue-buffer riece-others-buffer)
    (concat client-prefix
@@ -124,7 +124,7 @@
        (list riece-dialogue-buffer riece-others-buffer)
        (concat (riece-concat-server-name message) "\n")))))
 
-(defun riece-handle-ping-message (prefix string)
+(defun riece-handle-ping-message (_prefix string)
   (riece-send-string (format "PONG :%s\r\n"
 			     (if (eq (aref string 0) ?:)
 				 (substring string 1)

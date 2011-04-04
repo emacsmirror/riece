@@ -1,4 +1,4 @@
-;;; riece-filter.el --- process filter and sentinel
+;;; riece-filter.el --- process filter and sentinel -*- lexical-binding: t -*-
 ;; Copyright (C) 1998-2003 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>

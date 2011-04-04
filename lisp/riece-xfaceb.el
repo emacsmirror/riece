@@ -1,4 +1,4 @@
-;;; riece-xfaceb.el --- display X-Face/Colour Face in IRC buffers
+;;; riece-xfaceb.el --- display X-Face/Colour Face in IRC buffers -*- lexical-binding: t -*-
 ;; Copyright (C) 2005 Daiki Ueno
 
 ;; Author: Steve Youngs <steve@sxemacs.org>

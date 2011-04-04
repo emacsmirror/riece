@@ -1,4 +1,4 @@
-;;; riece-layout.el --- layout management
+;;; riece-layout.el --- layout management -*- lexical-binding: t -*-
 ;; Copyright (C) 1998-2003 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>

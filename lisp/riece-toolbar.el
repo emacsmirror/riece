@@ -1,4 +1,4 @@
-;;; riece-toolbar.el --- display toolbar icons
+;;; riece-toolbar.el --- display toolbar icons -*- lexical-binding: t -*-
 ;; Copyright (C) 1998-2004 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>
@@ -66,7 +66,7 @@
   (if (featurep 'xemacs)
       (if (featurep 'toolbar)
 	  (progn
-	    (defun riece-make-toolbar-from-menu (items menu-items map)
+	    (defun riece-make-toolbar-from-menu (items _menu-items _map)
 	      (let ((pointer items)
 		    toolbar
 		    file
@@ -104,7 +104,7 @@
 	(defalias 'riece-make-toolbar-from-menu 'ignore)
 	(defalias 'riece-set-toolbar 'ignore)
 	(defalias 'riece-unset-toolbar 'ignore))
-    (defun riece-make-toolbar-from-menu (items menu-items map)
+    (defun riece-make-toolbar-from-menu (items _menu-items map)
       (let ((pointer items)
 	    (tool-bar-map (make-sparse-keymap)))
 	(while pointer

@@ -1,4 +1,4 @@
-;;; riece-foolproof.el --- prevent miss-operation in the command buffer
+;;; riece-foolproof.el --- prevent miss-operation in the command buffer -*- lexical-binding: t -*-
 ;; Copyright (C) 2004 TAKAHASHI Kaoru
 
 ;; Author: TAKAHASHI Kaoru <kaoru@kaisei.org>

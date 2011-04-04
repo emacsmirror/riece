@@ -1,4 +1,4 @@
-;;; riece-identity.el --- an identity object
+;;; riece-identity.el --- an identity object -*- lexical-binding: t -*-
 ;; Copyright (C) 1998-2003 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>

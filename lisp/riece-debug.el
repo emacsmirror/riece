@@ -1,4 +1,4 @@
-;;; riece-debug.el --- debug support
+;;; riece-debug.el --- debug support -*- lexical-binding: t -*-
 ;; Copyright (C) 1998-2005 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>

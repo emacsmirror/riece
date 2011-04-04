@@ -1,4 +1,4 @@
-;;; riece-lsdb.el --- help register nicknames in LSDB rolodex program
+;;; riece-lsdb.el --- help register nicknames in LSDB rolodex program -*- lexical-binding: t -*-
 ;; Copyright (C) 1998-2003 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>
@@ -94,7 +94,7 @@
 	 (table lsdb-hash-table))
      (unless (vectorp table)
        (setq table (make-vector 29 0))
-       (lsdb-maphash (lambda (key value)
+       (lsdb-maphash (lambda (key _value)
 		       (intern key table))
 		     lsdb-hash-table))
      (list (riece-completing-read-identity

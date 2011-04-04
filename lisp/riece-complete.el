@@ -1,4 +1,4 @@
-;;; riece-complete.el --- completion
+;;; riece-complete.el --- completion -*- lexical-binding: t -*-
 ;; Copyright (C) 1998-2003 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>

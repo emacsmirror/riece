@@ -1,4 +1,4 @@
-;;; riece-000.el --- handlers for 000 replies
+;;; riece-000.el --- handlers for 000 replies -*- lexical-binding: t -*-
 ;; Copyright (C) 1998-2003 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>
@@ -35,7 +35,7 @@
   (riece-default-handle-numeric-reply
    riece-info-prefix prefix number name string))
 
-(defun riece-handle-001-message (prefix number name string)
+(defun riece-handle-001-message (prefix _number name string)
   "RPL_WELCOME \"Welcome to the Internet Relay Network <nick>!<user>@<host>\""
   (if riece-real-server-name
       (error (riece-mcat "Already registered")))
@@ -64,7 +64,7 @@
 	  (riece-command-join-channel identity (nth 1 entry)))
       (setq channel-list (cdr channel-list)))))
 
-(defun riece-handle-004-message (prefix number name string)
+(defun riece-handle-004-message (_prefix _number _name string)
   "RPL_MYINFO \"<umodes> <chnlmodes>\""
   (if (string-match "^[^ ]+ +[^ ]+ +\\([^ ]+\\) +" string)
       (setq riece-supported-user-modes

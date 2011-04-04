@@ -1,4 +1,4 @@
-;;; riece-irc.el --- IRC protocol
+;;; riece-irc.el --- IRC protocol -*- lexical-binding: t -*-
 ;; Copyright (C) 1998-2004 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>

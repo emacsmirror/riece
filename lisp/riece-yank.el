@@ -1,4 +1,4 @@
-;;; riece-yank.el --- enter the element of kill-ring
+;;; riece-yank.el --- enter the element of kill-ring -*- lexical-binding: t -*-
 ;; Copyright (C) 2004 Masatake YAMATO
 
 ;; Author: Masatake YAMATO <jet@gyve.org>

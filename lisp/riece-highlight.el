@@ -1,4 +1,4 @@
-;;; riece-highlight.el --- highlight IRC buffers
+;;; riece-highlight.el --- highlight IRC buffers -*- lexical-binding: t -*-
 ;; Copyright (C) 1998-2003 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>
@@ -229,7 +229,7 @@
   (if (get 'riece-highlight 'riece-addon-enabled)
       (font-lock-mode 1)))
 
-(defun riece-highlight-hide-prefix (start end length)
+(defun riece-highlight-hide-prefix (start _end _length)
   (save-excursion
     (goto-char start)
     (if (looking-at riece-prefix-regexp)

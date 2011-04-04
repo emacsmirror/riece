@@ -1,4 +1,4 @@
-;;; riece-doctor.el --- pretend to be a psychotherapist
+;;; riece-doctor.el --- pretend to be a psychotherapist -*- lexical-binding: t -*-
 ;; Copyright (C) 1998-2003 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>

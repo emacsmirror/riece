@@ -1,4 +1,4 @@
-;;; riece-unread.el --- mark channels where new messages arrived
+;;; riece-unread.el --- mark channels where new messages arrived -*- lexical-binding: t -*-
 ;; Copyright (C) 1998-2003 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>
@@ -84,7 +84,7 @@
 	  (setq riece-unread-channels (cons target riece-unread-channels))
 	  (riece-emit-signal 'channel-list-changed)))))
 
-(defun riece-unread-after-switch-to-channel-function (last)
+(defun riece-unread-after-switch-to-channel-function (_last)
   (if (get 'riece-unread 'riece-addon-enabled)
       (setq riece-unread-channels
 	    (delq (car (riece-identity-member riece-current-channel

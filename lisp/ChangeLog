@@ -1,3 +1,7 @@
+2011-04-04  Daiki Ueno  <ueno@unixuser.org>
+
+	* Use lexical binding.
+
 2011-03-25  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-url.el (riece-url-regexp): Update the default value.

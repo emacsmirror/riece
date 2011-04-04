@@ -1,4 +1,4 @@
-;;; riece-mini.el --- use Riece only on the minibuffer
+;;; riece-mini.el --- use Riece only on the minibuffer -*- lexical-binding: t -*-
 ;; Copyright (C) 2003 OHASHI Akira
 
 ;; Author: OHASHI Akira <bg66@koka-in.org>

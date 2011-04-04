@@ -1,4 +1,4 @@
-;;; riece-rdcc.el --- DCC file sending protocol support (written in Ruby)
+;;; riece-rdcc.el --- DCC file sending protocol support (written in Ruby) -*- lexical-binding: t -*-
 ;; Copyright (C) 1998-2003 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>
@@ -117,7 +117,7 @@ end
 (defvar jka-compr-compression-info-list)
 (defvar jam-zcat-filename-list)
 
-(defun riece-rdcc-output-handler (name output time)
+(defun riece-rdcc-output-handler (name output _time)
   (if (string-match "\\([0-9]+\\) \\([0-9]+\\)" output)
       (let ((address (match-string 1 output))
 	    (port (match-string 2 output)))
@@ -131,7 +131,7 @@ end
 		 (riece-ruby-property name 'riece-rdcc-request-size)))))
   (riece-ruby-set-output-handler name #'riece-rdcc-output-handler-2))
 
-(defun riece-rdcc-output-handler-2 (name output time)
+(defun riece-rdcc-output-handler-2 (name output _time)
   (message (riece-mcat "Sending %s...(%s/%d)")
 	   (riece-ruby-property name 'riece-rdcc-request-file)
 	   (string-to-number output)
@@ -195,7 +195,7 @@ end
     (if (= riece-rdcc-received-size riece-rdcc-request-size)
 	(set-process-filter process nil))))
 
-(defun riece-rdcc-sentinel (process status)
+(defun riece-rdcc-sentinel (process _status)
   (with-current-buffer (process-buffer process)
     (unless (= riece-rdcc-received-size riece-rdcc-request-size)
       (error "Premature end of file"))

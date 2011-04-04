@@ -1,4 +1,4 @@
-;;; riece-biff.el --- be notified if messages arrives
+;;; riece-biff.el --- be notified if messages arrives -*- lexical-binding: t -*-
 ;; Copyright (C) 2004 OHASHI Akira
 
 ;; Author: OHASHI Akira <bg66@koka-in.org>
@@ -65,7 +65,7 @@
 		      riece-biff-check-channels))
       (setq riece-biff-mode-string 'riece-biff-biff-mode-string))))
 
-(defun riece-biff-clear (&optional dummy)
+(defun riece-biff-clear (&optional _dummy)
   (when (get 'riece-biff 'riece-addon-enabled)
     (setq riece-biff-mode-string 'riece-biff-default-mode-string)))
 

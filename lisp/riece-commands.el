@@ -1,4 +1,4 @@
-;;; riece-commands.el --- commands available in command buffer
+;;; riece-commands.el --- commands available in command buffer -*- lexical-binding: t -*-
 ;; Copyright (C) 1998-2003 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>
@@ -308,6 +308,8 @@ the layout to the selected layout-name."
 			"Really want to query LIST without argument? ")))
       (riece-send-string (format "LIST %s\r\n" pattern))))
 
+(defvar riece-temp-minibuffer-message)
+(defvar riece-overriding-server-name)
 (defun riece-command-change-mode (channel change)
   (interactive
    (let* ((completion-ignore-case t)
@@ -341,7 +343,7 @@ the layout to the selected layout-name."
 			       (riece-identity-prefix channel)
 			       change))))
 
-(defun riece-command-set-operators (users &optional arg)
+(defun riece-command-set-operators (users)
   (interactive
    (progn
      (riece-check-channel-commands-are-usable t)
@@ -376,7 +378,7 @@ the layout to the selected layout-name."
 		 (mapconcat #'identity (nreverse group) " ")))
 	(setq group nil)))))
 
-(defun riece-command-set-speakers (users &optional arg)
+(defun riece-command-set-speakers (users)
   (interactive
    (progn
      (riece-check-channel-commands-are-usable t)

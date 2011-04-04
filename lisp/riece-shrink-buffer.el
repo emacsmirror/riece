@@ -1,4 +1,4 @@
-;;; riece-shrink-buffer.el --- free old IRC messages to save memory usage
+;;; riece-shrink-buffer.el --- free old IRC messages to save memory usage -*- lexical-binding: t -*-
 ;; Copyright (C) 1998-2005 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>

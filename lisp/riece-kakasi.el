@@ -1,4 +1,4 @@
-;;; riece-kakasi.el --- convert Japanese to roman string by KAKASI
+;;; riece-kakasi.el --- convert Japanese to roman string by KAKASI -*- lexical-binding: t -*-
 ;; Copyright (C) 1998-2004 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>

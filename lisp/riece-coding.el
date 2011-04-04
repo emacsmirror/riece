@@ -1,4 +1,4 @@
-;;; riece-coding.el --- converting string with coding system
+;;; riece-coding.el --- converting string with coding system -*- lexical-binding: t -*-
 ;; Copyright (C) 1998-2003 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>

@@ -1,4 +1,4 @@
-;;; riece-keyword.el --- detect keywords in IRC buffers
+;;; riece-keyword.el --- detect keywords in IRC buffers -*- lexical-binding: t -*-
 ;; Copyright (C) 1998-2003 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>
@@ -48,7 +48,8 @@
   :group 'riece-keyword)
 
 (make-obsolete-variable 'riece-notify-keyword-functions
-			'riece-keyword-notify-functions)
+			'riece-keyword-notify-functions
+			"2003-12-22")
 
 (defcustom riece-keyword-notify-functions nil
   "Functions used to notify keyword match.

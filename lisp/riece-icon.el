@@ -1,4 +1,4 @@
-;;; riece-icon.el --- display icons in IRC buffers
+;;; riece-icon.el --- display icons in IRC buffers -*- lexical-binding: t -*-
 ;; Copyright (C) 1998-2003 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>
@@ -195,7 +195,7 @@ static char * a_xpm[] = {
       (defun riece-icon-make-image (data string)
 	(make-glyph (list (vector 'xpm :data data)
 			  (vector 'string :data string))))
-    (defun riece-icon-make-image (data string)
+    (defun riece-icon-make-image (data _string)
       (create-image data 'xpm t :ascent 'center))))
 
 (defun riece-icon-make-images (alist)
@@ -210,7 +210,7 @@ static char * a_xpm[] = {
   (if (featurep 'xemacs)
       (defun riece-icon-add-image-region (image start end)
 	(map-extents
-	 (lambda (extent ignore)
+	 (lambda (extent _ignore)
 	   (if (or (extent-property extent 'riece-icon-user-list-extent)
 		   (extent-property extent 'riece-icon-user-list-annotation))
 	       (delete-extent extent)))

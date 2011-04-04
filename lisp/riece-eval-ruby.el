@@ -1,4 +1,4 @@
-;;; riece-eval-ruby.el --- evaluate input string as a Ruby program
+;;; riece-eval-ruby.el --- evaluate input string as a Ruby program -*- lexical-binding: t -*-
 ;; Copyright (C) 1998-2005 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>

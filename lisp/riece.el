@@ -1,4 +1,4 @@
-;;; riece.el --- IRC client for Emacsen
+;;; riece.el --- IRC client for Emacsen -*- lexical-binding: t -*-
 ;; Copyright (C) 1998-2003 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>
@@ -245,6 +245,7 @@ If optional argument SAFE is nil, overwrite previous definitions."
 
 (defvar print-quoted)
 (defvar print-escape-multibyte)
+(defvar print-readably)
 (defun riece-save-variables-files ()
   "Save current settings to `riece-saved-variables-file'."
   (message (riece-mcat "Saving %s...") riece-saved-variables-file)

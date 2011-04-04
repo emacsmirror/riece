@@ -1,4 +1,4 @@
-;;; riece-url.el --- collect URL in IRC buffers
+;;; riece-url.el --- collect URL in IRC buffers -*- lexical-binding: t -*-
 ;; Copyright (C) 1998-2003 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>
@@ -129,7 +129,7 @@ This maps a string \"Bug#12345\" to a URL
 			  (mapcar #'list riece-urls))))
   (browse-url url))
 
-(defun riece-url-create-menu (menu)
+(defun riece-url-create-menu (_menu)
   (mapcar (lambda (url)
 	    (vector url (list 'browse-url url)))
 	  riece-urls))

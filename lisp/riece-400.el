@@ -1,4 +1,4 @@
-;;; riece-400.el --- handlers for 400 replies
+;;; riece-400.el --- handlers for 400 replies -*- lexical-binding: t -*-
 ;; Copyright (C) 1998-2003 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>
@@ -42,7 +42,7 @@
     (quit
      (ignore (message "%s" (concat prompt "Quit"))))))
 
-(defun riece-handle-432-message (prefix number name string)
+(defun riece-handle-432-message (_prefix _number _name string)
   "ERR_ERRONEUSNICKNAME	\"<nick> :Erroneous nickname\"."
   (let ((nickname
 	 (riece-handle-read-string
@@ -51,7 +51,7 @@
     (if nickname
 	(riece-send-string (format "NICK %s\r\n" nickname)))))
 
-(defun riece-handle-433-message (prefix number name string)
+(defun riece-handle-433-message (_prefix _number _name string)
   "ERR_NICKNAMEINUSE \"<nick> :Nickname is already in use\"."
   (let ((nickname
 	 (riece-handle-read-string
@@ -60,12 +60,12 @@
     (if nickname
 	(riece-send-string (format "NICK %s\r\n" nickname)))))
 
-(defun riece-handle-464-message (prefix number name string)
+(defun riece-handle-464-message (prefix _number _name _string)
   "ERR_PASSWDMISMATCH \":Password incorrect\"."
   (message (riece-mcat "Password incorrect from %s.") prefix)
   (setq riece-reconnect-with-password t))
 
-(defun riece-handle-475-message (prefix number name string)
+(defun riece-handle-475-message (_prefix _number _name string)
   "ERR_BADCHANNELKEY \"<channel> :Cannot join channel (+k)\"."
   (let* ((parameters (riece-split-parameters string))
 	 (channel-identity (riece-make-identity (car parameters)

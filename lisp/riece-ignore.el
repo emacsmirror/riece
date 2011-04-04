@@ -1,4 +1,4 @@
-;;; riece-ignore.el --- ignore messages from some users
+;;; riece-ignore.el --- ignore messages from some users -*- lexical-binding: t -*-
 ;; Copyright (C) 1998-2004 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>
@@ -64,7 +64,7 @@ Otherwise, they are not removed from IRC buffers, but are hidden with
   "Ignore messages from some users.")
 (defvar riece-ignored-user-list nil)
 
-(defun riece-ignore-user-rename-signal-function (signal handback)
+(defun riece-ignore-user-rename-signal-function (signal _handback)
   (let ((pointer (riece-identity-member (car (riece-signal-args signal))
 					riece-ignored-user-list)))
     (if pointer

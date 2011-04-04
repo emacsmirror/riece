@@ -1,4 +1,4 @@
-;;; riece-button.el --- display useful buttons in IRC buffers
+;;; riece-button.el --- display useful buttons in IRC buffers -*- lexical-binding: t -*-
 ;; Copyright (C) 1998-2003 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>
@@ -56,7 +56,7 @@
   "A channel button."
   :action 'riece-button-switch-to-identity
   :help-echo
-  (lambda (widget/window &optional overlay pos)
+  (lambda (widget/window &optional overlay _pos)
     ;; Needed to properly clear the message due to a bug in
     ;; wid-edit (XEmacs only).
     (if (boundp 'help-echo-owns-message)
@@ -71,7 +71,7 @@
 		   (widget-value (widget-at (riece-overlay-start overlay))))
 	       (widget-value widget/window))))))
 
-(defun riece-button-switch-to-identity (widget &optional event)
+(defun riece-button-switch-to-identity (widget &optional _event)
   "Switch to identity stored in WIDGET.
 This function is used as a callback for a channel button."
   (let ((channel (widget-value widget)))
@@ -142,7 +142,7 @@ This function is used as a callback for a channel button."
 	  (riece-scan-property-region
 	   'riece-identity
 	   (region-beginning) (region-end)
-	   (lambda (start end)
+	   (lambda (start _end)
 	     (setq group (cons (get-text-property start 'riece-identity)
 			       group)))))
       (setq group (list (get-text-property (point) 'riece-identity))))
@@ -170,7 +170,7 @@ This function is used as a callback for a channel button."
 	  (riece-scan-property-region
 	   'riece-identity
 	   (region-beginning) (region-end)
-	   (lambda (start end)
+	   (lambda (start _end)
 	     (setq group (cons (get-text-property start 'riece-identity)
 			       group)))))
       (setq group (list (get-text-property (point) 'riece-identity))))
@@ -303,7 +303,7 @@ This function is used as a callback for a channel button."
 	;; On XEmacs, BUFFER arg of widget-map-buttons is ignored.
 	(set-buffer (car pointer))
 	(widget-map-buttons
-	 (lambda (widget maparg)
+	 (lambda (widget _maparg)
 	   (widget-leave-text widget)))
 	(setq pointer (cdr pointer))))))
 

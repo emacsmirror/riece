@@ -1,4 +1,4 @@
-(defun riece-insert-struct-template (prefix struct)
+(defun riece-insert-struct-template (prefix struct) -*- lexical-binding: t -*-
   (interactive "sPrefix: \nsStruct: ")
   (let (attributes
 	optional-attributes

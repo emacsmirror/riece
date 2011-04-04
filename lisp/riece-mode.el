@@ -1,4 +1,4 @@
-;;; riece-mode.el --- functions for manipulating channel/user modes
+;;; riece-mode.el --- functions for manipulating channel/user modes -*- lexical-binding: t -*-
 ;; Copyright (C) 1998-2003 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>

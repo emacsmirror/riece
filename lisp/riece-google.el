@@ -1,4 +1,4 @@
-;;; riece-google.el --- search keywords by Google
+;;; riece-google.el --- search keywords by Google -*- lexical-binding: t -*-
 ;; Copyright (C) 2005 OHASHI Akira
 
 ;; Author: OHASHI Akira <bg66@koka-in.org>
@@ -210,7 +210,7 @@ end
 				  (buffer-substring (point-min) (point)))
 	(delete-region (point-min) (progn (beginning-of-line 2) (point)))))))
 
-(defun riece-google-sentinel (process string)
+(defun riece-google-sentinel (process _string)
   (delete-process process))
 
 (defun riece-google-send-string (target message)

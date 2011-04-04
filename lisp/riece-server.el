@@ -1,4 +1,4 @@
-;;; riece-server.el --- functions to open and close servers
+;;; riece-server.el --- functions to open and close servers -*- lexical-binding: t -*-
 ;; Copyright (C) 1998-2003 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>

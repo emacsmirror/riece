@@ -1,4 +1,4 @@
-;;; riece-naming.el --- toplevel naming management
+;;; riece-naming.el --- toplevel naming management -*- lexical-binding: t -*-
 ;; Copyright (C) 1998-2003 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>

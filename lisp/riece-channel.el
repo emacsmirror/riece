@@ -1,4 +1,4 @@
-;;; riece-channel.el --- a channel object
+;;; riece-channel.el --- a channel object -*- lexical-binding: t -*-
 ;; Copyright (C) 1998-2003 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>
@@ -52,7 +52,7 @@
 Arguments are appropriate to channel users, topic, modes, banned
 users, invited users, uninvited users, and the channel key,
 respectively."
-  (vector users topic modes banned invited uninvited))
+  (vector users topic modes banned invited uninvited key))
 
 (defun riece-get-channel (name)
   (let ((symbol (intern-soft (riece-identity-canonicalize-prefix name)

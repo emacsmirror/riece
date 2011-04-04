@@ -1,4 +1,4 @@
-;;; riece-500.el --- handlers for 500 replies
+;;; riece-500.el --- handlers for 500 replies -*- lexical-binding: t -*-
 ;; Copyright (C) 1998-2003 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>

@@ -1,4 +1,4 @@
-;;; riece-xface.el --- display X-Face in IRC buffers
+;;; riece-xface.el --- display X-Face in IRC buffers -*- lexical-binding: t -*-
 ;; Copyright (C) 1998-2003 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>

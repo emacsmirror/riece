@@ -1,4 +1,4 @@
-;;; riece-mcat.el --- message catalog for Japanese -*- coding: iso-2022-jp -*-
+;;; riece-mcat.el --- message catalog for Japanese -*- coding: iso-2022-jp -*- -*- lexical-binding: t -*-
 ;; Copyright (C) 2007 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>

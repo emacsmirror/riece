@@ -1,4 +1,4 @@
-;;; riece-emacs.el --- FSF Emacs specific functions
+;;; riece-emacs.el --- FSF Emacs specific functions -*- lexical-binding: t -*-
 ;; Copyright (C) 1999 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>
@@ -48,7 +48,7 @@
 	     (car (last (symbol-function function)))
 	   function)))))
 
-(defun riece-popup-menu-popup (menu event)
+(defun riece-popup-menu-popup (menu _event)
   (let ((function (riece-popup-menu-bogus-filter-constructor menu)))
     (if function
 	(funcall function))))

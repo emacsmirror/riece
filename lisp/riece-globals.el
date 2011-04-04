@@ -1,4 +1,4 @@
-;;; riece-globals.el --- global variables and constants.
+;;; riece-globals.el --- global variables and constants. -*- lexical-binding: t -*-
 ;; Copyright (C) 1998-2003 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>

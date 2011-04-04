@@ -1,4 +1,4 @@
-;;; riece-desktop-notify.el --- Display notification to desktop
+;;; riece-desktop-notify.el --- Display notification to desktop -*- lexical-binding: t -*-
 ;; Copyright (C) 2009 OHASHI Akira
 
 ;; Author: OHASHI Akira <bg66@koka-in.org>
@@ -145,7 +145,7 @@ This function must have only one message object as argument."
 		  (symbol-name riece-desktop-notify-type)
 		  (symbol-name symbol))))
 
-(defun riece-desktop-notify-keyword-notify-function (keyword message)
+(defun riece-desktop-notify-keyword-notify-function (_keyword message)
   (let ((program-symbol (riece-desktop-notify-make-symbol 'program))
 	(args-symbol (riece-desktop-notify-make-symbol 'args)))
     (when (and (boundp program-symbol) (boundp args-symbol))

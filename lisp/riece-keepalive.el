@@ -1,4 +1,4 @@
-;;; riece-keepalive.el --- keep an IRC connection
+;;; riece-keepalive.el --- keep an IRC connection -*- lexical-binding: t -*-
 ;; Copyright (C) 1998-2004 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>

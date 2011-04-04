@@ -1,4 +1,4 @@
-;;; riece-display.el --- buffer arrangement
+;;; riece-display.el --- buffer arrangement -*- lexical-binding: t -*-
 ;; Copyright (C) 1998-2003 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>
@@ -51,13 +51,13 @@ Local to the buffer in `riece-buffer-list'.")
 (defun riece-display-connect-signals ()
   (riece-connect-signal
    'channel-list-changed
-   (lambda (signal handback)
+   (lambda (_signal _handback)
      (with-current-buffer riece-channel-list-buffer
        (run-hooks 'riece-update-buffer-functions))
      (riece-update-channel-list-indicator)))
   (riece-connect-signal
    'user-list-changed
-   (lambda (signal handback)
+   (lambda (_signal _handback)
      (with-current-buffer riece-user-list-buffer
        (run-hooks 'riece-update-buffer-functions)))
    (lambda (signal)
@@ -66,7 +66,7 @@ Local to the buffer in `riece-buffer-list'.")
 				riece-current-channel))))
   (riece-connect-signal
    'channel-switched
-   (lambda (signal handback)
+   (lambda (_signal _handback)
      (riece-update-status-indicators)
      (riece-update-channel-status-indicator)
      (riece-update-channel-indicator)
@@ -78,7 +78,7 @@ Local to the buffer in `riece-buffer-list'.")
        (riece-redraw-layout))))
   (riece-connect-signal
    'user-joined-channel
-   (lambda (signal handback)
+   (lambda (_signal _handback)
      (riece-emit-signal 'user-list-changed riece-current-channel))
    (lambda (signal)
      (and riece-current-channel
@@ -88,7 +88,7 @@ Local to the buffer in `riece-buffer-list'.")
 				     (riece-current-nickname))))))
   (riece-connect-signal
    'user-joined-channel
-   (lambda (signal handback)
+   (lambda (signal _handback)
      (riece-join-channel (nth 1 (riece-signal-args signal)))
      (riece-switch-to-channel (nth 1 (riece-signal-args signal)))
      (setq riece-join-channel-candidate nil))
@@ -97,7 +97,7 @@ Local to the buffer in `riece-buffer-list'.")
 			   (riece-current-nickname))))
   (riece-connect-signal
    'user-left-channel
-   (lambda (signal handback)
+   (lambda (_signal _handback)
      (riece-emit-signal 'user-list-changed riece-current-channel))
    (lambda (signal)
      (and riece-current-channel
@@ -107,14 +107,14 @@ Local to the buffer in `riece-buffer-list'.")
 				     (riece-current-nickname))))))
   (riece-connect-signal
    'user-left-channel
-   (lambda (signal handback)
+   (lambda (signal _handback)
      (riece-part-channel (nth 1 (riece-signal-args signal))))
    (lambda (signal)
      (riece-identity-equal (car (riece-signal-args signal))
 			   (riece-current-nickname))))
   (riece-connect-signal
    'user-renamed
-   (lambda (signal handback)
+   (lambda (_signal _handback)
      (riece-emit-signal 'user-list-changed riece-current-channel))
    (lambda (signal)
      (and riece-current-channel
@@ -131,7 +131,7 @@ Local to the buffer in `riece-buffer-list'.")
 	       t))))))
   (riece-connect-signal
    'user-renamed
-   (lambda (signal handback)
+   (lambda (_signal _handback)
      (riece-update-status-indicators)
      (riece-update-channel-indicator)
      (force-mode-line-update t))
@@ -140,7 +140,7 @@ Local to the buffer in `riece-buffer-list'.")
 			   (riece-current-nickname))))
   (riece-connect-signal
    'user-renamed
-   (lambda (signal handback)
+   (lambda (signal _handback)
      (riece-switch-to-channel (nth 1 (riece-signal-args signal))))
    (lambda (signal)
      (and riece-current-channel
@@ -148,7 +148,7 @@ Local to the buffer in `riece-buffer-list'.")
 				riece-current-channel))))
   (riece-connect-signal
    'user-renamed
-   (lambda (signal handback)
+   (lambda (signal _handback)
      (let* ((old-identity (car (riece-signal-args signal)))
 	    (new-identity (nth 1 (riece-signal-args signal)))
 	    (pointer (riece-identity-member old-identity
@@ -165,7 +165,7 @@ Local to the buffer in `riece-buffer-list'.")
 			     riece-channel-buffer-alist))))))))
   (riece-connect-signal
    'user-away-changed
-   (lambda (signal handback)
+   (lambda (_signal _handback)
      (riece-update-status-indicators)
      (force-mode-line-update t))
    (lambda (signal)
@@ -173,7 +173,7 @@ Local to the buffer in `riece-buffer-list'.")
 			   (riece-current-nickname))))
   (riece-connect-signal
    'user-operator-changed
-   (lambda (signal handback)
+   (lambda (_signal _handback)
      (riece-update-status-indicators)
      (force-mode-line-update t))
    (lambda (signal)
@@ -181,7 +181,7 @@ Local to the buffer in `riece-buffer-list'.")
 			   (riece-current-nickname))))
   (riece-connect-signal
    'channel-topic-changed
-   (lambda (signal handback)
+   (lambda (_signal _handback)
      (riece-update-long-channel-indicator)
      (force-mode-line-update t))
    (lambda (signal)
@@ -190,7 +190,7 @@ Local to the buffer in `riece-buffer-list'.")
 				riece-current-channel))))
   (riece-connect-signal
    'channel-modes-changed
-   (lambda (signal handback)
+   (lambda (_signal _handback)
      (riece-update-long-channel-indicator)
      (force-mode-line-update t))
    (lambda (signal)
@@ -199,7 +199,7 @@ Local to the buffer in `riece-buffer-list'.")
 				riece-current-channel))))
   (riece-connect-signal
    'channel-operators-changed
-   (lambda (signal handback)
+   (lambda (_signal _handback)
      (riece-update-channel-status-indicator)
      (riece-emit-signal 'user-list-changed riece-current-channel))
    (lambda (signal)
@@ -208,7 +208,7 @@ Local to the buffer in `riece-buffer-list'.")
 				riece-current-channel))))
   (riece-connect-signal
    'channel-speakers-changed
-   (lambda (signal handback)
+   (lambda (_signal _handback)
      (riece-update-channel-status-indicator)
      (riece-emit-signal 'user-list-changed riece-current-channel))
    (lambda (signal)
@@ -217,7 +217,7 @@ Local to the buffer in `riece-buffer-list'.")
 				riece-current-channel))))
   (riece-connect-signal
    'buffer-freeze-changed
-   (lambda (signal handback)
+   (lambda (_signal _handback)
      (riece-update-status-indicators)
      (force-mode-line-update t))))
 

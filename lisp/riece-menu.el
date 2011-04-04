@@ -1,4 +1,4 @@
-;;; riece-menu.el --- setup menus
+;;; riece-menu.el --- setup menus -*- lexical-binding: t -*-
 ;; Copyright (C) 1998-2003 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>
@@ -87,13 +87,13 @@
 (defconst riece-menu-description
   "Setup Riece's command menus.")
 
-(defun riece-menu-create-layouts-menu (menu)
+(defun riece-menu-create-layouts-menu (_menu)
   (mapcar (lambda (entry)
 	    (vector (car entry) (list 'riece-command-change-layout (car entry))
 		    t))
 	  riece-layout-alist))
 
-(defun riece-menu-create-channels-menu (menu)
+(defun riece-menu-create-channels-menu (_menu)
   (delq nil
 	(mapcar (lambda (channel)
 		  (if channel
@@ -109,7 +109,7 @@
 					  (riece-identity-prefix channel)) t))))
 		riece-current-channels)))
 
-(defun riece-menu-create-servers-menu (menu)
+(defun riece-menu-create-servers-menu (_menu)
   (mapcar (lambda (entry)
 	    (list (car entry)
 		  (vector (riece-mcat "Open Server")

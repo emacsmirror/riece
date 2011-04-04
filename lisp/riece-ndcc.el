@@ -1,4 +1,4 @@
-;;; riece-ndcc.el --- DCC file sending protocol support (written in elisp)
+;;; riece-ndcc.el --- DCC file sending protocol support (written in elisp) -*- lexical-binding: t -*-
 ;; Copyright (C) 1998-2003 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>

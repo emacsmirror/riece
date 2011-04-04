@@ -1,4 +1,4 @@
-;;; riece-ruby.el --- interact with Ruby interpreter
+;;; riece-ruby.el --- interact with Ruby interpreter -*- lexical-binding: t -*-
 ;; Copyright (C) 1998-2005 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>
@@ -246,7 +246,7 @@ Use `riece-ruby-set-property' to set this variable.")
 	      (cons (list name (cons output time))
 		    riece-ruby-output-queue-alist))))))
 
-(defun riece-ruby-sentinel (process status)
+(defun riece-ruby-sentinel (process _status)
   (kill-buffer (process-buffer process)))
 
 (defun riece-ruby-execute (program)

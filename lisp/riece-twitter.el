@@ -1,4 +1,4 @@
-;;; riece-twitter.el --- post your status to Twitter
+;;; riece-twitter.el --- post your status to Twitter -*- lexical-binding: t -*-
 ;; Copyright (C) 2007 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>
@@ -87,7 +87,7 @@
 				 "-d" "source=riece"))))))
     (set-process-sentinel process #'riece-twitter-sentinel)))
 
-(defun riece-twitter-sentinel (process status)
+(defun riece-twitter-sentinel (_process status)
   (if (equal status "finished\n")
       (message "Sending to Twitter...done")
     (message "Sending to Twitter...failed: %s"

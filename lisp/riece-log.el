@@ -1,4 +1,4 @@
-;;; riece-log.el --- Save IRC logs
+;;; riece-log.el --- Save IRC logs -*- lexical-binding: t -*-
 ;; Copyright (C) 2003 OHASHI Akira
 ;; Copyright (C) 2004 Daiki Ueno
 

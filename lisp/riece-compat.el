@@ -1,4 +1,4 @@
-;;; riece-compat.el --- compatibility functions
+;;; riece-compat.el --- compatibility functions -*- lexical-binding: t -*-
 ;; Copyright (C) 1998-2003 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>

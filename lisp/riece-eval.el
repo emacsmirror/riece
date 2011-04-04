@@ -1,4 +1,4 @@
-;;; riece-eval.el --- evaluate input string as an elisp form
+;;; riece-eval.el --- evaluate input string as an elisp form -*- lexical-binding: t -*-
 ;; Copyright (C) 2005 OHASHI Akira
 
 ;; Author: OHASHI Akira <bg66@koka-in.org>

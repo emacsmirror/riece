@@ -1,4 +1,4 @@
-;;; riece-ctlseq.el --- mark up control sequences in IRC buffers
+;;; riece-ctlseq.el --- mark up control sequences in IRC buffers -*- lexical-binding: t -*-
 ;; Copyright (C) 1998-2004 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>

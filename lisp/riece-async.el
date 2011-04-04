@@ -1,4 +1,4 @@
-;;; riece-async.el --- connect to IRC server via async proxy
+;;; riece-async.el --- connect to IRC server via async proxy -*- lexical-binding: t -*-
 ;; Copyright (C) 1998-2003 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>
@@ -68,7 +68,7 @@ assumed that the file is in the same directory of this file.")
   "Connect to IRC server via async proxy.")
 
 ;;;###autoload
-(defun riece-async-open-network-stream (name buffer host service)
+(defun riece-async-open-network-stream (name buffer _host _service)
   (let* (process-connection-type
 	 (process
 	  (apply #'start-process name buffer riece-ruby-command

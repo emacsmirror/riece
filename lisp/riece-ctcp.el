@@ -1,4 +1,4 @@
-;;; riece-ctcp.el --- CTCP (Client To Client Protocol) support
+;;; riece-ctcp.el --- CTCP (Client To Client Protocol) support -*- lexical-binding: t -*-
 ;; Copyright (C) 1998-2003 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>
@@ -91,7 +91,7 @@
 					     message)))
 	    t)))))
 
-(defun riece-handle-ctcp-version-request (prefix target string)
+(defun riece-handle-ctcp-version-request (prefix target _string)
   (let* ((target-identity (riece-make-identity target riece-server-name))
 	 (buffer (if (riece-channel-p target)
 		     (riece-channel-buffer target-identity)))
@@ -135,7 +135,7 @@
 	       (riece-format-identity target-identity t)))
       "\n"))))
 
-(defun riece-handle-ctcp-clientinfo-request (prefix target string)
+(defun riece-handle-ctcp-clientinfo-request (prefix target _string)
   (let* ((target-identity (riece-make-identity target riece-server-name))
 	 (buffer (if (riece-channel-p target)
 		     (riece-channel-buffer target-identity)))
@@ -187,10 +187,7 @@
      "\n")))
 
 (defun riece-handle-ctcp-action-request (prefix target string)
-  (let ((buffer (if (riece-channel-p target)
-		    (riece-channel-buffer (riece-make-identity
-					   target riece-server-name))))
-	(user (riece-prefix-nickname prefix)))
+  (let ((user (riece-prefix-nickname prefix)))
     (riece-display-message
      (riece-make-message (riece-make-identity user
 					      riece-server-name)
@@ -201,7 +198,7 @@
 			 (riece-identity-equal-no-server
 			  user riece-real-nickname)))))
 
-(defun riece-handle-ctcp-time-request (prefix target string)
+(defun riece-handle-ctcp-time-request (prefix target _string)
   (let* ((target-identity (riece-make-identity target riece-server-name))
 	 (buffer (if (riece-channel-p target)
 		     (riece-channel-buffer target-identity)))
@@ -255,7 +252,7 @@
 					     message)))
 	    t)))))
 
-(defun riece-handle-ctcp-version-response (prefix target string)
+(defun riece-handle-ctcp-version-response (prefix _target string)
   (riece-insert-change
    (list riece-dialogue-buffer riece-others-buffer)
    (concat
@@ -266,7 +263,7 @@
 	     string))
     "\n")))
 
-(defun riece-handle-ctcp-ping-response (prefix target string)
+(defun riece-handle-ctcp-ping-response (prefix _target _string)
   (let* ((now (current-time))
 	 (elapsed (+ (* 65536 (- (car now) (car riece-ctcp-ping-time)))
 		     (- (nth 1 now) (nth 1 riece-ctcp-ping-time)))))
@@ -280,7 +277,7 @@
 	       elapsed))
       "\n"))))
 
-(defun riece-handle-ctcp-clientinfo-response (prefix target string)
+(defun riece-handle-ctcp-clientinfo-response (prefix _target string)
   (riece-insert-change
    (list riece-dialogue-buffer riece-others-buffer)
    (concat
@@ -291,7 +288,7 @@
 	     string))
     "\n")))
 
-(defun riece-handle-ctcp-time-response (prefix target string)
+(defun riece-handle-ctcp-time-response (prefix _target string)
   (riece-insert-change
    (list riece-dialogue-buffer riece-others-buffer)
    (concat

@@ -1,4 +1,4 @@
-;;; riece-hangman.el --- allow channel members to play the hangman game
+;;; riece-hangman.el --- allow channel members to play the hangman game -*- lexical-binding: t -*-
 ;; Copyright (C) 1998-2004 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>

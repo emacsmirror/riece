@@ -1,4 +1,4 @@
-;;; riece-300.el --- handlers for 300 replies
+;;; riece-300.el --- handlers for 300 replies -*- lexical-binding: t -*-
 ;; Copyright (C) 1998-2003 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>
@@ -35,7 +35,7 @@
   (riece-default-handle-numeric-reply
    riece-info-prefix prefix number name string))
 
-(defun riece-handle-302-message (prefix number name string)
+(defun riece-handle-302-message (_prefix _number _name string)
   "RPL_USERHOST \":*1<reply> *( \" \" <reply> )\""
   (let ((replies (split-string (if (eq (aref string 0) ?:)
 				   (substring string 1)
@@ -76,7 +76,7 @@
 	      "\n"))))
       (setq replies (cdr replies)))))
 
-(defun riece-handle-303-message (prefix number name string)
+(defun riece-handle-303-message (_prefix _number _name string)
   (riece-insert-info
    (list riece-dialogue-buffer riece-others-buffer)
    (concat
@@ -94,7 +94,7 @@
 	      "")))
     "\n")))
 
-(defun riece-handle-301-message (prefix number name string)
+(defun riece-handle-301-message (_prefix _number _name string)
   (if (string-match (concat "^\\([^ ]+\\) :?") string)
       (let ((user (match-string 1 string))
 	    (message (substring string (match-end 0))))
@@ -113,21 +113,21 @@
 		   message))
 	  "\n")))))
 
-(defun riece-handle-305-message (prefix number name string)
+(defun riece-handle-305-message (_prefix _number _name _string)
   (riece-user-toggle-away riece-real-nickname nil)
   (riece-emit-signal 'user-away-changed
 		      (riece-make-identity riece-real-nickname
 					   riece-server-name)
 		      nil))
 
-(defun riece-handle-306-message (prefix number name string)
+(defun riece-handle-306-message (_prefix _number _name _string)
   (riece-user-toggle-away riece-real-nickname t)
   (riece-emit-signal 'user-away-changed
 		     (riece-make-identity riece-real-nickname
 					  riece-server-name)
 		     t))
 
-(defun riece-handle-311-message (prefix number name string)
+(defun riece-handle-311-message (_prefix _number _name string)
   (if (string-match
        (concat "^\\([^ ]+\\) \\([^ ]+\\) \\([^ ]+\\) \\* :?")
        string)
@@ -147,7 +147,7 @@
 		   user-at-host))
 	  "\n")))))
 
-(defun riece-handle-312-message (prefix number name string)
+(defun riece-handle-312-message (_prefix _number _name string)
   (if (string-match
        (concat "^\\([^ ]+\\) \\([^ ]+\\) :?")
        string)
@@ -160,7 +160,7 @@
 		 (substring string (match-end 0))))
 	"\n"))))
 
-(defun riece-handle-313-message (prefix number name string)
+(defun riece-handle-313-message (_prefix _number _name string)
   (if (string-match "^[^ ]+" string)
       (let ((user (match-string 0 string)))
 	(riece-insert-info
@@ -173,7 +173,7 @@
 		    t)))
 	  "\n")))))
 
-(defun riece-handle-317-message (prefix number name string)
+(defun riece-handle-317-message (_prefix _number _name string)
   (if (string-match
        (concat "^\\([^ ]+\\) \\([0-9]+\\) ")
        string)
@@ -203,7 +203,7 @@
 			      " ")))
 	  "\n")))))
 
-(defun riece-handle-319-message (prefix number name string)
+(defun riece-handle-319-message (_prefix _number _name string)
   (if (string-match (concat "^\\([^ ]+\\) :?") string)
       (let ((user (match-string 1 string))
 	    (channels
@@ -231,7 +231,7 @@
 		   channels))
 	  "\n")))))
 
-(defun riece-handle-351-message (prefix number name string)
+(defun riece-handle-351-message (_prefix _number _name string)
   (if (string-match "\\([^ ]+\\.[^ ]+\\) \\([^ ]+\\) :?" string)
       (riece-insert-info
        (list riece-dialogue-buffer riece-others-buffer)
@@ -244,7 +244,7 @@
 	"\n"))))
 
 (defvar riece-353-message-alist nil)
-(defun riece-handle-353-message (prefix number name string)
+(defun riece-handle-353-message (_prefix _number _name string)
   "RPL_NAMREPLY	\"[=\*@] <channel> :[[@|+]<nick> [[@|+]<nick> [...]]]\"."
   (make-local-variable 'riece-353-message-alist)      
   (if (string-match "^[=\*@] *\\([^ ]+\\) +:?" string)
@@ -259,7 +259,7 @@
 			    (concat (substring string (match-end 0)) " "))
 		      riece-353-message-alist))))))
 
-(defun riece-handle-322-message (prefix number name decoded)
+(defun riece-handle-322-message (_prefix _number _name decoded)
   (let* ((parameters (riece-split-parameters (riece-decoded-string decoded)))
 	 (channel (car parameters))
 	 (visible (nth 1 parameters))
@@ -284,7 +284,7 @@
 	       (riece-format-identity channel-identity t) visible topic))
       "\n"))))
 
-(defun riece-handle-324-message (prefix number name string)
+(defun riece-handle-324-message (_prefix _number _name string)
   (if (string-match "^\\([^ ]+\\) \\([^ ]+\\) " string)
       (let* ((channel (match-string 1 string))
 	     (mode-string (match-string 2 string)))
@@ -307,7 +307,7 @@
 		     mode-string))
 	    "\n"))))))
 
-(defun riece-handle-set-topic (prefix number name decoded remove)
+(defun riece-handle-set-topic (_prefix _number _name decoded remove)
   (let* ((parameters (riece-split-parameters (riece-decoded-string decoded)))
 	 (channel (car parameters))
 	 topic
@@ -340,7 +340,7 @@
 (defun riece-handle-332-message (prefix number name string)
   (riece-handle-set-topic prefix number name string nil))
 
-(defun riece-handle-341-message (prefix number name string)
+(defun riece-handle-341-message (_prefix _number _name string)
   (if (string-match "^\\([^ ]+\\) " string)
       (let* ((channel (substring string (match-end 0)))
 	     (user (match-string 1 string))
@@ -358,7 +358,7 @@
 		   (riece-format-identity channel-identity t)))
 	  "\n")))))
 
-(defun riece-handle-352-message (prefix number name string)
+(defun riece-handle-352-message (_prefix _number _name string)
   (if (string-match "^\\([^ ]+\\) \\([^ ]+\\) \\([^ ]+\\) \\([^ ]+\\) \\([^ ]+\\) \\([HG]\\)\\(\\*\\)?\\([@+]\\)? :\\([0-9]+\\) " string)
       (let* ((channel (match-string 1 string))
 	     (user (match-string 2 string))
@@ -423,11 +423,11 @@
 	     info)))
 	  "\n")))))
 
-(defun riece-handle-315-message (prefix number name string))
-(defun riece-handle-318-message (prefix number name string))
-(defun riece-handle-323-message (prefix number name string))
+(defun riece-handle-315-message (_prefix _number _name _string))
+(defun riece-handle-318-message (_prefix _number _name _string))
+(defun riece-handle-323-message (_prefix _number _name _string))
 
-(defun riece-handle-366-message (prefix number name string)
+(defun riece-handle-366-message (_prefix _number _name string)
   "RPL_ENDOFNAMES \"<channel> :End of NAMES list\""
   (if (string-match "^\\([^ ]+\\) " string)
       (let* ((channel (match-string 1 string))

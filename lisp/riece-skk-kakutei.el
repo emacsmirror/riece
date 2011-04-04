@@ -1,4 +1,4 @@
-;;; riece-skk-kakutei.el --- remove SKK's preedit mark before sending messages
+;;; riece-skk-kakutei.el --- remove SKK's preedit mark before sending messages -*- lexical-binding: t -*-
 ;; Copyright (C) 2003 TAKAHASHI Kaoru
 
 ;; Author: TAKAHASHI Kaoru <kaoru@kaisei.org>

@@ -1,4 +1,4 @@
-;;; riece-message.el --- generate and display message line
+;;; riece-message.el --- generate and display message line -*- lexical-binding: t -*-
 ;; Copyright (C) 1999-2003 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>

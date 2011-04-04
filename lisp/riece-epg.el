@@ -1,4 +1,4 @@
-;;; riece-epg.el --- Encrypt/decrypt messages add-on
+;;; riece-epg.el --- Encrypt/decrypt messages add-on -*- lexical-binding: t -*-
 ;; Copyright (C) 2006 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>
@@ -191,7 +191,7 @@
 	    :notify #'riece-epg-encrypted-button-notify
 	    (get-text-property start 'riece-epg-encryption-target)))))))
 
-(defun riece-epg-encrypted-button-notify (widget &rest ignore)
+(defun riece-epg-encrypted-button-notify (widget &rest _ignore)
   (let* ((from (marker-position (widget-get widget :from)))
 	 (to (marker-position (widget-get widget :to)))
 	 (target (widget-get widget :value))

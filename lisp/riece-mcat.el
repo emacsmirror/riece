@@ -1,4 +1,4 @@
-;;; riece-mcat.el --- message catalog
+;;; riece-mcat.el --- message catalog -*- lexical-binding: t -*-
 ;; Copyright (C) 2007 Daiki Ueno
 
 ;; Author: Daiki Ueno <ueno@unixuser.org>
