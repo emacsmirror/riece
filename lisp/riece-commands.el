@@ -343,7 +343,7 @@ the layout to the selected layout-name."
 			       (riece-identity-prefix channel)
 			       change))))
 
-(defun riece-command-set-operators (users)
+(defun riece-command-set-operators (users &optional _arg)
   (interactive
    (progn
      (riece-check-channel-commands-are-usable t)
@@ -378,7 +378,7 @@ the layout to the selected layout-name."
 		 (mapconcat #'identity (nreverse group) " ")))
 	(setq group nil)))))
 
-(defun riece-command-set-speakers (users)
+(defun riece-command-set-speakers (users &optional _arg)
   (interactive
    (progn
      (riece-check-channel-commands-are-usable t)
