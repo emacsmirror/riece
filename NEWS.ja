@@ -1,3 +1,11 @@
+* Riece 8.0.0 の主な変更点
+
+** riece-url の URL 正規表現を拡張 (ueno)
+
+** lexical binding の使用 (ueno)
+
+** doc/ptexinfmt.el の更新 (kaoru)
+
 * Riece 7.0.3 の主な変更点
 
 ** チャンネルバッファにカーソルがある状態でのフリーズ動作の修正 (ueno)

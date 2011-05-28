@@ -1,3 +1,11 @@
+* Major changes in 8.0.0
+
+** Extend URL regexp used in riece-url (ueno)
+
+** Use lexical binding everywhere (ueno)
+
+** Update doc/ptexinfmt.el (kaoru)
+
 * Major changes in 7.0.3
 
 ** Fix freeze behavior when the cursor is on a channel buffer (ueno)
