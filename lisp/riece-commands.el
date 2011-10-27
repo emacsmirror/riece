@@ -113,9 +113,10 @@
 	(pointer riece-current-channels)
 	channels)
     (while pointer
-      (setq channels (riece-identity-assign-binding (car pointer) channels
-						    binding)
-	    pointer (cdr pointer)))
+      (if (car pointer)
+	  (setq channels (riece-identity-assign-binding (car pointer) channels
+							binding)))
+      (setq pointer (cdr pointer)))
     (setq riece-current-channels channels)
     (riece-emit-signal 'channel-list-changed)))
 
