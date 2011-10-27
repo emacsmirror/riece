@@ -102,6 +102,23 @@
 	  (riece-command-switch-to-channel channel)
 	(error "No such channel!")))))
 
+(defun riece-command-reorder-channels ()
+  "Reorder channel list."
+  (interactive)
+  (let ((binding (mapcar
+		  (lambda (channel)
+		    (if channel
+			(riece-parse-identity channel)))
+		  riece-default-channel-binding))
+	(pointer riece-current-channels)
+	channels)
+    (while pointer
+      (setq channels (riece-identity-assign-binding (car pointer) channels
+						    binding)
+	    pointer (cdr pointer)))
+    (setq riece-current-channels channels)
+    (riece-emit-signal 'channel-list-changed)))
+
 (defun riece-command-select-command-buffer ()
   "Select the command buffer."
   (interactive)
