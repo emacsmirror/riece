@@ -1,3 +1,10 @@
+2012-04-25  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-commands.el (riece-command-join): Allow multiple choices
+	using riece-completing-read-multiple.
+	* riece-mcat-japanese.el (riece-mcat-japanese-alist): Update
+	translation.
+
 2011-10-27  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-commands.el (riece-command-reorder-channels): New command.

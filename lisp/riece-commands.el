@@ -520,26 +520,35 @@ the layout to the selected layout-name."
       (riece-join-channel target)
       (riece-switch-to-channel target))))
 
-(defun riece-command-join (target)
+(defun riece-command-join (targets)
   (interactive
-   (let ((completion-ignore-case t))
+   (let ((completion-ignore-case t)
+	 (candidates (mapcar (lambda (channel)
+			       (list (riece-format-identity channel)))
+			     (delq nil (riece-get-identities-on-server
+					(riece-current-server-name)))))
+	 (default (if riece-join-channel-candidate
+		      (riece-format-identity
+		       riece-join-channel-candidate))))
      (list
-      (if riece-join-channel-candidate
-	  (let ((default (riece-format-identity
-			  riece-join-channel-candidate)))
-	    (riece-completing-read-identity
-	     (format (riece-mcat "Join channel/user (default %s): ") default)
-	     (riece-get-identities-on-server (riece-current-server-name))
-	     nil nil nil nil default))
-	(riece-completing-read-identity
-	 (riece-mcat "Join channel/user: ")
-	 (riece-get-identities-on-server (riece-current-server-name)))))))
-  (let ((pointer (riece-identity-member target riece-current-channels)))
-    (if pointer
+      (mapcar #'riece-parse-identity
+	      (riece-completing-read-multiple
+	       (if default
+		   (format (riece-mcat "Join channel/user (default %s)")
+			   default)
+		 (riece-mcat "Join channel/user"))
+	       candidates nil nil nil nil default)))))
+  (let (pointer)
+    (if (and (= (length targets) 1)
+	     (setq pointer (riece-identity-member (car targets)
+						  riece-current-channels)))
 	(riece-command-switch-to-channel (car pointer))
-      (if (riece-channel-p (riece-identity-prefix target))
-	  (riece-command-join-channel target nil)
-	(riece-command-join-partner target)))))
+      (setq pointer targets)
+      (while pointer
+	(if (riece-channel-p (riece-identity-prefix (car pointer)))
+	    (riece-command-join-channel (car pointer) nil)
+	  (riece-command-join-partner (car pointer)))
+	(setq pointer (cdr pointer))))))
 
 (defun riece-command-part-channel (target message)
   (unless (riece-server-opened (riece-identity-server target))
