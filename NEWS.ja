@@ -1,3 +1,10 @@
+* Riece 9.0.0 の主な変更点
+
+** チャンネルを並べ直すコマンドを追加 (ueno)
+   riece-command-reorder-channels の説明を参照
+
+** チャンネル参加時に複数のチャンネルを補完するようにした (ueno)
+
 * Riece 8.0.0 の主な変更点
 
 ** riece-url の URL 正規表現を拡張 (ueno)

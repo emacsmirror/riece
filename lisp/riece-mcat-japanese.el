@@ -149,7 +149,7 @@
     ("Mark channels where new messages arrived." . "新しいメッセージが届いたチャンネルをマーク")
     ("Mark up control sequences in IRC buffers." . "コントロールシーケンスによる色付け")
     ("Message to user: " . "ユーザへのメッセージ: ")
-    ("Message: " . "メッセージ")
+    ("Message: " . "メッセージ: ")
     ("Mode (? for help)" . "モード (ヘルプは ?)")
     ("Mode by %s: %s\n" . "%s によるモード設定: %s\n")
     ("Mode for %s: %s" . "%s のモード: %s")
