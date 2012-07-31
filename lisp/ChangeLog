@@ -1,3 +1,8 @@
+2012-07-31  Daiki Ueno  <ueno@unixuser.org>
+
+	* riece-commands.el (riece-command-open-server): Open the default
+	server if server-name is "".
+
 2012-04-25  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-commands.el (riece-command-join): Allow multiple choices

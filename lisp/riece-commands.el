@@ -778,7 +778,9 @@ If prefix argument ARG is non-nil, toggle frozen status."
   (if (riece-server-process server-name)
       (error "%s is already opened" server-name))
   (riece-open-server
-   (riece-server-name-to-server server-name)
+   (riece-server-name-to-server (if (equal server-name "")
+				    riece-server
+				  server-name))
    server-name))
 
 (defun riece-command-close-server (server-name &optional message)
