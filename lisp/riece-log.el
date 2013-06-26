@@ -100,8 +100,12 @@ It is created if there is at least one instance of Emacs running riece-log.")
 		  (or riece-log-coding-system
 		      (car (get-language-info current-language-environment
 					      'coding-system)))))
-	     (file (riece-log-make-file-name (riece-message-target message)
-					     coding-system-for-write))
+	     (file (riece-log-make-file-name
+		    (if (and (riece-message-private-p message)
+			     (not (riece-message-own-p message)))
+			(riece-message-speaker message)
+		      (riece-message-target message))
+		    coding-system-for-write))
 	     (file-name-coding-system 'no-conversion))
 	(unless (file-directory-p (file-name-directory file))
 	  (make-directory (file-name-directory file) t))
