@@ -141,69 +141,71 @@
       (if (and riece-gather-channel-modes
 	       (riece-identity-equal-no-server user riece-real-nickname))
 	  (riece-send-string (format "MODE %s\r\n" (car channels))))
-      (let* ((channel-identity (riece-make-identity (car channels)
-						    riece-server-name))
-	     (buffer (riece-channel-buffer channel-identity)))
-	(riece-insert-change
-	 buffer
-	 (format (riece-mcat "%s (%s) has joined %s\n")
-		 (riece-format-identity user-identity t)
-		 (riece-user-get-user-at-host user)
-		 (riece-format-identity channel-identity t)))
-	(riece-insert-change
-	 (if (and riece-channel-buffer-mode
-		  (not (eq buffer riece-channel-buffer)))
-	     (list riece-dialogue-buffer riece-others-buffer)
-	   riece-dialogue-buffer)
-	 (concat
-	  (riece-concat-server-name
-	   (format (riece-mcat "%s (%s) has joined %s")
+      (unless (memq 'joins riece-hide-joins-parts-quits)
+	(let* ((channel-identity (riece-make-identity (car channels)
+						      riece-server-name))
+	       (buffer (riece-channel-buffer channel-identity)))
+	  (riece-insert-change
+	   buffer
+	   (format (riece-mcat "%s (%s) has joined %s\n")
 		   (riece-format-identity user-identity t)
 		   (riece-user-get-user-at-host user)
 		   (riece-format-identity channel-identity t)))
-	  "\n")))
+	  (riece-insert-change
+	   (if (and riece-channel-buffer-mode
+		    (not (eq buffer riece-channel-buffer)))
+	       (list riece-dialogue-buffer riece-others-buffer)
+	     riece-dialogue-buffer)
+	   (concat
+	    (riece-concat-server-name
+	     (format (riece-mcat "%s (%s) has joined %s")
+		     (riece-format-identity user-identity t)
+		     (riece-user-get-user-at-host user)
+		     (riece-format-identity channel-identity t)))
+	    "\n"))))
       (setq channels (cdr channels)))))
 
 (defun riece-handle-part-message (prefix decoded)
-  (let* ((user (riece-prefix-nickname prefix))
-	 (parameters (riece-split-parameters (riece-decoded-string decoded)))
-	 ;; RFC2812 3.2.2 doesn't recommend server to send part
-	 ;; messages which contain multiple targets.
-	 (channels (split-string (car parameters) ","))
-	 (user-identity (riece-make-identity user riece-server-name)))
-    (while channels
-      (let* ((channel-identity (riece-make-identity (car channels)
-						    riece-server-name))
-	     (buffer (riece-channel-buffer channel-identity))
+  (unless (memq 'parts riece-hide-joins-parts-quits)
+    (let* ((user (riece-prefix-nickname prefix))
+	   (parameters (riece-split-parameters (riece-decoded-string decoded)))
+	   ;; RFC2812 3.2.2 doesn't recommend server to send part
+	   ;; messages which contain multiple targets.
+	   (channels (split-string (car parameters) ","))
+	   (user-identity (riece-make-identity user riece-server-name)))
+      (while channels
+	(let* ((channel-identity (riece-make-identity (car channels)
+						      riece-server-name))
+	       (buffer (riece-channel-buffer channel-identity))
+	       message)
+	  (setq parameters (riece-split-parameters
+			    (riece-decoded-string-for-identity decoded
+							       channel-identity))
+		message (nth 1 parameters))
+	  (riece-insert-change
+	   buffer
+	   (concat
+	    (riece-concat-message
+	     (format (riece-mcat "%s has left %s")
+		     (riece-format-identity user-identity t)
+		     (riece-format-identity channel-identity t))
 	     message)
-	(setq parameters (riece-split-parameters
-			  (riece-decoded-string-for-identity decoded
-							     channel-identity))
-	      message (nth 1 parameters))
-	(riece-insert-change
-	 buffer
-	 (concat
-	  (riece-concat-message
-	   (format (riece-mcat "%s has left %s")
-		   (riece-format-identity user-identity t)
-		   (riece-format-identity channel-identity t))
-	   message)
-	  "\n"))
-	(riece-insert-change
-	 (if (and riece-channel-buffer-mode
-		  (not (eq buffer riece-channel-buffer)))
-	     (list riece-dialogue-buffer riece-others-buffer)
-	   riece-dialogue-buffer)
-	 (concat
-	  (riece-concat-server-name
-	   (riece-concat-message
-	    (format (riece-mcat "%s has left %s")
-		    (riece-format-identity user-identity t)
-		    (riece-format-identity channel-identity t))
-	    message))
-	  "\n")))
-      (riece-naming-assert-part user (car channels))
-      (setq channels (cdr channels)))))
+	    "\n"))
+	  (riece-insert-change
+	   (if (and riece-channel-buffer-mode
+		    (not (eq buffer riece-channel-buffer)))
+	       (list riece-dialogue-buffer riece-others-buffer)
+	     riece-dialogue-buffer)
+	   (concat
+	    (riece-concat-server-name
+	     (riece-concat-message
+	      (format (riece-mcat "%s has left %s")
+		      (riece-format-identity user-identity t)
+		      (riece-format-identity channel-identity t))
+	      message))
+	    "\n")))
+	(riece-naming-assert-part user (car channels))
+	(setq channels (cdr channels))))))
 
 (defun riece-handle-kick-message (prefix decoded)
   (let* ((kicker (riece-prefix-nickname prefix))
@@ -259,32 +261,33 @@
     (while pointer
       (riece-naming-assert-part user (car pointer))
       (setq pointer (cdr pointer)))
-    (let ((buffers
-	   (delq nil (mapcar
-		      (lambda (channel)
-			(riece-channel-buffer (riece-make-identity
-					       channel riece-server-name)))
-		      channels))))
-      (riece-insert-change
-       buffers
-       (concat
-	(riece-concat-message
-	 (format (riece-mcat "%s has left IRC")
-		 (riece-format-identity user-identity t))
-	 message)
-	"\n"))
-      (riece-insert-change
-       (if (and riece-channel-buffer-mode
-		(not (memq riece-channel-buffer buffers)))
-	   (list riece-dialogue-buffer riece-others-buffer)
-	 riece-dialogue-buffer)
-       (concat
-	(riece-concat-server-name
-	 (riece-concat-message
-	  (format (riece-mcat "%s has left IRC")
-		  (riece-format-identity user-identity t))
-	  message))
-	"\n")))))
+    (unless (memq 'quits riece-hide-joins-parts-quits)
+      (let ((buffers
+	     (delq nil (mapcar
+			(lambda (channel)
+			  (riece-channel-buffer (riece-make-identity
+						 channel riece-server-name)))
+			channels))))
+	(riece-insert-change
+	 buffers
+	 (concat
+	  (riece-concat-message
+	   (format (riece-mcat "%s has left IRC")
+		   (riece-format-identity user-identity t))
+	   message)
+	  "\n"))
+	(riece-insert-change
+	 (if (and riece-channel-buffer-mode
+		  (not (memq riece-channel-buffer buffers)))
+	     (list riece-dialogue-buffer riece-others-buffer)
+	   riece-dialogue-buffer)
+	 (concat
+	  (riece-concat-server-name
+	   (riece-concat-message
+	    (format (riece-mcat "%s has left IRC")
+		    (riece-format-identity user-identity t))
+	    message))
+	  "\n"))))))
 
 (defun riece-handle-kill-message (prefix string)
   (let* ((killer (riece-prefix-nickname prefix))

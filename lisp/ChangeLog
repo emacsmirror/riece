@@ -1,3 +1,12 @@
+2014-04-01  Steve Youngs  <steve@sxemacs.org>
+
+	* riece-options.el (riece-hide-joins-parts-quits): New user
+	variable to control suppression of join/part/quit messages.
+
+	* riece-handle.el (riece-handle-join-message): Use it.
+	(riece-handle-part-message): Use it.
+	(riece-handle-quit-message): Use it.
+
 2013-06-26  Daiki Ueno  <ueno@unixuser.org>
 
 	* riece-log.el (riece-log-display-message-function): Use the same
