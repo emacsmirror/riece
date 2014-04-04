@@ -1,3 +1,15 @@
+2014-04-04  Steve Youngs  <steve@sxemacs.org>
+
+	* riece-options.el (riece-hide-list): Renamed from
+	`riece-hide-joins-parts-quits' which was an ugly name.
+
+	* riece-handle.el (riece-handle-join-message): Use renamed hide
+	var, don't hide our own joins.
+	(riece-handle-part-message): Use renamed hide var, don't hide our
+	own parts.
+	(riece-handle-quit-message): Use renamed hide var, don't hide our
+	own quits.
+
 2014-04-01  Steve Youngs  <steve@sxemacs.org>
 
 	* riece-options.el (riece-hide-joins-parts-quits): New user

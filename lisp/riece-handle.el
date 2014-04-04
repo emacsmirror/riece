@@ -141,7 +141,9 @@
       (if (and riece-gather-channel-modes
 	       (riece-identity-equal-no-server user riece-real-nickname))
 	  (riece-send-string (format "MODE %s\r\n" (car channels))))
-      (unless (memq 'joins riece-hide-joins-parts-quits)
+      (unless (and (memq 'joins riece-hide-list)
+		   (not (riece-identity-equal-no-server
+			 user riece-real-nickname)))
 	(let* ((channel-identity (riece-make-identity (car channels)
 						      riece-server-name))
 	       (buffer (riece-channel-buffer channel-identity)))
@@ -166,13 +168,15 @@
       (setq channels (cdr channels)))))
 
 (defun riece-handle-part-message (prefix decoded)
-  (unless (memq 'parts riece-hide-joins-parts-quits)
-    (let* ((user (riece-prefix-nickname prefix))
-	   (parameters (riece-split-parameters (riece-decoded-string decoded)))
-	   ;; RFC2812 3.2.2 doesn't recommend server to send part
-	   ;; messages which contain multiple targets.
-	   (channels (split-string (car parameters) ","))
-	   (user-identity (riece-make-identity user riece-server-name)))
+  (let* ((user (riece-prefix-nickname prefix))
+	 (parameters (riece-split-parameters (riece-decoded-string decoded)))
+	 ;; RFC2812 3.2.2 doesn't recommend server to send part
+	 ;; messages which contain multiple targets.
+	 (channels (split-string (car parameters) ","))
+	 (user-identity (riece-make-identity user riece-server-name)))
+    (unless (and (memq 'parts riece-hide-list)
+		 (not (riece-identity-equal-no-server
+		       user riece-real-nickname)))
       (while channels
 	(let* ((channel-identity (riece-make-identity (car channels)
 						      riece-server-name))
@@ -261,7 +265,9 @@
     (while pointer
       (riece-naming-assert-part user (car pointer))
       (setq pointer (cdr pointer)))
-    (unless (memq 'quits riece-hide-joins-parts-quits)
+    (unless (and (memq 'quits riece-hide-list)
+		 (not (riece-identity-equal-no-server
+		       user riece-real-nickname)))
       (let ((buffers
 	     (delq nil (mapcar
 			(lambda (channel)

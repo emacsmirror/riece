@@ -364,10 +364,11 @@ specifying the coding systems for decoding and encoding respectively."
   :type 'function
   :group 'riece-options)
 
-(defcustom riece-hide-joins-parts-quits '()
-  "Whether to hide join/part/quit messages.
+(defcustom riece-hide-list '()
+  "Whether to hide certain server messages.
 
-This should be a list of up to 3 symbols, namely: `joins', `parts',
+Currently supported are join, part, and quit messages.
+This is a list of up to 3 symbols, namely: `joins', `parts',
 `quits'."
   :type '(set (symbol :tag "Hide Joins" joins)
 	      (symbol :tag "Hide Parts" parts)
