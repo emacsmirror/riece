@@ -174,10 +174,10 @@
 	 ;; messages which contain multiple targets.
 	 (channels (split-string (car parameters) ","))
 	 (user-identity (riece-make-identity user riece-server-name)))
-    (unless (and (memq 'parts riece-hide-list)
-		 (not (riece-identity-equal-no-server
-		       user riece-real-nickname)))
-      (while channels
+    (while channels
+      (unless (and (memq 'parts riece-hide-list)
+		   (not (riece-identity-equal-no-server
+			 user riece-real-nickname)))
 	(let* ((channel-identity (riece-make-identity (car channels)
 						      riece-server-name))
 	       (buffer (riece-channel-buffer channel-identity))
@@ -207,9 +207,9 @@
 		      (riece-format-identity user-identity t)
 		      (riece-format-identity channel-identity t))
 	      message))
-	    "\n")))
-	(riece-naming-assert-part user (car channels))
-	(setq channels (cdr channels))))))
+	    "\n"))))
+      (riece-naming-assert-part user (car channels))
+      (setq channels (cdr channels)))))
 
 (defun riece-handle-kick-message (prefix decoded)
   (let* ((kicker (riece-prefix-nickname prefix))
