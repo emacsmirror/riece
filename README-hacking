@@ -1,10 +1,7 @@
--*- mode: text -*-
+-*- mode: outline -*-
 
 This document is for Riece developers or those who are interested in
-becoming a developer.
-
-The main topics explained here are the development process and the
-internals.
+the development.
 
 * Development process
 
@@ -13,21 +10,10 @@ internals.
 If you find a bug, please file it at
 https://savannah.nongnu.org/bugs/?group=riece
 
-** Contributing code
-
-If you write an add-on or a patch, send it to us.  If it is useful, we
-may incorporate it into the development source code.
-
 ** Getting the development source code
 
-The development of Riece uses Git.  The latest development version is
-available from git.sv.gnu.org.  
-
-NOTE: If you are a beginning user, who just wants to try the "newer"
-version, stick on the latest released version.  Pointless complaints
-about development versions are unwelcome to us.
-
-The instructions to obtain and build the source from Git are below.
+We currently use Git.  Follow the instructions below to build the
+development version.
 
 (1) checkout modules
 
@@ -35,11 +21,18 @@ The instructions to obtain and build the source from Git are below.
 
 (2) generate configure script
 
-    autoreconf -f -i -v
+    ./bootstrap
 
-Note that "autoreconf" is not "autoconf".
+(3) run the configure script
 
-* Internals
+    ./configure
+
+(4) build and install
+
+    make
+    make install
+
+* Source structure
 
 ** Modules
 

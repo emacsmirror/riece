@@ -1,3 +1,4 @@
+/build-aux
 COPYING
 INSTALL
 Makefile
@@ -35,3 +36,4 @@ lisp/custom-defines.el
 ++*
 ,,*
 =*
+/gitlog-to-changelog

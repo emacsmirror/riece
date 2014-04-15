@@ -1,5 +1,6 @@
 AC_INIT([riece], [9.0.0], [riece-discuss@nongnu.org])
 AC_CONFIG_SRCDIR([configure.ac])
+AC_CONFIG_AUX_DIR([build-aux])
 AC_PREREQ(2.63)
 AM_INIT_AUTOMAKE
 
