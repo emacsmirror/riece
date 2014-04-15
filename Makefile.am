@@ -18,11 +18,17 @@ ja_docs =					\
 	doc/ja/README				\
 	doc/ja/README-hacking
 
+BUILT_SOURCES = $(top_srcdir)/.version
+
 EXTRA_DIST =					\
 	$(ja_docs)				\
 	$(changelog_etc)			\
 	bootstrap				\
-	bootstrap.conf
+	bootstrap.conf				\
+	$(BUILT_SOURCES)
+
+$(top_srcdir)/.version:
+	echo $(VERSION) > $@-t && mv $@-t $@
 
 # Arrange so that .tarball-version appears only in the distribution
 # tarball, and never in a checked-out repository.

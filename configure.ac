@@ -1,7 +1,12 @@
-AC_INIT([riece], [9.0.0], [riece-discuss@nongnu.org])
+AC_PREREQ(2.63)
+
+AC_INIT([riece],
+	m4_esyscmd([build-aux/git-version-gen .tarball-version]),
+	[riece-discuss@nongnu.org])
+
 AC_CONFIG_SRCDIR([configure.ac])
 AC_CONFIG_AUX_DIR([build-aux])
-AC_PREREQ(2.63)
+
 AM_INIT_AUTOMAKE
 
 AC_CHECK_EMACS
