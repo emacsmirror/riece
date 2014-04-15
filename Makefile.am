@@ -13,12 +13,16 @@ changelog_etc =					\
 	lisp/ChangeLog-2014			\
 	lisp/ChangeLog.Liece
 
+ja_docs =					\
+	doc/ja/NEWS				\
+	doc/ja/README				\
+	doc/ja/README-hacking
+
 EXTRA_DIST =					\
-  README.ja					\
-  NEWS.ja					\
-  $(changelog_etc)				\
-  bootstrap					\
-  bootstrap.conf
+	$(ja_docs)				\
+	$(changelog_etc)			\
+	bootstrap				\
+	bootstrap.conf
 
 # Arrange so that .tarball-version appears only in the distribution
 # tarball, and never in a checked-out repository.
