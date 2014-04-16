@@ -36,4 +36,8 @@ lisp/custom-defines.el
 ++*
 ,,*
 =*
-/gitlog-to-changelog
+/ChangeLog
+/.version
+# We don't import Gnulib modules which use the following directories.
+/lib
+/m4
