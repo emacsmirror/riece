@@ -145,31 +145,38 @@ This function must have only one message object as argument."
 		  (symbol-name riece-desktop-notify-type)
 		  (symbol-name symbol))))
 
+(defvar riece-desktop-notify-last-message nil
+  "The previous message we have seen in
+`riece-desktop-notify-keyword-notify-function'.")
+
 (defun riece-desktop-notify-keyword-notify-function (_keyword message)
-  (let ((program-symbol (riece-desktop-notify-make-symbol 'program))
-	(args-symbol (riece-desktop-notify-make-symbol 'args)))
-    (when (and (boundp program-symbol) (boundp args-symbol))
-      (let ((program (eval program-symbol))
-	    (args (eval args-symbol)))
-	(when (fboundp 'executable-find)
-	  (setq program (executable-find program)))
-	(when (stringp program)
-	  (let ((title (funcall riece-desktop-notify-title-function message))
-		(message (funcall riece-desktop-notify-message-function
-				  message)))
-	    (condition-case nil
-		(apply #'call-process program nil nil nil
-		       (riece-desktop-notify-substitute-variables
-			args
-			(list (cons 'title
-				    (encode-coding-string
-				     title
-				     riece-desktop-notify-coding-system))
-			      (cons 'message
-				    (encode-coding-string
-				     message
-				     riece-desktop-notify-coding-system)))))
-	      (file-error nil))))))))
+  ;; Don't send notification multiple times for a single message.
+  (unless (eq riece-desktop-notify-last-message message)
+    (let ((program-symbol (riece-desktop-notify-make-symbol 'program))
+	  (args-symbol (riece-desktop-notify-make-symbol 'args)))
+      (when (and (boundp program-symbol) (boundp args-symbol))
+	(let ((program (eval program-symbol))
+	      (args (eval args-symbol)))
+	  (when (fboundp 'executable-find)
+	    (setq program (executable-find program)))
+	  (when (stringp program)
+	    (let ((title (funcall riece-desktop-notify-title-function message))
+		  (message (funcall riece-desktop-notify-message-function
+				    message)))
+	      (condition-case nil
+		  (apply #'call-process program nil 0 nil
+			 (riece-desktop-notify-substitute-variables
+			  args
+			  (list (cons 'title
+				      (encode-coding-string
+				       title
+				       riece-desktop-notify-coding-system))
+				(cons 'message
+				      (encode-coding-string
+				       message
+				       riece-desktop-notify-coding-system)))))
+		(file-error nil))))))))
+  (setq riece-desktop-notify-last-message message))
 
 (defun riece-desktop-notify-requires ()
   '(riece-keyword))
