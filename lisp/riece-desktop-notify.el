@@ -59,8 +59,10 @@
   :group 'riece)
 
 (defcustom riece-desktop-notify-title-function
-  '(lambda (message)
-     (riece-identity-prefix (riece-message-target message)))
+  #'(lambda (message)
+      (format "%s said in %s..."
+	      (riece-identity-prefix (riece-message-speaker message))
+	      (riece-identity-prefix (riece-message-target message))))
   "*The function which make title.
 This function must have only one message object as argument."
   :type 'function
