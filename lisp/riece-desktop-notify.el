@@ -79,6 +79,12 @@ This function must have only one message object as argument."
   :type 'coding-system
   :group 'riece-desktop-notify)
 
+(defcustom riece-desktop-notify-icon
+  (expand-file-name "riece-notify-icon.png" riece-data-directory)
+  "*Icon to display in desktop notifications."
+  :type '(file :must-match t)
+  :group 'riece-desktop-notify)
+
 (defcustom riece-desktop-notify-type
   (if (eq system-type 'linux) 'gnu/linux system-type)
   "*The type to notify desktop."
@@ -108,11 +114,13 @@ This function must have only one message object as argument."
   :type 'file
   :group 'riece-desktop-notify)
 
-(defcustom riece-desktop-notify-gnu/linux-args '("-u" "low" title message)
+(defcustom riece-desktop-notify-gnu/linux-args
+  '("-i" icon "-u" "low" title message)
   "*The Arguments to notify for GNU/Linux."
   :type '(repeat (radio (string :tag "Argument")
 			(const :tag "Title" title)
-			(const :tag "Message" message)))
+			(const :tag "Message" message)
+			(const :tag "Icon" icon)))
   :group 'riece-desktop-notify)
 
 ;; for Windows
@@ -176,7 +184,9 @@ This function must have only one message object as argument."
 				(cons 'message
 				      (encode-coding-string
 				       message
-				       riece-desktop-notify-coding-system)))))
+				       riece-desktop-notify-coding-system))
+				(cons 'icon
+				      riece-desktop-notify-icon))))
 		(file-error nil))))))))
   (setq riece-desktop-notify-last-message message))
 

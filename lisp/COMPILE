@@ -62,7 +62,8 @@
     "riece-command-configure-windows.xpm"
     "riece-command-list-addons.xpm"
     "riece-command-join.xpm"
-    "riece-command-part.xpm"))
+    "riece-command-part.xpm"
+    "riece-notify-icon.png"))
 
 (defvar riece-scripts
   '("server.rb"
