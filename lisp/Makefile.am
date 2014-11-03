@@ -39,11 +39,11 @@ elc:
 
 install: elc
 	$(EMACS) $(FLAGS) -l $(srcdir)/COMPILE -f riece-install \
-		$(srcdir) $(lispdir) # $(MAKE)
+		$(srcdir) $(DESTDIR)/$(lispdir) # $(MAKE)
 
 uninstall:
 	$(EMACS) $(FLAGS) -l $(srcdir)/COMPILE -f riece-uninstall \
-		$(lispdir)
+		$(DESTDIR)/$(lispdir)
 
 package:
 	$(XEMACS) $(FLAGS) -l $(srcdir)/COMPILE -f riece-compile-package \
