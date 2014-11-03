@@ -3,15 +3,22 @@
 (luna-define-class test-riece-log (lunit-test-case))
 
 (defun test-riece-log-delete-directory (directory)
-  (let ((file-name-coding-system 'no-conversion)
-	 (files (directory-files directory t nil t)))
-    (while files
-      (if (file-directory-p (car files))
-	  (unless (member (file-name-nondirectory (car files)) '("." ".."))
-	    (test-riece-log-delete-directory (car files)))
-	(delete-file (car files)))
-      (setq files (cdr files)))
-    (delete-directory directory)))
+  (condition-case nil
+      ;; delete-directory has an optional parameter RECURSIVE, since
+      ;; Emacs 23.2.
+      (delete-directory directory t)
+    (wrong-number-of-arguments
+     ;; FIXME: we could use this portable version always, but it
+     ;; doesn't work well with Emacs 23.
+     (let* ((file-name-coding-system 'no-conversion)
+	    (files (directory-files directory t nil t)))
+       (while files
+	 (if (file-directory-p (car files))
+	     (unless (member (file-name-nondirectory (car files)) '("." ".."))
+	       (test-riece-log-delete-directory (car files)))
+	   (delete-file (car files)))
+	 (setq files (cdr files)))
+       (delete-directory directory)))))
 
 (luna-define-method lunit-test-case-setup ((case test-riece-log))
   (setq riece-log-directory
