@@ -52,14 +52,48 @@
 
 (autoload 'bbdb-records "bbdb")
 (autoload 'bbdb-record-getprop "bbdb")
+(autoload 'bbdb-search "bbdb-com" nil nil 'macro)
 
 (defconst riece-xfaceb-description
   "Display X-Face & Colour Face images in IRC buffers \(BBDB\).")
+
+(defcustom riece-xfaceb-channels nil
+  "*If non-nil, faces are only added in channels in this list.
+
+You really want to set this to a list of small-ish channels that
+you're in because having it set globally can slow Emacs to a crawl,
+rendering it unusable if you're in some busy channels.
+
+`riece-xfaceb-addremove-channel' can be used to interactively add or
+remove the current channel to/from this list."
+  :type '(repeat string)
+  :group 'riece-looks)
 
 (defcustom riece-xfaceb-prefer-cface-to-xface (featurep 'png)
   "*When non-nil, display colour face images instead of X-Face."
   :type 'boolean
   :group 'riece-looks)
+
+(defun riece-xfaceb-addremove-channel (&optional remove)
+  "*Add the current channel to `riece-xfaceb-channels'.
+
+With optional argument, REMOVE, remove the current channel from the
+list."
+  (interactive "P")
+  (if (or current-prefix-arg remove)
+      ;; Remove channel.
+      (progn
+	(setq riece-xfaceb-channels
+	      (remove (riece-identity-prefix riece-current-channel)
+		      riece-xfaceb-channels))
+	(message "Channel: %s removed from riece-xfaceb channel list."
+		 (riece-identity-prefix riece-current-channel)))
+    ;; Add channel.
+    (add-to-list 'riece-xfaceb-channels
+		 (riece-identity-prefix riece-current-channel))
+    (message "Channel: %s added to riece-xfaceb channel list."
+	     (riece-identity-prefix riece-current-channel)))
+  (riece-emit-signal 'user-list-changed riece-current-channel))
 
 (defun riece-xfaceb-face-to-png (face)
   "Base64 decode a Face header into a PNG.
@@ -69,48 +103,61 @@ Returns a string."
     (base64-decode-region (point-min) (point-max))
     (buffer-string)))
 
+(defun riece-xfaceb-add-glyph (type extent data)
+  "Adds a cface or xface glyph to an extent.
+
+TYPE is a symbol, either `cface', or `xface'.
+EXTENT is the extent to add the glyph to.
+DATA is the image data from BBDB."
+  (cond
+   ((eq type 'cface)
+    (let ((glyph (riece-xfaceb-face-to-png data)))
+      (set-extent-begin-glyph
+       extent
+       (make-glyph `([png :data ,glyph])))))
+   ((eq type 'xface)
+    (let ((glyph (concat "X-Face: " data)))
+      (set-extent-begin-glyph
+       extent
+       (make-glyph `([xface :data ,glyph
+			    :foreground "black"
+			    :background "white"])))))
+   (t nil)))
+
 (defun riece-xfaceb-update-user-list-buffer ()
   "Add X-Face or Colour Face images to channel users' buffer."
-  (when (get 'riece-xfaceb 'riece-addon-enabled)
+  (when (and (get 'riece-xfaceb 'riece-addon-enabled)
+	     (or (null riece-xfaceb-channels)
+		 (member (riece-identity-prefix riece-current-channel)
+			 riece-xfaceb-channels)))
     (let ((users (ignore-errors 
 		   (riece-with-server-buffer
 		       (riece-identity-server riece-current-channel)
 		     (riece-channel-get-users (riece-identity-prefix
-					       riece-current-channel)))))
-	  all-records cface xface nick name record)
+					       riece-current-channel))))))
       (while users
-	(setq name (caar users))
-	(setq all-records (bbdb-records))
-	(while all-records
-	  (setq record (car all-records)
-		nick (bbdb-record-getprop record 'ircnick)
-		xface (bbdb-record-getprop record 'face)
-		cface (bbdb-record-getprop record 'cface))
-	  (when (and (equal nick name)
-		     (or xface cface))
+	(let* ((name (regexp-quote (caar users)))
+	       (str (cons 'ircnick name))
+	       (records (bbdb-search (bbdb-records) nil nil nil str nil))
+	       cface xface)
+	  (mapcar
+	   #'(lambda (record)
+	       (setq xface (bbdb-record-getprop record 'face))
+	       (setq cface (bbdb-record-getprop record 'cface)))
+	   records)
+	  (when (or cface xface)
 	    (with-current-buffer riece-user-list-buffer
 	      (goto-char (point-min))
 	      (re-search-forward (regexp-quote name) nil t)
 	      (beginning-of-line)
-	      (when (and xface
-			 (or (not riece-xfaceb-prefer-cface-to-xface)
-			     (not cface)))
-		(set-extent-begin-glyph
-		 (extent-at (point))
-		 (make-glyph (list (vector 'xface
-					   :data (concat "X-Face: " xface)
-					   :foreground "black"
-					   :background "white")))))
-	      (when (and (featurep 'png)
-			 riece-xfaceb-prefer-cface-to-xface
-			 cface)
-		(set-extent-begin-glyph
-		 (extent-at (point))
-		 (make-glyph (list (vector 'png
-					   :data (riece-xfaceb-face-to-png cface)))))))
-	    ;; We have a match, get out of the inner loop
-	    (setq all-records nil))
-	  (setq all-records (cdr all-records)))
+	      (let ((ext (extent-at (point))))
+		(cond
+		 ((and cface
+		       (or riece-xfaceb-prefer-cface-to-xface
+			   (not xface)))
+		  (riece-xfaceb-add-glyph 'cface ext cface))
+		 (xface (riece-xfaceb-add-glyph 'xface ext xface))
+		 (t nil))))))
 	(setq users (cdr users))))))
 
 (defun riece-xfaceb-requires ()
@@ -136,10 +183,16 @@ Returns a string."
 	       'riece-xfaceb-user-list-mode-hook))
 
 (defun riece-xfaceb-enable ()
+  (add-to-list 'riece-saved-forms 'riece-xfaceb-channels)
+  (define-key riece-command-mode-map "\C-c\C-cx"
+    #'riece-xfaceb-addremove-channel)
   (if riece-current-channel
       (riece-emit-signal 'user-list-changed riece-current-channel)))
 
 (defun riece-xfaceb-disable ()
+  (setq riece-saved-forms
+	(remove 'riece-xfaceb-channels riece-saved-forms))
+  (define-key riece-command-mode-map "\C-c\C-cx" nil)
   (if riece-current-channel
       (riece-emit-signal 'user-list-changed riece-current-channel)))
 
