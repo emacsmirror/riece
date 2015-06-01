@@ -52,7 +52,12 @@
 
 (autoload 'bbdb-records "bbdb")
 (autoload 'bbdb-record-getprop "bbdb")
-(autoload 'bbdb-search "bbdb-com" nil nil 'macro)
+
+;; `bbdb-search' is defined as a macro in bbdb-com.
+(eval-when-compile
+  (condition-case nil
+      (require 'bbdb-com)
+    (error)))
 
 (defconst riece-xfaceb-description
   "Display X-Face & Colour Face images in IRC buffers \(BBDB\).")
