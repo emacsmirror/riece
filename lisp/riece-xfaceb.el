@@ -132,6 +132,7 @@ DATA is the image data from BBDB."
 (defun riece-xfaceb-update-user-list-buffer ()
   "Add X-Face or Colour Face images to channel users' buffer."
   (when (and (get 'riece-xfaceb 'riece-addon-enabled)
+	     riece-current-channel
 	     (or (null riece-xfaceb-channels)
 		 (member (riece-identity-prefix riece-current-channel)
 			 riece-xfaceb-channels)))
