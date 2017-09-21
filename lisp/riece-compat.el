@@ -83,6 +83,10 @@
   (defalias 'riece-set-process-query-on-exit-flag
     'process-kill-without-query))
 
+(if (fboundp 'set-face-underline)
+    (defalias 'riece-set-face-underline 'set-face-underline)
+  (defalias 'riece-set-face-underline 'set-face-underline-p))
+
 (provide 'riece-compat)
 
 ;;; riece-compat.el ends here

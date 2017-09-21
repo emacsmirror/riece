@@ -102,7 +102,7 @@ To set up colors compatible with X-Chat and mIRC, do:
     (if (plist-get attrs 'bold)
 	(make-face-bold face))
     (if (plist-get attrs 'underline)
-	(set-face-underline-p face t))
+	(riece-set-face-underline face t))
     (if (setq foreground (plist-get attrs 'foreground))
 	(set-face-foreground face foreground))
     (if (setq background (plist-get attrs 'background))
