@@ -772,27 +772,27 @@ If prefix argument ARG is non-nil, toggle frozen status."
 	  (delete-region (point) (- (point) (length current)))
 	  (insert completion))))))
 
-(defun riece-command-open-server (server-name)
+(defun riece-command-open-server (name)
   (interactive
    (list (completing-read (riece-mcat "Open server: ") riece-server-alist)))
-  (if (riece-server-process server-name)
-      (error "%s is already opened" server-name))
+  (if (riece-server-process name)
+      (error "%s is already opened" name))
   (riece-open-server
-   (riece-server-name-to-server (if (equal server-name "")
+   (riece-server-name-to-server (if (equal name "")
 				    riece-server
-				  server-name))
-   server-name))
+				  name))
+   name))
 
-(defun riece-command-close-server (server-name &optional message)
+(defun riece-command-close-server (name &optional message)
   (interactive
    (list (completing-read (riece-mcat "Close server: ")
 			  riece-server-process-alist)
 	 (if current-prefix-arg
 	     (read-string (riece-mcat "Message: "))
 	   riece-quit-message)))
-  (let ((process (riece-server-process server-name)))
+  (let ((process (riece-server-process name)))
     (unless process
-      (error "%s is not opened" server-name))
+      (error "%s is not opened" name))
     (riece-quit-server-process process message)))
 
 (defun riece-command-universal-server-name-argument ()

@@ -80,26 +80,26 @@ the `riece-server-keyword-map' variable."
 	(setq plist (cons `(:password ,(substring password 1)) plist)))
       (apply #'nconc plist))))
 
-(defun riece-server-name-to-server (server-name)
-  (let ((entry (assoc server-name riece-server-alist)))
+(defun riece-server-name-to-server (name)
+  (let ((entry (assoc name riece-server-alist)))
     (if entry
 	(unless (listp (cdr entry))
 	  (setcdr entry (riece-server-parse-string (cdr entry))))
-      (setq entry (cons server-name (riece-server-parse-string server-name))
+      (setq entry (cons name (riece-server-parse-string name))
 	    riece-server-alist (cons entry riece-server-alist)
 	    riece-save-variables-are-dirty t))
     (cdr entry)))
 
-(defun riece-server-process-name (server-name)
-  (if (equal server-name "")
+(defun riece-server-process-name (name)
+  (if (equal name "")
       "IRC"
-    (format "IRC<%s>" server-name)))
+    (format "IRC<%s>" name)))
 
-(defun riece-server-process (server-name)
-  (cdr (assoc server-name riece-server-process-alist)))
+(defun riece-server-process (name)
+  (cdr (assoc name riece-server-process-alist)))
 
-(defmacro riece-with-server-buffer (server-name &rest body)
-  `(let ((process (riece-server-process ,server-name)))
+(defmacro riece-with-server-buffer (name &rest body)
+  `(let ((process (riece-server-process ,name)))
      (if process
 	 (with-current-buffer (process-buffer process)
 	   ,@body)
@@ -196,10 +196,10 @@ the `riece-server-keyword-map' variable."
 	      "")))))
 
 (defun riece-send-string (string &optional identity)
-  (let* ((server-name (if identity
-			  (riece-identity-server identity)
-			(riece-current-server-name)))
-	 (process (riece-server-process server-name)))
+  (let* ((name (if identity
+		   (riece-identity-server identity)
+		 (riece-current-server-name)))
+	 (process (riece-server-process name)))
     (unless process
       (error "%s" (substitute-command-keys
 		   "Type \\[riece-command-open-server] to open server.")))
@@ -210,7 +210,7 @@ the `riece-server-keyword-map' variable."
 	   (riece-encode-coding-string-for-identity string identity)
 	 (riece-encode-coding-string string))))))
 
-(defun riece-open-server (server server-name)
+(defun riece-open-server (server name)
   (let ((protocol (or (plist-get server :protocol)
 		      riece-protocol))
 	function
@@ -224,13 +224,13 @@ the `riece-server-keyword-map' variable."
     (unless function
       (error "\"%S\" is not supported" protocol))
     (setq process (riece-funcall-ignore-errors (symbol-name function)
-					       function server server-name))
+					       function server name))
     (when process
       (with-current-buffer (process-buffer process)
 	(make-local-variable 'riece-protocol)
 	(setq riece-protocol protocol))
       (setq riece-server-process-alist
-	    (cons (cons server-name process)
+	    (cons (cons name process)
 		  riece-server-process-alist)))))
 
 (defun riece-quit-server-process (process &optional message)
@@ -290,9 +290,9 @@ the `riece-server-keyword-map' variable."
 (defun riece-server-process-opened (process)
   (not (null (memq (process-status process) '(open run)))))
 
-(defun riece-server-opened (&optional server-name)
-  (if server-name
-      (let ((process (riece-server-process server-name)))
+(defun riece-server-opened (&optional name)
+  (if name
+      (let ((process (riece-server-process name)))
 	(and process
 	     (riece-server-process-opened process)))
     (let ((alist riece-server-process-alist))
@@ -302,11 +302,11 @@ the `riece-server-keyword-map' variable."
 	      (throw 'found t))
 	  (setq alist (cdr alist)))))))
 
-(defun riece-server-properties (server-name)
-  "Return a list of properties associated with SERVER-NAME."
-  (if (equal server-name "")
+(defun riece-server-properties (name)
+  "Return a list of properties associated with NAME."
+  (if (equal name "")
       riece-server
-    (let ((entry (assoc server-name riece-server-alist)))
+    (let ((entry (assoc name riece-server-alist)))
       (unless entry
 	(error "No such server"))
       (cdr entry))))

@@ -178,11 +178,11 @@
 (defun riece-concat-server-name (string)
   (if (equal riece-server-name "")
       string
-    (let ((server-name (concat " (from " riece-server-name ")")))
-      (put-text-property 0 (length server-name)
+    (let ((name (concat " (from " riece-server-name ")")))
+      (put-text-property 0 (length name)
 			 'riece-server-name riece-server-name
-			 server-name)
-      (concat string server-name))))
+			 name)
+      (concat string name))))
 
 (defun riece-concat-user-status (status string)
   (if status
@@ -217,31 +217,31 @@
       (substring user-at-host 1)
     user-at-host))
 
-(defun riece-get-users-on-server (server-name)
-  (riece-with-server-buffer server-name
+(defun riece-get-users-on-server (name)
+  (riece-with-server-buffer name
     (let (identities)
       (mapatoms
        (lambda (user)
 	 (setq identities
-	       (cons (riece-make-identity (symbol-name user) server-name)
+	       (cons (riece-make-identity (symbol-name user) name)
 		     identities)))
        (riece-cache-hash-obarray riece-user-cache))
       identities)))
 
-(defun riece-get-channels-on-server (server-name)
-  (riece-with-server-buffer server-name
+(defun riece-get-channels-on-server (name)
+  (riece-with-server-buffer name
     (let (identities)
       (mapatoms
        (lambda (channel)
 	 (setq identities
-	       (cons (riece-make-identity (symbol-name channel) server-name)
+	       (cons (riece-make-identity (symbol-name channel) name)
 		     identities)))
        (riece-cache-hash-obarray riece-channel-cache))
       identities)))
 
-(defun riece-get-identities-on-server (server-name)
-  (nconc (riece-get-channels-on-server server-name)
-	 (riece-get-users-on-server server-name)))
+(defun riece-get-identities-on-server (name)
+  (nconc (riece-get-channels-on-server name)
+	 (riece-get-users-on-server name)))
 
 (defun riece-check-channel-commands-are-usable (&optional channel)
    (unless riece-current-channel
