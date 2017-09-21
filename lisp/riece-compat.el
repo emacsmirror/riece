@@ -87,6 +87,35 @@
     (defalias 'riece-set-face-underline 'set-face-underline)
   (defalias 'riece-set-face-underline 'set-face-underline-p))
 
+(if (fboundp 'time-less-p)
+    (defalias 'riece-time-less-p 'time-less-p)
+  ;; stolen (and renamed) from time-date.el.
+  (defun riece-time-less-p (t1 t2)
+    "Say whether time value T1 is less than time value T2."
+    (or (< (car t1) (car t2))
+	(and (= (car t1) (car t2))
+	     (< (nth 1 t1) (nth 1 t2))))))
+
+(if (fboundp 'time-since)
+    (defalias 'riece-time-since 'time-since)
+  ;; stolen (and renamed) from time-date.el.
+  (defun riece-time-since (time)
+    "Return the time elapsed since TIME."
+    (let* ((current (current-time))
+	   (rest (when (< (nth 1 current) (nth 1 time))
+		   (expt 2 16))))
+      (list (- (+ (car current) (if rest -1 0)) (car time))
+	    (- (+ (or rest 0) (nth 1 current)) (nth 1 time))))))
+
+(if (fboundp 'seconds-to-time)
+    (defalias 'riece-seconds-to-time 'seconds-to-time)
+  ;; stolen (and renamed) from time-date.el.
+  (defun riece-seconds-to-time (seconds)
+    "Convert SECONDS (a floating point number) to a time value."
+    (list (floor seconds 65536)
+	  (floor (mod seconds 65536))
+	  (floor (* (- seconds (ffloor seconds)) 1000000)))))
+
 (provide 'riece-compat)
 
 ;;; riece-compat.el ends here

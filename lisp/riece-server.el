@@ -133,29 +133,6 @@ the `riece-server-keyword-map' variable."
   "Return t if QUEUE is empty."
   (null (aref queue 0)))
 
-;; stolen (and renamed) from time-date.el.
-(defun riece-seconds-to-time (seconds)
-  "Convert SECONDS (a floating point number) to a time value."
-  (list (floor seconds 65536)
-	(floor (mod seconds 65536))
-	(floor (* (- seconds (ffloor seconds)) 1000000))))
-
-;; stolen (and renamed) from time-date.el.
-(defun riece-time-less-p (t1 t2)
-  "Say whether time value T1 is less than time value T2."
-  (or (< (car t1) (car t2))
-      (and (= (car t1) (car t2))
-	   (< (nth 1 t1) (nth 1 t2)))))
-
-;; stolen (and renamed) from time-date.el.
-(defun riece-time-since (time)
-  "Return the time elapsed since TIME."
-  (let* ((current (current-time))
-	 (rest (when (< (nth 1 current) (nth 1 time))
-		 (expt 2 16))))
-    (list (- (+ (car current) (if rest -1 0)) (car time))
-	  (- (+ (or rest 0) (nth 1 current)) (nth 1 time)))))
-
 (defun riece-flush-send-queue (process)
   (with-current-buffer (process-buffer process)
     (let ((length 0)
