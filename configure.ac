@@ -1,4 +1,4 @@
-AC_PREREQ(2.63)
+AC_PREREQ(2.64)
 
 AC_INIT([riece],
 	m4_esyscmd([build-aux/git-version-gen .tarball-version]),
